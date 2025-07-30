@@ -1,0 +1,746 @@
+MetaDirectiveAnalysis ::= "(" "For each of: CHAPTER 4: 'Generators and projectives', extend the constructed grammar to integrate the formalized content of the section." ")" "==>" {
+
+(* ========================================================================================================== *)
+(* == Part 1: Defining the Equivalence Relation on Monomorphisms                                         == *)
+(* ========================================================================================================== *)
+(* ELABORATION: The core concept of a subobject is not a single monomorphism, but an *equivalence class*
+ * of them. To formalize this, we must first explicitly define the equivalence relation itself. Two
+ * monomorphisms are equivalent if their domains are isomorphic in a way that respects the maps into X.
+*)
+
+MonomorphismEquivalence ::= Identifier "≈_Sub" Identifier ;
+TYPING
+    (*
+     * This rule defines the proposition `m1 ≈_Sub m2`. It is true if m1 and m2 are
+     * monomorphisms into the same object X, and there exists an isomorphism `i`
+     * between their domains such that the triangle commutes.
+    *)
+    Γ ⊢ m1 : S1 -> X, Γ ⊢ m2 : S2 -> X
+    Γ ⊢ m1, m2 are MONOMORPHISMS
+    ∃ (i : S1 -> S2 is ISOMORPHISM) s.t. (m2 ∘ i == m1)
+    -------------------------------------------------------
+    Γ ⊢ (m1 ≈_Sub m2) : EquivalenceRelation ;
+CATEGORY
+    [[ m1 ≈_Sub m2 ]] = "An assertion of isomorphism in the slice category C/X between the objects (S1, m1) and (S2, m2). This is the fundamental relation used to define subobjects." ;
+
+(* ========================================================================================================== *)
+(* == Part 2: Defining Subobjects and their Ordering                                                       == *)
+(* ========================================================================================================== *)
+
+SubobjectAsEquivalenceClass ::= "[" Identifier "]" "_X" ;
+TYPING
+    (* A Subobject is now explicitly an equivalence class [m] under the relation ≈_Sub. *)
+    Γ ⊢ m : S -> X, Γ ⊢ m is MONOMORPHISM
+    -------------------------------------------
+    Γ ⊢ [m]_X : SubobjectOf(X) ;
+CATEGORY
+    [[ [m]_X ]] = "The subobject of X represented by the monomorphism m. It is the equivalence class of all monomorphisms `m'` such that `m' ≈_Sub m`." ;
+
+SubobjectOrdering ::= SubobjectAsEquivalenceClass "≤" SubobjectAsEquivalenceClass ;
+TYPING
+    (*
+     * The ordering relation [m1] ≤ [m2] holds if there exists a morphism `k` (which will
+     * necessarily be a monomorphism) such that `m1` factors through `m2`.
+    *)
+    Γ ⊢ [m1]_X : SubobjectOf(X), Γ ⊢ [m2]_X : SubobjectOf(X)
+    m1 : S1 -> X, m2 : S2 -> X
+    ∃ (k : S1 -> S2) s.t. (m2 ∘ k == m1)
+    -------------------------------------------------
+    Γ ⊢ ([m1]_X ≤ [m2]_X) : Proposition ;
+CATEGORY
+    [[ [m1]_X ≤ [m2]_X ]] = "The assertion that the 'part' of X represented by m1 is contained within the 'part' represented by m2. This defines a partial order on the collection of subobjects of X." ;
+
+(* ========================================================================================================== *)
+(* == Part 3: The Master Definition and its Dual                                                         == *)
+(* ========================================================================================================== *)
+
+SubobjectLattice ::= "Sub" "(" Identifier ")" ;
+TYPING
+    (* This constructor bundles all subobjects of X into a single structure. *)
+    Γ ⊢ X : Object_in(C)
+    -----------------------------------------------------------
+    Γ ⊢ Sub(X) : Poset(SubobjectOf(X), ≤) ;
+CATEGORY
+    [[ Sub(X) ]] = "The subobject lattice of X. It is the partially ordered collection of all subobjects of X, which forms a complete lattice if the category C is sufficiently complete." ;
+
+CategoryPropertyDefinition ::= Identifier "is" "WELL-POWERED" ;
+TYPING
+    (*
+     * The refined definition of well-powered: A category C is well-powered if for any object X,
+     * its entire subobject lattice `Sub(X)` is a set, not a proper class.
+    *)
+    Γ ⊢ C : Category
+    ∀ X ∈ Objects(C), IsSet( Sub(X) )
+    ---------------------------------------
+    Γ ⊢ C is WELL-POWERED : PropositionAbout(C) ;
+CATEGORY
+    [[ C is WELL-POWERED ]] = "A 'local smallness' condition asserting that every object in the category has a set-sized lattice of subobjects. This is a crucial prerequisite for many constructions, including the Adjoint Functor Theorems and image factorizations." ;
+
+(* ========================================================================================================== *)
+(* == Part 4: The Entire Dual Theory (via Duality Principle)                                             == *)
+(* ========================================================================================================== *)
+
+DualTheoremInference ::= "INFER_DUAL_THEORY" "'Well-Copowered'" "FROM" "THEORY" "'Well-Powered'" ;
+TYPING
+    (***
+     * By applying the duality functor `(-)^op` to the entire theory block defined above,
+     * the system mechanically generates the corresponding correct dual theory.
+     * The DualityMapping dictionary performs the following rewrites:
+     * 1. Monomorphism -> Epimorphism
+     * 2. ≈_Sub -> ≈_Quotient
+     * 3. Subobject -> QuotientObject
+     * 4. m:S->X -> e:X->Q
+     * 5. [m]_X -> [e]^X
+     * 6. SubobjectLattice `Sub(X)` -> QuotientLattice `Quot(X)`
+     * 7. WELL-POWERED -> WELL-COPOWERED
+     * The resulting propositions are valid theorems in the dual theory.
+    ***)
+    Γ ⊢ TheoryBlock["Well-Powered"] : CoherentTheoryFragment
+    --------------------------------------------------------------------------------------
+    Γ ⊢ TheoryBlock["Well-Copowered"] := (TheoryBlock["Well-Powered"])^op : CoherentTheoryFragment ;
+CATEGORY
+    [[ INFER_DUAL_THEORY ... ]] = "A constructive proof of the entire theory for 'well-copowered' categories. This process, derived by mechanically applying the duality functor, generates the definitions for quotient object equivalence, quotient lattices, and the `is WELL-COPOWERED` property without requiring separate proofs, showcasing the symmetry and power of the Duality Principle." ;
+
+(* ========================================================================================================== *)
+(* == Part 1: Deconstructing Intersection as a Limit (Wide Pullback)                                     == *)
+(* ========================================================================================================== *)
+
+WidePullbackDiagram ::= "DIAGRAM_for_Intersection" "(" "{" {SubobjectOf} "}" ")" ;
+TYPING
+    (* This constructor defines the specific diagram shape over which we take a limit to get an intersection. *)
+    (* It's a cospan diagram with many legs, all pointing to the same object X. *)
+    ∀ s_i in Subobjects_Set, Γ ⊢ s_i : SubobjectOf(X) (with representative m_i: A_i -> X)
+    Shape := The category with objects {A_i} and a terminal object T, and arrows A_i -> T.
+    Functor D maps A_i to A_i and T to X.
+    -----------------------------------------------------------------------------------------
+    Γ ⊢ DIAGRAM_for_Intersection(...) : Diagram ;
+CATEGORY
+    [[ DIAGRAM_for_Intersection({[m_i]}) ]] = "The cospan diagram formed by the representative monomorphisms {m_i} all pointing to the object X. The limit of this diagram is known as a wide pullback." ;
+
+IntersectionConstructor ::= "LIMIT_OF" WidePullbackDiagram ;
+TYPING
+    (* This rule asserts that the intersection *is* the limit of the cospan diagram. *)
+    Γ ⊢ C : Category, C has all small Limits
+    Γ ⊢ d : WidePullbackDiagram
+    ----------------------------------------------------
+    Γ ⊢ LIMIT_OF d : SubobjectOf( Codomain(d) ) ;
+CATEGORY
+    [[ LIMIT_OF d ]] = "The formal construction of the intersection as a limit. The apex of the limit cone is the domain of the new subobject, and the universal mapping property of the limit guarantees it is the greatest lower bound." ;
+
+BinaryIntersection ::= SubobjectOf "∩" SubobjectOf ;
+TYPING
+    (* Convenience syntax for the most common case. *)
+    Γ ⊢ s1 : SubobjectOf(X), Γ ⊢ s2 : SubobjectOf(X)
+    -----------------------------------------------------
+    Γ ⊢ (s1 ∩ s2) : SubobjectOf(X) (defined as Intersection({s1, s2}) );
+CATEGORY
+    [[ s1 ∩ s2 ]] = "The pullback of the monomorphisms representing s1 and s2. This is the binary case of the general intersection construction." ;
+
+(* ========================================================================================================== *)
+(* == Part 2: Deconstructing Union as a Colimit-then-Image                                               == *)
+(* ========================================================================================================== *)
+
+UnionConstructor ::= "Image" "(" "UniversalCoproductMap" "(" "{" {SubobjectOf} "}" ")" ")" ;
+TYPING
+    (*
+     * This rule formalizes the two-step construction of the union.
+     * Step 1: Form the coproduct of the domains of the subobjects (e.g., A_i).
+     * Step 2: Form the induced map [m_i] from the coproduct ∐A_i to X.
+     * Step 3: Take the image of this map, which is the union subobject.
+    *)
+    Context: C has small Coproducts and Images (e.g. from a (StrongEpi, Mono) factorization system).
+    Subobjects_Set = {s_i | s_i has representative m_i: A_i -> X }
+    CP := Coproduct({ A_i })
+    u := UniversalCoproductMorphism( from:CP, to:X, via:{m_i} )
+    --------------------------------------------------------------------------------
+    Γ ⊢ Image(u) : SubobjectOf(X) ;
+CATEGORY
+    [[ Image(UniversalCoproductMap(...)) ]] = "The formal, constructive definition of the union. It corresponds to gathering all the 'parts' together (the coproduct) and then seeing what 'area' they cover in the target object (the image)." ;
+
+BinaryUnion ::= SubobjectOf "∪" SubobjectOf ;
+TYPING
+    (* Convenience syntax for the binary union. *)
+    Γ ⊢ s1 : SubobjectOf(X), Γ ⊢ s2 : SubobjectOf(X)
+    -----------------------------------------------------
+    Γ ⊢ (s1 ∪ s2) : SubobjectOf(X) (defined as Union({s1, s2}) );
+CATEGORY
+    [[ s1 ∪ s2 ]] = "The binary union, constructed by taking the image of the map from the coproduct of the two subobject domains into X." ;
+
+
+(* ========================================================================================================== *)
+(* == Part 3: Formalizing the Lattice Structure                                                          == *)
+(* ========================================================================================================== *)
+
+LatticePropertyDefinition ::= Identifier "is" "COMPLETE_LATTICE" ;
+TYPING
+    (* A formal property definition for a complete lattice. *)
+    Γ ⊢ P : Poset
+    ∀ (S ⊆ Carrier(P)), ( Supremum(S) exists in P ∧ Infimum(S) exists in P )
+    ----------------------------------------------------------------------------
+    Γ ⊢ P is COMPLETE_LATTICE : PropositionAbout(P) ;
+CATEGORY
+    [[ P is COMPLETE_LATTICE ]] = "The property of a partially ordered set P having all small joins (suprema) and meets (infima). This is the strongest form of lattice completeness." ;
+
+SubobjectLattice ::= "Sub" "(" Identifier ")" ;
+TYPING
+    Γ ⊢ X : Object_in(C)
+    Carrier_Set := { s | Γ ⊢ s : SubobjectOf(X) }
+    Ordering_Rel := (s1, s2) ↦ (Γ ⊢ s1 ≤ s2)
+    ------------------------------------------------
+    Γ ⊢ Sub(X) : Poset(Carrier_Set, Ordering_Rel) ;
+CATEGORY
+    [[ Sub(X) ]] = "The subobject lattice of X. It is the partially ordered collection of all subobjects of X." ;
+
+TheoremDeclaration ::= "THEOREM" "SubobjectLatticeIsComplete" ":"
+    "IF" "(" Identifier "C" "is WELL-POWERED and has small Pullbacks and Images" ")" "THEN"
+    "(" "FOR_ALL" "object" "X" "," "Sub(X)" "is" "COMPLETE_LATTICE" ")" ;
+TYPING
+    (*
+     * This is the refined theorem. The preconditions are more explicit.
+     * Well-powered ensures Sub(X) is a set.
+     * Pullbacks ensure all intersections (infima) exist.
+     * Images (and coproducts) ensure all unions (suprema) exist.
+    *)
+    Γ ⊢ C is WELL-POWERED
+    Γ ⊢ C has all small Pullbacks
+    Γ ⊢ C has Images
+    -----------------------------------------------------------------
+    ∀X ∈ Ob(C), Γ ⊢ Sub(X) is COMPLETE_LATTICE : MetaTheorem ;
+CATEGORY
+    [[ THEOREM SubobjectLatticeIsComplete ]] = "The refined assertion that connects the categorical properties of the ambient category C to the algebraic structure of the subobject collection. The rich structure of C (completeness and factorizations) induces a rich algebraic structure (a complete lattice) on each of its subobject posets." ;
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 4.3: Strong epimorphisms" ")" "==>" {
+(*
+
+ELABORATION: A strong epimorphism is a more robust version of a standard epimorphism. Its
+strength is defined by its relationship to monomorphisms, via a "diagonal fill-in" property.
+This property is more formally known as orthogonality. To elaborate, we will:
+
+Deconstruct the Definition: We will first formalize the "diagonal fill-in" property
+as a testable predicate on commutative squares.
+
+Formalize the Concept: We will build the definition of a Strong Epimorphism upon
+this predicate, making the orthogonality condition explicit.
+
+Show its Significance: We will state the theorem that connects strong epimorphisms
+to their primary role as the 'E' class in the canonical (StrongEpi, Mono) factorization
+system, which is the subject of the next section but crucial for context here.
+
+Derive the Dual Theory: We will use the Duality Principle to mechanically derive the
+complete definition and properties of the dual concept, a Strong Monomorphism, which is
+orthogonal to all epimorphisms.
+
+*)
+
+(* ========================================================================================================== )
+( == Part 1: Deconstructing the Orthogonality Condition == )
+( ========================================================================================================== *)
+
+CommutativeSquareForOrthogonalityTest ::= "ORTHOGONALITY_SQUARE" "(" "e" ":" Identifier "," "m" ":" Identifier ")" "with" "(" "f" ":" Identifier "," "g" ":" Identifier ")" ;
+TYPING
+(*
+* This rule defines the setup for the orthogonality test. It's a commutative square
+* where one arrow e (the candidate strong epi) is parallel to f, and another
+* arrow m (the test mono) is parallel to g.
+*)
+Context: e:A->B, m:C->D, f:A->C, g:B->D
+Γ ⊢ e,m,f,g : Morphism
+g ∘ e == m ∘ f
+------------------------------------------------------------------------------------------------
+Γ ⊢ ORTHOGONALITY_SQUARE(e,m) with (f,g) : CommutativeSquare ;
+CATEGORY
+[[ ORTHOGONALITY_SQUARE ... ]] = "The proposition that the morphisms e, m, f, and g form a commutative square, setting the stage for the diagonal fill-in test." ;
+
+DiagonalFillerProperty ::= "HasUniqueDiagonalFiller" "(" Identifier ")" ;
+TYPING
+(*
+* This is the predicate that asserts the existence of the unique diagonal d.
+* This is the core property of orthogonality.
+*)
+Context: Let sq = ORTHOGONALITY_SQUARE(e:A->B,m:C->D) with (f:A->C,g:B->D)
+∃! (d : B -> C is Morphism) s.t. ( (d ∘ e == f) ∧ (m ∘ d == g) )
+-----------------------------------------------------------------------
+Γ ⊢ HasUniqueDiagonalFiller(sq) : BooleanProposition ;
+CATEGORY
+[[ HasUniqueDiagonalFiller(sq) ]] = "The assertion that there is a unique morphism d that makes both triangles of the commutative square commute. This morphism d is the 'diagonal filler'." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Formal Definition of Strong Epimorphism == )
+( ========================================================================================================== *)
+
+MorphismPropertyAssertion ::= Identifier "is" "STRONG_EPIMORPHISM" ;
+TYPING
+(*
+* A morphism e is a Strong Epimorphism if it is an epimorphism, AND for every
+* monomorphism m, any commutative square involving e and m has a unique diagonal filler.
+*)
+Premise1: Γ ⊢ e is EPIMORPHISM
+Premise2: ∀ (m : a->b is MONOMORPHISM),
+∀ (sq : CommutativeSquareForOrthogonalityTest involving e and m),
+( HasUniqueDiagonalFiller(sq) )
+----------------------------------------------------------------------------------
+Γ ⊢ e is STRONG_EPIMORPHISM : PropositionAbout(e) ;
+CATEGORY
+[[ e is STRONG_EPIMORPHISM ]] = "A morphism e that is 'orthogonal' to all monomorphisms. This property ensures e is surjective-like in a very robust way, suitable for being the left part of a canonical factorization." ;
+
+(* ========================================================================================================== )
+( == Part 3: The Context and Significance (Factorization) == )
+( ========================================================================================================== *)
+
+TheoremDeclaration ::= "THEOREM" "CanonicalFactorizationSystem" ":"
+"In any category with pullbacks and coequalizers,"
+"(" "'StrongEpi'" "," "'Mono'" ")" "forms a" "FACTORIZATION_SYSTEM" ;
+TYPING
+Context: Category C has Pullbacks and Coequalizers.
+E := { f | f is STRONG_EPIMORPHISM }
+M := { f | f is MONOMORPHISM }
+-------------------------------------------------------
+Γ ⊢ C has FACTORIZATION_SYSTEM(E, M) : MetaTheorem ;
+CATEGORY
+[[ THEOREM CanonicalFactorizationSystem ... ]] = "The assertion that the classes of strong epimorphisms and monomorphisms form a natural and well-behaved factorization system. This is the primary motivation for defining strong epimorphisms, as they provide the ideal 'surjective part' for image factorization." ;
+
+(* ========================================================================================================== )
+( == Part 4: Deriving the Dual Theory for Strong Monomorphisms == )
+( ========================================================================================================== *)
+
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "STRONG_EPIMORPHISM" "IS" "STRONG_MONOMORPHISM" ;
+
+MorphismPropertyAssertion ::= Identifier "is" "STRONG_MONOMORPHISM" ;
+TYPING
+(* Derived via duality from strong epimorphism. *)
+IsDualOf("STRONG_EPIMORPHISM")
+EquivalentTyping:
+Premise1: Γ ⊢ m is MONOMORPHISM
+Premise2: ∀ (e : a->b is EPIMORPHISM),
+∀ (sq : CommutativeSquareForOrthogonalityTest involving m and e),
+( HasUniqueDiagonalFiller(sq) )
+----------------------------------------------------------------
+Γ ⊢ m is STRONG_MONOMORPHISM : PropositionAbout(m) ;
+CATEGORY
+[[ m is STRONG_MONOMORPHISM ]] = "The dual concept. A strong monomorphism is a monomorphism that is orthogonal to all epimorphisms. They are the 'M' class in the less common but equally valid (Epi, StrongMono) factorization system." ;
+
+DualTheoremInference ::= "INFER_DUAL_THEOREM" "'DualFactorizationSystem'" "FROM" "THEOREM" "'CanonicalFactorizationSystem'" ;
+TYPING
+(*
+* By applying the duality operator to the CanonicalFactorizationSystem theorem, we derive:
+* (Epi, StrongMono) forms a factorization system.
+*)
+Γ ⊢ THEOREM 'CanonicalFactorizationSystem' : P_canonical
+P_dual = rewrite(P_canonical, DualityMappings)
+------------------------------------------------------------------
+Γ ⊢ THEOREM 'DualFactorizationSystem' : P_dual ;
+CATEGORY
+[[ INFER_DUAL_THEOREM ... ]] = "A constructive proof of the existence of the dual factorization system (Epi, StrongMono), derived mechanically by applying the duality functor. It asserts that regular epimorphisms and strong monomorphisms also form a valid way to decompose arrows in a category." ;
+}
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on 4.4: Epi-mono factorizations" ")" "==>" {
+(*
+
+ELABORATION: This section formalizes the concept of a "factorization system," a core
+structural property of a category. The most common example is the (StrongEpi, Mono) system,
+which allows any morphism f to be uniquely decomposed into a strong epimorphism e
+followed by a monomorphism m. This decomposition gives rise to the categorical definition
+of the "Image" of f.
+
+To elaborate, we will:
+
+Formalize the Components: Define what it means for a morphism to have a factorization
+and what the intermediate "Image Object" is.
+
+Formalize Uniqueness: Explicitly define the uniqueness condition for factorizations, which
+is crucial and involves a unique isomorphism between any two potential factorizations.
+
+Formalize the Global Property: Define what it means for a category to possess such a
+factorization system for all its morphisms.
+
+Define Image and Coimage: Show how this factorization machinery provides the canonical definitions
+for the Image(f) (the subobject part) and the Coimage(f) (the quotient object part).
+
+State Key Theorems: Assert the theorem that (StrongEpi, Mono) often forms a factorization system
+and derive its dual using the Duality Principle.
+
+*)
+
+(* ========================================================================================================== )
+( == Part 1: The Components of a Factorization == )
+( ========================================================================================================== *)
+
+MorphismFactorization ::= "Factorization_of" "(" Identifier ")" "is" "(" Identifier "," Identifier ")" "via" Identifier ;
+TYPING
+(*
+* This rule asserts that a specific morphism f has a decomposition (e, m).
+* f: A -> B is decomposed into e: A -> I and m: I -> B.
+* The rule checks that the composition is correct and the factors belong to their specified classes.
+*)
+Context: FactorizationSystem(E, M)
+Γ ⊢ f : A -> B
+Γ ⊢ e : A -> I, Γ ⊢ m : I -> B
+f == m ∘ e
+e ∈ E
+m ∈ M
+-------------------------------------------------------------------------
+Γ ⊢ Factorization_of(f) is (e, m) via I : FactorizationObject ;
+CATEGORY
+[[ Factorization_of(f) is (e, m) via I ]] = "A specific decomposition of the morphism f into two stages. The first stage e is a morphism from the class E (e.g., epimorphisms), and the second stage m is from the class M (e.g., monomorphisms). The object I is the 'Image Object'." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Crucial Uniqueness Condition == )
+( ========================================================================================================== *)
+
+FactorizationUniquenessAxiom ::= "AXIOM" "FactorizationIsUniqueUpToIsomorphism" ;
+TYPING
+(*
+* This is the formal typing for the uniqueness condition. It is a meta-theorem.
+* It asserts that if a morphism f has two factorizations, then their intermediate
+* objects must be uniquely isomorphic in a way that makes the whole diagram commute.
+*)
+Context: FactorizationSystem(E, M)
+f_has_factorization (e1:A->I1, m1:I1->B)
+f_has_factorization (e2:A->I2, m2:I2->B)
+------------------------------------------------------------------------------
+Condition := ∃! (i : I1 -> I2 is ISOMORPHISM) s.t. ( (i ∘ e1 == e2) ∧ (m1 == m2 ∘ i) )
+Γ ⊢ AXIOM ... is TRUE if Condition holds : MetaTheorem ;
+CATEGORY
+[[ AXIOM FactorizationIsUniqueUpToIsomorphism ]] = "The coherence law for factorization systems. It guarantees that the 'Image Object' I is not arbitrary but is determined uniquely up to a canonical isomorphism. This makes the concept of 'the' image of a morphism well-defined." ;
+
+(* ========================================================================================================== )
+( == Part 3: The Global Property of a Category == )
+( ========================================================================================================== *)
+
+CategoryPropertyDefinition ::= Identifier "has" "FACTORIZATION_SYSTEM" "(" Identifier "," Identifier ")" ;
+TYPING
+(*
+* A category C has an (E,M) factorization system if EVERY morphism in C admits a
+* factorization that satisfies the uniqueness axiom.
+*)
+Γ ⊢ C : Category
+Γ ⊢ E, M : ClassOfMorphisms
+∀ f ∈ Mor(C), ( ∃ Factorization_of(f) ∧ FactorizationUniquenessAxiom holds )
+--------------------------------------------------------------------------------
+Γ ⊢ C has FACTORIZATION_SYSTEM(E, M) : PropositionAbout(C) ;
+CATEGORY
+[[ C has FACTORIZATION_SYSTEM(E, M) ]] = "A fundamental structural property of a category C, guaranteeing that every arrow can be canonically decomposed into a part from class E and a part from class M. It is the categorical generalization of the first isomorphism theorem for groups." ;
+
+(* ========================================================================================================== )
+( == Part 4: Defining Image and Coimage == )
+( ========================================================================================================== *)
+
+ImageOfMorphism ::= "Image" "(" Identifier ")" ;
+TYPING
+(*
+* The Image of f is defined as the M part of its canonical factorization.
+* The Image is formally the subobject represented by the monomorphism m.
+*)
+Context: Category C has FACTORIZATION_SYSTEM(StrongEpi, Mono)
+Factorization_of(f) is (e: A -> I, m: I -> B)
+----------------------------------------------------------------
+Γ ⊢ Image(f) : SubobjectOf(B) (represented by m) ;
+CATEGORY
+[[ Image(f) ]] = "The categorical image of the morphism f. It is defined as the smallest subobject of the codomain B through which f factors. This is constructed as the monomorphism part m of the canonical (StrongEpi, Mono) factorization f = m ∘ e." ;
+
+CoimageOfMorphism ::= "Coimage" "(" Identifier ")" ;
+TYPING
+(*
+* The Coimage of f is dually defined as the E part of its canonical factorization.
+* The Coimage is formally the quotient object represented by the epimorphism e.
+*)
+Context: Category C has FACTORIZATION_SYSTEM(StrongEpi, Mono)
+Factorization_of(f) is (e: A -> I, m: I -> B)
+----------------------------------------------------------------
+Γ ⊢ Coimage(f) : QuotientObjectOf(A) (represented by e) ;
+CATEGORY
+[[ Coimage(f) ]] = "The categorical coimage of the morphism f. It is defined as the largest quotient object of the domain A through which f factors. This is constructed as the epimorphism part e of the canonical (StrongEpi, Mono) factorization f = m ∘ e. In many algebraic categories, Image(f) and Coimage(f) are isomorphic." ;
+
+(* ========================================================================================================== )
+( == Part 5: The Canonical System and its Dual == )
+( ========================================================================================================== *)
+
+TheoremDeclaration ::= "THEOREM" "StandardFactorizationSystem" ":"
+"IF" "(" Identifier "has Pullbacks and Coequalizers" ")" "THEN"
+"(" Identifier "has FACTORIZATION_SYSTEM" "(" "StrongEpi" "," "Mono" ")" ")" ;
+CATEGORY
+[[ THEOREM StandardFactorizationSystem ]] = "The assertion that the classes of strong epimorphisms and monomorphisms form a natural and well-behaved factorization system in any category with sufficient (co)limits. This is the primary motivation for defining strong epimorphisms, as they provide the ideal 'surjective part' for image factorization." ;
+
+DualTheoremInference ::= "INFER_DUAL_THEOREM" "'AlternateFactorizationSystem'" "FROM" "THEOREM" "'StandardFactorizationSystem'" ;
+TYPING
+(*
+* By applying the duality operator to the StandardFactorizationSystem theorem, we derive:
+* C has a factorization system (Epi, StrongMono).
+* The system uses the dictionary: StrongEpi -> StrongMono (dual), Mono -> Epi (dual).
+*)
+Γ ⊢ THEOREM 'StandardFactorizationSystem' : P_standard
+P_alternate = rewrite(P_standard, DualityMappings)
+----------------------------------------------------------
+Γ ⊢ THEOREM 'AlternateFactorizationSystem' : P_alternate ;
+CATEGORY
+[[ INFER_DUAL_THEOREM ... ]] = "A constructive proof of the existence of the dual factorization system (Epi, StrongMono), derived mechanically by applying the duality functor. While less commonly used, it is an equally valid decomposition that highlights the symmetry of the underlying categorical concepts." ;
+
+}
+
+(* ========================================================================================================== *)
+(* == Section 4.5: Generators                                                                            == *)
+(* ========================================================================================================== *)
+(*
+ * ELABORATION: A generator is an object (or set of objects) that is sufficient to 'probe' and distinguish
+ * all other morphisms in the category. We formalize this 'probing' ability as the faithfulness of the
+ * Hom functor.
+*)
+
+HasGeneratorObject ::= Identifier "has" "GENERATOR" Identifier ;
+TYPING
+    (* A category C has a generator G if the Hom(G, -) functor is faithful. *)
+    Γ ⊢ C : Category, Γ ⊢ G : Object_in(C)
+    Functor_Hom(G,_) : C -> Set is FAITHFUL
+    EquivalentTyping: ∀ (f,g : X->Y, f!=g), ∃(h : G->X) s.t. (f∘h != g∘h)
+    ------------------------------------------------------------------------
+    Γ ⊢ C has GENERATOR G : PropositionAbout(C);
+CATEGORY
+    [[ C has GENERATOR G ]] = "The property of a category C being 'generated' by a single object G. This means that all morphisms can be tested and distinguished by pre-composing them with morphisms out of G. For example, a singleton set is a generator for the category of Sets." ;
+
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "GENERATOR" "IS" "COGENERATOR" ;
+(* NOTE: Cogenerator was defined in Sec 3.2; this reaffirms its place as the dual of Generator. *)
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 4.6: Projectives" ")" "==>" {
+(*
+
+ELABORATION: This section defines a class of objects with a special "lifting" property against
+epimorphisms. A deep elaboration requires not just stating this definition, but deconstructing it,
+showing its equivalence to a more abstract functorial definition, connecting it to the concept of
+"free" objects, formalizing the global property of a category having "enough" of them, and
+finally, deriving the entire dual theory of "injective" objects using the Duality Principle.
+
+*)
+
+(* ========================================================================================================== )
+( == Part 1: Deconstructing the Core Lifting Property == )
+( ========================================================================================================== *)
+
+ProjectiveLiftingProblem ::= "LIFTING_PROBLEM" "(" "morphism" Identifier "," "against_epi" Identifier ")" ;
+TYPING
+(* This defines the setup for the lifting property: a morphism f from a potential projective P, and an epimorphism e. *)
+Γ ⊢ P : Object
+Γ ⊢ f : Morphism(P, B)
+Γ ⊢ e : Morphism(A, B), Γ ⊢ e is EPIMORPHISM
+----------------------------------------------------------------------------------------------------------
+Γ ⊢ LIFTING_PROBLEM(f, against_epi e) : LiftableConfiguration(P, A, B) ;
+CATEGORY
+[[ LIFTING_PROBLEM(f, e) ]] = "The data for a lifting problem, consisting of an object P, an epimorphism e:A->B, and a morphism f:P->B. The problem is to find a lift g:P->A." ;
+
+HasLiftSolution ::= "HAS_LIFT" "(" ProjectiveLiftingProblem ")" ;
+TYPING
+(* This predicate is true if the given lifting problem has a solution g. *)
+Γ ⊢ problem : LiftableConfiguration(P, A, B)
+Let problem = (f:P->B, e:A->B)
+∃(g : P -> A is Morphism) s.t. (e ∘ g == f)
+--------------------------------------------------------------------------------
+Γ ⊢ HAS_LIFT(problem) : BooleanProposition ;
+CATEGORY
+[[ HAS_LIFT(...) ]] = "The assertion that a solution to the lifting problem exists. It is a proof that the object P can be 'projected' through the epimorphism e to cover the morphism f." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Two Equiva lent Definitions == )
+( ========================================================================================================== *)
+
+ObjectPropertyDeclaration ::= Identifier "is" "PROJECTIVE" ;
+TYPING
+(* The first-principles definition: An object P is projective if EVERY lifting problem involving it has a solution. *)
+Γ ⊢ P : Object
+∀ (problem : LiftableConfiguration involving P), ( HAS_LIFT(problem) )
+--------------------------------------------------------------------------
+Γ ⊢ P is PROJECTIVE : PropositionAbout(P) ;
+CATEGORY
+[[ P is PROJECTIVE ]] = "The property of an object P that allows it to be mapped into any quotient object via a lift. This means the functor Hom(P,-) is exact. In categories of modules, these are the projective modules." ;
+
+TheoremDeclaration ::= "THEOREM" "ProjectiveFunctorialEquivalence" ":"
+"(" Identifier "P" "is" "PROJECTIVE" ")"
+"<==>"
+"(" "Hom_Functor" "(" "P" "," "" ")" "preserves" "EPIMORPHISMS" ")" ;
+TYPING
+(* This formalizes the equivalence between the diagrammatic lifting definition and the functorial one. *)
+P1 := (Γ ⊢ P is PROJECTIVE)
+P2 := (Γ ⊢ Functor_Hom(P,) preserves EPIMORPHISMS)
+---------------------------------------------------------
+Γ ⊢ (P1 <==> P2) : ProvableEquivalence ;
+CATEGORY
+[[ THEOREM ProjectiveFunctorialEquivalence ]] = "The assertion that the concrete, diagrammatic definition of a projective object (the lifting property) is precisely equivalent to the abstract, functorial definition (the Hom(P,-) functor preserves epimorphisms). This is a foundational result that allows working at whichever level of abstraction is more convenient." ;
+
+(* ========================================================================================================== )
+( == Part 3: Connection to Free Objects and Injective Objects == )
+( ========================================================================================================== *)
+
+TheoremDeclaration ::= "THEOREM" "FreeObjectsAreProjective" ":"
+"FOR_ALL" "object" "O" "in" "AlgebraicCategory" "," "(" "O is FREE" ")" "==>" "(" "O is PROJECTIVE" ")" ;
+TYPING
+Context: C is a suitable algebraic category (e.g. Set, Grp, Mod_R).
+Γ ⊢ O : Object_in(C)
+(IsFree(O)) ⇒ (IsProjective(O))
+---------------------------------------------
+Γ ⊢ THEOREM ... : MetaTheorem ;
+CATEGORY
+[[ THEOREM FreeObjectsAreProjective ]] = "A key structural result in algebra. It asserts that any object constructed 'freely' from a set of generators automatically has the lifting property of a projective object. For example, all free groups are projective in the category of groups." ;
+
+(* ========================================================================================================== )
+( == Part 4: The Global Property - "Enough Projectives" == )
+( ========================================================================================================== *)
+
+CategoryPropertyDefinition ::= Identifier "has" "ENOUGH_PROJECTIVES" ;
+TYPING
+(* This is a property of the entire category. It is true if every object is a quotient of some projective object. *)
+Γ ⊢ C : Category
+∀X ∈ Objects(C),
+∃ (P : Object s.t. P is PROJECTIVE),
+∃ (e : P -> X s.t. e is EPIMORPHISM)
+------------------------------------------------------------------------------------------
+Γ ⊢ C has ENOUGH_PROJECTIVES : PropositionAbout(C) ;
+CATEGORY
+[[ C has ENOUGH_PROJECTIVES ]] = "The property of a category having a rich supply of projective objects, sufficient to 'cover' every other object via an epimorphism. This property is crucial for constructing projective resolutions in homological algebra and for proving theorems about derived functors." ;
+
+(* ========================================================================================================== )
+( == Part 5: The Dual Theory for Injectives (via Duality Principle) == )
+( ========================================================================================================== *)
+
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "PROJECTIVE" "IS" "INJECTIVE" ;
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "ENOUGH_PROJECTIVES" "IS" "ENOUGH_INJECTIVES" ;
+
+DualTheoremInference ::= "INFER_DUAL_THEORY" "'InjectiveTheory'" "FROM" "THEORY" "'ProjectiveTheory'" ;
+TYPING
+(***
+* By applying the duality functor (-)^op to the entire theory block for projectives,
+* the system mechanically generates the correct dual theory for injectives.
+* Rewrites performed by the DualityMapping dictionary:
+* 1. PROJECTIVE -> INJECTIVE
+* 2. LIFTING_PROBLEM (against epi) -> EXTENSION_PROBLEM (from mono)
+* 3. e:A->B (epi) -> m:B->A (mono)
+* 4. HAS_LIFT -> HAS_EXTENSION
+* 5. Hom(P,) preserves EPIMORPHISMS -> Hom(,I) sends MONOMORPHISMS to EPIMORPHISMS
+* 6. ENOUGH_PROJECTIVES -> ENOUGH_INJECTIVES (every object is a subobject of an injective)
+* The resulting dual propositions are valid theorems.
+***)
+Γ ⊢ TheoryBlock["ProjectiveTheory"] : CoherentTheoryFragment
+--------------------------------------------------------------------------------------
+Γ ⊢ TheoryBlock["InjectiveTheory"] := (TheoryBlock["ProjectiveTheory"])^op : CoherentTheoryFragment ;
+CATEGORY
+[[ INFER_DUAL_THEORY ... ]] = "A constructive proof of the entire theory for 'injective objects'. This process, derived by mechanically applying the duality functor, generates the definitions for the extension property of injectives, the equivalence to the functorial definition, and the property of a category having 'enough injectives', all without requiring separate proofs." ;
+
+}
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 4.7: Injectives, cogenerators" ")" "==>" {
+(*
+
+ELABORATION: This section formalizes the dual concepts to projectives and generators. A deep
+elaboration requires more than just stating the dual definitions. It must:
+
+Deconstruct the Injective Property: Define injectivity not just as a dual, but explicitly
+through its core "extension property" against monomorphisms.
+
+Formalize the Cogenerator Property: Define a cogenerator explicitly as a "universal test object"
+that can distinguish any two different morphisms by post-composition.
+
+State the Foundational Connection: Formalize the crucial theorem (a generalization of Baer's
+Criterion) which shows how to construct an injective object that an arbitrary object can embed into,
+using a cogenerator and products. This is the heart of the "enough injectives" proof.
+
+Define "Enough Injectives": Formalize the global property of a category having enough
+injective objects to embed every object, and link it directly to the constructive theorem.
+
+This approach transforms the section from a set of definitions into a coherent, constructive theory.
+*)
+
+(* ========================================================================================================== )
+( == Part 1: Deconstructing the Injective Object Property == )
+( ========================================================================================================== )
+( An Injective object is the exact dual of a projective one. It has an "extension" property against monomorphisms. *)
+
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "PROJECTIVE" "IS" "INJECTIVE" ;
+
+ObjectPropertyDeclaration ::= Identifier "is" "INJECTIVE" ;
+TYPING
+(*
+* This defines the a property of an object I. An object is INJECTIVE if it satisfies two equivalent conditions:
+* 1. (Functorial): The contravariant Hom-functor Hom(-, I) sends monomorphisms to epimorphisms.
+* 2. (Diagrammatic): For every extension problem involving I, a solution exists. We formalize this below.
+*)
+(Γ ⊢ P is INJECTIVE) <==> (Γ ⊢ Functor_Hom(-, P) sends MONOMORPHISMS to EPIMORPHISMS) ;
+CATEGORY
+[[ P is INJECTIVE ]] = "The property of an object P that allows any map from a subobject to be extended to the entire ambient object. This makes P a 'receptive' object with no 'holes'. In Ab (abelian groups), the divisible groups are injective." ;
+
+InjectiveExtensionProblem ::= "EXTENSION_PROBLEM" "(" "from_mono" Identifier "," "with_map" Identifier ")" ;
+TYPING
+(* This formalizes the setup for the extension property: a monomorphism m and a map f from its domain. )
+Γ ⊢ I : Object ( The candidate Injective *)
+Γ ⊢ m : A -> B, Γ ⊢ m is MONOMORPHISM
+Γ ⊢ f : Morphism(A, I)
+-------------------------------------------------------------------------------------------------
+Γ ⊢ EXTENSION_PROBLEM(from_mono m, with_map f) : ExtendableConfiguration(I, A, B) ;
+CATEGORY
+[[ EXTENSION_PROBLEM(m, f) ]] = "The data for an extension problem. The problem is to find a map g: B -> I that 'extends' f along the monomorphism m." ;
+
+TheoremDeclaration ::= "THEOREM" "InjectiveLiftingEquivalence" ":"
+"(" Identifier "I" "is" "INJECTIVE" ")"
+"<==>"
+"( FOR_ALL problem:InjectiveExtensionProblem involving I, problem HAS_EXTENSION )" ;
+TYPING
+(* This theorem makes the equivalence with the diagrammatic formulation explicit. *)
+P1 := (Γ ⊢ I is INJECTIVE)
+P2_sub := (∃g:B->I s.t. g∘m == f)
+P2 := ∀(problem with m,f), P2_sub holds
+----------------------------------------------------------------
+Γ ⊢ (P1 <==> P2) : ProvableEquivalence ;
+CATEGORY
+[[ THEOREM InjectiveLiftingEquivalence ]] = "The assertion that the abstract, functorial definition of an injective object is precisely equivalent to the concrete, diagrammatic definition (the extension property)." ;
+
+(* ========================================================================================================== )
+( == Part 2: Cogenerators as Universal Test Objects == )
+( ========================================================================================================== )
+( A Cogenerator is the exact dual of a Generator. *)
+
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "GENERATOR" "IS" "COGENERATOR" ;
+
+HasCogeneratorObject ::= Identifier "has" "COGENERATOR" Identifier ;
+TYPING
+(* A category C has a cogenerator G if the CONTRAVARIANT Hom(-, G) functor is faithful. *)
+Γ ⊢ C : Category, Γ ⊢ G : Object_in(C)
+Functor_Hom(-, G) : C^op -> Set is FAITHFUL
+EquivalentTyping: ∀ (f, h : X -> Y, f != h), ∃ (k : Y -> G) s.t. (k ∘ f != k ∘ h)
+------------------------------------------------------------------------------------
+Γ ⊢ C has COGENERATOR G : PropositionAbout(C) ;
+CATEGORY
+[[ C has COGENERATOR G ]] = "The property of a category C possessing a single 'universal test object' G. Any two different morphisms can be distinguished by mapping into G. In Set, any set with at least two elements is a cogenerator. In Ab, the circle group Q/Z is a cogenerator." ;
+
+(* ========================================================================================================== )
+( == Part 3: The Foundational Connection and "Enough Injectives" == )
+( ========================================================================================================== *)
+
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "ENOUGH_PROJECTIVES" "IS" "ENOUGH_INJECTIVES" ;
+
+CategoryPropertyDefinition ::= Identifier "has" "ENOUGH_INJECTIVES" ;
+TYPING
+(* This is the global property that every object can be embedded into an injective one. *)
+IsDualOf("ENOUGH_PROJECTIVES")
+EquivalentTyping: ∀X ∈ Objects(C), ∃ (I : Object s.t. I is INJECTIVE), ∃ (m : X -> I s.t. m is MONOMORPHISM)
+---------------------------------------------------------------------------
+Γ ⊢ C has ENOUGH_INJECTIVES : PropositionAbout(C) ;
+CATEGORY
+[[ C has ENOUGH_INJECTIVES ]] = "The crucial property of a category having a rich enough supply of injective objects to embed every other object. This property is the foundation for constructing injective resolutions in homological algebra." ;
+
+TheoremDeclaration ::= "THEOREM" "InjectiveEmbeddingConstruction" ":"
+"IF" "(" Identifier "C" "has a COGENERATOR and small PRODUCTS" ")" "THEN"
+"(" "C has ENOUGH_INJECTIVES" ")" ;
+TYPING
+(*
+* This is the constructive proof. For any object X, we can build an injective I and an embedding m:X->I.
+* The construction of I: Let G be a cogenerator. Let H be the set of all morphisms h:S->G for all subobjects S of X.
+* Then I is the product of G over the index set H.
+*)
+Context: Γ ⊢ C has COGENERATOR G, Γ ⊢ C has small PRODUCTS
+Proof for a given X:
+1. Let ProbeSet be the set of all morphisms h:S->G where S is a subobject of X.
+2. Let I_X be the product Π_{h ∈ ProbeSet} G. The product exists by premise.
+3. I_X can be proven to be INJECTIVE.
+4. An embedding m: X -> I_X can be constructed.
+Since this holds for any X, the category has enough injectives.
+-------------------------------------------------------------------------------------------------------
+Γ ⊢ THEOREM... : MetaTheorem ;
+CATEGORY
+[[ THEOREM InjectiveEmbeddingConstruction ]] = "The fundamental theorem providing sufficient conditions for a category to have enough injectives. It provides a canonical recipe for constructing a large injective object that can 'receive' an embedding of any given object, using the category's cogenerator as the building block and products as the glue. This is a powerful tool for proving an entire category (like Ab) has enough injectives." ;
+}

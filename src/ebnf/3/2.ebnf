@@ -1,0 +1,831 @@
+(* ========================================================================================================== )
+( == Section 2.1: Sheaves on a locale == )
+( ========================================================================================================== )
+(*
+ELABORATION: This section defines the central object of study: the sheaf. A sheaf is a "presheaf"
+that additionally satisfies a "gluing axiom." A deep elaboration requires us to deconstruct this axiom
+into its formal, testable components: the notion of a 'cover', a 'matching family' of data on that
+cover, and the unique 'amalgamation' (or gluing) of that data.
+*)
+
+(* --- The Prerequisite: Presheaves on a Locale --- *)
+
+PresheafOnLocale ::= "PRESHEAF" Identifier "on" LocaleDeclaration ;
+TYPING
+(* A presheaf of sets on a locale L is a contravariant functor from its frame F (viewed as a category) to Set. *)
+Γ ⊢ L : LOCALE
+Let F = Frame(L).
+--------------------------------------------------------------
+Γ ⊢ PRESHEAF P on L : Functor(F^op, Set) ;
+CATEGORY
+[[ PRESHEAF P on L ]] = "An object in the category [Frame(L)^op, Set], representing a family of sets indexed by the 'opens' of the locale L, equipped with restriction maps. It is 'data that can be restricted'." ;
+
+(* --- Deconstructing the Gluing Axiom --- *)
+
+CoverOfOpen ::= "COVER" "of" Identifier "by" "{" {Identifier} "}" ;
+TYPING
+(* A cover of an open 'a' in a frame F is a set of opens {a_i} whose join is 'a'. *)
+Context: Γ ⊢ F : FRAME
+Γ ⊢ a : ElementOf(F)
+Γ ⊢ S = {a_i} : Set of ElementsOf(F)
+-----------------------------------------------------------
+Γ ⊢ COVER of a by S is valid if (a == ⋁{a_i ∈ S}) ;
+CATEGORY
+[[ COVER of a by S ]] = "An algebraic representation of an open cover of 'a', representing the context for a gluing problem." ;
+
+MatchingFamily ::= "MATCHING_FAMILY" "{" {Identifier} "}" "for" "(" PresheafOnLocale "," CoverOfOpen ")" ;
+TYPING
+(*
+* A matching family for a presheaf P on a cover S of 'a' is a selection of sections s_i ∈ P(a_i)
+* that are compatible on overlaps.
+*)
+Γ ⊢ P : PRESHEAF on L, Γ ⊢ C = (COVER of a by S)
+Family_s := { s_i ∈ P(a_i) | a_i ∈ S }
+Compatibility_Condition := ∀ a_i,a_j ∈ S, P(incl_{ij})(s_i) == P(incl_{ji})(s_j) in P(a_i ∧ a_j)
+--------------------------------------------------------------------------------------------------
+Γ ⊢ MATCHING_FAMILY Family_s ... is valid if Compatibility_Condition holds ;
+CATEGORY
+[[ MATCHING_FAMILY ... ]] = "A collection of local data that is consistent and thus 'gluable'. The compatibility condition ensures that the data agrees on all intersections." ;
+
+SheafGluingAxiom ::= "AXIOM" "SheafGluingCondition" "holds_for" PresheafOnLocale ;
+TYPING
+(* The gluing condition states that every matching family has a unique amalgamation. *)
+Γ ⊢ P : PRESHEAF on L
+Condition := ∀ (C:Cover), ∀(MF:MatchingFamily for (P,C)),
+( ∃! s ∈ P(CoveredOpen(C)) s.t. ∀i, P(incl_i)(s) == section_i(MF) )
+--------------------------------------------------------------------
+Γ ⊢ AXIOM ... holds_for P is TRUE if Condition holds ;
+CATEGORY
+[[ AXIOM SheafGluingCondition ... ]] = "The assertion that the presheaf P satisfies the sheaf axiom. This property elevates the presheaf from mere 'restrictable data' to 'local data' that can be uniquely glued together to form global data. Categorically, it means P(a) is the limit of the diagram formed by the matching family." ;
+
+(* --- The Master Definition --- *)
+
+SheafOnLocaleDeclaration ::= "SHEAF" Identifier "on" LocaleDeclaration ;
+TYPING
+(* A sheaf is a presheaf that satisfies the gluing axiom. *)
+Premise1: Γ ⊢ P is a PRESHEAF on L
+Premise2: Γ ⊢ AXIOM SheafGluingCondition holds_for P
+------------------------------------------------------
+Γ ⊢ SHEAF P on L is a valid declaration ;
+CATEGORY
+[[ SHEAF P on L ]] = "A presheaf that satisfies the gluing condition. Sheaves are the central objects of topos theory, providing a bridge between topology, logic, and geometry. They represent 'continuously varying sets' over the base locale." ;
+
+
+(* ========================================================================================================== )
+( == Section 2.2-2.3: Properties of the Category of Sheaves, Sh(L) == )
+( ========================================================================================================== )
+(*
+ELABORATION: These sections establish the fundamental result that the category of sheaves on a locale,
+denoted Sh(L), is not just a category but a "Grothendieck topos." This is a very powerful statement,
+implying that Sh(L) has an exceptionally rich and well-behaved internal structure. A deep elaboration requires
+us to formalize this claim and then unpack its major consequences, including the existence of a
+"subobject classifier," which is the heart of a topos's internal logic.
+*)
+
+(* ========================================================================================================== )
+( == Part 1: The Main Theorem - Sh(L) is a Topos == )
+( ========================================================================================================== )
+
+CategoryOfSheaves ::= "Sh" "(" LocaleDeclaration ")" ;
+TYPING
+(* This constructor defines the category of sheaves on a locale L. *)
+Γ ⊢ L : LOCALE
+Objects := { P | Γ ⊢ P is SHEAF on L }
+Morphisms := { α : P₁ ⇒ P₂ | α is a NaturalTransformation between the underlying presheaves }
+
+Γ ⊢ Sh(L) : FullSubcategory(of: Presheaves on L) ;
+CATEGORY
+[[ Sh(L) ]] = "The category of sheaves of sets on the locale L. This category is the primary object of study." ;
+
+GrothendieckToposDeclaration ::= Identifier "is" "GROTHENDIECK_TOPOS" ;
+TYPING
+(*
+
+A category C is a Grothendieck topos if it is equivalent to the category of sheaves on some site.
+
+An equivalent characterization is given by Giraud's Axioms, which are internal to C.
+*)
+Γ ⊢ C : Category
+GiraudAxiom1: C is cocomplete and has a set of generators.
+GiraudAxiom2: Coproducts in C are disjoint and stable under pullback.
+GiraudAxiom3: Equivalence relations in C are effective.
+
+Γ ⊢ C is GROTHENDIECK_TOPOS is TRUE if GiraudAxioms hold ;
+CATEGORY
+[[ C is GROTHENDIECK_TOPOS ]] = "A category that behaves like a category of sheaves. Toposes are foundational universes for mathematics, possessing rich internal logic and serving as a bridge between geometry, logic, and algebra." ;
+
+TheoremDeclaration ::= "THEOREM" "CategoryOfSheavesIsATopos" ":" "For any locale L, Sh(L) is a GROTHENDIECK_TOPOS." ;
+TYPING
+(* This is a central theorem of topos theory. *)
+Γ ⊢ L : LOCALE
+
+Γ ⊢ Sh(L) is a GROTHENDIECK_TOPOS : ProvableProposition ;
+CATEGORY
+[[ THEOREM "CategoryOfSheavesIsATopos" ]] = "The fundamental theorem asserting that the category of sheaves on a locale provides a canonical model of a Grothendieck topos. All the rich properties of a topos are therefore available in Sh(L)." ;
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 2.2-2.3: Properties of the Category of Sheaves, Sh(L) Part 2: Consequences - Completeness, CCC, and the Subobject Classifier" ")" "==>" {
+(*
+ELABORATION (Deeper Dive): The previous elaboration stated that Sh(L) is complete, cocomplete, and Cartesian Closed with a subobject classifier. A deeper elaboration requires us to deconstruct how these properties arise from the fact that Sh(L) is a reflective subcategory of the category of presheaves Psh(L). The key insight is that the presheaf category is extremely well-behaved, and these "nice" properties are either inherited directly (for limits) or constructed via the reflection (for colimits and exponentials).
+
+This elaboration will proceed by:
+
+Deconstructing Completeness and Cocompleteness: We will formalize the constructions, showing that limits in Sh(L) are simply computed as limits in Psh(L), but colimits require an extra "sheafification" step.
+
+Deconstructing the Cartesian Closed Structure: We will formalize the construction of the exponential object G^F in Sh(L), showing it is the sheafification of a presheaf-level internal Hom.
+
+Deconstructing the Subobject Classifier: We will formalize the mechanism of classification itself: the "characteristic map" χ associated with any subsheaf, and the universal pullback property it satisfies, which is the defining feature of Ω.
+*)
+
+(* ========================================================================================================== )
+( == Part 2A: Deconstructing Completeness and Cocompleteness == )
+( ========================================================================================================== )
+
+PresheafCategory ::= "Psh" "(" LocaleDeclaration ")" ;
+TYPING
+(* The category of all presheaves on L. This is our 'ambient' well-behaved universe. *)
+Γ ⊢ L : LOCALE
+
+Γ ⊢ Psh(L) : Category (specifically, [Frame(L)^op, Set]) ;
+CATEGORY
+[[ Psh(L) ]] = "The category of presheaves on L. This category is a Grothendieck topos and is complete, cocomplete, and Cartesian closed. Its (co)limits are computed 'pointwise'." ;
+
+LimitInSheafCategory ::= "Limit_Sh" "(" DiagramDeclaration ")" ;
+TYPING
+(* Limits in Sh(L) are computed "as in Psh(L)". The limit of a diagram of sheaves is already a sheaf. *)
+Γ ⊢ D : Diagram(J, Sh(L))
+Let D_psh be D viewed as a diagram in Psh(L).
+Limit_in_Psh := The pointwise limit of D_psh.
+
+Γ ⊢ Limit_Sh(D) : SHEAF on L (where Limit_Sh(D) == Limit_in_Psh) ;
+CATEGORY
+[[ Limit_Sh(D) ]] = "The assertion that the category of sheaves is a complete category. The limit of any diagram of sheaves is computed by taking the limit of the underlying presheaves, and the resulting presheaf is automatically a sheaf. This means the inclusion functor i: Sh(L) ↪ Psh(L) creates limits." ;
+
+ColimitInSheafCategory ::= "Colimit_Sh" "(" DiagramDeclaration ")" ;
+TYPING
+(* Colimits in Sh(L) are computed by taking the colimit in Psh(L) and then applying the sheafification functor. *)
+Γ ⊢ D : Diagram(J, Sh(L))
+Let D_psh be D viewed as a diagram in Psh(L).
+Colimit_in_Psh := The pointwise colimit of D_psh.
+
+Γ ⊢ Colimit_Sh(D) : SHEAF on L (defined as Sheafify(Colimit_in_Psh)) ;
+CATEGORY
+[[ Colimit_Sh(D) ]] = "The assertion that the category of sheaves is a cocomplete category. The colimit of a diagram of sheaves is the sheafification of the colimit of the underlying presheaves. This is a direct consequence of the sheafification functor a being the left adjoint to the inclusion functor i." ;
+
+(* ========================================================================================================== )
+( == Part 2B: Deconstructing the Cartesian Closed Structure == )
+( ========================================================================================================== )
+
+InternalHomPresheaf ::= "PshHom" "(" PresheafOnLocale "," PresheafOnLocale ")" ;
+TYPING
+(* This constructs the internal Hom at the presheaf level. *)
+Γ ⊢ F, G : PRESHEAF on L
+Let Frm_L = Frame(L).
+ActionOnObjects(U ∈ Frm_L): PshHom(F,G)(U) := Hom_{Psh(L/U)}( F|_U, G|_U )
+(The set of natural transformations between the restrictions of F and G to the sub-locale U)
+
+Γ ⊢ PshHom(F,G) : PRESHEAF on L ;
+CATEGORY
+[[ PshHom(F,G) ]] = "The internal hom-object in the category of presheaves. For any open U, a section of this presheaf is a natural transformation between the restrictions of F and G to U. This object makes Psh(L) Cartesian closed." ;
+
+ExponentialObject_Sheaf ::= SHEAF Identifier "^" SHEAF Identifier ;
+TYPING
+(* The exponential object in Sh(L) is the sheafification of the presheaf-level internal hom. *)
+Γ ⊢ F, G : SHEAF on L
+Psh_Exp := PshHom(F, G)
+
+Γ ⊢ G^F : SHEAF on L (defined as Sheafify(Psh_Exp)) ;
+CATEGORY
+[[ G^F ]] = "The exponential object, or internal hom, in the category of sheaves. It is the sheaf representing the 'sheaf of morphisms' from F to G. Its existence is what makes Sh(L) a Cartesian Closed Category (CCC)." ;
+
+(* ========================================================================================================== )
+( == Part 2C: Deconstructing the Subobject Classifier == )
+( ========================================================================================================== )
+
+CharacteristicMapConstructor ::= "χ_" "(" MonomorphismDeclaration ")" ;
+TYPING
+(*
+
+For any subsheaf S of F (represented by a mono m:S↪F), this constructs its characteristic map χ_m: F → Ω.
+
+The map is a natural transformation whose component at an open U is a function χ_m_U: F(U) → Ω(U).
+*)
+Γ ⊢ m : S ↪ F is MONOMORPHISM in Sh(L)
+-- Define the component map χ_m_U : F(U) → Ω(U) --
+ActionOnObjects(s ∈ F(U)):
+χ_m_U(s) := Join( {V ⊆ U | the restriction of s to V factors through S} )
+
+Γ ⊢ χ_m : NaturalTransformation(F, Ω) ;
+CATEGORY
+[[ χ_m ]] = "The characteristic map of the subsheaf S. For a given local section s of F over U, this map returns the largest sub-open of U on which s actually belongs to the subsheaf S. It is a map that measures 'the extent to which a section is in the subsheaf'." ;
+
+SubobjectClassifierAxiom ::= "AXIOM" "ClassificationPullback" "for" "(" MonomorphismDeclaration ")" ;
+TYPING
+(*
+
+This is the universal property of the subobject classifier. It asserts that for any subsheaf S↪F,
+
+the square formed by its characteristic map χ_m and the global 'true' section is a pullback square.
+*)
+Γ ⊢ m : S ↪ F is MONOMORPHISM in Sh(L)
+Let t : 1 → Ω be the terminal sheaf's map to Ω ("true").
+Let ! : S → 1 be the unique map to the terminal sheaf.
+
+Γ ⊢ AXIOM ... is TRUE if (the square with corners S, F, 1, Ω and maps m, χ_m, !, t is a PULLBACK) ;
+CATEGORY
+[[ AXIOM "ClassificationPullback" for m ]] = "The formal statement of the universal property of the subobject classifier. It asserts that the subsheaf S can be perfectly recovered as the pullback of the 'generic subobject' (the true map) along the characteristic map χ_m. This means S is precisely the 'locus of truth' for the predicate χ_m." ;
+}
+
+
+(* ========================================================================================================== )
+( == Section 2.4-2.5: Etale Spaces and Stalks == )
+( ========================================================================================================== )
+(*
+ELABORATION: These sections provide an alternative, more geometric perspective on sheaves. The main result
+is that the category of sheaves on a (sober) space X is equivalent to the category of "etale spaces" over X.
+An etale space is a bundle that is locally a homeomorphism, and the connection is made via the concept of "stalks".
+A deep elaboration requires formalizing this entire equivalence by defining the geometric world, the
+algebraic-to-geometric bridge (stalks and the total space construction), the geometric-to-algebraic bridge
+(the sheaf of sections), and the final equivalence theorem itself.
+*)
+
+MorphismPropertyAssertion ::= Identifier "is" "LOCAL_HOMEOMORPHISM" ;
+TYPING
+(*
+* This rule formalizes the point-set definition of a local homeomorphism. A map p is a
+* local homeomorphism if for every point in the domain, there is an open neighborhood
+* that is mapped homeomorphically onto an open neighborhood in the codomain.
+*)
+Γ ⊢ p : Morphism(E, X) in Top
+Condition := ∀ e ∈ E, ∃ (U ⊆ E is an open neighborhood of e) s.t.
+( (p(U) is open in X) ∧ (the restriction p|_U : U → p(U) is a HOMEOMORPHISM) )
+--------------------------------------------------------------------------------------------------
+Γ ⊢ p is LOCAL_HOMEOMORPHISM is TRUE if Condition holds ;
+CATEGORY
+[[ p is LOCAL_HOMEOMORPHISM ]] = "The property of a map being 'locally an isomorphism'. It is a fundamental concept in differential geometry (defining covering spaces and manifolds) and topology, ensuring that the local topological structure is preserved." ;
+
+EtaleSpaceOver ::= "ETALE_SPACE" Identifier "over" Identifier ;
+TYPING
+(* This is the refined definition of an etale space, now explicitly based on the property of being a local homeomorphism. *)
+Γ ⊢ E, X : Object_in(Top)
+Γ ⊢ p : Morphism(E, X)
+Premise: Γ ⊢ p is LOCAL_HOMEOMORPHISM
+--------------------------------------------------
+Γ ⊢ ETALE_SPACE p over X is a valid declaration ;
+CATEGORY
+[[ ETALE_SPACE p over X ]] = "A space E that is 'spread out' over a base space X in a locally trivial way. The fibres of this map (the preimages of points) are discrete sets. An etale space is the geometric object that corresponds to a sheaf." ;
+
+CategoryOfEtaleSpaces ::= "Etale" "(" Identifier ")" ;
+TYPING
+(*
+* This defines the a category Etale(X) of all etale spaces over a fixed base space X.
+* The morphisms are required to respect the projection maps to the base.
+*)
+Γ ⊢ X : Object_in(Top)
+Objects(Etale(X)) := { p | Γ ⊢ p is ETALE_SPACE over X }
+Morphisms(Etale(X)) from (p₁:E₁→X) to (p₂:E₂→X) :=
+{ f : Morphism(E₁, E₂) in Top | the diagram (E₁ --f--> E₂ --p₂--> X) equals (E₁ --p₁--> X) }
+--------------------------------------------------------------------------------------------------
+Γ ⊢ Etale(X) : Category ;
+CATEGORY
+[[ Etale(X) ]] = "The category of etale spaces over X. This is the 'geometric side' of the Sheaf-Etale equivalence. It is the full subcategory of the slice category Top/X whose objects are the local homeomorphisms." ;
+
+(* ========================================================================================================== )
+( == Elaborated Section 2.4-2.5, Part 2: The Bridge Between Worlds (Stalks and Sections) == )
+( ========================================================================================================== )
+(*
+ELABORATION (Deeper Dive): This elaboration focuses exclusively on the bridge constructions. We will
+deconstruct the definitions of Stalk, TotalEtaleSpace, and SheafOfSections to reveal the precise
+machinery that translates between the algebraic world of sheaves and the geometric world of etale spaces.
+This involves formalizing the inputs, the universal properties, and the key theorems that justify why
+these constructions work.
+*)
+
+(* ========================================================================================================== )
+( == Part 2a: The Algebraic-to-Geometric Bridge (Stalks → Total Space) == )
+( ========================================================================================================== )
+(This construction takes an algebraic presheaf and builds its geometric counterpart, the etale space.)
+
+Diagram_of_Neighborhoods ::= "DIAGRAM_Neighborhoods" "(" PointDeclaration ")" ;
+TYPING
+(*
+
+This formalizes the initial data for the stalk construction. For a point p, its open
+
+neighborhoods form a directed set (ordered by reverse inclusion), which gives rise to a
+
+diagram in the category Set via the presheaf.
+*)
+Γ ⊢ L : LOCALE, Γ ⊢ p : PointOf(L)
+Γ ⊢ F : PRESHEAF on L
+Neighborhoods_p := { U ∈ Frame(L) | p is in U }, ordered by ⊇.
+
+Γ ⊢ DIAGRAM_Neighborhoods(p) : Diagram(Neighborhoods_p^op, Set) (defined by restricting F) ;
+CATEGORY
+[[ DIAGRAM_Neighborhoods(p) ]] = "The directed system of sections of the presheaf F over the open neighborhoods of the point p. The colimit of this diagram gathers all the information about F 'in the vicinity' of p." ;
+
+GermOfAPresheaf ::= "Germ" "(" PresheafOnLocale "," PointDeclaration "," ElementDeclaration ")" ;
+TYPING
+(*
+
+A germ is an element of the stalk. It is formally an equivalence class of sections defined
+
+on neighborhoods of the point, where two sections are equivalent if they agree on some smaller neighborhood.
+
+A colimit is precisely the set of these equivalence classes.
+*)
+Context: Let S = Stalk(F, p) = Colimit(DIAGRAM_Neighborhoods(p))
+Γ ⊢ s_U : ElementOf(F(U)) for some neighborhood U of p.
+
+Γ ⊢ Germ(F, p, s_U) : ElementOf(S) ;
+CATEGORY
+[[ Germ(F, p, s_U) ]] = "A germ of the section s_U at the point p. It represents the 'infinitesimal value' of the presheaf at p, abstracting away from the specific open set on which the representative section was defined." ;
+
+StalkConstructor ::= "Stalk" "(" PresheafOnLocale "," PointDeclaration ")" ;
+TYPING
+(* The refined definition of the stalk as the set of all germs. *)
+Γ ⊢ F : PRESHEAF on L, Γ ⊢ p : PointOf(L)
+
+Γ ⊢ Stalk(F,p) : Set (defined as { g | g is a GermOfAPresheaf at p }) ;
+CATEGORY
+[[ Stalk(F, p) ]] = "The set of 'germs' of the presheaf F at the point p, constructed as the colimit over the directed system of sections on ever-smaller neighborhoods of p. This object captures the local behavior of the presheaf at a specific point." ;
+
+BasicOpen_in_EtaleSpace ::= "OpenSection" "(" PresheafOnLocale "," ElementDeclaration ")" ;
+TYPING
+(*
+
+This defines the basic open sets that form the topology on the total space of stalks.
+
+For any section s on an open set U of the base space, there is a corresponding open set
+
+in the total space, consisting of all the germs of s.
+*)
+Γ ⊢ F : PRESHEAF on L
+Let X = pt(L). U ∈ Open(X).
+Γ ⊢ s : ElementOf(F(U))
+
+Γ ⊢ OpenSection(F, s) : Subset of TotalSpaceOfStalks(F) (defined as { Germ(F, p, s) | p ∈ U }) ;
+CATEGORY
+[[ OpenSection(F, s) ]] = "The basic open set in the etale space topology corresponding to the section s. The collection of all such sets forms a basis for the topology of the total space E." ;
+
+TotalSpaceOfStalks ::= "TotalEtaleSpace" "(" PresheafOnLocale ")" ;
+TYPING
+(* The refined definition, making the topology explicit. *)
+Γ ⊢ F : PRESHEAF on L
+Let X = pt(L).
+UnderlyingSet_E := ∐_{x∈X} Stalk(F,x)
+Topology_on_E := The topology generated by the basis { B | B is a BasicOpen_in_EtaleSpace for F }
+ProjectionMap_p(s ∈ Stalk(F,x)) := x
+
+Γ ⊢ TotalEtaleSpace(F) : TopologicalSpace (E, Topology_on_E) with projection p ;
+CATEGORY
+[[ TotalEtaleSpace(F) ]] = "The geometric realization of a presheaf F. The underlying set is the disjoint union of all stalks, and it is given the unique topology (the 'sheaf topology') that makes the projection map to the base space a local homeomorphism. This is the functor from the algebraic world to the geometric world." ;
+
+(* ========================================================================================================== )
+( == Part 2b: The Geometric-to-Algebraic Bridge (Sections) == )
+( ========================================================================================================== )
+(This construction takes a geometric etale space and extracts its algebraic sheaf of sections.)
+
+ContinuousSection ::= "SECTION" Identifier "of" EtaleSpaceOver "over" Identifier ;
+TYPING
+(* A section 's' of an etale space p:E→X over an open set U is a continuous map that is a right-inverse to the projection. *)
+Γ ⊢ p : ETALE_SPACE E over X
+Γ ⊢ U : OpenSubset of X
+
+Γ ⊢ SECTION s of p over U is valid if (s: U→E is Continuous ∧ p∘s == inclusion_of_U_in_X) ;
+CATEGORY
+[[ SECTION s of p over U ]] = "A continuous choice of a point in the fibre above each point of U. These are the fundamental 'local data' of the geometric object." ;
+
+SheafOfSectionsFunctor ::= "Γ" "(" EtaleSpaceOver ")" ;
+TYPING
+(* The refined definition of the functor of sections. *)
+Γ ⊢ p : ETALE_SPACE E over X
+-- Define the presheaf P_Γ --
+ActionOnObjects(U ∈ Open(X)):
+P_Γ(U) := { s | Γ ⊢ SECTION s of p over U is valid }
+ActionOnMorphisms (Restriction):
+P_Γ(incl_{UV}) is the function that restricts a section over U to the smaller open set V.
+
+Γ ⊢ Γ(p) : SHEAF on X (defined by the presheaf P_Γ) ;
+CATEGORY
+[[ Γ(p) ]] = "The sheaf of continuous sections of the etale space p. It translates the geometric structure of the bundle p into the algebraic language of sheaves. The non-trivial fact that this presheaf of sections is always a sheaf is the key to the equivalence." ;
+
+TheoremDeclaration ::= "THEOREM" "SectionsOfEtaleSpaceFormASheaf" ":"
+"The presheaf of continuous sections of any etale space is a sheaf." ;
+TYPING
+Let P_Γ be the presheaf of sections for an etale space p.
+
+Γ ⊢ AXIOM SheafGluingCondition holds_for P_Γ : ProvableProposition ;
+CATEGORY
+[[ THEOREM "SectionsOfEtaleSpaceFormASheaf" ]] = "The assertion that the geometric structure of a local homeomorphism is precisely what is needed to guarantee that its presheaf of sections satisfies the algebraic gluing axiom. The local homeomorphism property allows patches of sections that agree on overlaps to be uniquely glued into a larger continuous section." ;
+
+(* ========================================================================================================== )
+( == Part 3: The Main Equivalence Theorem == )
+( ========================================================================================================== )
+
+TheoremDeclaration ::= "THEOREM" "SheafEtaleEquivalence" ":"
+"The category of sheaves on a sober space X is equivalent to the category of etale spaces over X." ;
+TYPING
+Let X be a SOBER_SPACE. Let L = Ω(X).
+Let Sh_X := Sh(L)
+Let Etale_X := the category of etale spaces over X.
+F_stalks : Sh_X → Etale_X (defined by TotalEtaleSpace)
+G_sections : Etale_X → Sh_X (defined by SheafOfSectionsFunctor)
+
+Γ ⊢ F_stalks and G_sections form an EquivalenceOfCategories ;
+CATEGORY
+[[ THEOREM "SheafEtaleEquivalence" ]] = "A fundamental result that provides a powerful geometric intuition for the abstract notion of a sheaf. It asserts that to give a sheaf on a space is the same as to give a space 'spread out' over it in a locally trivial way. This equivalence is the foundation for many constructions in algebraic geometry and topology." ;
+
+
+(* ========================================================================================================== )
+( == Section 2.6: Associated sheaves and etale morphisms == )
+( ========================================================================================================== )
+(*
+ELABORATION: This section brings together several powerful concepts from both Chapter 1 (Locales) and Chapter 2 (Sheaves).
+The goal is to understand how a special type of map between "spaces" (an etale locale morphism) behaves
+with respect to their associated categories of sheaves.
+
+The main result is profound: an etale morphism f: L → M is a "local isomorphism" in such a strong sense
+that it induces an equivalence between the entire categories of sheaves, Sh(L) ≅ Sh(M). This means that from the
+perspective of sheaf theory, the two locales are indistinguishable.
+
+Our elaboration will proceed by:
+
+Formalizing the Bridge (The Change of Base Functors): We will first formalize the functors that a locale
+morphism f: L → M induces between the sheaf categories. These are the "direct image" functor f_* (pushforward)
+and the "inverse image" functor f* (pullback). We will state their fundamental adjunctional relationship: f* ⊣ f_*.
+
+Revisiting the Associated Sheaf: We will briefly restate the sheafification functor a, as the inverse image
+functor f* is constructed using it. This is the "associated sheaf" part of the section title.
+
+Stating the Main Equivalence Theorem: We will then state the central theorem: if the locale morphism f is
+additionally "etale" (the localic version of a local homeomorphism), then the adjunction between the sheaf
+categories is not just an adjunction, but an equivalence of categories. This is the primary result.
+*)
+
+(* ========================================================================================================== )
+( == Part 1: The Bridge Functors for Sheaves on Locales == )
+( ========================================================================================================== )
+(A morphism of locales f: L → M induces a pair of adjoint functors between their sheaf categories.)
+
+DirectImageFunctor_Locale ::= Identifier "_" ;
+TYPING
+(
+
+This constructor takes a locale morphism f: L → M and produces the direct image functor f_*: Sh(L) → Sh(M).
+
+The locale morphism f corresponds to a frame homomorphism g: Frame(M) → Frame(L).
+
+This functor is defined by pre-composition on the underlying presheaves.
+*)
+Γ ⊢ f : LocaleMorphism(from:L, to:M)
+Let g: Frame(M) → Frame(L) be the corresponding frame homomorphism.
+ActionOnObjects( F : SHEAF on L ):
+-- The direct image presheaf P(U) for U∈Frame(M) is defined as F(g(U)).
+-- This presheaf can be shown to already be a sheaf.
+f_*F(U) := F(g(U))
+
+Γ ⊢ f_* : Functor(Sh(L), Sh(M)) ;
+CATEGORY
+[[ f_* ]] = "The direct image functor (or pushforward). It takes a sheaf on the 'domain' locale L and views it as a sheaf on the 'codomain' locale M. For an open U in M, the sections of f_*F are simply the sections of F over the corresponding open g(U) in L." ;
+
+InverseImageFunctor_Locale ::= Identifier "" ;
+TYPING
+(
+
+This constructor defines the inverse image functor f*: Sh(M) → Sh(L).
+
+Its construction is more complex and requires sheafification (the 'associated sheaf').
+)
+Γ ⊢ f : LocaleMorphism(from:L, to:M)
+Let g: Frame(M) → Frame(L) be the corresponding frame homomorphism.
+ActionOnObjects( G : SHEAF on M ):
+-- First, define a presheaf P on L by P(V) := colim_{U s.t. V≤g(U)} G(U).
+-- The inverse image sheaf is the sheafification of this presheaf.
+fG := Sheafify(P)
+
+Γ ⊢ f* : Functor(Sh(M), Sh(L)) ;
+CATEGORY
+[[ f* ]] = "The inverse image functor (or pullback). It takes a sheaf on M and pulls it back to a sheaf on L. The stalk of the resulting sheaf f*G at a point p of L is isomorphic to the stalk of G at the point f(p) of M. This is the correct categorical way to 'restrict' a sheaf along a map." ;
+
+TheoremDeclaration ::= "THEOREM" "LocaleChangeOfBaseAdjunction" ":"
+"For any locale morphism f, the inverse image functor f* is left adjoint to the direct image functor f_*." ;
+TYPING
+Context: Γ ⊢ f : LocaleMorphism(L, M)
+Let f_star_inv := InverseImageFunctor(f) : Sh(M) → Sh(L)
+Let f_star_dir := DirectImageFunctor_Locale(f) : Sh(L) → Sh(M)
+
+Γ ⊢ f_star_inv ⊣ f_star_dir : Adjunction(Sh(M), Sh(L)) ;
+CATEGORY
+[[ THEOREM "LocaleChangeOfBaseAdjunction" ]] = "A fundamental adjunction in sheaf theory on locales. The natural isomorphism is Hom_{Sh(L)}(f*G, F) ≅ Hom_{Sh(M)}(G, f_*F). This adjunction is the foundation for relating sheaf-theoretic constructions on different locales." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Main Equivalence Theorem for Etale Morphisms == )
+( ========================================================================================================== )
+
+TheoremDeclaration ::= "THEOREM" "EtaleMorphismInducesSheafEquivalence" ":"
+"If f: L → M is an ETALE locale morphism, then the inverse image functor f*: Sh(M) → Sh(L) is an equivalence of categories." ;
+TYPING
+(*
+
+This is the central result of the section. It connects the geometric property of the locale morphism
+
+with a very strong categorical property of the induced functor between sheaf topoi.
+*)
+Premise: Γ ⊢ f : ETALE LocaleMorphism(from:L, to:M)
+Let f_star := InverseImageFunctor_Locale(f) : Sh(M) → Sh(L)
+
+Conclusion: Γ ⊢ f_star is an EquivalenceOfCategories : MetaTheorem ;
+CATEGORY
+[[ THEOREM "EtaleMorphismInducesSheafEquivalence" ]] = "The assertion that an etale morphism of locales is a 'sheaf-theoretic isomorphism'. An etale map is the point-free analogue of a local homeomorphism, a map that makes L look locally identical to M. The theorem confirms this intuition in the strongest possible way: the categories of sheaves on L and M, which encode all the 'local data' on the spaces, are structurally identical. This means that from the point of view of the topos of sheaves, an etale morphism is an isomorphism." ;
+}
+
+
+(* ========================================================================================================== )
+( == Section 2.7-2.9: Internal Logic, Ω-sets, and Completeness == )
+( ========================================================================================================== )
+(*
+ELABORATION: These advanced sections explore the deep connection between the category of sheaves on a locale,
+Sh(L), and its rich internal logic. A sheaf topos is not just a category; it is a mathematical universe where
+one can do a form of set theory. In this universe, the role of the two-element set of truth values {true, false}
+is played by the subobject classifier Ω (which for Sh(L) is the frame of the locale itself).
+
+The central insight is that sheaves can be completely described from a "set-theoretic" perspective that is
+internal to the topos. The key object in this internal view is the "Ω-set"—a set equipped with an explicit,
+Ω-valued equality relation. The main theorem then shows that sheaves correspond precisely to the "complete"
+Ω-sets, which are those that are saturated with "elements."
+
+This elaboration will deconstruct this profound correspondence by:
+
+Formalizing the Internal Set (The Ω-set): We will formally define an Ω-set as a pair consisting
+of a classical set of "global elements" and a function that defines a "truth-value of equality" for
+any two elements, where the truth values come from the frame Ω. We will formalize the axioms
+(reflexivity, symmetry, transitivity) that this equality predicate must satisfy.
+
+Formalizing the Notion of Completeness: We will then define what it means for an Ω-set to be
+"complete." This is a saturation property, ensuring that the set of global elements is rich enough to
+represent all possible "ideal elements" (characters) definable within the internal logic.
+
+Stating the Main Equivalence Theorem: Finally, we will state the fundamental representation theorem:
+the category of sheaves on a locale L is equivalent to the category of complete Ω-sets, where Ω is
+the frame of L. This provides a powerful dictionary for translating between the external, categorical
+view of sheaves and the internal, logical/set-theoretic view.
+*)
+
+(* ========================================================================================================== )
+( == Elaborated Section 2.7-2.9, Part 1: The Internal Set (The Ω-set) == )
+( ========================================================================================================== )
+(*
+ELABORATION (Deeper Dive): This elaboration focuses exclusively on the formal structure of the "Ω-set".
+The previous summary introduced the concept; this deep dive deconstructs it into its finest constituent
+parts, separating the raw DATA from the AXIOMS it must satisfy. This makes the analogy to classical
+algebraic structures (like a group, which is data of a set and an operation, plus axioms) perfectly explicit.
+
+Furthermore, a complete understanding requires defining not just the objects, but the structure-preserving
+maps between them. Therefore, this elaboration will also formalize the "Ω-set Homomorphism" and culminate in
+the definition of the "Category of Ω-sets".
+*)
+
+(* ========================================================================================================== )
+( == Step 1: The Data of an Ω-set == )
+( ========================================================================================================== )
+
+OmegaSetData ::= "DATA_OmegaSet" "(" "Elements" ":" Identifier "," "Equality" ":" Identifier ")" ;
+TYPING
+(*
+
+This rule declares the raw data of an Ω-set, before any laws are imposed. It is a pair (X, δ).
+
+X is a standard, classical set of "global elements".
+
+δ is a function assigning a "truth value" from the frame F (our Ω) to each pair of elements.
+*)
+Let L be a LOCALE, and F = Frame(L) be its frame (our Ω).
+Γ ⊢ X : Set
+Γ ⊢ δ : Function(X × X, Carrier(F))
+
+Γ ⊢ DATA_OmegaSet (Elements:X, Equality:δ) : OmegaSetData_Type ;
+CATEGORY
+[[ DATA_OmegaSet (X, δ) ]] = "The raw data for an internal set. X is the set of global points or constants of the set, and δ is a candidate for its F-valued equality predicate." ;
+
+(* ========================================================================================================== )
+( == Step 2: The Axioms for the Equality Predicate == )
+( ========================================================================================================== )
+(These axioms ensure the equality predicate δ behaves like a true, intuitionistic equality.)
+
+OmegaSet_ReflexivityAxiom ::= "AXIOM" "Reflexivity" "for" OmegaSetData ;
+TYPING
+(* This axiom asserts that for any element x, the truth value of "x equals x" is maximal truth (1_F). *)
+Context: Γ ⊢ data=(X,δ) : OmegaSetData_Type
+Condition := ∀x ∈ X, δ(x,x) == TopElement(FrameOf(data))
+
+Γ ⊢ AXIOM Reflexivity for data is TRUE if Condition holds ;
+CATEGORY
+[[ AXIOM Reflexivity ... ]] = "The internal logic axiom asserting ∀x. x=x. It ensures the F-valued equality is reflexive." ;
+
+OmegaSet_SymmetryAxiom ::= "AXIOM" "Symmetry" "for" OmegaSetData ;
+TYPING
+(* This axiom asserts that the truth value of "x equals y" is the same as "y equals x". *)
+Context: Γ ⊢ data=(X,δ) : OmegaSetData_Type
+Condition := ∀x,y ∈ X, δ(x,y) == δ(y,x)
+
+Γ ⊢ AXIOM Symmetry for data is TRUE if Condition holds ;
+CATEGORY
+[[ AXIOM Symmetry ... ]] = "The internal logic axiom asserting ∀x,y. (x=y → y=x). It ensures the F-valued equality is symmetric." ;
+
+OmegaSet_TransitivityAxiom ::= "AXIOM" "Transitivity" "for" OmegaSetData ;
+TYPING
+(* This axiom asserts that the truth value of "x equals z" is at least as true as "x equals y AND y equals z". *)
+Context: Γ ⊢ data=(X,δ) : OmegaSetData_Type
+Condition := ∀x,y,z ∈ X, (δ(x,y) ∧ δ(y,z)) ≤ δ(x,z)
+
+Γ ⊢ AXIOM Transitivity for data is TRUE if Condition holds ;
+CATEGORY
+[[ AXIOM Transitivity ... ]] = "The internal logic axiom asserting ∀x,y,z. (x=y ∧ y=z → x=z). It ensures the F-valued equality is transitive. The use of ≤ instead of == is characteristic of the intuitionistic setting." ;
+
+(* ========================================================================================================== )
+( == Step 3: The Assembled Definition and its Morphisms == )
+( ========================================================================================================== )
+
+OmegaSetDeclaration_Verified ::= "OMEGA_SET" Identifier "is" "{" "Data" ":" OmegaSetData ";" "Verification" ":" "{" OmegaSet_ReflexivityAxiom ";" OmegaSet_SymmetryAxiom ";" OmegaSet_TransitivityAxiom "}" "}" ;
+TYPING
+(* The refined master definition, explicitly separating the data from the axiomatic verification. *)
+Γ ⊢ data : OmegaSetData_Type
+Γ ⊢ AXIOM Reflexivity for data is TRUE
+Γ ⊢ AXIOM Symmetry for data is TRUE
+Γ ⊢ AXIOM Transitivity for data is TRUE
+
+Γ ⊢ OMEGA_SET S ... : OmegaSet_Object ;
+CATEGORY
+[[ OMEGA_SET S ... ]] = "A verified Ω-set. This structure combines the raw data with the proof that this data satisfies the coherence laws required for an internal, F-valued equivalence relation. It is a fully-formed object in the category of Ω-sets." ;
+
+OmegaSetHomomorphism ::= "OMEGA_HOMOMORPHISM" Identifier ":" OmegaSetDeclaration_Verified "→" OmegaSetDeclaration_Verified ;
+TYPING
+(*
+
+A morphism between two Ω-sets (X, δ_X) and (Y, δ_Y) is a function f:X→Y on the underlying sets
+
+that "respects" the Ω-valued equality. This is formalized by the inequality below.
+*)
+Γ ⊢ S_X=(X,δ_X), S_Y=(Y,δ_Y) : OmegaSet_Object
+Γ ⊢ f : Function(X, Y)
+Condition_RespectsEquality: ∀x₁,x₂ ∈ X, ( δ_X(x₁, x₂) ≤ δ_Y(f(x₁), f(x₂)) )
+
+Γ ⊢ OMEGA_HOMOMORPHISM f ... is a valid declaration if Condition_RespectsEquality holds ;
+CATEGORY
+[[ OMEGA_HOMOMORPHISM f ... ]] = "A structure-preserving map between Ω-sets. The condition δ_X(x, x') ≤ δ_Y(f(x), f(x')) is the internal version of the statement x=x' → f(x)=f(x'). It ensures that if two elements are considered 'equal' to some degree in the domain, their images must be considered 'equal' to at least that same degree in the codomain." ;
+
+Category_of_OmegaSets ::= "Category_OmegaSet" "(" FrameDeclaration ")" ;
+TYPING
+(* This rule assembles the previous definitions into the full category. *)
+Γ ⊢ F : FRAME
+Objects := { S | Γ ⊢ S : OMEGA_SET_Verified with respect to F }
+Morphisms := { f | Γ ⊢ f : OMEGA_HOMOMORPHISM between objects in this category }
+
+Γ ⊢ Category_OmegaSet(F) : Category ;
+CATEGORY
+[[ Category_OmegaSet(F) ]] = "The category of F-sets, denoted F-Set. This is the category that provides the internal, set-theoretic perspective on the topos of sheaves Sh(L), where F is the frame of the locale L. The main theorem of the next sections is that the subcategory of complete F-sets is equivalent to Sh(L)." ;
+
+(* ========================================================================================================== )
+( == Elaborated Section 2.7-2.9, Part 2: The Main Equivalence Theorem (Sheaves as Complete Ω-Sets) == )
+( ========================================================================================================== )
+(*
+ELABORATION (Deeper Dive): The statement that Sh(L) is equivalent to the category of complete Ω-sets is profound.
+A deep elaboration requires us to formalize the very functors that establish this equivalence. This process
+reveals how the components of a sheaf (its sections, restriction maps) are translated into the components of an
+Ω-set (its global elements, equality predicate), and vice-versa.
+
+This elaboration will deconstruct the equivalence into three parts:
+
+Formalizing the First Functor (Sheaf → Ω-Set): We will define the functor A that takes a sheaf and
+constructs its corresponding complete Ω-set. We will specify precisely how the set of "global elements"
+and the "equality predicate" are derived from the sheaf's structure.
+
+Formalizing the Second Functor (Ω-Set → Sheaf): We will define the functor S that takes a complete
+Ω-set and constructs its corresponding sheaf. We will specify how the "sections over an open" and the
+"restriction maps" are derived from the Ω-set's internal logic.
+
+Stating the Refined Equivalence: We will re-state the main theorem, asserting that these two
+explicitly constructed functors, A and S, are quasi-inverses and thus witness the equivalence
+of the two categories.
+*)
+
+(* ========================================================================================================== )
+( == Part 2a: The Functor from Sheaves to Ω-Sets == )
+( ========================================================================================================== )
+
+Functor_SheafToOmegaSet ::= "Functor_A" ":" "Sh(" LocaleDeclaration ")" "→" "Category_CompleteOmegaSet" "(" FrameDeclaration ")" ;
+TYPING
+(*
+
+This rule defines the functor A that translates from the categorical world of sheaves to the internal,
+
+set-theoretic world of Ω-sets. We must define its action on objects and morphisms.
+*)
+-- Action on Objects --
+Given a SHEAF F on L (with frame Ω_L):
+
+The set of "global elements" X is defined as the set of sections over the top element: X := F(1).
+
+The Ω-valued "equality predicate" δ: X×X → Ω_L is defined by the "equalizer object" in the frame.
+For any two global sections s₁, s₂ ∈ F(1), δ(s₁, s₂) is the largest open U on which they agree:
+δ(s₁, s₂) := ⋁{ U ∈ Ω_L | s₁|_U == s₂|_U in F(U) }.
+
+It is a non-trivial theorem that the resulting Ω-set A(F) = (X, δ) is always COMPLETE.
+
+-- Action on Morphisms --
+Given a morphism α: F₁ → F₂ (a natural transformation), the corresponding Ω-homomorphism
+f: A(F₁) → A(F₂) is the component of α at the top element:
+f := α_1 : F₁(1) → F₂(1).
+(This function can be proven to be an Ω-homomorphism).
+
+Γ ⊢ Functor_A ... is a well-defined Functor ;
+CATEGORY
+[[ Functor_A ]] = "The functor that takes a sheaf and extracts its 'internal set' representation. It interprets the global sections of the sheaf as the 'elements' of the set and defines their intuitionistic equality based on the extent to which they agree locally. This functor provides the translation from the external, categorical perspective to the internal, logical one." ;
+
+(* ========================================================================================================== )
+( == Part 2b: The Functor from Ω-Sets to Sheaves == )
+( ========================================================================================================== )
+
+Functor_OmegaSetToSheaf ::= "Functor_S" ":" "Category_CompleteOmegaSet" "(" FrameDeclaration ")" "→" "Sh(" LocaleDeclaration ")" ;
+TYPING
+(*
+
+This rule defines the functor S that translates from the internal, set-theoretic world of complete Ω-sets
+
+back to the categorical world of sheaves. We must define its action on objects and morphisms.
+*)
+-- Action on Objects --
+Given a COMPLETE OMEGA_SET (X, δ) with respect to frame Ω_L:
+
+We construct a presheaf P_(X,δ). The sections over an open U ∈ Ω_L are "U-elements", defined as
+maps s: X → Ω_L that satisfy two internal logic axioms:
+(i) s(x) ≤ U (s is supported on U)
+(ii) s(x) ∧ δ(x,y) ≤ s(y) (s respects the equality)
+P_(X,δ)(U) := { s: X→Ω_L | s is a U-element }.
+
+The restriction maps are inclusions.
+
+The completeness of the Ω-set (X,δ) is precisely the condition needed to prove that this
+presheaf P_(X,δ) is in fact a SHEAF.
+S((X,δ)) := P_(X,δ).
+
+-- Action on Morphisms --
+Given an Ω-homomorphism f: (X₁,δ₁) → (X₂,δ₂), the corresponding sheaf morphism (natural transformation)
+α: S((X₁,δ₁)) → S((X₂,δ₂)) is given by pre-composition.
+The component at U, α_U : S((X₁,δ₁))(U) → S((X₂,δ₂))(U), maps a section s:X₁→Ω_L to the composite s∘f.
+
+Γ ⊢ Functor_S ... is a well-defined Functor ;
+CATEGORY
+[[ Functor_S ]] = "The functor that takes an internal, complete Ω-set and constructs its external, categorical representation as a sheaf. It interprets a 'U-element' of the internal set as a 'section over U' of the sheaf. The completeness of the Ω-set is the crucial ingredient that guarantees the resulting presheaf of sections satisfies the sheaf gluing axiom. This functor provides the translation from the internal, logical perspective back to the external, categorical one." ;
+
+(* ========================================================================================================== )
+( == Part 2c: The Refined Equivalence Theorem == )
+( ========================================================================================================== )
+
+TheoremDeclaration ::= "THEOREM" "SheavesAreCompleteOmegaSets_Refined" ":"
+"The functors Functor_A and Functor_S are quasi-inverses, establishing an equivalence of categories between Sh(L) and the category of complete Ω-sets." ;
+TYPING
+Let L be a LOCALE with Frame Ω_L.
+Let Sh_L := Sh(L).
+Let CΩSet_L := the category of complete Ω-sets for Ω_L.
+Let A := Functor_SheafToOmegaSet : Sh_L → CΩSet_L.
+Let S := Functor_OmegaSetToSheaf : CΩSet_L → Sh_L.
+
+Γ ⊢ (S ∘ A ≅ Id_{Sh_L}) ∧ (A ∘ S ≅ Id_{CΩSet_L}) : ProvableIsomorphism ;
+CATEGORY
+[[ THEOREM "SheavesAreCompleteOmegaSets_Refined" ]] = "The assertion that the explicitly constructed functors A and S provide a perfect, invertible dictionary between the world of sheaves and the world of complete internal sets. This refined theorem does not just state that an equivalence exists, but exhibits the very machinery that creates it, providing a fully constructive account of the profound connection between the external category theory and the internal logic of a topos." ;
+
+(* ========================================================================================================== )
+( == Section 2.10: Basic facts in ring theory (Context for Sheaves of Modules) == )
+( ========================================================================================================== )
+
+SheafOfRings ::= "SHEAF_OF_RINGS" Identifier "on" LocaleDeclaration ;
+TYPING
+(* A sheaf of rings is a sheaf whose values are rings and whose restriction maps are ring homomorphisms. *)
+Γ ⊢ O : SHEAF on L
+Condition: ∀(a∈Frame(L)), O(a) is a Ring, and ∀(b≤a), the restriction O(a)→O(b) is a RingHomomorphism.
+
+Γ ⊢ SHEAF_OF_RINGS O on L is a valid declaration ;
+CATEGORY
+[[ SHEAF_OF_RINGS O on L ]] = "A 'variable ring' indexed by the opens of a locale. This is the foundational structure for algebraic geometry, where O is the structure sheaf of a scheme." ;
+
+SheafOfOModules ::= "SHEAF_OF" "(" SheafOfRings ")" "-MODULES" Identifier ;
+TYPING
+(* A sheaf of O-modules is a sheaf M where each section M(a) is a module over the ring O(a). *)
+Γ ⊢ O : SHEAF_OF_RINGS on L
+Γ ⊢ M : SHEAF on L
+Condition: ∀(a∈Frame(L)), M(a) is an O(a)-Module, and restrictions are O-linear.
+
+Γ ⊢ ... is a valid declaration ;
+CATEGORY
+[[ SHEAF_OF O -MODULES M ]] = "A 'variable module' over a 'variable ring', indexed by the opens of a locale. The category of such sheaves, denoted O-Mod, is the central object of study in modern algebraic geometry." ;
+
+CorollaryDeclaration ::= "COROLLARY" "CategoryOfOModulesIsAbelian" ":"
+"If O is a SHEAF_OF_RINGS, then the category of sheaves of O-modules is an ABELIAN_CATEGORY." ;
+TYPING
+Let O-Mod be the category of sheaves of O-modules.
+(This can be proven by checking the abelian category axioms, which hold 'pointwise' at each open set).
+
+Γ ⊢ O-Mod is an ABELIAN_CATEGORY : ProvableProposition ;
+CATEGORY
+[[ COROLLARY "CategoryOfOModulesIsAbelian" ]] = "The assertion that the category of O-modules inherits the rich abelian structure of the underlying category of modules for each ring O(a). This guarantees that homological algebra can be performed on sheaves of modules, which is the basis for sheaf cohomology." ;

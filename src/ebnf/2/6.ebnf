@@ -1,0 +1,670 @@
+MetaDirectiveAnalysis ::= "(" "For each of: CHAPTER 6: 'Enriched category theory', extend the constructed grammar to integrate the formalized content of the section." ")" "==>" {
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 6.1: Symmetric monoidal closed categories" ")" "==>" {
+(*
+ELABORATION (Deeper Dive): This elaboration focuses exclusively on the foundational concepts of Section 6.1.
+It deconstructs the definition of a Symmetric Monoidal Closed Category into its most fundamental, formal components.
+We are moving beyond simply naming the axioms to formalizing the diagrams they represent.
+
+This elaboration will proceed in three stages:
+
+Monoidal Category: We will meticulously define the associator, left_unitor, and right_unitor
+as natural isomorphisms. Then, we will formalize the Pentagon Axiom and Triangle Axiom as
+explicit commutative diagrams that these isomorphisms must satisfy. This makes the coherence of a
+monoidal category fully explicit.
+
+Symmetric Monoidal Category: We will add the braiding natural isomorphism and formalize its
+own coherence law, the Hexagon Axiom, which ensures its compatibility with the associator.
+
+Symmetric Monoidal Closed Category: We will define the crucial concept of an InternalHomObject
+and state the Tensor-Hom Adjunction, which is the universal property that defines the "closed"
+structure and makes the category a suitable environment for enriched category theory.
+*)
+
+(* ========================================================================================================== )
+( == Part 1: The Monoidal Category Deconstructed == )
+( ========================================================================================================== )
+
+MonoidalCategoryDeclaration ::= "MONOIDAL_CATEGORY" Identifier "is" "{"
+"Data" ":" MonoidalCategoryData ";"
+"Constraints" ":" "{" AssociatorDeclaration ";" LeftUnitorDeclaration ";" RightUnitorDeclaration "}" ";"
+"Axioms" ":" "{" PentagonAxiom ";" TriangleAxiom "}" ";"
+"}" ;
+TYPING
+(* This is the master definition, combining the data, the constraint isomorphisms, and the coherence axioms for those constraints. *)
+Γ ⊢ data : MonoidalCategoryData_Type
+Γ ⊢ α : NaturalIsomorphism, Γ ⊢ λ : NaturalIsomorphism, Γ ⊢ ρ : NaturalIsomorphism
+Γ ⊢ PentagonAxiom_holds_for(α)
+Γ ⊢ TriangleAxiom_holds_for(α,λ,ρ)
+--------------------------------------------------------------------------------------
+Γ ⊢ MONOIDAL_CATEGORY ... : MonoidalCategory ;
+CATEGORY
+[[ MONOIDAL_CATEGORY V ... ]] = "A category V with a tensor product that is associative and unital up to coherent, specified isomorphisms." ;
+
+(* --- The Constraint Isomorphisms --- )
+AssociatorDeclaration ::= "associator" "α" ":" "( _ ⊗ _ ) ⊗ " "≅" " ⊗ ( _ ⊗ _ )" ;
+TYPING
+( The associator α is a natural isomorphism between two functors from V×V×V to V. *)
+Functor_LHS(A,B,C) := (A ⊗ B) ⊗ C
+Functor_RHS(A,B,C) := A ⊗ (B ⊗ C)
+----------------------------------------------------------------
+Γ ⊢ α : NaturalIsomorphism(Functor_LHS, Functor_RHS) ;
+CATEGORY
+[[ associator α ... ]] = "The natural isomorphism with components α_{A,B,C} : (A⊗B)⊗C → A⊗(B⊗C) that witnesses the associativity of the tensor product." ;
+
+LeftUnitorDeclaration ::= "left_unitor" "λ" ":" "( I ⊗ _ )" "≅" "Id" ;
+TYPING
+(* The left unitor λ is a natural isomorphism from the functor (I ⊗ -) to the identity functor. *)
+Functor_LHS(A) := I ⊗ A
+Functor_RHS(A) := A
+------------------------------------------------------------
+Γ ⊢ λ : NaturalIsomorphism(Functor_LHS, Functor_RHS) ;
+CATEGORY
+[[ left_unitor λ ... ]] = "The natural isomorphism with components λ_A : I⊗A → A that witnesses the fact that the unit object I is a left identity for the tensor product." ;
+
+RightUnitorDeclaration ::= "right_unitor" "ρ" ":" "( _ ⊗ I )" "≅" "Id" ;
+TYPING
+(* The right unitor ρ is a natural isomorphism from the functor (- ⊗ I) to the identity functor. *)
+Functor_LHS(A) := A ⊗ I
+Functor_RHS(A) := A
+-------------------------------------------------------------
+Γ ⊢ ρ : NaturalIsomorphism(Functor_LHS, Functor_RHS) ;
+CATEGORY
+[[ right_unitor ρ ... ]] = "The natural isomorphism with components ρ_A : A⊗I → A that witnesses the fact that the unit object I is a right identity for the tensor product." ;
+
+(* --- The Coherence Axioms --- )
+PentagonAxiom ::= "AXIOM" "PentagonIdentity" ":" "FOR_ALL A,B,C,D, the pentagon diagram commutes." ;
+TYPING
+( This axiom states that for any four objects, the following diagram of α-isomorphisms must commute. *)
+Path1_Top := α_{A⊗B, C, D} ∘ α_{A, B, C⊗D}
+Path2_Bottom := (Id_A ⊗ α_{B,C,D}) ∘ α_{A, B⊗C, D} ∘ (α_{A,B,C} ⊗ Id_D)
+----------------------------------------------------------------
+Γ ⊢ PentagonIdentity holds if (Path1_Top == Path2_Bottom) ;
+CATEGORY
+[[ AXIOM PentagonIdentity ... ]] = "Mac Lane's Coherence Theorem for monoidal categories. It guarantees that any two ways of re-associating a long tensor product using the associator α will result in the same composite isomorphism. This means parentheses can be dropped without ambiguity." ;
+
+TriangleAxiom ::= "AXIOM" "TriangleIdentity" ":" "FOR_ALL A,B, the triangle diagram commutes." ;
+TYPING
+(* This axiom states that the associator is compatible with the unitors. *)
+Path_Direct := ρ_A ⊗ Id_B
+Path_Indirect := (Id_A ⊗ λ_B) ∘ α_{A, I, B}
+-----------------------------------------------------------
+Γ ⊢ TriangleIdentity holds if (Path_Direct == Path_Indirect) ;
+CATEGORY
+[[ AXIOM TriangleIdentity ... ]] = "The coherence law relating the associator and the unitors. It ensures that the two canonical ways to remove the unit object from the expression A⊗I⊗B are the same, guaranteeing that the unitors are well-behaved." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Symmetric Monoidal Category == )
+( ========================================================================================================== )
+
+SymmetricMonoidalCategoryDeclaration ::= "SYMMETRIC" MonoidalCategoryDeclaration "with" "{"
+BraidingDeclaration ";"
+HexagonAxiom ";"
+"}" ;
+TYPING
+Γ ⊢ V : MONOIDAL_CATEGORY
+Γ ⊢ γ : Braiding_Type
+Γ ⊢ HexagonAxiom_holds_for(V's associator α, γ)
+--------------------------------------------------
+Γ ⊢ SYMMETRIC ... : SymmetricMonoidalCategory ;
+CATEGORY
+[[ SYMMETRIC MONOIDAL_CATEGORY V ... ]] = "A monoidal category with a commutative tensor product, where commutativity is witnessed by a coherent natural isomorphism γ." ;
+
+BraidingDeclaration ::= "braiding" "γ" ":" "_ ⊗ " "≅" " ⊗ " ;
+TYPING
+(* The braiding γ is a natural isomorphism from the tensor functor to itself with swapped arguments. *)
+Functor_Tensor(A,B) := A ⊗ B
+Functor_Tensor_Swapped(A,B) := B ⊗ A
+SymmetryCondition: γ{B,A} ∘ γ_{A,B} == id_{A⊗B}
+---------------------------------------------------------------------------------------
+Γ ⊢ γ : NaturalIsomorphism(Functor_Tensor, Functor_Tensor_Swapped) which is symmetric ;
+CATEGORY
+[[ braiding γ ... ]] = "The symmetry isomorphism, with components γ_{A,B} : A⊗B → B⊗A. It witnesses the commutativity of the tensor product." ;
+
+HexagonAxiom ::= "AXIOM" "HexagonIdentity" ":" "FOR_ALL A,B,C, the hexagon diagram commutes." ;
+TYPING
+(* This is the coherence law that makes the braiding compatible with associativity. *)
+Path1 := α_{A,C,B} ∘ γ_{A, B⊗C} ∘ α_{A,B,C}
+Path2 := (Id_A ⊗ γ_{B,C}) ∘ α_{A,C,B} ∘ (γ_{A,B} ⊗ Id_C)
+-----------------------------------------------------------
+Γ ⊢ HexagonIdentity holds if (Path1 == Path2) ;
+CATEGORY
+[[ AXIOM HexagonIdentity ... ]] = "The coherence law for a symmetric monoidal category. It guarantees that the braiding interacts correctly with the associator, ensuring that all diagrammatic calculations involving both associativity and commutativity are unambiguous." ;
+
+(* ========================================================================================================== )
+( == Part 3: The Symmetric Monoidal Closed Category == )
+( ========================================================================================================== )
+
+SymmetricMonoidalClosedCategoryDeclaration ::= SymmetricMonoidalCategoryDeclaration "which_is_CLOSED_by" "{"
+InternalHomObjectDeclaration ";"
+TensorHomAdjunctionTheorem ";"
+"}" ;
+TYPING
+Γ ⊢ V : SYMMETRIC_MONOIDAL_CATEGORY
+Γ ⊢ exists_internal_hom
+Γ ⊢ exists_adjunction
+---------------------------------------------------
+Γ ⊢ ... which_is_CLOSED ... : SymmetricMonoidalClosedCategory ;
+CATEGORY
+[[ ... which_is_CLOSED ... ]] = "The required structure for an enriching category V. It is a symmetric monoidal category that also possesses an internal hom-object, making it a suitable universe for both 'logic' (hom) and 'conjunction' (tensor)." ;
+
+InternalHomObjectDeclaration ::= "INTERNAL_HOM_OBJECT" "[" Identifier "," Identifier "]" ;
+TYPING
+(* The internal hom is an object in V representing the collection of morphisms between two other objects. *)
+Γ ⊢ B, C : Object_in(V)
+--------------------------
+Γ ⊢ [B, C] : Object_in(V) ;
+CATEGORY
+[[ [B, C] ]] = "The internal hom-object, or exponential object. It is the object in V that represents the 'function space' from B to C." ;
+
+TensorHomAdjunctionTheorem ::= "THEOREM" "TensorHomAdjunction" ":" "The functor (-⊗B) is left adjoint to the functor [B,-]." ;
+TYPING
+(* This adjunction is the universal property that defines the internal hom object. *)
+Let F(A) := A ⊗ B
+Let G(C) := [B, C]
+------------------------------------------------------------------------------------------
+Γ ⊢ F ⊣ G : Adjunction(V,V) which is equivalent to Hom_V(A⊗B, C) ≅ Hom_V(A, [B,C]) ;
+CATEGORY
+[[ THEOREM TensorHomAdjunction ... ]] = "The assertion of the currying/uncurrying isomorphism at the categorical level. This natural isomorphism is the defining property of a closed category. It provides the mechanism for converting morphisms out of a tensor product into morphisms into an internal hom-object, which is the heart of enriched category theory." ;
+}
+
+(*
+ELABORATION: This section defines the central object of study for the chapter: a "V-enriched category,"
+or "V-category." Having established the necessary structure for the enriching category V (it must be
+a monoidal category), we can now generalize the very definition of a category. A deep elaboration must
+show how each component of the standard definition—hom-sets, composition functions, identities—is
+replaced by its V-enriched analogue.
+
+Our formalization will proceed by deconstructing the definition of a V-category into its two main parts:
+
+The Data: We will formalize the "data" of a V-category C. This consists of a collection of objects,
+and then, for each pair of objects, a "hom-object" C(A,B) in V, a "composition" morphism ∘ in V,
+and an "identity" morphism j in V.
+
+The Axioms: We will formalize the axioms that this data must satisfy. The familiar associativity and
+unitality laws are no longer simple equations about function application but become commuting diagrams
+of morphisms within the enriching category V. These diagrams crucially involve the structural
+isomorphisms (the associator α and unitors λ, ρ) of V itself.
+
+This approach reveals that an enriched category is not just a category with extra properties, but a
+fundamentally different kind of structure whose laws are expressed in the language of its enriching base V.
+*)
+
+(* ========================================================================================================== )
+( == Part 1: The Data of a V-Category == )
+( ========================================================================================================== )
+
+EnrichedCategoryData ::= "DATA_V_Category" "{"
+"Objects" ":" "{" {Identifier} "}" ";"
+"HomObjects" ":" "{" {HomObjectDeclaration} "}" ";"
+"Composition" ":" "{" {CompositionMorphismDeclaration} "}" ";"
+"Identities" ":" "{" {IdentityMorphismDeclaration_Enriched} "}" ";"
+"}" ;
+TYPING
+(* This rule defines the raw structural data of a V-category, before any axioms are checked. *)
+Context: Γ ⊢ V : MonoidalCategory
+-- All components are checked for well-typedness within V --
+∀ hom_obj ∈ HomObjects, its declared type is an Object_in(V).
+∀ comp_mor ∈ Composition, it is a Morphism_in(V) of the correct type.
+∀ id_mor ∈ Identities, it is a Morphism_in(V) of the correct type.
+
+Γ ⊢ DATA_V_Category ... : EnrichedCategoryData_Type ;
+CATEGORY
+[[ DATA_V_Category ... ]] = "The structural data for a V-enriched category. It comprises the collection of objects and the families of hom-objects, composition morphisms, and identity morphisms, all interpreted within the enriching category V." ;
+
+HomObjectDeclaration ::= "hom" "(" Identifier "," Identifier ")" "is" Identifier ";" ;
+TYPING
+(* This rule declares that for the pair of C-objects (A,B), the hom-object is the V-object C(A,B). *)
+Γ ⊢ C_A, C_B : Object_in(EnrichedCategory C)
+
+Γ ⊢ hom(C_A, C_B) is V_obj : HomObject_in(V) ;
+CATEGORY
+[[ hom(A,B) is V_obj ]] = "The assignment of the object V_obj from the enriching category V to serve as the 'collection of morphisms' between objects A and B in the enriched category C." ;
+
+CompositionMorphismDeclaration ::= "compose_" Identifier "" Identifier "" Identifier " : " "C(" Identifier "," Identifier ") ⊗ C(" Identifier "," Identifier ") → C(" Identifier "," Identifier ")" ;
+TYPING
+(* Defines the composition morphism in V. *)
+Context: EnrichedCategory C, MonoidalCategory V
+
+Γ ⊢ compose_ABC : Morphism( C(B,C) ⊗ C(A,B), C(A,C) ) in V ;
+CATEGORY
+[[ compose_ABC ... ]] = "The composition morphism. It replaces the set-theoretic composition function, acting on the tensor product of hom-objects to produce a result in another hom-object. It is a morphism inside V." ;
+
+IdentityMorphismDeclaration_Enriched ::= "id_" Identifier " : " "I → C(" Identifier "," Identifier ")" ;
+TYPING
+(* Defines the identity-selecting morphism in V. *)
+Context: EnrichedCategory C, MonoidalCategory V with UnitObject I
+
+Γ ⊢ id_A : Morphism( I, C(A,A) ) in V ;
+CATEGORY
+[[ id_A ... ]] = "The identity morphism for object A. It replaces the selection of an identity element, instead using a morphism from V's monoidal unit I to pick out the identity in the hom-object C(A,A). It is a morphism inside V." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Axioms of a V-Category == )
+( ========================================================================================================== )
+
+EnrichedAssociativityAxiom ::= "AXIOM" "EnrichedAssociativity" ":" "The associativity pentagon commutes in V." ;
+TYPING
+(*
+
+This axiom asserts that the familiar associativity pentagon is now a commutative diagram of morphisms in V.
+
+It connects the composition morphisms ∘ of the enriched category C with the associator isomorphism α of V.
+
+The diagram asserts: ∘_ACD ∘ (∘_ABC ⊗ id) == ∘_ABD ∘ (id ⊗ ∘_BCD) ∘ α_{C(C,D),C(B,C),C(A,B)}
+*)
+Context: EnrichedCategoryData C, MonoidalCategory V
+(Diagram expressed as equality of composite V-morphisms holds for all A,B,C,D)
+
+Γ ⊢ AXIOM EnrichedAssociativity is TRUE ;
+CATEGORY
+[[ AXIOM EnrichedAssociativity ]] = "The coherence law ensuring that composition in the enriched category is associative. The law itself is expressed as a commutative diagram in the enriching category V, demonstrating how the structure of V dictates the laws of C." ;
+
+EnrichedUnitalityAxiom ::= "AXIOM" "EnrichedUnitality" ":" "The unit law triangles commute in V." ;
+TYPING
+(*
+
+This axiom asserts that the identity morphisms behave correctly. This is also a commutative diagram in V,
+
+connecting composition ∘, identities id, and the unitor isomorphisms λ and ρ of V.
+
+The left unit law asserts: ∘_AAB ∘ (id_A ⊗ id) == ρ (where ρ is the right unitor of V)
+*)
+Context: EnrichedCategoryData C, MonoidalCategory V
+(Diagrams for left and right unitality commute in V for all A,B)
+
+Γ ⊢ AXIOM EnrichedUnitality is TRUE ;
+CATEGORY
+[[ AXIOM EnrichedUnitality ]] = "The coherence law ensuring that the identity morphisms in the enriched category behave as units for composition. This law is expressed as a commutative diagram in V, showing how identities in C are governed by the monoidal unit and unitors of V." ;
+
+EnrichedCategoryDeclaration ::= "V_CATEGORY" Identifier "enriched_in" Identifier "is" "{"
+EnrichedCategoryData ";"
+"AXIOMS" "(" "EnrichedAssociativity" "," "EnrichedUnitality" ")"
+"}" ;
+TYPING
+(* Fully assembled master definition. *)
+Γ ⊢ V : MonoidalCategory
+Γ ⊢ data : EnrichedCategoryData_Type for C, enriched in V
+Γ ⊢ EnrichedAssociativity axiom holds for data
+Γ ⊢ EnrichedUnitality axiom holds for data
+
+Γ ⊢ V_CATEGORY C ... : EnrichedCategory_over(V) ;
+CATEGORY
+[[ V_CATEGORY C ... ]] = "A category C whose hom-sets are replaced by hom-objects from a monoidal category V. Its laws of composition and identity are expressed as commuting diagrams of morphisms within V, using V's own structural isomorphisms. Standard categories are Set-categories." ;
+
+(*
+ELABORATION: This section formalizes the crucial concept of "change of base," a mechanism for
+translating a category enriched in one monoidal category V into a category enriched in another, W.
+This is the primary tool for relating different enriched worlds and, most importantly, for extracting
+the familiar "underlying ordinary category" from any V-category.
+
+A deep elaboration requires us to deconstruct this process into its constituent parts:
+
+The Tool (The Strong Monoidal Functor): We will first formalize the structure-preserving map F: V → W that enables the translation. This is a functor that coherently respects the tensor product and unit of the monoidal categories.
+
+The Construction (The Change of Base Functor): We will then formalize the construction itself, showing how a V-category C and a monoidal functor F produce a new W-category, which we will denote F_*(C). The formalization will make the construction explicit: showing how F is applied to the hom-objects and how its structural isomorphisms are used to define the new composition and identity morphisms.
+
+The Key Application (The Underlying Ordinary Category): Finally, we will reveal the most important application of this machinery. We will show that the intuitive notion of the "underlying ordinary category" is not a new, ad-hoc definition but is a specific instance of the change of base construction. We will formalize this by demonstrating that applying the change of base along the canonical Hom_V(I, -) functor from V to Set precisely yields the underlying category.
+*)
+
+(* ========================================================================================================== )
+( == Part 1: The Tool - Strong Monoidal Functors == )
+(* ========================================================================================================== *)
+
+StrongMonoidalFunctor ::= "STRONG_MONOIDAL_FUNCTOR" Identifier ":" MonoidalCategoryDeclaration "→" MonoidalCategoryDeclaration ;
+TYPING
+(*
+
+A strong monoidal functor F:V→W is a functor equipped with natural isomorphisms
+
+that coherently relate its action to the tensor products and units of V and W.
+*)
+Γ ⊢ F : Functor(V, W), Γ ⊢ V, W : MonoidalCategory
+Let (⊗_V, I_V) and (⊗_W, I_W) be the respective monoidal structures.
+There exist natural isomorphisms (which must satisfy coherence diagrams):
+μ_{A,B} : F(A) ⊗_W F(B) → F(A ⊗_V B)
+ε : I_W → F(I_V)
+
+Γ ⊢ F is a STRONG_MONOIDAL_FUNCTOR ;
+CATEGORY
+[[ STRONG_MONOIDAL_FUNCTOR F ... ]] = "A structure-preserving map between monoidal categories. It is the correct notion of 'morphism' for monoidal categories and is the essential tool for changing the base of enrichment. It provides a dictionary for translating the tensorial structure of V into the tensorial structure of W." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Construction - Changing the Base of Enrichment == )
+(* ========================================================================================================== *)
+
+ChangeOfBaseConstructor ::= Identifier "_" "(" EnrichedCategoryDeclaration ")" ;
+TYPING
+(
+
+This constructor takes a V-category C and a strong monoidal functor F:V→W
+
+and produces a W-category F_*(C). The typing rule below is the constructive definition.
+)
+Γ ⊢ F : StrongMonoidalFunctor(V, W), Γ ⊢ C : V_CATEGORY
+Let F have structural isomorphisms μ and ε.
+-- Define the new W-category C' = F_(C) --
+
+Objects(C') := Objects(C)
+
+HomObjects_{C'}(A,B) := F(HomObjects_C(A,B))
+
+Composition_{C'} : Hom_{C'}(B,C) ⊗_W Hom_{C'}(A,B) → Hom_{C'}(A,C) is defined as the composite:
+F(C(B,C)) ⊗_W F(C(A,B)) --μ⁻¹--> F(C(B,C) ⊗_V C(A,B)) --F(∘_C)--> F(C(A,C))
+
+Identities_{C'} : I_W → Hom_{C'}(A,A) is defined as the composite:
+I_W --ε--> F(I_V) --F(id_C_A)--> F(C(A,A))
+
+Γ ⊢ F_(C) : W_CATEGORY ;
+CATEGORY
+[[ F_(C) ]] = "The change of base of the V-category C along the monoidal functor F. This construction allows one to view C as if it were enriched in W, by systematically applying the functor F to all of its structural components (hom-objects, composition, identities). The structural isomorphisms of F are crucial for re-connecting these components correctly in the new enriching category W." ;
+
+(* ========================================================================================================== )
+( == Part 3: The Key Application - The Underlying Ordinary Category == )
+(* ========================================================================================================== *)
+
+UnderlyingOrdinaryCategory ::= "UnderlyingCategory_of" "(" EnrichedCategoryDeclaration ")" ;
+TYPING
+(*
+
+This rule asserts that the concept of an "underlying ordinary category" is not a new primitive,
+
+but is precisely the result of a specific change of base operation.
+*)
+Context: Γ ⊢ C : V_CATEGORY, where V is a SymmetricMonoidalClosedCategory.
+
+Define the target category: W := (Set, ×, {∗}), the category of sets with the Cartesian monoidal structure.
+
+Define the monoidal functor: F_underlying := Hom_V(I, -) : V → Set. This is a strong monoidal functor.
+
+The underlying category of C is definitionally equivalent to the change of base of C along this specific functor.
+
+Γ ⊢ UnderlyingCategory_of(C) ≅ F_underlying_*(C) : EquivalenceOfCategories ;
+CATEGORY
+[[ UnderlyingCategory_of(C) ]] = "The underlying Set-enriched (i.e., ordinary) category of a V-category C. This theorem reveals that this fundamental concept is a canonical instance of changing the base of enrichment. The hom-sets of the underlying category are formed by taking the 'global elements' of the V-hom-objects, a process formalized by applying the functor Hom_V(I, -) to each one. This construction is the essential bridge from the abstract world of enriched category theory back to standard, set-based category theory." ;
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 6.3 & 6.7: Enriched Functors, Adjunctions, and the Yoneda Lemma" ")" "==>" {
+(*
+ELABORATION (Deeper Dive): This elaboration meticulously deconstructs the core concepts of enriched
+functors, transformations, adjunctions, and the Yoneda Lemma. Instead of treating them as monolithic
+definitions, we will formalize them by separating their "Data" from the "Axioms" (the commuting
+diagrams in the enriching category V) that this data must satisfy. This reveals the precise,
+diagrammatic nature of the laws governing these enriched structures.
+*)
+
+(* ========================================================================================================== )
+( == Part 1: Deconstructing the V-Functor == )
+( ========================================================================================================== )
+
+EnrichedFunctorData ::= "DATA_V_Functor" "{"
+"ActionOnObjects" ":" {ObjectMapping} ";"
+"ActionOnHomObjects" ":" {HomObjectMorphism} ";"
+"}" ;
+TYPING
+(* This declares the raw structural data of a V-functor F: C → D. *)
+Context: V-categories C, D enriched in V.
+F_obj : Ob(C) → Ob(D) is a function.
+F_hom : is a family of V-morphisms { F_AB : C(A,B) → D(F(A),F(B)) | A,B ∈ Ob(C) }.
+---------------------------------------------------------------------------------
+Γ ⊢ DATA_V_Functor ... : EnrichedFunctorData_Type ;
+CATEGORY
+[[ DATA_V_Functor ... ]] = "The data for a V-functor, consisting of its effect on objects and its action on hom-objects, expressed as a family of morphisms in the enriching category V." ;
+
+EnrichedFunctorAxiom_Composition ::= "AXIOM" "EnrichedFunctor_PreservesComposition" "for" EnrichedFunctorData ;
+TYPING
+(*
+* This axiom asserts that the V-functor F respects composition. This is a commutative
+* diagram of morphisms within the enriching category V.
+*)
+Context: F_data from C to D.
+Diagram_Path1 := compose_D_FAFBFС ∘ (F_BC ⊗ F_AB)
+Diagram_Path2 := F_AC ∘ compose_C_ABC
+-------------------------------------------------------------------------
+Γ ⊢ AXIOM ... holds if (Diagram_Path1 == Diagram_Path2) in V;
+CATEGORY
+[[ AXIOM EnrichedFunctor_PreservesComposition ]] = "The coherence law ensuring that a V-functor is compatible with composition. It asserts that 'composing then mapping' is the same as 'mapping then composing', where the comparison takes place in the enriching category V." ;
+
+EnrichedFunctorAxiom_Identity ::= "AXIOM" "EnrichedFunctor_PreservesIdentity" "for" EnrichedFunctorData ;
+TYPING
+(* This axiom asserts that F respects identities, again as a commutative diagram in V. *)
+Context: F_data from C to D. For each A in C:
+Diagram_Path1 := F_AA ∘ id_C_A
+Diagram_Path2 := id_D_FA
+----------------------------------------------------------------
+Γ ⊢ AXIOM ... holds if (Diagram_Path1 == Diagram_Path2) in V;
+CATEGORY
+[[ AXIOM EnrichedFunctor_PreservesIdentity ]] = "The coherence law ensuring a V-functor respects identity morphisms. It states that 'mapping the identity-selecting morphism for A' is the same as 'the identity-selecting morphism for F(A)'." ;
+
+EnrichedFunctorDeclaration ::= "V_FUNCTOR" Identifier ":" EnrichedCategoryDeclaration "→" EnrichedCategoryDeclaration "is" "{"
+EnrichedFunctorData ";"
+"Verification" ":" "{" EnrichedFunctorAxiom_Composition ";" EnrichedFunctorAxiom_Identity "}"
+"}" ;
+TYPING
+(* The fully assembled, verified definition of a V-functor. *)
+Γ ⊢ data : EnrichedFunctorData_Type
+Γ ⊢ AXIOM ..._PreservesComposition for data
+Γ ⊢ AXIOM ..._PreservesIdentity for data
+------------------------------------------------
+Γ ⊢ V_FUNCTOR ... : EnrichedFunctor_over(V) ;
+CATEGORY
+[[ V_FUNCTOR F ... ]] = "A structure-preserving map between V-enriched categories, defined by its data and the verification that this data satisfies the required coherence axioms in the enriching category V." ;
+
+(* ========================================================================================================== )
+( == Part 2: Deconstructing the V-Natural Transformation == )
+( ========================================================================================================== )
+
+EnrichedNaturalTransformation ::= "V_NATURAL_TRANSFORMATION" Identifier ":" EnrichedFunctorDeclaration "⇒" EnrichedFunctorDeclaration ;
+TYPING
+(*
+* A V-natural transformation α between V-functors F, G: C → D is a family of morphisms
+* α_A : F(A) → G(A) in the UNDERLYING ordinary category of D.
+* This family must satisfy a V-enriched naturality square.
+* An equivalent, more powerful definition is a family of V-morphisms {α_A : I → D(F(A), G(A))}
+* satisfying a coherence axiom in V.
+*)
+Context: V-Functors F, G : C → D.
+Let α be a family of morphisms { α_A : I → D(F(A), G(A)) } in V.
+-------------------------------------------------------------------------------
+Γ ⊢ α is V_NATURAL_TRANSFORMATION if V_NaturalityAxiom for α holds ;
+CATEGORY
+[[ V_NATURAL_TRANSFORMATION α ... ]] = "A morphism between V-functors. Its components are 'global elements' (morphisms from the unit I) in the hom-objects of the target V-category, and they must cohere in a way dictated by the structure of V." ;
+
+V_NaturalityAxiom ::= "AXIOM" "V_Naturality" "for" "transformation" Identifier ;
+TYPING
+(*
+* This axiom asserts the commutativity of the V-enriched naturality square for each f in C(A,B).
+* The diagram in V is: compose_D ∘ (id ⊗ α_A) ∘ G_AB == compose_D ∘ (α_B ⊗ id) ∘ F_AB
+*)
+... (diagram commutes in V for all hom-objects) ...
+------------------------------------------------
+Γ ⊢ AXIOM V_Naturality ... is TRUE ;
+CATEGORY
+[[ AXIOM V_Naturality ... ]] = "The coherence law for a V-natural transformation. It ensures that the components of the transformation are compatible with the V-functor actions on all hom-objects. It is the enriched analogue of the classic naturality square." ;
+
+(* ========================================================================================================== )
+( == Part 3: The Enriched Adjunction and Yoneda Lemma == )
+( ========================================================================================================== )
+
+EnrichedAdjunctionDeclaration ::= "V_ADJUNCTION" EnrichedFunctorDeclaration "⊣" EnrichedFunctorDeclaration ;
+TYPING
+(*
+* The adjunction is defined by a V-natural isomorphism of hom-objects.
+* This means for each pair (A,B), there is an isomorphism D(F(A),B) ≅ C(A,G(B)) in V,
+* and this family of isomorphisms constitutes a V-natural transformation.
+*)
+Γ ⊢ F:C→D, Γ ⊢ G:D→C are V_FUNCTORS
+----------------------------------------------------------------------------------------
+Γ ⊢ F ⊣ G if D(F(-), -) and C(-, G(-)) are V-naturally isomorphic as V-functors C^op × D → V ;
+CATEGORY
+[[ V_ADJUNCTION F ⊣ G ]] = "The enriched version of an adjunction. The natural bijection of hom-sets is elevated to a natural isomorphism of hom-objects in the enriching category V. This is the most powerful and fundamental expression of the adjunction concept." ;
+
+EnrichedPresheafCategory ::= "[" EnrichedCategoryDeclaration "^op" "," Identifier "]" ;
+TYPING
+Γ ⊢ C : V_CATEGORY, Γ ⊢ V : SymmetricMonoidalClosedCategory
+---------------------------------------------------------------------------
+Γ ⊢ [C^op, V] : V_CATEGORY of V-functors from C^op to V ;
+CATEGORY
+[[ [C^op, V] ]] = "The V-category of all V-enriched presheaves on C. Its objects are V-functors from C^op to V, and its hom-objects are the objects of V-natural transformations." ;
+
+TheoremDeclaration ::= "THEOREM" "EnrichedYonedaIsomorphism" ":"
+"The hom-object of V-natural transformations [y(A), P] is isomorphic in V to the object P(A)." ;
+TYPING
+Context: Γ ⊢ C : V_CATEGORY, Γ ⊢ V : SymmetricMonoidalClosedCategory
+Let y: C → [C^op, V] be the enriched Yoneda embedding V-functor.
+Γ ⊢ A : Object_in(C), Γ ⊢ P : Object_in([C^op, V])
+LHS := HomObject_{[C^op,V]}( y(A), P )
+RHS := P(A) (the V-object resulting from evaluating P at A)
+----------------------------------------------------------------
+Γ ⊢ LHS ≅ RHS : Isomorphism in V ;
+CATEGORY
+[[ THEOREM EnrichedYonedaIsomorphism ]] = "The core assertion of the enriched Yoneda Lemma. It provides a canonical isomorphism in the enriching category V between the object of V-natural transformations from a representable presheaf and a presheaf's value at the representing object. This demonstrates that the principle of representation is fundamental and holds in any sufficiently structured enriched context." ;
+
+CorollaryDeclaration ::= "COROLLARY" "EnrichedYonedaEmbeddingIsFullyFaithful" "to" "EnrichedYonedaIsomorphism" ;
+TYPING
+(* This is a direct consequence of the main theorem. *)
+Let P = y(B) in the EnrichedYonedaIsomorphism.
+Then [C^op,V](yA, yB) ≅ yB(A) = C(A,B).
+This isomorphism of hom-objects means the Yoneda embedding y is full and faithful.
+-------------------------------------------------------------------------------
+Γ ⊢ "The enriched Yoneda embedding y: C → [C^op, V] is a fully faithful V-functor." ;
+CATEGORY
+[[ COROLLARY ... ]] = "The practical consequence of the Yoneda Lemma. It guarantees that any V-category C is perfectly mirrored inside its category of V-enriched presheaves, preserving the full V-enriched structure of its hom-objects. This allows problems in C to be translated into the often better-behaved category of V-presheaves." ;
+}
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 6.5 & 6.6: Tensors and Weighted Limits" ")" "==>" {
+(*
+ELABORATION: This combined elaboration formalizes the most general notions of colimits and limits
+in an enriched setting. The key insight is that the standard notions of coproducts and products, which
+are limits/colimits over discrete diagrams, are generalized to "tensors" and "cotensors" where we
+can take a copower/power by an object from the enriching category V itself.
+
+This idea is then taken to its ultimate conclusion with the concept of "weighted" limits and colimits.
+Instead of a simple diagram shape, we now have a diagram D and a "weighting functor" W that specifies
+the precise way the components of D should be combined to form the universal object. All other limit
+and colimit constructions in a V-category are shown to be special cases of this single, powerful universal
+construction.
+
+This elaboration will proceed by:
+
+Formalizing Tensors and Cotensors: Define the tensor (copower) and cotensor (power) via their
+fundamental universal property, which is an enriched adjunction.
+
+Formalizing Weighted (Co)Limits: Define the master concepts of the weighted limit and weighted
+colimit, again via their universal property, which involves an object of enriched natural transformations.
+
+Stating the Unification Theorem: Assert the crucial theorem that tensors and cotensors are not
+new, independent ideas, but are specific, simple instances of weighted colimits and limits, respectively.
+This demonstrates that the weighted (co)limit is the single unifying concept for all such constructions.
+*)
+
+(* ========================================================================================================== )
+( == Part 1: Tensors (Copowers) and Cotensors (Powers) == )
+( ========================================================================================================== )
+
+TensorDeclaration ::= Identifier "⊗" Identifier ;
+TYPING
+(*
+* This defines the tensor or "copower" of an object X in the V-category C by an object v from V.
+* Its defining property is the enriched adjunction which must hold for all objects Y in C.
+*)
+Context: Γ ⊢ C : V_CATEGORY, Γ ⊢ V : SymmetricMonoidalClosedCategory
+Γ ⊢ v:Object_in(V), Γ ⊢ X:Object_in(C)
+UniversalProperty := (∀Y∈Ob(C), C(v⊗X, Y) ≅ V(v, C(X,Y)) is a natural isomorphism in V)
+-------------------------------------------------------------------------------------
+Γ ⊢ v⊗X : Object_in(C) (defined by its UniversalProperty) ;
+CATEGORY
+[[ v⊗X ]] = "The tensor (or copower) of X by v. It is the enriched analogue of a coproduct of 'v copies' of X. It represents the universal object in C for receiving V-morphisms from v into the hom-object C(X,Y)." ;
+
+CotensorDeclaration ::= "[" Identifier "," Identifier "]" ;
+TYPING
+(*
+* This defines the cotensor or "power" of an object X in C by an object v from V.
+* It is the dual concept to the tensor, defined by a different enriched adjunction.
+*)
+Context: Γ ⊢ C : V_CATEGORY, Γ ⊢ V : SymmetricMonoidalClosedCategory
+Γ ⊢ v:Object_in(V), Γ ⊢ X:Object_in(C)
+UniversalProperty := (∀Y∈Ob(C), C(Y, [v,X]) ≅ V(v, C(Y,X)) is a natural isomorphism in V)
+--------------------------------------------------------------------------------------
+Γ ⊢ [v,X] : Object_in(C) (defined by its UniversalProperty) ;
+CATEGORY
+[[ [v,X] ]] = "The cotensor (or power) of X by v. It is the enriched analogue of a product of 'v copies' of X. It represents the universal object in C that receives V-morphisms from v 'for every map out of Y'." ;
+
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "Tensor" "IS" "Cotensor" ;
+
+(* ========================================================================================================== )
+( == Part 2: The General Theory of Weighted (Co)Limits == )
+( ========================================================================================================== )
+
+WeightedLimitDeclaration ::= "{" Identifier "," Identifier "}" ;
+TYPING
+(*
+* The weighted limit of a V-functor D:J→C, with weight W:J^op→V, is an object {W,D} in C.
+* Its universal property connects the hom-object C(X,{W,D}) to the object of enriched
+* natural transformations between the weight W and the representable functor C(X,D-).
+*)
+Context: Γ ⊢ C, J : V_CATEGORY, Γ ⊢ V : SymmetricMonoidalClosedCategory
+Γ ⊢ D : V_FUNCTOR(J → C), Γ ⊢ W: V_FUNCTOR(J^op → V)
+UniversalProperty := (∀X∈Ob(C), C(X, {W,D}) ≅ [J^op, V](W, C(X,D(-))) is an isomorphism in V)
+-----------------------------------------------------------------------------------------------
+Γ ⊢ {W,D} : Object_in(C) (defined by its UniversalProperty) ;
+CATEGORY
+[[ {W,D} ]] = "The weighted limit of the diagram D with respect to the weight W. The weight specifies how the different parts of the diagram D are to be 'weighted' in the construction of the limit object. This is the most general possible notion of a limit in enriched category theory." ;
+
+WeightedColimitDeclaration ::= "{" Identifier "∗" Identifier "}" ;
+TYPING
+(*
+* The weighted colimit is the dual concept. The universal property is now for morphisms out of the object.
+*)
+Context: Γ ⊢ C, J : V_CATEGORY, Γ ⊢ V : SymmetricMonoidalClosedCategory
+Γ ⊢ D : V_FUNCTOR(J → C), Γ ⊢ W: V_FUNCTOR(J → V)
+UniversalProperty := (∀X∈Ob(C), C({W∗D}, X) ≅ [J, V](W, C(D(-),X)) is an isomorphism in V)
+----------------------------------------------------------------------------------------------
+Γ ⊢ {W∗D} : Object_in(C) (defined by its UniversalProperty) ;
+CATEGORY
+[[ {W∗D} ]] = "The weighted colimit of the diagram D with respect to the weight W. This is the most general possible notion of a colimit in enriched category theory." ;
+
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "WeightedLimit" "IS" "WeightedColimit" ;
+
+(* ========================================================================================================== )
+( == Part 3: Unification - Tensors as Weighted Colimits == )
+( ========================================================================================================== )
+
+TheoremDeclaration ::= "THEOREM" "TensorsAreWeightedColimits" ":"
+"The tensor v⊗X is the weighted colimit of the diagram selecting X, with weight v." ;
+TYPING
+(*
+* This theorem provides the explicit construction that shows tensors are a special case of weighted colimits.
+* To prove v⊗X ≅ {W∗D}, we choose a specific diagram D and weight W and show that the universal
+* property for the weighted colimit reduces to the universal property for the tensor.
+*)
+Let V_1 be the terminal V-category (one object, identity hom-object I).
+1. Let D : V_1 → C be the V-functor that selects the object X.
+2. Let W : V_1 → V be the V-functor that selects the object v.
+3. The universal property for the weighted colimit {W∗D} states:
+C({W∗D}, Y) ≅ [V_1, V](W, C(D(-),Y)) for any Y in C.
+4. An enriched natural transformation from a constant functor W=v to another functor F is simply
+a morphism in V from v to the value of F. So, [V_1, V](W, C(D(-),Y)) ≅ V(v, C(X,Y)).
+5. Therefore, C({W∗D}, Y) ≅ V(v, C(X,Y)).
+6. This is precisely the universal property defining the tensor v⊗X.
+-----------------------------------------------------------------------------------------------
+Conclusion: (Γ ⊢ v⊗X ≅ {W∗D}) for these specific W and D : ProvableIsomorphism ;
+CATEGORY
+[[ THEOREM TensorsAreWeightedColimits ]] = "The assertion that the concept of a tensor (copower) is a specific instance of the more general weighted colimit construction. This reveals that weighted colimits are the single, unifying framework for all such 'constructive' universal properties in enriched category theory." ;
+
+DualTheoremInference ::= "INFER_DUAL_THEOREM" "'CotensorsAreWeightedLimits'" "FROM" "THEOREM" "'TensorsAreWeightedColimits'" ;
+TYPING
+(*
+* By applying the duality functor (-)^op to the previous theorem, we mechanically derive the dual result.
+* The system uses the DualityMapping dictionary:
+* 1. Tensor -> Cotensor
+* 2. Weighted Colimit -> Weighted Limit
+* The resulting proposition is the valid dual theorem.
+*)
+Γ ⊢ THEOREM 'TensorsAreWeightedColimits' : P_colim
+P_lim = rewrite(P_colim, DualityMappings)
+-------------------------------------------------------------
+Conclusion: The Cotensor [v,X] is the weighted limit of the diagram selecting X, weighted by v. ;
+CATEGORY
+[[ INFER_DUAL_THEOREM ... ]] = "A constructive proof of the dual theorem, derived mechanically by applying the duality functor. It asserts that the concept of a cotensor (power) is a specific instance of the more general weighted limit construction, completing the unification." ;
+
+}

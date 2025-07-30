@@ -1,0 +1,1100 @@
+MetaDirectiveAnalysis ::= "(" "For each of: CHAPTER 3: 'Adjoint functors', extend the constructed grammar to integrate the formalized content of the section." ")" "==>" {
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 3.1: Definition and examples of adjoint functors" ")" "==>" {
+
+(*
+
+ELABORATION: The concept of an adjunction is central to category theory. It can be defined in
+
+several equivalent ways. We will elaborate on this section by formalizing the two most common definitions
+
+and demonstrating their equivalence. Then, we will use this formal machinery to construct two classic examples.
+
+The Hom-Set Isomorphism: An adjunction is a natural isomorphism between Hom-sets.
+
+The Unit-Counit Definition: An adjunction is specified by a pair of natural transformations
+
+Generated code
+(the unit and counit) that satisfy coherence laws (the triangle identities).
+
+
+We will create a master rule for AdjunctionDeclaration that allows either formulation and an axiom
+
+asserting their equivalence, then instantiate these definitions with concrete examples.
+*)
+
+(* ========================================================================================================== )
+( == Part 1: The Two Core Definitions of Adjunction == )
+( ========================================================================================================== *)
+
+AdjunctionDeclaration ::= Identifier "⊣" Identifier ":" "(" Identifier "," Identifier ")" | "ADJUNCTION" "from" UnitCounitPair ;
+TYPING
+(* This rule allows two syntaxes for declaring an adjunction F ⊣ G. )
+CASE "F ⊣ G: (C, D)": ( Hom-set definition )
+Γ ⊢ F : Functor(C,D), Γ ⊢ G : Functor(D,C)
+IsNaturalIsomorphism( Hom_D(F(-),) , Hom_C(-,G()) )
+CASE "ADJUNCTION from ...": ( Unit-counit definition *)
+Γ ⊢ pair : UnitCounitPair
+Satisfies(pair, TriangleIdentitiesAxiom)
+------------------------------------------------------------------------------------------------
+Γ ⊢ ... : Adjunction(F,G) ;
+CATEGORY
+[[ F ⊣ G ]] = "The assertion that functor F is left adjoint to functor G. This is a fundamental structural relationship between categories, more general than equivalence but still indicating a strong connection." ;
+
+HomSetIsomorphism ::= "Hom_" Identifier "(" Expression "," Expression ")" "≅" "Hom_" Identifier "(" Expression "," Expression ")" ;
+TYPING
+(* This predicate defines the natural isomorphism of Hom-sets for F ⊣ G. *)
+Γ ⊢ D, C : Category
+IsNaturalIsomorphism(
+λX,Y. Hom_D(F(X), Y),
+λX,Y. Hom_C(X, G(Y))
+)
+
+Γ ⊢ Hom_D(F(-),) ≅ Hom_C(-,G()) : ProvableIsomorphism ;
+CATEGORY
+[[ Hom_D(F(X),Y) ≅ Hom_C(X,G(Y)) ]] = "The formal statement of the hom-set adjunction. It asserts a natural bijection between the set of arrows from the image of X to Y in D, and the set of arrows from X to the image of Y in C." ;
+
+UnitCounitPair ::= "UNIT" NaturalTransformationDeclaration "COUNIT" NaturalTransformationDeclaration ;
+TYPING
+(* Defines the unit (η) and counit (ε) natural transformations required for the second definition. *)
+Context: Functors F:C->D, G:D->C
+Γ ⊢ η : NATURAL_TRANSFORMATION Id_C ==> G∘F
+Γ ⊢ ε : NATURAL_TRANSFORMATION F∘G ==> Id_D
+-------------------------------------------------------------------------
+Γ ⊢ UNIT η COUNIT ε : UnitCounitPair ;
+CATEGORY
+[[ UNIT η COUNIT ε ]] = "The data for a unit-counit adjunction. The unit η universally maps an object X to its 'reflection' G(F(X)), while the counit ε universally maps the 'co-reflection' F(G(Y)) back to Y." ;
+
+TriangleIdentitiesAxiom ::= "AXIOM" "TriangleIdentities" "FOR" UnitCounitPair ;
+TYPING
+(* This axiom asserts that the unit and counit satisfy the zig-zag coherence laws. *)
+Context: (η, ε) form a UnitCounitPair for F ⊣ G
+Law1 := ∀X∈Ob(C), ε_{F(X)} ∘ F(η_X) == id_{F(X)}
+Law2 := ∀Y∈Ob(D), G(ε_Y) ∘ η_{G(Y)} == id_{G(Y)}
+-----------------------------------------------------
+Γ ⊢ AXIOM TriangleIdentities ... : ProvableEquality ;
+CATEGORY
+[[ AXIOM TriangleIdentities ... ]] = "The coherence laws for a unit-counit adjunction. These identities ensure that the process of applying the unit and then mapping with F is undone by the counit (and dually), preventing the adjunction from collapsing." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Equivalence of Definitions == )
+( ========================================================================================================== *)
+
+EquivalenceOfAdjunctionDefinitions ::= "THEOREM" "AdjunctionEquivalence" ":"
+"(" Identifier "⊣" Identifier ")" "<==>" "(" "ExistsUnitCounitSatisfyingTriangles" ")" ;
+TYPING
+P_hom_set := (Γ ⊢ F ⊣ G via Hom-set isomorphism)
+P_unit_counit := (Γ ⊢ ∃ (η,ε) : UnitCounitPair s.t. AXIOM TriangleIdentities holds)
+---------------------------------------------------------------------------------
+Γ ⊢ (P_hom_set <==> P_unit_counit) : ProvableEquivalence ;
+CATEGORY
+[[ THEOREM AdjunctionEquivalence ... ]] = "A fundamental meta-theorem asserting that the two primary definitions of an adjunction (hom-set isomorphism and unit-counit with triangle identities) are logically equivalent." ;
+
+(* ========================================================================================================== )
+( == Part 3: Example 1 - The Free-Forgetful Adjunction == )
+( ========================================================================================================== *)
+
+CategoryDeclaration ::= "CATEGORY" ("Set" | "Grp") ; (* Declare our categories *)
+
+ForgetfulFunctor ::= "FORGET" "from" Identifier "to" Identifier ;
+TYPING
+Γ ⊢ U : Identifier, Γ ⊢ Grp:Category, Γ ⊢ Set:Category
+--------------------------------------------------
+Γ ⊢ FORGET U from Grp to Set : Functor(Grp, Set) ;
+CATEGORY
+[[ FORGET U from Grp to Set ]] = "The forgetful functor U: Grp -> Set which maps a group to its underlying set of elements and a group homomorphism to the underlying function." ;
+
+FreeFunctor ::= "FREE" "on" Identifier "from" Identifier "to" Identifier ;
+TYPING
+Γ ⊢ F : Identifier, Γ ⊢ Set:Category, Γ ⊢ Grp:Category
+------------------------------------------------
+Γ ⊢ FREE F on Set from Set to Grp : Functor(Set, Grp) ;
+CATEGORY
+[[ FREE F on Set from Set to Grp ]] = "The free functor F: Set -> Grp which maps a set to the free group generated by the elements of that set." ;
+
+AdjunctionDeclaration ::= "FREE 'F' ⊣ FORGET 'U' : (Set, Grp)" ;
+TYPING
+(* This asserts the canonical adjunction between the free and forgetful functors. *)
+IsNaturalIsomorphism( Hom_Grp(F(S), G), Hom_Set(S, U(G)) )
+----------------------------------------------------------
+Γ ⊢ ... : Adjunction(F,U) ;
+CATEGORY
+[[ F ⊣ U ]] = "The free-forgetful adjunction. The isomorphism Hom_Grp(F(S), G) ≅ Hom_Set(S, U(G)) states that a homomorphism from the free group on S to G is uniquely determined by a function from the generators S to the set underlying G." ;
+
+UnitComponent ::= "η_" Identifier ;
+CounitComponent ::= "ε_" Identifier ;
+TYPING
+Γ ⊢ S : Object_in(Set)
+--------------------------------
+Γ ⊢ η_S : S -> U(F(S)) ;
+Γ ⊢ G : Object_in(Grp)
+------------------------------
+Γ ⊢ ε_G : F(U(G)) -> G ;
+CATEGORY
+[[ η_S ]] = "The unit of the free-forgetful adjunction at a set S. It is the function that includes the set of generators S into the underlying set of the free group F(S)." ;
+[[ ε_G ]] = "The counit of the adjunction at a group G. It is the homomorphism that evaluates a formal word in the free group F(U(G)) to its product in the group G." ;
+
+(* ========================================================================================================== )
+( == Part 4: Example 2 - The Product-Diagonal Adjunction == )
+( ========================================================================================================== *)
+
+ProductCategory ::= Identifier "×" Identifier ;
+TYPING
+Γ ⊢ C1:Category, Γ ⊢ C2:Category
+-----------------------------------
+Γ ⊢ C1 × C2 : Category ;
+CATEGORY
+[[ C1 × C2 ]] = "The product category, whose objects are pairs of objects (c1, c2) and morphisms are pairs of morphisms (f1, f2)." ;
+
+Functor_Delta ::= "Δ" ;
+Functor_Pi ::= "Π" ;
+TYPING
+(* The Diagonal Functor )
+Γ ⊢ C:Category
+--------------------------------------
+Γ ⊢ Δ : Functor(C, C × C) ;
+( The Product Functor *)
+Γ ⊢ C:Category, C has all Products
+----------------------------------------
+Γ ⊢ Π : Functor(C × C, C) ;
+CATEGORY
+[[ Δ ]] = "The diagonal functor Δ: C -> C×C which maps an object X to the pair (X,X) and a morphism f to the pair (f,f)." ;
+[[ Π ]] = "The product functor Π: C×C -> C which maps a pair of objects (A,B) to their product A×B and a pair of morphisms (f,g) to the induced morphism f×g." ;
+
+AdjunctionDeclaration ::= "Functor_Delta ⊣ Functor_Pi : (C, C×C)" ;
+TYPING
+(* This asserts the adjunction Δ ⊣ Π *)
+IsNaturalIsomorphism( Hom_{C×C}(Δ(X), (A,B)), Hom_C(X, Π(A,B)) )
+---------------------------------------------------------------------
+Γ ⊢ ... : Adjunction(Δ, Π) ;
+CATEGORY
+[[ Δ ⊣ Π ]] = "The adjunction between the diagonal and product functors. The isomorphism Hom_{C×C}((X,X), (A,B)) ≅ Hom_C(X, A×B) unpacks to Hom_C(X,A) × Hom_C(X,B) ≅ Hom_C(X, A×B), which is precisely the universal property of the binary product in category C." ;
+
+}
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 3.2: The adjoint functor theorem" ")" "==>" {
+(*
+
+ELABORATION: To formalize the Adjoint Functor Theorem is not merely to state it, but to
+
+construct its logical prerequisites as formal objects within our grammar. We will:
+
+Define the constituent properties required by the theorems: the Solution Set Condition,
+
+Generated code
+and the properties of categories being well-powered and having a cogenerator.
+
+
+Formalize the two main existence theorems, the General Adjoint Functor Theorem (GAFT)
+
+Generated code
+and the Special Adjoint Functor Theorem (SAFT), which provide checkable criteria for
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+IGNORE_WHEN_COPYING_END
+Generated code
+the existence of a left adjoint.
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+IGNORE_WHEN_COPYING_END
+
+Demonstrate the power of the Duality Principle by defining the dual notions (Generator, etc.)
+
+Generated code
+and using the `DualTheoremInference` rule to mechanically derive the corresponding theorems
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+IGNORE_WHEN_COPYING_END
+Generated code
+for the existence of right adjoints.
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+IGNORE_WHEN_COPYING_END
+
+*)
+
+(* ========================================================================================================== )
+( == Part 1: The Prerequisites for the Theorems == )
+( ========================================================================================================== *)
+
+SolutionSetCondition ::= Identifier "satisfies" "SolutionSetCondition" ;
+TYPING
+(*
+* This formalizes the technical 'smallness' condition required by the GAFT. Intuitively,
+* it states that for any object c, the problem of finding a universal arrow from c to
+* G can be solved by searching through a 'set' of candidates, not a 'proper class'.
+*)
+Γ ⊢ G : Functor(D, C)
+∀c ∈ Ob(C), ∃ (Set S_c of pairs (d_i, f_i)) where d_i ∈ Ob(D), f_i : c -> G(d_i)
+s.t. ∀d' ∈ Ob(D), ∀h : c -> G(d'), ∃ (d_i, f_i) ∈ S_c, ∃ (g : d_i -> d') s.t. h = G(g) ∘ f_i
+------------------------------------------------------------------------------------------------
+Γ ⊢ G satisfies SolutionSetCondition : PropositionAbout(G) ;
+CATEGORY
+[[ G satisfies SolutionSetCondition ]] = "A 'smallness' condition ensuring that for any object c, the collection of all maps from c into the image of G is 'generated' by a set-sized collection of initial maps. This prevents the construction of the left adjoint from running into set-theoretic paradoxes." ;
+
+CategoryPropertyDefinition ::= Identifier "is" "WELL-POWERED" ;
+TYPING
+(* A category is well-powered if every object has only a set (not a proper class) of subobjects. *)
+Γ ⊢ C : Category
+∀X ∈ Ob(C), IsSet({ S | S is Subobject of X })
+--------------------------------------------------
+Γ ⊢ C is WELL-POWERED : PropositionAbout(C) ;
+CATEGORY
+[[ C is WELL-POWERED ]] = "A 'local smallness' property of a category, ensuring that its subobject lattices are well-behaved sets. This is a common property for many categories of interest, like Set or Grp." ;
+
+FunctorProperty_Faithful ::= Identifier "is" "FAITHFUL" ;
+TYPING
+(* A functor is faithful if it is injective on hom-sets. *)
+Γ ⊢ F : Functor(C,D)
+∀X,Y ∈ Ob(C), Function (m ↦ F(m)) from Hom_C(X,Y) to Hom_D(F(X),F(Y)) is an Injection
+--------------------------------------------------------------------------------------
+Γ ⊢ F is FAITHFUL : PropositionAbout(F) ;
+CATEGORY
+[[ F is FAITHFUL ]] = "The property of a functor that does not collapse distinct parallel morphisms. It may identify non-parallel morphisms, but it is 'faithful' to the distinctions within any given hom-set." ;
+
+HasCogenerator ::= Identifier "has" "COGENERATOR" ;
+TYPING
+(* A category has a cogenerator if there is a 'testing' object C such that Hom(-, C) is a faithful functor. *)
+Γ ⊢ D : Category
+∃C ∈ Ob(D), ( Γ ⊢ Functor_Hom(-,C) is FAITHFUL )
+------------------------------------------------
+Γ ⊢ D has COGENERATOR : PropositionAbout(D) ;
+CATEGORY
+[[ D has COGENERATOR ]] = "The property of a category possessing a single 'testing object' C such that any two distinct parallel arrows f,g: X->Y can always be distinguished by composing them with some map Y->C. It provides a way to 'probe' the structure of the category from a single object." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Adjoint Functor Theorems for Left Adjoints == )
+( ========================================================================================================== *)
+
+AdjointFunctorTheoremLeft ::= "THEOREM" ("GeneralAdjointFunctorTheorem" | "SpecialAdjointFunctorTheorem") ":" Proposition ;
+TYPING
+(* This rule formalizes the two main existence theorems for LEFT adjoints. *)
+Context: Functor G:D->C, Category D is COMPLETE
+CASE "GeneralAdjointFunctorTheorem":
+(G has LeftAdjoint) <==> (G preserves LIMITS ∧ G satisfies SolutionSetCondition)
+CASE "SpecialAdjointFunctorTheorem":
+IF (D is WELL-POWERED ∧ D has COGENERATOR):
+(G has LeftAdjoint) <==> (G preserves LIMITS)
+---------------------------------------------------------------------------------------------
+Γ ⊢ THEOREM ... : ProvableEquivalence ;
+CATEGORY
+[[ THEOREM GeneralAdjointFunctorTheorem ... ]] = "The theorem providing necessary and sufficient conditions for a functor G to have a left adjoint. It links the abstract existence question to two concrete properties: limit preservation (structural compatibility) and the solution set condition (foundational safety)." ;
+[[ THEOREM SpecialAdjointFunctorTheorem ... ]] = "A powerful simplification of the GAFT. For categories that are sufficiently 'well-behaved' (well-powered with a cogenerator), the difficult solution set condition is automatically met, making the existence of a left adjoint equivalent to the single property of preserving limits." ;
+
+(* ========================================================================================================== )
+( == Part 3: The Dual Theory for Right Adjoints (Derived via Duality) == )
+( ========================================================================================================== *)
+
+(* First, we must formally define the dual concepts required by the dual theorems. *)
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "WELL-POWERED" "IS" "WELL-COPOWERED" ;
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "COGENERATOR" "IS" "GENERATOR" ;
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "SolutionSetCondition" "IS" "CoSolutionSetCondition" ;
+
+HasGenerator ::= Identifier "has" "GENERATOR" ;
+TYPING
+(* This is the dual of HasCogenerator. *)
+IsDualOf("HasCogenerator")
+EquivalentTyping: Γ ⊢ D : Category, ∃G ∈ Ob(D), ( Γ ⊢ Functor_Hom(G,-) is FAITHFUL )
+-----------------------------------------------
+Γ ⊢ D has GENERATOR : PropositionAbout(D) ;
+CATEGORY
+[[ D has GENERATOR ]] = "The dual property to having a cogenerator. A generator G is an object from which every other object can be reached by a series of morphisms and colimits. It 'generates' the whole category." ;
+
+AdjointFunctorTheoremRight ::= "INFER_DUAL_THEOREM" ("GeneralAdjointFunctorTheorem_Dual" | "SpecialAdjointFunctorTheorem_Dual") "FROM" AdjointFunctorTheoremLeft ;
+TYPING
+(*
+* This is the Duality Principle in action. We do not need to reprove the theorems.
+* We apply the (-)^op operator to the theorems for left adjoints.
+* The system uses the DualityMapping dictionary to mechanically generate the correct dual theorems.
+* G:D->C has left adjoint F <--Duality--> F:C->D has right adjoint G
+* D is COMPLETE <--Duality--> C is COCOMPLETE
+* G preserves LIMITS <--Duality--> F preserves COLIMITS
+* WellPowered, Cogenerator <--Duality--> WellCopowered, Generator
+*)
+Γ ⊢ THEOREM GAFTLeft : P_GAFT_L
+Γ ⊢ THEOREM SAFTLeft : P_SAFT_L
+------------------------------------------------------------------
+Γ ⊢ THEOREM GAFTRight : (P_GAFT_L)^op
+Γ ⊢ THEOREM SAFTRight : (P_SAFT_L)^op ;
+CATEGORY
+[[ INFER_DUAL_THEOREM ... ]] = "A constructive proof of the Adjoint Functor Theorems for the existence of RIGHT adjoints. The results are not proven from scratch, but are derived mechanically by applying the formal duality functor to the theorems for left adjoints. This demonstrates that the entire logical structure of the argument is perfectly symmetric." ;
+
+}
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 3.3: Properties of adjoint functors" ")" "==>" {
+
+(* ========================================================================================================== )
+( == Property 1: Relationship with Limits and Colimits == )
+( ========================================================================================================== )
+(
+
+ELABORATION: This is the most important and widely used property of adjoints. It provides a
+
+powerful tool for proving that a functor preserves limits or colimits. The property is
+
+perfectly dual: right adjoints preserve limits, and left adjoints preserve colimits.
+
+We will formalize the first statement and then use our established Duality Principle to
+
+derive the second statement "for free".
+*)
+
+TheoremDeclaration ::= "THEOREM" "RightAdjointsPreserveLimits" ":"
+"FOR_ALL" "functor" "G" "," "(" "G is RightAdjoint" ")" "==>" "(" "G preserves LIMITS" ")" ;
+TYPING
+(*
+* This theorem states that if a functor G has a left adjoint, then G must preserve
+* all limits that exist in its domain category. This is a provable proposition in the meta-theory.
+*)
+IsProvable( ∀G, (HasLeftAdjoint(G)) ⇒ (PreservesAllLimits(G)) )
+---------------------------------------------------------------------
+Γ ⊢ THEOREM ... : MetaTheorem ;
+CATEGORY
+[[ THEOREM RightAdjointsPreserveLimits ... ]] = "The assertion of a fundamental connection between the algebraic structure of an adjunction and the limit-based structure of a category. It provides a sufficient condition for a functor to be 'continuous' (limit-preserving)." ;
+
+DualTheoremInference ::= "INFER_DUAL_THEOREM" "'LeftAdjointsPreserveColimits'" "FROM" "THEOREM" "'RightAdjointsPreserveLimits'" ;
+TYPING
+(*
+* This rule demonstrates the Duality Principle. We apply the (-)^op operator to the theorem above.
+* The system uses the DualityMapping dictionary to perform these transformations:
+* 1. "RightAdjoint" -> "LeftAdjoint"
+* 2. "LIMITS" -> "COLIMITS"
+* The result is the fully-formed, correct, and provable dual theorem.
+*)
+Γ ⊢ THEOREM 'RightAdjointsPreserveLimits' : P_lim
+P_colim = rewrite(P_lim, DualityMappings)
+--------------------------------------------------------------------------
+Γ ⊢ (INFER_DUAL_THEOREM ... results in) THEOREM 'LeftAdjointsPreserveColimits' : P_colim ;
+CATEGORY
+[[ INFER_DUAL_THEOREM ... ]] = "A constructive proof of the dual theorem, derived mechanically by applying the duality functor. It asserts that all left adjoint functors are 'cocontinuous' (colimit-preserving), a result obtained symmetrically and without a separate proof." ;
+
+(* ========================================================================================================== )
+( == Property 2: Adjunctions as Universal Arrows == )
+( ========================================================================================================== )
+(
+
+ELABORATION: This property provides an alternative, often more intuitive, definition of an
+
+adjunction. It recasts the global property of a natural isomorphism of hom-sets into a
+
+local property about individual "universal arrows" for each object.
+*)
+
+UniversalArrowCategory ::= "(" Identifier "↓" Identifier ")" | "(" Identifier "↓" Identifier ")" ;
+TYPING
+(* Defines the two comma categories needed for the universal arrow definition. )
+CASE "(X ↓ G)": ( Category of arrows from object X to functor G )
+Γ ⊢ X:Object_in(C), Γ ⊢ G:Functor(D,C)
+CASE "(F ↓ Y)": ( Category of arrows from functor F to object Y *)
+Γ ⊢ F:Functor(C,D), Γ ⊢ Y:Object_in(D)
+-------------------------------------------------------------------------------------
+Γ ⊢ ... : Category ;
+CATEGORY
+[[ (X ↓ G) ]] = "The comma category of objects from D 'under' X via G. Its objects are pairs (d, f:X->G(d))." ;
+[[ (F ↓ Y) ]] = "The comma category of objects from C 'over' Y via F. Its objects are pairs (c, g:F(c)->Y)." ;
+
+TheoremDeclaration ::= "THEOREM" "AdjunctionsViaUniversalArrows" ":"
+"(" Identifier "F" "⊣" Identifier "G" ")" "<==>" "(FOR_ALL X, η_X is Initial in (X↓G)) ∧ (FOR_ALL Y, ε_Y is Terminal in (F↓Y))" ;
+TYPING
+(* This proposition asserts the equivalence of the main adjunction definition with the universal arrow definition. *)
+P_adj := (Γ ⊢ F ⊣ G : Adjunction)
+P_univ := ( (∀X∈Ob(C), (Unit(η)_X : X -> G(F(X))) is INITIAL_OBJECT in (X↓G)) ∧
+(∀Y∈Ob(D), (Counit(ε)_Y : F(G(Y)) -> Y) is TERMINAL_OBJECT in (F↓Y)) )
+--------------------------------------------------------------------
+Γ ⊢ (P_adj <==> P_univ) : ProvableEquivalence ;
+CATEGORY
+[[ THEOREM AdjunctionsViaUniversalArrows ... ]] = "An equivalent characterization of an adjunction in terms of universal mapping properties. It states that an adjunction exists if and only if for every object X, there is a 'best' arrow from X to the functor G (the unit), and dually, a 'best' arrow from F to every object Y (the counit)." ;
+
+(* ========================================================================================================== )
+( == Property 3: Uniqueness of Adjoints == )
+( ========================================================================================================== )
+(
+
+ELABORATION: This property ensures that the concept of "the" adjoint is well-defined. While a functor
+
+might not have an adjoint, if it does, it is unique up to a canonical natural isomorphism.
+*)
+
+TheoremDeclaration ::= "THEOREM" "AdjointsAreUnique" ":"
+"(" Identifier "F" "⊣" Identifier "G" "∧" Identifier "F_prime" "⊣" "G" ")" "==>" "(" "F" "≅" "F_prime" ")" ;
+TYPING
+(* This theorem states that any two left adjoints (F, F') of the same functor (G) must be naturally isomorphic. *)
+Γ ⊢ F, F_prime : Functor(C,D), Γ ⊢ G : Functor(D,C)
+Γ ⊢ F ⊣ G
+Γ ⊢ F_prime ⊣ G
+--------------------------------------------------------------------------
+Γ ⊢ F is NaturallyIsomorphicTo F_prime : ProvableIsomorphism ;
+CATEGORY
+[[ THEOREM AdjointsAreUnique ... ]] = "The assertion that a functor's adjoint is unique up to a canonical natural isomorphism. This allows us to speak of 'the' left adjoint or 'the' right adjoint of a given functor without ambiguity, which is crucial for building theories upon the concept." ;
+}
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 3.4: Fully faithful adjoint functors" ")" "==>" {
+(*
+
+ELABORATION: This section explores the deep connection between the properties of an adjoint
+
+functor (specifically, its faithfulness and fullness) and the properties of the unit and
+
+counit of the adjunction. To elaborate, we will formalize this connection by:
+
+Defining the properties FAITHFUL and FULL for functors.
+
+Stating the precise theorem that relates these properties for a right adjoint G to
+
+Generated code
+whether the components of the unit `η` are monomorphisms, split epimorphisms, or isomorphisms.
+
+
+Using the DualTheoremInference rule to mechanically derive the corresponding, dual theorem
+
+Generated code
+for a left adjoint `F` and the components of the counit `ε`. This demonstrates the power
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+IGNORE_WHEN_COPYING_END
+
+of formal duality.
+*)
+
+(* ========================================================================================================== )
+( == Part 1: Defining the Functor Properties == )
+( ========================================================================================================== *)
+
+FunctorProperty_Faithful ::= Identifier "is" "FAITHFUL" ;
+TYPING
+(* A functor F is faithful if it is injective on hom-sets. *)
+Γ ⊢ F : Functor(C,D)
+Is_Injective( F_{X,Y} : Hom_C(X,Y) -> Hom_D(F(X),F(Y)) ) for all X,Y in C
+--------------------------------------------------------------------------------------
+Γ ⊢ F is FAITHFUL : PropositionAbout(F) ;
+CATEGORY
+[[ F is FAITHFUL ]] = "The property of a functor that does not collapse distinct parallel morphisms. If f ≠ g, then F(f) ≠ F(g). It is 'faithful' to the distinctions within any given hom-set." ;
+
+FunctorProperty_Full ::= Identifier "is" "FULL" ;
+TYPING
+(* A functor F is full if it is surjective on hom-sets. *)
+Γ ⊢ F : Functor(C,D)
+Is_Surjective( F_{X,Y} : Hom_C(X,Y) -> Hom_D(F(X),F(Y)) ) for all X,Y in C
+------------------------------------------------------------------------------------
+Γ ⊢ F is FULL : PropositionAbout(F) ;
+CATEGORY
+[[ F is FULL ]] = "The property of a functor where every morphism between images F(X) -> F(Y) is the image of some morphism X -> Y. It ensures no new morphisms appear between image objects." ;
+
+FunctorProperty_FullyFaithful ::= Identifier "is" "FULLY_FAITHFUL" ;
+TYPING
+(* A functor is fully faithful if it is both full and faithful. *)
+Γ ⊢ F is FAITHFUL
+Γ ⊢ F is FULL
+-------------------------------------------------------
+Γ ⊢ F is FULLY_FAITHFUL : PropositionAbout(F) ;
+CATEGORY
+[[ F is FULLY_FAITHFUL ]] = "The property of a functor that induces an isomorphism on hom-sets. It represents a full and faithful embedding of the morphism structure of the source category into the target category." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Main Theorem for Right Adjoints and the Unit == )
+( ========================================================================================================== *)
+
+TheoremDeclaration ::= "THEOREM" "RightAdjointFaithfulnessCriteria" ":"
+"FOR_ADJUNCTION" "(" Identifier "⊣" Identifier "G" ")" "," "{"
+"'G is FAITHFUL' <==> '∀X, η_X is MONOMORPHISM'" ";"
+"'G is FULL' <==> '∀X, η_X is SPLIT_EPIMORPHISM'" ";"
+"'G is FULLY_FAITHFUL' <==> '∀X, η_X is ISOMORPHISM'" ";"
+"}" ;
+TYPING
+(* This theorem provides a complete diagnostic for the properties of a Right Adjoint G. *)
+Context: F ⊣ G, with unit η
+Equivalence1 := (Γ ⊢ G is FAITHFUL) <==> (∀X, Γ ⊢ η_X is MONOMORPHISM)
+Equivalence2 := (Γ ⊢ G is FULL) <==> (∀X, Γ ⊢ η_X is SPLIT_EPIMORPHISM)
+Equivalence3 := (Γ ⊢ G is FULLY_FAITHFUL) <==> (∀X, Γ ⊢ η_X is ISOMORPHISM)
+--------------------------------------------------------------------------------
+Γ ⊢ THEOREM ... : MetaTheoremPackage(Equivalence1, Equivalence2, Equivalence3) ;
+CATEGORY
+[[ THEOREM RightAdjointFaithfulnessCriteria ... ]] = "A fundamental set of equivalences connecting the global properties of a right adjoint functor G to the local properties of the individual components of the unit η. This powerful theorem allows one to check for faithfulness/fullness by examining the unit arrows, which is often much easier." ;
+
+(* ========================================================================================================== )
+( == Part 3: The Dual Theorem via Duality Principle == )
+( ========================================================================================================== *)
+
+DualTheoremInference ::= "INFER_DUAL_THEOREM" "'LeftAdjointFaithfulnessCriteria'" "FROM" "THEOREM" "'RightAdjointFaithfulnessCriteria'" ;
+TYPING
+(*
+* This is the Duality Principle in action. We apply the (-)^op operator to the theorem above.
+* The system uses its DualityMapping dictionary to perform these transformations:
+* 1. RightAdjoint G -> LeftAdjoint F
+* 2. unit η -> counit ε
+* 3. MONOMORPHISM -> EPIMORPHISM
+* 4. SPLIT_EPIMORPHISM -> SPLIT_MONOMORPHISM
+* 5. ISOMORPHISM -> ISOMORPHISM (self-dual)
+* The result is the fully-formed, correct, and provable dual theorem for the left adjoint F.
+*)
+Γ ⊢ THEOREM 'RightAdjointFaithfulnessCriteria' : P_right
+P_left = rewrite(P_right, DualityMappings)
+-----------------------------------------------------------------------------
+Γ ⊢ (INFER_DUAL_THEOREM ... results in) THEOREM 'LeftAdjointFaithfulnessCriteria' : P_left ;
+CATEGORY
+[[ INFER_DUAL_THEOREM ... ]] = "A constructive proof of the dual theorem, derived mechanically by applying the duality functor. It asserts the corresponding criteria for a left adjoint F based on the properties of the counit ε's components. For example, F is faithful if and only if every component of ε is an epimorphism. This result is obtained symmetrically and without a separate proof, highlighting the power of formal duality." ;
+
+}
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 3.5: Reflective subcategories" ")" "==>" {
+(*
+
+ELABORATION: A reflective subcategory is a fundamental concept illustrating how a "nice"
+subcategory sits inside a larger, ambient category. The core idea is that the inclusion
+functor has a left adjoint, called the "reflector". To elaborate on this, we will:
+
+Formalize the Components: Define FullSubcategory and the InclusionFunctor that
+embeds it.
+
+Define the Core Concept: Create a rule for ReflectiveSubcategory that is explicitly
+defined by the existence of a left adjoint to the inclusion functor.
+
+Identify the Universal Arrow: Formalize the ReflectionArrow, which is the unit of
+the adjunction, showing how any object in the larger category maps universally to its
+"reflection" in the subcategory.
+
+State the Key Theorem: Connect this concept to the previous section (3.4) by stating
+the theorem that for a reflective subcategory, the counit of the adjunction is an
+isomorphism, a direct consequence of the inclusion functor being fully faithful.
+
+*)
+
+(* ========================================================================================================== )
+( == Part 1: The Components (Subcategory and Inclusion) == )
+( ========================================================================================================== *)
+
+FullSubcategoryDeclaration ::= "FULL_SUBCATEGORY" Identifier "of" Identifier "on_objects" "{" {Identifier} "}" ;
+TYPING
+(*
+* A Full Subcategory A of B is determined by a subset of B's objects.
+* It inherits ALL morphisms from B between those objects.
+*)
+Γ ⊢ B : Category, Γ ⊢ A_id : Identifier
+Obj_A ⊆ Objects(B)
+Morphisms_A(X,Y) == Morphisms_B(X,Y) for all X,Y in Obj_A
+---------------------------------------------------------------
+Γ ⊢ FULL_SUBCATEGORY A_id of B ... : Subcategory(A_id, B) ;
+CATEGORY
+[[ FULL_SUBCATEGORY A of B ... ]] = "The definition of a subcategory A that has a subset of B's objects but retains the complete hom-set structure between any two of those objects." ;
+
+InclusionFunctorDeclaration ::= "INCLUSION" Identifier ":" Identifier "↪" Identifier ;
+TYPING
+(* The inclusion functor I simply maps objects and morphisms of A to themselves in B. *)
+Γ ⊢ A : Subcategory_of(B)
+---------------------------------------------------
+Γ ⊢ INCLUSION I: A ↪ B : Functor(A, B) ;
+CATEGORY
+[[ INCLUSION I: A ↪ B ]] = "The canonical functor embedding the subcategory A into its parent category B. This functor is always faithful, and if A is a full subcategory, it is fully faithful." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Core Concept and its Universal Arrow == )
+( ========================================================================================================== *)
+
+ReflectiveSubcategoryDeclaration ::= Identifier "is" "REFLECTIVE_IN" Identifier ;
+TYPING
+(*
+* This is the master definition. A is reflective in B if its inclusion functor I has a left adjoint L.
+*)
+Γ ⊢ A : FullSubcategory_of(B)
+Γ ⊢ I : InclusionFunctor(A, B)
+Γ ⊢ L is LeftAdjointOf(I)
+------------------------------------------------------------
+Γ ⊢ A is REFLECTIVE_IN B : PropositionAbout(A) ;
+CATEGORY
+[[ A is REFLECTIVE_IN B ]] = "The property of a subcategory A being a 'core component' of B. For every object in B, there is a 'best approximation' or 'reflection' within A, a process governed by the left adjoint (the reflector) to the inclusion functor." ;
+
+ReflectorFunctor ::= "Reflector" "(" Identifier "," Identifier ")" ;
+TYPING
+(* This rule gives a name to the left adjoint of the inclusion. *)
+Context: A is REFLECTIVE_IN B
+Γ ⊢ L ⊣ Inclusion(A,B)
+--------------------------------------------------
+Γ ⊢ Reflector(A,B) : Functor(B, A) (where this functor is L) ;
+CATEGORY
+[[ Reflector(A,B) ]] = "The left adjoint to the inclusion I:A↪B. This functor L:B->A maps each object b in the larger category to its reflection L(b) in the subcategory A." ;
+
+ReflectionArrow ::= "reflection_of" "(" Identifier ")" ;
+TYPING
+(*
+* The reflection arrow for an object b in B is precisely the b-component of the unit
+* of the adjunction L ⊣ I. It is an arrow η_b : b -> I(L(b)).
+*)
+Context: A is REFLECTIVE_IN B, L = Reflector(A,B), I = Inclusion(A,B)
+Γ ⊢ η is UnitOf(L ⊣ I)
+Γ ⊢ b : Object_in(B)
+--------------------------------------------------------------------------
+Γ ⊢ reflection_of(b) : Morphism( b, I(L(b)) ) (where this is η_b) ;
+CATEGORY
+[[ reflection_of(b) ]] = "The universal arrow from the object b to the inclusion functor I. This morphism is the 'reflection' of b into the subcategory, representing the universal solution to approximating b with an object from A." ;
+
+(* ========================================================================================================== )
+( == Part 3: The Key Consequence (from Sec. 3.4) == )
+( ========================================================================================================== *)
+
+TheoremDeclaration ::= "THEOREM" "ReflectionCounitIsomorphism" ":"
+"FOR" ReflectiveSubcategoryDeclaration "A in B" ","
+"Counit(Reflector(A,B) ⊣ Inclusion(A,B)) is ISOMORPHISM" ;
+TYPING
+(*
+* This theorem is a direct consequence of the definitions and results from Sec. 3.4.
+* 1. The inclusion functor I of a FULL subcategory A is, by definition, FULLY_FAITHFUL.
+* 2. The subcategory A is reflective, so the adjunction L ⊣ I exists, with counit ε.
+* 3. The theorem from Sec. 3.4 states that for an adjunction F ⊣ G, F is fully faithful
+* if and only if the counit ε is an isomorphism.
+* 4. In our case, F is the Reflector L, and G is the Inclusion I. While I being
+* fully faithful doesn't directly imply L is, a standard result for reflective
+* subcategories confirms that the counit ε is indeed an isomorphism.
+*)
+Context: A is REFLECTIVE_IN B, L ⊣ I, with counit ε
+Premise1 := (Γ ⊢ I is FULLY_FAITHFUL) (from definition of FullSubcategory)
+--------------------------------------------------------------------------------
+Conclusion: Γ ⊢ ε is ISOMORPHISM : ProvableProposition ;
+CATEGORY
+[[ THEOREM ReflectionCounitIsomorphism ... ]] = "A key structural property of reflective subcategories. It asserts that for any object a already in the subcategory, reflecting it and then mapping back via the counit (ε_a: L(I(a)) -> a) is an isomorphism. This means the reflection process is 'idempotent' up to isomorphism on objects of A." ;
+
+}
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 3.6: Epireflective subcategories" ")" "==>" {
+(*
+
+ELABORATION: This section defines a special, more constrained type of reflective subcategory.
+The constraint concerns the nature of the "reflection arrows." To elaborate, we will:
+
+Formalize the Definition: Define EpireflectiveSubcategory by building directly upon
+the ReflectiveSubcategory definition, adding the crucial constraint that all reflection
+arrows must be epimorphisms.
+
+State the Key Characterization Theorem: Formalize the powerful theorem stating that
+a subcategory is epireflective if and only if it is closed under the formation of
+products and subobjects within the larger ambient category.
+
+Provide a Classic Example: Instantiate these definitions with the canonical example of
+Grp (Groups) as an epireflective subcategory of Mon (Monoids).
+
+Derive the Dual Theory: Use the DualityMappingAxiom and DualTheoremInference
+rules to mechanically derive the entire corresponding theory for the dual concept of
+MonoreflectiveSubcategory, including its characterization theorem.
+
+*)
+
+(* ========================================================================================================== )
+( == Part 1: The Core Definition == )
+( ========================================================================================================== *)
+
+EpireflectiveSubcategoryDeclaration ::= Identifier "is" "EPIREFLECTIVE_IN" Identifier ;
+TYPING
+(*
+* This typing rule has two premises:
+* 1. The subcategory must first satisfy the conditions of being reflective.
+* 2. The reflection arrows (which are the components of the unit η of the
+* Reflector ⊣ Inclusion adjunction) must all be epimorphisms.
+*)
+Premise1: Γ ⊢ A is REFLECTIVE_IN B
+Context: Let η be the unit of the Reflector(B,A) ⊣ Inclusion(A,B) adjunction.
+Premise2: ∀ b ∈ Objects(B), (Γ ⊢ component(η, b) is EPIMORPHISM)
+---------------------------------------------------------------------
+Γ ⊢ A is EPIREFLECTIVE_IN B : PropositionAbout(A) ;
+CATEGORY
+[[ A is EPIREFLECTIVE_IN B ]] = "A property of a subcategory A requiring not only that a 'best approximation' of any object b in B exists in A, but that the universal mapping to this approximation (η_b) is an epimorphism. This is characteristic of subcategories formed by imposing algebraic equations, such as the inclusion of Groups into Monoids." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Characterization Theorem == )
+( ========================================================================================================== *)
+
+CategoryClosednessProperty ::= Identifier "is_closed_under" ("PRODUCTS" | "SUBOBJECTS") "in" Identifier ;
+TYPING
+Γ ⊢ A : Subcategory_of(B)
+CASE "PRODUCTS":
+Condition := ∀ (family {a_i} ⊆ Ob(A)), (Product_in_B({a_i}) exists) ⇒ (Product_in_B({a_i}) ∈ Ob(A))
+CASE "SUBOBJECTS":
+Condition := ∀ (a ∈ Ob(A)), ∀ (m:s->a is MONOMORPHISM in B), (s ∈ Ob(A))
+---------------------------------------------------------------------------------
+Γ ⊢ A is_closed_under ... : PropositionAbout(A) ;
+CATEGORY
+[[ A is_closed_under PRODUCTS in B ]] = "The property that the subcategory A contains all products of its own objects that are formed within the ambient category B." ;
+[[ A is_closed_under SUBOBJECTS in B ]] = "The property that A contains all subobjects of its own objects." ;
+
+TheoremDeclaration ::= "THEOREM" "EpireflectiveCriterion" ":"
+"(" Identifier "A" "is" "EPIREFLECTIVE_IN" Identifier "B" ")"
+"<==>"
+"(" "A is_closed_under PRODUCTS in B" "&&" "A is_closed_under SUBOBJECTS in B" ")" ;
+CATEGORY
+[[ THEOREM EpireflectiveCriterion ... ]] = "A fundamental theorem providing a powerful, non-adjunction-based criterion for a subcategory to be epireflective. It equates the abstract property of epireflection with the concrete structural properties of being closed under products and subobjects." ;
+
+(* ========================================================================================================== )
+( == Part 3: A Concrete Example (Grp in Mon) == )
+( ========================================================================================================== *)
+
+EpireflectiveSubcategoryDeclaration ::= "Grp" "is" "EPIREFLECTIVE_IN" "Mon" ;
+TYPING
+(* To prove this, one must show that Grp is reflective in Mon, and the reflection maps are epis. )
+Γ ⊢ Grp is REFLECTIVE_IN Mon ( Via the Grothendieck group construction as a reflector *)
+Let η be the unit of this adjunction.
+∀ (m ∈ Ob(Mon)), (Γ ⊢ η_m : m -> L(I(m)) is EPIMORPHISM in Mon)
+------------------------------------------------------------------
+Γ ⊢ "Grp is EPIREFLECTIVE_IN Mon" : ProvableProposition ;
+CATEGORY
+[[ Grp is EPIREFLECTIVE_IN Mon ]] = "The canonical example of an epireflective subcategory. Groups form a subcategory of Monoids closed under products and subobjects, thus satisfying the criterion. The reflection of a monoid is its group of invertible elements (or Grothendieck group), and the inclusion map is an epimorphism." ;
+
+(* ========================================================================================================== )
+( == Part 4: The Dual Theory (Monoreflective Subcategories) == )
+( ========================================================================================================== *)
+
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "EPIREFLECTIVE_IN" "IS" "MONOREFLECTIVE_IN" ;
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "SUBOBJECTS" "IS" "QUOTIENT_OBJECTS" ;
+
+MonoreflectiveSubcategoryDeclaration ::= Identifier "is" "MONOREFLECTIVE_IN" Identifier ;
+TYPING
+(* Derived via duality. REFLECTIVE is self-dual in this context, but EPIMORPHISM becomes MONOMORPHISM. *)
+Premise1: Γ ⊢ A is REFLECTIVE_IN B
+Context: Let η be the unit of the Reflector(B,A) ⊣ Inclusion(A,B) adjunction.
+Premise2_dual: ∀ b ∈ Objects(B), (Γ ⊢ component(η, b) is MONOMORPHISM)
+--------------------------------------------------------------------------
+Γ ⊢ A is MONOREFLECTIVE_IN B : PropositionAbout(A) ;
+CATEGORY
+[[ A is MONOREFLECTIVE_IN B ]] = "The dual concept, requiring the universal reflection arrows to be monomorphisms. This is characteristic of subcategories formed by imposing 'properties' rather than 'structure', such as the inclusion of Hausdorff spaces into all Topological spaces." ;
+
+DualTheoremInference ::= "INFER_DUAL_THEOREM" "'MonoreflectiveCriterion'" "FROM" "THEOREM" "'EpireflectiveCriterion'" ;
+TYPING
+(*
+* By applying the duality operator to the EpireflectiveCriterion theorem, the system derives:
+* (A is MONOREFLECTIVE_IN B) <==> (A is_closed_under COPRODUCTS in B && A is_closed_under QUOTIENT_OBJECTS in B)
+*)
+Γ ⊢ THEOREM 'EpireflectiveCriterion' : P_epi
+P_mono = rewrite(P_epi, DualityMappings)
+---------------------------------------------------------
+Γ ⊢ THEOREM 'MonoreflectiveCriterion' : P_mono ;
+CATEGORY
+[[ INFER_DUAL_THEOREM 'MonoreflectiveCriterion' ... ]] = "A constructive proof of the characterization theorem for monoreflective subcategories, derived mechanically by applying the duality functor. It asserts that monoreflectivity is equivalent to being closed under colimits and quotient objects, a result obtained 'for free' from the original theorem." ;
+}
+
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 3.7: Kan extensions" ")" "==>" {
+(*
+
+ELABORATION: Kan extensions are among the most general and abstract concepts in category theory,
+
+unifying limits, colimits, and adjunctions under a single framework. To elaborate, we must
+
+deconstruct this universal property into its constituent parts:
+
+The Candidates: Formalize the notion of a "candidate extension," which is a functor
+
+Generated code
+paired with a natural transformation that links it to the original setup.
+
+
+The Category of Candidates: Define the categories whose objects are these candidates.
+
+The Universal Object: Show that the Kan extension is precisely the initial (for Left Kan)
+
+Generated code
+or terminal (for Right Kan) object in this category of candidates. This is the most
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+IGNORE_WHEN_COPYING_END
+Generated code
+elegant and fundamental definition.
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+IGNORE_WHEN_COPYING_END
+
+The Pointwise Formula: State the famous and powerful theorem that provides a formula
+
+Generated code
+for computing Kan extensions as a (co)limit, when they exist. This connects the
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+IGNORE_WHEN_COPYING_END
+Generated code
+abstract universal property to the concrete machinery of (co)limits.
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+IGNORE_WHEN_COPYING_END
+
+The Link to Adjunctions: Formalize the theorem showing that adjunctions themselves
+
+Generated code
+are a special case of Kan extensions, completing the conceptual unification.
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+IGNORE_WHEN_COPYING_END
+
+*)
+
+(* ========================================================================================================== )
+( == Part 1: The Setup and The Candidates == )
+( ========================================================================================================== *)
+
+KanExtensionContext ::= "CONTEXT_KAN" "{" "K" ":" Identifier "->" Identifier ";" "T" ":" Identifier "->" Identifier ";" "}" ;
+TYPING
+(* This rule establishes the common context for any Kan extension problem. *)
+Γ ⊢ C, A, B : Category
+Γ ⊢ K : Functor(C, A), Γ ⊢ T : Functor(C, B)
+--------------------------------------------------------------
+Γ ⊢ CONTEXT_KAN ... : KanProblemSetup(K, T) ;
+CATEGORY
+[[ CONTEXT_KAN { K:C->A; T:C->B; } ]] = "The data for a Kan extension problem. We have a functor K mapping a small category C into a larger one A, and another functor T mapping C into a target B. The goal is to 'best' extend T to all of A." ;
+
+LeftKanCandidate ::= "L_CANDIDATE" "(" Identifier "," Identifier ")" ;
+TYPING
+(* A Left Kan Candidate is a proposed solution: a functor M:A->B and a transformation β:T ==> M∘K *)
+Context: KanProblemSetup(K:C->A, T:C->B)
+Γ ⊢ M : Functor(A, B)
+Γ ⊢ β : NaturalTransformation(T, M∘K)
+-----------------------------------------------------
+Γ ⊢ L_CANDIDATE(M, β) : LeftKanCandidate_Type ;
+CATEGORY
+[[ L_CANDIDATE(M, β) ]] = "A candidate solution for the Left Kan Extension. It consists of a functor M from the larger domain A, and a natural transformation β that witnesses how M's behavior (when restricted back to C via K) relates to the original functor T." ;
+
+RightKanCandidate ::= "R_CANDIDATE" "(" Identifier "," Identifier ")" ;
+TYPING
+(* A Right Kan Candidate is the dual: a functor M:A->B and a transformation δ:M∘K ==> T *)
+Context: KanProblemSetup(K:C->A, T:C->B)
+Γ ⊢ M : Functor(A, B)
+Γ ⊢ δ : NaturalTransformation(M∘K, T)
+------------------------------------------------------
+Γ ⊢ R_CANDIDATE(M, δ) : RightKanCandidate_Type ;
+CATEGORY
+[[ R_CANDIDATE(M, δ) ]] = "A candidate solution for the Right Kan Extension. The transformation δ witnesses how the behavior of the proposed functor M relates to the original T, with the arrow pointing in the opposite direction from the Left Kan case." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Universal Property as a Universal Object == )
+( ========================================================================================================== *)
+
+LeftKanExtensionIsInitialObject ::= "LeftKanExtension" "(" Identifier "," Identifier ")" "IS_INITIAL_IN_CATEGORY_OF" LeftKanCandidate ;
+TYPING
+(* This is the core definition of the Left Kan Extension (Lan_K T). *)
+Γ ⊢ K:Functor(C,A), Γ ⊢ T:Functor(C,B)
+Category_LKC := Category of LeftKanCandidate(K,T)
+L_α_pair := (L, α) where L = Lan_K T
+-----------------------------------------------------------------------------------------------
+Γ ⊢ L_α_pair is INITIAL_OBJECT in Category_LKC : DefinitionalProposition ;
+CATEGORY
+[[ LeftKanExtension(K,T) IS_INITIAL_IN_CATEGORY_OF L_CANDIDATE ]] = "The formal definition of the Left Kan Extension Lan_K T as the initial object in the category of left candidates. Its universality means it is the 'freest' or 'most efficient' extension of T along K." ;
+
+RightKanExtensionIsTerminalObject ::= "RightKanExtension" "(" Identifier "," Identifier ")" "IS_TERMINAL_IN_CATEGORY_OF" RightKanCandidate ;
+TYPING
+(* The dual definition for the Right Kan Extension (Ran_K T). *)
+Γ ⊢ K:Functor(C,A), Γ ⊢ T:Functor(C,B)
+Category_RKC := Category of RightKanCandidate(K,T)
+R_ε_pair := (R, ε) where R = Ran_K T
+-------------------------------------------------------------------------------------------------
+Γ ⊢ R_ε_pair is TERMINAL_OBJECT in Category_RKC : DefinitionalProposition ;
+CATEGORY
+[[ RightKanExtension(K,T) IS_TERMINAL_IN_CATEGORY_OF R_CANDIDATE ]] = "The formal definition of the Right Kan Extension Ran_K T as the terminal object in the category of right candidates. Its universality means it is the 'most constrained' or 'canonical' extension of T along K." ;
+
+(* ========================================================================================================== )
+( == Part 3: The Pointwise Formula Theorem == )
+( ========================================================================================================== *)
+
+PointwiseKanFormulaTheorem ::= "THEOREM" "KanExtensionAsLimit" ":" Proposition ;
+TYPING
+Context: All necessary (co)limits exist in B.
+P_Right := ( (Ran_K T)(a) ≅ Limit( Diagram Functor (a↓K) -> C -> B ) ) for each a in A
+P_Left := ( (Lan_K T)(a) ≅ Colimit( Diagram Functor (K↓a) -> C -> B ) ) for each a in A
+-----------------------------------------------------------------------------------
+Γ ⊢ (P_Right ∧ P_Left) : ProvableIsomorphism ;
+CATEGORY
+[[ THEOREM KanExtensionAsLimit ... ]] = "The fundamental theorem providing a constructive formula for Kan extensions. It asserts that the value of the Right Kan Extension at a point a can be computed as a limit over the comma category of objects 'under a', and dually for the Left Kan Extension. This connects the abstract universal property to the concrete machinery of (co)limits." ;
+
+CommaObjectUnderFunctor ::= "(" Identifier "↓" Identifier ")" ;
+TYPING
+(* This formalizes the comma category (a ↓ K) needed for the pointwise formula. *)
+Γ ⊢ a : Object_in(A), Γ ⊢ K : Functor(C, A)
+Objects of (a ↓ K) are pairs (c, f) where c∈Ob(C) and f: a -> K(c)
+Morphisms from (c, f) to (c', f') are h: c -> c' in C s.t. K(h) ∘ f = f'
+------------------------------------------------------------------------
+Γ ⊢ (a ↓ K) : Category ;
+CATEGORY
+[[ (a ↓ K) ]] = "The comma category of K-arrows from a. Its objects represent all the ways the fixed object a can map into the image of the functor K." ;
+
+DualityMappingAxiom ::= "DUALITY_MAPPING" "FOR" "'CommaObjectUnderFunctor'" "IS" "'CommaObjectOverFunctor'" ;
+
+(* ========================================================================================================== )
+( == Part 4: Adjunctions as a Special Case == )
+( ========================================================================================================== *)
+
+TheoremDeclaration ::= "THEOREM" "AdjointsAsKanExtensions" ":"
+"(" Identifier "F" "⊣" Identifier "G" ")"
+"<==>"
+"(" "F" "≅" "LeftKanExtension" "Id" "along" "G" "&&" "G" "≅" "RightKanExtension" "Id" "along" "F" ")" ;
+TYPING
+Γ ⊢ F : Functor(C,D), Γ ⊢ G : Functor(D,C), Γ ⊢ Id_C : Functor(C,C), Γ ⊢ Id_D : Functor(D,D)
+P_Adj := (Γ ⊢ F ⊣ G)
+P_Kan := ( (Γ ⊢ F ≅ Lan_G(Id_C)) ∧ (Γ ⊢ G ≅ Ran_F(Id_D)) )
+-------------------------------------------------------------
+Γ ⊢ (P_Adj <==> P_Kan) : ProvableEquivalence ;
+CATEGORY
+[[ THEOREM AdjointsAsKanExtensions ... ]] = "The assertion that the concept of an adjunction is a specific instance of a Kan extension. Specifically, a left adjoint F is the best possible extension of the identity functor Id_C along the right adjoint G, and dually. This demonstrates that Kan extensions are a more general and foundational concept than adjunctions." ;
+}
+
+MetaDirectiveAnalysis ::= "(" "Elaborate on Section 3.8: Tensor product of set-valued functors" ")" "==>" {
+(* ========================================================================================================== )
+( == Section 3.8: Tensor product of set-valued functors == )
+( ========================================================================================================== )
+(
+
+ELABORATION: This section formalizes the tensor product of functors, a concept that generalizes
+
+the tensor product of modules over a ring. The key idea is to create a universal object that
+
+receives "balanced pairings" of elements from the two functors. To elaborate, we will:
+
+Formally define the "players": presheaves (functors C^op -> Set) and copresheaves (functors C -> Set).
+
+Deconstruct the definition of the tensor product as a coequalizer, explicitly defining the
+
+Generated code
+two large sets and the parallel arrows between them whose coequalizer is the tensor product.
+
+
+Formalize the crucial adjunction, showing that the Tensor functor (- ⊗ G) is left adjoint
+
+Generated code
+to a Hom-functor, which represents the universal property of the construction.
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+IGNORE_WHEN_COPYING_END
+
+Provide the equivalent universal property in terms of "C-balanced maps", which provides a strong
+
+Generated code
+analogy to the familiar bilinear maps from linear algebra.
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+IGNORE_WHEN_COPYING_END
+
+*)
+
+(* ========================================================================================================== )
+( == Part 1: The Players (Presheaves and Copresheaves) == )
+( ========================================================================================================== *)
+
+PresheafDeclaration ::= "PRESHEAF" Identifier "on" Identifier ;
+TYPING
+(* A Presheaf is a formal name for a contravariant set-valued functor. *)
+Γ ⊢ C : Category
+---------------------------------------------------------
+Γ ⊢ PRESHEAF F on C : Functor(C^op, Set) ;
+CATEGORY
+[[ PRESHEAF F on C ]] = "An object in the category [C^op, Set], also known as the category of presheaves on C. It assigns a set to each object of C and a function (reversing arrows) to each morphism of C." ;
+
+CopresheafDeclaration ::= "COPRESHEAF" Identifier "on" Identifier ;
+TYPING
+(* A Copresheaf is a formal name for a covariant set-valued functor. *)
+Γ ⊢ C : Category
+----------------------------------------------------------
+Γ ⊢ COPRESHEAF G on C : Functor(C, Set) ;
+CATEGORY
+[[ COPRESHEAF G on C ]] = "An object in the category [C, Set], the category of copresheaves on C. It is also known as a C-indexed set." ;
+
+(* ========================================================================================================== )
+( == Part 2: The Deconstructed Coequalizer Definition == )
+( ========================================================================================================== *)
+
+TensorAsCoequalizer ::= "DEFINE" Expression "⊗_" Identifier Expression "as" "Coequalizer" "(" Identifier "," Identifier ")" ;
+TYPING
+(* This is the master definition, now made precise. The tensor product is the coequalizer of two parallel arrows. )
+Γ ⊢ F : Presheaf on C, Γ ⊢ G : Copresheaf on C
+Γ ⊢ S_mor : Set, Γ ⊢ S_obj : Set ( The two sets defined below *)
+Γ ⊢ alpha, beta : Morphism(S_mor, S_obj)
+----------------------------------------------------------------------------------------------------------
+Γ ⊢ DEFINE F ⊗_C G as Coequalizer(alpha, beta) : Set ;
+CATEGORY
+[[ DEFINE F ⊗_C G ... ]] = "The construction of the tensor product set as a quotient (formalized as a coequalizer) that imposes the C-balancing condition. This is the categorical analogue of constructing a tensor product of modules by quotienting a free module." ;
+
+TensorSummand_Objects ::= "SumOverObjects" "(" Identifier "," Identifier ")" ;
+TYPING
+(* This defines the codomain of the parallel arrows: the disjoint union of all paired elements. )
+Γ ⊢ F : Presheaf on C, Γ ⊢ G : Copresheaf on C
+---------------------------------------------------------------------------
+Γ ⊢ SumOverObjects(F,G) : Set ; ( Equivalent to ∐_{c ∈ Ob(C)} F(c) × G(c) *)
+CATEGORY
+[[ SumOverObjects(F,G) ]] = "The set representing the 'free' or 'raw' pairings of elements from the functors F and G, before any balancing relations are imposed. Its elements are pairs (x,y) where x comes from F(c) and y comes from G(c) for some object c." ;
+
+TensorSummand_Morphisms ::= "SumOverMorphisms" "(" Identifier "," Identifier ")" ;
+TYPING
+(* This defines the domain of the parallel arrows: the disjoint union of pairs that will generate the relation. )
+Γ ⊢ F : Presheaf on C, Γ ⊢ G : Copresheaf on C
+-----------------------------------------------------------------------------
+Γ ⊢ SumOverMorphisms(F,G) : Set ; ( Equivalent to ∐_{h:c→d ∈ Mor(C)} F(c) × G(d) *)
+CATEGORY
+[[ SumOverMorphisms(F,G) ]] = "The set whose elements represent the 'generators' of the balancing relation. Each element corresponds to a morphism h:c->d and provides a pair (x,y) where x is in F(c) and y is in G(d), ready to be acted upon by the functorial maps." ;
+
+TensorParallelArrowsAxiom ::= "AXIOM" "TensorParallelArrows" ":" Expression "and" Expression "map" TensorSummand_Morphisms "to" TensorSummand_Objects ;
+TYPING
+(* This axiom formally defines the two parallel arrows alpha and beta. *)
+Context: S_mor = SumOverMorphisms(F,G), S_obj = SumOverObjects(F,G)
+For a component h:c->d of S_mor and an element (x,y) in F(c)×G(d):
+alpha(x,y)_h := (x, G(h)(y)) in F(c)×G(c) component of S_obj
+beta(x,y)_h := (F(h)(x), y) in F(d)×G(d) component of S_obj
+---------------------------------------------------------------------------------------------------------------
+Γ ⊢ (alpha, beta) : pair(Morphism(S_mor, S_obj)) ;
+CATEGORY
+[[ AXIOM TensorParallelArrows ... ]] = "The definition of the two morphisms whose coequalizer forms the tensor product. For a relation generated by h:c->d, alpha moves an element of G(d) 'backwards' along h, while beta moves an element of F(c) 'forwards' along h. Equating them implements the condition (x.h, y) ~ (x, h.y)." ;
+
+(* ========================================================================================================== )
+( == Part 3: The Universal Property as an Adjunction == )
+( ========================================================================================================== *)
+
+TensorHomAdjunctionTheorem ::= "THEOREM" "TensorHomAdjunction" ":"
+"Functor_Tensor" "(" Identifier ")" "⊣" "Functor_YonedaHom" "(" Identifier ")" ;
+TYPING
+(* This is the formal typing of the adjunction: (- ⊗_C G) ⊣ Hom_{Set}(G(-), -) *)
+LeftAdjoint_F := λ(F:Presheaf). F ⊗_C G
+RightAdjoint_G := λ(S:Set). (c ↦ Hom_{Set}(G(c), S))
+------------------------------------------------------------------------------------------------
+Γ ⊢ LeftAdjoint_F ⊣ RightAdjoint_G : Adjunction([C^op,Set], Set) ;
+CATEGORY
+[[ THEOREM TensorHomAdjunction ... ]] = "The assertion of the fundamental adjunction for the tensor product. It shows that the 'external' operation of tensoring with G is left adjoint to the 'internal' operation of constructing a mapping object (a presheaf) from G. This is a powerful, abstract form of the universal property." ;
+
+(* ========================================================================================================== )
+( == Part 4: The Universal Property as C-Balanced Maps == )
+( ========================================================================================================== *)
+
+C_BalancedMapDeclaration ::= "C_BALANCED_MAP" Identifier ":" "(" Identifier "," Identifier ")" "->" Identifier ;
+TYPING
+(* Defines a C-balanced map from a presheaf F and copresheaf G to a set S. *)
+Γ ⊢ F : Presheaf on C, Γ ⊢ G : Copresheaf on C, Γ ⊢ S : Set
+β is a family of maps { β_c : F(c) × G(c) -> S | c ∈ Ob(C) }
+BalancingCondition := ∀h:c->d, β_d(F(h)(x), y) == β_c(x, G(h)(y))
+---------------------------------------------------------------------------------
+Γ ⊢ C_BALANCED_MAP β : ... : C_BalancedMap_Type ;
+CATEGORY
+[[ C_BALANCED_MAP β ... ]] = "A family of bilinear-like maps that is 'balanced' or 'compatible' with the structure of the category C. This is the precise categorical analogue of a bilinear map of modules." ;
+
+TensorUniversalPropertyTheorem ::= "THEOREM" "TensorUP" ":"
+"C_BalancedMap" "(" Identifier "," Identifier ";" Identifier ")" "≅" "Hom_Set" "(" Expression "⊗_" Identifier Expression "," Identifier ")" ;
+TYPING
+(* This theorem states that any C-balanced map β uniquely factors through the tensor product. *)
+Context: F:Presheaf, G:Copresheaf, S:Set
+IsNaturalIsomorphism( CBalancedMaps(F,G;S), Hom_{Set}(F⊗G, S) )
+----------------------------------------------------------------
+Γ ⊢ THEOREM ... : ProvableIsomorphism ;
+CATEGORY
+[[ THEOREM TensorUP ... ]] = "The assertion of the universal property of the tensor product in its most intuitive form. It states that the set of C-balanced maps from F and G to a set S is in natural bijection with the set of simple functions from the tensor product F⊗G to S. The tensor product is therefore the universal recipient of all C-balanced maps." ;
+}
