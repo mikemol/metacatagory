@@ -1,6 +1,6 @@
 # MetaCategory: A Computable Formalization of Category Theory
 
-> Project status (2025-11): The original EBNF-based grammar has been retired from the build. The repository now centers on Agda modules under `src/ebnf`, with a simple Makefile for typechecking and HTML docs. The EBNF description below is preserved as historical context and a conceptual map; it is no longer part of an active build pipeline.
+> Project status (2025-11): The original EBNF-based grammar has been retired from the build. The repository now centers on Agda modules under `src/agda`, with a simple Makefile for typechecking and generating HTML/Markdown docs. The EBNF description below is preserved as historical context and a conceptual map; it is no longer part of an active build pipeline.
 
 ## Getting started (Agda)
 
@@ -17,6 +17,9 @@ make check
 # Generate HTML docs into build/html
 make docs
 
+# Generate Markdown docs (via pandoc) into build/md
+make docs-md
+
 # Per-chapter docs during authoring
 make docs1
 make docs2
@@ -28,19 +31,21 @@ make clean
 
 What’s built
 
-* Structural Agda modules that mirror the EBNF sections, organized by chapter: `src/ebnf/1`, `src/ebnf/2`, `src/ebnf/3`.
+* Structural Agda modules organized by chapter under `src/agda/Chapter{1,2,3}`.
 * Chapter index modules aggregate each chapter:
-  * `src/ebnf/1/Index.agda`
-  * `src/ebnf/2/Index.agda`
-  * `src/ebnf/3/Index.agda`
-* New modules for Chapter 3:
+  * `src/agda/Chapter1/Level1Index.agda`
+  * `src/agda/Chapter2/Level2Index.agda`
+  * `src/agda/Chapter3/Level3Index.agda`
+* Examples in Chapter 3:
   * `Level3_1` (Locales)
   * `Level3_2` (Sheaves on locales)
 
 Notes
 
-* The Makefile now targets Agda only; the old EBNF concatenation target has been removed.
-* EBNF files remain in-tree for reference, but are not used by the build.
+* The Makefile targets Agda only; the old EBNF concatenation target has been removed.
+* HTML docs are written to `build/html`, Markdown docs to `build/md` (requires `pandoc`).
+* CI: GitHub Actions workflow `ci.yml` runs typechecks and builds docs on push/PR.
+* On push, CI publishes Markdown docs into the repository’s `docs/` folder for easy browsing on GitHub.
 
 ---
 

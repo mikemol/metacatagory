@@ -10,21 +10,22 @@ AGDA ?= agda
 AGDA_FLAGS ?= --no-main
 
 # Root include for Agda modules
-AGDA_INCLUDE = -i src/ebnf
+AGDA_INCLUDE = -i src/agda
 
 # Chapter index modules (act as entry points for typechecking and docs)
-AGDA_INDEX_1 = src/ebnf/Chapter1/Level1Index.agda
-AGDA_INDEX_2 = src/ebnf/Chapter2/Level2Index.agda
-AGDA_INDEX_3 = src/ebnf/Chapter3/Level3Index.agda
+AGDA_INDEX_1 = src/agda/Chapter1/Level1Index.agda
+AGDA_INDEX_2 = src/agda/Chapter2/Level2Index.agda
+AGDA_INDEX_3 = src/agda/Chapter3/Level3Index.agda
 AGDA_INDEXES = $(AGDA_INDEX_1) $(AGDA_INDEX_2) $(AGDA_INDEX_3)
 
 # Build artifacts
 BUILD_DIR = build
 HTML_DIR = $(BUILD_DIR)/html
+MD_DIR = $(BUILD_DIR)/md
 
 # --- Targets ---
 
-.PHONY: all check docs docs1 docs2 docs3 clean help
+.PHONY: all check docs docs-md docs1 docs2 docs3 clean help
 
 # Default: typecheck everything
 all: check
@@ -44,6 +45,21 @@ docs: | $(HTML_DIR)
 	@$(AGDA) --html --html-dir=$(HTML_DIR) $(AGDA_INCLUDE) $(AGDA_INDEXES)
 	@echo "HTML docs generated in $(HTML_DIR). Open index.html for entry points."
 
+# Generate Markdown documentation by converting the HTML output via pandoc
+docs-md: docs | $(MD_DIR)
+	@echo "Converting HTML docs to Markdown into $(MD_DIR)..."
+	@if ! command -v pandoc >/dev/null 2>&1; then \
+	   echo "Error: pandoc not found. Install pandoc to build Markdown docs." 1>&2; \
+	   exit 1; \
+	 fi
+	@find $(HTML_DIR) -name '*.html' -type f | while read -r f; do \
+	   rel=$${f#$(HTML_DIR)/}; \
+	   out='$(MD_DIR)/'$${rel%.html}.md; \
+	   mkdir -p "$$("dirname" "$$out")"; \
+	   pandoc "$$f" -f html -t gfm -o "$$out"; \
+	 done
+	@echo "Markdown docs generated in $(MD_DIR)."
+
 # Per-chapter docs (useful during authoring)
 docs1: | $(HTML_DIR)
 	@echo "Generating HTML docs for Chapter 1 into $(HTML_DIR)..."
@@ -61,10 +77,15 @@ docs3: | $(HTML_DIR)
 $(HTML_DIR):
 	@mkdir -p $(HTML_DIR)
 
+$(MD_DIR):
+	@mkdir -p $(MD_DIR)
+
 # Clean build artifacts
 clean:
 	@echo "Cleaning build artifacts..."
 	@rm -rf $(BUILD_DIR)
+	@echo "Removing Agda interface files (*.agdai)..."
+	@find src/agda -name '*.agdai' -delete 2>/dev/null || true
 
 # Show available targets
 help:
