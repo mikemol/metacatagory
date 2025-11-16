@@ -187,8 +187,129 @@ testSplittingFieldAlgorithm = SplittingFieldAlgorithm-generic {dummyField}
 testSplittingField : SplittingField dummyField (M.mkId "f")
 testSplittingField = SplittingFieldAlgorithm.splittingField testSplittingFieldAlgorithm (M.mkId "f")
 
+-- =========================================================================
+-- Smoke Test 4: FieldExtensionDegreeAlgorithm
+-- =========================================================================
+
+testExtensionDegreeAlgorithm : FieldExtensionDegreeAlgorithm dummyField dummyExtension
+testExtensionDegreeAlgorithm = FieldExtensionDegreeAlgorithm-generic {dummyField} {dummyExtension}
+
+testExtensionDegree : ExtensionDegree dummyField dummyExtension
+testExtensionDegree = FieldExtensionDegreeAlgorithm.extensionDegree testExtensionDegreeAlgorithm
+
+testBasis : List M.Identifier
+testBasis = FieldExtensionDegreeAlgorithm.basis testExtensionDegreeAlgorithm
+
+-- =========================================================================
+-- Smoke Test 5: SubfieldEnumerationAlgorithm
+-- =========================================================================
+
+testSubfieldEnumerationAlgorithm : SubfieldEnumerationAlgorithm dummyField dummyExtension
+testSubfieldEnumerationAlgorithm = SubfieldEnumerationAlgorithm-generic {dummyField} {dummyExtension}
+
+testSubfields : List (Subfield dummyExtension)
+testSubfields = SubfieldEnumerationAlgorithm.subfields testSubfieldEnumerationAlgorithm
+
+-- =========================================================================
+-- Smoke Test 6: SubgroupEnumerationAlgorithm
+-- =========================================================================
+
+testSubgroupEnumerationAlgorithm : SubgroupEnumerationAlgorithm dummyField dummyExtension
+testSubgroupEnumerationAlgorithm = SubgroupEnumerationAlgorithm-generic {dummyField} {dummyExtension}
+
+testSubgroups : List GroupDeclaration
+testSubgroups = SubgroupEnumerationAlgorithm.subgroups testSubgroupEnumerationAlgorithm
+
+-- =========================================================================
+-- Smoke Test 7: AlgebraicityDecisionAlgorithm
+-- =========================================================================
+
+testAlgebraicityDecisionAlgorithm : AlgebraicityDecisionAlgorithm dummyField dummyExtension
+testAlgebraicityDecisionAlgorithm = AlgebraicityDecisionAlgorithm-generic {dummyField} {dummyExtension}
+
+testIsAlgebraic : Dec (AlgebraicElement dummyField dummyExtension (M.mkId "α"))
+testIsAlgebraic = AlgebraicityDecisionAlgorithm.isAlgebraic testAlgebraicityDecisionAlgorithm (M.mkId "α")
+
+testIsTranscendental : Dec (TranscendentalElement dummyField dummyExtension (M.mkId "α"))
+testIsTranscendental = AlgebraicityDecisionAlgorithm.isTranscendental testAlgebraicityDecisionAlgorithm (M.mkId "α")
+
+-- =========================================================================
+-- Smoke Test 8: PrimitiveElementAlgorithm
+-- =========================================================================
+
+testPrimitiveElementAlgorithm : PrimitiveElementAlgorithm dummyField dummyExtension
+testPrimitiveElementAlgorithm = PrimitiveElementAlgorithm-generic {dummyField} {dummyExtension}
+
+testPrimitiveElement : M.Identifier
+testPrimitiveElement = PrimitiveElementAlgorithm.primitiveElement testPrimitiveElementAlgorithm
+
+testWitnessSimpleExtension : SimpleExtension dummyField dummyExtension (PrimitiveElementAlgorithm.primitiveElement testPrimitiveElementAlgorithm)
+testWitnessSimpleExtension = PrimitiveElementAlgorithm.witnessSimpleExtension testPrimitiveElementAlgorithm
+
+-- =========================================================================
+-- Smoke Test 9: NormalityDecisionAlgorithm
+-- =========================================================================
+
+testNormalityDecisionAlgorithm : NormalityDecisionAlgorithm dummyField dummyExtension
+testNormalityDecisionAlgorithm = NormalityDecisionAlgorithm-generic {dummyField} {dummyExtension}
+
+testDecideNormal : Dec (NormalExtension dummyField dummyExtension)
+testDecideNormal = NormalityDecisionAlgorithm.isNormal testNormalityDecisionAlgorithm
+
+-- =========================================================================
+-- Smoke Test 10: SeparabilityDecisionAlgorithm
+-- =========================================================================
+
+testSeparabilityDecisionAlgorithm : SeparabilityDecisionAlgorithm dummyField dummyExtension
+testSeparabilityDecisionAlgorithm = SeparabilityDecisionAlgorithm-generic {dummyField} {dummyExtension}
+
+testDecideSeparable : Dec (SeparableExtension dummyField dummyExtension)
+testDecideSeparable = SeparabilityDecisionAlgorithm.isSeparable testSeparabilityDecisionAlgorithm
+
+testPurelyInseparableMarker : M.Identifier
+testPurelyInseparableMarker = SeparabilityDecisionAlgorithm.isPurelyInseparable testSeparabilityDecisionAlgorithm
+
+-- =========================================================================
+-- Smoke Test 11: NormalClosureAlgorithm
+-- =========================================================================
+
+testNormalClosureAlgorithm : NormalClosureAlgorithm dummyField dummyExtension
+testNormalClosureAlgorithm = NormalClosureAlgorithm-generic {dummyField} {dummyExtension}
+
+testNormalClosure : M.Identifier
+testNormalClosure = NormalClosureAlgorithm.normalClosure testNormalClosureAlgorithm
+
+testNormalClosureWitness : M.Identifier
+testNormalClosureWitness = NormalClosureAlgorithm.witnessNormalClosure testNormalClosureAlgorithm
+
+-- =========================================================================
+-- Smoke Test 12: GaloisClosureAlgorithm
+-- =========================================================================
+
+testGaloisClosureAlgorithm : GaloisClosureAlgorithm dummyField dummyExtension
+testGaloisClosureAlgorithm = GaloisClosureAlgorithm-generic {dummyField} {dummyExtension}
+
+testGaloisClosure : M.Identifier
+testGaloisClosure = GaloisClosureAlgorithm.galoisClosure testGaloisClosureAlgorithm
+
+testGaloisClosureWitness : M.Identifier
+testGaloisClosureWitness = GaloisClosureAlgorithm.witnessGaloisClosure testGaloisClosureAlgorithm
+
+-- =========================================================================
+-- Smoke Test 13: PerfectFieldDecisionAlgorithm
+-- =========================================================================
+
+testPerfectFieldDecisionAlgorithm : PerfectFieldDecisionAlgorithm dummyField
+testPerfectFieldDecisionAlgorithm = PerfectFieldDecisionAlgorithm-generic {dummyField}
+
+testDecidePerfect : M.Identifier
+testDecidePerfect = PerfectFieldDecisionAlgorithm.isPerfect testPerfectFieldDecisionAlgorithm
+
+testDecideAlgebraicallyClosed : M.Identifier
+testDecideAlgebraicallyClosed = PerfectFieldDecisionAlgorithm.isAlgebraicallyClosed testPerfectFieldDecisionAlgorithm
+
 -- ============================================================================
--- Smoke Test 4: All 13 Algorithm Interfaces
+-- Smoke Test 14: All Algorithm Interfaces Marker
 -- ============================================================================
 
 -- If this typechecks, all algorithm interfaces are well-formed
