@@ -14,6 +14,9 @@ Quick use
 # Typecheck all chapters (1, 2, 3)
 make check
 
+# Typecheck behavioral phase boundary test suite
+agda --no-main -i src/agda src/agda/Tests/Index.agda
+
 # Generate HTML docs into build/html
 make docs
 
@@ -41,6 +44,16 @@ What's built
 * Examples in Chapter 3:
   * `Level3_1` (Locales)
   * `Level3_2` (Sheaves on locales)
+* Behavioral phase boundary test suite under `src/agda/Tests/`:
+  * **Core/Phase.agda**: Formalization of phase abstraction (transformation pipelines, composition laws)
+  * **Tests/DispatchBehaviorTests.agda** (9 phases): Evidence → Classification → Dispatch → Invocation
+  * **Tests/UniversalPropertyTests.agda** (9 phases): Algorithm → UMP → Categorical structures
+  * **Tests/WitnessConstructionTests.agda** (12 phases): Identifiers → Witnesses → Composites
+  * **Tests/ErrorHandlingTests.agda** (8 phases): Type-level validation and error-preventing boundaries
+  * **Tests/PropertyRegistryTests.agda** (3 phases): Stable identifier typing and consumption
+  * **Tests/PhaseExamples.agda**: Demonstrations of Phase usage
+  * **Tests/Index.agda**: Unified entry point importing all test suites
+  * See `docs/TestingStrategy.md` for detailed philosophy and coverage
 
 Notes
 

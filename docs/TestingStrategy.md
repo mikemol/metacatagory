@@ -56,7 +56,15 @@ module Tests.SuiteName where
    - Domain: Witness lifecycle
    - Coverage: Identifiers → Witnesses → Composite structures
 
-4. **Tests/Index.agda**
+4. **ErrorHandlingTests** (8 phases, lightweight)
+   - Domain: Error-preventing phase boundaries
+   - Coverage: Type-level validation, dispatch exhaustiveness, algorithm preconditions, witness invariants, automorphism typing, bundle structure, property specificity, subfield directionality
+
+5. **PropertyRegistryTests** (3 phases, lightweight)
+   - Domain: Stable property identifiers
+   - Coverage: Identifier typing, generic consumption, stability under simple composition
+
+6. **Tests/Index.agda**
    - Unified entry point importing all test suites
    - Documents coverage summary
 
@@ -225,6 +233,22 @@ We test **architectural correctness**, not computational correctness.
 9. **Bridge Coherence**: Commutative diagrams
 
 ### WitnessConstructionTests (12 phases)
+### ErrorHandlingTests (8 phases)
+
+1. Type-Level Validation: Evidence typing and classifier arity
+2. Dispatch Routing: Exhaustive case handling in bundle selection
+3. Algorithm Preconditions: Minimal polynomial and Galois group contexts
+4. Witness Construction: Field/extension constructors enforce invariants
+5. Automorphism Typing: Base/extension domains preserved
+6. Bundle Extraction: Structure respected during algorithm retrieval
+7. Property Specificity: Minimal polynomial property bound to (F, E, α)
+8. Subfield Directionality: Inclusion E ⊇ F enforced by types
+
+### PropertyRegistryTests (3 phases)
+
+1. Identifier Typing: All registry entries are M.Identifier
+2. Generic Consumption: Usable anywhere an Identifier is required
+3. Structural Composition: Pairings of identifiers remain well-typed
 
 1. **Identifier Creation**: String → M.Identifier
 2. **Field Construction**: Identifier → FieldDeclaration
@@ -246,6 +270,8 @@ We test **architectural correctness**, not computational correctness.
 agda --no-main -i src/agda src/agda/Tests/DispatchBehaviorTests.agda
 agda --no-main -i src/agda src/agda/Tests/UniversalPropertyTests.agda
 agda --no-main -i src/agda src/agda/Tests/WitnessConstructionTests.agda
+agda --no-main -i src/agda src/agda/Tests/ErrorHandlingTests.agda
+agda --no-main -i src/agda src/agda/Tests/PropertyRegistryTests.agda
 ```
 
 ### All Tests
@@ -320,4 +346,4 @@ Success = typechecking completes without errors.
 ---
 
 **Last Updated**: November 16, 2025  
-**Test Suite Statistics**: 30 phases across 3 suites, ~1200 lines total
+**Test Suite Statistics**: 41 phases across 5 suites, ~1400 lines total
