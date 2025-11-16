@@ -106,10 +106,8 @@ record GaloisGroup (F E : FieldDeclaration) : Set₁ where
     automorphisms : M.Identifier
 
 -- Fixed field of automorphism group
-record FixedField (E : FieldDeclaration) (G : GaloisGroup _ E) : Set₁ where
+record FixedField (F E : FieldDeclaration) (G : GaloisGroup F E) : Set₁ where
   field
-    extensionField : FieldDeclaration
-    galoisGroup : GaloisGroup _ extensionField
     fixedField : FieldDeclaration
     -- F = {x ∈ E | σ(x) = x ∀ σ ∈ G}
     definition : M.Identifier
