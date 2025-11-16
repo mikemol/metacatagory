@@ -8,6 +8,7 @@ open import Algebra.Fields.Basic
 open import Algebra.Groups.Basic
 open import Algebra.Foundation
 open import Core.AlgebraicAlgorithms
+open import Core.Witnesses
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 
@@ -108,14 +109,8 @@ finiteFieldAlgorithms : ∀ {F E} → (Ffin : IsFiniteField F) → (Efin : IsFin
                        → FiniteFieldAlgorithms F E Ffin Efin
 finiteFieldAlgorithms {F} {E} Ffin Efin = record
   { minimalPolynomialAlg = record
-    { minimalPolynomial = λ α → M.mkId "minpoly"
-    ; isAlgebraic       = λ α → yes (record
-      { baseField        = F
-      ; extensionField   = E
-      ; element          = α
-      ; minimalPolynomial = M.mkId "minpoly"
-      ; isAlgebraic      = M.mkId "algebraic"
-      })
+      { minimalPolynomial = λ α → M.mkId "minpoly"
+      ; isAlgebraic       = λ α → yes (mkAlgebraicElement F E α)
       }
   ; galoisGroupAlg = record
       { galoisGroup   = λ f → cyclicGaloisGroup F E Ffin Efin
@@ -123,51 +118,25 @@ finiteFieldAlgorithms {F} {E} Ffin Efin = record
       ; isSolvable    = λ f → M.mkId "cyclic-solvable"
       }
   ; splittingFieldAlg = record
-    { splittingField = λ f → record
-      { baseField       = F
-      ; polynomial      = f
-      ; splittingField  = E
-      ; definition      = M.mkId "splits"
-      }
-    ; roots          = λ f → []
+      { splittingField = λ f → mkSplittingField F f E
+      ; roots          = λ f → []
       }
   ; extensionDegreeAlg = record
-    { extensionDegree = record
-      { baseField       = F
-      ; extensionField  = E
-      ; degree          = M.mkId "degree"
-      }
-    ; basis           = defaultBasis F E
+      { extensionDegree = mkExtensionDegree F E
+      ; basis           = defaultBasis F E
       }
   ; subfieldEnumAlg = record
-    { subfields = (record
-      { subfield   = F
-      ; subset     = M.mkId "subset"
-      ; inclusion  = M.mkId "incl"
-      ; isSubfield = M.mkId "isSubfield"
-      }) ∷ []
+      { subfields = trivialSubfield F E
       }
   ; subgroupEnumAlg = record
       { subgroups = cyclicSubgroups F E Ffin Efin
       }
   ; algebraicityAlg = record
-    { isAlgebraic      = λ α → yes (record
-      { baseField        = F
-      ; extensionField   = E
-      ; element          = α
-      ; minimalPolynomial = M.mkId "minpoly"
-      ; isAlgebraic      = M.mkId "algebraic"
-      })
-    ; isTranscendental = λ α → no
+      { isAlgebraic      = λ α → yes (mkAlgebraicElement F E α)
+      ; isTranscendental = λ α → no
       }
   ; primitiveElementAlg = record
-    { primitiveElement = M.mkId "primitive"
-    ; witnessSimpleExtension = record
-      { baseField         = F
-      ; extensionField    = E
-      ; adjoinedElement   = M.mkId "primitive"
-      ; minimalPolynomial = M.mkId "minpoly"
-      ; isSimpleExtension = M.mkId "witness"
+      { primitiveElement = M.mkId "primitive"
+      ; witnessSimpleExtension = mkSimpleExtension F E (M.mkId "primitive")
       }
-    }
   }

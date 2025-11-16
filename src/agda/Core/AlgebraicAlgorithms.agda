@@ -6,6 +6,7 @@ module Core.AlgebraicAlgorithms where
 open import Core
 open import Algebra.Rings.Basic
 open import Algebra.Fields.Basic
+open import Algebra.Fields.Advanced
 open import Algebra.Groups.Basic
 open import Algebra.Foundation
 open import Metamodel as M
@@ -99,6 +100,44 @@ record PrimitiveElementAlgorithm (F E : FieldDeclaration) : Set₁ where
     primitiveElement : M.Identifier
     witnessSimpleExtension : SimpleExtension F E primitiveElement
 
+-- ==========================================================================
+-- Normality and Separability Decision Algorithms (Chapter VI)
+-- ==========================================================================
+
+record NormalityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
+  field
+    -- Decide if E/F is normal
+    isNormal : Dec (NormalExtension F E)
+
+record SeparabilityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
+  field
+    -- Decide if E/F is separable
+    isSeparable : Dec (SeparableExtension F E)
+    -- Decide if E/F is purely inseparable (using an identifier placeholder)
+    isPurelyInseparable : M.Identifier
+
+-- Normal closure construction
+record NormalClosureAlgorithm (F E : FieldDeclaration) : Set₁ where
+  field
+    -- Construct the normal closure of E/F
+    normalClosure : M.Identifier
+    witnessNormalClosure : M.Identifier
+
+-- Galois closure construction
+record GaloisClosureAlgorithm (F E : FieldDeclaration) : Set₁ where
+  field
+    -- Construct the Galois closure of E/F
+    galoisClosure : M.Identifier
+    witnessGaloisClosure : M.Identifier
+
+-- Perfect field decision
+record PerfectFieldDecisionAlgorithm (F : FieldDeclaration) : Set₁ where
+  field
+    -- Decide if F is perfect (using identifier placeholder)
+    isPerfect : M.Identifier
+    -- Decide if F is algebraically closed (using identifier placeholder)
+    isAlgebraicallyClosed : M.Identifier
+
 -- ============================================================================
 -- Extensibility: External/Verified Computation
 -- ============================================================================
@@ -124,6 +163,16 @@ postulate
   defaultDecAlg : (F E : FieldDeclaration) → (α : M.Identifier) → Dec (AlgebraicElement F E α)
   defaultDecTrans : (F E : FieldDeclaration) → (α : M.Identifier) → Dec (TranscendentalElement F E α)
   defaultPrimitiveElement : (F E : FieldDeclaration) → PrimitiveElementAlgorithm F E
+  -- Chapter VI defaults
+  defaultIsNormal : (F E : FieldDeclaration) → Dec (NormalExtension F E)
+  defaultIsSeparable : (F E : FieldDeclaration) → Dec (SeparableExtension F E)
+  defaultIsPurelyInseparable : (F E : FieldDeclaration) → M.Identifier
+  defaultNormalClosure : (F E : FieldDeclaration) → M.Identifier
+  defaultNormalClosureWitness : (F E : FieldDeclaration) → M.Identifier
+  defaultGaloisClosure : (F E : FieldDeclaration) → M.Identifier
+  defaultGaloisClosureWitness : (F E : FieldDeclaration) → M.Identifier
+  defaultIsPerfect : (F : FieldDeclaration) → M.Identifier
+  defaultIsAlgebraicallyClosed : (F : FieldDeclaration) → M.Identifier
 
 MinimalPolynomialAlgorithm-generic : ∀ {F E} → MinimalPolynomialAlgorithm F E
 MinimalPolynomialAlgorithm-generic {F} {E} = record
@@ -168,3 +217,32 @@ AlgebraicityDecisionAlgorithm-generic {F} {E} = record
 
 PrimitiveElementAlgorithm-generic : ∀ {F E} → PrimitiveElementAlgorithm F E
 PrimitiveElementAlgorithm-generic {F} {E} = defaultPrimitiveElement F E
+
+NormalityDecisionAlgorithm-generic : ∀ {F E} → NormalityDecisionAlgorithm F E
+NormalityDecisionAlgorithm-generic {F} {E} = record
+  { isNormal = defaultIsNormal F E
+  }
+
+SeparabilityDecisionAlgorithm-generic : ∀ {F E} → SeparabilityDecisionAlgorithm F E
+SeparabilityDecisionAlgorithm-generic {F} {E} = record
+  { isSeparable = defaultIsSeparable F E
+  ; isPurelyInseparable = defaultIsPurelyInseparable F E
+  }
+
+NormalClosureAlgorithm-generic : ∀ {F E} → NormalClosureAlgorithm F E
+NormalClosureAlgorithm-generic {F} {E} = record
+  { normalClosure = defaultNormalClosure F E
+  ; witnessNormalClosure = defaultNormalClosureWitness F E
+  }
+
+GaloisClosureAlgorithm-generic : ∀ {F E} → GaloisClosureAlgorithm F E
+GaloisClosureAlgorithm-generic {F} {E} = record
+  { galoisClosure = defaultGaloisClosure F E
+  ; witnessGaloisClosure = defaultGaloisClosureWitness F E
+  }
+
+PerfectFieldDecisionAlgorithm-generic : ∀ {F} → PerfectFieldDecisionAlgorithm F
+PerfectFieldDecisionAlgorithm-generic {F} = record
+  { isPerfect = defaultIsPerfect F
+  ; isAlgebraicallyClosed = defaultIsAlgebraicallyClosed F
+  }
