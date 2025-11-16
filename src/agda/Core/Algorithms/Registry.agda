@@ -10,7 +10,9 @@ open import Algebra.Rings.Basic
 open import Algebra.Fields.Basic
 open import Algebra.Fields.Advanced
 open import Core.AlgebraicAlgorithms
+open import Core.Algorithms.Bundle
 open import Core.Algorithms.FiniteFields
+open import Core.Algorithms.NumberFields
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 
@@ -54,23 +56,7 @@ postulate
 -- Algorithm Bundle Registry
 -- ============================================================================
 
--- Full suite of algorithms for a field extension E/F
-record AlgorithmBundle (F E : FieldDeclaration) : Set₁ where
-  field
-    minimalPolynomialAlg : MinimalPolynomialAlgorithm F E
-    galoisGroupAlg       : GaloisGroupAlgorithm F E
-    splittingFieldAlg    : SplittingFieldAlgorithm F
-    extensionDegreeAlg   : FieldExtensionDegreeAlgorithm F E
-    subfieldEnumAlg      : SubfieldEnumerationAlgorithm F E
-    subgroupEnumAlg      : SubgroupEnumerationAlgorithm F E
-    algebraicityAlg      : AlgebraicityDecisionAlgorithm F E
-    primitiveElementAlg  : PrimitiveElementAlgorithm F E
-    normalityAlg         : NormalityDecisionAlgorithm F E
-    separabilityAlg      : SeparabilityDecisionAlgorithm F E
-    normalClosureAlg     : NormalClosureAlgorithm F E
-    galoisClosureAlg     : GaloisClosureAlgorithm F E
-
-open AlgorithmBundle public
+-- AlgorithmBundle is now imported from Core.Algorithms.Bundle
 
 -- Generic fallback bundle using all defaults
 genericAlgorithmBundle : (F E : FieldDeclaration) → AlgorithmBundle F E
@@ -116,12 +102,37 @@ finiteFieldBundle F E Ffin Efin =
 -- Central Dispatch (Algorithm Lookup)
 -- ============================================================================
 
--- Lookup a full algorithm bundle based on field type classification
--- This is the main entry point for algorithm discovery
+-- Basic lookup without evidence (uses generic defaults)
 lookupAlgorithmBundle : (F E : FieldDeclaration) → AlgorithmBundle F E
 lookupAlgorithmBundle F E = genericAlgorithmBundle F E
-  -- Future enhancement: pattern match on classifyField F and classifyField E
-  -- to dispatch to specialized bundles (finite field, number field, etc.)
+
+-- Evidence-based lookup with specialized dispatch
+-- Provide IsFiniteField or IsNumberField evidence to get optimized bundles
+module _ where
+  -- Lookup with finite field evidence
+  lookupWithFiniteFieldEvidence : (F E : FieldDeclaration)
+                                → IsFiniteField F
+                                → IsFiniteField E
+                                → AlgorithmBundle F E
+  lookupWithFiniteFieldEvidence F E Ffin Efin = finiteFieldBundle F E Ffin Efin
+
+  -- Lookup with number field evidence
+  lookupWithNumberFieldEvidence : (F E : FieldDeclaration)
+                                → IsNumberField F
+                                → IsNumberField E
+                                → AlgorithmBundle F E
+  lookupWithNumberFieldEvidence F E Fnf Enf = numberFieldBundle F E Fnf Enf
+
+  -- Automatic dispatch based on classifyField (requires evidence construction)
+  -- This demonstrates the pattern; in practice you'd build evidence from classification
+  lookupAlgorithmBundleAuto : (F E : FieldDeclaration) → AlgorithmBundle F E
+  lookupAlgorithmBundleAuto F E with classifyField F | classifyField E
+  ... | FiniteFieldType   | FiniteFieldType   = genericAlgorithmBundle F E
+      -- Could dispatch if we had evidence: finiteFieldBundle F E ? ?
+  ... | NumberFieldType   | NumberFieldType   = genericAlgorithmBundle F E
+      -- Could dispatch if we had evidence: numberFieldBundle F E ? ?
+  ... | FunctionFieldType | FunctionFieldType = genericAlgorithmBundle F E
+  ... | _                 | _                 = genericAlgorithmBundle F E
 
 -- Single-algorithm lookup by category
 lookupMinimalPolynomial : (F E : FieldDeclaration) → MinimalPolynomialAlgorithm F E

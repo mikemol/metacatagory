@@ -4,8 +4,6 @@
 
 module Core.Algorithms.External where
 
-open import Agda.Primitive using (Level; lzero; lsuc; _⊔_)
-
 open import Core
 open import Algebra.Foundation
 open import Algebra.Rings.Basic
@@ -13,10 +11,11 @@ open import Algebra.Fields.Basic
 open import Algebra.Fields.Advanced
 open import Core.AlgebraicAlgorithms
 open import Core.Witnesses
-open import Core.Algorithms.Registry
+open import Core.Algorithms.Bundle
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String using (String)
+open import Agda.Primitive using (Level; lzero; lsuc; _⊔_)
 
 private
   ℓ₀ = lzero

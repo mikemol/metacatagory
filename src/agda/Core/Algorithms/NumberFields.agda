@@ -8,7 +8,7 @@ open import Algebra.Rings.Basic
 open import Algebra.Fields.Basic
 open import Algebra.Fields.Advanced
 open import Core.AlgebraicAlgorithms
-open import Core.Algorithms.Registry
+open import Core.Algorithms.Bundle
 open import Core.Witnesses
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)

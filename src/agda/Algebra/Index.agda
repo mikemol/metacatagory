@@ -14,6 +14,7 @@ open import Algebra.Modules.Basic public
 open import Algebra.Fields.Basic public
 open import Algebra.Fields.Advanced public
 open import Core.AlgebraicAlgorithms public
+open import Core.Algorithms.Bundle public
 open import Core.Algorithms.FiniteFields public
 open import Core.Algorithms.NumberFields public
 open import Core.Algorithms.Registry public
