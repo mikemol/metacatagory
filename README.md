@@ -290,4 +290,3 @@ To keep the proof surface compact, we added stable identifiers for Chapter 3 pro
 * Beck characterization facets: `CategoryHasProperty(C, HasRegularProjectiveGenerator)` and `CategoryHasProperty(C, RegularlyCoveredByGenerator)`.
 
 This ensures Chapter 3 statements participate in the same compact, canonical query surface as Chapter 2 (regular/exact/Barr-exact), while the structured records remain available for richer indexing and future constructive witnesses.
-
