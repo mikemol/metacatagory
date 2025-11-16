@@ -223,8 +223,164 @@ module DispatchExample where
   test-pipeline = fullPipeline $ₚ_
 
 -- ============================================================================
+-- Dependent Phases (Advanced)
+-- ============================================================================
+
+-- A dependent phase where the output type depends on the input value
+-- This is useful for dispatch scenarios where different classifications
+-- produce different bundle types
+record DependentPhase {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : A → Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
+  field
+    transform : (a : A) → B a
+
+-- Apply dependent phase
+_$ᵈ_ : ∀ {A : Set ℓ₁} {B : A → Set ℓ₂} → DependentPhase A B → (a : A) → B a
+phase $ᵈ input = DependentPhase.transform phase input
+
+infixl 9 _$ᵈ_
+
+-- Create dependent phase from dependent function
+mkDepPhase : ∀ {A : Set ℓ₁} {B : A → Set ℓ₂} → ((a : A) → B a) → DependentPhase A B
+mkDepPhase f = record { transform = f }
+
+-- Identity dependent phase
+idDepPhase : ∀ {A : Set ℓ} → DependentPhase A (λ _ → A)
+idDepPhase = mkDepPhase (λ a → a)
+
+-- Compose dependent phases (when codomain of first matches domain of second)
+_⟫ᵈ_ : ∀ {A : Set ℓ₁} {B : A → Set ℓ₂} {C : (a : A) → B a → Set ℓ₃}
+     → (p₁ : DependentPhase A B)
+     → (p₂ : (a : A) → DependentPhase (B a) (C a))
+     → DependentPhase A (λ a → C a (p₁ $ᵈ a))
+p₁ ⟫ᵈ p₂ = mkDepPhase (λ a → (p₂ a) $ᵈ (p₁ $ᵈ a))
+
+infixr 8 _⟫ᵈ_
+
+-- Lift regular phase to dependent phase (constant family)
+liftPhase : ∀ {A : Set ℓ₁} {B : Set ℓ₂} → Phase A B → DependentPhase A (λ _ → B)
+liftPhase p = mkDepPhase (p $ₚ_)
+
+-- ============================================================================
+-- Phase Invariants
+-- ============================================================================
+
+-- An invariant is a property that should hold before and after a phase
+-- We express this as a predicate that must be preserved
+record Invariant {ℓ : Level} (A : Set ℓ) : Set (Agda.Primitive.lsuc ℓ) where
+  field
+    property : A → Set ℓ
+    
+-- A phase with an explicit invariant
+record PhaseWithInvariant {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : Set ℓ₂) : Set (Agda.Primitive.lsuc (ℓ₁ ⊔ ℓ₂)) where
+  field
+    phase : Phase A B
+    invariantA : Invariant A
+    invariantB : Invariant B
+    -- Proof that invariant is preserved (we postulate for now)
+    preserves : (a : A) → Invariant.property invariantA a 
+              → Invariant.property invariantB (phase $ₚ a)
+
+-- Create phase with trivial invariant (always true)
+withTrivialInvariant : ∀ {A : Set ℓ₁} {B : Set ℓ₂} → Phase A B → PhaseWithInvariant A B
+withTrivialInvariant {ℓ₁} {ℓ₂} {A} {B} p = record
+  { phase = p
+  ; invariantA = record { property = λ _ → A }  -- Trivially true
+  ; invariantB = record { property = λ _ → B }  -- Trivially true
+  ; preserves = λ a _ → p $ₚ a
+  }
+
+-- ============================================================================
+-- Phase Combinators
+-- ============================================================================
+
+-- Maybe type for error handling
+data Maybe {ℓ : Level} (A : Set ℓ) : Set ℓ where
+  just : A → Maybe A
+  nothing : Maybe A
+
+-- Natural numbers for retry counts
+data ℕ : Set where
+  zero : ℕ
+  suc : ℕ → ℕ
+
+-- Retry combinator: attempt phase up to n times, return first success
+retry : ∀ {A : Set ℓ₁} {B : Set ℓ₂}
+      → ℕ → Phase A (Maybe B) → Phase A (Maybe B)
+retry zero p = p
+retry (suc n) p = mkPhase attempt
+  where
+    attempt : _ → Maybe _
+    attempt a with p $ₚ a
+    ... | just b = just b
+    ... | nothing = (retry n p) $ₚ a
+
+-- Fallback combinator: try primary phase, use secondary if it fails
+fallback : ∀ {A : Set ℓ₁} {B : Set ℓ₂}
+         → Phase A (Maybe B) → Phase A B → Phase A B
+fallback primary secondary = mkPhase attempt
+  where
+    attempt : _ → _
+    attempt a with primary $ₚ a
+    ... | just b = b
+    ... | nothing = secondary $ₚ a
+
+-- Map over Maybe result
+mapMaybe : ∀ {A : Set ℓ₁} {B : Set ℓ₂} → (A → B) → Maybe A → Maybe B
+mapMaybe f (just a) = just (f a)
+mapMaybe f nothing = nothing
+
+-- Chain phases that can fail
+_>>=ₘ_ : ∀ {A : Set ℓ₁} {B : Set ℓ₂}
+        → Phase A (Maybe B) → (B → Phase A (Maybe B)) → Phase A (Maybe B)
+p₁ >>=ₘ f = mkPhase chain
+  where
+    chain : _ → Maybe _
+    chain a with p₁ $ₚ a
+    ... | just b = (f b) $ₚ a
+    ... | nothing = nothing
+
+infixl 7 _>>=ₘ_
+
+-- ============================================================================
+-- Profiling and Tracing
+-- ============================================================================
+
+-- Execution metadata for profiling
+record ExecutionMetadata : Set where
+  field
+    phaseName : String
+    -- Could extend with: complexity bounds, witness sizes, call counts
+    -- For now, just track the name
+
+-- A phase with profiling hooks
+record ProfiledPhase {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
+  field
+    phase : Phase A B
+    metadata : ExecutionMetadata
+    -- Hook called before transformation
+    beforeHook : A → A  -- Identity for now, could log
+    -- Hook called after transformation
+    afterHook : B → B   -- Identity for now, could log
+  
+  -- Execute with profiling
+  execute : A → B
+  execute a = afterHook (phase $ₚ (beforeHook a))
+
+-- Create profiled phase from annotated phase
+profile : ∀ {A : Set ℓ₁} {B : Set ℓ₂} → AnnotatedPhase A B → ProfiledPhase A B
+profile annotated = record
+  { phase = AnnotatedPhase.phase annotated
+  ; metadata = record { phaseName = AnnotatedPhase.name annotated }
+  ; beforeHook = λ a → a
+  ; afterHook = λ b → b
+  }
+
+-- ============================================================================
 -- Exports
 -- ============================================================================
 
 -- Re-export main types and operations
 open Phase public using (transform)
+open DependentPhase public using () renaming (transform to depTransform)
+open Invariant public using (property)
+open ExecutionMetadata public using (phaseName)

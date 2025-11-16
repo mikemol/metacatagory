@@ -32,6 +32,9 @@ import Tests.PropertyRegistryTests
 -- Phase abstraction usage examples (informational)
 import Tests.PhaseExamples
 
+-- Advanced phase capabilities (dependent, invariants, combinators, profiling)
+import Tests.AdvancedPhaseExamples
+
 -- Usage:
 --   agda --no-main -i src/agda src/agda/Tests/Index.agda
 --
