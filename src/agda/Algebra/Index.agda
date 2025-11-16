@@ -7,6 +7,7 @@ open import Algebra.Foundation public
 open import Algebra.Enrichment public
 open import Algebra.Groups.Abelian public
 open import Algebra.Groups.Basic public
+open import Algebra.Groups.Free public
 
 -- Future algebra modules will be added here as they are developed:
 -- open import Algebra.Rings.Basic public
