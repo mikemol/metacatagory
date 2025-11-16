@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  build:
+    name: Typecheck and Docs
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Agda and Pandoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y agda pandoc
+
+      - name: Typecheck
+        run: make check
+
+      - name: Build HTML docs
+        run: make docs
+
+      - name: Build Markdown docs
+        run: make docs-md
+
+      - name: Publish Markdown docs into docs/ (push only)
+        if: github.event_name == 'push'
+        run: |
+          set -e
+          rm -rf docs
+          mkdir -p docs
+          if [ -d build/md ]; then
+            rsync -a --delete build/md/ docs/
+          fi
+          if [ -n "$(git status --porcelain docs)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add docs
+            git commit -m "docs: update Markdown docs [skip ci]"
+            git push
+          else
+            echo "No changes in docs/ to commit."
+          fi
