@@ -10,7 +10,7 @@ open import Algebra.Groups.Basic public
 open import Algebra.Groups.Free public
 open import Algebra.Groups.Structure public
 open import Algebra.Rings.Basic public
+open import Algebra.Modules.Basic public
 
 -- Future algebra modules will be added here as they are developed:
--- open import Algebra.Modules.Basic public
 -- open import Algebra.Fields.Basic public
