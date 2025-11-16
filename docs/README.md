@@ -37,6 +37,12 @@ This directory contains auto-generated Markdown documentation from the Agda sour
   * [Level 3.1](Chapter3.Level3sub1.md) – Locales (Intuitionistic Logic, Heyting Algebras, Frames)
   * [Level 3.2](Chapter3.Level3sub2.md) – Sheaves on Locales (Presheaves, Gluing Axioms, Grothendieck Toposes)
 
+### Algebra: Hungerford's Graduate Algebra
+
+* [Algebra Index](Algebra.Index.md) – Entry point for algebraic structures
+  * [Foundation](Algebra.Foundation.md) – Magma, Semigroup, Monoid, Group, Abelian Group hierarchies
+  * Groups, Rings, Modules, Fields (coming soon)
+
 ## Build Info
 
 * **Source**: `src/agda/`
@@ -51,6 +57,13 @@ src/agda/
 ├── Core.agda                 # Unified proof layer
 ├── Metamodel.agda            # Meta-level constructs
 ├── PropertyRegistry.agda     # Property identifiers
+├── Algebra/
+│   ├── Index.agda            # Algebra aggregator
+│   ├── Foundation.agda       # Basic algebraic structures
+│   ├── Groups/               # Group theory (Hungerford Ch I-II)
+│   ├── Rings/                # Ring theory (Hungerford Ch III)
+│   ├── Modules/              # Module theory (Hungerford Ch IV)
+│   └── Fields/               # Field theory & Galois (Hungerford Ch V-VI)
 ├── Chapter1/
 │   ├── Level1Index.agda      # Chapter 1 aggregator
 │   └── Level1*.agda          # Individual modules

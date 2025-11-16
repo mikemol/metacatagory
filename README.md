@@ -29,13 +29,15 @@ make docs3
 make clean
 ```
 
-What’s built
+What's built
 
 * Structural Agda modules organized by chapter under `src/agda/Chapter{1,2,3}`.
+* Algebraic structures (Groups, Rings, Modules, Fields) under `src/agda/Algebra/`.
 * Chapter index modules aggregate each chapter:
   * `src/agda/Chapter1/Level1Index.agda`
   * `src/agda/Chapter2/Level2Index.agda`
   * `src/agda/Chapter3/Level3Index.agda`
+  * `src/agda/Algebra/Index.agda`
 * Examples in Chapter 3:
   * `Level3_1` (Locales)
   * `Level3_2` (Sheaves on locales)

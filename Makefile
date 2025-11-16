@@ -16,7 +16,8 @@ AGDA_INCLUDE = -i src/agda
 AGDA_INDEX_1 = src/agda/Chapter1/Level1Index.agda
 AGDA_INDEX_2 = src/agda/Chapter2/Level2Index.agda
 AGDA_INDEX_3 = src/agda/Chapter3/Level3Index.agda
-AGDA_INDEXES = $(AGDA_INDEX_1) $(AGDA_INDEX_2) $(AGDA_INDEX_3)
+AGDA_INDEX_ALGEBRA = src/agda/Algebra/Index.agda
+AGDA_INDEXES = $(AGDA_INDEX_1) $(AGDA_INDEX_2) $(AGDA_INDEX_3) $(AGDA_INDEX_ALGEBRA)
 
 # Build artifacts
 BUILD_DIR = build
@@ -25,7 +26,7 @@ MD_DIR = $(BUILD_DIR)/md
 
 # --- Targets ---
 
-.PHONY: all check docs docs-md docs1 docs2 docs3 clean help
+.PHONY: all check docs docs-md docs1 docs2 docs3 docs-algebra clean help
 
 # Default: typecheck everything
 all: check
@@ -73,6 +74,10 @@ docs3: | $(HTML_DIR)
 	@echo "Generating HTML docs for Chapter 3 into $(HTML_DIR)..."
 	@$(AGDA) --html --html-dir=$(HTML_DIR) $(AGDA_INCLUDE) $(AGDA_INDEX_3)
 
+docs-algebra: | $(HTML_DIR)
+	@echo "Generating HTML docs for Algebra into $(HTML_DIR)..."
+	@$(AGDA) --html --html-dir=$(HTML_DIR) $(AGDA_INCLUDE) $(AGDA_INDEX_ALGEBRA)
+
 # Ensure html output directory exists
 $(HTML_DIR):
 	@mkdir -p $(HTML_DIR)
@@ -90,8 +95,10 @@ clean:
 # Show available targets
 help:
 	@echo "Available targets:"
-	@echo "  all / check  - Typecheck all Agda chapter indexes"
-	@echo "  docs         - Generate HTML docs for all chapters"
+	@echo "  all / check  - Typecheck all Agda chapter indexes and algebra"
+	@echo "  docs         - Generate HTML docs for all chapters and algebra"
 	@echo "  docs1|docs2|docs3 - Generate HTML docs per chapter"
+	@echo "  docs-algebra - Generate HTML docs for algebra modules"
+	@echo "  docs-md      - Generate Markdown docs (requires pandoc)"
 	@echo "  clean        - Remove build artifacts under $(BUILD_DIR)"
 	@echo "Variables: AGDA, AGDA_FLAGS"

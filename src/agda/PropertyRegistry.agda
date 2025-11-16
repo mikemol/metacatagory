@@ -37,6 +37,9 @@ PullbackContextId = M.mkId "Pullback"
 AlgebraicCategoryId : M.Identifier
 AlgebraicCategoryId = M.mkId "AlgebraicCategory"
 
+AbelianCategoryId : M.Identifier
+AbelianCategoryId = M.mkId "AbelianCategory"
+
 CompleteCategoryId : M.Identifier
 CompleteCategoryId = M.mkId "Complete"
 
