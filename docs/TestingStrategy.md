@@ -298,6 +298,24 @@ We test **architectural correctness**, not computational correctness.
 8. Factorial Complexity: Galois group enumeration
 9. Profiled Complexity: Static and dynamic tracking
 
+### ConstructiveWitnessTests (15 phases)
+
+1. **Constructive Minimal Polynomial**: Algorithm → Computable witness with coefficients
+2. **Constructive Splitting Field**: Algorithm → Witness with explicit roots
+3. **Constructive Galois Group**: Algorithm → Automorphisms with group operations
+4. **Witness Validation**: Constructive witness → Validation result
+5. **Correctness Proof Extraction**: Witness → Proof with verification steps
+6. **Constructive Extension Degree**: Degree → Basis elements
+7. **Constructive Normal Closure**: Algorithm → Conjugates and embeddings
+8. **Complete Bundle**: Algorithms → Integrated witness bundle
+9. **Phase Composition**: Multi-step constructive pipelines
+10. **Computational Evidence**: Lift witness to evidence with computed flag
+11. **Automorphism Composition**: Group operations on automorphisms
+12. **Verification Pipeline**: Build → Validate → Prove workflow
+13. **Constructive vs Non-constructive**: Compare placeholder vs computational
+14. **Galois Correctness**: Verify fundamental theorem properties
+15. **Bundle Consistency**: Cross-witness validation
+
 ### WitnessConstructionTests (12 phases)
 
 1. **Identifier Creation**: String → M.Identifier
@@ -325,6 +343,7 @@ agda --no-main -i src/agda src/agda/Tests/PropertyRegistryTests.agda
 agda --no-main -i src/agda src/agda/Tests/AlgorithmCompositionTests.agda
 agda --no-main -i src/agda src/agda/Tests/SerializationTests.agda
 agda --no-main -i src/agda src/agda/Tests/PerformanceBoundaryTests.agda
+agda --no-main -i src/agda src/agda/Tests/ConstructiveWitnessTests.agda
 ```
 
 ### All Tests
@@ -399,4 +418,4 @@ Success = typechecking completes without errors.
 ---
 
 **Last Updated**: November 16, 2025  
-**Test Suite Statistics**: 68 phases across 8 suites, ~2100 lines total
+**Test Suite Statistics**: 83 phases across 9 suites, ~2500 lines total

@@ -46,14 +46,20 @@ What's built
   * `Level3_2` (Sheaves on locales)
 * Behavioral phase boundary test suite under `src/agda/Tests/`:
   * **Core/Phase.agda**: Formalization of phase abstraction (transformation pipelines, composition laws)
+  * **Core/ConstructiveWitnesses.agda**: Constructive witnesses with computational content
   * **Tests/DispatchBehaviorTests.agda** (9 phases): Evidence → Classification → Dispatch → Invocation
   * **Tests/UniversalPropertyTests.agda** (9 phases): Algorithm → UMP → Categorical structures
   * **Tests/WitnessConstructionTests.agda** (12 phases): Identifiers → Witnesses → Composites
   * **Tests/ErrorHandlingTests.agda** (8 phases): Type-level validation and error-preventing boundaries
   * **Tests/PropertyRegistryTests.agda** (3 phases): Stable identifier typing and consumption
+  * **Tests/AlgorithmCompositionTests.agda** (9 phases): Multi-step algorithm pipelines
+  * **Tests/SerializationTests.agda** (9 phases): Witness externalization and roundtrip
+  * **Tests/PerformanceBoundaryTests.agda** (9 phases): Complexity tracking and optimization
+  * **Tests/ConstructiveWitnessTests.agda** (15 phases): Computable witnesses with verification
   * **Tests/PhaseExamples.agda**: Demonstrations of Phase usage
-  * **Tests/Index.agda**: Unified entry point importing all test suites
+  * **Tests/Index.agda**: Unified entry point importing all test suites (83 phases total)
   * See `docs/TestingStrategy.md` for detailed philosophy and coverage
+  * See `docs/ConstructiveWitnesses.md` for constructive witness architecture
 
 Notes
 

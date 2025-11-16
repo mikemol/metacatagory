@@ -47,6 +47,10 @@ import Tests.SerializationTests
 -- Validates: Complexity classification, resource estimation, optimization points
 import Tests.PerformanceBoundaryTests
 
+-- Constructive witness framework (15 phases)
+-- Validates: Computational witnesses, algorithms, correctness proofs, validation
+import Tests.ConstructiveWitnessTests
+
 -- Usage:
 --   agda --no-main -i src/agda src/agda/Tests/Index.agda
 --
