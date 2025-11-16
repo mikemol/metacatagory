@@ -4,5 +4,5 @@ module Core where
 -- Import the syntactic/metamodel layer and the unified proof layer
 
 open import Metamodel public
-open import Level1 public
+open import Chapter1.Level1 public
 open import PropertyRegistry public

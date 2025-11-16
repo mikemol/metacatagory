@@ -7,64 +7,64 @@ open import Metamodel as M
 
 -- Category-level properties
 RegularCategoryId : M.Identifier
-RegularCategoryId = "RegularCategory"
+RegularCategoryId = M.mkId "RegularCategory"
 
 ExactCategoryId : M.Identifier
-ExactCategoryId = "ExactCategory"
+ExactCategoryId = M.mkId "ExactCategory"
 
 BarrExactCategoryId : M.Identifier
-BarrExactCategoryId = "BarrExactCategory"
+BarrExactCategoryId = M.mkId "BarrExactCategory"
 
 FiniteLimitsId : M.Identifier
-FiniteLimitsId = "FiniteLimits"
+FiniteLimitsId = M.mkId "FiniteLimits"
 
 -- Relation effectiveness property
 EffectiveEquivalenceRelationsId : M.Identifier
-EffectiveEquivalenceRelationsId = "EffectiveEquivalenceRelations"
+EffectiveEquivalenceRelationsId = M.mkId "EffectiveEquivalenceRelations"
 
 -- Morphism classes and closure notions
 RegularEpiClassId : M.Identifier
-RegularEpiClassId = "RegularEpi"
+RegularEpiClassId = M.mkId "RegularEpi"
 
 -- Operations / contexts for closure and stability
 CompositionOpId : M.Identifier
-CompositionOpId = "Composition"
+CompositionOpId = M.mkId "Composition"
 
 PullbackContextId : M.Identifier
-PullbackContextId = "Pullback"
+PullbackContextId = M.mkId "Pullback"
 
 -- Chapter 3: Algebraic categories and related properties
 AlgebraicCategoryId : M.Identifier
-AlgebraicCategoryId = "AlgebraicCategory"
+AlgebraicCategoryId = M.mkId "AlgebraicCategory"
 
 CompleteCategoryId : M.Identifier
-CompleteCategoryId = "Complete"
+CompleteCategoryId = M.mkId "Complete"
 
 CocompleteCategoryId : M.Identifier
-CocompleteCategoryId = "Cocomplete"
+CocompleteCategoryId = M.mkId "Cocomplete"
 
 SymmetricMonoidalCategoryId : M.Identifier
-SymmetricMonoidalCategoryId = "SymmetricMonoidalCategory"
+SymmetricMonoidalCategoryId = M.mkId "SymmetricMonoidalCategory"
 
 -- Free/forgetful adjunction existence (algebraic categories)
 HasFreeForgetfulAdjunctionId : M.Identifier
-HasFreeForgetfulAdjunctionId = "HasFreeForgetfulAdjunction"
+HasFreeForgetfulAdjunctionId = M.mkId "HasFreeForgetfulAdjunction"
 
 -- Lattice-level properties (used for Subobject lattices etc.)
 AlgebraicLatticeId : M.Identifier
-AlgebraicLatticeId = "AlgebraicLattice"
+AlgebraicLatticeId = M.mkId "AlgebraicLattice"
 
 -- Beck characterization: generator properties
 HasRegularProjectiveGeneratorId : M.Identifier
-HasRegularProjectiveGeneratorId = "HasRegularProjectiveGenerator"
+HasRegularProjectiveGeneratorId = M.mkId "HasRegularProjectiveGenerator"
 
 RegularlyCoveredByGeneratorId : M.Identifier
-RegularlyCoveredByGeneratorId = "RegularlyCoveredByGenerator"
+RegularlyCoveredByGeneratorId = M.mkId "RegularlyCoveredByGenerator"
 
 -- Category has a (possibly non-regular-projective) generator
 HasGeneratorId : M.Identifier
-HasGeneratorId = "HasGenerator"
+HasGeneratorId = M.mkId "HasGenerator"
 
 -- Functor-level properties
 AlgebraicFunctorId : M.Identifier
-AlgebraicFunctorId = "AlgebraicFunctor"
+AlgebraicFunctorId = M.mkId "AlgebraicFunctor"

@@ -13,9 +13,9 @@ AGDA_FLAGS ?= --no-main
 AGDA_INCLUDE = -i src/ebnf
 
 # Chapter index modules (act as entry points for typechecking and docs)
-AGDA_INDEX_1 = src/ebnf/1/Index.agda
-AGDA_INDEX_2 = src/ebnf/2/Index.agda
-AGDA_INDEX_3 = src/ebnf/3/Index.agda
+AGDA_INDEX_1 = src/ebnf/Chapter1/Level1Index.agda
+AGDA_INDEX_2 = src/ebnf/Chapter2/Level2Index.agda
+AGDA_INDEX_3 = src/ebnf/Chapter3/Level3Index.agda
 AGDA_INDEXES = $(AGDA_INDEX_1) $(AGDA_INDEX_2) $(AGDA_INDEX_3)
 
 # Build artifacts
@@ -32,7 +32,10 @@ all: check
 # Typecheck all chapter indexes
 check:
 	@echo "Typechecking Agda chapters..."
-	@$(AGDA) $(AGDA_FLAGS) $(AGDA_INCLUDE) $(AGDA_INDEXES)
+	@for file in $(AGDA_INDEXES); do \
+		echo "Checking $$file..."; \
+		$(AGDA) $(AGDA_FLAGS) $(AGDA_INCLUDE) $$file || exit 1; \
+	done
 	@echo "Typecheck complete."
 
 # Generate HTML documentation for all chapters
