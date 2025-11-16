@@ -13,6 +13,7 @@ open import Core.AlgebraicAlgorithms
 open import Core.Algorithms.Bundle
 open import Core.Algorithms.FiniteFields
 open import Core.Algorithms.NumberFields
+open import Core.Algorithms.FunctionFields
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Equality using (_≡_; refl)
@@ -54,7 +55,7 @@ data FieldType : Set where
 FieldTypeEvidence : (F : FieldDeclaration) → FieldType → Set
 FieldTypeEvidence F FiniteFieldType   = IsFiniteField F
 FieldTypeEvidence F NumberFieldType   = IsNumberField F
-FieldTypeEvidence F FunctionFieldType = M.Identifier  -- Placeholder for future IsFunctionField
+FieldTypeEvidence F FunctionFieldType = IsFunctionField F
 FieldTypeEvidence F GenericFieldType  = M.Identifier  -- No special evidence needed
 
 -- Dependent pair: tag + evidence
@@ -91,6 +92,11 @@ instance
   numberFieldClassifiable : {F : FieldDeclaration} (ev : IsNumberField F) → Classifiable F
   numberFieldClassifiable {F} ev = record { classification = (NumberFieldType , ev) }
 
+-- Instance: function field evidence → classifiable
+instance
+  functionFieldClassifiable : {F : FieldDeclaration} (ev : IsFunctionField F) → Classifiable F
+  functionFieldClassifiable {F} ev = record { classification = (FunctionFieldType , ev) }
+
 -- ============================================================================
 -- Smart Constructors (for explicit use when instances aren't available)
 -- ============================================================================
@@ -101,6 +107,9 @@ classifyAsFiniteField F ev = (FiniteFieldType , ev)
 
 classifyAsNumberField : (F : FieldDeclaration) → IsNumberField F → FieldClassification F
 classifyAsNumberField F ev = (NumberFieldType , ev)
+
+classifyAsFunctionField : (F : FieldDeclaration) → IsFunctionField F → FieldClassification F
+classifyAsFunctionField F ev = (FunctionFieldType , ev)
 
 -- Extract classification from Classifiable instance
 getClassification : {F : FieldDeclaration} → ⦃ _ : Classifiable F ⦄ → FieldClassification F
@@ -177,6 +186,13 @@ module _ where
                                 → AlgorithmBundle F E
   lookupWithNumberFieldEvidence F E Fnf Enf = numberFieldBundle F E Fnf Enf
 
+  -- Lookup with function field evidence
+  lookupWithFunctionFieldEvidence : (F E : FieldDeclaration)
+                                  → IsFunctionField F
+                                  → IsFunctionField E
+                                  → AlgorithmBundle F E
+  lookupWithFunctionFieldEvidence F E Fff Eff = functionFieldBundle F E Fff Eff
+
 -- ============================================================================
 -- Automatic Dispatch with Dependent Pairs (Simplified Hybrid)
 -- ============================================================================
@@ -190,6 +206,8 @@ dispatchBundle F E (FiniteFieldType , evF) (FiniteFieldType , evE) =
   finiteFieldBundle F E evF evE
 dispatchBundle F E (NumberFieldType , evF) (NumberFieldType , evE) = 
   numberFieldBundle F E evF evE
+dispatchBundle F E (FunctionFieldType , evF) (FunctionFieldType , evE) =
+  functionFieldBundle F E evF evE
 dispatchBundle F E _ _ = 
   genericAlgorithmBundle F E  -- Fallback for unsupported/mixed combinations
 
