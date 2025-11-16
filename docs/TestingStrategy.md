@@ -64,7 +64,19 @@ module Tests.SuiteName where
    - Domain: Stable property identifiers
    - Coverage: Identifier typing, generic consumption, stability under simple composition
 
-6. **Tests/Index.agda**
+6. **AlgorithmCompositionTests** (9 phases, ~300 lines)
+   - Domain: Multi-step algorithm pipelines
+   - Coverage: Algorithm output validity, two/three-step composition, bundle composition, invariant preservation, UMP composition, error propagation, profiled composition, dependent composition
+
+7. **SerializationTests** (9 phases, ~280 lines)
+   - Domain: Witness externalization
+   - Coverage: Identifier/field/extension/polynomial/Galois group/bundle serialization, structure preservation, error handling, profiled serialization
+
+8. **PerformanceBoundaryTests** (9 phases, ~300 lines)
+   - Domain: Computational complexity tracking
+   - Coverage: Complexity classification (constant/polynomial/exponential), boundary detection, resource estimation, optimization opportunities, profiled complexity
+
+9. **Tests/Index.agda**
    - Unified entry point importing all test suites
    - Documents coverage summary
 
@@ -250,6 +262,44 @@ We test **architectural correctness**, not computational correctness.
 2. Generic Consumption: Usable anywhere an Identifier is required
 3. Structural Composition: Pairings of identifiers remain well-typed
 
+### AlgorithmCompositionTests (9 phases)
+
+1. Single Algorithm Validity: Individual outputs are well-typed
+2. Two-Step Composition: Output → input compatibility
+3. Three-Step Pipeline: End-to-end correctness
+4. Bundle Composition: Algorithms from same bundle compose
+5. Invariant Preservation: Properties maintained through composition
+6. Universal Property Composition: Composite UMPs hold
+7. Error Propagation: Maybe composition and fallback
+8. Profiled Composition: Metadata tracking through pipelines
+9. Dependent Composition: Type-indexed algorithm chains
+
+### SerializationTests (9 phases)
+
+1. Identifier Serialization: String conversion and parsing
+2. Field Serialization: External representation of fields
+3. Extension Serialization: Structure preservation
+4. Polynomial Serialization: String format conversion
+5. Galois Group Serialization: Group structure externalization
+6. Bundle Serialization: Full algorithm suite persistence
+7. Structure Preservation: Mathematical properties maintained
+8. Deserialization Errors: Invalid data rejection
+9. Profiled Serialization: Performance tracking
+
+### PerformanceBoundaryTests (9 phases)
+
+1. Constant Complexity: Identifier operations
+2. Polynomial Complexity: Field classification
+3. Exponential Complexity: Minimal polynomial computation
+4. Complexity Boundaries: Where jumps occur in pipelines
+5. Logarithmic Complexity: Bundle dispatch
+6. Resource Estimation: Time and space costs
+7. Optimization Opportunities: Fast/slow path identification
+8. Factorial Complexity: Galois group enumeration
+9. Profiled Complexity: Static and dynamic tracking
+
+### WitnessConstructionTests (12 phases)
+
 1. **Identifier Creation**: String → M.Identifier
 2. **Field Construction**: Identifier → FieldDeclaration
 3. **Extension Building**: (F, E) → Extension witnesses
@@ -272,6 +322,9 @@ agda --no-main -i src/agda src/agda/Tests/UniversalPropertyTests.agda
 agda --no-main -i src/agda src/agda/Tests/WitnessConstructionTests.agda
 agda --no-main -i src/agda src/agda/Tests/ErrorHandlingTests.agda
 agda --no-main -i src/agda src/agda/Tests/PropertyRegistryTests.agda
+agda --no-main -i src/agda src/agda/Tests/AlgorithmCompositionTests.agda
+agda --no-main -i src/agda src/agda/Tests/SerializationTests.agda
+agda --no-main -i src/agda src/agda/Tests/PerformanceBoundaryTests.agda
 ```
 
 ### All Tests
@@ -346,4 +399,4 @@ Success = typechecking completes without errors.
 ---
 
 **Last Updated**: November 16, 2025  
-**Test Suite Statistics**: 41 phases across 5 suites, ~1400 lines total
+**Test Suite Statistics**: 68 phases across 8 suites, ~2100 lines total

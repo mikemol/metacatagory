@@ -35,6 +35,18 @@ import Tests.PhaseExamples
 -- Advanced phase capabilities (dependent, invariants, combinators, profiling)
 import Tests.AdvancedPhaseExamples
 
+-- Algorithm composition validation (9 phases)
+-- Validates: Multi-step pipelines, invariant preservation, UMP composition
+import Tests.AlgorithmCompositionTests
+
+-- Serialization and deserialization (9 phases)
+-- Validates: Witness ↔ External conversion, roundtrip, structure preservation
+import Tests.SerializationTests
+
+-- Performance and complexity boundaries (9 phases)
+-- Validates: Complexity classification, resource estimation, optimization points
+import Tests.PerformanceBoundaryTests
+
 -- Usage:
 --   agda --no-main -i src/agda src/agda/Tests/Index.agda
 --
