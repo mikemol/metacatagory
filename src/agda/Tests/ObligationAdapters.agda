@@ -3904,3 +3904,463 @@ mkAlgebraHomomorphismAdapter R A B d er p =
 
 isFilledAlgebraHomomorphism : AlgebraHomomorphismAdapter → B.Bool
 isFilledAlgebraHomomorphism a = AlgebraHomomorphismAdapter.status a
+
+
+------------------------------------------------------------------------
+-- Monad-Adjunction Theory (Chapter2.Level2sub4)
+------------------------------------------------------------------------
+
+-- Category of T-algebras (Eilenberg-Moore category)
+record CategoryOfAlgebrasAdapter : Set₁ where
+  field
+    decl : C2S4.CategoryOfAlgebras
+    expectedMonad : C2S4.MonadDeclaration
+    link : C2S4.CategoryOfAlgebras.monad decl ≡ expectedMonad
+    status : B.Bool
+
+mkCategoryOfAlgebrasAdapter :
+  (d : C2S4.CategoryOfAlgebras) →
+  (em : C2S4.MonadDeclaration) →
+  (p : C2S4.CategoryOfAlgebras.monad d ≡ em) →
+  CategoryOfAlgebrasAdapter
+mkCategoryOfAlgebrasAdapter d em p =
+  record { decl = d ; expectedMonad = em ; link = p ; status = B.true }
+
+isFilledCategoryOfAlgebras : CategoryOfAlgebrasAdapter → B.Bool
+isFilledCategoryOfAlgebras a = CategoryOfAlgebrasAdapter.status a
+
+
+-- Theorem: Adjunction induces monad
+record AdjunctionInducesMonadTheoremAdapter : Set₁ where
+  field
+    decl : C2S4.AdjunctionInducesMonadTheorem
+    expectedMonad : C2S4.MonadDeclaration
+    link : C2S4.AdjunctionInducesMonadTheorem.inducedMonad decl ≡ expectedMonad
+    status : B.Bool
+
+mkAdjunctionInducesMonadTheoremAdapter :
+  (d : C2S4.AdjunctionInducesMonadTheorem) →
+  (em : C2S4.MonadDeclaration) →
+  (p : C2S4.AdjunctionInducesMonadTheorem.inducedMonad d ≡ em) →
+  AdjunctionInducesMonadTheoremAdapter
+mkAdjunctionInducesMonadTheoremAdapter d em p =
+  record { decl = d ; expectedMonad = em ; link = p ; status = B.true }
+
+isFilledAdjunctionInducesMonadTheorem : AdjunctionInducesMonadTheoremAdapter → B.Bool
+isFilledAdjunctionInducesMonadTheorem a = AdjunctionInducesMonadTheoremAdapter.status a
+
+
+-- Eilenberg-Moore adjunction from monad
+record EilenbergMooreAdjunctionAdapter : Set₁ where
+  field
+    decl : C2S4.EilenbergMooreAdjunction
+    expectedMonad : C2S4.MonadDeclaration
+    expectedAlgCat : C2S4.CategoryOfAlgebras
+    link1 : C2S4.EilenbergMooreAdjunction.monad decl ≡ expectedMonad
+    link2 : C2S4.EilenbergMooreAdjunction.algebraCategory decl ≡ expectedAlgCat
+    status : B.Bool
+
+mkEilenbergMooreAdjunctionAdapter :
+  (d : C2S4.EilenbergMooreAdjunction) →
+  (em : C2S4.MonadDeclaration) →
+  (eac : C2S4.CategoryOfAlgebras) →
+  (p1 : C2S4.EilenbergMooreAdjunction.monad d ≡ em) →
+  (p2 : C2S4.EilenbergMooreAdjunction.algebraCategory d ≡ eac) →
+  EilenbergMooreAdjunctionAdapter
+mkEilenbergMooreAdjunctionAdapter d em eac p1 p2 =
+  record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledEilenbergMooreAdjunction : EilenbergMooreAdjunctionAdapter → B.Bool
+isFilledEilenbergMooreAdjunction a = EilenbergMooreAdjunctionAdapter.status a
+
+
+-- Monad-adjunction correspondence theorem
+record MonadAdjunctionCorrespondenceTheoremAdapter : Set₁ where
+  field
+    decl : C2S4.MonadAdjunctionCorrespondenceTheorem
+    expectedMonad : C2S4.MonadDeclaration
+    expectedEM : C2S4.EilenbergMooreAdjunction
+    link1 : C2S4.MonadAdjunctionCorrespondenceTheorem.monad decl ≡ expectedMonad
+    link2 : C2S4.MonadAdjunctionCorrespondenceTheorem.emAdjunction decl ≡ expectedEM
+    status : B.Bool
+
+mkMonadAdjunctionCorrespondenceTheoremAdapter :
+  (d : C2S4.MonadAdjunctionCorrespondenceTheorem) →
+  (em : C2S4.MonadDeclaration) →
+  (eEM : C2S4.EilenbergMooreAdjunction) →
+  (p1 : C2S4.MonadAdjunctionCorrespondenceTheorem.monad d ≡ em) →
+  (p2 : C2S4.MonadAdjunctionCorrespondenceTheorem.emAdjunction d ≡ eEM) →
+  MonadAdjunctionCorrespondenceTheoremAdapter
+mkMonadAdjunctionCorrespondenceTheoremAdapter d em eEM p1 p2 =
+  record { decl = d ; expectedMonad = em ; expectedEM = eEM ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledMonadAdjunctionCorrespondenceTheorem : MonadAdjunctionCorrespondenceTheoremAdapter → B.Bool
+isFilledMonadAdjunctionCorrespondenceTheorem a = MonadAdjunctionCorrespondenceTheoremAdapter.status a
+
+
+-- Beck monadicity theorem
+record BeckMonadicityTheoremAdapter : Set₁ where
+  field
+    decl : C2S4.BeckMonadicityTheorem
+    expectedReflects : C2S4.ReflectsIsomorphismsProperty
+    link : C2S4.BeckMonadicityTheorem.reflectsIsomorphisms decl ≡ expectedReflects
+    status : B.Bool
+
+mkBeckMonadicityTheoremAdapter :
+  (d : C2S4.BeckMonadicityTheorem) →
+  (er : C2S4.ReflectsIsomorphismsProperty) →
+  (p : C2S4.BeckMonadicityTheorem.reflectsIsomorphisms d ≡ er) →
+  BeckMonadicityTheoremAdapter
+mkBeckMonadicityTheoremAdapter d er p =
+  record { decl = d ; expectedReflects = er ; link = p ; status = B.true }
+
+isFilledBeckMonadicityTheorem : BeckMonadicityTheoremAdapter → B.Bool
+isFilledBeckMonadicityTheorem a = BeckMonadicityTheoremAdapter.status a
+
+
+-- Functor property: is monadic
+record MonadicFunctorPropertyAdapter : Set₁ where
+  field
+    decl : C2S4.MonadicFunctorProperty
+    expectedFunctor : M.Identifier
+    link : C2S4.MonadicFunctorProperty.functor decl ≡ expectedFunctor
+    status : B.Bool
+
+mkMonadicFunctorPropertyAdapter :
+  (d : C2S4.MonadicFunctorProperty) →
+  (ef : M.Identifier) →
+  (p : C2S4.MonadicFunctorProperty.functor d ≡ ef) →
+  MonadicFunctorPropertyAdapter
+mkMonadicFunctorPropertyAdapter d ef p =
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+
+isFilledMonadicFunctorProperty : MonadicFunctorPropertyAdapter → B.Bool
+isFilledMonadicFunctorProperty a = MonadicFunctorPropertyAdapter.status a
+
+
+-- Comonad from adjunction (for descent theory)
+record ComonadFromAdjunctionAdapter : Set₁ where
+  field
+    decl : C2S4.ComonadFromAdjunction
+    expectedComonad : C2S4.ComonadDeclaration
+    link : C2S4.ComonadFromAdjunction.inducedComonad decl ≡ expectedComonad
+    status : B.Bool
+
+mkComonadFromAdjunctionAdapter :
+  (d : C2S4.ComonadFromAdjunction) →
+  (ec : C2S4.ComonadDeclaration) →
+  (p : C2S4.ComonadFromAdjunction.inducedComonad d ≡ ec) →
+  ComonadFromAdjunctionAdapter
+mkComonadFromAdjunctionAdapter d ec p =
+  record { decl = d ; expectedComonad = ec ; link = p ; status = B.true }
+
+isFilledComonadFromAdjunction : ComonadFromAdjunctionAdapter → B.Bool
+isFilledComonadFromAdjunction a = ComonadFromAdjunctionAdapter.status a
+
+
+------------------------------------------------------------------------
+-- Limits and Colimits in Algebra Categories (Chapter2.Level2sub4)
+------------------------------------------------------------------------
+
+-- Theorem: Forgetful functor from algebras creates limits
+record ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter : Set₁ where
+  field
+    decl : C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem
+    expectedMonad : C2S4.MonadDeclaration
+    expectedAlgCat : C2S4.CategoryOfAlgebras
+    link1 : C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem.monad decl ≡ expectedMonad
+    link2 : C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem.algebraCategory decl ≡ expectedAlgCat
+    status : B.Bool
+
+mkForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter :
+  (d : C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem) →
+  (em : C2S4.MonadDeclaration) →
+  (eac : C2S4.CategoryOfAlgebras) →
+  (p1 : C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem.monad d ≡ em) →
+  (p2 : C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem.algebraCategory d ≡ eac) →
+  ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter
+mkForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter d em eac p1 p2 =
+  record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledForgetfulFunctorFromAlgebrasCreatesLimitsTheorem : ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter → B.Bool
+isFilledForgetfulFunctorFromAlgebrasCreatesLimitsTheorem a = ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter.status a
+
+
+-- Corollary: Completeness of algebra categories
+record CompletenessOfAlgebraCategoriesCorollaryAdapter : Set₁ where
+  field
+    decl : C2S4.CompletenessOfAlgebraCategoriesCorollary
+    expectedMonad : C2S4.MonadDeclaration
+    expectedAlgCat : C2S4.CategoryOfAlgebras
+    link1 : C2S4.CompletenessOfAlgebraCategoriesCorollary.monad decl ≡ expectedMonad
+    link2 : C2S4.CompletenessOfAlgebraCategoriesCorollary.algebraCategory decl ≡ expectedAlgCat
+    status : B.Bool
+
+mkCompletenessOfAlgebraCategoriesCorollaryAdapter :
+  (d : C2S4.CompletenessOfAlgebraCategoriesCorollary) →
+  (em : C2S4.MonadDeclaration) →
+  (eac : C2S4.CategoryOfAlgebras) →
+  (p1 : C2S4.CompletenessOfAlgebraCategoriesCorollary.monad d ≡ em) →
+  (p2 : C2S4.CompletenessOfAlgebraCategoriesCorollary.algebraCategory d ≡ eac) →
+  CompletenessOfAlgebraCategoriesCorollaryAdapter
+mkCompletenessOfAlgebraCategoriesCorollaryAdapter d em eac p1 p2 =
+  record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledCompletenessOfAlgebraCategoriesCorollary : CompletenessOfAlgebraCategoriesCorollaryAdapter → B.Bool
+isFilledCompletenessOfAlgebraCategoriesCorollary a = CompletenessOfAlgebraCategoriesCorollaryAdapter.status a
+
+
+-- Reflexive pair
+record ReflexivePairAdapter : Set₁ where
+  field
+    decl : C2S4.ReflexivePair
+    expectedDomain : M.Identifier
+    expectedCodomain : M.Identifier
+    link1 : C2S4.ReflexivePair.domain decl ≡ expectedDomain
+    link2 : C2S4.ReflexivePair.codomain decl ≡ expectedCodomain
+    status : B.Bool
+
+mkReflexivePairAdapter :
+  (d : C2S4.ReflexivePair) →
+  (edom : M.Identifier) →
+  (ecod : M.Identifier) →
+  (p1 : C2S4.ReflexivePair.domain d ≡ edom) →
+  (p2 : C2S4.ReflexivePair.codomain d ≡ ecod) →
+  ReflexivePairAdapter
+mkReflexivePairAdapter d edom ecod p1 p2 =
+  record { decl = d ; expectedDomain = edom ; expectedCodomain = ecod ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledReflexivePair : ReflexivePairAdapter → B.Bool
+isFilledReflexivePair a = ReflexivePairAdapter.status a
+
+
+-- Theorem: Forgetful functor preserves coequalizers of reflexive pairs
+record ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter : Set₁ where
+  field
+    decl : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem
+    expectedMonad : C2S4.MonadDeclaration
+    expectedAlgCat : C2S4.CategoryOfAlgebras
+    expectedRefPair : C2S4.ReflexivePair
+    link1 : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem.monad decl ≡ expectedMonad
+    link2 : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem.algebraCategory decl ≡ expectedAlgCat
+    link3 : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem.reflexivePair decl ≡ expectedRefPair
+    status : B.Bool
+
+mkForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter :
+  (d : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem) →
+  (em : C2S4.MonadDeclaration) →
+  (eac : C2S4.CategoryOfAlgebras) →
+  (erp : C2S4.ReflexivePair) →
+  (p1 : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem.monad d ≡ em) →
+  (p2 : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem.algebraCategory d ≡ eac) →
+  (p3 : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem.reflexivePair d ≡ erp) →
+  ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter
+mkForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter d em eac erp p1 p2 p3 =
+  record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; expectedRefPair = erp ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = B.true }
+
+isFilledForgetfulFunctorPreservesCertainCoequalizersTheorem : ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter → B.Bool
+isFilledForgetfulFunctorPreservesCertainCoequalizersTheorem a = ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter.status a
+
+
+-- Functor property: reflects isomorphisms
+record ReflectsIsomorphismsPropertyAdapter : Set₁ where
+  field
+    decl : C2S4.ReflectsIsomorphismsProperty
+    expectedFunctor : M.Identifier
+    link : C2S4.ReflectsIsomorphismsProperty.functor decl ≡ expectedFunctor
+    status : B.Bool
+
+mkReflectsIsomorphismsPropertyAdapter :
+  (d : C2S4.ReflectsIsomorphismsProperty) →
+  (ef : M.Identifier) →
+  (p : C2S4.ReflectsIsomorphismsProperty.functor d ≡ ef) →
+  ReflectsIsomorphismsPropertyAdapter
+mkReflectsIsomorphismsPropertyAdapter d ef p =
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+
+isFilledReflectsIsomorphismsProperty : ReflectsIsomorphismsPropertyAdapter → B.Bool
+isFilledReflectsIsomorphismsProperty a = ReflectsIsomorphismsPropertyAdapter.status a
+
+
+-- U-split pair
+record USplitPairAdapter : Set₁ where
+  field
+    decl : C2S4.USplitPair
+    expectedFunctor : M.Identifier
+    link : C2S4.USplitPair.functor decl ≡ expectedFunctor
+    status : B.Bool
+
+mkUSplitPairAdapter :
+  (d : C2S4.USplitPair) →
+  (ef : M.Identifier) →
+  (p : C2S4.USplitPair.functor d ≡ ef) →
+  USplitPairAdapter
+mkUSplitPairAdapter d ef p =
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+
+isFilledUSplitPair : USplitPairAdapter → B.Bool
+isFilledUSplitPair a = USplitPairAdapter.status a
+
+
+------------------------------------------------------------------------
+-- Regular Category Theory (Chapter2.Level2sub2)
+------------------------------------------------------------------------
+
+-- Regular category declaration
+record RegularCategoryDeclarationAdapter : Set₁ where
+  field
+    decl : C2S2.RegularCategoryDeclaration
+    expectedFiniteLimits : C2S2.FiniteLimitsProperty
+    expectedStability : C2S2.StabilityUnderPullbackProperty
+    link1 : C2S2.RegularCategoryDeclaration.finiteLimits decl ≡ expectedFiniteLimits
+    link2 : C2S2.RegularCategoryDeclaration.regularEpiStability decl ≡ expectedStability
+    status : B.Bool
+
+mkRegularCategoryDeclarationAdapter :
+  (d : C2S2.RegularCategoryDeclaration) →
+  (efl : C2S2.FiniteLimitsProperty) →
+  (es : C2S2.StabilityUnderPullbackProperty) →
+  (p1 : C2S2.RegularCategoryDeclaration.finiteLimits d ≡ efl) →
+  (p2 : C2S2.RegularCategoryDeclaration.regularEpiStability d ≡ es) →
+  RegularCategoryDeclarationAdapter
+mkRegularCategoryDeclarationAdapter d efl es p1 p2 =
+  record { decl = d ; expectedFiniteLimits = efl ; expectedStability = es ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledRegularCategoryDeclaration : RegularCategoryDeclarationAdapter → B.Bool
+isFilledRegularCategoryDeclaration a = RegularCategoryDeclarationAdapter.status a
+
+
+-- Kernel pair of a morphism
+record KernelPairDeclarationAdapter : Set₁ where
+  field
+    decl : C2S2.KernelPairDeclaration
+    expectedMorphism : M.Identifier
+    link : C2S2.KernelPairDeclaration.morphism decl ≡ expectedMorphism
+    status : B.Bool
+
+mkKernelPairDeclarationAdapter :
+  (d : C2S2.KernelPairDeclaration) →
+  (em : M.Identifier) →
+  (p : C2S2.KernelPairDeclaration.morphism d ≡ em) →
+  KernelPairDeclarationAdapter
+mkKernelPairDeclarationAdapter d em p =
+  record { decl = d ; expectedMorphism = em ; link = p ; status = B.true }
+
+isFilledKernelPairDeclaration : KernelPairDeclarationAdapter → B.Bool
+isFilledKernelPairDeclaration a = KernelPairDeclarationAdapter.status a
+
+
+-- Internal equivalence relation
+record InternalEquivalenceRelationDeclarationAdapter : Set₁ where
+  field
+    decl : C2S2.InternalEquivalenceRelationDeclaration
+    expectedObjectA : M.Identifier
+    link : C2S2.InternalEquivalenceRelationDeclaration.objectA decl ≡ expectedObjectA
+    status : B.Bool
+
+mkInternalEquivalenceRelationDeclarationAdapter :
+  (d : C2S2.InternalEquivalenceRelationDeclaration) →
+  (eoa : M.Identifier) →
+  (p : C2S2.InternalEquivalenceRelationDeclaration.objectA d ≡ eoa) →
+  InternalEquivalenceRelationDeclarationAdapter
+mkInternalEquivalenceRelationDeclarationAdapter d eoa p =
+  record { decl = d ; expectedObjectA = eoa ; link = p ; status = B.true }
+
+isFilledInternalEquivalenceRelationDeclaration : InternalEquivalenceRelationDeclarationAdapter → B.Bool
+isFilledInternalEquivalenceRelationDeclaration a = InternalEquivalenceRelationDeclarationAdapter.status a
+
+
+-- Exact category (regular + effective relations)
+record ExactCategoryDeclarationAdapter : Set₁ where
+  field
+    decl : C2S2.ExactCategoryDeclaration
+    expectedRegular : C2S2.RegularCategoryDeclaration
+    link : C2S2.ExactCategoryDeclaration.regular decl ≡ expectedRegular
+    status : B.Bool
+
+mkExactCategoryDeclarationAdapter :
+  (d : C2S2.ExactCategoryDeclaration) →
+  (er : C2S2.RegularCategoryDeclaration) →
+  (p : C2S2.ExactCategoryDeclaration.regular d ≡ er) →
+  ExactCategoryDeclarationAdapter
+mkExactCategoryDeclarationAdapter d er p =
+  record { decl = d ; expectedRegular = er ; link = p ; status = B.true }
+
+isFilledExactCategoryDeclaration : ExactCategoryDeclarationAdapter → B.Bool
+isFilledExactCategoryDeclaration a = ExactCategoryDeclarationAdapter.status a
+
+
+------------------------------------------------------------------------
+-- Advanced Monad Theory (Chapter2.Level2sub4)
+------------------------------------------------------------------------
+
+-- Monad with rank α
+record MonadWithRankAdapter : Set₁ where
+  field
+    decl : C2S4.MonadWithRank
+    expectedMonad : C2S4.MonadDeclaration
+    expectedCardinal : C2S4.RegularCardinal
+    link1 : C2S4.MonadWithRank.monad decl ≡ expectedMonad
+    link2 : C2S4.MonadWithRank.cardinal decl ≡ expectedCardinal
+    status : B.Bool
+
+mkMonadWithRankAdapter :
+  (d : C2S4.MonadWithRank) →
+  (em : C2S4.MonadDeclaration) →
+  (ec : C2S4.RegularCardinal) →
+  (p1 : C2S4.MonadWithRank.monad d ≡ em) →
+  (p2 : C2S4.MonadWithRank.cardinal d ≡ ec) →
+  MonadWithRankAdapter
+mkMonadWithRankAdapter d em ec p1 p2 =
+  record { decl = d ; expectedMonad = em ; expectedCardinal = ec ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledMonadWithRank : MonadWithRankAdapter → B.Bool
+isFilledMonadWithRank a = MonadWithRankAdapter.status a
+
+
+-- Locally α-presentable category
+record LocallyPresentableCategoryAdapter : Set₁ where
+  field
+    decl : C2S4.LocallyPresentableCategory
+    expectedCardinal : C2S4.RegularCardinal
+    link : C2S4.LocallyPresentableCategory.cardinal decl ≡ expectedCardinal
+    status : B.Bool
+
+mkLocallyPresentableCategoryAdapter :
+  (d : C2S4.LocallyPresentableCategory) →
+  (ec : C2S4.RegularCardinal) →
+  (p : C2S4.LocallyPresentableCategory.cardinal d ≡ ec) →
+  LocallyPresentableCategoryAdapter
+mkLocallyPresentableCategoryAdapter d ec p =
+  record { decl = d ; expectedCardinal = ec ; link = p ; status = B.true }
+
+isFilledLocallyPresentableCategory : LocallyPresentableCategoryAdapter → B.Bool
+isFilledLocallyPresentableCategory a = LocallyPresentableCategoryAdapter.status a
+
+
+-- Rank theorem for monadic categories
+record RankTheoremForMonadicCategoriesTheoremAdapter : Set₁ where
+  field
+    decl : C2S4.RankTheoremForMonadicCategoriesTheorem
+    expectedBaseCategory : C2S4.LocallyPresentableCategory
+    expectedMonadWithRank : C2S4.MonadWithRank
+    expectedAlgCat : C2S4.CategoryOfAlgebras
+    link1 : C2S4.RankTheoremForMonadicCategoriesTheorem.baseCategory decl ≡ expectedBaseCategory
+    link2 : C2S4.RankTheoremForMonadicCategoriesTheorem.monadWithRank decl ≡ expectedMonadWithRank
+    link3 : C2S4.RankTheoremForMonadicCategoriesTheorem.algebraCategory decl ≡ expectedAlgCat
+    status : B.Bool
+
+mkRankTheoremForMonadicCategoriesTheoremAdapter :
+  (d : C2S4.RankTheoremForMonadicCategoriesTheorem) →
+  (ebc : C2S4.LocallyPresentableCategory) →
+  (emr : C2S4.MonadWithRank) →
+  (eac : C2S4.CategoryOfAlgebras) →
+  (p1 : C2S4.RankTheoremForMonadicCategoriesTheorem.baseCategory d ≡ ebc) →
+  (p2 : C2S4.RankTheoremForMonadicCategoriesTheorem.monadWithRank d ≡ emr) →
+  (p3 : C2S4.RankTheoremForMonadicCategoriesTheorem.algebraCategory d ≡ eac) →
+  RankTheoremForMonadicCategoriesTheoremAdapter
+mkRankTheoremForMonadicCategoriesTheoremAdapter d ebc emr eac p1 p2 p3 =
+  record { decl = d ; expectedBaseCategory = ebc ; expectedMonadWithRank = emr ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = B.true }
+
+isFilledRankTheoremForMonadicCategoriesTheorem : RankTheoremForMonadicCategoriesTheoremAdapter → B.Bool
+isFilledRankTheoremForMonadicCategoriesTheorem a = RankTheoremForMonadicCategoriesTheoremAdapter.status a
