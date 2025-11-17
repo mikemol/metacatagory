@@ -346,3 +346,285 @@ chk2s8A = record
     ; pseudofunctors = ⊤
     ; equivalence = ⊤
     }
+
+------------------------------------------------------------------------
+-- Additional adapter instances for comprehensive Chapter 2 coverage
+------------------------------------------------------------------------
+
+-- Level 2.1 additional adapters
+sesDecl : S1.ShortExactSequenceDeclaration
+sesDecl = S1.SHORT_EXACT_SEQUENCE (M.mkId "0") (M.mkId "A") (M.mkId "B") (M.mkId "C")
+            (M.mkId "f") (M.mkId "g") true true true
+
+ses-adapter : A.ShortExactSequenceAdapter
+ses-adapter = A.mkShortExactSequenceAdapter sesDecl (M.mkId "A") (M.mkId "B") (M.mkId "C") refl refl refl
+
+ses-status-is-filled : A.isFilledShortExactSequence ses-adapter ≡ true
+ses-status-is-filled = refl
+
+zeroMorphDecl : S1.ZeroMorphismDeclaration
+zeroMorphDecl = S1.zero_mor (M.mkId "A") (M.mkId "B") (M.mkId "0") (M.mkId "f") (M.mkId "g")
+
+zero-morph-adapter : A.ZeroMorphismAdapter
+zero-morph-adapter = A.mkZeroMorphismAdapter zeroMorphDecl (M.mkId "A") (M.mkId "B") (M.mkId "0") refl refl refl
+
+zero-morph-status-is-filled : A.isFilledZeroMorphism zero-morph-adapter ≡ true
+zero-morph-status-is-filled = refl
+
+torsionTheoryDecl : S1.TorsionTheoryDeclaration
+torsionTheoryDecl = S1.TORSION_THEORY (M.mkId "C") (M.mkId "T") (M.mkId "F")
+  (S1._⊥_ (M.mkId "T") (M.mkId "F") (M.mkId "orth"))
+  [] (M.mkId "quot-closed") (M.mkId "subobj-closed") (M.mkId "corefl") (M.mkId "refl")
+
+torsion-adapter : A.TorsionTheoryAdapter
+torsion-adapter = A.mkTorsionTheoryAdapter torsionTheoryDecl (M.mkId "C") (M.mkId "T") (M.mkId "F") refl refl refl
+
+torsion-status-is-filled : A.isFilledTorsionTheory torsion-adapter ≡ true
+torsion-status-is-filled = refl
+
+-- Level 2.3 additional adapters
+bialgebraDecl : S3.BialgebraDeclaration
+bialgebraDecl = S3._is_T1_T2_Bialgebra
+  (S3.LAWVERE_THEORY_WITH_base_object (M.mkId "T1") (M.mkId "X1") (M.mkId "fp1") (M.mkId "arity1"))
+  (S3.LAWVERE_THEORY_WITH_base_object (M.mkId "T2") (M.mkId "X2") (M.mkId "fp2") (M.mkId "arity2"))
+  (M.mkId "S") (M.mkId "M1") (M.mkId "M2") (M.mkId "compat")
+
+bialgebra-adapter : A.BialgebraAdapter
+bialgebra-adapter = A.mkBialgebraAdapter bialgebraDecl (M.mkId "S") (M.mkId "M1") (M.mkId "M2") refl refl refl
+
+bialgebra-status-is-filled : A.isFilledBialgebra bialgebra-adapter ≡ true
+bialgebra-status-is-filled = refl
+
+-- Level 2.4 additional adapters
+comonadData : S4.ComonadData
+comonadData = S4.COMONAD_DATA (M.mkId "C") (M.mkId "G") (M.mkId "ε") (M.mkId "δ")
+
+comonadAxioms : S4.ComonadAxioms
+comonadAxioms = S4.COMONAD_AXIOMS (M.mkId "coassoc") (M.mkId "counit")
+
+comonadDecl : S4.ComonadDeclaration
+comonadDecl = S4.COMONAD_on (M.mkId "G") comonadData comonadAxioms
+
+comonad-adapter : A.ComonadAdapter
+comonad-adapter = A.mkComonadAdapter comonadDecl (M.mkId "G") comonadData refl refl
+
+comonad-status-is-filled : A.isFilledComonad comonad-adapter ≡ true
+comonad-status-is-filled = refl
+
+-- Level 2.5 additional adapters
+accessibleCatDecl : S5.AccessibleCategoryDeclaration
+accessibleCatDecl = record
+  { category = C1S3.CATEGORY (M.mkId "C")
+  ; rank = C1S6.REGULAR_CARDINAL (M.mkId "ℵ₀")
+  ; hasFilteredColimits = ⊤
+  ; generatingSet = ⊤
+  ; generatingSetIsSmall = ⊤
+  ; generatorsArePresentable = ⊤
+  ; generatesViaFilteredColimits = ⊤
+  }
+
+accessible-adapter : A.AccessibleCategoryAdapter
+accessible-adapter = A.mkAccessibleCategoryAdapter accessibleCatDecl
+  (C1S3.CATEGORY (M.mkId "C")) (C1S6.REGULAR_CARDINAL (M.mkId "ℵ₀")) refl refl
+
+accessible-status-is-filled : A.isFilledAccessibleCategory accessible-adapter ≡ true
+accessible-status-is-filled = refl
+
+sketchDecl : S5.SketchDeclaration
+sketchDecl = record
+  { underlyingCategory = C1S3.CATEGORY (M.mkId "S")
+  ; categoryIsSmall = ⊤
+  ; limitCones = ⊤
+  ; colimitCocones = ⊤
+  }
+
+sketch-adapter : A.SketchAdapter
+sketch-adapter = A.mkSketchAdapter sketchDecl (C1S3.CATEGORY (M.mkId "S")) refl
+
+sketch-status-is-filled : A.isFilledSketch sketch-adapter ≡ true
+sketch-status-is-filled = refl
+
+-- Level 2.6 adapters
+monoidalData : S6.MonoidalCategoryData
+monoidalData = record
+  { underlyingCategory = C1S3.CATEGORY (M.mkId "M")
+  ; tensorProduct = ⊤
+  ; unitObject = M.mkId "I"
+  }
+
+associatorDecl : S6.AssociatorDeclaration
+associatorDecl = record
+  { monoidalCategory = monoidalData
+  ; naturalIsomorphism = ⊤
+  }
+
+leftUnitorDecl : S6.LeftUnitorDeclaration
+leftUnitorDecl = record
+  { monoidalCategory = monoidalData
+  ; naturalIsomorphism = ⊤
+  }
+
+rightUnitorDecl : S6.RightUnitorDeclaration
+rightUnitorDecl = record
+  { monoidalCategory = monoidalData
+  ; naturalIsomorphism = ⊤
+  }
+
+pentagonAxiom : S6.PentagonAxiom
+pentagonAxiom = record
+  { monoidalCategory = monoidalData
+  ; associator = associatorDecl
+  ; diagramCommutes = ⊤
+  }
+
+triangleAxiom : S6.TriangleAxiom
+triangleAxiom = record
+  { monoidalCategory = monoidalData
+  ; associator = associatorDecl
+  ; leftUnitor = leftUnitorDecl
+  ; rightUnitor = rightUnitorDecl
+  ; diagramCommutes = ⊤
+  }
+
+monoidalDecl : S6.MonoidalCategoryDeclaration
+monoidalDecl = record
+  { datum = monoidalData
+  ; associator = associatorDecl
+  ; leftUnitor = leftUnitorDecl
+  ; rightUnitor = rightUnitorDecl
+  ; pentagonAxiom = pentagonAxiom
+  ; triangleAxiom = triangleAxiom
+  }
+
+monoidal-adapter : A.MonoidalCategoryAdapter
+monoidal-adapter = A.mkMonoidalCategoryAdapter monoidalDecl monoidalData associatorDecl refl refl
+
+monoidal-status-is-filled : A.isFilledMonoidal monoidal-adapter ≡ true
+monoidal-status-is-filled = refl
+
+braidingDecl : S6.BraidingDeclaration
+braidingDecl = record
+  { monoidalCategory = monoidalData
+  ; naturalIsomorphism = ⊤
+  ; symmetryCondition = ⊤
+  }
+
+hexagonAxiom : S6.HexagonAxiom
+hexagonAxiom = record
+  { monoidalCategory = monoidalData
+  ; associator = associatorDecl
+  ; braiding = braidingDecl
+  ; diagramCommutes = ⊤
+  }
+
+symMonoidalDecl : S6.SymmetricMonoidalCategoryDeclaration
+symMonoidalDecl = record
+  { monoidalCategory = monoidalDecl
+  ; braiding = braidingDecl
+  ; hexagonAxiom = hexagonAxiom
+  }
+
+sym-monoidal-adapter : A.SymmetricMonoidalAdapter
+sym-monoidal-adapter = A.mkSymmetricMonoidalAdapter symMonoidalDecl monoidalDecl braidingDecl refl refl
+
+sym-monoidal-status-is-filled : A.isFilledSymmetricMonoidal sym-monoidal-adapter ≡ true
+sym-monoidal-status-is-filled = refl
+
+internalHomDecl : S6.InternalHomObjectDeclaration
+internalHomDecl = record
+  { category = C1S3.CATEGORY (M.mkId "C")
+  ; sourceObject = M.mkId "A"
+  ; targetObject = M.mkId "B"
+  ; internalHomObject = M.mkId "[A,B]"
+  }
+
+internal-hom-adapter : A.InternalHomAdapter
+internal-hom-adapter = A.mkInternalHomAdapter internalHomDecl
+  (C1S3.CATEGORY (M.mkId "C")) (M.mkId "A") (M.mkId "B") refl refl refl
+
+internal-hom-status-is-filled : A.isFilledInternalHom internal-hom-adapter ≡ true
+internal-hom-status-is-filled = refl
+
+-- Level 2.7 adapters
+topCatCGWH : S7.TopologicalSpacesCategory
+topCatCGWH = record
+  { underlyingCategory = C1S3.CATEGORY (M.mkId "Top")
+  ; spaces = ⊤
+  ; continuousMaps = ⊤
+  }
+
+cgwhDecl : S7.CGWH_CategoryDeclaration
+cgwhDecl = record
+  { topCategory = topCatCGWH
+  ; underlyingCategory = C1S3.CATEGORY (M.mkId "CGWH")
+  ; objectsAreCompactlyGenerated = ⊤
+  ; objectsAreWeakHausdorff = ⊤
+  }
+
+cgwh-adapter : A.CGWH_CategoryAdapter
+cgwh-adapter = A.mkCGWH_CategoryAdapter cgwhDecl topCatCGWH (C1S3.CATEGORY (M.mkId "CGWH")) refl refl
+
+cgwh-status-is-filled : A.isFilledCGWH cgwh-adapter ≡ true
+cgwh-status-is-filled = refl
+
+topFunctorProp : S7.TopologicalFunctorProperty
+topFunctorProp = record
+  { functor = M.mkId "U"
+  ; admitsInitialLifts = λ sink → record
+      { sink = sink
+      ; liftedObject = M.mkId "X"
+      ; liftedMorphisms = ⊤
+      ; preservesTargetObject = ⊤
+      ; preservesSourceMaps = ⊤
+      ; universalProperty = ⊤
+      }
+  ; admitsFinalLifts = λ source → record
+      { source = source
+      ; liftedObject = M.mkId "Y"
+      ; liftedMorphisms = ⊤
+      ; preservesSourceObject = ⊤
+      ; preservesTargetMaps = ⊤
+      ; universalProperty = ⊤
+      }
+  }
+
+top-functor-adapter : A.TopologicalFunctorAdapter
+top-functor-adapter = A.mkTopologicalFunctorAdapter topFunctorProp (M.mkId "U") refl
+
+top-functor-status-is-filled : A.isFilledTopologicalFunctor top-functor-adapter ≡ true
+top-functor-status-is-filled = refl
+
+-- Level 2.8 adapters
+totalCat : C1S3.CategoryDeclaration
+totalCat = C1S3.CATEGORY (M.mkId "E")
+
+fibProjection : S8.FibrationProjectionFunctor
+fibProjection = record
+  { totalCategory = totalCat
+  ; baseCategory = baseCat
+  ; projectionFunctor = M.mkId "p"
+  }
+
+fibrationDecl : S8.FibrationDeclaration
+fibrationDecl = record
+  { projectionFunctor = fibProjection
+  ; cartesianLiftsExist = ⊤
+  }
+
+fibration-adapter : A.FibrationAdapter
+fibration-adapter = A.mkFibrationAdapter fibrationDecl fibProjection refl
+
+fibration-status-is-filled : A.isFilledFibration fibration-adapter ≡ true
+fibration-status-is-filled = refl
+
+opfibrationDecl : S8.OpfibrationDeclaration
+opfibrationDecl = record
+  { projectionFunctor = fibProjection
+  ; coCartesianLiftsExist = ⊤
+  }
+
+opfibration-adapter : A.OpfibrationAdapter
+opfibration-adapter = A.mkOpfibrationAdapter opfibrationDecl fibProjection refl
+
+opfibration-status-is-filled : A.isFilledOpfibration opfibration-adapter ≡ true
+opfibration-status-is-filled = refl

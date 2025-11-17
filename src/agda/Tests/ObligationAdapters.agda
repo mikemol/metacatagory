@@ -19,6 +19,8 @@ import Chapter2.Level2sub3 as C2S3
 import Chapter2.Level2sub4 as C2S4
 import Chapter2.Level2sub5 as C2S5
 import Chapter2.Level2sub6 as S6
+import Chapter2.Level2sub7 as C2S7
+import Chapter2.Level2sub8 as C2S8
 import Chapter3.Level3sub1 as C3S1
 import Chapter3.Level3sub2 as C3S2
 
@@ -535,3 +537,348 @@ mkLocallyPresentableAdapter d cat rk pcat prk =
 
 isFilledLocallyPresentable : LocallyPresentableAdapter → B.Bool
 isFilledLocallyPresentable a = LocallyPresentableAdapter.status a
+
+-- ==========================================================
+-- Chapter 2, Level 2.6 (Monoidal/Enriched categories)
+-- ==========================================================
+
+record MonoidalCategoryAdapter : Set₁ where
+  field
+    decl : S6.MonoidalCategoryDeclaration
+    expDatum : S6.MonoidalCategoryData
+    expAssociator : S6.AssociatorDeclaration
+    linkDatum : S6.MonoidalCategoryDeclaration.datum decl ≡ expDatum
+    linkAssoc : S6.MonoidalCategoryDeclaration.associator decl ≡ expAssociator
+    status : B.Bool
+
+mkMonoidalCategoryAdapter :
+  (d : S6.MonoidalCategoryDeclaration) →
+  (dat : S6.MonoidalCategoryData) →
+  (assoc : S6.AssociatorDeclaration) →
+  (pdat : S6.MonoidalCategoryDeclaration.datum d ≡ dat) →
+  (passoc : S6.MonoidalCategoryDeclaration.associator d ≡ assoc) →
+  MonoidalCategoryAdapter
+mkMonoidalCategoryAdapter d dat assoc pdat passoc =
+  record { decl = d ; expDatum = dat ; expAssociator = assoc
+         ; linkDatum = pdat ; linkAssoc = passoc ; status = B.true }
+
+isFilledMonoidal : MonoidalCategoryAdapter → B.Bool
+isFilledMonoidal a = MonoidalCategoryAdapter.status a
+
+record SymmetricMonoidalAdapter : Set₁ where
+  field
+    decl : S6.SymmetricMonoidalCategoryDeclaration
+    expMonoidal : S6.MonoidalCategoryDeclaration
+    expBraiding : S6.BraidingDeclaration
+    linkMonoidal : S6.SymmetricMonoidalCategoryDeclaration.monoidalCategory decl ≡ expMonoidal
+    linkBraiding : S6.SymmetricMonoidalCategoryDeclaration.braiding decl ≡ expBraiding
+    status : B.Bool
+
+mkSymmetricMonoidalAdapter :
+  (d : S6.SymmetricMonoidalCategoryDeclaration) →
+  (mon : S6.MonoidalCategoryDeclaration) →
+  (br : S6.BraidingDeclaration) →
+  (pmon : S6.SymmetricMonoidalCategoryDeclaration.monoidalCategory d ≡ mon) →
+  (pbr : S6.SymmetricMonoidalCategoryDeclaration.braiding d ≡ br) →
+  SymmetricMonoidalAdapter
+mkSymmetricMonoidalAdapter d mon br pmon pbr =
+  record { decl = d ; expMonoidal = mon ; expBraiding = br
+         ; linkMonoidal = pmon ; linkBraiding = pbr ; status = B.true }
+
+isFilledSymmetricMonoidal : SymmetricMonoidalAdapter → B.Bool
+isFilledSymmetricMonoidal a = SymmetricMonoidalAdapter.status a
+
+record InternalHomAdapter : Set₁ where
+  field
+    decl : S6.InternalHomObjectDeclaration
+    expCat : C1S3.CategoryDeclaration
+    expSource : M.Identifier
+    expTarget : M.Identifier
+    linkCat : S6.InternalHomObjectDeclaration.category decl ≡ expCat
+    linkSource : S6.InternalHomObjectDeclaration.sourceObject decl ≡ expSource
+    linkTarget : S6.InternalHomObjectDeclaration.targetObject decl ≡ expTarget
+    status : B.Bool
+
+mkInternalHomAdapter :
+  (d : S6.InternalHomObjectDeclaration) →
+  (cat : C1S3.CategoryDeclaration) →
+  (src tgt : M.Identifier) →
+  (pcat : S6.InternalHomObjectDeclaration.category d ≡ cat) →
+  (psrc : S6.InternalHomObjectDeclaration.sourceObject d ≡ src) →
+  (ptgt : S6.InternalHomObjectDeclaration.targetObject d ≡ tgt) →
+  InternalHomAdapter
+mkInternalHomAdapter d cat src tgt pcat psrc ptgt =
+  record { decl = d ; expCat = cat ; expSource = src ; expTarget = tgt
+         ; linkCat = pcat ; linkSource = psrc ; linkTarget = ptgt ; status = B.true }
+
+isFilledInternalHom : InternalHomAdapter → B.Bool
+isFilledInternalHom a = InternalHomAdapter.status a
+
+-- ==========================================================
+-- Chapter 2, Level 2.7 (Topological categories)
+-- ==========================================================
+
+record CGWH_CategoryAdapter : Set₁ where
+  field
+    decl : C2S7.CGWH_CategoryDeclaration
+    expTopCat : C2S7.TopologicalSpacesCategory
+    expUnderlyingCat : C1S3.CategoryDeclaration
+    linkTopCat : C2S7.CGWH_CategoryDeclaration.topCategory decl ≡ expTopCat
+    linkUnderlyingCat : C2S7.CGWH_CategoryDeclaration.underlyingCategory decl ≡ expUnderlyingCat
+    status : B.Bool
+
+mkCGWH_CategoryAdapter :
+  (d : C2S7.CGWH_CategoryDeclaration) →
+  (topcat : C2S7.TopologicalSpacesCategory) →
+  (cat : C1S3.CategoryDeclaration) →
+  (ptop : C2S7.CGWH_CategoryDeclaration.topCategory d ≡ topcat) →
+  (pcat : C2S7.CGWH_CategoryDeclaration.underlyingCategory d ≡ cat) →
+  CGWH_CategoryAdapter
+mkCGWH_CategoryAdapter d topcat cat ptop pcat =
+  record { decl = d ; expTopCat = topcat ; expUnderlyingCat = cat
+         ; linkTopCat = ptop ; linkUnderlyingCat = pcat ; status = B.true }
+
+isFilledCGWH : CGWH_CategoryAdapter → B.Bool
+isFilledCGWH a = CGWH_CategoryAdapter.status a
+
+record TopologicalFunctorAdapter : Set₁ where
+  field
+    decl : C2S7.TopologicalFunctorProperty
+    expFunctor : M.Identifier
+    linkFunctor : C2S7.TopologicalFunctorProperty.functor decl ≡ expFunctor
+    status : B.Bool
+
+mkTopologicalFunctorAdapter :
+  (d : C2S7.TopologicalFunctorProperty) →
+  (f : M.Identifier) →
+  (pf : C2S7.TopologicalFunctorProperty.functor d ≡ f) →
+  TopologicalFunctorAdapter
+mkTopologicalFunctorAdapter d f pf =
+  record { decl = d ; expFunctor = f
+         ; linkFunctor = pf ; status = B.true }
+
+isFilledTopologicalFunctor : TopologicalFunctorAdapter → B.Bool
+isFilledTopologicalFunctor a = TopologicalFunctorAdapter.status a
+
+-- ==========================================================
+-- Chapter 2, Level 2.8 (Fibrations)
+-- ==========================================================
+
+record FibrationAdapter : Set₁ where
+  field
+    decl : C2S8.FibrationDeclaration
+    expProjection : C2S8.FibrationProjectionFunctor
+    linkProjection : C2S8.FibrationDeclaration.projectionFunctor decl ≡ expProjection
+    status : B.Bool
+
+mkFibrationAdapter :
+  (d : C2S8.FibrationDeclaration) →
+  (proj : C2S8.FibrationProjectionFunctor) →
+  (pproj : C2S8.FibrationDeclaration.projectionFunctor d ≡ proj) →
+  FibrationAdapter
+mkFibrationAdapter d proj pproj =
+  record { decl = d ; expProjection = proj
+         ; linkProjection = pproj ; status = B.true }
+
+isFilledFibration : FibrationAdapter → B.Bool
+isFilledFibration a = FibrationAdapter.status a
+
+record OpfibrationAdapter : Set₁ where
+  field
+    decl : C2S8.OpfibrationDeclaration
+    expProjection : C2S8.FibrationProjectionFunctor
+    linkProjection : C2S8.OpfibrationDeclaration.projectionFunctor decl ≡ expProjection
+    status : B.Bool
+
+mkOpfibrationAdapter :
+  (d : C2S8.OpfibrationDeclaration) →
+  (proj : C2S8.FibrationProjectionFunctor) →
+  (pproj : C2S8.OpfibrationDeclaration.projectionFunctor d ≡ proj) →
+  OpfibrationAdapter
+mkOpfibrationAdapter d proj pproj =
+  record { decl = d ; expProjection = proj
+         ; linkProjection = pproj ; status = B.true }
+
+isFilledOpfibration : OpfibrationAdapter → B.Bool
+isFilledOpfibration a = OpfibrationAdapter.status a
+
+-- ==========================================================
+-- Additional Chapter 2, Level 2.1 adapters
+-- ==========================================================
+
+record ShortExactSequenceAdapter : Set₁ where
+  field
+    decl : C2S1.ShortExactSequenceDeclaration
+    expA : M.Identifier
+    expB : M.Identifier
+    expC : M.Identifier
+    linkA : C2S1.ShortExactSequenceDeclaration.A decl ≡ expA
+    linkB : C2S1.ShortExactSequenceDeclaration.B decl ≡ expB
+    linkC : C2S1.ShortExactSequenceDeclaration.C decl ≡ expC
+    status : B.Bool
+
+mkShortExactSequenceAdapter :
+  (d : C2S1.ShortExactSequenceDeclaration) →
+  (a b c : M.Identifier) →
+  (pa : C2S1.ShortExactSequenceDeclaration.A d ≡ a) →
+  (pb : C2S1.ShortExactSequenceDeclaration.B d ≡ b) →
+  (pc : C2S1.ShortExactSequenceDeclaration.C d ≡ c) →
+  ShortExactSequenceAdapter
+mkShortExactSequenceAdapter d a b c pa pb pc =
+  record { decl = d ; expA = a ; expB = b ; expC = c
+         ; linkA = pa ; linkB = pb ; linkC = pc ; status = B.true }
+
+isFilledShortExactSequence : ShortExactSequenceAdapter → B.Bool
+isFilledShortExactSequence a = ShortExactSequenceAdapter.status a
+
+record ZeroMorphismAdapter : Set₁ where
+  field
+    decl : C2S1.ZeroMorphismDeclaration
+    expFrom : M.Identifier
+    expTo : M.Identifier
+    expViaZero : M.Identifier
+    linkFrom : C2S1.ZeroMorphismDeclaration.from decl ≡ expFrom
+    linkTo : C2S1.ZeroMorphismDeclaration.to decl ≡ expTo
+    linkViaZero : C2S1.ZeroMorphismDeclaration.viaZeroObject decl ≡ expViaZero
+    status : B.Bool
+
+mkZeroMorphismAdapter :
+  (d : C2S1.ZeroMorphismDeclaration) →
+  (from to via : M.Identifier) →
+  (pfrom : C2S1.ZeroMorphismDeclaration.from d ≡ from) →
+  (pto : C2S1.ZeroMorphismDeclaration.to d ≡ to) →
+  (pvia : C2S1.ZeroMorphismDeclaration.viaZeroObject d ≡ via) →
+  ZeroMorphismAdapter
+mkZeroMorphismAdapter d from to via pfrom pto pvia =
+  record { decl = d ; expFrom = from ; expTo = to ; expViaZero = via
+         ; linkFrom = pfrom ; linkTo = pto ; linkViaZero = pvia ; status = B.true }
+
+isFilledZeroMorphism : ZeroMorphismAdapter → B.Bool
+isFilledZeroMorphism a = ZeroMorphismAdapter.status a
+
+record TorsionTheoryAdapter : Set₁ where
+  field
+    decl : C2S1.TorsionTheoryDeclaration
+    expCategory : M.Identifier
+    expTorsionClass : M.Identifier
+    expTorsionFreeClass : M.Identifier
+    linkCat : C2S1.TorsionTheoryDeclaration.category decl ≡ expCategory
+    linkTorsion : C2S1.TorsionTheoryDeclaration.torsionClass decl ≡ expTorsionClass
+    linkTorsionFree : C2S1.TorsionTheoryDeclaration.torsionFreeClass decl ≡ expTorsionFreeClass
+    status : B.Bool
+
+mkTorsionTheoryAdapter :
+  (d : C2S1.TorsionTheoryDeclaration) →
+  (cat tclass tfclass : M.Identifier) →
+  (pcat : C2S1.TorsionTheoryDeclaration.category d ≡ cat) →
+  (pt : C2S1.TorsionTheoryDeclaration.torsionClass d ≡ tclass) →
+  (ptf : C2S1.TorsionTheoryDeclaration.torsionFreeClass d ≡ tfclass) →
+  TorsionTheoryAdapter
+mkTorsionTheoryAdapter d cat tclass tfclass pcat pt ptf =
+  record { decl = d ; expCategory = cat ; expTorsionClass = tclass ; expTorsionFreeClass = tfclass
+         ; linkCat = pcat ; linkTorsion = pt ; linkTorsionFree = ptf ; status = B.true }
+
+isFilledTorsionTheory : TorsionTheoryAdapter → B.Bool
+isFilledTorsionTheory a = TorsionTheoryAdapter.status a
+
+-- ==========================================================
+-- Additional Chapter 2, Level 2.3 adapters
+-- ==========================================================
+
+record BialgebraAdapter : Set₁ where
+  field
+    decl : C2S3.BialgebraDeclaration
+    expCarrier : M.Identifier
+    expModel1 : M.Identifier
+    expModel2 : M.Identifier
+    linkCarrier : C2S3.BialgebraDeclaration.carrier decl ≡ expCarrier
+    linkModel1 : C2S3.BialgebraDeclaration.model1 decl ≡ expModel1
+    linkModel2 : C2S3.BialgebraDeclaration.model2 decl ≡ expModel2
+    status : B.Bool
+
+mkBialgebraAdapter :
+  (d : C2S3.BialgebraDeclaration) →
+  (car m1 m2 : M.Identifier) →
+  (pcar : C2S3.BialgebraDeclaration.carrier d ≡ car) →
+  (pm1 : C2S3.BialgebraDeclaration.model1 d ≡ m1) →
+  (pm2 : C2S3.BialgebraDeclaration.model2 d ≡ m2) →
+  BialgebraAdapter
+mkBialgebraAdapter d car m1 m2 pcar pm1 pm2 =
+  record { decl = d ; expCarrier = car ; expModel1 = m1 ; expModel2 = m2
+         ; linkCarrier = pcar ; linkModel1 = pm1 ; linkModel2 = pm2 ; status = B.true }
+
+isFilledBialgebra : BialgebraAdapter → B.Bool
+isFilledBialgebra a = BialgebraAdapter.status a
+
+-- ==========================================================
+-- Additional Chapter 2, Level 2.4 adapters
+-- ==========================================================
+
+record ComonadAdapter : Set₁ where
+  field
+    decl : C2S4.ComonadDeclaration
+    expName : M.Identifier
+    expDatum : C2S4.ComonadData
+    linkName : C2S4.ComonadDeclaration.name decl ≡ expName
+    linkDatum : C2S4.ComonadDeclaration.datum decl ≡ expDatum
+    status : B.Bool
+
+mkComonadAdapter :
+  (d : C2S4.ComonadDeclaration) →
+  (n : M.Identifier) →
+  (dat : C2S4.ComonadData) →
+  (pn : C2S4.ComonadDeclaration.name d ≡ n) →
+  (pdat : C2S4.ComonadDeclaration.datum d ≡ dat) →
+  ComonadAdapter
+mkComonadAdapter d n dat pn pdat =
+  record { decl = d ; expName = n ; expDatum = dat
+         ; linkName = pn ; linkDatum = pdat ; status = B.true }
+
+isFilledComonad : ComonadAdapter → B.Bool
+isFilledComonad a = ComonadAdapter.status a
+
+-- ==========================================================
+-- Additional Chapter 2, Level 2.5 adapters
+-- ==========================================================
+
+record AccessibleCategoryAdapter : Set₁ where
+  field
+    decl : C2S5.AccessibleCategoryDeclaration
+    expCat : C1S3.CategoryDeclaration
+    expRank : C1S6.RegularCardinal
+    linkCat : C2S5.AccessibleCategoryDeclaration.category decl ≡ expCat
+    linkRank : C2S5.AccessibleCategoryDeclaration.rank decl ≡ expRank
+    status : B.Bool
+
+mkAccessibleCategoryAdapter :
+  (d : C2S5.AccessibleCategoryDeclaration) →
+  (cat : C1S3.CategoryDeclaration) →
+  (rk : C1S6.RegularCardinal) →
+  (pcat : C2S5.AccessibleCategoryDeclaration.category d ≡ cat) →
+  (prk : C2S5.AccessibleCategoryDeclaration.rank d ≡ rk) →
+  AccessibleCategoryAdapter
+mkAccessibleCategoryAdapter d cat rk pcat prk =
+  record { decl = d ; expCat = cat ; expRank = rk
+         ; linkCat = pcat ; linkRank = prk ; status = B.true }
+
+isFilledAccessibleCategory : AccessibleCategoryAdapter → B.Bool
+isFilledAccessibleCategory a = AccessibleCategoryAdapter.status a
+
+record SketchAdapter : Set₁ where
+  field
+    decl : C2S5.SketchDeclaration
+    expUnderlyingCat : C1S3.CategoryDeclaration
+    linkUnderlyingCat : C2S5.SketchDeclaration.underlyingCategory decl ≡ expUnderlyingCat
+    status : B.Bool
+
+mkSketchAdapter :
+  (d : C2S5.SketchDeclaration) →
+  (cat : C1S3.CategoryDeclaration) →
+  (pcat : C2S5.SketchDeclaration.underlyingCategory d ≡ cat) →
+  SketchAdapter
+mkSketchAdapter d cat pcat =
+  record { decl = d ; expUnderlyingCat = cat
+         ; linkUnderlyingCat = pcat ; status = B.true }
+
+isFilledSketch : SketchAdapter → B.Bool
+isFilledSketch a = SketchAdapter.status a
