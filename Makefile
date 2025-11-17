@@ -24,6 +24,9 @@ AGDA_INDEX_3 = src/agda/Chapter3/Level3Index.agda
 AGDA_INDEX_ALGEBRA = src/agda/Algebra/Index.agda
 AGDA_INDEXES = $(AGDA_INDEX_1) $(AGDA_INDEX_2) $(AGDA_INDEX_3) $(AGDA_INDEX_ALGEBRA)
 
+# Test infrastructure (type-checked metadata)
+AGDA_COVERAGE_METADATA = src/agda/Tests/CoverageReport.agda
+
 # Build artifacts
 BUILD_DIR = build
 HTML_DIR = $(BUILD_DIR)/html
@@ -33,7 +36,7 @@ DIAGRAMS_DIR = $(BUILD_DIR)/diagrams
 
 # --- Targets ---
 
-.PHONY: all check docs docs-md docs1 docs2 docs3 docs-algebra clean help
+.PHONY: all check check-coverage docs docs-md docs1 docs2 docs3 docs-algebra clean help
 .PHONY: venv report diagram search test-tools
 
 # Default: typecheck everything
@@ -47,6 +50,12 @@ check:
 		$(AGDA) $(AGDA_FLAGS) $(AGDA_INCLUDE) $$file || exit 1; \
 	done
 	@echo "Typecheck complete."
+
+# Typecheck test coverage metadata (validates assertion counts)
+check-coverage: 
+	@echo "Validating test coverage metadata..."
+	@$(AGDA) $(AGDA_FLAGS) $(AGDA_INCLUDE) $(AGDA_COVERAGE_METADATA)
+	@echo "✓ Coverage metadata validated by Agda type system"
 
 # Generate HTML documentation for all chapters
 docs: | $(HTML_DIR)
@@ -114,7 +123,7 @@ venv:
 	@echo "Virtual environment ready at $(VENV)/"
 
 # Generate test coverage report
-report: venv | $(REPORTS_DIR)
+report: venv check-coverage | $(REPORTS_DIR)
 	@echo "Generating test coverage report..."
 	@$(PYTHON) scripts/test_report.py --out-dir $(REPORTS_DIR)
 	@echo "Report available at $(REPORTS_DIR)/test-report.{json,md}"
