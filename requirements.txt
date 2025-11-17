@@ -1,0 +1,13 @@
+# Python dependencies for metacatagory tooling and automation
+
+# Graph visualization for phase diagrams
+networkx>=3.0
+
+# Pure-Python graphviz (no C dependencies)
+graphviz>=0.20
+
+# Rich text formatting for CLI output
+rich>=13.0
+
+# YAML/JSON parsing for reports
+pyyaml>=6.0

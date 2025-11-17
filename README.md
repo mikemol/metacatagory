@@ -7,6 +7,7 @@
 Prerequisites
 
 * Agda installed and available on your PATH (and your preferred standard library if you plan to elaborate beyond these structural records).
+* Python 3.8+ for automation tools (optional, but recommended for test reports and diagrams).
 
 Quick use
 
@@ -31,6 +32,65 @@ make docs3
 # Clean build artifacts
 make clean
 ```
+
+### Tools & Automation
+
+The project includes Python-based automation tools for test coverage analysis, phase diagrams, and code search. These tools run in a virtual environment and generate reports and visualizations.
+
+**Setup:**
+
+```bash
+# Create and activate virtual environment
+make venv
+
+# Or manually:
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+**Available Tools:**
+
+```bash
+# Generate test coverage report (JSON + Markdown)
+make report
+# Output: build/reports/test-report.{json,md}
+
+# Generate phase boundary diagram (DOT format)
+make diagram  
+# Output: build/diagrams/phases.dot
+
+# Search for algorithms/properties by keyword
+make search QUERY="kernel"
+make search QUERY="adjunction"
+
+# Test all automation scripts
+make test-tools
+```
+
+**Direct Script Usage:**
+
+```bash
+# Activate venv first
+source venv/bin/activate
+
+# Test coverage report
+python scripts/test_report.py --out-dir build/reports
+
+# Phase diagram (with options)
+python scripts/phase_diagram.py --out-dir build/diagrams
+
+# Search with custom path
+python scripts/search_algo.py --q "regular epi" --path src/agda
+```
+
+**What the tools do:**
+
+* **test_report.py**: Scans `Tests/*.agda` files, counts adapters and status assertions per chapter, generates coverage statistics.
+* **phase_diagram.py**: Parses test structure to build a graph of exercised phase boundaries, outputs Graphviz DOT files.
+* **search_algo.py**: Indexes Agda declarations (records, constructors, postulates) and enables substring search across the codebase.
+
+See `make help` for a complete list of available targets.
 
 What's built
 
