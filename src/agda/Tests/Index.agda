@@ -57,6 +57,9 @@ import Tests.PhaseCategoryExamplesRunner
 -- Real-world algorithm implementations (small, computable examples)
 import Tests.RealWorldAlgorithmsTests
 
+-- Chapters 1–3 content (import triggers compilation of chapters)
+import Tests.Chapters
+
 -- Usage:
 --   agda --no-main -i src/agda src/agda/Tests/Index.agda
 --
