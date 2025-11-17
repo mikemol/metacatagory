@@ -54,6 +54,9 @@ import Tests.ConstructiveWitnessTests
 -- Category of Phases examples (import triggers compilation of examples)
 import Tests.PhaseCategoryExamplesRunner
 
+-- Real-world algorithm implementations (small, computable examples)
+import Tests.RealWorldAlgorithmsTests
+
 -- Usage:
 --   agda --no-main -i src/agda src/agda/Tests/Index.agda
 --
