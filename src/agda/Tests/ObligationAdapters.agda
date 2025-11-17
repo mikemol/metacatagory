@@ -27,6 +27,9 @@ import Chapter3.Level3sub2 as C3S2
 -- Algebra imports
 import Algebra.Foundation as AF
 import Algebra.Rings.Basic as AR
+import Algebra.Modules.Basic as AM
+import Algebra.Fields.Advanced as AFA
+import Core.UniversalProperties as CUP
 
 -- Common status predicate wrapper
 record ObligationStatus : Set₁ where
@@ -1306,3 +1309,613 @@ mkFieldAdapter d cr pcr =
 
 isFilledField : FieldAdapter → B.Bool
 isFilledField a = FieldAdapter.status a
+
+-- ==========================================================
+-- Core.UniversalProperties: adapters for general UMPs
+-- ==========================================================
+
+-- Initial object
+record InitialObjectAdapter : Set₁ where
+  field
+    decl : CUP.InitialObject
+    expInitial : M.Identifier
+    linkInitial : CUP.InitialObject.initial decl ≡ expInitial
+    status : B.Bool
+
+mkInitialObjectAdapter :
+  (d : CUP.InitialObject) →
+  (i : M.Identifier) →
+  (pi : CUP.InitialObject.initial d ≡ i) →
+  InitialObjectAdapter
+mkInitialObjectAdapter d i pi =
+  record { decl = d ; expInitial = i ; linkInitial = pi ; status = B.true }
+
+isFilledInitialObject : InitialObjectAdapter → B.Bool
+isFilledInitialObject a = InitialObjectAdapter.status a
+
+-- Terminal object
+record TerminalObjectAdapter : Set₁ where
+  field
+    decl : CUP.TerminalObject
+    expTerminal : M.Identifier
+    linkTerminal : CUP.TerminalObject.terminal decl ≡ expTerminal
+    status : B.Bool
+
+mkTerminalObjectAdapter :
+  (d : CUP.TerminalObject) →
+  (t : M.Identifier) →
+  (pt : CUP.TerminalObject.terminal d ≡ t) →
+  TerminalObjectAdapter
+mkTerminalObjectAdapter d t pt =
+  record { decl = d ; expTerminal = t ; linkTerminal = pt ; status = B.true }
+
+isFilledTerminalObject : TerminalObjectAdapter → B.Bool
+isFilledTerminalObject a = TerminalObjectAdapter.status a
+
+-- Product property
+record ProductPropertyAdapter : Set₁ where
+  field
+    A B : M.Identifier
+    decl : CUP.ProductProperty A B
+    expProduct : M.Identifier
+    linkProduct : CUP.ProductProperty.product decl ≡ expProduct
+    status : B.Bool
+
+mkProductPropertyAdapter :
+  (A B : M.Identifier) →
+  (d : CUP.ProductProperty A B) →
+  (p : M.Identifier) →
+  (pp : CUP.ProductProperty.product d ≡ p) →
+  ProductPropertyAdapter
+mkProductPropertyAdapter A B d p pp =
+  record { A = A ; B = B ; decl = d ; expProduct = p ; linkProduct = pp ; status = B.true }
+
+isFilledProductProperty : ProductPropertyAdapter → B.Bool
+isFilledProductProperty a = ProductPropertyAdapter.status a
+
+-- Coproduct property
+record CoproductPropertyAdapter : Set₁ where
+  field
+    A B : M.Identifier
+    decl : CUP.CoproductProperty A B
+    expCoproduct : M.Identifier
+    linkCoproduct : CUP.CoproductProperty.coproduct decl ≡ expCoproduct
+    status : B.Bool
+
+mkCoproductPropertyAdapter :
+  (A B : M.Identifier) →
+  (d : CUP.CoproductProperty A B) →
+  (c : M.Identifier) →
+  (pc : CUP.CoproductProperty.coproduct d ≡ c) →
+  CoproductPropertyAdapter
+mkCoproductPropertyAdapter A B d c pc =
+  record { A = A ; B = B ; decl = d ; expCoproduct = c ; linkCoproduct = pc ; status = B.true }
+
+isFilledCoproductProperty : CoproductPropertyAdapter → B.Bool
+isFilledCoproductProperty a = CoproductPropertyAdapter.status a
+
+-- Equalizer property
+record EqualizerPropertyAdapter : Set₁ where
+  field
+    A B f g : M.Identifier
+    decl : CUP.EqualizerProperty A B f g
+    expEqualizer : M.Identifier
+    linkEqualizer : CUP.EqualizerProperty.equalizer decl ≡ expEqualizer
+    status : B.Bool
+
+mkEqualizerPropertyAdapter :
+  (A B f g : M.Identifier) →
+  (d : CUP.EqualizerProperty A B f g) →
+  (e : M.Identifier) →
+  (pe : CUP.EqualizerProperty.equalizer d ≡ e) →
+  EqualizerPropertyAdapter
+mkEqualizerPropertyAdapter A B f g d e pe =
+  record { A = A ; B = B ; f = f ; g = g ; decl = d ; expEqualizer = e ; linkEqualizer = pe ; status = B.true }
+
+isFilledEqualizerProperty : EqualizerPropertyAdapter → B.Bool
+isFilledEqualizerProperty a = EqualizerPropertyAdapter.status a
+
+-- Coequalizer property
+record CoequalizerPropertyAdapter : Set₁ where
+  field
+    A B f g : M.Identifier
+    decl : CUP.CoequalizerProperty A B f g
+    expCoequalizer : M.Identifier
+    linkCoequalizer : CUP.CoequalizerProperty.coequalizer decl ≡ expCoequalizer
+    status : B.Bool
+
+mkCoequalizerPropertyAdapter :
+  (A B f g : M.Identifier) →
+  (d : CUP.CoequalizerProperty A B f g) →
+  (e : M.Identifier) →
+  (pe : CUP.CoequalizerProperty.coequalizer d ≡ e) →
+  CoequalizerPropertyAdapter
+mkCoequalizerPropertyAdapter A B f g d e pe =
+  record { A = A ; B = B ; f = f ; g = g ; decl = d ; expCoequalizer = e ; linkCoequalizer = pe ; status = B.true }
+
+isFilledCoequalizerProperty : CoequalizerPropertyAdapter → B.Bool
+isFilledCoequalizerProperty a = CoequalizerPropertyAdapter.status a
+
+-- Pullback property
+record PullbackPropertyAdapter : Set₁ where
+  field
+    A B C f g : M.Identifier
+    decl : CUP.PullbackProperty A B C f g
+    expPullback : M.Identifier
+    linkPullback : CUP.PullbackProperty.pullback decl ≡ expPullback
+    status : B.Bool
+
+mkPullbackPropertyAdapter :
+  (A B C f g : M.Identifier) →
+  (d : CUP.PullbackProperty A B C f g) →
+  (p : M.Identifier) →
+  (pp : CUP.PullbackProperty.pullback d ≡ p) →
+  PullbackPropertyAdapter
+mkPullbackPropertyAdapter A B C f g d p pp =
+  record { A = A ; B = B ; C = C ; f = f ; g = g ; decl = d ; expPullback = p ; linkPullback = pp ; status = B.true }
+
+isFilledPullbackProperty : PullbackPropertyAdapter → B.Bool
+isFilledPullbackProperty a = PullbackPropertyAdapter.status a
+
+-- Pushout property
+record PushoutPropertyAdapter : Set₁ where
+  field
+    A B C f g : M.Identifier
+    decl : CUP.PushoutProperty A B C f g
+    expPushout : M.Identifier
+    linkPushout : CUP.PushoutProperty.pushout decl ≡ expPushout
+    status : B.Bool
+
+mkPushoutPropertyAdapter :
+  (A B C f g : M.Identifier) →
+  (d : CUP.PushoutProperty A B C f g) →
+  (p : M.Identifier) →
+  (pp : CUP.PushoutProperty.pushout d ≡ p) →
+  PushoutPropertyAdapter
+mkPushoutPropertyAdapter A B C f g d p pp =
+  record { A = A ; B = B ; C = C ; f = f ; g = g ; decl = d ; expPushout = p ; linkPushout = pp ; status = B.true }
+
+isFilledPushoutProperty : PushoutPropertyAdapter → B.Bool
+isFilledPushoutProperty a = PushoutPropertyAdapter.status a
+
+-- Limit property
+record LimitPropertyAdapter : Set₁ where
+  field
+    D : M.Identifier
+    decl : CUP.LimitProperty D
+    expLimit : M.Identifier
+    linkLimit : CUP.LimitProperty.limit decl ≡ expLimit
+    status : B.Bool
+
+mkLimitPropertyAdapter :
+  (D : M.Identifier) →
+  (d : CUP.LimitProperty D) →
+  (l : M.Identifier) →
+  (pl : CUP.LimitProperty.limit d ≡ l) →
+  LimitPropertyAdapter
+mkLimitPropertyAdapter D d l pl =
+  record { D = D ; decl = d ; expLimit = l ; linkLimit = pl ; status = B.true }
+
+isFilledLimitProperty : LimitPropertyAdapter → B.Bool
+isFilledLimitProperty a = LimitPropertyAdapter.status a
+
+-- Colimit property
+record ColimitPropertyAdapter : Set₁ where
+  field
+    D : M.Identifier
+    decl : CUP.ColimitProperty D
+    expColimit : M.Identifier
+    linkColimit : CUP.ColimitProperty.colimit decl ≡ expColimit
+    status : B.Bool
+
+mkColimitPropertyAdapter :
+  (D : M.Identifier) →
+  (d : CUP.ColimitProperty D) →
+  (c : M.Identifier) →
+  (pc : CUP.ColimitProperty.colimit d ≡ c) →
+  ColimitPropertyAdapter
+mkColimitPropertyAdapter D d c pc =
+  record { D = D ; decl = d ; expColimit = c ; linkColimit = pc ; status = B.true }
+
+isFilledColimitProperty : ColimitPropertyAdapter → B.Bool
+isFilledColimitProperty a = ColimitPropertyAdapter.status a
+
+-- ==========================================================
+-- Algebra.Modules.Basic: adapters
+-- ==========================================================
+
+-- Left module
+record LeftModuleAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    decl : AM.LeftModule R
+    expRing : AR.RingDeclaration
+    linkRing : AM.LeftModule.ring decl ≡ expRing
+    status : B.Bool
+
+mkLeftModuleAdapter :
+  (R : AR.RingDeclaration) →
+  (d : AM.LeftModule R) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.LeftModule.ring d ≡ er) →
+  LeftModuleAdapter
+mkLeftModuleAdapter R d er pr =
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledLeftModule : LeftModuleAdapter → B.Bool
+isFilledLeftModule a = LeftModuleAdapter.status a
+
+-- Module homomorphism
+record ModuleHomomorphismAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    M N : AM.LeftModule R
+    decl : AM.ModuleHomomorphism R M N
+    expRing : AR.RingDeclaration
+    linkRing : AM.ModuleHomomorphism.ring decl ≡ expRing
+    status : B.Bool
+
+mkModuleHomomorphismAdapter :
+  (R : AR.RingDeclaration) →
+  (M N : AM.LeftModule R) →
+  (d : AM.ModuleHomomorphism R M N) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.ModuleHomomorphism.ring d ≡ er) →
+  ModuleHomomorphismAdapter
+mkModuleHomomorphismAdapter R M N d er pr =
+  record { R = R ; M = M ; N = N ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledModuleHom : ModuleHomomorphismAdapter → B.Bool
+isFilledModuleHom a = ModuleHomomorphismAdapter.status a
+
+-- Submodule
+record SubmoduleAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    M : AM.LeftModule R
+    decl : AM.Submodule R M
+    expRing : AR.RingDeclaration
+    linkRing : AM.Submodule.ring decl ≡ expRing
+    status : B.Bool
+
+mkSubmoduleAdapter :
+  (R : AR.RingDeclaration) →
+  (M : AM.LeftModule R) →
+  (d : AM.Submodule R M) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.Submodule.ring d ≡ er) →
+  SubmoduleAdapter
+mkSubmoduleAdapter R M d er pr =
+  record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledSubmodule : SubmoduleAdapter → B.Bool
+isFilledSubmodule a = SubmoduleAdapter.status a
+
+-- Quotient module
+record QuotientModuleAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    M : AM.LeftModule R
+    N : AM.Submodule R M
+    decl : AM.QuotientModule R M N
+    expRing : AR.RingDeclaration
+    linkRing : AM.QuotientModule.ring decl ≡ expRing
+    status : B.Bool
+
+mkQuotientModuleAdapter :
+  (R : AR.RingDeclaration) →
+  (M : AM.LeftModule R) →
+  (N : AM.Submodule R M) →
+  (d : AM.QuotientModule R M N) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.QuotientModule.ring d ≡ er) →
+  QuotientModuleAdapter
+mkQuotientModuleAdapter R M N d er pr =
+  record { R = R ; M = M ; N = N ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledQuotientModule : QuotientModuleAdapter → B.Bool
+isFilledQuotientModule a = QuotientModuleAdapter.status a
+
+-- Kernel of module homomorphism
+record KernelOfModuleHomomorphismAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    f : M.Identifier
+    decl : AM.KernelOfModuleHomomorphism R f
+    expRing : AR.RingDeclaration
+    linkRing : AM.KernelOfModuleHomomorphism.ring decl ≡ expRing
+    status : B.Bool
+
+mkKernelOfModuleHomomorphismAdapter :
+  (R : AR.RingDeclaration) →
+  (f : M.Identifier) →
+  (d : AM.KernelOfModuleHomomorphism R f) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.KernelOfModuleHomomorphism.ring d ≡ er) →
+  KernelOfModuleHomomorphismAdapter
+mkKernelOfModuleHomomorphismAdapter R f d er pr =
+  record { R = R ; f = f ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledKernelModuleHom : KernelOfModuleHomomorphismAdapter → B.Bool
+isFilledKernelModuleHom a = KernelOfModuleHomomorphismAdapter.status a
+
+-- Image of module homomorphism
+record ImageOfModuleHomomorphismAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    f : M.Identifier
+    decl : AM.ImageOfModuleHomomorphism R f
+    expRing : AR.RingDeclaration
+    linkRing : AM.ImageOfModuleHomomorphism.ring decl ≡ expRing
+    status : B.Bool
+
+mkImageOfModuleHomomorphismAdapter :
+  (R : AR.RingDeclaration) →
+  (f : M.Identifier) →
+  (d : AM.ImageOfModuleHomomorphism R f) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.ImageOfModuleHomomorphism.ring d ≡ er) →
+  ImageOfModuleHomomorphismAdapter
+mkImageOfModuleHomomorphismAdapter R f d er pr =
+  record { R = R ; f = f ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledImageModuleHom : ImageOfModuleHomomorphismAdapter → B.Bool
+isFilledImageModuleHom a = ImageOfModuleHomomorphismAdapter.status a
+
+-- Cokernel of module homomorphism
+record CokernelOfModuleHomomorphismAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    f : M.Identifier
+    decl : AM.CokernelOfModuleHomomorphism R f
+    expRing : AR.RingDeclaration
+    linkRing : AM.CokernelOfModuleHomomorphism.ring decl ≡ expRing
+    status : B.Bool
+
+mkCokernelOfModuleHomomorphismAdapter :
+  (R : AR.RingDeclaration) →
+  (f : M.Identifier) →
+  (d : AM.CokernelOfModuleHomomorphism R f) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.CokernelOfModuleHomomorphism.ring d ≡ er) →
+  CokernelOfModuleHomomorphismAdapter
+mkCokernelOfModuleHomomorphismAdapter R f d er pr =
+  record { R = R ; f = f ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledCokernelModuleHom : CokernelOfModuleHomomorphismAdapter → B.Bool
+isFilledCokernelModuleHom a = CokernelOfModuleHomomorphismAdapter.status a
+
+-- Exact sequence (modules)
+record ModuleExactSequenceAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    decl : AM.ExactSequence R
+    expRing : AR.RingDeclaration
+    linkRing : AM.ExactSequence.ring decl ≡ expRing
+    status : B.Bool
+
+mkModuleExactSequenceAdapter :
+  (R : AR.RingDeclaration) →
+  (d : AM.ExactSequence R) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.ExactSequence.ring d ≡ er) →
+  ModuleExactSequenceAdapter
+mkModuleExactSequenceAdapter R d er pr =
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledModuleExactSequence : ModuleExactSequenceAdapter → B.Bool
+isFilledModuleExactSequence a = ModuleExactSequenceAdapter.status a
+
+-- Short exact sequence (modules)
+record ModuleShortExactSequenceAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    decl : AM.ShortExactSequence R
+    expRing : AR.RingDeclaration
+    linkRing : AM.ShortExactSequence.ring decl ≡ expRing
+    status : B.Bool
+
+mkModuleShortExactSequenceAdapter :
+  (R : AR.RingDeclaration) →
+  (d : AM.ShortExactSequence R) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.ShortExactSequence.ring d ≡ er) →
+  ModuleShortExactSequenceAdapter
+mkModuleShortExactSequenceAdapter R d er pr =
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledModuleShortExactSequence : ModuleShortExactSequenceAdapter → B.Bool
+isFilledModuleShortExactSequence a = ModuleShortExactSequenceAdapter.status a
+
+-- ==========================================================
+-- Algebra.Fields.Advanced: adapters
+-- ==========================================================
+
+-- Inseparable extension
+record InseparableExtensionAdapter : Set₁ where
+  field
+    F E : AR.FieldDeclaration
+    decl : AFA.InseparableExtension F E
+    expBase : AR.FieldDeclaration
+    linkBase : AFA.InseparableExtension.baseField decl ≡ expBase
+    status : B.Bool
+
+mkInseparableExtensionAdapter :
+  (F E : AR.FieldDeclaration) →
+  (d : AFA.InseparableExtension F E) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFA.InseparableExtension.baseField d ≡ eb) →
+  InseparableExtensionAdapter
+mkInseparableExtensionAdapter F E d eb pb =
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledInseparableExtension : InseparableExtensionAdapter → B.Bool
+isFilledInseparableExtension a = InseparableExtensionAdapter.status a
+
+-- Purely inseparable extension
+record PurelyInseparableExtensionAdapter : Set₁ where
+  field
+    F E : AR.FieldDeclaration
+    decl : AFA.PurelyInseparableExtension F E
+    expBase : AR.FieldDeclaration
+    linkBase : AFA.PurelyInseparableExtension.baseField decl ≡ expBase
+    status : B.Bool
+
+mkPurelyInseparableExtensionAdapter :
+  (F E : AR.FieldDeclaration) →
+  (d : AFA.PurelyInseparableExtension F E) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFA.PurelyInseparableExtension.baseField d ≡ eb) →
+  PurelyInseparableExtensionAdapter
+mkPurelyInseparableExtensionAdapter F E d eb pb =
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledPurelyInseparableExtension : PurelyInseparableExtensionAdapter → B.Bool
+isFilledPurelyInseparableExtension a = PurelyInseparableExtensionAdapter.status a
+
+-- Perfect field
+record PerfectFieldAdapter : Set₁ where
+  field
+    F : AR.FieldDeclaration
+    decl : AFA.PerfectField F
+    expBase : AR.FieldDeclaration
+    linkBase : AFA.PerfectField.baseField decl ≡ expBase
+    status : B.Bool
+
+mkPerfectFieldAdapter :
+  (F : AR.FieldDeclaration) →
+  (d : AFA.PerfectField F) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFA.PerfectField.baseField d ≡ eb) →
+  PerfectFieldAdapter
+mkPerfectFieldAdapter F d eb pb =
+  record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledPerfectField : PerfectFieldAdapter → B.Bool
+isFilledPerfectField a = PerfectFieldAdapter.status a
+
+-- Algebraically closed field
+record AlgebraicallyClosedFieldAdapter : Set₁ where
+  field
+    F : AR.FieldDeclaration
+    decl : AFA.AlgebraicallyClosedField F
+    expBase : AR.FieldDeclaration
+    linkBase : AFA.AlgebraicallyClosedField.baseField decl ≡ expBase
+    status : B.Bool
+
+mkAlgebraicallyClosedFieldAdapter :
+  (F : AR.FieldDeclaration) →
+  (d : AFA.AlgebraicallyClosedField F) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFA.AlgebraicallyClosedField.baseField d ≡ eb) →
+  AlgebraicallyClosedFieldAdapter
+mkAlgebraicallyClosedFieldAdapter F d eb pb =
+  record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledAlgebraicallyClosedField : AlgebraicallyClosedFieldAdapter → B.Bool
+isFilledAlgebraicallyClosedField a = AlgebraicallyClosedFieldAdapter.status a
+
+-- Normal closure
+record NormalClosureAdapter : Set₁ where
+  field
+    F E : AR.FieldDeclaration
+    decl : AFA.NormalClosure F E
+    expNormal : AR.FieldDeclaration
+    linkNormal : AFA.NormalClosure.normalClosure decl ≡ expNormal
+    status : B.Bool
+
+mkNormalClosureAdapter :
+  (F E : AR.FieldDeclaration) →
+  (d : AFA.NormalClosure F E) →
+  (en : AR.FieldDeclaration) →
+  (pn : AFA.NormalClosure.normalClosure d ≡ en) →
+  NormalClosureAdapter
+mkNormalClosureAdapter F E d en pn =
+  record { F = F ; E = E ; decl = d ; expNormal = en ; linkNormal = pn ; status = B.true }
+
+isFilledNormalClosure : NormalClosureAdapter → B.Bool
+isFilledNormalClosure a = NormalClosureAdapter.status a
+
+-- Galois closure
+record GaloisClosureAdapter : Set₁ where
+  field
+    F E : AR.FieldDeclaration
+    decl : AFA.GaloisClosure F E
+    expGalois : AR.FieldDeclaration
+    linkGalois : AFA.GaloisClosure.galoisClosure decl ≡ expGalois
+    status : B.Bool
+
+mkGaloisClosureAdapter :
+  (F E : AR.FieldDeclaration) →
+  (d : AFA.GaloisClosure F E) →
+  (eg : AR.FieldDeclaration) →
+  (pg : AFA.GaloisClosure.galoisClosure d ≡ eg) →
+  GaloisClosureAdapter
+mkGaloisClosureAdapter F E d eg pg =
+  record { F = F ; E = E ; decl = d ; expGalois = eg ; linkGalois = pg ; status = B.true }
+
+isFilledGaloisClosure : GaloisClosureAdapter → B.Bool
+isFilledGaloisClosure a = GaloisClosureAdapter.status a
+
+-- Frobenius endomorphism
+record FrobeniusEndomorphismAdapter : Set₁ where
+  field
+    F : AR.FieldDeclaration
+    decl : AFA.FrobeniusEndomorphism F
+    expBase : AR.FieldDeclaration
+    linkBase : AFA.FrobeniusEndomorphism.baseField decl ≡ expBase
+    status : B.Bool
+
+mkFrobeniusEndomorphismAdapter :
+  (F : AR.FieldDeclaration) →
+  (d : AFA.FrobeniusEndomorphism F) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFA.FrobeniusEndomorphism.baseField d ≡ eb) →
+  FrobeniusEndomorphismAdapter
+mkFrobeniusEndomorphismAdapter F d eb pb =
+  record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledFrobeniusEndomorphism : FrobeniusEndomorphismAdapter → B.Bool
+isFilledFrobeniusEndomorphism a = FrobeniusEndomorphismAdapter.status a
+
+-- Rational function field
+record RationalFunctionFieldAdapter : Set₁ where
+  field
+    K : AR.FieldDeclaration
+    decl : AFA.RationalFunctionField K
+    expFunctionField : AR.FieldDeclaration
+    linkFunctionField : AFA.RationalFunctionField.functionField decl ≡ expFunctionField
+    status : B.Bool
+
+mkRationalFunctionFieldAdapter :
+  (K : AR.FieldDeclaration) →
+  (d : AFA.RationalFunctionField K) →
+  (eff : AR.FieldDeclaration) →
+  (pf : AFA.RationalFunctionField.functionField d ≡ eff) →
+  RationalFunctionFieldAdapter
+mkRationalFunctionFieldAdapter K d eff pf =
+  record { K = K ; decl = d ; expFunctionField = eff ; linkFunctionField = pf ; status = B.true }
+
+isFilledRationalFunctionField : RationalFunctionFieldAdapter → B.Bool
+isFilledRationalFunctionField a = RationalFunctionFieldAdapter.status a
+
+-- Algebraic function field
+record AlgebraicFunctionFieldAdapter : Set₁ where
+  field
+    K : AR.FieldDeclaration
+    decl : AFA.AlgebraicFunctionField K
+    expFunctionField : AR.FieldDeclaration
+    linkFunctionField : AFA.AlgebraicFunctionField.functionField decl ≡ expFunctionField
+    status : B.Bool
+
+mkAlgebraicFunctionFieldAdapter :
+  (K : AR.FieldDeclaration) →
+  (d : AFA.AlgebraicFunctionField K) →
+  (eff : AR.FieldDeclaration) →
+  (pf : AFA.AlgebraicFunctionField.functionField d ≡ eff) →
+  AlgebraicFunctionFieldAdapter
+mkAlgebraicFunctionFieldAdapter K d eff pf =
+  record { K = K ; decl = d ; expFunctionField = eff ; linkFunctionField = pf ; status = B.true }
+
+isFilledAlgebraicFunctionField : AlgebraicFunctionFieldAdapter → B.Bool
+isFilledAlgebraicFunctionField a = AlgebraicFunctionFieldAdapter.status a
