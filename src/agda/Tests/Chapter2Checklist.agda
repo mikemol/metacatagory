@@ -5,8 +5,9 @@ module Tests.Chapter2Checklist where
 
 open import Agda.Builtin.Unit using (⊤; tt)
 import Agda.Builtin.Bool as B
-open B using () renaming (Bool to Boolean; true to True; false to False)
+open import Agda.Builtin.Bool using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
+open import Agda.Builtin.List using (List; []; _∷_)
 open import Metamodel as M
 
 -- Submodule imports
@@ -41,6 +42,53 @@ chk2s1A = S1.THEOREM_AdditivityEquivalence (M.mkId "C") B.true B.true (M.mkId "i
 chk2s1B : S1.HomFunctorIsAdditiveTheorem
 -- TODO(Ch2 §2.1): Replace with Hom functor built from a concrete category.
 chk2s1B = S1.THEOREM_HomFunctorIsAdditive (M.mkId "C") (M.mkId "A") (M.mkId "HomCA-") (M.mkId "bilinear")
+
+-- Additive category declaration
+zeroObj : S1.HasZeroObjectProperty
+zeroObj = S1._has_a_ZERO_OBJECT (M.mkId "AddCat") (M.mkId "0")
+
+enrichment : S1.EnrichedOverProperty
+enrichment = S1._is_ENRICHED_OVER_ (M.mkId "AddCat") (M.mkId "Ab")
+
+addCatDecl : S1.AdditiveCategoryDeclaration
+addCatDecl = S1.ADDITIVE_CATEGORY (M.mkId "AddCat") zeroObj enrichment []
+
+-- Adapter for additive category
+add-cat-adapter : A.AdditiveCategoryAdapter
+add-cat-adapter = A.mkAdditiveCategoryAdapter addCatDecl (M.mkId "AddCat") zeroObj refl refl
+
+add-cat-status-is-filled : A.isFilledAdditive add-cat-adapter ≡ B.true
+add-cat-status-is-filled = refl
+
+-- Abelian category declaration
+abelianDecl : S1.AbelianCategoryDeclaration
+abelianDecl = S1.ABELIAN_CATEGORY (M.mkId "Ab") addCatDecl true true true true
+
+-- Adapter for abelian category
+ab-cat-adapter : A.AbelianCategoryAdapter
+ab-cat-adapter = A.mkAbelianCategoryAdapter abelianDecl (M.mkId "Ab") addCatDecl refl refl
+
+ab-cat-status-is-filled : A.isFilledAbelian ab-cat-adapter ≡ true
+ab-cat-status-is-filled = refl
+
+-- Biproduct
+biproductDecl : S1.BiproductObject
+biproductDecl = record
+  { left = M.mkId "A"
+  ; right = M.mkId "B"
+  ; object = M.mkId "A⊕B"
+  ; projectionLeft = M.mkId "π₁"
+  ; projectionRight = M.mkId "π₂"
+  ; injectionLeft = M.mkId "ι₁"
+  ; injectionRight = M.mkId "ι₂"
+  }
+
+-- Adapter for biproduct
+biprod-adapter : A.BiproductAdapter
+biprod-adapter = A.mkBiproductAdapter biproductDecl (M.mkId "A") (M.mkId "B") (M.mkId "A⊕B") refl refl refl
+
+biprod-status-is-filled : A.isFilledBiproduct biprod-adapter ≡ B.true
+biprod-status-is-filled = refl
 
 ------------------------------------------------------------------------
 -- Level2sub2
@@ -120,8 +168,22 @@ res-status-is-filled = refl
 lawvere : S3.LawvereTheoryDeclaration
 lawvere = S3.LAWVERE_THEORY_WITH_base_object (M.mkId "T") (M.mkId "X") (M.mkId "fin-prod") (M.mkId "arity")
 
+-- Adapter for Lawvere theory
+lawvere-adapter : A.LawvereTheoryAdapter
+lawvere-adapter = A.mkLawvereTheoryAdapter lawvere (M.mkId "T") (M.mkId "X") refl refl
+
+lawvere-status-is-filled : A.isFilledLawvereTheory lawvere-adapter ≡ B.true
+lawvere-status-is-filled = refl
+
 algCat : S3.AlgebraicCategoryDeclaration
 algCat = S3._is_ALGEBRAIC_CATEGORY (M.mkId "C") lawvere (M.mkId "equiv")
+
+-- Adapter for algebraic category
+alg-cat-adapter : A.AlgebraicCategoryAdapter
+alg-cat-adapter = A.mkAlgebraicCategoryAdapter algCat (M.mkId "C") lawvere refl refl
+
+alg-cat-status-is-filled : A.isFilledAlgebraicCategory alg-cat-adapter ≡ B.true
+alg-cat-status-is-filled = refl
 
 chk2s3A : S3.AlgebraicCategoriesAreRegularTheorem
 -- TODO(Ch2 §2.3): Replace with regularity witness derived from Mod(T,Set).
@@ -143,8 +205,22 @@ monadDecl : S4.MonadDeclaration
 monadDecl = S4.MONAD_on (M.mkId "T") monadData (S4.AXIOM_MonadAssociativity monadData (M.mkId "assoc"))
                         (S4.AXIOM_MonadUnitality monadData (M.mkId "unit"))
 
+-- Adapter for monad
+monad-adapter : A.MonadAdapter
+monad-adapter = A.mkMonadAdapter monadDecl (M.mkId "T") monadData refl refl
+
+monad-status-is-filled : A.isFilledMonad monad-adapter ≡ true
+monad-status-is-filled = refl
+
 algData : S4.TAlgebraData
 algData = S4.T_ALGEBRA_DATA monadDecl (M.mkId "A") (M.mkId "h")
+
+-- Adapter for T-algebra
+talg-adapter : A.TAlgebraAdapter
+talg-adapter = A.mkTAlgebraAdapter algData (M.mkId "A") monadDecl refl refl
+
+talg-status-is-filled : A.isFilledTAlgebra talg-adapter ≡ true
+talg-status-is-filled = refl
 
 chk2s4A : S4.ListAlgebrasAreMonoidsTheorem
 -- TODO(Ch2 §2.4): Replace with (A,h) obtained from a concrete list-algebra.
@@ -174,6 +250,13 @@ locallyPresentableC = record
     ; generatorsArePresentable = ⊤
     ; generatesUnderColimits = ⊤
     }
+
+-- Adapter for locally presentable category
+lp-cat-adapter : A.LocallyPresentableAdapter
+lp-cat-adapter = A.mkLocallyPresentableAdapter locallyPresentableC catDeclC alpha1 refl refl
+
+lp-cat-status-is-filled : A.isFilledLocallyPresentable lp-cat-adapter ≡ B.true
+lp-cat-status-is-filled = refl
 
 chk2s5A : S5.LocallyPresentableAreWellBehavedTheorem
 -- TODO(Ch2 §2.5): Replace with LP-category declaration built from small generators.

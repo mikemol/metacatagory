@@ -7,12 +7,20 @@ open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.Equality using (_≡_)
 open import Metamodel as M
 
--- Chapter 2, Level 2.6 (enriched category fragments)
-import Chapter2.Level2sub6 as S6
+-- Chapter imports
 import Chapter1.Level1 as C1L
+import Chapter1.Level1sub3 as C1S3
 import Chapter1.Level1sub4 as C1S4
 import Chapter1.Level1sub5 as C1S5
+import Chapter1.Level1sub6 as C1S6
+import Chapter2.Level2sub1 as C2S1
 import Chapter2.Level2sub2 as C2S2
+import Chapter2.Level2sub3 as C2S3
+import Chapter2.Level2sub4 as C2S4
+import Chapter2.Level2sub5 as C2S5
+import Chapter2.Level2sub6 as S6
+import Chapter3.Level3sub1 as C3S1
+import Chapter3.Level3sub2 as C3S2
 
 -- Common status predicate wrapper
 record ObligationStatus : Set₁ where
@@ -326,3 +334,204 @@ mkRegularExactSequenceAdapter d k q pk pq =
 
 isFilledRegularExact : RegularExactSequenceAdapter → B.Bool
 isFilledRegularExact a = RegularExactSequenceAdapter.status a
+
+-- ==========================================================
+-- Chapter 2, Level 2.1 (Abelian categories)
+-- ==========================================================
+
+record AdditiveCategoryAdapter : Set₁ where
+  field
+    decl : C2S1.AdditiveCategoryDeclaration
+    expCategory : M.Identifier
+    expZero : C2S1.HasZeroObjectProperty
+    linkCat : C2S1.AdditiveCategoryDeclaration.category decl ≡ expCategory
+    linkZero : C2S1.AdditiveCategoryDeclaration.hasZeroObject decl ≡ expZero
+    status : B.Bool
+
+mkAdditiveCategoryAdapter :
+  (d : C2S1.AdditiveCategoryDeclaration) →
+  (cat : M.Identifier) →
+  (zero : C2S1.HasZeroObjectProperty) →
+  (pcat : C2S1.AdditiveCategoryDeclaration.category d ≡ cat) →
+  (pzero : C2S1.AdditiveCategoryDeclaration.hasZeroObject d ≡ zero) →
+  AdditiveCategoryAdapter
+mkAdditiveCategoryAdapter d cat zero pcat pzero =
+  record { decl = d ; expCategory = cat ; expZero = zero
+         ; linkCat = pcat ; linkZero = pzero ; status = B.true }
+
+isFilledAdditive : AdditiveCategoryAdapter → B.Bool
+isFilledAdditive a = AdditiveCategoryAdapter.status a
+
+record AbelianCategoryAdapter : Set₁ where
+  field
+    decl : C2S1.AbelianCategoryDeclaration
+    expCategory : M.Identifier
+    expAdditive : C2S1.AdditiveCategoryDeclaration
+    linkCat : C2S1.AbelianCategoryDeclaration.category decl ≡ expCategory
+    linkAdd : C2S1.AbelianCategoryDeclaration.additive decl ≡ expAdditive
+    status : B.Bool
+
+mkAbelianCategoryAdapter :
+  (d : C2S1.AbelianCategoryDeclaration) →
+  (cat : M.Identifier) →
+  (add : C2S1.AdditiveCategoryDeclaration) →
+  (pcat : C2S1.AbelianCategoryDeclaration.category d ≡ cat) →
+  (padd : C2S1.AbelianCategoryDeclaration.additive d ≡ add) →
+  AbelianCategoryAdapter
+mkAbelianCategoryAdapter d cat add pcat padd =
+  record { decl = d ; expCategory = cat ; expAdditive = add
+         ; linkCat = pcat ; linkAdd = padd ; status = B.true }
+
+isFilledAbelian : AbelianCategoryAdapter → B.Bool
+isFilledAbelian a = AbelianCategoryAdapter.status a
+
+record BiproductAdapter : Set₁ where
+  field
+    decl : C2S1.BiproductObject
+    expLeft : M.Identifier
+    expRight : M.Identifier
+    expObject : M.Identifier
+    linkLeft : C2S1.BiproductObject.left decl ≡ expLeft
+    linkRight : C2S1.BiproductObject.right decl ≡ expRight
+    linkObject : C2S1.BiproductObject.object decl ≡ expObject
+    status : B.Bool
+
+mkBiproductAdapter :
+  (d : C2S1.BiproductObject) →
+  (l r obj : M.Identifier) →
+  (pl : C2S1.BiproductObject.left d ≡ l) →
+  (pr : C2S1.BiproductObject.right d ≡ r) →
+  (pobj : C2S1.BiproductObject.object d ≡ obj) →
+  BiproductAdapter
+mkBiproductAdapter d l r obj pl pr pobj =
+  record { decl = d ; expLeft = l ; expRight = r ; expObject = obj
+         ; linkLeft = pl ; linkRight = pr ; linkObject = pobj ; status = B.true }
+
+isFilledBiproduct : BiproductAdapter → B.Bool
+isFilledBiproduct a = BiproductAdapter.status a
+
+-- ==========================================================
+-- Chapter 2, Level 2.3 (Lawvere theories, algebraic categories)
+-- ==========================================================
+
+record LawvereTheoryAdapter : Set₁ where
+  field
+    decl : C2S3.LawvereTheoryDeclaration
+    expTheory : M.Identifier
+    expBase : M.Identifier
+    linkTheory : C2S3.LawvereTheoryDeclaration.theoryCategory decl ≡ expTheory
+    linkBase : C2S3.LawvereTheoryDeclaration.baseObject decl ≡ expBase
+    status : B.Bool
+
+mkLawvereTheoryAdapter :
+  (d : C2S3.LawvereTheoryDeclaration) →
+  (th base : M.Identifier) →
+  (pth : C2S3.LawvereTheoryDeclaration.theoryCategory d ≡ th) →
+  (pbase : C2S3.LawvereTheoryDeclaration.baseObject d ≡ base) →
+  LawvereTheoryAdapter
+mkLawvereTheoryAdapter d th base pth pbase =
+  record { decl = d ; expTheory = th ; expBase = base
+         ; linkTheory = pth ; linkBase = pbase ; status = B.true }
+
+isFilledLawvereTheory : LawvereTheoryAdapter → B.Bool
+isFilledLawvereTheory a = LawvereTheoryAdapter.status a
+
+record AlgebraicCategoryAdapter : Set₁ where
+  field
+    decl : C2S3.AlgebraicCategoryDeclaration
+    expCategory : M.Identifier
+    expTheory : C2S3.LawvereTheoryDeclaration
+    linkCat : C2S3.AlgebraicCategoryDeclaration.category decl ≡ expCategory
+    linkTheory : C2S3.AlgebraicCategoryDeclaration.witnessTheory decl ≡ expTheory
+    status : B.Bool
+
+mkAlgebraicCategoryAdapter :
+  (d : C2S3.AlgebraicCategoryDeclaration) →
+  (cat : M.Identifier) →
+  (th : C2S3.LawvereTheoryDeclaration) →
+  (pcat : C2S3.AlgebraicCategoryDeclaration.category d ≡ cat) →
+  (pth : C2S3.AlgebraicCategoryDeclaration.witnessTheory d ≡ th) →
+  AlgebraicCategoryAdapter
+mkAlgebraicCategoryAdapter d cat th pcat pth =
+  record { decl = d ; expCategory = cat ; expTheory = th
+         ; linkCat = pcat ; linkTheory = pth ; status = B.true }
+
+isFilledAlgebraicCategory : AlgebraicCategoryAdapter → B.Bool
+isFilledAlgebraicCategory a = AlgebraicCategoryAdapter.status a
+
+-- ==========================================================
+-- Chapter 2, Level 2.4 (Monads)
+-- ==========================================================
+
+record MonadAdapter : Set₁ where
+  field
+    decl : C2S4.MonadDeclaration
+    expName : M.Identifier
+    expDatum : C2S4.MonadData
+    linkName : C2S4.MonadDeclaration.name decl ≡ expName
+    linkDatum : C2S4.MonadDeclaration.datum decl ≡ expDatum
+    status : B.Bool
+
+mkMonadAdapter :
+  (d : C2S4.MonadDeclaration) →
+  (n : M.Identifier) →
+  (dat : C2S4.MonadData) →
+  (pn : C2S4.MonadDeclaration.name d ≡ n) →
+  (pdat : C2S4.MonadDeclaration.datum d ≡ dat) →
+  MonadAdapter
+mkMonadAdapter d n dat pn pdat =
+  record { decl = d ; expName = n ; expDatum = dat
+         ; linkName = pn ; linkDatum = pdat ; status = B.true }
+
+isFilledMonad : MonadAdapter → B.Bool
+isFilledMonad a = MonadAdapter.status a
+
+record TAlgebraAdapter : Set₁ where
+  field
+    decl : C2S4.TAlgebraData
+    expCarrier : M.Identifier
+    monad : C2S4.MonadDeclaration
+    linkCarrier : C2S4.TAlgebraData.carrier decl ≡ expCarrier
+    linkMonad : C2S4.TAlgebraData.monad decl ≡ monad
+    status : B.Bool
+
+mkTAlgebraAdapter :
+  (d : C2S4.TAlgebraData) →
+  (c : M.Identifier) →
+  (m : C2S4.MonadDeclaration) →
+  (pc : C2S4.TAlgebraData.carrier d ≡ c) →
+  (pm : C2S4.TAlgebraData.monad d ≡ m) →
+  TAlgebraAdapter
+mkTAlgebraAdapter d c m pc pm =
+  record { decl = d ; expCarrier = c ; monad = m
+         ; linkCarrier = pc ; linkMonad = pm ; status = B.true }
+
+isFilledTAlgebra : TAlgebraAdapter → B.Bool
+isFilledTAlgebra a = TAlgebraAdapter.status a
+
+-- ==========================================================
+-- Chapter 2, Level 2.5 (Locally presentable categories)
+-- ==========================================================
+
+record LocallyPresentableAdapter : Set₁ where
+  field
+    decl : C2S5.LocallyPresentableCategoryDeclaration
+    expCat : C1S3.CategoryDeclaration
+    expRank : C1S6.RegularCardinal
+    linkCat : C2S5.LocallyPresentableCategoryDeclaration.category decl ≡ expCat
+    linkRank : C2S5.LocallyPresentableCategoryDeclaration.rank decl ≡ expRank
+    status : B.Bool
+
+mkLocallyPresentableAdapter :
+  (d : C2S5.LocallyPresentableCategoryDeclaration) →
+  (cat : C1S3.CategoryDeclaration) →
+  (rk : C1S6.RegularCardinal) →
+  (pcat : C2S5.LocallyPresentableCategoryDeclaration.category d ≡ cat) →
+  (prk : C2S5.LocallyPresentableCategoryDeclaration.rank d ≡ rk) →
+  LocallyPresentableAdapter
+mkLocallyPresentableAdapter d cat rk pcat prk =
+  record { decl = d ; expCat = cat ; expRank = rk
+         ; linkCat = pcat ; linkRank = prk ; status = B.true }
+
+isFilledLocallyPresentable : LocallyPresentableAdapter → B.Bool
+isFilledLocallyPresentable a = LocallyPresentableAdapter.status a
