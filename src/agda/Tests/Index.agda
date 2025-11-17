@@ -60,6 +60,12 @@ import Tests.RealWorldAlgorithmsTests
 -- Chapters 1–3 content (import triggers compilation of chapters)
 import Tests.Chapters
 
+-- Smoke tests: instantiate a few proof-obligation records from chapters
+import Tests.ChapterObligationsSmoke
+import Tests.Chapter1Checklist
+import Tests.Chapter2Checklist
+import Tests.Chapter3Checklist
+
 -- Usage:
 --   agda --no-main -i src/agda src/agda/Tests/Index.agda
 --
