@@ -3083,3 +3083,143 @@ mkPrimeSpectrumAdapter R d ets pts =
 
 isFilledPrimeSpectrum : PrimeSpectrumAdapter → B.Bool
 isFilledPrimeSpectrum a = PrimeSpectrumAdapter.status a
+
+-- Projective module
+record ProjectiveModuleAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    P : AM.LeftModule R
+    decl : AM.ProjectiveModule R P
+    expRing : AR.RingDeclaration
+    linkRing : AM.ProjectiveModule.ring decl ≡ expRing
+    status : B.Bool
+
+mkProjectiveModuleAdapter :
+  (R : AR.RingDeclaration) →
+  (P : AM.LeftModule R) →
+  (d : AM.ProjectiveModule R P) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.ProjectiveModule.ring d ≡ er) →
+  ProjectiveModuleAdapter
+mkProjectiveModuleAdapter R P d er pr =
+  record { R = R ; P = P ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledProjectiveModule : ProjectiveModuleAdapter → B.Bool
+isFilledProjectiveModule a = ProjectiveModuleAdapter.status a
+
+-- Injective module
+record InjectiveModuleAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    I : AM.LeftModule R
+    decl : AM.InjectiveModule R I
+    expRing : AR.RingDeclaration
+    linkRing : AM.InjectiveModule.ring decl ≡ expRing
+    status : B.Bool
+
+mkInjectiveModuleAdapter :
+  (R : AR.RingDeclaration) →
+  (I : AM.LeftModule R) →
+  (d : AM.InjectiveModule R I) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.InjectiveModule.ring d ≡ er) →
+  InjectiveModuleAdapter
+mkInjectiveModuleAdapter R I d er pr =
+  record { R = R ; I = I ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledInjectiveModule : InjectiveModuleAdapter → B.Bool
+isFilledInjectiveModule a = InjectiveModuleAdapter.status a
+
+-- Torsion element
+record TorsionElementAdapter : Set₁ where
+  field
+    R : AR.IntegralDomain
+    M : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing (AR.IntegralDomain.underlyingRing R)))
+    m : M.Identifier
+    decl : AM.TorsionElement R M m
+    expDomain : AR.IntegralDomain
+    linkDomain : AM.TorsionElement.domain decl ≡ expDomain
+    status : B.Bool
+
+mkTorsionElementAdapter :
+  (R : AR.IntegralDomain) →
+  (M : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing (AR.IntegralDomain.underlyingRing R)))) →
+  (m : M.Identifier) →
+  (d : AM.TorsionElement R M m) →
+  (ed : AR.IntegralDomain) →
+  (pd : AM.TorsionElement.domain d ≡ ed) →
+  TorsionElementAdapter
+mkTorsionElementAdapter R M m d ed pd =
+  record { R = R ; M = M ; m = m ; decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+
+isFilledTorsionElement : TorsionElementAdapter → B.Bool
+isFilledTorsionElement a = TorsionElementAdapter.status a
+
+-- Torsion submodule
+record TorsionSubmoduleAdapter : Set₁ where
+  field
+    R : AR.IntegralDomain
+    M : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing (AR.IntegralDomain.underlyingRing R)))
+    decl : AM.TorsionSubmodule R M
+    expDomain : AR.IntegralDomain
+    linkDomain : AM.TorsionSubmodule.domain decl ≡ expDomain
+    status : B.Bool
+
+mkTorsionSubmoduleAdapter :
+  (R : AR.IntegralDomain) →
+  (M : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing (AR.IntegralDomain.underlyingRing R)))) →
+  (d : AM.TorsionSubmodule R M) →
+  (ed : AR.IntegralDomain) →
+  (pd : AM.TorsionSubmodule.domain d ≡ ed) →
+  TorsionSubmoduleAdapter
+mkTorsionSubmoduleAdapter R M d ed pd =
+  record { R = R ; M = M ; decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+
+isFilledTorsionSubmodule : TorsionSubmoduleAdapter → B.Bool
+isFilledTorsionSubmodule a = TorsionSubmoduleAdapter.status a
+
+-- Torsion-free module
+record TorsionFreeModuleAdapter : Set₁ where
+  field
+    R : AR.IntegralDomain
+    M : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing (AR.IntegralDomain.underlyingRing R)))
+    decl : AM.TorsionFreeModule R M
+    expDomain : AR.IntegralDomain
+    linkDomain : AM.TorsionFreeModule.domain decl ≡ expDomain
+    status : B.Bool
+
+mkTorsionFreeModuleAdapter :
+  (R : AR.IntegralDomain) →
+  (M : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing (AR.IntegralDomain.underlyingRing R)))) →
+  (d : AM.TorsionFreeModule R M) →
+  (ed : AR.IntegralDomain) →
+  (pd : AM.TorsionFreeModule.domain d ≡ ed) →
+  TorsionFreeModuleAdapter
+mkTorsionFreeModuleAdapter R M d ed pd =
+  record { R = R ; M = M ; decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+
+isFilledTorsionFreeModule : TorsionFreeModuleAdapter → B.Bool
+isFilledTorsionFreeModule a = TorsionFreeModuleAdapter.status a
+
+-- Structure theorem for finitely generated modules over PID
+record StructureTheoremPIDAdapter : Set₁ where
+  field
+    R : AR.PrincipalIdealDomain
+    M : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing (AR.IntegralDomain.underlyingRing (AR.PrincipalIdealDomain.domain R))))
+    decl : AM.StructureTheoremPID R M
+    expPID : AR.PrincipalIdealDomain
+    linkPID : AM.StructureTheoremPID.pid decl ≡ expPID
+    status : B.Bool
+
+mkStructureTheoremPIDAdapter :
+  (R : AR.PrincipalIdealDomain) →
+  (M : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing (AR.IntegralDomain.underlyingRing (AR.PrincipalIdealDomain.domain R))))) →
+  (d : AM.StructureTheoremPID R M) →
+  (ep : AR.PrincipalIdealDomain) →
+  (pp : AM.StructureTheoremPID.pid d ≡ ep) →
+  StructureTheoremPIDAdapter
+mkStructureTheoremPIDAdapter R M d ep pp =
+  record { R = R ; M = M ; decl = d ; expPID = ep ; linkPID = pp ; status = B.true }
+
+isFilledStructureTheoremPID : StructureTheoremPIDAdapter → B.Bool
+isFilledStructureTheoremPID a = StructureTheoremPIDAdapter.status a

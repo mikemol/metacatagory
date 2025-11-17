@@ -77,6 +77,7 @@ import Tests.GroupsAbelianChecklist
 import Tests.TensorProductChecklist
 import Tests.VectorSpaceChecklist
 import Tests.PolynomialExtensionsChecklist
+import Tests.ModuleStructureChecklist
 
 -- Proof obligation status checks (ensures selected obligations are filled
 -- and linked to constructive witnesses in examples)
