@@ -81,6 +81,7 @@ import Tests.ModuleStructureChecklist
 import Tests.ModuleTheoryChecklist
 import Tests.PolynomialFieldExtensionsChecklist
 import Tests.EnrichmentChecklist
+import Tests.AlgebraicCompletionChecklist
 
 -- Proof obligation status checks (ensures selected obligations are filled
 -- and linked to constructive witnesses in examples)

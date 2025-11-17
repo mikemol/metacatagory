@@ -3788,3 +3788,119 @@ mkAbSelfEnrichmentViaInternalHomAdapter d ec p =
 
 isFilledAbSelfEnrichmentViaInternalHom : AbSelfEnrichmentViaInternalHomAdapter → B.Bool
 isFilledAbSelfEnrichmentViaInternalHom a = AbSelfEnrichmentViaInternalHomAdapter.status a
+
+
+-- ============================================================================
+-- Module Category Theory and R-Algebras
+-- ============================================================================
+
+-- General exact sequence
+record ExactSequenceAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    decl : AM.ExactSequence R
+    expectedRing : AR.RingDeclaration
+    link : AM.ExactSequence.ring decl ≡ expectedRing
+    status : B.Bool
+
+mkExactSequenceAdapter :
+  (R : AR.RingDeclaration) →
+  (d : AM.ExactSequence R) →
+  (er : AR.RingDeclaration) →
+  (p : AM.ExactSequence.ring d ≡ er) →
+  ExactSequenceAdapter
+mkExactSequenceAdapter R d er p =
+  record { R = R ; decl = d ; expectedRing = er ; link = p ; status = B.true }
+
+isFilledExactSequence : ExactSequenceAdapter → B.Bool
+isFilledExactSequence a = ExactSequenceAdapter.status a
+
+
+-- Category of modules R-Mod
+record CategoryOfModulesAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    decl : AM.CategoryOfModules R
+    expectedRing : AR.RingDeclaration
+    link : AM.CategoryOfModules.ring decl ≡ expectedRing
+    status : B.Bool
+
+mkCategoryOfModulesAdapter :
+  (R : AR.RingDeclaration) →
+  (d : AM.CategoryOfModules R) →
+  (er : AR.RingDeclaration) →
+  (p : AM.CategoryOfModules.ring d ≡ er) →
+  CategoryOfModulesAdapter
+mkCategoryOfModulesAdapter R d er p =
+  record { R = R ; decl = d ; expectedRing = er ; link = p ; status = B.true }
+
+isFilledCategoryOfModules : CategoryOfModulesAdapter → B.Bool
+isFilledCategoryOfModules a = CategoryOfModulesAdapter.status a
+
+
+-- Vector space over a field
+record VectorSpaceAdapter : Set₁ where
+  field
+    F : AFB.FieldDeclaration
+    decl : AM.VectorSpace F
+    expectedField : AFB.FieldDeclaration
+    link : AM.VectorSpace.field' decl ≡ expectedField
+    status : B.Bool
+
+mkVectorSpaceAdapter :
+  (F : AFB.FieldDeclaration) →
+  (d : AM.VectorSpace F) →
+  (ef : AFB.FieldDeclaration) →
+  (p : AM.VectorSpace.field' d ≡ ef) →
+  VectorSpaceAdapter
+mkVectorSpaceAdapter F d ef p =
+  record { F = F ; decl = d ; expectedField = ef ; link = p ; status = B.true }
+
+isFilledVectorSpace : VectorSpaceAdapter → B.Bool
+isFilledVectorSpace a = VectorSpaceAdapter.status a
+
+
+-- R-algebra (ring with compatible R-module structure)
+record RAlgebraAdapter : Set₁ where
+  field
+    R : AR.CommutativeRingDeclaration
+    decl : AM.RAlgebra R
+    expectedRing : AR.CommutativeRingDeclaration
+    link : AM.RAlgebra.coefficientRing decl ≡ expectedRing
+    status : B.Bool
+
+mkRAlgebraAdapter :
+  (R : AR.CommutativeRingDeclaration) →
+  (d : AM.RAlgebra R) →
+  (er : AR.CommutativeRingDeclaration) →
+  (p : AM.RAlgebra.coefficientRing d ≡ er) →
+  RAlgebraAdapter
+mkRAlgebraAdapter R d er p =
+  record { R = R ; decl = d ; expectedRing = er ; link = p ; status = B.true }
+
+isFilledRAlgebra : RAlgebraAdapter → B.Bool
+isFilledRAlgebra a = RAlgebraAdapter.status a
+
+
+-- Algebra homomorphism
+record AlgebraHomomorphismAdapter : Set₁ where
+  field
+    R : AR.CommutativeRingDeclaration
+    A B : AM.RAlgebra R
+    decl : AM.AlgebraHomomorphism R A B
+    expectedRing : AR.CommutativeRingDeclaration
+    link : AM.AlgebraHomomorphism.coefficientRing decl ≡ expectedRing
+    status : B.Bool
+
+mkAlgebraHomomorphismAdapter :
+  (R : AR.CommutativeRingDeclaration) →
+  (A B : AM.RAlgebra R) →
+  (d : AM.AlgebraHomomorphism R A B) →
+  (er : AR.CommutativeRingDeclaration) →
+  (p : AM.AlgebraHomomorphism.coefficientRing d ≡ er) →
+  AlgebraHomomorphismAdapter
+mkAlgebraHomomorphismAdapter R A B d er p =
+  record { R = R ; A = A ; B = B ; decl = d ; expectedRing = er ; link = p ; status = B.true }
+
+isFilledAlgebraHomomorphism : AlgebraHomomorphismAdapter → B.Bool
+isFilledAlgebraHomomorphism a = AlgebraHomomorphismAdapter.status a
