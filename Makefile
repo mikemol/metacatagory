@@ -51,7 +51,10 @@ check:
 # Generate HTML documentation for all chapters
 docs: | $(HTML_DIR)
 	@echo "Generating HTML docs for all chapters into $(HTML_DIR)..."
-	@$(AGDA) --html --html-dir=$(HTML_DIR) $(AGDA_INCLUDE) $(AGDA_INDEXES)
+	@for file in $(AGDA_INDEXES); do \
+		echo "Generating HTML for $$file..."; \
+		$(AGDA) --html --html-dir=$(HTML_DIR) $(AGDA_INCLUDE) $$file || exit 1; \
+	done
 	@echo "HTML docs generated in $(HTML_DIR). Open index.html for entry points."
 
 # Generate Markdown documentation by converting the HTML output via pandoc
