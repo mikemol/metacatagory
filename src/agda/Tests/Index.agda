@@ -66,6 +66,10 @@ import Tests.Chapter1Checklist
 import Tests.Chapter2Checklist
 import Tests.Chapter3Checklist
 
+-- Proof obligation status checks (ensures selected obligations are filled
+-- and linked to constructive witnesses in examples)
+import Tests.ProofObligationStatus
+
 -- Usage:
 --   agda --no-main -i src/agda src/agda/Tests/Index.agda
 --

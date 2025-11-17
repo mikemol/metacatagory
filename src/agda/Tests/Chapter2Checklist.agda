@@ -4,7 +4,9 @@
 module Tests.Chapter2Checklist where
 
 open import Agda.Builtin.Unit using (⊤; tt)
-open import Agda.Builtin.Bool using (Bool; true; false)
+import Agda.Builtin.Bool as B
+open B using () renaming (Bool to Boolean; true to True; false to False)
+open import Agda.Builtin.Equality using (_≡_; refl)
 open import Metamodel as M
 
 -- Submodule imports
@@ -19,6 +21,7 @@ import Chapter2.Level2sub8 as S8
 import Chapter1.Level1sub3 as C1S3
 import Chapter1.Level1sub6 as C1S6
 import Chapter1.Level1 as C1L
+import Tests.ObligationAdapters as A
 
 -- TODO: These are smoke placeholders. Replace each with a constructed witness
 --       once concrete examples/bridges land:
@@ -33,7 +36,7 @@ import Chapter1.Level1 as C1L
 
 chk2s1A : S1.AdditivityEquivalenceTheorem
 -- TODO(Ch2 §2.1): Replace with an actual additive-category instance when ready.
-chk2s1A = S1.THEOREM_AdditivityEquivalence (M.mkId "C") true true (M.mkId "iso")
+chk2s1A = S1.THEOREM_AdditivityEquivalence (M.mkId "C") B.true B.true (M.mkId "iso")
 
 chk2s1B : S1.HomFunctorIsAdditiveTheorem
 -- TODO(Ch2 §2.1): Replace with Hom functor built from a concrete category.
@@ -50,6 +53,65 @@ chk2s2A = S2._is_REGULAR_EPIMORPHISM (M.mkId "e") (M.mkId "A") (M.mkId "B")
 chk2s2B : S2.KernelPairDeclaration
 -- TODO(Ch2 §2.2): Populate from an explicit pullback example later.
 chk2s2B = S2.KernelPair_of (M.mkId "f") (M.mkId "K") (M.mkId "k1") (M.mkId "k2") (M.mkId "pb")
+
+chk2s2C : S2.InternalEquivalenceRelationDeclaration
+-- TODO(Ch2 §2.3): Internal equivalence relation induced by (r1,r2) on A.
+chk2s2C = S2.INTERNAL_EQUIV_RELATION_on (M.mkId "R") (M.mkId "A") (M.mkId "r1") (M.mkId "r2")
+                                         (M.mkId "mono<r1,r2>") (M.mkId "refl") (M.mkId "sym") (M.mkId "trans")
+
+chk2s2D : S2.RegularExactSequenceDeclaration
+-- TODO(Ch2 §2.3): Regular exact sequence K --(k1,k2)--> A --e--> Q.
+chk2s2D = S2.REGULAR_EXACT_SEQUENCE chk2s2B chk2s2A (M.mkId "compat")
+
+-- Regular category declaration tying (RegEpi,Mono) factorization to a coequalizer witness
+finLim : S2.FiniteLimitsProperty
+finLim = S2._has_FINITE_LIMITS (M.mkId "C") (M.mkId "term") (M.mkId "pullbacks")
+
+stab : S2.StabilityUnderPullbackProperty
+stab = S2._is_STABLE_UNDER_PULLBACK (M.mkId "RegEpi") (M.mkId "stable")
+
+regCatDecl : S2.RegularCategoryDeclaration
+regCatDecl = S2.REGULAR_CATEGORY (M.mkId "C") finLim (M.mkId "coeq") stab
+
+-- Adapter linking factorization witness to the coequalizer used above
+reg-fact-link : S2.RegularCategoryDeclaration.regularEpiMonoFactorizationWitness regCatDecl ≡
+                S2.RegularEpimorphismProperty.coequalizerWitness chk2s2A
+reg-fact-link = refl
+
+reg-fact-adapter : A.RegularFactorizationAdapter
+reg-fact-adapter = A.mkRegularFactorizationAdapter regCatDecl
+                     (S2.RegularEpimorphismProperty.coequalizerWitness chk2s2A)
+                     reg-fact-link
+
+reg-fact-status-is-filled : A.isFilledRegularFactorization reg-fact-adapter ≡ B.true
+reg-fact-status-is-filled = refl
+
+-- Link KernelPairDeclaration fields to chosen identifiers and assert status
+kp-adapter : A.KernelPairAdapter
+kp-adapter =
+    A.mkKernelPairAdapter chk2s2B (M.mkId "f") (M.mkId "k1") (M.mkId "k2") (M.mkId "pb")
+        refl refl refl refl
+
+kp-status-is-filled : A.isFilledKernelPair kp-adapter ≡ B.true
+kp-status-is-filled = refl
+
+-- Link internal equivalence relation (r1,r2) and mono-into-product witness
+ier-adapter : A.InternalEquivalenceRelationAdapter
+ier-adapter =
+    A.mkInternalEquivalenceRelationAdapter chk2s2C (M.mkId "r1") (M.mkId "r2") (M.mkId "mono<r1,r2>")
+        refl refl refl
+
+ier-status-is-filled : A.isFilledInternalEquiv ier-adapter ≡ B.true
+ier-status-is-filled = refl
+
+-- Link regular exact sequence’s kernel pair morphism and quotient morphism
+res-adapter : A.RegularExactSequenceAdapter
+res-adapter =
+    A.mkRegularExactSequenceAdapter chk2s2D (M.mkId "f") (M.mkId "e")
+        refl refl
+
+res-status-is-filled : A.isFilledRegularExact res-adapter ≡ B.true
+res-status-is-filled = refl
 
 ------------------------------------------------------------------------
 -- Level2sub3
@@ -130,12 +192,32 @@ chk2s6A : S6.HomObjectDeclaration
 -- TODO(Ch2 §2.6): Build from an enriched category example once available.
 chk2s6A = record { sourceObject = M.mkId "A" ; targetObject = M.mkId "B" ; homObjectInV = M.mkId "HomAB" }
 
+-- Link assertion and standardized status via adapter
+hom-link : S6.HomObjectDeclaration.homObjectInV chk2s6A ≡ M.mkId "HomAB"
+hom-link = refl
+
+hom-adapter : A.HomObjectAdapter
+hom-adapter = A.mkHomObjectAdapter chk2s6A (M.mkId "HomAB") hom-link
+
+hom-status-is-filled : A.isFilledHom hom-adapter ≡ B.true
+hom-status-is-filled = refl
+
 idMor : C1L.MorphismDeclaration
 idMor = C1L.mor (M.mkId "id") (M.mkId "X") (M.mkId "X")
 
 chk2s6B : S6.IdentityMorphismDeclaration_Enriched
 -- TODO(Ch2 §2.6): Replace with identity in the enriching category of the example.
 chk2s6B = record { object = M.mkId "X" ; identityMorphismInV = idMor }
+
+-- Link assertion and standardized status via adapter
+id-link : S6.IdentityMorphismDeclaration_Enriched.identityMorphismInV chk2s6B ≡ idMor
+id-link = refl
+
+id-adapter : A.IdEnrichedAdapter
+id-adapter = A.mkIdEnrichedAdapter chk2s6B idMor id-link
+
+id-status-is-filled : A.isFilledId id-adapter ≡ B.true
+id-status-is-filled = refl
 
 ------------------------------------------------------------------------
 -- Level2sub7 (Topological theorems)
