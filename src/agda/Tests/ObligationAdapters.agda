@@ -3402,3 +3402,167 @@ mkRightModuleAdapter R d er pr =
 
 isFilledRightModule : RightModuleAdapter → B.Bool
 isFilledRightModule a = RightModuleAdapter.status a
+
+
+-- ============================================================================
+-- Extension Degree and Polynomial-Related Adapters
+-- ============================================================================
+
+-- Extension degree [E : F]
+record ExtensionDegreeAdapter : Set₁ where
+  field
+    F E : AFB.FieldDeclaration
+    decl : AFB.ExtensionDegree F E
+    expected : AFB.FieldDeclaration
+    expExt : AFB.FieldDeclaration
+    link : AFB.ExtensionDegree.baseField decl ≡ expected
+    linkExt : AFB.ExtensionDegree.extensionField decl ≡ expExt
+    status : B.Bool
+
+mkExtensionDegreeAdapter :
+  (F E : AFB.FieldDeclaration) →
+  (d : AFB.ExtensionDegree F E) →
+  (ef : AFB.FieldDeclaration) →
+  (ee : AFB.FieldDeclaration) →
+  (pf : AFB.ExtensionDegree.baseField d ≡ ef) →
+  (pe : AFB.ExtensionDegree.extensionField d ≡ ee) →
+  ExtensionDegreeAdapter
+mkExtensionDegreeAdapter F E d ef ee pf pe =
+  record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = B.true }
+
+isFilledExtensionDegree : ExtensionDegreeAdapter → B.Bool
+isFilledExtensionDegree a = ExtensionDegreeAdapter.status a
+
+
+-- Inseparable degree [E : F]ᵢ
+record InseparableDegreeAdapter : Set₁ where
+  field
+    F E : AFB.FieldDeclaration
+    decl : AFA.InseparableDegree F E
+    expected : AFB.FieldDeclaration
+    expExt : AFB.FieldDeclaration
+    link : AFA.InseparableDegree.baseField decl ≡ expected
+    linkExt : AFA.InseparableDegree.extensionField decl ≡ expExt
+    status : B.Bool
+
+mkInseparableDegreeAdapter :
+  (F E : AFB.FieldDeclaration) →
+  (d : AFA.InseparableDegree F E) →
+  (ef : AFB.FieldDeclaration) →
+  (ee : AFB.FieldDeclaration) →
+  (pf : AFA.InseparableDegree.baseField d ≡ ef) →
+  (pe : AFA.InseparableDegree.extensionField d ≡ ee) →
+  InseparableDegreeAdapter
+mkInseparableDegreeAdapter F E d ef ee pf pe =
+  record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = B.true }
+
+isFilledInseparableDegree : InseparableDegreeAdapter → B.Bool
+isFilledInseparableDegree a = InseparableDegreeAdapter.status a
+
+
+-- Separable degree [E : F]ₛ
+record SeparableDegreeAdapter : Set₁ where
+  field
+    F E : AFB.FieldDeclaration
+    decl : AFA.SeparableDegree F E
+    expected : AFB.FieldDeclaration
+    expExt : AFB.FieldDeclaration
+    link : AFA.SeparableDegree.baseField decl ≡ expected
+    linkExt : AFA.SeparableDegree.extensionField decl ≡ expExt
+    status : B.Bool
+
+mkSeparableDegreeAdapter :
+  (F E : AFB.FieldDeclaration) →
+  (d : AFA.SeparableDegree F E) →
+  (ef : AFB.FieldDeclaration) →
+  (ee : AFB.FieldDeclaration) →
+  (pf : AFA.SeparableDegree.baseField d ≡ ef) →
+  (pe : AFA.SeparableDegree.extensionField d ≡ ee) →
+  SeparableDegreeAdapter
+mkSeparableDegreeAdapter F E d ef ee pf pe =
+  record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = B.true }
+
+isFilledSeparableDegree : SeparableDegreeAdapter → B.Bool
+isFilledSeparableDegree a = SeparableDegreeAdapter.status a
+
+
+-- Simple extension F(α)
+record SimpleExtensionAdapter : Set₁ where
+  field
+    F E : AFB.FieldDeclaration
+    α : M.Identifier
+    decl : AFB.SimpleExtension F E α
+    expected : AFB.FieldDeclaration
+    expExt : AFB.FieldDeclaration
+    link : AFB.SimpleExtension.baseField decl ≡ expected
+    linkExt : AFB.SimpleExtension.extensionField decl ≡ expExt
+    status : B.Bool
+
+mkSimpleExtensionAdapter :
+  (F E : AFB.FieldDeclaration) →
+  (α : M.Identifier) →
+  (d : AFB.SimpleExtension F E α) →
+  (ef : AFB.FieldDeclaration) →
+  (ee : AFB.FieldDeclaration) →
+  (pf : AFB.SimpleExtension.baseField d ≡ ef) →
+  (pe : AFB.SimpleExtension.extensionField d ≡ ee) →
+  SimpleExtensionAdapter
+mkSimpleExtensionAdapter F E α d ef ee pf pe =
+  record { F = F ; E = E ; α = α ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = B.true }
+
+isFilledSimpleExtension : SimpleExtensionAdapter → B.Bool
+isFilledSimpleExtension a = SimpleExtensionAdapter.status a
+
+
+-- Transcendental element
+record TranscendentalElementAdapter : Set₁ where
+  field
+    F E : AFB.FieldDeclaration
+    α : M.Identifier
+    decl : AFB.TranscendentalElement F E α
+    expected : AFB.FieldDeclaration
+    expExt : AFB.FieldDeclaration
+    link : AFB.TranscendentalElement.baseField decl ≡ expected
+    linkExt : AFB.TranscendentalElement.extensionField decl ≡ expExt
+    status : B.Bool
+
+mkTranscendentalElementAdapter :
+  (F E : AFB.FieldDeclaration) →
+  (α : M.Identifier) →
+  (d : AFB.TranscendentalElement F E α) →
+  (ef : AFB.FieldDeclaration) →
+  (ee : AFB.FieldDeclaration) →
+  (pf : AFB.TranscendentalElement.baseField d ≡ ef) →
+  (pe : AFB.TranscendentalElement.extensionField d ≡ ee) →
+  TranscendentalElementAdapter
+mkTranscendentalElementAdapter F E α d ef ee pf pe =
+  record { F = F ; E = E ; α = α ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = B.true }
+
+isFilledTranscendentalElement : TranscendentalElementAdapter → B.Bool
+isFilledTranscendentalElement a = TranscendentalElementAdapter.status a
+
+
+-- Transcendence basis
+record TranscendenceBasisAdapter : Set₁ where
+  field
+    F E : AFB.FieldDeclaration
+    decl : AFB.TranscendenceBasis F E
+    expected : AFB.FieldDeclaration
+    expExt : AFB.FieldDeclaration
+    link : AFB.TranscendenceBasis.baseField decl ≡ expected
+    linkExt : AFB.TranscendenceBasis.extensionField decl ≡ expExt
+    status : B.Bool
+
+mkTranscendenceBasisAdapter :
+  (F E : AFB.FieldDeclaration) →
+  (d : AFB.TranscendenceBasis F E) →
+  (ef : AFB.FieldDeclaration) →
+  (ee : AFB.FieldDeclaration) →
+  (pf : AFB.TranscendenceBasis.baseField d ≡ ef) →
+  (pe : AFB.TranscendenceBasis.extensionField d ≡ ee) →
+  TranscendenceBasisAdapter
+mkTranscendenceBasisAdapter F E d ef ee pf pe =
+  record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = B.true }
+
+isFilledTranscendenceBasis : TranscendenceBasisAdapter → B.Bool
+isFilledTranscendenceBasis a = TranscendenceBasisAdapter.status a

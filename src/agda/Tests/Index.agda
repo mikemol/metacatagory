@@ -79,6 +79,7 @@ import Tests.VectorSpaceChecklist
 import Tests.PolynomialExtensionsChecklist
 import Tests.ModuleStructureChecklist
 import Tests.ModuleTheoryChecklist
+import Tests.PolynomialFieldExtensionsChecklist
 
 -- Proof obligation status checks (ensures selected obligations are filled
 -- and linked to constructive witnesses in examples)
