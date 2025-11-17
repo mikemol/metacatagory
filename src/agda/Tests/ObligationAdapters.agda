@@ -3223,3 +3223,182 @@ mkStructureTheoremPIDAdapter R M d ep pp =
 
 isFilledStructureTheoremPID : StructureTheoremPIDAdapter → B.Bool
 isFilledStructureTheoremPID a = StructureTheoremPIDAdapter.status a
+
+-- Hom functor
+record HomFunctorAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    M : AM.LeftModule R
+    decl : AM.HomFunctor R M
+    expRing : AR.RingDeclaration
+    linkRing : AM.HomFunctor.ring decl ≡ expRing
+    status : B.Bool
+
+mkHomFunctorAdapter :
+  (R : AR.RingDeclaration) →
+  (M : AM.LeftModule R) →
+  (d : AM.HomFunctor R M) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.HomFunctor.ring d ≡ er) →
+  HomFunctorAdapter
+mkHomFunctorAdapter R M d er pr =
+  record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledHomFunctor : HomFunctorAdapter → B.Bool
+isFilledHomFunctor a = HomFunctorAdapter.status a
+
+-- Dual module
+record DualModuleAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    M : AM.LeftModule R
+    decl : AM.DualModule R M
+    expRing : AR.RingDeclaration
+    linkRing : AM.DualModule.ring decl ≡ expRing
+    status : B.Bool
+
+mkDualModuleAdapter :
+  (R : AR.RingDeclaration) →
+  (M : AM.LeftModule R) →
+  (d : AM.DualModule R M) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.DualModule.ring d ≡ er) →
+  DualModuleAdapter
+mkDualModuleAdapter R M d er pr =
+  record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledDualModule : DualModuleAdapter → B.Bool
+isFilledDualModule a = DualModuleAdapter.status a
+
+-- Reflexive module
+record ReflexiveModuleAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    M : AM.LeftModule R
+    decl : AM.ReflexiveModule R M
+    expRing : AR.RingDeclaration
+    linkRing : AM.ReflexiveModule.ring decl ≡ expRing
+    status : B.Bool
+
+mkReflexiveModuleAdapter :
+  (R : AR.RingDeclaration) →
+  (M : AM.LeftModule R) →
+  (d : AM.ReflexiveModule R M) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.ReflexiveModule.ring d ≡ er) →
+  ReflexiveModuleAdapter
+mkReflexiveModuleAdapter R M d er pr =
+  record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledReflexiveModule : ReflexiveModuleAdapter → B.Bool
+isFilledReflexiveModule a = ReflexiveModuleAdapter.status a
+
+-- Tensor product of modules
+record TensorProductModuleAdapter : Set₁ where
+  field
+    R : AR.CommutativeRingDeclaration
+    M : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing R))
+    N : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing R))
+    decl : AM.TensorProduct R M N
+    expTensorProduct : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing R))
+    linkTensorProduct : AM.TensorProduct.tensorProduct decl ≡ expTensorProduct
+    status : B.Bool
+
+mkTensorProductModuleAdapter :
+  (R : AR.CommutativeRingDeclaration) →
+  (M N : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing R))) →
+  (d : AM.TensorProduct R M N) →
+  (et : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing R))) →
+  (pt : AM.TensorProduct.tensorProduct d ≡ et) →
+  TensorProductModuleAdapter
+mkTensorProductModuleAdapter R M N d et pt =
+  record { R = R ; M = M ; N = N ; decl = d ; expTensorProduct = et ; linkTensorProduct = pt ; status = B.true }
+
+isFilledTensorProductModule : TensorProductModuleAdapter → B.Bool
+isFilledTensorProductModule a = TensorProductModuleAdapter.status a
+
+-- Free module
+record FreeModuleAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    X : M.Identifier
+    decl : AM.FreeModule R X
+    expRing : AR.RingDeclaration
+    linkRing : AM.FreeModule.ring decl ≡ expRing
+    status : B.Bool
+
+mkFreeModuleAdapter :
+  (R : AR.RingDeclaration) →
+  (X : M.Identifier) →
+  (d : AM.FreeModule R X) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.FreeModule.ring d ≡ er) →
+  FreeModuleAdapter
+mkFreeModuleAdapter R X d er pr =
+  record { R = R ; X = X ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledFreeModule : FreeModuleAdapter → B.Bool
+isFilledFreeModule a = FreeModuleAdapter.status a
+
+-- Free module functor
+record FreeModuleFunctorAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    decl : AM.FreeModuleFunctor R
+    expRing : AR.RingDeclaration
+    linkRing : AM.FreeModuleFunctor.ring decl ≡ expRing
+    status : B.Bool
+
+mkFreeModuleFunctorAdapter :
+  (R : AR.RingDeclaration) →
+  (d : AM.FreeModuleFunctor R) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.FreeModuleFunctor.ring d ≡ er) →
+  FreeModuleFunctorAdapter
+mkFreeModuleFunctorAdapter R d er pr =
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledFreeModuleFunctor : FreeModuleFunctorAdapter → B.Bool
+isFilledFreeModuleFunctor a = FreeModuleFunctorAdapter.status a
+
+-- Forgetful module functor
+record ForgetfulModuleFunctorAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    decl : AM.ForgetfulModuleFunctor R
+    expRing : AR.RingDeclaration
+    linkRing : AM.ForgetfulModuleFunctor.ring decl ≡ expRing
+    status : B.Bool
+
+mkForgetfulModuleFunctorAdapter :
+  (R : AR.RingDeclaration) →
+  (d : AM.ForgetfulModuleFunctor R) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.ForgetfulModuleFunctor.ring d ≡ er) →
+  ForgetfulModuleFunctorAdapter
+mkForgetfulModuleFunctorAdapter R d er pr =
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledForgetfulModuleFunctor : ForgetfulModuleFunctorAdapter → B.Bool
+isFilledForgetfulModuleFunctor a = ForgetfulModuleFunctorAdapter.status a
+
+-- Right module
+record RightModuleAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    decl : AM.RightModule R
+    expRing : AR.RingDeclaration
+    linkRing : AM.RightModule.ring decl ≡ expRing
+    status : B.Bool
+
+mkRightModuleAdapter :
+  (R : AR.RingDeclaration) →
+  (d : AM.RightModule R) →
+  (er : AR.RingDeclaration) →
+  (pr : AM.RightModule.ring d ≡ er) →
+  RightModuleAdapter
+mkRightModuleAdapter R d er pr =
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledRightModule : RightModuleAdapter → B.Bool
+isFilledRightModule a = RightModuleAdapter.status a
