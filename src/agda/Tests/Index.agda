@@ -51,6 +51,9 @@ import Tests.PerformanceBoundaryTests
 -- Validates: Computational witnesses, algorithms, correctness proofs, validation
 import Tests.ConstructiveWitnessTests
 
+-- Category of Phases examples (import triggers compilation of examples)
+import Tests.PhaseCategoryExamplesRunner
+
 -- Usage:
 --   agda --no-main -i src/agda src/agda/Tests/Index.agda
 --

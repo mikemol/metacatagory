@@ -9,6 +9,11 @@ This directory contains auto-generated Markdown documentation from the Agda sour
 * [Core](Core.md) – Foundational definitions, axioms, and the unified proof layer
 * [Metamodel](Metamodel.md) – Meta-level constructs and identifiers
 * [PropertyRegistry](PropertyRegistry.md) – Canonical property identifiers for compact queries
+* [Core.PhaseCategory](Core.PhaseCategory.md) – Category of Phases (morphisms are `Phase A B`), with raw functors, raw natural transformations, and a monoidal (parallel) structure
+
+### Guides & Overviews
+
+* [Phase Category Guide](PhaseCategory.md) – Short overview and usage examples for `Core/PhaseCategory.agda`
 
 ### Chapter 1: The Language of Categories
 
@@ -76,3 +81,9 @@ src/agda/
 ```
 
 For typechecking and building locally, see the main [README](../README.md).
+
+## Examples
+
+Source examples for the Category of Phases can be found at:
+
+* `src/agda/Examples/PhaseCategoryExamples.agda` – identity/compose/parallel on phases, a simple raw functor, and identity natural transformations.
