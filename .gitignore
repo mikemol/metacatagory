@@ -1,0 +1,33 @@
+# Python virtual environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Agda compiled files
+*.agdai
+
+# Build outputs
+build/
+dist/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test/automation outputs
+docs/automation/
+*.svg
+*.png
+*.dot
+reports/

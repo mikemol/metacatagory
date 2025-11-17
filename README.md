@@ -7,12 +7,16 @@
 Prerequisites
 
 * Agda installed and available on your PATH (and your preferred standard library if you plan to elaborate beyond these structural records).
+* Python 3.8+ for automation tools (optional, but recommended for test reports and diagrams).
 
 Quick use
 
 ```bash
 # Typecheck all chapters (1, 2, 3)
 make check
+
+# Typecheck behavioral phase boundary test suite
+agda --no-main -i src/agda src/agda/Tests/Index.agda
 
 # Generate HTML docs into build/html
 make docs
@@ -29,6 +33,65 @@ make docs3
 make clean
 ```
 
+### Tools & Automation
+
+The project includes Python-based automation tools for test coverage analysis, phase diagrams, and code search. These tools run in a virtual environment and generate reports and visualizations.
+
+**Setup:**
+
+```bash
+# Create and activate virtual environment
+make venv
+
+# Or manually:
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+**Available Tools:**
+
+```bash
+# Generate test coverage report (JSON + Markdown)
+make report
+# Output: build/reports/test-report.{json,md}
+
+# Generate phase boundary diagram (DOT format)
+make diagram  
+# Output: build/diagrams/phases.dot
+
+# Search for algorithms/properties by keyword
+make search QUERY="kernel"
+make search QUERY="adjunction"
+
+# Test all automation scripts
+make test-tools
+```
+
+**Direct Script Usage:**
+
+```bash
+# Activate venv first
+source venv/bin/activate
+
+# Test coverage report
+python scripts/test_report.py --out-dir build/reports
+
+# Phase diagram (with options)
+python scripts/phase_diagram.py --out-dir build/diagrams
+
+# Search with custom path
+python scripts/search_algo.py --q "regular epi" --path src/agda
+```
+
+**What the tools do:**
+
+* **test_report.py**: Scans `Tests/*.agda` files, counts adapters and status assertions per chapter, generates coverage statistics.
+* **phase_diagram.py**: Parses test structure to build a graph of exercised phase boundaries, outputs Graphviz DOT files.
+* **search_algo.py**: Indexes Agda declarations (records, constructors, postulates) and enables substring search across the codebase.
+
+See `make help` for a complete list of available targets.
+
 What's built
 
 * Structural Agda modules organized by chapter under `src/agda/Chapter{1,2,3}`.
@@ -41,6 +104,26 @@ What's built
 * Examples in Chapter 3:
   * `Level3_1` (Locales)
   * `Level3_2` (Sheaves on locales)
+* Behavioral phase boundary test suite under `src/agda/Tests/`:
+  * **Core/Phase.agda**: Formalization of phase abstraction (transformation pipelines, composition laws)
+  * **Core/PhaseCategory.agda**: Category of Phases with raw functors, raw natural transformations, and a monoidal (parallel) structure
+  * **Core/ConstructiveWitnesses.agda**: Constructive witnesses with computational content (480 lines)
+  * **Core/AlgorithmCorrectness.agda**: Formal correctness specifications and proof obligations (520 lines)
+  * **Tests/DispatchBehaviorTests.agda** (9 phases): Evidence → Classification → Dispatch → Invocation
+  * **Tests/UniversalPropertyTests.agda** (9 phases): Algorithm → UMP → Categorical structures
+  * **Tests/WitnessConstructionTests.agda** (12 phases): Identifiers → Witnesses → Composites
+  * **Tests/ErrorHandlingTests.agda** (8 phases): Type-level validation and error-preventing boundaries
+  * **Tests/PropertyRegistryTests.agda** (3 phases): Stable identifier typing and consumption
+  * **Tests/AlgorithmCompositionTests.agda** (9 phases): Multi-step algorithm pipelines
+  * **Tests/SerializationTests.agda** (9 phases): Witness externalization and roundtrip
+  * **Tests/PerformanceBoundaryTests.agda** (9 phases): Complexity tracking and optimization
+  * **Tests/ConstructiveWitnessTests.agda** (15 phases): Computable witnesses with verification
+  * **Tests/PhaseExamples.agda**: Demonstrations of Phase usage
+  * **Examples/PhaseCategoryExamples.agda**: Small, concrete examples for functors, natural transformations, and monoidal tensor on phases
+  * **Tests/Index.agda**: Unified entry point importing all test suites (83 phases total)
+  * See `docs/TestingStrategy.md` for detailed philosophy and coverage
+  * See `docs/ConstructiveWitnesses.md` for constructive witness architecture
+  * See `docs/AlgorithmCorrectness.md` for algorithm correctness framework
 
 Notes
 

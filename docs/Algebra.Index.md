@@ -1,3 +1,4 @@
+``` Agda
 -- Algebra.Index: Aggregator for algebraic structure modules
 -- This module re-exports the algebraic hierarchy for easy importing
 
@@ -20,3 +21,4 @@ open import Core.Algorithms.NumberFields public
 open import Core.Algorithms.Registry public
 open import Core.Algorithms.External public
 open import Core.Witnesses public
+```
