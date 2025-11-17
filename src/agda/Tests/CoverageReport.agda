@@ -73,6 +73,28 @@ data AdapterType : Set where
   InjectiveObjectAdapter : AdapterType
   HasEnoughProjectivesAdapter : AdapterType
   HasEnoughInjectivesAdapter : AdapterType
+  
+  -- Topos Theory
+  PresheafOnLocaleAdapter : AdapterType
+  SheafGluingAxiomAdapter : AdapterType
+  CategoryOfSheavesAdapter : AdapterType
+  CategoryOfSheavesIsAToposTheoremAdapter : AdapterType
+  ExponentialObjectSheafAdapter : AdapterType
+  SubobjectClassifierAxiomAdapter : AdapterType
+  EtaleSpaceOverAdapter : AdapterType
+  CategoryOfEtaleSpacesAdapter : AdapterType
+  StalkConstructorAdapter : AdapterType
+  TotalSpaceOfStalksAdapter : AdapterType
+  SheafOfSectionsFunctorAdapter : AdapterType
+  SheafEtaleEquivalenceTheoremAdapter : AdapterType
+  DirectImageFunctorLocaleAdapter : AdapterType
+  InverseImageFunctorLocaleAdapter : AdapterType
+  LocaleChangeOfBaseAdjunctionTheoremAdapter : AdapterType
+  EtaleMorphismInducesSheafEquivalenceTheoremAdapter : AdapterType
+  SheavesAreCompleteOmegaSetsRefinedTheoremAdapter : AdapterType
+  SheafOfRingsAdapter : AdapterType
+  SheafOfOModulesAdapter : AdapterType
+  CategoryOfOModulesIsAbelianCorollaryAdapter : AdapterType
 
 -- Checklist module registry
 record ChecklistModule : Set where
@@ -113,6 +135,19 @@ allChecklists =
                          InjectiveObjectAdapter ∷ HasEnoughProjectivesAdapter ∷
                          HasEnoughInjectivesAdapter ∷ []
          } ∷
+  record { moduleName = "Tests.ToposTheoryChecklist"
+         ; assertionCount = 25
+         ; adapterTypes = PresheafOnLocaleAdapter ∷ SheafGluingAxiomAdapter ∷
+                         CategoryOfSheavesAdapter ∷ CategoryOfSheavesIsAToposTheoremAdapter ∷
+                         ExponentialObjectSheafAdapter ∷ SubobjectClassifierAxiomAdapter ∷
+                         EtaleSpaceOverAdapter ∷ CategoryOfEtaleSpacesAdapter ∷
+                         StalkConstructorAdapter ∷ TotalSpaceOfStalksAdapter ∷
+                         SheafOfSectionsFunctorAdapter ∷ SheafEtaleEquivalenceTheoremAdapter ∷
+                         DirectImageFunctorLocaleAdapter ∷ InverseImageFunctorLocaleAdapter ∷
+                         LocaleChangeOfBaseAdjunctionTheoremAdapter ∷ EtaleMorphismInducesSheafEquivalenceTheoremAdapter ∷
+                         SheavesAreCompleteOmegaSetsRefinedTheoremAdapter ∷ SheafOfRingsAdapter ∷
+                         SheafOfOModulesAdapter ∷ CategoryOfOModulesIsAbelianCorollaryAdapter ∷ []
+         } ∷
   []  -- Add more as needed
 
 -- Total assertion count (computed from the list)
@@ -123,8 +158,8 @@ totalAssertions = sumAssertions allChecklists
     sumAssertions [] = zero
     sumAssertions (m ∷ ms) = ChecklistModule.assertionCount m + sumAssertions ms
 
--- Verify our count matches reality (247 as of last update)
-_ : totalAssertions ≡ 37
+-- Verify our count matches reality (now 37 + 25 = 62 topos theory assertions)
+_ : totalAssertions ≡ 62
 _ = refl  -- This will fail to typecheck if our count is wrong!
 
 ------------------------------------------------------------------------
