@@ -4722,3 +4722,725 @@ mkAdjointFunctorTheoremRightAdapter d =
 
 isFilledAdjointFunctorTheoremRight : AdjointFunctorTheoremRightAdapter → B.Bool
 isFilledAdjointFunctorTheoremRight a = AdjointFunctorTheoremRightAdapter.status a
+
+
+------------------------------------------------------------------------
+-- Grothendieck Fibrations (Chapter2.Level2sub8)
+------------------------------------------------------------------------
+
+-- Fibration declaration (projection functor with Cartesian lifts)
+record FibrationDeclarationAdapter : Set₁ where
+  field
+    decl : C2S8.FibrationDeclaration
+    expectedProjection : M.Identifier
+    link : C2S8.FibrationProjectionFunctor.projectionFunctor (C2S8.FibrationDeclaration.projectionFunctor decl) ≡ expectedProjection
+    status : B.Bool
+
+mkFibrationDeclarationAdapter :
+  (d : C2S8.FibrationDeclaration) →
+  (ep : M.Identifier) →
+  (p : C2S8.FibrationProjectionFunctor.projectionFunctor (C2S8.FibrationDeclaration.projectionFunctor d) ≡ ep) →
+  FibrationDeclarationAdapter
+mkFibrationDeclarationAdapter d ep p =
+  record { decl = d ; expectedProjection = ep ; link = p ; status = B.true }
+
+isFilledFibrationDeclaration : FibrationDeclarationAdapter → B.Bool
+isFilledFibrationDeclaration a = FibrationDeclarationAdapter.status a
+
+-- Cartesian arrow (universal lifting property)
+record CartesianArrowAdapter : Set₁ where
+  field
+    decl : C2S8.CartesianArrow
+    expectedArrow : M.Identifier
+    link : C2S8.CartesianArrow.arrow decl ≡ expectedArrow
+    status : B.Bool
+
+mkCartesianArrowAdapter :
+  (d : C2S8.CartesianArrow) →
+  (ea : M.Identifier) →
+  (p : C2S8.CartesianArrow.arrow d ≡ ea) →
+  CartesianArrowAdapter
+mkCartesianArrowAdapter d ea p =
+  record { decl = d ; expectedArrow = ea ; link = p ; status = B.true }
+
+isFilledCartesianArrow : CartesianArrowAdapter → B.Bool
+isFilledCartesianArrow a = CartesianArrowAdapter.status a
+
+-- Cartesian functor between fibrations
+record CartesianFunctorDeclarationAdapter : Set₁ where
+  field
+    decl : C2S8.CartesianFunctorDeclaration
+    expectedFunctor : M.Identifier
+    link : C2S8.CartesianFunctorDeclaration.underlyingFunctor decl ≡ expectedFunctor
+    status : B.Bool
+
+mkCartesianFunctorDeclarationAdapter :
+  (d : C2S8.CartesianFunctorDeclaration) →
+  (ef : M.Identifier) →
+  (p : C2S8.CartesianFunctorDeclaration.underlyingFunctor d ≡ ef) →
+  CartesianFunctorDeclarationAdapter
+mkCartesianFunctorDeclarationAdapter d ef p =
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+
+isFilledCartesianFunctorDeclaration : CartesianFunctorDeclarationAdapter → B.Bool
+isFilledCartesianFunctorDeclaration a = CartesianFunctorDeclarationAdapter.status a
+
+-- Category of fibrations over a base
+record CategoryOfFibrationsAdapter : Set₁ where
+  field
+    decl : C2S8.CategoryOfFibrations
+    expectedBase : M.Identifier
+    link : C2S8.CategoryOfFibrations.baseCategory decl ≡ expectedBase
+    status : B.Bool
+
+mkCategoryOfFibrationsAdapter :
+  (d : C2S8.CategoryOfFibrations) →
+  (eb : M.Identifier) →
+  (p : C2S8.CategoryOfFibrations.baseCategory d ≡ eb) →
+  CategoryOfFibrationsAdapter
+mkCategoryOfFibrationsAdapter d eb p =
+  record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+
+isFilledCategoryOfFibrations : CategoryOfFibrationsAdapter → B.Bool
+isFilledCategoryOfFibrations a = CategoryOfFibrationsAdapter.status a
+
+-- Pseudofunctor from fibration (unpacking)
+record PseudofunctorFromFibrationAdapter : Set₁ where
+  field
+    decl : C2S8.PseudofunctorFromFibration
+    status : B.Bool
+
+mkPseudofunctorFromFibrationAdapter :
+  (d : C2S8.PseudofunctorFromFibration) →
+  PseudofunctorFromFibrationAdapter
+mkPseudofunctorFromFibrationAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledPseudofunctorFromFibration : PseudofunctorFromFibrationAdapter → B.Bool
+isFilledPseudofunctorFromFibration a = PseudofunctorFromFibrationAdapter.status a
+
+-- Grothendieck construction (category of elements)
+record GrothendieckConstructionAdapter : Set₁ where
+  field
+    decl : C2S8.GrothendieckConstruction
+    expectedTotal : M.Identifier
+    link : C2S8.GrothendieckConstruction.totalCategory decl ≡ expectedTotal
+    status : B.Bool
+
+mkGrothendieckConstructionAdapter :
+  (d : C2S8.GrothendieckConstruction) →
+  (et : M.Identifier) →
+  (p : C2S8.GrothendieckConstruction.totalCategory d ≡ et) →
+  GrothendieckConstructionAdapter
+mkGrothendieckConstructionAdapter d et p =
+  record { decl = d ; expectedTotal = et ; link = p ; status = B.true }
+
+isFilledGrothendieckConstruction : GrothendieckConstructionAdapter → B.Bool
+isFilledGrothendieckConstruction a = GrothendieckConstructionAdapter.status a
+
+-- Grothendieck equivalence theorem (2-equivalence)
+record GrothendieckEquivalenceTheoremAdapter : Set₁ where
+  field
+    decl : C2S8.GrothendieckEquivalenceTheorem
+    expectedBase : M.Identifier
+    link : C2S8.GrothendieckEquivalenceTheorem.baseCategory decl ≡ expectedBase
+    status : B.Bool
+
+mkGrothendieckEquivalenceTheoremAdapter :
+  (d : C2S8.GrothendieckEquivalenceTheorem) →
+  (eb : M.Identifier) →
+  (p : C2S8.GrothendieckEquivalenceTheorem.baseCategory d ≡ eb) →
+  GrothendieckEquivalenceTheoremAdapter
+mkGrothendieckEquivalenceTheoremAdapter d eb p =
+  record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+
+isFilledGrothendieckEquivalenceTheorem : GrothendieckEquivalenceTheoremAdapter → B.Bool
+isFilledGrothendieckEquivalenceTheorem a = GrothendieckEquivalenceTheoremAdapter.status a
+
+-- Fibred adjunction (pointwise on fibres)
+record FibredAdjunctionDeclarationAdapter : Set₁ where
+  field
+    decl : C2S8.FibredAdjunctionDeclaration
+    expectedLeft : M.Identifier
+    expectedRight : M.Identifier
+    link1 : C2S8.FibredAdjunctionDeclaration.leftAdjoint decl ≡ expectedLeft
+    link2 : C2S8.FibredAdjunctionDeclaration.rightAdjoint decl ≡ expectedRight
+    status : B.Bool
+
+mkFibredAdjunctionDeclarationAdapter :
+  (d : C2S8.FibredAdjunctionDeclaration) →
+  (el : M.Identifier) →
+  (er : M.Identifier) →
+  (p1 : C2S8.FibredAdjunctionDeclaration.leftAdjoint d ≡ el) →
+  (p2 : C2S8.FibredAdjunctionDeclaration.rightAdjoint d ≡ er) →
+  FibredAdjunctionDeclarationAdapter
+mkFibredAdjunctionDeclarationAdapter d el er p1 p2 =
+  record { decl = d ; expectedLeft = el ; expectedRight = er ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledFibredAdjunctionDeclaration : FibredAdjunctionDeclarationAdapter → B.Bool
+isFilledFibredAdjunctionDeclaration a = FibredAdjunctionDeclarationAdapter.status a
+
+-- Beck-Chevalley condition (coherence for fibred adjunctions)
+record BeckChevalleyConditionAdapter : Set₁ where
+  field
+    decl : C2S8.BeckChevalleyCondition
+    status : B.Bool
+
+mkBeckChevalleyConditionAdapter :
+  (d : C2S8.BeckChevalleyCondition) →
+  BeckChevalleyConditionAdapter
+mkBeckChevalleyConditionAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledBeckChevalleyCondition : BeckChevalleyConditionAdapter → B.Bool
+isFilledBeckChevalleyCondition a = BeckChevalleyConditionAdapter.status a
+
+-- Fibration completeness criterion theorem
+record FibrationCompletenessCriterionTheoremAdapter : Set₁ where
+  field
+    decl : C2S8.FibrationCompletenessCriterionTheorem
+    status : B.Bool
+
+mkFibrationCompletenessCriterionTheoremAdapter :
+  (d : C2S8.FibrationCompletenessCriterionTheorem) →
+  FibrationCompletenessCriterionTheoremAdapter
+mkFibrationCompletenessCriterionTheoremAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledFibrationCompletenessCriterionTheorem : FibrationCompletenessCriterionTheoremAdapter → B.Bool
+isFilledFibrationCompletenessCriterionTheorem a = FibrationCompletenessCriterionTheoremAdapter.status a
+
+-- Locally small fibration
+record LocallySmallFibrationAdapter : Set₁ where
+  field
+    decl : C2S8.LocallySmallFibration
+    status : B.Bool
+
+mkLocallySmallFibrationAdapter :
+  (d : C2S8.LocallySmallFibration) →
+  LocallySmallFibrationAdapter
+mkLocallySmallFibrationAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledLocallySmallFibration : LocallySmallFibrationAdapter → B.Bool
+isFilledLocallySmallFibration a = LocallySmallFibrationAdapter.status a
+
+-- Refined Grothendieck equivalence (for locally small fibrations)
+record RefinedGrothendieckEquivalenceTheoremAdapter : Set₁ where
+  field
+    decl : C2S8.RefinedGrothendieckEquivalenceTheorem
+    expectedBase : M.Identifier
+    link : C2S8.RefinedGrothendieckEquivalenceTheorem.baseCategory decl ≡ expectedBase
+    status : B.Bool
+
+mkRefinedGrothendieckEquivalenceTheoremAdapter :
+  (d : C2S8.RefinedGrothendieckEquivalenceTheorem) →
+  (eb : M.Identifier) →
+  (p : C2S8.RefinedGrothendieckEquivalenceTheorem.baseCategory d ≡ eb) →
+  RefinedGrothendieckEquivalenceTheoremAdapter
+mkRefinedGrothendieckEquivalenceTheoremAdapter d eb p =
+  record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+
+isFilledRefinedGrothendieckEquivalenceTheorem : RefinedGrothendieckEquivalenceTheoremAdapter → B.Bool
+isFilledRefinedGrothendieckEquivalenceTheorem a = RefinedGrothendieckEquivalenceTheoremAdapter.status a
+
+-- Codomain fibration (canonical example)
+record CodomainFibrationAdapter : Set₁ where
+  field
+    decl : C2S8.CodomainFibration
+    expectedBase : M.Identifier
+    link : C2S8.CodomainFibration.baseCategory decl ≡ expectedBase
+    status : B.Bool
+
+mkCodomainFibrationAdapter :
+  (d : C2S8.CodomainFibration) →
+  (eb : M.Identifier) →
+  (p : C2S8.CodomainFibration.baseCategory d ≡ eb) →
+  CodomainFibrationAdapter
+mkCodomainFibrationAdapter d eb p =
+  record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+
+isFilledCodomainFibration : CodomainFibrationAdapter → B.Bool
+isFilledCodomainFibration a = CodomainFibrationAdapter.status a
+
+-- Lindenbaum-Tarski fibration (logic connection)
+record LindenbaumTarskiFibrationAdapter : Set₁ where
+  field
+    decl : C2S8.LindenbaumTarskiFibration
+    status : B.Bool
+
+mkLindenbaumTarskiFibrationAdapter :
+  (d : C2S8.LindenbaumTarskiFibration) →
+  LindenbaumTarskiFibrationAdapter
+mkLindenbaumTarskiFibrationAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledLindenbaumTarskiFibration : LindenbaumTarskiFibrationAdapter → B.Bool
+isFilledLindenbaumTarskiFibration a = LindenbaumTarskiFibrationAdapter.status a
+
+-- Families fibration (indexed sets)
+record FamiliesFibrationAdapter : Set₁ where
+  field
+    decl : C2S8.FamiliesFibration
+    expectedBase : M.Identifier
+    link : C2S8.FamiliesFibration.baseCategory decl ≡ expectedBase
+    status : B.Bool
+
+mkFamiliesFibrationAdapter :
+  (d : C2S8.FamiliesFibration) →
+  (eb : M.Identifier) →
+  (p : C2S8.FamiliesFibration.baseCategory d ≡ eb) →
+  FamiliesFibrationAdapter
+mkFamiliesFibrationAdapter d eb p =
+  record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+
+isFilledFamiliesFibration : FamiliesFibrationAdapter → B.Bool
+isFilledFamiliesFibration a = FamiliesFibrationAdapter.status a
+
+
+------------------------------------------------------------------------
+-- Abelian Categories (Chapter2.Level2sub1)
+------------------------------------------------------------------------
+
+-- Zero object property (initial and terminal)
+record HasZeroObjectPropertyAdapter : Set₁ where
+  field
+    decl : C2S1.HasZeroObjectProperty
+    expectedCategory : M.Identifier
+    expectedZero : M.Identifier
+    link1 : C2S1.HasZeroObjectProperty.category decl ≡ expectedCategory
+    link2 : C2S1.HasZeroObjectProperty.zeroObj decl ≡ expectedZero
+    status : B.Bool
+
+mkHasZeroObjectPropertyAdapter :
+  (d : C2S1.HasZeroObjectProperty) →
+  (ec : M.Identifier) →
+  (ez : M.Identifier) →
+  (p1 : C2S1.HasZeroObjectProperty.category d ≡ ec) →
+  (p2 : C2S1.HasZeroObjectProperty.zeroObj d ≡ ez) →
+  HasZeroObjectPropertyAdapter
+mkHasZeroObjectPropertyAdapter d ec ez p1 p2 =
+  record { decl = d ; expectedCategory = ec ; expectedZero = ez ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledHasZeroObjectProperty : HasZeroObjectPropertyAdapter → B.Bool
+isFilledHasZeroObjectProperty a = HasZeroObjectPropertyAdapter.status a
+
+-- Kernel as equalizer definition
+record KernelAsEqualizerDefinitionAdapter : Set₁ where
+  field
+    decl : C2S1.KernelAsEqualizerDefinition
+    expectedMorphism : M.Identifier
+    expectedKernel : M.Identifier
+    link1 : C2S1.KernelAsEqualizerDefinition.morphism decl ≡ expectedMorphism
+    link2 : C2S1.KernelAsEqualizerDefinition.equalizerObject decl ≡ expectedKernel
+    status : B.Bool
+
+mkKernelAsEqualizerDefinitionAdapter :
+  (d : C2S1.KernelAsEqualizerDefinition) →
+  (em : M.Identifier) →
+  (ek : M.Identifier) →
+  (p1 : C2S1.KernelAsEqualizerDefinition.morphism d ≡ em) →
+  (p2 : C2S1.KernelAsEqualizerDefinition.equalizerObject d ≡ ek) →
+  KernelAsEqualizerDefinitionAdapter
+mkKernelAsEqualizerDefinitionAdapter d em ek p1 p2 =
+  record { decl = d ; expectedMorphism = em ; expectedKernel = ek ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledKernelAsEqualizerDefinition : KernelAsEqualizerDefinitionAdapter → B.Bool
+isFilledKernelAsEqualizerDefinition a = KernelAsEqualizerDefinitionAdapter.status a
+
+-- Biproduct object (simultaneous product and coproduct)
+record BiproductObjectAdapter : Set₁ where
+  field
+    decl : C2S1.BiproductObject
+    expectedLeft : M.Identifier
+    expectedRight : M.Identifier
+    expectedObject : M.Identifier
+    link1 : C2S1.BiproductObject.left decl ≡ expectedLeft
+    link2 : C2S1.BiproductObject.right decl ≡ expectedRight
+    link3 : C2S1.BiproductObject.object decl ≡ expectedObject
+    status : B.Bool
+
+mkBiproductObjectAdapter :
+  (d : C2S1.BiproductObject) →
+  (el : M.Identifier) →
+  (er : M.Identifier) →
+  (eo : M.Identifier) →
+  (p1 : C2S1.BiproductObject.left d ≡ el) →
+  (p2 : C2S1.BiproductObject.right d ≡ er) →
+  (p3 : C2S1.BiproductObject.object d ≡ eo) →
+  BiproductObjectAdapter
+mkBiproductObjectAdapter d el er eo p1 p2 p3 =
+  record { decl = d ; expectedLeft = el ; expectedRight = er ; expectedObject = eo ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = B.true }
+
+isFilledBiproductObject : BiproductObjectAdapter → B.Bool
+isFilledBiproductObject a = BiproductObjectAdapter.status a
+
+-- Additive category declaration
+record AdditiveCategoryDeclarationAdapter : Set₁ where
+  field
+    decl : C2S1.AdditiveCategoryDeclaration
+    expectedCategory : M.Identifier
+    link : C2S1.AdditiveCategoryDeclaration.category decl ≡ expectedCategory
+    status : B.Bool
+
+mkAdditiveCategoryDeclarationAdapter :
+  (d : C2S1.AdditiveCategoryDeclaration) →
+  (ec : M.Identifier) →
+  (p : C2S1.AdditiveCategoryDeclaration.category d ≡ ec) →
+  AdditiveCategoryDeclarationAdapter
+mkAdditiveCategoryDeclarationAdapter d ec p =
+  record { decl = d ; expectedCategory = ec ; link = p ; status = B.true }
+
+isFilledAdditiveCategoryDeclaration : AdditiveCategoryDeclarationAdapter → B.Bool
+isFilledAdditiveCategoryDeclaration a = AdditiveCategoryDeclarationAdapter.status a
+
+-- Abelian category declaration (main definition)
+record AbelianCategoryDeclarationAdapter : Set₁ where
+  field
+    decl : C2S1.AbelianCategoryDeclaration
+    expectedCategory : M.Identifier
+    link : C2S1.AbelianCategoryDeclaration.category decl ≡ expectedCategory
+    status : B.Bool
+
+mkAbelianCategoryDeclarationAdapter :
+  (d : C2S1.AbelianCategoryDeclaration) →
+  (ec : M.Identifier) →
+  (p : C2S1.AbelianCategoryDeclaration.category d ≡ ec) →
+  AbelianCategoryDeclarationAdapter
+mkAbelianCategoryDeclarationAdapter d ec p =
+  record { decl = d ; expectedCategory = ec ; link = p ; status = B.true }
+
+isFilledAbelianCategoryDeclaration : AbelianCategoryDeclarationAdapter → B.Bool
+isFilledAbelianCategoryDeclaration a = AbelianCategoryDeclarationAdapter.status a
+
+-- First isomorphism theorem for abelian categories
+record FirstIsomorphismForAbelianCategoriesTheoremAdapter : Set₁ where
+  field
+    decl : C2S1.FirstIsomorphismForAbelianCategoriesTheorem
+    expectedCategory : M.Identifier
+    expectedMorphism : M.Identifier
+    link1 : C2S1.FirstIsomorphismForAbelianCategoriesTheorem.category decl ≡ expectedCategory
+    link2 : C2S1.FirstIsomorphismForAbelianCategoriesTheorem.morphism decl ≡ expectedMorphism
+    status : B.Bool
+
+mkFirstIsomorphismForAbelianCategoriesTheoremAdapter :
+  (d : C2S1.FirstIsomorphismForAbelianCategoriesTheorem) →
+  (ec : M.Identifier) →
+  (em : M.Identifier) →
+  (p1 : C2S1.FirstIsomorphismForAbelianCategoriesTheorem.category d ≡ ec) →
+  (p2 : C2S1.FirstIsomorphismForAbelianCategoriesTheorem.morphism d ≡ em) →
+  FirstIsomorphismForAbelianCategoriesTheoremAdapter
+mkFirstIsomorphismForAbelianCategoriesTheoremAdapter d ec em p1 p2 =
+  record { decl = d ; expectedCategory = ec ; expectedMorphism = em ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledFirstIsomorphismForAbelianCategoriesTheorem : FirstIsomorphismForAbelianCategoriesTheoremAdapter → B.Bool
+isFilledFirstIsomorphismForAbelianCategoriesTheorem a = FirstIsomorphismForAbelianCategoriesTheoremAdapter.status a
+
+-- Normal monomorphism property
+record NormalMonomorphismPropertyAdapter : Set₁ where
+  field
+    decl : C2S1.NormalMonomorphismProperty
+    expectedMono : M.Identifier
+    link : C2S1.NormalMonomorphismProperty.mono decl ≡ expectedMono
+    status : B.Bool
+
+mkNormalMonomorphismPropertyAdapter :
+  (d : C2S1.NormalMonomorphismProperty) →
+  (em : M.Identifier) →
+  (p : C2S1.NormalMonomorphismProperty.mono d ≡ em) →
+  NormalMonomorphismPropertyAdapter
+mkNormalMonomorphismPropertyAdapter d em p =
+  record { decl = d ; expectedMono = em ; link = p ; status = B.true }
+
+isFilledNormalMonomorphismProperty : NormalMonomorphismPropertyAdapter → B.Bool
+isFilledNormalMonomorphismProperty a = NormalMonomorphismPropertyAdapter.status a
+
+-- Abelian category example: Ab
+record AbelianCategoryExampleAbAdapter : Set₁ where
+  field
+    decl : C2S1.AbelianCategoryExampleAb
+    status : B.Bool
+
+mkAbelianCategoryExampleAbAdapter :
+  (d : C2S1.AbelianCategoryExampleAb) →
+  AbelianCategoryExampleAbAdapter
+mkAbelianCategoryExampleAbAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledAbelianCategoryExampleAb : AbelianCategoryExampleAbAdapter → B.Bool
+isFilledAbelianCategoryExampleAb a = AbelianCategoryExampleAbAdapter.status a
+
+-- Abelian category example: R-Mod
+record AbelianCategoryExampleRModAdapter : Set₁ where
+  field
+    decl : C2S1.AbelianCategoryExampleRMod
+    expectedRing : M.Identifier
+    link : C2S1.AbelianCategoryExampleRMod.ring decl ≡ expectedRing
+    status : B.Bool
+
+mkAbelianCategoryExampleRModAdapter :
+  (d : C2S1.AbelianCategoryExampleRMod) →
+  (er : M.Identifier) →
+  (p : C2S1.AbelianCategoryExampleRMod.ring d ≡ er) →
+  AbelianCategoryExampleRModAdapter
+mkAbelianCategoryExampleRModAdapter d er p =
+  record { decl = d ; expectedRing = er ; link = p ; status = B.true }
+
+isFilledAbelianCategoryExampleRMod : AbelianCategoryExampleRModAdapter → B.Bool
+isFilledAbelianCategoryExampleRMod a = AbelianCategoryExampleRModAdapter.status a
+
+-- Functor additive property
+record FunctorAdditivePropertyAdapter : Set₁ where
+  field
+    decl : C2S1.FunctorAdditiveProperty
+    expectedFunctor : M.Identifier
+    link : C2S1.FunctorAdditiveProperty.functor decl ≡ expectedFunctor
+    status : B.Bool
+
+mkFunctorAdditivePropertyAdapter :
+  (d : C2S1.FunctorAdditiveProperty) →
+  (ef : M.Identifier) →
+  (p : C2S1.FunctorAdditiveProperty.functor d ≡ ef) →
+  FunctorAdditivePropertyAdapter
+mkFunctorAdditivePropertyAdapter d ef p =
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+
+isFilledFunctorAdditiveProperty : FunctorAdditivePropertyAdapter → B.Bool
+isFilledFunctorAdditiveProperty a = FunctorAdditivePropertyAdapter.status a
+
+-- Additivity via biproduct coincidence theorem
+record AdditivityViaBiproductCoincidenceTheoremAdapter : Set₁ where
+  field
+    decl : C2S1.AdditivityViaBiproductCoincidenceTheorem
+    expectedCategory : M.Identifier
+    link : C2S1.AdditivityViaBiproductCoincidenceTheorem.category decl ≡ expectedCategory
+    status : B.Bool
+
+mkAdditivityViaBiproductCoincidenceTheoremAdapter :
+  (d : C2S1.AdditivityViaBiproductCoincidenceTheorem) →
+  (ec : M.Identifier) →
+  (p : C2S1.AdditivityViaBiproductCoincidenceTheorem.category d ≡ ec) →
+  AdditivityViaBiproductCoincidenceTheoremAdapter
+mkAdditivityViaBiproductCoincidenceTheoremAdapter d ec p =
+  record { decl = d ; expectedCategory = ec ; link = p ; status = B.true }
+
+isFilledAdditivityViaBiproductCoincidenceTheorem : AdditivityViaBiproductCoincidenceTheoremAdapter → B.Bool
+isFilledAdditivityViaBiproductCoincidenceTheorem a = AdditivityViaBiproductCoincidenceTheoremAdapter.status a
+
+
+------------------------------------------------------------------------
+-- Subobject Theory (Chapter1.Level1sub4)
+------------------------------------------------------------------------
+
+-- Subobject lattice
+record SubobjectLatticeAdapter : Set₁ where
+  field
+    decl : C1S4.SubobjectLattice
+    expectedX : M.Identifier
+    link : C1S4.SubobjectLattice.X decl ≡ expectedX
+    status : B.Bool
+
+mkSubobjectLatticeAdapter :
+  (d : C1S4.SubobjectLattice) →
+  (ex : M.Identifier) →
+  (p : C1S4.SubobjectLattice.X d ≡ ex) →
+  SubobjectLatticeAdapter
+mkSubobjectLatticeAdapter d ex p =
+  record { decl = d ; expectedX = ex ; link = p ; status = B.true }
+
+isFilledSubobjectLattice : SubobjectLatticeAdapter → B.Bool
+isFilledSubobjectLattice a = SubobjectLatticeAdapter.status a
+
+-- Well-powered category
+record WellPoweredCategoryAdapter : Set₁ where
+  field
+    decl : C1S4.WellPoweredCategory
+    expectedC : M.Identifier
+    link : C1S4.WellPoweredCategory.C decl ≡ expectedC
+    status : B.Bool
+
+mkWellPoweredCategoryAdapter :
+  (d : C1S4.WellPoweredCategory) →
+  (ec : M.Identifier) →
+  (p : C1S4.WellPoweredCategory.C d ≡ ec) →
+  WellPoweredCategoryAdapter
+mkWellPoweredCategoryAdapter d ec p =
+  record { decl = d ; expectedC = ec ; link = p ; status = B.true }
+
+isFilledWellPoweredCategory : WellPoweredCategoryAdapter → B.Bool
+isFilledWellPoweredCategory a = WellPoweredCategoryAdapter.status a
+
+-- Subobject lattice is complete theorem
+record SubobjectLatticeIsCompleteAdapter : Set₁ where
+  field
+    decl : C1S4.SubobjectLatticeIsComplete
+    status : B.Bool
+
+mkSubobjectLatticeIsCompleteAdapter :
+  (d : C1S4.SubobjectLatticeIsComplete) →
+  SubobjectLatticeIsCompleteAdapter
+mkSubobjectLatticeIsCompleteAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledSubobjectLatticeIsComplete : SubobjectLatticeIsCompleteAdapter → B.Bool
+isFilledSubobjectLatticeIsComplete a = SubobjectLatticeIsCompleteAdapter.status a
+
+-- Strong epimorphism (orthogonal to monomorphisms)
+record StrongEpimorphismAdapter : Set₁ where
+  field
+    decl : C1S4.StrongEpimorphism
+    expectedE : M.Identifier
+    link : C1S4.StrongEpimorphism.e decl ≡ expectedE
+    status : B.Bool
+
+mkStrongEpimorphismAdapter :
+  (d : C1S4.StrongEpimorphism) →
+  (ee : M.Identifier) →
+  (p : C1S4.StrongEpimorphism.e d ≡ ee) →
+  StrongEpimorphismAdapter
+mkStrongEpimorphismAdapter d ee p =
+  record { decl = d ; expectedE = ee ; link = p ; status = B.true }
+
+isFilledStrongEpimorphism : StrongEpimorphismAdapter → B.Bool
+isFilledStrongEpimorphism a = StrongEpimorphismAdapter.status a
+
+-- Canonical factorization system theorem
+record CanonicalFactorizationSystemAdapter : Set₁ where
+  field
+    decl : C1S4.CanonicalFactorizationSystem
+    status : B.Bool
+
+mkCanonicalFactorizationSystemAdapter :
+  (d : C1S4.CanonicalFactorizationSystem) →
+  CanonicalFactorizationSystemAdapter
+mkCanonicalFactorizationSystemAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledCanonicalFactorizationSystem : CanonicalFactorizationSystemAdapter → B.Bool
+isFilledCanonicalFactorizationSystem a = CanonicalFactorizationSystemAdapter.status a
+
+-- Morphism factorization (epi-mono)
+record MorphismFactorizationAdapter : Set₁ where
+  field
+    decl : C1S4.MorphismFactorization
+    expectedF : M.Identifier
+    expectedE : M.Identifier
+    expectedM : M.Identifier
+    link1 : C1S4.MorphismFactorization.f decl ≡ expectedF
+    link2 : C1S4.MorphismFactorization.e decl ≡ expectedE
+    link3 : C1S4.MorphismFactorization.m decl ≡ expectedM
+    status : B.Bool
+
+mkMorphismFactorizationAdapter :
+  (d : C1S4.MorphismFactorization) →
+  (ef : M.Identifier) →
+  (ee : M.Identifier) →
+  (em : M.Identifier) →
+  (p1 : C1S4.MorphismFactorization.f d ≡ ef) →
+  (p2 : C1S4.MorphismFactorization.e d ≡ ee) →
+  (p3 : C1S4.MorphismFactorization.m d ≡ em) →
+  MorphismFactorizationAdapter
+mkMorphismFactorizationAdapter d ef ee em p1 p2 p3 =
+  record { decl = d ; expectedF = ef ; expectedE = ee ; expectedM = em ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = B.true }
+
+isFilledMorphismFactorization : MorphismFactorizationAdapter → B.Bool
+isFilledMorphismFactorization a = MorphismFactorizationAdapter.status a
+
+-- Has generator object
+record HasGeneratorObjectAdapter : Set₁ where
+  field
+    decl : C1S4.HasGeneratorObject
+    expectedC : M.Identifier
+    expectedG : M.Identifier
+    link1 : C1S4.HasGeneratorObject.C decl ≡ expectedC
+    link2 : C1S4.HasGeneratorObject.G decl ≡ expectedG
+    status : B.Bool
+
+mkHasGeneratorObjectAdapter :
+  (d : C1S4.HasGeneratorObject) →
+  (ec : M.Identifier) →
+  (eg : M.Identifier) →
+  (p1 : C1S4.HasGeneratorObject.C d ≡ ec) →
+  (p2 : C1S4.HasGeneratorObject.G d ≡ eg) →
+  HasGeneratorObjectAdapter
+mkHasGeneratorObjectAdapter d ec eg p1 p2 =
+  record { decl = d ; expectedC = ec ; expectedG = eg ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledHasGeneratorObject : HasGeneratorObjectAdapter → B.Bool
+isFilledHasGeneratorObject a = HasGeneratorObjectAdapter.status a
+
+-- Projective object
+record ProjectiveObjectAdapter : Set₁ where
+  field
+    decl : C1S4.ProjectiveObject
+    expectedP : M.Identifier
+    link : C1S4.ProjectiveObject.P decl ≡ expectedP
+    status : B.Bool
+
+mkProjectiveObjectAdapter :
+  (d : C1S4.ProjectiveObject) →
+  (ep : M.Identifier) →
+  (p : C1S4.ProjectiveObject.P d ≡ ep) →
+  ProjectiveObjectAdapter
+mkProjectiveObjectAdapter d ep p =
+  record { decl = d ; expectedP = ep ; link = p ; status = B.true }
+
+isFilledProjectiveObject : ProjectiveObjectAdapter → B.Bool
+isFilledProjectiveObject a = ProjectiveObjectAdapter.status a
+
+-- Injective object (dual to projective)
+record InjectiveObjectAdapter : Set₁ where
+  field
+    decl : C1S4.InjectiveObject
+    expectedI : M.Identifier
+    link : C1S4.InjectiveObject.I decl ≡ expectedI
+    status : B.Bool
+
+mkInjectiveObjectAdapter :
+  (d : C1S4.InjectiveObject) →
+  (ei : M.Identifier) →
+  (p : C1S4.InjectiveObject.I d ≡ ei) →
+  InjectiveObjectAdapter
+mkInjectiveObjectAdapter d ei p =
+  record { decl = d ; expectedI = ei ; link = p ; status = B.true }
+
+isFilledInjectiveObject : InjectiveObjectAdapter → B.Bool
+isFilledInjectiveObject a = InjectiveObjectAdapter.status a
+
+-- Has enough projectives
+record HasEnoughProjectivesAdapter : Set₁ where
+  field
+    decl : C1S4.HasEnoughProjectives
+    expectedC : M.Identifier
+    link : C1S4.HasEnoughProjectives.C decl ≡ expectedC
+    status : B.Bool
+
+mkHasEnoughProjectivesAdapter :
+  (d : C1S4.HasEnoughProjectives) →
+  (ec : M.Identifier) →
+  (p : C1S4.HasEnoughProjectives.C d ≡ ec) →
+  HasEnoughProjectivesAdapter
+mkHasEnoughProjectivesAdapter d ec p =
+  record { decl = d ; expectedC = ec ; link = p ; status = B.true }
+
+isFilledHasEnoughProjectives : HasEnoughProjectivesAdapter → B.Bool
+isFilledHasEnoughProjectives a = HasEnoughProjectivesAdapter.status a
+
+-- Has enough injectives
+record HasEnoughInjectivesAdapter : Set₁ where
+  field
+    decl : C1S4.HasEnoughInjectives
+    expectedC : M.Identifier
+    link : C1S4.HasEnoughInjectives.C decl ≡ expectedC
+    status : B.Bool
+
+mkHasEnoughInjectivesAdapter :
+  (d : C1S4.HasEnoughInjectives) →
+  (ec : M.Identifier) →
+  (p : C1S4.HasEnoughInjectives.C d ≡ ec) →
+  HasEnoughInjectivesAdapter
+mkHasEnoughInjectivesAdapter d ec p =
+  record { decl = d ; expectedC = ec ; link = p ; status = B.true }
+
+isFilledHasEnoughInjectives : HasEnoughInjectivesAdapter → B.Bool
+isFilledHasEnoughInjectives a = HasEnoughInjectivesAdapter.status a
