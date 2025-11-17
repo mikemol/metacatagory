@@ -9,10 +9,12 @@ open import Metamodel as M
 
 -- Chapter imports
 import Chapter1.Level1 as C1L
+import Chapter1.Level1sub2 as C1S2
 import Chapter1.Level1sub3 as C1S3
 import Chapter1.Level1sub4 as C1S4
 import Chapter1.Level1sub5 as C1S5
 import Chapter1.Level1sub6 as C1S6
+import Chapter1.Level1sub8 as C1S8
 import Chapter2.Level2sub1 as C2S1
 import Chapter2.Level2sub2 as C2S2
 import Chapter2.Level2sub3 as C2S3
@@ -4364,3 +4366,359 @@ mkRankTheoremForMonadicCategoriesTheoremAdapter d ebc emr eac p1 p2 p3 =
 
 isFilledRankTheoremForMonadicCategoriesTheorem : RankTheoremForMonadicCategoriesTheoremAdapter → B.Bool
 isFilledRankTheoremForMonadicCategoriesTheorem a = RankTheoremForMonadicCategoriesTheoremAdapter.status a
+
+
+------------------------------------------------------------------------
+-- Functor Properties: Preserve/Reflect/Create Limits (Chapter1.Level1sub2)
+------------------------------------------------------------------------
+
+-- Functor preserves limits
+record FunctorPreservesLimitsAdapter : Set₁ where
+  field
+    decl : C1S2.FunctorPreservesLimits
+    expectedFunctor : M.Identifier
+    link : C1S2.FunctorPreservesLimits.F decl ≡ expectedFunctor
+    status : B.Bool
+
+mkFunctorPreservesLimitsAdapter :
+  (d : C1S2.FunctorPreservesLimits) →
+  (ef : M.Identifier) →
+  (p : C1S2.FunctorPreservesLimits.F d ≡ ef) →
+  FunctorPreservesLimitsAdapter
+mkFunctorPreservesLimitsAdapter d ef p =
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+
+isFilledFunctorPreservesLimits : FunctorPreservesLimitsAdapter → B.Bool
+isFilledFunctorPreservesLimits a = FunctorPreservesLimitsAdapter.status a
+
+
+-- Functor reflects limits
+record FunctorReflectsLimitsAdapter : Set₁ where
+  field
+    decl : C1S2.FunctorReflectsLimits
+    expectedFunctor : M.Identifier
+    link : C1S2.FunctorReflectsLimits.F decl ≡ expectedFunctor
+    status : B.Bool
+
+mkFunctorReflectsLimitsAdapter :
+  (d : C1S2.FunctorReflectsLimits) →
+  (ef : M.Identifier) →
+  (p : C1S2.FunctorReflectsLimits.F d ≡ ef) →
+  FunctorReflectsLimitsAdapter
+mkFunctorReflectsLimitsAdapter d ef p =
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+
+isFilledFunctorReflectsLimits : FunctorReflectsLimitsAdapter → B.Bool
+isFilledFunctorReflectsLimits a = FunctorReflectsLimitsAdapter.status a
+
+
+-- Functor creates limits
+record FunctorCreatesLimitsAdapter : Set₁ where
+  field
+    decl : C1S2.FunctorCreatesLimits
+    expectedFunctor : M.Identifier
+    link : C1S2.FunctorCreatesLimits.F decl ≡ expectedFunctor
+    status : B.Bool
+
+mkFunctorCreatesLimitsAdapter :
+  (d : C1S2.FunctorCreatesLimits) →
+  (ef : M.Identifier) →
+  (p : C1S2.FunctorCreatesLimits.F d ≡ ef) →
+  FunctorCreatesLimitsAdapter
+mkFunctorCreatesLimitsAdapter d ef p =
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+
+isFilledFunctorCreatesLimits : FunctorCreatesLimitsAdapter → B.Bool
+isFilledFunctorCreatesLimits a = FunctorCreatesLimitsAdapter.status a
+
+
+-- Theorem: Creation implies reflection
+record CreationImpliesReflectionAdapter : Set₁ where
+  field
+    decl : C1S2.CreationImpliesReflection
+    expectedFunctor : M.Identifier
+    link : C1S2.CreationImpliesReflection.F decl ≡ expectedFunctor
+    status : B.Bool
+
+mkCreationImpliesReflectionAdapter :
+  (d : C1S2.CreationImpliesReflection) →
+  (ef : M.Identifier) →
+  (p : C1S2.CreationImpliesReflection.F d ≡ ef) →
+  CreationImpliesReflectionAdapter
+mkCreationImpliesReflectionAdapter d ef p =
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+
+isFilledCreationImpliesReflection : CreationImpliesReflectionAdapter → B.Bool
+isFilledCreationImpliesReflection a = CreationImpliesReflectionAdapter.status a
+
+
+-- Theorem: Isomorphisms of categories reflect limits
+record IsomorphismsOfCategoriesReflectLimitsAdapter : Set₁ where
+  field
+    decl : C1S2.IsomorphismsOfCategoriesReflectLimits
+    expectedFunctor : M.Identifier
+    link : C1S2.IsomorphismsOfCategoriesReflectLimits.F decl ≡ expectedFunctor
+    status : B.Bool
+
+mkIsomorphismsOfCategoriesReflectLimitsAdapter :
+  (d : C1S2.IsomorphismsOfCategoriesReflectLimits) →
+  (ef : M.Identifier) →
+  (p : C1S2.IsomorphismsOfCategoriesReflectLimits.F d ≡ ef) →
+  IsomorphismsOfCategoriesReflectLimitsAdapter
+mkIsomorphismsOfCategoriesReflectLimitsAdapter d ef p =
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+
+isFilledIsomorphismsOfCategoriesReflectLimits : IsomorphismsOfCategoriesReflectLimitsAdapter → B.Bool
+isFilledIsomorphismsOfCategoriesReflectLimits a = IsomorphismsOfCategoriesReflectLimitsAdapter.status a
+
+
+-- Theorem: Right adjoints preserve limits
+record RightAdjointsPreserveLimits_L2Adapter : Set₁ where
+  field
+    decl : C1S2.RightAdjointsPreserveLimits_L2
+    expectedFunctor : M.Identifier
+    link : C1S2.RightAdjointsPreserveLimits_L2.F decl ≡ expectedFunctor
+    status : B.Bool
+
+mkRightAdjointsPreserveLimits_L2Adapter :
+  (d : C1S2.RightAdjointsPreserveLimits_L2) →
+  (ef : M.Identifier) →
+  (p : C1S2.RightAdjointsPreserveLimits_L2.F d ≡ ef) →
+  RightAdjointsPreserveLimits_L2Adapter
+mkRightAdjointsPreserveLimits_L2Adapter d ef p =
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+
+isFilledRightAdjointsPreserveLimits_L2 : RightAdjointsPreserveLimits_L2Adapter → B.Bool
+isFilledRightAdjointsPreserveLimits_L2 a = RightAdjointsPreserveLimits_L2Adapter.status a
+
+
+------------------------------------------------------------------------
+-- Yoneda Lemma (Chapter1.Level1sub8)
+------------------------------------------------------------------------
+
+-- Internal Yoneda embedding
+record InternalYonedaEmbeddingAdapter : Set₁ where
+  field
+    decl : C1S8.InternalYonedaEmbedding
+    expectedInternalCategory : C1S8.InternalCategory
+    link : C1S8.InternalYonedaEmbedding.internalCategory decl ≡ expectedInternalCategory
+    status : B.Bool
+
+mkInternalYonedaEmbeddingAdapter :
+  (d : C1S8.InternalYonedaEmbedding) →
+  (eic : C1S8.InternalCategory) →
+  (p : C1S8.InternalYonedaEmbedding.internalCategory d ≡ eic) →
+  InternalYonedaEmbeddingAdapter
+mkInternalYonedaEmbeddingAdapter d eic p =
+  record { decl = d ; expectedInternalCategory = eic ; link = p ; status = B.true }
+
+isFilledInternalYonedaEmbedding : InternalYonedaEmbeddingAdapter → B.Bool
+isFilledInternalYonedaEmbedding a = InternalYonedaEmbeddingAdapter.status a
+
+
+-- Internal Yoneda lemma theorem
+record InternalYonedaLemmaAdapter : Set₁ where
+  field
+    decl : C1S8.InternalYonedaLemma
+    expectedInternalCategory : C1S8.InternalCategory
+    expectedPresheaf : C1S8.InternalPresheaf
+    link1 : C1S8.InternalYonedaLemma.internalCategory decl ≡ expectedInternalCategory
+    link2 : C1S8.InternalYonedaLemma.presheaf decl ≡ expectedPresheaf
+    status : B.Bool
+
+mkInternalYonedaLemmaAdapter :
+  (d : C1S8.InternalYonedaLemma) →
+  (eic : C1S8.InternalCategory) →
+  (ep : C1S8.InternalPresheaf) →
+  (p1 : C1S8.InternalYonedaLemma.internalCategory d ≡ eic) →
+  (p2 : C1S8.InternalYonedaLemma.presheaf d ≡ ep) →
+  InternalYonedaLemmaAdapter
+mkInternalYonedaLemmaAdapter d eic ep p1 p2 =
+  record { decl = d ; expectedInternalCategory = eic ; expectedPresheaf = ep ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledInternalYonedaLemma : InternalYonedaLemmaAdapter → B.Bool
+isFilledInternalYonedaLemma a = InternalYonedaLemmaAdapter.status a
+
+
+------------------------------------------------------------------------
+-- Kan Extensions (Chapter1.Level1sub3)
+------------------------------------------------------------------------
+
+-- Kan extension context
+record KanExtensionContextAdapter : Set₁ where
+  field
+    decl : C1S3.KanExtensionContext
+    expectedK : M.Identifier
+    expectedT : M.Identifier
+    link1 : C1S3.KanExtensionContext.K decl ≡ expectedK
+    link2 : C1S3.KanExtensionContext.T decl ≡ expectedT
+    status : B.Bool
+
+mkKanExtensionContextAdapter :
+  (d : C1S3.KanExtensionContext) →
+  (ek : M.Identifier) →
+  (et : M.Identifier) →
+  (p1 : C1S3.KanExtensionContext.K d ≡ ek) →
+  (p2 : C1S3.KanExtensionContext.T d ≡ et) →
+  KanExtensionContextAdapter
+mkKanExtensionContextAdapter d ek et p1 p2 =
+  record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledKanExtensionContext : KanExtensionContextAdapter → B.Bool
+isFilledKanExtensionContext a = KanExtensionContextAdapter.status a
+
+
+-- Left Kan candidate
+record LeftKanCandidateAdapter : Set₁ where
+  field
+    decl : C1S3.LeftKanCandidate
+    expectedM : M.Identifier
+    link : C1S3.LeftKanCandidate.M decl ≡ expectedM
+    status : B.Bool
+
+mkLeftKanCandidateAdapter :
+  (d : C1S3.LeftKanCandidate) →
+  (em : M.Identifier) →
+  (p : C1S3.LeftKanCandidate.M d ≡ em) →
+  LeftKanCandidateAdapter
+mkLeftKanCandidateAdapter d em p =
+  record { decl = d ; expectedM = em ; link = p ; status = B.true }
+
+isFilledLeftKanCandidate : LeftKanCandidateAdapter → B.Bool
+isFilledLeftKanCandidate a = LeftKanCandidateAdapter.status a
+
+
+-- Right Kan candidate
+record RightKanCandidateAdapter : Set₁ where
+  field
+    decl : C1S3.RightKanCandidate
+    expectedM : M.Identifier
+    link : C1S3.RightKanCandidate.M decl ≡ expectedM
+    status : B.Bool
+
+mkRightKanCandidateAdapter :
+  (d : C1S3.RightKanCandidate) →
+  (em : M.Identifier) →
+  (p : C1S3.RightKanCandidate.M d ≡ em) →
+  RightKanCandidateAdapter
+mkRightKanCandidateAdapter d em p =
+  record { decl = d ; expectedM = em ; link = p ; status = B.true }
+
+isFilledRightKanCandidate : RightKanCandidateAdapter → B.Bool
+isFilledRightKanCandidate a = RightKanCandidateAdapter.status a
+
+
+-- Theorem: Left Kan extension is initial object
+record LeftKanExtensionIsInitialObjectAdapter : Set₁ where
+  field
+    decl : C1S3.LeftKanExtensionIsInitialObject
+    expectedK : M.Identifier
+    expectedT : M.Identifier
+    link1 : C1S3.LeftKanExtensionIsInitialObject.K decl ≡ expectedK
+    link2 : C1S3.LeftKanExtensionIsInitialObject.T decl ≡ expectedT
+    status : B.Bool
+
+mkLeftKanExtensionIsInitialObjectAdapter :
+  (d : C1S3.LeftKanExtensionIsInitialObject) →
+  (ek : M.Identifier) →
+  (et : M.Identifier) →
+  (p1 : C1S3.LeftKanExtensionIsInitialObject.K d ≡ ek) →
+  (p2 : C1S3.LeftKanExtensionIsInitialObject.T d ≡ et) →
+  LeftKanExtensionIsInitialObjectAdapter
+mkLeftKanExtensionIsInitialObjectAdapter d ek et p1 p2 =
+  record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledLeftKanExtensionIsInitialObject : LeftKanExtensionIsInitialObjectAdapter → B.Bool
+isFilledLeftKanExtensionIsInitialObject a = LeftKanExtensionIsInitialObjectAdapter.status a
+
+
+-- Theorem: Right Kan extension is terminal object
+record RightKanExtensionIsTerminalObjectAdapter : Set₁ where
+  field
+    decl : C1S3.RightKanExtensionIsTerminalObject
+    expectedK : M.Identifier
+    expectedT : M.Identifier
+    link1 : C1S3.RightKanExtensionIsTerminalObject.K decl ≡ expectedK
+    link2 : C1S3.RightKanExtensionIsTerminalObject.T decl ≡ expectedT
+    status : B.Bool
+
+mkRightKanExtensionIsTerminalObjectAdapter :
+  (d : C1S3.RightKanExtensionIsTerminalObject) →
+  (ek : M.Identifier) →
+  (et : M.Identifier) →
+  (p1 : C1S3.RightKanExtensionIsTerminalObject.K d ≡ ek) →
+  (p2 : C1S3.RightKanExtensionIsTerminalObject.T d ≡ et) →
+  RightKanExtensionIsTerminalObjectAdapter
+mkRightKanExtensionIsTerminalObjectAdapter d ek et p1 p2 =
+  record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledRightKanExtensionIsTerminalObject : RightKanExtensionIsTerminalObjectAdapter → B.Bool
+isFilledRightKanExtensionIsTerminalObject a = RightKanExtensionIsTerminalObjectAdapter.status a
+
+
+-- Theorem: Pointwise Kan formula
+record PointwiseKanFormulaTheoremAdapter : Set₁ where
+  field
+    decl : C1S3.PointwiseKanFormulaTheorem
+    expectedK : M.Identifier
+    expectedT : M.Identifier
+    link1 : C1S3.PointwiseKanFormulaTheorem.K decl ≡ expectedK
+    link2 : C1S3.PointwiseKanFormulaTheorem.T decl ≡ expectedT
+    status : B.Bool
+
+mkPointwiseKanFormulaTheoremAdapter :
+  (d : C1S3.PointwiseKanFormulaTheorem) →
+  (ek : M.Identifier) →
+  (et : M.Identifier) →
+  (p1 : C1S3.PointwiseKanFormulaTheorem.K d ≡ ek) →
+  (p2 : C1S3.PointwiseKanFormulaTheorem.T d ≡ et) →
+  PointwiseKanFormulaTheoremAdapter
+mkPointwiseKanFormulaTheoremAdapter d ek et p1 p2 =
+  record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledPointwiseKanFormulaTheorem : PointwiseKanFormulaTheoremAdapter → B.Bool
+isFilledPointwiseKanFormulaTheorem a = PointwiseKanFormulaTheoremAdapter.status a
+
+
+-- Theorem: Adjoints as Kan extensions
+record AdjointsAsKanExtensionsAdapter : Set₁ where
+  field
+    decl : C1S3.AdjointsAsKanExtensions
+    expectedF : M.Identifier
+    expectedG : M.Identifier
+    link1 : C1S3.AdjointsAsKanExtensions.F decl ≡ expectedF
+    link2 : C1S3.AdjointsAsKanExtensions.G decl ≡ expectedG
+    status : B.Bool
+
+mkAdjointsAsKanExtensionsAdapter :
+  (d : C1S3.AdjointsAsKanExtensions) →
+  (ef : M.Identifier) →
+  (eg : M.Identifier) →
+  (p1 : C1S3.AdjointsAsKanExtensions.F d ≡ ef) →
+  (p2 : C1S3.AdjointsAsKanExtensions.G d ≡ eg) →
+  AdjointsAsKanExtensionsAdapter
+mkAdjointsAsKanExtensionsAdapter d ef eg p1 p2 =
+  record { decl = d ; expectedF = ef ; expectedG = eg ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+isFilledAdjointsAsKanExtensions : AdjointsAsKanExtensionsAdapter → B.Bool
+isFilledAdjointsAsKanExtensions a = AdjointsAsKanExtensionsAdapter.status a
+
+
+------------------------------------------------------------------------
+-- Adjoint Functor Theorems (Chapter1.Level1sub3)
+------------------------------------------------------------------------
+
+-- Adjoint functor theorem (right version - dual theorem)
+record AdjointFunctorTheoremRightAdapter : Set₁ where
+  field
+    decl : C1S3.AdjointFunctorTheoremRight
+    status : B.Bool
+
+mkAdjointFunctorTheoremRightAdapter :
+  (d : C1S3.AdjointFunctorTheoremRight) →
+  AdjointFunctorTheoremRightAdapter
+mkAdjointFunctorTheoremRightAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledAdjointFunctorTheoremRight : AdjointFunctorTheoremRightAdapter → B.Bool
+isFilledAdjointFunctorTheoremRight a = AdjointFunctorTheoremRightAdapter.status a

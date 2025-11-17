@@ -86,6 +86,9 @@ import Tests.MonadAdjunctionChecklist
 import Tests.LimitsColimitsChecklist
 import Tests.RegularCategoriesChecklist
 import Tests.AdvancedMonadTheoryChecklist
+import Tests.FunctorPropertiesChecklist
+import Tests.YonedaChecklist
+import Tests.KanExtensionsChecklist
 
 -- Proof obligation status checks (ensures selected obligations are filled
 -- and linked to constructive witnesses in examples)
