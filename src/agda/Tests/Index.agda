@@ -69,6 +69,11 @@ import Tests.AlgebraChecklist
 import Tests.CoreUniversalPropertiesChecklist
 import Tests.ModulesChecklist
 import Tests.AdvancedFieldsChecklist
+import Tests.FieldsBasicChecklist
+import Tests.RingsBasicChecklist
+import Tests.GroupsFreeChecklist
+import Tests.GroupsStructureChecklist
+import Tests.GroupsAbelianChecklist
 
 -- Proof obligation status checks (ensures selected obligations are filled
 -- and linked to constructive witnesses in examples)

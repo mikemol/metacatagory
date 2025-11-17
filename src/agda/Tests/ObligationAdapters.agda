@@ -28,7 +28,11 @@ import Chapter3.Level3sub2 as C3S2
 import Algebra.Foundation as AF
 import Algebra.Rings.Basic as AR
 import Algebra.Modules.Basic as AM
+import Algebra.Fields.Basic as AFB
 import Algebra.Fields.Advanced as AFA
+import Algebra.Groups.Free as AGF
+import Algebra.Groups.Structure as AGS
+import Algebra.Groups.Abelian as AGA
 import Core.UniversalProperties as CUP
 
 -- Common status predicate wrapper
@@ -1919,3 +1923,1005 @@ mkAlgebraicFunctionFieldAdapter K d eff pf =
 
 isFilledAlgebraicFunctionField : AlgebraicFunctionFieldAdapter → B.Bool
 isFilledAlgebraicFunctionField a = AlgebraicFunctionFieldAdapter.status a
+
+-- ==========================================================
+-- Algebra.Fields.Basic - Core Galois Theory
+-- ==========================================================
+
+-- Subfield
+record SubfieldAdapter : Set₁ where
+  field
+    F : AR.FieldDeclaration
+    decl : AFB.Subfield F
+    expSubfield : AR.FieldDeclaration
+    linkSubfield : AFB.Subfield.subfield decl ≡ expSubfield
+    status : B.Bool
+
+mkSubfieldAdapter :
+  (F : AR.FieldDeclaration) →
+  (d : AFB.Subfield F) →
+  (es : AR.FieldDeclaration) →
+  (ps : AFB.Subfield.subfield d ≡ es) →
+  SubfieldAdapter
+mkSubfieldAdapter F d es ps =
+  record { F = F ; decl = d ; expSubfield = es ; linkSubfield = ps ; status = B.true }
+
+isFilledSubfield : SubfieldAdapter → B.Bool
+isFilledSubfield a = SubfieldAdapter.status a
+
+-- Field extension
+record FieldExtensionAdapter : Set₁ where
+  field
+    F E : AR.FieldDeclaration
+    decl : AFB.FieldExtension F E
+    expBase : AR.FieldDeclaration
+    linkBase : AFB.FieldExtension.baseField decl ≡ expBase
+    status : B.Bool
+
+mkFieldExtensionAdapter :
+  (F E : AR.FieldDeclaration) →
+  (d : AFB.FieldExtension F E) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFB.FieldExtension.baseField d ≡ eb) →
+  FieldExtensionAdapter
+mkFieldExtensionAdapter F E d eb pb =
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledFieldExtension : FieldExtensionAdapter → B.Bool
+isFilledFieldExtension a = FieldExtensionAdapter.status a
+
+-- Algebraic element
+record AlgebraicElementAdapter : Set₁ where
+  field
+    F E : AR.FieldDeclaration
+    α : M.Identifier
+    decl : AFB.AlgebraicElement F E α
+    expBase : AR.FieldDeclaration
+    linkBase : AFB.AlgebraicElement.baseField decl ≡ expBase
+    status : B.Bool
+
+mkAlgebraicElementAdapter :
+  (F E : AR.FieldDeclaration) →
+  (α : M.Identifier) →
+  (d : AFB.AlgebraicElement F E α) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFB.AlgebraicElement.baseField d ≡ eb) →
+  AlgebraicElementAdapter
+mkAlgebraicElementAdapter F E α d eb pb =
+  record { F = F ; E = E ; α = α ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledAlgebraicElement : AlgebraicElementAdapter → B.Bool
+isFilledAlgebraicElement a = AlgebraicElementAdapter.status a
+
+-- Algebraic extension
+record AlgebraicExtensionAdapter : Set₁ where
+  field
+    F E : AR.FieldDeclaration
+    decl : AFB.AlgebraicExtension F E
+    expBase : AR.FieldDeclaration
+    linkBase : AFB.AlgebraicExtension.baseField decl ≡ expBase
+    status : B.Bool
+
+mkAlgebraicExtensionAdapter :
+  (F E : AR.FieldDeclaration) →
+  (d : AFB.AlgebraicExtension F E) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFB.AlgebraicExtension.baseField d ≡ eb) →
+  AlgebraicExtensionAdapter
+mkAlgebraicExtensionAdapter F E d eb pb =
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledAlgebraicExtension : AlgebraicExtensionAdapter → B.Bool
+isFilledAlgebraicExtension a = AlgebraicExtensionAdapter.status a
+
+-- Field automorphism
+record FieldAutomorphismAdapter : Set₁ where
+  field
+    F E : AR.FieldDeclaration
+    decl : AFB.FieldAutomorphism F E
+    expBase : AR.FieldDeclaration
+    linkBase : AFB.FieldAutomorphism.baseField decl ≡ expBase
+    status : B.Bool
+
+mkFieldAutomorphismAdapter :
+  (F E : AR.FieldDeclaration) →
+  (d : AFB.FieldAutomorphism F E) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFB.FieldAutomorphism.baseField d ≡ eb) →
+  FieldAutomorphismAdapter
+mkFieldAutomorphismAdapter F E d eb pb =
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledFieldAutomorphism : FieldAutomorphismAdapter → B.Bool
+isFilledFieldAutomorphism a = FieldAutomorphismAdapter.status a
+
+-- Galois group
+record GaloisGroupAdapter : Set₁ where
+  field
+    F E : AR.FieldDeclaration
+    decl : AFB.GaloisGroup F E
+    expBase : AR.FieldDeclaration
+    linkBase : AFB.GaloisGroup.baseField decl ≡ expBase
+    status : B.Bool
+
+mkGaloisGroupAdapter :
+  (F E : AR.FieldDeclaration) →
+  (d : AFB.GaloisGroup F E) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFB.GaloisGroup.baseField d ≡ eb) →
+  GaloisGroupAdapter
+mkGaloisGroupAdapter F E d eb pb =
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledGaloisGroup : GaloisGroupAdapter → B.Bool
+isFilledGaloisGroup a = GaloisGroupAdapter.status a
+
+-- Galois extension
+record GaloisExtensionAdapter : Set₁ where
+  field
+    F E : AR.FieldDeclaration
+    decl : AFB.GaloisExtension F E
+    expBase : AR.FieldDeclaration
+    linkBase : AFB.GaloisExtension.baseField decl ≡ expBase
+    status : B.Bool
+
+mkGaloisExtensionAdapter :
+  (F E : AR.FieldDeclaration) →
+  (d : AFB.GaloisExtension F E) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFB.GaloisExtension.baseField d ≡ eb) →
+  GaloisExtensionAdapter
+mkGaloisExtensionAdapter F E d eb pb =
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledGaloisExtension : GaloisExtensionAdapter → B.Bool
+isFilledGaloisExtension a = GaloisExtensionAdapter.status a
+
+-- Normal extension
+record NormalExtensionAdapter : Set₁ where
+  field
+    F E : AR.FieldDeclaration
+    decl : AFB.NormalExtension F E
+    expBase : AR.FieldDeclaration
+    linkBase : AFB.NormalExtension.baseField decl ≡ expBase
+    status : B.Bool
+
+mkNormalExtensionAdapter :
+  (F E : AR.FieldDeclaration) →
+  (d : AFB.NormalExtension F E) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFB.NormalExtension.baseField d ≡ eb) →
+  NormalExtensionAdapter
+mkNormalExtensionAdapter F E d eb pb =
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledNormalExtension : NormalExtensionAdapter → B.Bool
+isFilledNormalExtension a = NormalExtensionAdapter.status a
+
+-- Separable extension
+record SeparableExtensionAdapter : Set₁ where
+  field
+    F E : AR.FieldDeclaration
+    decl : AFB.SeparableExtension F E
+    expBase : AR.FieldDeclaration
+    linkBase : AFB.SeparableExtension.baseField decl ≡ expBase
+    status : B.Bool
+
+mkSeparableExtensionAdapter :
+  (F E : AR.FieldDeclaration) →
+  (d : AFB.SeparableExtension F E) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFB.SeparableExtension.baseField d ≡ eb) →
+  SeparableExtensionAdapter
+mkSeparableExtensionAdapter F E d eb pb =
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledSeparableExtension : SeparableExtensionAdapter → B.Bool
+isFilledSeparableExtension a = SeparableExtensionAdapter.status a
+
+-- Splitting field
+record SplittingFieldAdapter : Set₁ where
+  field
+    F : AR.FieldDeclaration
+    f : M.Identifier
+    decl : AFB.SplittingField F f
+    expBase : AR.FieldDeclaration
+    linkBase : AFB.SplittingField.baseField decl ≡ expBase
+    status : B.Bool
+
+mkSplittingFieldAdapter :
+  (F : AR.FieldDeclaration) →
+  (f : M.Identifier) →
+  (d : AFB.SplittingField F f) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFB.SplittingField.baseField d ≡ eb) →
+  SplittingFieldAdapter
+mkSplittingFieldAdapter F f d eb pb =
+  record { F = F ; f = f ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledSplittingField : SplittingFieldAdapter → B.Bool
+isFilledSplittingField a = SplittingFieldAdapter.status a
+
+-- Algebraic closure
+record AlgebraicClosureAdapter : Set₁ where
+  field
+    F : AR.FieldDeclaration
+    decl : AFB.AlgebraicClosure F
+    expBase : AR.FieldDeclaration
+    linkBase : AFB.AlgebraicClosure.baseField decl ≡ expBase
+    status : B.Bool
+
+mkAlgebraicClosureAdapter :
+  (F : AR.FieldDeclaration) →
+  (d : AFB.AlgebraicClosure F) →
+  (eb : AR.FieldDeclaration) →
+  (pb : AFB.AlgebraicClosure.baseField d ≡ eb) →
+  AlgebraicClosureAdapter
+mkAlgebraicClosureAdapter F d eb pb =
+  record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+
+isFilledAlgebraicClosure : AlgebraicClosureAdapter → B.Bool
+isFilledAlgebraicClosure a = AlgebraicClosureAdapter.status a
+
+-- ==========================================================
+-- Algebra.Rings.Basic - Ring Theory & Ideal Theory
+-- ==========================================================
+
+-- Ideal
+record IdealAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    decl : AR.Ideal R
+    expRing : AR.RingDeclaration
+    linkRing : AR.Ideal.ring decl ≡ expRing
+    status : B.Bool
+
+mkIdealAdapter :
+  (R : AR.RingDeclaration) →
+  (d : AR.Ideal R) →
+  (er : AR.RingDeclaration) →
+  (pr : AR.Ideal.ring d ≡ er) →
+  IdealAdapter
+mkIdealAdapter R d er pr =
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledIdeal : IdealAdapter → B.Bool
+isFilledIdeal a = IdealAdapter.status a
+
+-- Prime ideal
+record PrimeIdealAdapter : Set₁ where
+  field
+    R : AR.CommutativeRingDeclaration
+    decl : AR.PrimeIdeal R
+    expRing : AR.CommutativeRingDeclaration
+    linkRing : AR.PrimeIdeal.ring decl ≡ expRing
+    status : B.Bool
+
+mkPrimeIdealAdapter :
+  (R : AR.CommutativeRingDeclaration) →
+  (d : AR.PrimeIdeal R) →
+  (er : AR.CommutativeRingDeclaration) →
+  (pr : AR.PrimeIdeal.ring d ≡ er) →
+  PrimeIdealAdapter
+mkPrimeIdealAdapter R d er pr =
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledPrimeIdeal : PrimeIdealAdapter → B.Bool
+isFilledPrimeIdeal a = PrimeIdealAdapter.status a
+
+-- Maximal ideal
+record MaximalIdealAdapter : Set₁ where
+  field
+    R : AR.CommutativeRingDeclaration
+    decl : AR.MaximalIdeal R
+    expRing : AR.CommutativeRingDeclaration
+    linkRing : AR.MaximalIdeal.ring decl ≡ expRing
+    status : B.Bool
+
+mkMaximalIdealAdapter :
+  (R : AR.CommutativeRingDeclaration) →
+  (d : AR.MaximalIdeal R) →
+  (er : AR.CommutativeRingDeclaration) →
+  (pr : AR.MaximalIdeal.ring d ≡ er) →
+  MaximalIdealAdapter
+mkMaximalIdealAdapter R d er pr =
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledMaximalIdeal : MaximalIdealAdapter → B.Bool
+isFilledMaximalIdeal a = MaximalIdealAdapter.status a
+
+-- Integral domain
+record IntegralDomainAdapter : Set₁ where
+  field
+    decl : AR.IntegralDomain
+    expRing : AR.CommutativeRingDeclaration
+    linkRing : AR.IntegralDomain.underlyingRing decl ≡ expRing
+    status : B.Bool
+
+mkIntegralDomainAdapter :
+  (d : AR.IntegralDomain) →
+  (er : AR.CommutativeRingDeclaration) →
+  (pr : AR.IntegralDomain.underlyingRing d ≡ er) →
+  IntegralDomainAdapter
+mkIntegralDomainAdapter d er pr =
+  record { decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledIntegralDomain : IntegralDomainAdapter → B.Bool
+isFilledIntegralDomain a = IntegralDomainAdapter.status a
+
+-- Irreducible element
+record IrreducibleElementAdapter : Set₁ where
+  field
+    R : AR.IntegralDomain
+    p : M.Identifier
+    decl : AR.IrreducibleElement R p
+    expDomain : AR.IntegralDomain
+    linkDomain : AR.IrreducibleElement.domain decl ≡ expDomain
+    status : B.Bool
+
+mkIrreducibleElementAdapter :
+  (R : AR.IntegralDomain) →
+  (p : M.Identifier) →
+  (d : AR.IrreducibleElement R p) →
+  (ed : AR.IntegralDomain) →
+  (pd : AR.IrreducibleElement.domain d ≡ ed) →
+  IrreducibleElementAdapter
+mkIrreducibleElementAdapter R p d ed pd =
+  record { R = R ; p = p ; decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+
+isFilledIrreducibleElement : IrreducibleElementAdapter → B.Bool
+isFilledIrreducibleElement a = IrreducibleElementAdapter.status a
+
+-- Prime element
+record PrimeElementAdapter : Set₁ where
+  field
+    R : AR.IntegralDomain
+    p : M.Identifier
+    decl : AR.PrimeElement R p
+    expDomain : AR.IntegralDomain
+    linkDomain : AR.PrimeElement.domain decl ≡ expDomain
+    status : B.Bool
+
+mkPrimeElementAdapter :
+  (R : AR.IntegralDomain) →
+  (p : M.Identifier) →
+  (d : AR.PrimeElement R p) →
+  (ed : AR.IntegralDomain) →
+  (pd : AR.PrimeElement.domain d ≡ ed) →
+  PrimeElementAdapter
+mkPrimeElementAdapter R p d ed pd =
+  record { R = R ; p = p ; decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+
+isFilledPrimeElement : PrimeElementAdapter → B.Bool
+isFilledPrimeElement a = PrimeElementAdapter.status a
+
+-- Unique factorization domain (UFD)
+record UFDAdapter : Set₁ where
+  field
+    decl : AR.UFD
+    expDomain : AR.IntegralDomain
+    linkDomain : AR.UFD.domain decl ≡ expDomain
+    status : B.Bool
+
+mkUFDAdapter :
+  (d : AR.UFD) →
+  (ed : AR.IntegralDomain) →
+  (pd : AR.UFD.domain d ≡ ed) →
+  UFDAdapter
+mkUFDAdapter d ed pd =
+  record { decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+
+isFilledUFD : UFDAdapter → B.Bool
+isFilledUFD a = UFDAdapter.status a
+
+-- Principal ideal domain (PID)
+record PrincipalIdealDomainAdapter : Set₁ where
+  field
+    decl : AR.PrincipalIdealDomain
+    expDomain : AR.IntegralDomain
+    linkDomain : AR.PrincipalIdealDomain.domain decl ≡ expDomain
+    status : B.Bool
+
+mkPrincipalIdealDomainAdapter :
+  (d : AR.PrincipalIdealDomain) →
+  (ed : AR.IntegralDomain) →
+  (pd : AR.PrincipalIdealDomain.domain d ≡ ed) →
+  PrincipalIdealDomainAdapter
+mkPrincipalIdealDomainAdapter d ed pd =
+  record { decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+
+isFilledPrincipalIdealDomain : PrincipalIdealDomainAdapter → B.Bool
+isFilledPrincipalIdealDomain a = PrincipalIdealDomainAdapter.status a
+
+-- Euclidean domain
+record EuclideanDomainAdapter : Set₁ where
+  field
+    decl : AR.EuclideanDomain
+    expDomain : AR.IntegralDomain
+    linkDomain : AR.EuclideanDomain.domain decl ≡ expDomain
+    status : B.Bool
+
+mkEuclideanDomainAdapter :
+  (d : AR.EuclideanDomain) →
+  (ed : AR.IntegralDomain) →
+  (pd : AR.EuclideanDomain.domain d ≡ ed) →
+  EuclideanDomainAdapter
+mkEuclideanDomainAdapter d ed pd =
+  record { decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+
+isFilledEuclideanDomain : EuclideanDomainAdapter → B.Bool
+isFilledEuclideanDomain a = EuclideanDomainAdapter.status a
+
+-- Multiplicative system
+record MultiplicativeSystemAdapter : Set₁ where
+  field
+    R : AR.CommutativeRingDeclaration
+    decl : AR.MultiplicativeSystem R
+    expRing : AR.CommutativeRingDeclaration
+    linkRing : AR.MultiplicativeSystem.ring decl ≡ expRing
+    status : B.Bool
+
+mkMultiplicativeSystemAdapter :
+  (R : AR.CommutativeRingDeclaration) →
+  (d : AR.MultiplicativeSystem R) →
+  (er : AR.CommutativeRingDeclaration) →
+  (pr : AR.MultiplicativeSystem.ring d ≡ er) →
+  MultiplicativeSystemAdapter
+mkMultiplicativeSystemAdapter R d er pr =
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledMultiplicativeSystem : MultiplicativeSystemAdapter → B.Bool
+isFilledMultiplicativeSystem a = MultiplicativeSystemAdapter.status a
+
+-- Localization
+record LocalizationAdapter : Set₁ where
+  field
+    R : AR.CommutativeRingDeclaration
+    S : AR.MultiplicativeSystem R
+    decl : AR.Localization R S
+    expRing : AR.CommutativeRingDeclaration
+    linkRing : AR.Localization.ring decl ≡ expRing
+    status : B.Bool
+
+mkLocalizationAdapter :
+  (R : AR.CommutativeRingDeclaration) →
+  (S : AR.MultiplicativeSystem R) →
+  (d : AR.Localization R S) →
+  (er : AR.CommutativeRingDeclaration) →
+  (pr : AR.Localization.ring d ≡ er) →
+  LocalizationAdapter
+mkLocalizationAdapter R S d er pr =
+  record { R = R ; S = S ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledLocalization : LocalizationAdapter → B.Bool
+isFilledLocalization a = LocalizationAdapter.status a
+
+-- Field of fractions
+record FieldOfFractionsAdapter : Set₁ where
+  field
+    R : AR.IntegralDomain
+    decl : AR.FieldOfFractions R
+    expDomain : AR.IntegralDomain
+    linkDomain : AR.FieldOfFractions.domain decl ≡ expDomain
+    status : B.Bool
+
+mkFieldOfFractionsAdapter :
+  (R : AR.IntegralDomain) →
+  (d : AR.FieldOfFractions R) →
+  (ed : AR.IntegralDomain) →
+  (pd : AR.FieldOfFractions.domain d ≡ ed) →
+  FieldOfFractionsAdapter
+mkFieldOfFractionsAdapter R d ed pd =
+  record { R = R ; decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+
+isFilledFieldOfFractions : FieldOfFractionsAdapter → B.Bool
+isFilledFieldOfFractions a = FieldOfFractionsAdapter.status a
+
+-- Polynomial ring
+record PolynomialRingAdapter : Set₁ where
+  field
+    R : AR.CommutativeRingDeclaration
+    decl : AR.PolynomialRing R
+    expCoeffRing : AR.CommutativeRingDeclaration
+    linkCoeffRing : AR.PolynomialRing.coefficientRing decl ≡ expCoeffRing
+    status : B.Bool
+
+mkPolynomialRingAdapter :
+  (R : AR.CommutativeRingDeclaration) →
+  (d : AR.PolynomialRing R) →
+  (ec : AR.CommutativeRingDeclaration) →
+  (pc : AR.PolynomialRing.coefficientRing d ≡ ec) →
+  PolynomialRingAdapter
+mkPolynomialRingAdapter R d ec pc =
+  record { R = R ; decl = d ; expCoeffRing = ec ; linkCoeffRing = pc ; status = B.true }
+
+isFilledPolynomialRing : PolynomialRingAdapter → B.Bool
+isFilledPolynomialRing a = PolynomialRingAdapter.status a
+
+-- Quotient ring
+record QuotientRingAdapter : Set₁ where
+  field
+    R : AR.RingDeclaration
+    I : AR.Ideal R
+    decl : AR.QuotientRing R I
+    expRing : AR.RingDeclaration
+    linkRing : AR.QuotientRing.ring decl ≡ expRing
+    status : B.Bool
+
+mkQuotientRingAdapter :
+  (R : AR.RingDeclaration) →
+  (I : AR.Ideal R) →
+  (d : AR.QuotientRing R I) →
+  (er : AR.RingDeclaration) →
+  (pr : AR.QuotientRing.ring d ≡ er) →
+  QuotientRingAdapter
+mkQuotientRingAdapter R I d er pr =
+  record { R = R ; I = I ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledQuotientRing : QuotientRingAdapter → B.Bool
+isFilledQuotientRing a = QuotientRingAdapter.status a
+
+-- ==========================================================
+-- Algebra.Groups.Free - Free Groups and Categorical Constructions
+-- ==========================================================
+
+-- Product in Grp
+record ProductInGrpAdapter : Set₁ where
+  field
+    G H : AF.GroupDeclaration
+    decl : AGF.ProductInGrp G H
+    expGroup1 : AF.GroupDeclaration
+    linkGroup1 : AGF.ProductInGrp.group1 decl ≡ expGroup1
+    status : B.Bool
+
+mkProductInGrpAdapter :
+  (G H : AF.GroupDeclaration) →
+  (d : AGF.ProductInGrp G H) →
+  (eg : AF.GroupDeclaration) →
+  (pg : AGF.ProductInGrp.group1 d ≡ eg) →
+  ProductInGrpAdapter
+mkProductInGrpAdapter G H d eg pg =
+  record { G = G ; H = H ; decl = d ; expGroup1 = eg ; linkGroup1 = pg ; status = B.true }
+
+isFilledProductInGrp : ProductInGrpAdapter → B.Bool
+isFilledProductInGrp a = ProductInGrpAdapter.status a
+
+-- Coproduct in Grp
+record CoproductInGrpAdapter : Set₁ where
+  field
+    G H : AF.GroupDeclaration
+    decl : AGF.CoproductInGrp G H
+    expGroup1 : AF.GroupDeclaration
+    linkGroup1 : AGF.CoproductInGrp.group1 decl ≡ expGroup1
+    status : B.Bool
+
+mkCoproductInGrpAdapter :
+  (G H : AF.GroupDeclaration) →
+  (d : AGF.CoproductInGrp G H) →
+  (eg : AF.GroupDeclaration) →
+  (pg : AGF.CoproductInGrp.group1 d ≡ eg) →
+  CoproductInGrpAdapter
+mkCoproductInGrpAdapter G H d eg pg =
+  record { G = G ; H = H ; decl = d ; expGroup1 = eg ; linkGroup1 = pg ; status = B.true }
+
+isFilledCoproductInGrp : CoproductInGrpAdapter → B.Bool
+isFilledCoproductInGrp a = CoproductInGrpAdapter.status a
+
+-- Free group object
+record FreeGroupObjectAdapter : Set₁ where
+  field
+    X : M.Identifier
+    decl : AGF.FreeGroupObject X
+    expGenSet : M.Identifier
+    linkGenSet : AGF.FreeGroupObject.generatingSet decl ≡ expGenSet
+    status : B.Bool
+
+mkFreeGroupObjectAdapter :
+  (X : M.Identifier) →
+  (d : AGF.FreeGroupObject X) →
+  (eg : M.Identifier) →
+  (pg : AGF.FreeGroupObject.generatingSet d ≡ eg) →
+  FreeGroupObjectAdapter
+mkFreeGroupObjectAdapter X d eg pg =
+  record { X = X ; decl = d ; expGenSet = eg ; linkGenSet = pg ; status = B.true }
+
+isFilledFreeGroupObject : FreeGroupObjectAdapter → B.Bool
+isFilledFreeGroupObject a = FreeGroupObjectAdapter.status a
+
+-- Free group
+record FreeGroupAdapter : Set₁ where
+  field
+    X : M.Identifier
+    decl : AGF.FreeGroup X
+    expGenSet : M.Identifier
+    linkGenSet : AGF.FreeGroup.generatingSet decl ≡ expGenSet
+    status : B.Bool
+
+mkFreeGroupAdapter :
+  (X : M.Identifier) →
+  (d : AGF.FreeGroup X) →
+  (eg : M.Identifier) →
+  (pg : AGF.FreeGroup.generatingSet d ≡ eg) →
+  FreeGroupAdapter
+mkFreeGroupAdapter X d eg pg =
+  record { X = X ; decl = d ; expGenSet = eg ; linkGenSet = pg ; status = B.true }
+
+isFilledFreeGroup : FreeGroupAdapter → B.Bool
+isFilledFreeGroup a = FreeGroupAdapter.status a
+
+-- Group presentation
+record GroupPresentationAdapter : Set₁ where
+  field
+    decl : AGF.GroupPresentation
+    expGenerators : M.Identifier
+    linkGenerators : AGF.GroupPresentation.generators decl ≡ expGenerators
+    status : B.Bool
+
+mkGroupPresentationAdapter :
+  (d : AGF.GroupPresentation) →
+  (eg : M.Identifier) →
+  (pg : AGF.GroupPresentation.generators d ≡ eg) →
+  GroupPresentationAdapter
+mkGroupPresentationAdapter d eg pg =
+  record { decl = d ; expGenerators = eg ; linkGenerators = pg ; status = B.true }
+
+isFilledGroupPresentation : GroupPresentationAdapter → B.Bool
+isFilledGroupPresentation a = GroupPresentationAdapter.status a
+
+-- Abelianization
+record AbelianizationAdapter : Set₁ where
+  field
+    G : AF.GroupDeclaration
+    decl : AGF.Abelianization G
+    expGroup : AF.GroupDeclaration
+    linkGroup : AGF.Abelianization.group decl ≡ expGroup
+    status : B.Bool
+
+mkAbelianizationAdapter :
+  (G : AF.GroupDeclaration) →
+  (d : AGF.Abelianization G) →
+  (eg : AF.GroupDeclaration) →
+  (pg : AGF.Abelianization.group d ≡ eg) →
+  AbelianizationAdapter
+mkAbelianizationAdapter G d eg pg =
+  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+
+isFilledAbelianization : AbelianizationAdapter → B.Bool
+isFilledAbelianization a = AbelianizationAdapter.status a
+
+-- Finitely generated abelian group
+record FinitelyGeneratedAbelianGroupAdapter : Set₁ where
+  field
+    decl : AGF.FinitelyGeneratedAbelianGroup
+    expGroup : AF.AbelianGroupDeclaration
+    linkGroup : AGF.FinitelyGeneratedAbelianGroup.underlyingGroup decl ≡ expGroup
+    status : B.Bool
+
+mkFinitelyGeneratedAbelianGroupAdapter :
+  (d : AGF.FinitelyGeneratedAbelianGroup) →
+  (eg : AF.AbelianGroupDeclaration) →
+  (pg : AGF.FinitelyGeneratedAbelianGroup.underlyingGroup d ≡ eg) →
+  FinitelyGeneratedAbelianGroupAdapter
+mkFinitelyGeneratedAbelianGroupAdapter d eg pg =
+  record { decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+
+isFilledFinitelyGeneratedAbelianGroup : FinitelyGeneratedAbelianGroupAdapter → B.Bool
+isFilledFinitelyGeneratedAbelianGroup a = FinitelyGeneratedAbelianGroupAdapter.status a
+
+-- ==========================================================
+-- Algebra.Groups.Structure - Group Structure Theory
+-- ==========================================================
+
+-- Invariant factor decomposition
+record InvariantFactorDecompositionAdapter : Set₁ where
+  field
+    A : AGF.FinitelyGeneratedAbelianGroup
+    decl : AGS.InvariantFactorDecomposition A
+    expFreeRank : M.Identifier
+    linkFreeRank : AGS.InvariantFactorDecomposition.freeRank decl ≡ expFreeRank
+    status : B.Bool
+
+mkInvariantFactorDecompositionAdapter :
+  (A : AGF.FinitelyGeneratedAbelianGroup) →
+  (d : AGS.InvariantFactorDecomposition A) →
+  (ef : M.Identifier) →
+  (pf : AGS.InvariantFactorDecomposition.freeRank d ≡ ef) →
+  InvariantFactorDecompositionAdapter
+mkInvariantFactorDecompositionAdapter A d ef pf =
+  record { A = A ; decl = d ; expFreeRank = ef ; linkFreeRank = pf ; status = B.true }
+
+isFilledInvariantFactorDecomposition : InvariantFactorDecompositionAdapter → B.Bool
+isFilledInvariantFactorDecomposition a = InvariantFactorDecompositionAdapter.status a
+
+-- Torsion subgroup
+record TorsionSubgroupAdapter : Set₁ where
+  field
+    A : AF.AbelianGroupDeclaration
+    decl : AGS.TorsionSubgroup A
+    expAbelianGroup : AF.AbelianGroupDeclaration
+    linkAbelianGroup : AGS.TorsionSubgroup.abelianGroup decl ≡ expAbelianGroup
+    status : B.Bool
+
+mkTorsionSubgroupAdapter :
+  (A : AF.AbelianGroupDeclaration) →
+  (d : AGS.TorsionSubgroup A) →
+  (ea : AF.AbelianGroupDeclaration) →
+  (pa : AGS.TorsionSubgroup.abelianGroup d ≡ ea) →
+  TorsionSubgroupAdapter
+mkTorsionSubgroupAdapter A d ea pa =
+  record { A = A ; decl = d ; expAbelianGroup = ea ; linkAbelianGroup = pa ; status = B.true }
+
+isFilledTorsionSubgroup : TorsionSubgroupAdapter → B.Bool
+isFilledTorsionSubgroup a = TorsionSubgroupAdapter.status a
+
+-- Group action
+record GroupActionAdapter : Set₁ where
+  field
+    G : AF.GroupDeclaration
+    X : M.Identifier
+    decl : AGS.GroupAction G X
+    expGroup : AF.GroupDeclaration
+    linkGroup : AGS.GroupAction.group decl ≡ expGroup
+    status : B.Bool
+
+mkGroupActionAdapter :
+  (G : AF.GroupDeclaration) →
+  (X : M.Identifier) →
+  (d : AGS.GroupAction G X) →
+  (eg : AF.GroupDeclaration) →
+  (pg : AGS.GroupAction.group d ≡ eg) →
+  GroupActionAdapter
+mkGroupActionAdapter G X d eg pg =
+  record { G = G ; X = X ; decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+
+isFilledGroupAction : GroupActionAdapter → B.Bool
+isFilledGroupAction a = GroupActionAdapter.status a
+
+-- Orbit
+record OrbitAdapter : Set₁ where
+  field
+    G : AF.GroupDeclaration
+    X : M.Identifier
+    act : AGS.GroupAction G X
+    x : M.Identifier
+    decl : AGS.Orbit G X act x
+    expGroupAction : AGS.GroupAction G X
+    linkGroupAction : AGS.Orbit.groupAction decl ≡ expGroupAction
+    status : B.Bool
+
+mkOrbitAdapter :
+  (G : AF.GroupDeclaration) →
+  (X : M.Identifier) →
+  (act : AGS.GroupAction G X) →
+  (x : M.Identifier) →
+  (d : AGS.Orbit G X act x) →
+  (ea : AGS.GroupAction G X) →
+  (pa : AGS.Orbit.groupAction d ≡ ea) →
+  OrbitAdapter
+mkOrbitAdapter G X act x d ea pa =
+  record { G = G ; X = X ; act = act ; x = x ; decl = d ; expGroupAction = ea ; linkGroupAction = pa ; status = B.true }
+
+isFilledOrbit : OrbitAdapter → B.Bool
+isFilledOrbit a = OrbitAdapter.status a
+
+-- Stabilizer
+record StabilizerAdapter : Set₁ where
+  field
+    G : AF.GroupDeclaration
+    X : M.Identifier
+    act : AGS.GroupAction G X
+    x : M.Identifier
+    decl : AGS.Stabilizer G X act x
+    expGroupAction : AGS.GroupAction G X
+    linkGroupAction : AGS.Stabilizer.groupAction decl ≡ expGroupAction
+    status : B.Bool
+
+mkStabilizerAdapter :
+  (G : AF.GroupDeclaration) →
+  (X : M.Identifier) →
+  (act : AGS.GroupAction G X) →
+  (x : M.Identifier) →
+  (d : AGS.Stabilizer G X act x) →
+  (ea : AGS.GroupAction G X) →
+  (pa : AGS.Stabilizer.groupAction d ≡ ea) →
+  StabilizerAdapter
+mkStabilizerAdapter G X act x d ea pa =
+  record { G = G ; X = X ; act = act ; x = x ; decl = d ; expGroupAction = ea ; linkGroupAction = pa ; status = B.true }
+
+isFilledStabilizer : StabilizerAdapter → B.Bool
+isFilledStabilizer a = StabilizerAdapter.status a
+
+-- P-group
+record PGroupAdapter : Set₁ where
+  field
+    p : M.Identifier
+    G : AF.GroupDeclaration
+    decl : AGS.PGroup p G
+    expPrime : M.Identifier
+    linkPrime : AGS.PGroup.prime decl ≡ expPrime
+    status : B.Bool
+
+mkPGroupAdapter :
+  (p : M.Identifier) →
+  (G : AF.GroupDeclaration) →
+  (d : AGS.PGroup p G) →
+  (ep : M.Identifier) →
+  (pp : AGS.PGroup.prime d ≡ ep) →
+  PGroupAdapter
+mkPGroupAdapter p G d ep pp =
+  record { p = p ; G = G ; decl = d ; expPrime = ep ; linkPrime = pp ; status = B.true }
+
+isFilledPGroup : PGroupAdapter → B.Bool
+isFilledPGroup a = PGroupAdapter.status a
+
+-- Sylow p-subgroup
+record SylowPSubgroupAdapter : Set₁ where
+  field
+    p : M.Identifier
+    G : AF.GroupDeclaration
+    decl : AGS.SylowPSubgroup p G
+    expPrime : M.Identifier
+    linkPrime : AGS.SylowPSubgroup.prime decl ≡ expPrime
+    status : B.Bool
+
+mkSylowPSubgroupAdapter :
+  (p : M.Identifier) →
+  (G : AF.GroupDeclaration) →
+  (d : AGS.SylowPSubgroup p G) →
+  (ep : M.Identifier) →
+  (pp : AGS.SylowPSubgroup.prime d ≡ ep) →
+  SylowPSubgroupAdapter
+mkSylowPSubgroupAdapter p G d ep pp =
+  record { p = p ; G = G ; decl = d ; expPrime = ep ; linkPrime = pp ; status = B.true }
+
+isFilledSylowPSubgroup : SylowPSubgroupAdapter → B.Bool
+isFilledSylowPSubgroup a = SylowPSubgroupAdapter.status a
+
+-- Simple group
+record SimpleGroupAdapter : Set₁ where
+  field
+    G : AF.GroupDeclaration
+    decl : AGS.SimpleGroup G
+    expGroup : AF.GroupDeclaration
+    linkGroup : AGS.SimpleGroup.group decl ≡ expGroup
+    status : B.Bool
+
+mkSimpleGroupAdapter :
+  (G : AF.GroupDeclaration) →
+  (d : AGS.SimpleGroup G) →
+  (eg : AF.GroupDeclaration) →
+  (pg : AGS.SimpleGroup.group d ≡ eg) →
+  SimpleGroupAdapter
+mkSimpleGroupAdapter G d eg pg =
+  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+
+isFilledSimpleGroup : SimpleGroupAdapter → B.Bool
+isFilledSimpleGroup a = SimpleGroupAdapter.status a
+
+-- Composition series
+record CompositionSeriesAdapter : Set₁ where
+  field
+    G : AF.GroupDeclaration
+    decl : AGS.CompositionSeries G
+    expGroup : AF.GroupDeclaration
+    linkGroup : AGS.CompositionSeries.group decl ≡ expGroup
+    status : B.Bool
+
+mkCompositionSeriesAdapter :
+  (G : AF.GroupDeclaration) →
+  (d : AGS.CompositionSeries G) →
+  (eg : AF.GroupDeclaration) →
+  (pg : AGS.CompositionSeries.group d ≡ eg) →
+  CompositionSeriesAdapter
+mkCompositionSeriesAdapter G d eg pg =
+  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+
+isFilledCompositionSeries : CompositionSeriesAdapter → B.Bool
+isFilledCompositionSeries a = CompositionSeriesAdapter.status a
+
+-- Solvable group
+record SolvableGroupAdapter : Set₁ where
+  field
+    G : AF.GroupDeclaration
+    decl : AGS.SolvableGroup G
+    expGroup : AF.GroupDeclaration
+    linkGroup : AGS.SolvableGroup.group decl ≡ expGroup
+    status : B.Bool
+
+mkSolvableGroupAdapter :
+  (G : AF.GroupDeclaration) →
+  (d : AGS.SolvableGroup G) →
+  (eg : AF.GroupDeclaration) →
+  (pg : AGS.SolvableGroup.group d ≡ eg) →
+  SolvableGroupAdapter
+mkSolvableGroupAdapter G d eg pg =
+  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+
+isFilledSolvableGroup : SolvableGroupAdapter → B.Bool
+isFilledSolvableGroup a = SolvableGroupAdapter.status a
+
+-- Nilpotent group
+record NilpotentGroupAdapter : Set₁ where
+  field
+    G : AF.GroupDeclaration
+    decl : AGS.NilpotentGroup G
+    expGroup : AF.GroupDeclaration
+    linkGroup : AGS.NilpotentGroup.group decl ≡ expGroup
+    status : B.Bool
+
+mkNilpotentGroupAdapter :
+  (G : AF.GroupDeclaration) →
+  (d : AGS.NilpotentGroup G) →
+  (eg : AF.GroupDeclaration) →
+  (pg : AGS.NilpotentGroup.group d ≡ eg) →
+  NilpotentGroupAdapter
+mkNilpotentGroupAdapter G d eg pg =
+  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+
+isFilledNilpotentGroup : NilpotentGroupAdapter → B.Bool
+isFilledNilpotentGroup a = NilpotentGroupAdapter.status a
+
+-- ==========================================================
+-- Algebra.Groups.Abelian - Free Abelian Groups & Grothendieck
+-- ==========================================================
+
+-- Free abelian group
+record FreeAbelianGroupAdapter : Set₁ where
+  field
+    X : M.Identifier
+    decl : AGA.FreeAbelianGroup X
+    expUnderlyingSet : M.Identifier
+    linkUnderlyingSet : AGA.FreeAbelianGroup.underlyingSet decl ≡ expUnderlyingSet
+    status : B.Bool
+
+mkFreeAbelianGroupAdapter :
+  (X : M.Identifier) →
+  (d : AGA.FreeAbelianGroup X) →
+  (eu : M.Identifier) →
+  (pu : AGA.FreeAbelianGroup.underlyingSet d ≡ eu) →
+  FreeAbelianGroupAdapter
+mkFreeAbelianGroupAdapter X d eu pu =
+  record { X = X ; decl = d ; expUnderlyingSet = eu ; linkUnderlyingSet = pu ; status = B.true }
+
+isFilledFreeAbelianGroup : FreeAbelianGroupAdapter → B.Bool
+isFilledFreeAbelianGroup a = FreeAbelianGroupAdapter.status a
+
+-- Free-Forgetful adjunction for Ab
+record FreeForgetfulAdjunctionAbAdapter : Set₁ where
+  field
+    decl : AGA.FreeForgetfulAdjunctionAb
+    expFreeFunctor : M.Identifier
+    linkFreeFunctor : AGA.FreeForgetfulAdjunctionAb.freeFunctor decl ≡ expFreeFunctor
+    status : B.Bool
+
+mkFreeForgetfulAdjunctionAbAdapter :
+  (d : AGA.FreeForgetfulAdjunctionAb) →
+  (ef : M.Identifier) →
+  (pf : AGA.FreeForgetfulAdjunctionAb.freeFunctor d ≡ ef) →
+  FreeForgetfulAdjunctionAbAdapter
+mkFreeForgetfulAdjunctionAbAdapter d ef pf =
+  record { decl = d ; expFreeFunctor = ef ; linkFreeFunctor = pf ; status = B.true }
+
+isFilledFreeForgetfulAdjunctionAb : FreeForgetfulAdjunctionAbAdapter → B.Bool
+isFilledFreeForgetfulAdjunctionAb a = FreeForgetfulAdjunctionAbAdapter.status a
+
+-- Grothendieck group
+record GrothendieckGroupAdapter : Set₁ where
+  field
+    M : AF.MonoidDeclaration
+    decl : AGA.GrothendieckGroup M
+    expUnderlyingSet : M.Identifier
+    linkUnderlyingSet : AGA.GrothendieckGroup.underlyingSet decl ≡ expUnderlyingSet
+    status : B.Bool
+
+mkGrothendieckGroupAdapter :
+  (M : AF.MonoidDeclaration) →
+  (d : AGA.GrothendieckGroup M) →
+  (eu : M.Identifier) →
+  (pu : AGA.GrothendieckGroup.underlyingSet d ≡ eu) →
+  GrothendieckGroupAdapter
+mkGrothendieckGroupAdapter M d eu pu =
+  record { M = M ; decl = d ; expUnderlyingSet = eu ; linkUnderlyingSet = pu ; status = B.true }
+
+isFilledGrothendieckGroup : GrothendieckGroupAdapter → B.Bool
+isFilledGrothendieckGroup a = GrothendieckGroupAdapter.status a
