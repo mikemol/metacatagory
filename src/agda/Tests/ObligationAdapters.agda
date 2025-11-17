@@ -25,15 +25,19 @@ import Chapter3.Level3sub1 as C3S1
 import Chapter3.Level3sub2 as C3S2
 
 -- Algebra imports
-import Algebra.Foundation as AF
+import Algebra.Foundation as AFo
+import Algebra.Enrichment as AE
 import Algebra.Rings.Basic as AR
 import Algebra.Modules.Basic as AM
 import Algebra.Fields.Basic as AFB
 import Algebra.Fields.Advanced as AFA
+import Algebra.Groups.Basic as AGB
 import Algebra.Groups.Free as AGF
 import Algebra.Groups.Structure as AGS
 import Algebra.Groups.Abelian as AGA
 import Core.UniversalProperties as CUP
+import Chapter1.Level1 as C
+import Chapter2.Level2sub6 as Enriched
 
 -- Common status predicate wrapper
 record ObligationStatus : Set₁ where
@@ -1134,10 +1138,10 @@ isFilledOmegaSet a = OmegaSetAdapter.status a
 -- Magma
 record MagmaAdapter : Set₁ where
   field
-    decl : AF.MagmaDeclaration
+    decl : AFo.MagmaDeclaration
     status : B.Bool
 
-mkMagmaAdapter : AF.MagmaDeclaration → MagmaAdapter
+mkMagmaAdapter : AFo.MagmaDeclaration → MagmaAdapter
 mkMagmaAdapter d = record { decl = d ; status = B.true }
 
 isFilledMagma : MagmaAdapter → B.Bool
@@ -1146,15 +1150,15 @@ isFilledMagma a = MagmaAdapter.status a
 -- Semigroup
 record SemigroupAdapter : Set₁ where
   field
-    decl : AF.SemigroupDeclaration
-    expMagma : AF.MagmaDeclaration
-    linkMagma : AF.SemigroupDeclaration.underlyingMagma decl ≡ expMagma
+    decl : AFo.SemigroupDeclaration
+    expMagma : AFo.MagmaDeclaration
+    linkMagma : AFo.SemigroupDeclaration.underlyingMagma decl ≡ expMagma
     status : B.Bool
 
 mkSemigroupAdapter :
-  (d : AF.SemigroupDeclaration) →
-  (m : AF.MagmaDeclaration) →
-  (pm : AF.SemigroupDeclaration.underlyingMagma d ≡ m) →
+  (d : AFo.SemigroupDeclaration) →
+  (m : AFo.MagmaDeclaration) →
+  (pm : AFo.SemigroupDeclaration.underlyingMagma d ≡ m) →
   SemigroupAdapter
 mkSemigroupAdapter d m pm =
   record { decl = d ; expMagma = m ; linkMagma = pm ; status = B.true }
@@ -1165,15 +1169,15 @@ isFilledSemigroup a = SemigroupAdapter.status a
 -- Monoid
 record MonoidAdapter : Set₁ where
   field
-    decl : AF.MonoidDeclaration
-    expSemigroup : AF.SemigroupDeclaration
-    linkSemigroup : AF.MonoidDeclaration.underlyingSemigroup decl ≡ expSemigroup
+    decl : AFo.MonoidDeclaration
+    expSemigroup : AFo.SemigroupDeclaration
+    linkSemigroup : AFo.MonoidDeclaration.underlyingSemigroup decl ≡ expSemigroup
     status : B.Bool
 
 mkMonoidAdapter :
-  (d : AF.MonoidDeclaration) →
-  (s : AF.SemigroupDeclaration) →
-  (ps : AF.MonoidDeclaration.underlyingSemigroup d ≡ s) →
+  (d : AFo.MonoidDeclaration) →
+  (s : AFo.SemigroupDeclaration) →
+  (ps : AFo.MonoidDeclaration.underlyingSemigroup d ≡ s) →
   MonoidAdapter
 mkMonoidAdapter d s ps =
   record { decl = d ; expSemigroup = s ; linkSemigroup = ps ; status = B.true }
@@ -1184,15 +1188,15 @@ isFilledMonoid a = MonoidAdapter.status a
 -- Group
 record GroupAdapter : Set₁ where
   field
-    decl : AF.GroupDeclaration
-    expMonoid : AF.MonoidDeclaration
-    linkMonoid : AF.GroupDeclaration.underlyingMonoid decl ≡ expMonoid
+    decl : AFo.GroupDeclaration
+    expMonoid : AFo.MonoidDeclaration
+    linkMonoid : AFo.GroupDeclaration.underlyingMonoid decl ≡ expMonoid
     status : B.Bool
 
 mkGroupAdapter :
-  (d : AF.GroupDeclaration) →
-  (m : AF.MonoidDeclaration) →
-  (pm : AF.GroupDeclaration.underlyingMonoid d ≡ m) →
+  (d : AFo.GroupDeclaration) →
+  (m : AFo.MonoidDeclaration) →
+  (pm : AFo.GroupDeclaration.underlyingMonoid d ≡ m) →
   GroupAdapter
 mkGroupAdapter d m pm =
   record { decl = d ; expMonoid = m ; linkMonoid = pm ; status = B.true }
@@ -1203,15 +1207,15 @@ isFilledGroup a = GroupAdapter.status a
 -- AbelianGroup
 record AbelianGroupAdapter : Set₁ where
   field
-    decl : AF.AbelianGroupDeclaration
-    expGroup : AF.GroupDeclaration
-    linkGroup : AF.AbelianGroupDeclaration.underlyingGroup decl ≡ expGroup
+    decl : AFo.AbelianGroupDeclaration
+    expGroup : AFo.GroupDeclaration
+    linkGroup : AFo.AbelianGroupDeclaration.underlyingGroup decl ≡ expGroup
     status : B.Bool
 
 mkAbelianGroupAdapter :
-  (d : AF.AbelianGroupDeclaration) →
-  (g : AF.GroupDeclaration) →
-  (pg : AF.AbelianGroupDeclaration.underlyingGroup d ≡ g) →
+  (d : AFo.AbelianGroupDeclaration) →
+  (g : AFo.GroupDeclaration) →
+  (pg : AFo.AbelianGroupDeclaration.underlyingGroup d ≡ g) →
   AbelianGroupAdapter
 mkAbelianGroupAdapter d g pg =
   record { decl = d ; expGroup = g ; linkGroup = pg ; status = B.true }
@@ -1223,13 +1227,13 @@ isFilledAbelianGroup a = AbelianGroupAdapter.status a
 record RingAdapter : Set₁ where
   field
     decl : AR.RingDeclaration
-    expAdditiveGroup : AF.AbelianGroupDeclaration
+    expAdditiveGroup : AFo.AbelianGroupDeclaration
     linkAdditiveGroup : AR.RingDeclaration.additiveGroup decl ≡ expAdditiveGroup
     status : B.Bool
 
 mkRingAdapter :
   (d : AR.RingDeclaration) →
-  (ag : AF.AbelianGroupDeclaration) →
+  (ag : AFo.AbelianGroupDeclaration) →
   (pag : AR.RingDeclaration.additiveGroup d ≡ ag) →
   RingAdapter
 mkRingAdapter d ag pag =
@@ -2468,16 +2472,16 @@ isFilledQuotientRing a = QuotientRingAdapter.status a
 -- Product in Grp
 record ProductInGrpAdapter : Set₁ where
   field
-    G H : AF.GroupDeclaration
+    G H : AFo.GroupDeclaration
     decl : AGF.ProductInGrp G H
-    expGroup1 : AF.GroupDeclaration
+    expGroup1 : AFo.GroupDeclaration
     linkGroup1 : AGF.ProductInGrp.group1 decl ≡ expGroup1
     status : B.Bool
 
 mkProductInGrpAdapter :
-  (G H : AF.GroupDeclaration) →
+  (G H : AFo.GroupDeclaration) →
   (d : AGF.ProductInGrp G H) →
-  (eg : AF.GroupDeclaration) →
+  (eg : AFo.GroupDeclaration) →
   (pg : AGF.ProductInGrp.group1 d ≡ eg) →
   ProductInGrpAdapter
 mkProductInGrpAdapter G H d eg pg =
@@ -2489,16 +2493,16 @@ isFilledProductInGrp a = ProductInGrpAdapter.status a
 -- Coproduct in Grp
 record CoproductInGrpAdapter : Set₁ where
   field
-    G H : AF.GroupDeclaration
+    G H : AFo.GroupDeclaration
     decl : AGF.CoproductInGrp G H
-    expGroup1 : AF.GroupDeclaration
+    expGroup1 : AFo.GroupDeclaration
     linkGroup1 : AGF.CoproductInGrp.group1 decl ≡ expGroup1
     status : B.Bool
 
 mkCoproductInGrpAdapter :
-  (G H : AF.GroupDeclaration) →
+  (G H : AFo.GroupDeclaration) →
   (d : AGF.CoproductInGrp G H) →
-  (eg : AF.GroupDeclaration) →
+  (eg : AFo.GroupDeclaration) →
   (pg : AGF.CoproductInGrp.group1 d ≡ eg) →
   CoproductInGrpAdapter
 mkCoproductInGrpAdapter G H d eg pg =
@@ -2571,16 +2575,16 @@ isFilledGroupPresentation a = GroupPresentationAdapter.status a
 -- Abelianization
 record AbelianizationAdapter : Set₁ where
   field
-    G : AF.GroupDeclaration
+    G : AFo.GroupDeclaration
     decl : AGF.Abelianization G
-    expGroup : AF.GroupDeclaration
+    expGroup : AFo.GroupDeclaration
     linkGroup : AGF.Abelianization.group decl ≡ expGroup
     status : B.Bool
 
 mkAbelianizationAdapter :
-  (G : AF.GroupDeclaration) →
+  (G : AFo.GroupDeclaration) →
   (d : AGF.Abelianization G) →
-  (eg : AF.GroupDeclaration) →
+  (eg : AFo.GroupDeclaration) →
   (pg : AGF.Abelianization.group d ≡ eg) →
   AbelianizationAdapter
 mkAbelianizationAdapter G d eg pg =
@@ -2593,13 +2597,13 @@ isFilledAbelianization a = AbelianizationAdapter.status a
 record FinitelyGeneratedAbelianGroupAdapter : Set₁ where
   field
     decl : AGF.FinitelyGeneratedAbelianGroup
-    expGroup : AF.AbelianGroupDeclaration
+    expGroup : AFo.AbelianGroupDeclaration
     linkGroup : AGF.FinitelyGeneratedAbelianGroup.underlyingGroup decl ≡ expGroup
     status : B.Bool
 
 mkFinitelyGeneratedAbelianGroupAdapter :
   (d : AGF.FinitelyGeneratedAbelianGroup) →
-  (eg : AF.AbelianGroupDeclaration) →
+  (eg : AFo.AbelianGroupDeclaration) →
   (pg : AGF.FinitelyGeneratedAbelianGroup.underlyingGroup d ≡ eg) →
   FinitelyGeneratedAbelianGroupAdapter
 mkFinitelyGeneratedAbelianGroupAdapter d eg pg =
@@ -2636,16 +2640,16 @@ isFilledInvariantFactorDecomposition a = InvariantFactorDecompositionAdapter.sta
 -- Torsion subgroup
 record TorsionSubgroupAdapter : Set₁ where
   field
-    A : AF.AbelianGroupDeclaration
+    A : AFo.AbelianGroupDeclaration
     decl : AGS.TorsionSubgroup A
-    expAbelianGroup : AF.AbelianGroupDeclaration
+    expAbelianGroup : AFo.AbelianGroupDeclaration
     linkAbelianGroup : AGS.TorsionSubgroup.abelianGroup decl ≡ expAbelianGroup
     status : B.Bool
 
 mkTorsionSubgroupAdapter :
-  (A : AF.AbelianGroupDeclaration) →
+  (A : AFo.AbelianGroupDeclaration) →
   (d : AGS.TorsionSubgroup A) →
-  (ea : AF.AbelianGroupDeclaration) →
+  (ea : AFo.AbelianGroupDeclaration) →
   (pa : AGS.TorsionSubgroup.abelianGroup d ≡ ea) →
   TorsionSubgroupAdapter
 mkTorsionSubgroupAdapter A d ea pa =
@@ -2657,18 +2661,18 @@ isFilledTorsionSubgroup a = TorsionSubgroupAdapter.status a
 -- Group action
 record GroupActionAdapter : Set₁ where
   field
-    G : AF.GroupDeclaration
+    G : AFo.GroupDeclaration
     X : M.Identifier
     decl : AGS.GroupAction G X
-    expGroup : AF.GroupDeclaration
+    expGroup : AFo.GroupDeclaration
     linkGroup : AGS.GroupAction.group decl ≡ expGroup
     status : B.Bool
 
 mkGroupActionAdapter :
-  (G : AF.GroupDeclaration) →
+  (G : AFo.GroupDeclaration) →
   (X : M.Identifier) →
   (d : AGS.GroupAction G X) →
-  (eg : AF.GroupDeclaration) →
+  (eg : AFo.GroupDeclaration) →
   (pg : AGS.GroupAction.group d ≡ eg) →
   GroupActionAdapter
 mkGroupActionAdapter G X d eg pg =
@@ -2680,7 +2684,7 @@ isFilledGroupAction a = GroupActionAdapter.status a
 -- Orbit
 record OrbitAdapter : Set₁ where
   field
-    G : AF.GroupDeclaration
+    G : AFo.GroupDeclaration
     X : M.Identifier
     act : AGS.GroupAction G X
     x : M.Identifier
@@ -2690,7 +2694,7 @@ record OrbitAdapter : Set₁ where
     status : B.Bool
 
 mkOrbitAdapter :
-  (G : AF.GroupDeclaration) →
+  (G : AFo.GroupDeclaration) →
   (X : M.Identifier) →
   (act : AGS.GroupAction G X) →
   (x : M.Identifier) →
@@ -2707,7 +2711,7 @@ isFilledOrbit a = OrbitAdapter.status a
 -- Stabilizer
 record StabilizerAdapter : Set₁ where
   field
-    G : AF.GroupDeclaration
+    G : AFo.GroupDeclaration
     X : M.Identifier
     act : AGS.GroupAction G X
     x : M.Identifier
@@ -2717,7 +2721,7 @@ record StabilizerAdapter : Set₁ where
     status : B.Bool
 
 mkStabilizerAdapter :
-  (G : AF.GroupDeclaration) →
+  (G : AFo.GroupDeclaration) →
   (X : M.Identifier) →
   (act : AGS.GroupAction G X) →
   (x : M.Identifier) →
@@ -2735,7 +2739,7 @@ isFilledStabilizer a = StabilizerAdapter.status a
 record PGroupAdapter : Set₁ where
   field
     p : M.Identifier
-    G : AF.GroupDeclaration
+    G : AFo.GroupDeclaration
     decl : AGS.PGroup p G
     expPrime : M.Identifier
     linkPrime : AGS.PGroup.prime decl ≡ expPrime
@@ -2743,7 +2747,7 @@ record PGroupAdapter : Set₁ where
 
 mkPGroupAdapter :
   (p : M.Identifier) →
-  (G : AF.GroupDeclaration) →
+  (G : AFo.GroupDeclaration) →
   (d : AGS.PGroup p G) →
   (ep : M.Identifier) →
   (pp : AGS.PGroup.prime d ≡ ep) →
@@ -2758,7 +2762,7 @@ isFilledPGroup a = PGroupAdapter.status a
 record SylowPSubgroupAdapter : Set₁ where
   field
     p : M.Identifier
-    G : AF.GroupDeclaration
+    G : AFo.GroupDeclaration
     decl : AGS.SylowPSubgroup p G
     expPrime : M.Identifier
     linkPrime : AGS.SylowPSubgroup.prime decl ≡ expPrime
@@ -2766,7 +2770,7 @@ record SylowPSubgroupAdapter : Set₁ where
 
 mkSylowPSubgroupAdapter :
   (p : M.Identifier) →
-  (G : AF.GroupDeclaration) →
+  (G : AFo.GroupDeclaration) →
   (d : AGS.SylowPSubgroup p G) →
   (ep : M.Identifier) →
   (pp : AGS.SylowPSubgroup.prime d ≡ ep) →
@@ -2780,16 +2784,16 @@ isFilledSylowPSubgroup a = SylowPSubgroupAdapter.status a
 -- Simple group
 record SimpleGroupAdapter : Set₁ where
   field
-    G : AF.GroupDeclaration
+    G : AFo.GroupDeclaration
     decl : AGS.SimpleGroup G
-    expGroup : AF.GroupDeclaration
+    expGroup : AFo.GroupDeclaration
     linkGroup : AGS.SimpleGroup.group decl ≡ expGroup
     status : B.Bool
 
 mkSimpleGroupAdapter :
-  (G : AF.GroupDeclaration) →
+  (G : AFo.GroupDeclaration) →
   (d : AGS.SimpleGroup G) →
-  (eg : AF.GroupDeclaration) →
+  (eg : AFo.GroupDeclaration) →
   (pg : AGS.SimpleGroup.group d ≡ eg) →
   SimpleGroupAdapter
 mkSimpleGroupAdapter G d eg pg =
@@ -2801,16 +2805,16 @@ isFilledSimpleGroup a = SimpleGroupAdapter.status a
 -- Composition series
 record CompositionSeriesAdapter : Set₁ where
   field
-    G : AF.GroupDeclaration
+    G : AFo.GroupDeclaration
     decl : AGS.CompositionSeries G
-    expGroup : AF.GroupDeclaration
+    expGroup : AFo.GroupDeclaration
     linkGroup : AGS.CompositionSeries.group decl ≡ expGroup
     status : B.Bool
 
 mkCompositionSeriesAdapter :
-  (G : AF.GroupDeclaration) →
+  (G : AFo.GroupDeclaration) →
   (d : AGS.CompositionSeries G) →
-  (eg : AF.GroupDeclaration) →
+  (eg : AFo.GroupDeclaration) →
   (pg : AGS.CompositionSeries.group d ≡ eg) →
   CompositionSeriesAdapter
 mkCompositionSeriesAdapter G d eg pg =
@@ -2822,16 +2826,16 @@ isFilledCompositionSeries a = CompositionSeriesAdapter.status a
 -- Solvable group
 record SolvableGroupAdapter : Set₁ where
   field
-    G : AF.GroupDeclaration
+    G : AFo.GroupDeclaration
     decl : AGS.SolvableGroup G
-    expGroup : AF.GroupDeclaration
+    expGroup : AFo.GroupDeclaration
     linkGroup : AGS.SolvableGroup.group decl ≡ expGroup
     status : B.Bool
 
 mkSolvableGroupAdapter :
-  (G : AF.GroupDeclaration) →
+  (G : AFo.GroupDeclaration) →
   (d : AGS.SolvableGroup G) →
-  (eg : AF.GroupDeclaration) →
+  (eg : AFo.GroupDeclaration) →
   (pg : AGS.SolvableGroup.group d ≡ eg) →
   SolvableGroupAdapter
 mkSolvableGroupAdapter G d eg pg =
@@ -2843,16 +2847,16 @@ isFilledSolvableGroup a = SolvableGroupAdapter.status a
 -- Nilpotent group
 record NilpotentGroupAdapter : Set₁ where
   field
-    G : AF.GroupDeclaration
+    G : AFo.GroupDeclaration
     decl : AGS.NilpotentGroup G
-    expGroup : AF.GroupDeclaration
+    expGroup : AFo.GroupDeclaration
     linkGroup : AGS.NilpotentGroup.group decl ≡ expGroup
     status : B.Bool
 
 mkNilpotentGroupAdapter :
-  (G : AF.GroupDeclaration) →
+  (G : AFo.GroupDeclaration) →
   (d : AGS.NilpotentGroup G) →
-  (eg : AF.GroupDeclaration) →
+  (eg : AFo.GroupDeclaration) →
   (pg : AGS.NilpotentGroup.group d ≡ eg) →
   NilpotentGroupAdapter
 mkNilpotentGroupAdapter G d eg pg =
@@ -2908,14 +2912,14 @@ isFilledFreeForgetfulAdjunctionAb a = FreeForgetfulAdjunctionAbAdapter.status a
 -- Grothendieck group
 record GrothendieckGroupAdapter : Set₁ where
   field
-    M : AF.MonoidDeclaration
+    M : AFo.MonoidDeclaration
     decl : AGA.GrothendieckGroup M
     expUnderlyingSet : M.Identifier
     linkUnderlyingSet : AGA.GrothendieckGroup.underlyingSet decl ≡ expUnderlyingSet
     status : B.Bool
 
 mkGrothendieckGroupAdapter :
-  (M : AF.MonoidDeclaration) →
+  (M : AFo.MonoidDeclaration) →
   (d : AGA.GrothendieckGroup M) →
   (eu : M.Identifier) →
   (pu : AGA.GrothendieckGroup.underlyingSet d ≡ eu) →
@@ -2929,17 +2933,17 @@ isFilledGrothendieckGroup a = GrothendieckGroupAdapter.status a
 -- Tensor product of abelian groups
 record TensorProductAbAdapter : Set₁ where
   field
-    A : AF.AbelianGroupDeclaration
-    B : AF.AbelianGroupDeclaration
+    A : AFo.AbelianGroupDeclaration
+    B : AFo.AbelianGroupDeclaration
     decl : AGA.TensorProductAb A B
-    expTensorProduct : AF.AbelianGroupDeclaration
+    expTensorProduct : AFo.AbelianGroupDeclaration
     linkTensorProduct : AGA.TensorProductAb.tensorProduct decl ≡ expTensorProduct
     status : B.Bool
 
 mkTensorProductAbAdapter :
-  (A B : AF.AbelianGroupDeclaration) →
+  (A B : AFo.AbelianGroupDeclaration) →
   (d : AGA.TensorProductAb A B) →
-  (et : AF.AbelianGroupDeclaration) →
+  (et : AFo.AbelianGroupDeclaration) →
   (pt : AGA.TensorProductAb.tensorProduct d ≡ et) →
   TensorProductAbAdapter
 mkTensorProductAbAdapter A B d et pt =
@@ -3566,3 +3570,221 @@ mkTranscendenceBasisAdapter F E d ef ee pf pe =
 
 isFilledTranscendenceBasis : TranscendenceBasisAdapter → B.Bool
 isFilledTranscendenceBasis a = TranscendenceBasisAdapter.status a
+
+
+-- ============================================================================
+-- Enrichment-Specific Adapters
+-- ============================================================================
+
+-- Monoid as monoidal category
+record MonoidAsMonoidalCategoryAdapter : Set₁ where
+  field
+    decl : AE.MonoidAsMonoidalCategory
+    expectedMonoid : AFo.MonoidDeclaration
+    link : AE.MonoidAsMonoidalCategory.monoid decl ≡ expectedMonoid
+    status : B.Bool
+
+mkMonoidAsMonoidalCategoryAdapter :
+  (d : AE.MonoidAsMonoidalCategory) →
+  (em : AFo.MonoidDeclaration) →
+  (p : AE.MonoidAsMonoidalCategory.monoid d ≡ em) →
+  MonoidAsMonoidalCategoryAdapter
+mkMonoidAsMonoidalCategoryAdapter d em p =
+  record { decl = d ; expectedMonoid = em ; link = p ; status = B.true }
+
+isFilledMonoidAsMonoidalCategory : MonoidAsMonoidalCategoryAdapter → B.Bool
+isFilledMonoidAsMonoidalCategory a = MonoidAsMonoidalCategoryAdapter.status a
+
+
+-- Abelian group as symmetric monoidal category
+record AbelianGroupAsSymmetricMonoidalAdapter : Set₁ where
+  field
+    decl : AE.AbelianGroupAsSymmetricMonoidal
+    expectedAbGroup : AGA.AbelianGroupDeclaration
+    link : AE.AbelianGroupAsSymmetricMonoidal.abelianGroup decl ≡ expectedAbGroup
+    status : B.Bool
+
+mkAbelianGroupAsSymmetricMonoidalAdapter :
+  (d : AE.AbelianGroupAsSymmetricMonoidal) →
+  (eab : AGA.AbelianGroupDeclaration) →
+  (p : AE.AbelianGroupAsSymmetricMonoidal.abelianGroup d ≡ eab) →
+  AbelianGroupAsSymmetricMonoidalAdapter
+mkAbelianGroupAsSymmetricMonoidalAdapter d eab p =
+  record { decl = d ; expectedAbGroup = eab ; link = p ; status = B.true }
+
+isFilledAbelianGroupAsSymmetricMonoidal : AbelianGroupAsSymmetricMonoidalAdapter → B.Bool
+isFilledAbelianGroupAsSymmetricMonoidal a = AbelianGroupAsSymmetricMonoidalAdapter.status a
+
+
+-- Monoid-enriched category
+record MonoidEnrichedCategoryAdapter : Set₁ where
+  field
+    decl : AE.MonoidEnrichedCategory
+    expectedMonoid : AFo.MonoidDeclaration
+    link : AE.MonoidEnrichedCategory.enrichingMonoid decl ≡ expectedMonoid
+    status : B.Bool
+
+mkMonoidEnrichedCategoryAdapter :
+  (d : AE.MonoidEnrichedCategory) →
+  (em : AFo.MonoidDeclaration) →
+  (p : AE.MonoidEnrichedCategory.enrichingMonoid d ≡ em) →
+  MonoidEnrichedCategoryAdapter
+mkMonoidEnrichedCategoryAdapter d em p =
+  record { decl = d ; expectedMonoid = em ; link = p ; status = B.true }
+
+isFilledMonoidEnrichedCategory : MonoidEnrichedCategoryAdapter → B.Bool
+isFilledMonoidEnrichedCategory a = MonoidEnrichedCategoryAdapter.status a
+
+
+-- Distance category (enriched over ℕ)
+record DistanceCategoryAdapter : Set₁ where
+  field
+    decl : AE.DistanceCategory
+    expectedMonoid : AFo.MonoidDeclaration
+    link : AE.DistanceCategory.naturalNumbersMonoid decl ≡ expectedMonoid
+    status : B.Bool
+
+mkDistanceCategoryAdapter :
+  (d : AE.DistanceCategory) →
+  (em : AFo.MonoidDeclaration) →
+  (p : AE.DistanceCategory.naturalNumbersMonoid d ≡ em) →
+  DistanceCategoryAdapter
+mkDistanceCategoryAdapter d em p =
+  record { decl = d ; expectedMonoid = em ; link = p ; status = B.true }
+
+isFilledDistanceCategory : DistanceCategoryAdapter → B.Bool
+isFilledDistanceCategory a = DistanceCategoryAdapter.status a
+
+
+-- Ab-enriched category (additive category)
+record AbEnrichedCategoryAdapter : Set₁ where
+  field
+    decl : AE.AbEnrichedCategory
+    expectedCat : AGA.CategoryOfAbelianGroups
+    link : AE.AbEnrichedCategory.enrichingCategory decl ≡ expectedCat
+    status : B.Bool
+
+mkAbEnrichedCategoryAdapter :
+  (d : AE.AbEnrichedCategory) →
+  (ec : AGA.CategoryOfAbelianGroups) →
+  (p : AE.AbEnrichedCategory.enrichingCategory d ≡ ec) →
+  AbEnrichedCategoryAdapter
+mkAbEnrichedCategoryAdapter d ec p =
+  record { decl = d ; expectedCat = ec ; link = p ; status = B.true }
+
+isFilledAbEnrichedCategory : AbEnrichedCategoryAdapter → B.Bool
+isFilledAbEnrichedCategory a = AbEnrichedCategoryAdapter.status a
+
+
+-- Generic enrichment over monoidal category V
+record GenericEnrichmentAdapter : Set₁ where
+  field
+    V : Enriched.MonoidalCategoryDeclaration
+    decl : AE.GenericEnrichment V
+    expectedCat : C.CategoryDeclaration
+    link : AE.GenericEnrichment.enrichingCategory decl ≡ expectedCat
+    status : B.Bool
+
+mkGenericEnrichmentAdapter :
+  (V : Enriched.MonoidalCategoryDeclaration) →
+  (d : AE.GenericEnrichment V) →
+  (ec : C.CategoryDeclaration) →
+  (p : AE.GenericEnrichment.enrichingCategory d ≡ ec) →
+  GenericEnrichmentAdapter
+mkGenericEnrichmentAdapter V d ec p =
+  record { V = V ; decl = d ; expectedCat = ec ; link = p ; status = B.true }
+
+isFilledGenericEnrichment : GenericEnrichmentAdapter → B.Bool
+isFilledGenericEnrichment a = GenericEnrichmentAdapter.status a
+
+
+-- Group action enriched category
+record GroupActionEnrichedCategoryAdapter : Set₁ where
+  field
+    decl : AE.GroupActionEnrichedCategory
+    expectedGroup : AGB.GroupDeclaration
+    link : AE.GroupActionEnrichedCategory.actingGroup decl ≡ expectedGroup
+    status : B.Bool
+
+mkGroupActionEnrichedCategoryAdapter :
+  (d : AE.GroupActionEnrichedCategory) →
+  (eg : AGB.GroupDeclaration) →
+  (p : AE.GroupActionEnrichedCategory.actingGroup d ≡ eg) →
+  GroupActionEnrichedCategoryAdapter
+mkGroupActionEnrichedCategoryAdapter d eg p =
+  record { decl = d ; expectedGroup = eg ; link = p ; status = B.true }
+
+isFilledGroupActionEnrichedCategory : GroupActionEnrichedCategoryAdapter → B.Bool
+isFilledGroupActionEnrichedCategory a = GroupActionEnrichedCategoryAdapter.status a
+
+
+-- Module-enriched category (over a ring)
+record ModuleEnrichedCategoryAdapter : Set₁ where
+  field
+    decl : AE.ModuleEnrichedCategory
+    status : B.Bool
+
+mkModuleEnrichedCategoryAdapter :
+  (d : AE.ModuleEnrichedCategory) →
+  ModuleEnrichedCategoryAdapter
+mkModuleEnrichedCategoryAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledModuleEnrichedCategory : ModuleEnrichedCategoryAdapter → B.Bool
+isFilledModuleEnrichedCategory a = ModuleEnrichedCategoryAdapter.status a
+
+
+-- Lawvere theory enriched category
+record LawvereTheoryEnrichedCategoryAdapter : Set₁ where
+  field
+    decl : AE.LawvereTheoryEnrichedCategory
+    status : B.Bool
+
+mkLawvereTheoryEnrichedCategoryAdapter :
+  (d : AE.LawvereTheoryEnrichedCategory) →
+  LawvereTheoryEnrichedCategoryAdapter
+mkLawvereTheoryEnrichedCategoryAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledLawvereTheoryEnrichedCategory : LawvereTheoryEnrichedCategoryAdapter → B.Bool
+isFilledLawvereTheoryEnrichedCategory a = LawvereTheoryEnrichedCategoryAdapter.status a
+
+
+-- Ab self-enriched
+record AbSelfEnrichedAdapter : Set₁ where
+  field
+    decl : AGA.AbSelfEnriched
+    expectedCat : AGA.CategoryOfAbelianGroups
+    link : AGA.AbSelfEnriched.category decl ≡ expectedCat
+    status : B.Bool
+
+mkAbSelfEnrichedAdapter :
+  (d : AGA.AbSelfEnriched) →
+  (ec : AGA.CategoryOfAbelianGroups) →
+  (p : AGA.AbSelfEnriched.category d ≡ ec) →
+  AbSelfEnrichedAdapter
+mkAbSelfEnrichedAdapter d ec p =
+  record { decl = d ; expectedCat = ec ; link = p ; status = B.true }
+
+isFilledAbSelfEnriched : AbSelfEnrichedAdapter → B.Bool
+isFilledAbSelfEnriched a = AbSelfEnrichedAdapter.status a
+
+
+-- Ab self-enrichment via internal hom
+record AbSelfEnrichmentViaInternalHomAdapter : Set₁ where
+  field
+    decl : AGA.AbSelfEnrichmentViaInternalHom
+    expectedCat : AGA.CategoryOfAbelianGroups
+    link : AGA.AbSelfEnrichmentViaInternalHom.category decl ≡ expectedCat
+    status : B.Bool
+
+mkAbSelfEnrichmentViaInternalHomAdapter :
+  (d : AGA.AbSelfEnrichmentViaInternalHom) →
+  (ec : AGA.CategoryOfAbelianGroups) →
+  (p : AGA.AbSelfEnrichmentViaInternalHom.category d ≡ ec) →
+  AbSelfEnrichmentViaInternalHomAdapter
+mkAbSelfEnrichmentViaInternalHomAdapter d ec p =
+  record { decl = d ; expectedCat = ec ; link = p ; status = B.true }
+
+isFilledAbSelfEnrichmentViaInternalHom : AbSelfEnrichmentViaInternalHomAdapter → B.Bool
+isFilledAbSelfEnrichmentViaInternalHom a = AbSelfEnrichmentViaInternalHomAdapter.status a
