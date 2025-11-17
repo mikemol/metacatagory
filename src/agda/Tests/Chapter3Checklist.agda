@@ -86,3 +86,235 @@ etal-adapter = A.mkEtaleSpaceAdapter chk3s2B (M.mkId "p") chk3s2A etal-proj-link
 
 etal-status-is-filled : A.isFilledEtale etal-adapter ≡ B.true
 etal-status-is-filled = refl
+
+------------------------------------------------------------------------
+-- New adapters for comprehensive Chapter 3 coverage
+------------------------------------------------------------------------
+
+-- HeytingAlgebra
+heytingDecl : S1.HeytingAlgebraDeclaration
+heytingDecl = record
+  { underlyingLattice = ⊤
+  ; implicationOperation = ⊤
+  ; adjointnessAxiom = ⊤
+  }
+
+heyting-adapter : A.HeytingAlgebraAdapter
+heyting-adapter = A.mkHeytingAlgebraAdapter heytingDecl
+
+heyting-status : A.isFilledHeytingAlgebra heyting-adapter ≡ B.true
+heyting-status = refl
+
+-- Frame
+frameDecl : S1.FrameDeclaration
+frameDecl = record
+  { underlyingHeytingAlgebra = heytingDecl
+  ; isCompleteLattice = ⊤
+  ; frameStructure = ⊤
+  }
+
+frame-link : S1.FrameDeclaration.underlyingHeytingAlgebra frameDecl ≡ heytingDecl
+frame-link = refl
+
+frame-adapter : A.FrameAdapter
+frame-adapter = A.mkFrameAdapter frameDecl heytingDecl frame-link
+
+frame-status : A.isFilledFrame frame-adapter ≡ B.true
+frame-status = refl
+
+-- Locale
+localeDecl : S1.LocaleDeclaration
+localeDecl = record
+  { associatedFrame = frameDecl
+  }
+
+locale-link : S1.LocaleDeclaration.associatedFrame localeDecl ≡ frameDecl
+locale-link = refl
+
+locale-adapter : A.LocaleAdapter
+locale-adapter = A.mkLocaleAdapter localeDecl frameDecl locale-link
+
+locale-status : A.isFilledLocale locale-adapter ≡ B.true
+locale-status = refl
+
+-- LocaleMorphism
+srcLocale : S1.LocaleDeclaration
+srcLocale = localeDecl
+
+tgtLocale : S1.LocaleDeclaration
+tgtLocale = localeDecl
+
+localeMorphDecl : S1.LocaleMorphismDeclaration
+localeMorphDecl = record
+  { sourceLocale = srcLocale
+  ; targetLocale = tgtLocale
+  ; representingFrameHomomorphism = ⊤
+  }
+
+locale-morph-src-link : S1.LocaleMorphismDeclaration.sourceLocale localeMorphDecl ≡ srcLocale
+locale-morph-src-link = refl
+
+locale-morph-tgt-link : S1.LocaleMorphismDeclaration.targetLocale localeMorphDecl ≡ tgtLocale
+locale-morph-tgt-link = refl
+
+locale-morph-adapter : A.LocaleMorphismAdapter
+locale-morph-adapter = A.mkLocaleMorphismAdapter localeMorphDecl srcLocale tgtLocale
+                                                  locale-morph-src-link locale-morph-tgt-link
+
+locale-morph-status : A.isFilledLocaleMorphism locale-morph-adapter ≡ B.true
+locale-morph-status = refl
+
+-- Nucleus
+nucleusDecl : S1.NucleusDeclaration
+nucleusDecl = record
+  { frame = frameDecl
+  ; nucleusMap = ⊤
+  ; inflationaryAxiom = ⊤
+  ; monotoneAxiom = ⊤
+  ; idempotentAxiom = ⊤
+  ; preservesMeetsAxiom = ⊤
+  }
+
+nucleus-link : S1.NucleusDeclaration.frame nucleusDecl ≡ frameDecl
+nucleus-link = refl
+
+nucleus-adapter : A.NucleusAdapter
+nucleus-adapter = A.mkNucleusAdapter nucleusDecl frameDecl nucleus-link
+
+nucleus-status : A.isFilledNucleus nucleus-adapter ≡ B.true
+nucleus-status = refl
+
+-- Sublocale
+sublocDecl : S1.SublocaleDeclaration
+sublocDecl = record
+  { sublocale = localeDecl
+  ; parentLocale = localeDecl
+  ; isMonomorphism = ⊤
+  }
+
+subloc-sub-link : S1.SublocaleDeclaration.sublocale sublocDecl ≡ localeDecl
+subloc-sub-link = refl
+
+subloc-par-link : S1.SublocaleDeclaration.parentLocale sublocDecl ≡ localeDecl
+subloc-par-link = refl
+
+subloc-adapter : A.SublocaleAdapter
+subloc-adapter = A.mkSublocaleAdapter sublocDecl localeDecl localeDecl
+                                      subloc-sub-link subloc-par-link
+
+subloc-status : A.isFilledSublocale subloc-adapter ≡ B.true
+subloc-status = refl
+
+-- OpenLocaleMorphism
+openMorphDecl : S1.OpenLocaleMorphismDeclaration
+openMorphDecl = record
+  { localeMorphism = localeMorphDecl
+  ; hasLeftAdjoint = ⊤
+  ; leftAdjointPreservesMeets = record { functor = M.mkId "f" ; preservesTop = ⊤ ; preservesBinaryMeets = ⊤ }
+  }
+
+open-morph-link : S1.OpenLocaleMorphismDeclaration.localeMorphism openMorphDecl ≡ localeMorphDecl
+open-morph-link = refl
+
+open-morph-adapter : A.OpenLocaleMorphismAdapter
+open-morph-adapter = A.mkOpenLocaleMorphismAdapter openMorphDecl localeMorphDecl open-morph-link
+
+open-morph-status : A.isFilledOpenLocaleMorphism open-morph-adapter ≡ B.true
+open-morph-status = refl
+
+-- SoberSpace
+soberDecl : S1.SoberSpaceDeclaration
+soberDecl = record
+  { space = ⊤
+  ; unitComponent = ⊤
+  ; unitIsIsomorphism = ⊤
+  }
+
+sober-adapter : A.SoberSpaceAdapter
+sober-adapter = A.mkSoberSpaceAdapter soberDecl
+
+sober-status : A.isFilledSoberSpace sober-adapter ≡ B.true
+sober-status = refl
+
+-- SpatialLocale
+spatialDecl : S1.SpatialLocaleDeclaration
+spatialDecl = record
+  { locale = localeDecl
+  ; counitComponent = ⊤
+  ; counitIsIsomorphism = ⊤
+  }
+
+spatial-link : S1.SpatialLocaleDeclaration.locale spatialDecl ≡ localeDecl
+spatial-link = refl
+
+spatial-adapter : A.SpatialLocaleAdapter
+spatial-adapter = A.mkSpatialLocaleAdapter spatialDecl localeDecl spatial-link
+
+spatial-status : A.isFilledSpatialLocale spatial-adapter ≡ B.true
+spatial-status = refl
+
+-- SheafOnLocale
+presheafDecl : S2.PresheafOnLocale
+presheafDecl = record
+  { locale = ⊤
+  ; underlyingFunctor = ⊤
+  }
+
+sheafDecl : S2.SheafOnLocaleDeclaration
+sheafDecl = record
+  { underlyingPresheaf = presheafDecl
+  ; satisfiesGluingAxiom = record { presheaf = presheafDecl ; uniqueAmalgamationProperty = ⊤ }
+  }
+
+sheaf-link : S2.SheafOnLocaleDeclaration.underlyingPresheaf sheafDecl ≡ presheafDecl
+sheaf-link = refl
+
+sheaf-adapter : A.SheafOnLocaleAdapter
+sheaf-adapter = A.mkSheafOnLocaleAdapter sheafDecl presheafDecl sheaf-link
+
+sheaf-status : A.isFilledSheafOnLocale sheaf-adapter ≡ B.true
+sheaf-status = refl
+
+-- GrothendieckTopos
+toposDecl : S2.GrothendieckToposDeclaration
+toposDecl = record
+  { category = catDecl
+  ; giraudAxiom1CocompletenessAndGenerators = ⊤
+  ; giraudAxiom2DisjointCoproductsStableUnderPullback = ⊤
+  ; giraudAxiom3EffectiveEquivalenceRelations = ⊤
+  }
+
+topos-link : S2.GrothendieckToposDeclaration.category toposDecl ≡ catDecl
+topos-link = refl
+
+topos-adapter : A.GrothendieckToposAdapter
+topos-adapter = A.mkGrothendieckToposAdapter toposDecl catDecl topos-link
+
+topos-status : A.isFilledGrothendieckTopos topos-adapter ≡ B.true
+topos-status = refl
+
+-- OmegaSet
+omegaData : S2.OmegaSetData
+omegaData = record
+  { frame = ⊤
+  ; elementsSet = ⊤
+  ; equalityPredicate = ⊤
+  }
+
+omegaSetDecl : S2.OmegaSetDeclarationVerified
+omegaSetDecl = record
+  { dataOmegaSet = omegaData
+  ; reflexivityProof = record { omegaSetData = omegaData ; reflexivityCondition = ⊤ }
+  ; symmetryProof = record { omegaSetData = omegaData ; symmetryCondition = ⊤ }
+  ; transitivityProof = record { omegaSetData = omegaData ; transitivityCondition = ⊤ }
+  }
+
+omega-link : S2.OmegaSetDeclarationVerified.dataOmegaSet omegaSetDecl ≡ omegaData
+omega-link = refl
+
+omega-adapter : A.OmegaSetAdapter
+omega-adapter = A.mkOmegaSetAdapter omegaSetDecl omegaData omega-link
+
+omega-status : A.isFilledOmegaSet omega-adapter ≡ B.true
+omega-status = refl
+

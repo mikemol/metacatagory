@@ -65,6 +65,33 @@ import Tests.ChapterObligationsSmoke
 import Tests.Chapter1Checklist
 import Tests.Chapter2Checklist
 import Tests.Chapter3Checklist
+import Tests.AlgebraChecklist
+import Tests.CoreUniversalPropertiesChecklist
+import Tests.ModulesChecklist
+import Tests.AdvancedFieldsChecklist
+import Tests.FieldsBasicChecklist
+import Tests.RingsBasicChecklist
+import Tests.GroupsFreeChecklist
+import Tests.GroupsStructureChecklist
+import Tests.GroupsAbelianChecklist
+import Tests.TensorProductChecklist
+import Tests.VectorSpaceChecklist
+import Tests.PolynomialExtensionsChecklist
+import Tests.ModuleStructureChecklist
+import Tests.ModuleTheoryChecklist
+import Tests.PolynomialFieldExtensionsChecklist
+import Tests.EnrichmentChecklist
+import Tests.AlgebraicCompletionChecklist
+import Tests.MonadAdjunctionChecklist
+import Tests.LimitsColimitsChecklist
+import Tests.RegularCategoriesChecklist
+import Tests.AdvancedMonadTheoryChecklist
+import Tests.FunctorPropertiesChecklist
+import Tests.YonedaChecklist
+import Tests.KanExtensionsChecklist
+import Tests.GrothendieckFibrationsChecklist
+import Tests.AbelianCategoriesChecklist
+import Tests.SubobjectTheoryChecklist
 
 -- Proof obligation status checks (ensures selected obligations are filled
 -- and linked to constructive witnesses in examples)
