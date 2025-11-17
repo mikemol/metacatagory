@@ -882,3 +882,236 @@ mkSketchAdapter d cat pcat =
 
 isFilledSketch : SketchAdapter → B.Bool
 isFilledSketch a = SketchAdapter.status a
+
+-- ==========================================================
+-- Chapter 3, Level 3.1 (Locales & Frames) - Additional
+-- ==========================================================
+
+record HeytingAlgebraAdapter : Set₁ where
+  field
+    decl : C3S1.HeytingAlgebraDeclaration
+    status : B.Bool
+
+mkHeytingAlgebraAdapter :
+  (d : C3S1.HeytingAlgebraDeclaration) →
+  HeytingAlgebraAdapter
+mkHeytingAlgebraAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledHeytingAlgebra : HeytingAlgebraAdapter → B.Bool
+isFilledHeytingAlgebra a = HeytingAlgebraAdapter.status a
+
+record FrameAdapter : Set₁ where
+  field
+    decl : C3S1.FrameDeclaration
+    expHeyting : C3S1.HeytingAlgebraDeclaration
+    linkHeyting : C3S1.FrameDeclaration.underlyingHeytingAlgebra decl ≡ expHeyting
+    status : B.Bool
+
+mkFrameAdapter :
+  (d : C3S1.FrameDeclaration) →
+  (h : C3S1.HeytingAlgebraDeclaration) →
+  (ph : C3S1.FrameDeclaration.underlyingHeytingAlgebra d ≡ h) →
+  FrameAdapter
+mkFrameAdapter d h ph =
+  record { decl = d ; expHeyting = h
+         ; linkHeyting = ph ; status = B.true }
+
+isFilledFrame : FrameAdapter → B.Bool
+isFilledFrame a = FrameAdapter.status a
+
+record LocaleAdapter : Set₁ where
+  field
+    decl : C3S1.LocaleDeclaration
+    expFrame : C3S1.FrameDeclaration
+    linkFrame : C3S1.LocaleDeclaration.associatedFrame decl ≡ expFrame
+    status : B.Bool
+
+mkLocaleAdapter :
+  (d : C3S1.LocaleDeclaration) →
+  (f : C3S1.FrameDeclaration) →
+  (pf : C3S1.LocaleDeclaration.associatedFrame d ≡ f) →
+  LocaleAdapter
+mkLocaleAdapter d f pf =
+  record { decl = d ; expFrame = f
+         ; linkFrame = pf ; status = B.true }
+
+isFilledLocale : LocaleAdapter → B.Bool
+isFilledLocale a = LocaleAdapter.status a
+
+record LocaleMorphismAdapter : Set₁ where
+  field
+    decl : C3S1.LocaleMorphismDeclaration
+    expSource : C3S1.LocaleDeclaration
+    expTarget : C3S1.LocaleDeclaration
+    linkSource : C3S1.LocaleMorphismDeclaration.sourceLocale decl ≡ expSource
+    linkTarget : C3S1.LocaleMorphismDeclaration.targetLocale decl ≡ expTarget
+    status : B.Bool
+
+mkLocaleMorphismAdapter :
+  (d : C3S1.LocaleMorphismDeclaration) →
+  (src tgt : C3S1.LocaleDeclaration) →
+  (psrc : C3S1.LocaleMorphismDeclaration.sourceLocale d ≡ src) →
+  (ptgt : C3S1.LocaleMorphismDeclaration.targetLocale d ≡ tgt) →
+  LocaleMorphismAdapter
+mkLocaleMorphismAdapter d src tgt psrc ptgt =
+  record { decl = d ; expSource = src ; expTarget = tgt
+         ; linkSource = psrc ; linkTarget = ptgt ; status = B.true }
+
+isFilledLocaleMorphism : LocaleMorphismAdapter → B.Bool
+isFilledLocaleMorphism a = LocaleMorphismAdapter.status a
+
+record NucleusAdapter : Set₁ where
+  field
+    decl : C3S1.NucleusDeclaration
+    expFrame : C3S1.FrameDeclaration
+    linkFrame : C3S1.NucleusDeclaration.frame decl ≡ expFrame
+    status : B.Bool
+
+mkNucleusAdapter :
+  (d : C3S1.NucleusDeclaration) →
+  (f : C3S1.FrameDeclaration) →
+  (pf : C3S1.NucleusDeclaration.frame d ≡ f) →
+  NucleusAdapter
+mkNucleusAdapter d f pf =
+  record { decl = d ; expFrame = f
+         ; linkFrame = pf ; status = B.true }
+
+isFilledNucleus : NucleusAdapter → B.Bool
+isFilledNucleus a = NucleusAdapter.status a
+
+record SublocaleAdapter : Set₁ where
+  field
+    decl : C3S1.SublocaleDeclaration
+    expSublocale : C3S1.LocaleDeclaration
+    expParent : C3S1.LocaleDeclaration
+    linkSublocale : C3S1.SublocaleDeclaration.sublocale decl ≡ expSublocale
+    linkParent : C3S1.SublocaleDeclaration.parentLocale decl ≡ expParent
+    status : B.Bool
+
+mkSublocaleAdapter :
+  (d : C3S1.SublocaleDeclaration) →
+  (sub : C3S1.LocaleDeclaration) →
+  (par : C3S1.LocaleDeclaration) →
+  (psub : C3S1.SublocaleDeclaration.sublocale d ≡ sub) →
+  (ppar : C3S1.SublocaleDeclaration.parentLocale d ≡ par) →
+  SublocaleAdapter
+mkSublocaleAdapter d sub par psub ppar =
+  record { decl = d ; expSublocale = sub ; expParent = par
+         ; linkSublocale = psub ; linkParent = ppar ; status = B.true }
+
+isFilledSublocale : SublocaleAdapter → B.Bool
+isFilledSublocale a = SublocaleAdapter.status a
+
+record OpenLocaleMorphismAdapter : Set₁ where
+  field
+    decl : C3S1.OpenLocaleMorphismDeclaration
+    expMorphism : C3S1.LocaleMorphismDeclaration
+    linkMorphism : C3S1.OpenLocaleMorphismDeclaration.localeMorphism decl ≡ expMorphism
+    status : B.Bool
+
+mkOpenLocaleMorphismAdapter :
+  (d : C3S1.OpenLocaleMorphismDeclaration) →
+  (m : C3S1.LocaleMorphismDeclaration) →
+  (pm : C3S1.OpenLocaleMorphismDeclaration.localeMorphism d ≡ m) →
+  OpenLocaleMorphismAdapter
+mkOpenLocaleMorphismAdapter d m pm =
+  record { decl = d ; expMorphism = m
+         ; linkMorphism = pm ; status = B.true }
+
+isFilledOpenLocaleMorphism : OpenLocaleMorphismAdapter → B.Bool
+isFilledOpenLocaleMorphism a = OpenLocaleMorphismAdapter.status a
+
+record SoberSpaceAdapter : Set₁ where
+  field
+    decl : C3S1.SoberSpaceDeclaration
+    status : B.Bool
+
+mkSoberSpaceAdapter :
+  (d : C3S1.SoberSpaceDeclaration) →
+  SoberSpaceAdapter
+mkSoberSpaceAdapter d =
+  record { decl = d ; status = B.true }
+
+isFilledSoberSpace : SoberSpaceAdapter → B.Bool
+isFilledSoberSpace a = SoberSpaceAdapter.status a
+
+record SpatialLocaleAdapter : Set₁ where
+  field
+    decl : C3S1.SpatialLocaleDeclaration
+    expLocale : C3S1.LocaleDeclaration
+    linkLocale : C3S1.SpatialLocaleDeclaration.locale decl ≡ expLocale
+    status : B.Bool
+
+mkSpatialLocaleAdapter :
+  (d : C3S1.SpatialLocaleDeclaration) →
+  (loc : C3S1.LocaleDeclaration) →
+  (ploc : C3S1.SpatialLocaleDeclaration.locale d ≡ loc) →
+  SpatialLocaleAdapter
+mkSpatialLocaleAdapter d loc ploc =
+  record { decl = d ; expLocale = loc
+         ; linkLocale = ploc ; status = B.true }
+
+isFilledSpatialLocale : SpatialLocaleAdapter → B.Bool
+isFilledSpatialLocale a = SpatialLocaleAdapter.status a
+
+-- ==========================================================
+-- Chapter 3, Level 3.2 (Sheaves & Toposes) - Additional
+-- ==========================================================
+
+record SheafOnLocaleAdapter : Set₁ where
+  field
+    decl : C3S2.SheafOnLocaleDeclaration
+    expPresheaf : C3S2.PresheafOnLocale
+    linkPresheaf : C3S2.SheafOnLocaleDeclaration.underlyingPresheaf decl ≡ expPresheaf
+    status : B.Bool
+
+mkSheafOnLocaleAdapter :
+  (d : C3S2.SheafOnLocaleDeclaration) →
+  (psh : C3S2.PresheafOnLocale) →
+  (ppsh : C3S2.SheafOnLocaleDeclaration.underlyingPresheaf d ≡ psh) →
+  SheafOnLocaleAdapter
+mkSheafOnLocaleAdapter d psh ppsh =
+  record { decl = d ; expPresheaf = psh
+         ; linkPresheaf = ppsh ; status = B.true }
+
+isFilledSheafOnLocale : SheafOnLocaleAdapter → B.Bool
+isFilledSheafOnLocale a = SheafOnLocaleAdapter.status a
+
+record GrothendieckToposAdapter : Set₁ where
+  field
+    decl : C3S2.GrothendieckToposDeclaration
+    expCategory : C1S3.CategoryDeclaration
+    linkCategory : C3S2.GrothendieckToposDeclaration.category decl ≡ expCategory
+    status : B.Bool
+
+mkGrothendieckToposAdapter :
+  (d : C3S2.GrothendieckToposDeclaration) →
+  (cat : C1S3.CategoryDeclaration) →
+  (pcat : C3S2.GrothendieckToposDeclaration.category d ≡ cat) →
+  GrothendieckToposAdapter
+mkGrothendieckToposAdapter d cat pcat =
+  record { decl = d ; expCategory = cat
+         ; linkCategory = pcat ; status = B.true }
+
+isFilledGrothendieckTopos : GrothendieckToposAdapter → B.Bool
+isFilledGrothendieckTopos a = GrothendieckToposAdapter.status a
+
+record OmegaSetAdapter : Set₁ where
+  field
+    decl : C3S2.OmegaSetDeclarationVerified
+    expData : C3S2.OmegaSetData
+    linkData : C3S2.OmegaSetDeclarationVerified.dataOmegaSet decl ≡ expData
+    status : B.Bool
+
+mkOmegaSetAdapter :
+  (d : C3S2.OmegaSetDeclarationVerified) →
+  (data' : C3S2.OmegaSetData) →
+  (pdata : C3S2.OmegaSetDeclarationVerified.dataOmegaSet d ≡ data') →
+  OmegaSetAdapter
+mkOmegaSetAdapter d data' pdata =
+  record { decl = d ; expData = data'
+         ; linkData = pdata ; status = B.true }
+
+isFilledOmegaSet : OmegaSetAdapter → B.Bool
+isFilledOmegaSet a = OmegaSetAdapter.status a
