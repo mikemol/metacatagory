@@ -2925,3 +2925,161 @@ mkGrothendieckGroupAdapter M d eu pu =
 
 isFilledGrothendieckGroup : GrothendieckGroupAdapter → B.Bool
 isFilledGrothendieckGroup a = GrothendieckGroupAdapter.status a
+
+-- Tensor product of abelian groups
+record TensorProductAbAdapter : Set₁ where
+  field
+    A : AF.AbelianGroupDeclaration
+    B : AF.AbelianGroupDeclaration
+    decl : AGA.TensorProductAb A B
+    expTensorProduct : AF.AbelianGroupDeclaration
+    linkTensorProduct : AGA.TensorProductAb.tensorProduct decl ≡ expTensorProduct
+    status : B.Bool
+
+mkTensorProductAbAdapter :
+  (A B : AF.AbelianGroupDeclaration) →
+  (d : AGA.TensorProductAb A B) →
+  (et : AF.AbelianGroupDeclaration) →
+  (pt : AGA.TensorProductAb.tensorProduct d ≡ et) →
+  TensorProductAbAdapter
+mkTensorProductAbAdapter A B d et pt =
+  record { A = A ; B = B ; decl = d ; expTensorProduct = et ; linkTensorProduct = pt ; status = B.true }
+
+isFilledTensorProductAb : TensorProductAbAdapter → B.Bool
+isFilledTensorProductAb a = TensorProductAbAdapter.status a
+
+-- Basis of vector space
+record BasisOfVectorSpaceAdapter : Set₁ where
+  field
+    F : AR.FieldDeclaration
+    V : AM.VectorSpace F
+    decl : AM.BasisOfVectorSpace F V
+    expBasisSet : M.Identifier
+    linkBasisSet : AM.BasisOfVectorSpace.basisSet decl ≡ expBasisSet
+    status : B.Bool
+
+mkBasisOfVectorSpaceAdapter :
+  (F : AR.FieldDeclaration) →
+  (V : AM.VectorSpace F) →
+  (d : AM.BasisOfVectorSpace F V) →
+  (eb : M.Identifier) →
+  (pb : AM.BasisOfVectorSpace.basisSet d ≡ eb) →
+  BasisOfVectorSpaceAdapter
+mkBasisOfVectorSpaceAdapter F V d eb pb =
+  record { F = F ; V = V ; decl = d ; expBasisSet = eb ; linkBasisSet = pb ; status = B.true }
+
+isFilledBasisOfVectorSpace : BasisOfVectorSpaceAdapter → B.Bool
+isFilledBasisOfVectorSpace a = BasisOfVectorSpaceAdapter.status a
+
+-- Dimension of vector space
+record DimensionAdapter : Set₁ where
+  field
+    F : AR.FieldDeclaration
+    V : AM.VectorSpace F
+    decl : AM.Dimension F V
+    expDimensionValue : M.Identifier
+    linkDimensionValue : AM.Dimension.dimensionValue decl ≡ expDimensionValue
+    status : B.Bool
+
+mkDimensionAdapter :
+  (F : AR.FieldDeclaration) →
+  (V : AM.VectorSpace F) →
+  (d : AM.Dimension F V) →
+  (edv : M.Identifier) →
+  (pdv : AM.Dimension.dimensionValue d ≡ edv) →
+  DimensionAdapter
+mkDimensionAdapter F V d edv pdv =
+  record { F = F ; V = V ; decl = d ; expDimensionValue = edv ; linkDimensionValue = pdv ; status = B.true }
+
+isFilledDimension : DimensionAdapter → B.Bool
+isFilledDimension a = DimensionAdapter.status a
+
+-- Multivariate polynomial ring
+record MultivariatePolynomialRingAdapter : Set₁ where
+  field
+    R : AR.CommutativeRingDeclaration
+    n : M.Identifier
+    decl : AR.MultivariatePolynomialRing R n
+    expRing : AR.CommutativeRingDeclaration
+    linkRing : AR.MultivariatePolynomialRing.polynomialRing decl ≡ expRing
+    status : B.Bool
+
+mkMultivariatePolynomialRingAdapter :
+  (R : AR.CommutativeRingDeclaration) →
+  (n : M.Identifier) →
+  (d : AR.MultivariatePolynomialRing R n) →
+  (er : AR.CommutativeRingDeclaration) →
+  (pr : AR.MultivariatePolynomialRing.polynomialRing d ≡ er) →
+  MultivariatePolynomialRingAdapter
+mkMultivariatePolynomialRingAdapter R n d er pr =
+  record { R = R ; n = n ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+
+isFilledMultivariatePolynomialRing : MultivariatePolynomialRingAdapter → B.Bool
+isFilledMultivariatePolynomialRing a = MultivariatePolynomialRingAdapter.status a
+
+-- Content of polynomial
+record ContentOfPolynomialAdapter : Set₁ where
+  field
+    R : AR.UFD
+    f : M.Identifier
+    decl : AR.ContentOfPolynomial R f
+    expContent : M.Identifier
+    linkContent : AR.ContentOfPolynomial.content decl ≡ expContent
+    status : B.Bool
+
+mkContentOfPolynomialAdapter :
+  (R : AR.UFD) →
+  (f : M.Identifier) →
+  (d : AR.ContentOfPolynomial R f) →
+  (ec : M.Identifier) →
+  (pc : AR.ContentOfPolynomial.content d ≡ ec) →
+  ContentOfPolynomialAdapter
+mkContentOfPolynomialAdapter R f d ec pc =
+  record { R = R ; f = f ; decl = d ; expContent = ec ; linkContent = pc ; status = B.true }
+
+isFilledContentOfPolynomial : ContentOfPolynomialAdapter → B.Bool
+isFilledContentOfPolynomial a = ContentOfPolynomialAdapter.status a
+
+-- Primitive polynomial
+record PrimitivePolynomialAdapter : Set₁ where
+  field
+    R : AR.UFD
+    f : M.Identifier
+    decl : AR.PrimitivePolynomial R f
+    expUFD : AR.UFD
+    linkUFD : AR.PrimitivePolynomial.domain decl ≡ expUFD
+    status : B.Bool
+
+mkPrimitivePolynomialAdapter :
+  (R : AR.UFD) →
+  (f : M.Identifier) →
+  (d : AR.PrimitivePolynomial R f) →
+  (eu : AR.UFD) →
+  (pu : AR.PrimitivePolynomial.domain d ≡ eu) →
+  PrimitivePolynomialAdapter
+mkPrimitivePolynomialAdapter R f d eu pu =
+  record { R = R ; f = f ; decl = d ; expUFD = eu ; linkUFD = pu ; status = B.true }
+
+isFilledPrimitivePolynomial : PrimitivePolynomialAdapter → B.Bool
+isFilledPrimitivePolynomial a = PrimitivePolynomialAdapter.status a
+
+-- Prime spectrum
+record PrimeSpectrumAdapter : Set₁ where
+  field
+    R : AR.CommutativeRingDeclaration
+    decl : AR.PrimeSpectrum R
+    expTopologicalSpace : M.Identifier
+    linkTopologicalSpace : AR.PrimeSpectrum.topologicalSpace decl ≡ expTopologicalSpace
+    status : B.Bool
+
+mkPrimeSpectrumAdapter :
+  (R : AR.CommutativeRingDeclaration) →
+  (d : AR.PrimeSpectrum R) →
+  (ets : M.Identifier) →
+  (pts : AR.PrimeSpectrum.topologicalSpace d ≡ ets) →
+  PrimeSpectrumAdapter
+mkPrimeSpectrumAdapter R d ets pts =
+  record { R = R ; decl = d ; expTopologicalSpace = ets ; linkTopologicalSpace = pts ; status = B.true }
+
+isFilledPrimeSpectrum : PrimeSpectrumAdapter → B.Bool
+isFilledPrimeSpectrum a = PrimeSpectrumAdapter.status a
