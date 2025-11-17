@@ -65,6 +65,7 @@ import Tests.ChapterObligationsSmoke
 import Tests.Chapter1Checklist
 import Tests.Chapter2Checklist
 import Tests.Chapter3Checklist
+import Tests.AlgebraChecklist
 
 -- Proof obligation status checks (ensures selected obligations are filled
 -- and linked to constructive witnesses in examples)

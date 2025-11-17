@@ -24,6 +24,10 @@ import Chapter2.Level2sub8 as C2S8
 import Chapter3.Level3sub1 as C3S1
 import Chapter3.Level3sub2 as C3S2
 
+-- Algebra imports
+import Algebra.Foundation as AF
+import Algebra.Rings.Basic as AR
+
 -- Common status predicate wrapper
 record ObligationStatus : Set₁ where
   field
@@ -1115,3 +1119,190 @@ mkOmegaSetAdapter d data' pdata =
 
 isFilledOmegaSet : OmegaSetAdapter → B.Bool
 isFilledOmegaSet a = OmegaSetAdapter.status a
+
+------------------------------------------------------------------------
+-- Algebra Adapters
+------------------------------------------------------------------------
+
+-- Magma
+record MagmaAdapter : Set₁ where
+  field
+    decl : AF.MagmaDeclaration
+    status : B.Bool
+
+mkMagmaAdapter : AF.MagmaDeclaration → MagmaAdapter
+mkMagmaAdapter d = record { decl = d ; status = B.true }
+
+isFilledMagma : MagmaAdapter → B.Bool
+isFilledMagma a = MagmaAdapter.status a
+
+-- Semigroup
+record SemigroupAdapter : Set₁ where
+  field
+    decl : AF.SemigroupDeclaration
+    expMagma : AF.MagmaDeclaration
+    linkMagma : AF.SemigroupDeclaration.underlyingMagma decl ≡ expMagma
+    status : B.Bool
+
+mkSemigroupAdapter :
+  (d : AF.SemigroupDeclaration) →
+  (m : AF.MagmaDeclaration) →
+  (pm : AF.SemigroupDeclaration.underlyingMagma d ≡ m) →
+  SemigroupAdapter
+mkSemigroupAdapter d m pm =
+  record { decl = d ; expMagma = m ; linkMagma = pm ; status = B.true }
+
+isFilledSemigroup : SemigroupAdapter → B.Bool
+isFilledSemigroup a = SemigroupAdapter.status a
+
+-- Monoid
+record MonoidAdapter : Set₁ where
+  field
+    decl : AF.MonoidDeclaration
+    expSemigroup : AF.SemigroupDeclaration
+    linkSemigroup : AF.MonoidDeclaration.underlyingSemigroup decl ≡ expSemigroup
+    status : B.Bool
+
+mkMonoidAdapter :
+  (d : AF.MonoidDeclaration) →
+  (s : AF.SemigroupDeclaration) →
+  (ps : AF.MonoidDeclaration.underlyingSemigroup d ≡ s) →
+  MonoidAdapter
+mkMonoidAdapter d s ps =
+  record { decl = d ; expSemigroup = s ; linkSemigroup = ps ; status = B.true }
+
+isFilledMonoid : MonoidAdapter → B.Bool
+isFilledMonoid a = MonoidAdapter.status a
+
+-- Group
+record GroupAdapter : Set₁ where
+  field
+    decl : AF.GroupDeclaration
+    expMonoid : AF.MonoidDeclaration
+    linkMonoid : AF.GroupDeclaration.underlyingMonoid decl ≡ expMonoid
+    status : B.Bool
+
+mkGroupAdapter :
+  (d : AF.GroupDeclaration) →
+  (m : AF.MonoidDeclaration) →
+  (pm : AF.GroupDeclaration.underlyingMonoid d ≡ m) →
+  GroupAdapter
+mkGroupAdapter d m pm =
+  record { decl = d ; expMonoid = m ; linkMonoid = pm ; status = B.true }
+
+isFilledGroup : GroupAdapter → B.Bool
+isFilledGroup a = GroupAdapter.status a
+
+-- AbelianGroup
+record AbelianGroupAdapter : Set₁ where
+  field
+    decl : AF.AbelianGroupDeclaration
+    expGroup : AF.GroupDeclaration
+    linkGroup : AF.AbelianGroupDeclaration.underlyingGroup decl ≡ expGroup
+    status : B.Bool
+
+mkAbelianGroupAdapter :
+  (d : AF.AbelianGroupDeclaration) →
+  (g : AF.GroupDeclaration) →
+  (pg : AF.AbelianGroupDeclaration.underlyingGroup d ≡ g) →
+  AbelianGroupAdapter
+mkAbelianGroupAdapter d g pg =
+  record { decl = d ; expGroup = g ; linkGroup = pg ; status = B.true }
+
+isFilledAbelianGroup : AbelianGroupAdapter → B.Bool
+isFilledAbelianGroup a = AbelianGroupAdapter.status a
+
+-- Ring
+record RingAdapter : Set₁ where
+  field
+    decl : AR.RingDeclaration
+    expAdditiveGroup : AF.AbelianGroupDeclaration
+    linkAdditiveGroup : AR.RingDeclaration.additiveGroup decl ≡ expAdditiveGroup
+    status : B.Bool
+
+mkRingAdapter :
+  (d : AR.RingDeclaration) →
+  (ag : AF.AbelianGroupDeclaration) →
+  (pag : AR.RingDeclaration.additiveGroup d ≡ ag) →
+  RingAdapter
+mkRingAdapter d ag pag =
+  record { decl = d ; expAdditiveGroup = ag ; linkAdditiveGroup = pag ; status = B.true }
+
+isFilledRing : RingAdapter → B.Bool
+isFilledRing a = RingAdapter.status a
+
+-- UnitalRing
+record UnitalRingAdapter : Set₁ where
+  field
+    decl : AR.UnitalRingDeclaration
+    expRing : AR.RingDeclaration
+    linkRing : AR.UnitalRingDeclaration.underlyingRing decl ≡ expRing
+    status : B.Bool
+
+mkUnitalRingAdapter :
+  (d : AR.UnitalRingDeclaration) →
+  (r : AR.RingDeclaration) →
+  (pr : AR.UnitalRingDeclaration.underlyingRing d ≡ r) →
+  UnitalRingAdapter
+mkUnitalRingAdapter d r pr =
+  record { decl = d ; expRing = r ; linkRing = pr ; status = B.true }
+
+isFilledUnitalRing : UnitalRingAdapter → B.Bool
+isFilledUnitalRing a = UnitalRingAdapter.status a
+
+-- CommutativeRing
+record CommutativeRingAdapter : Set₁ where
+  field
+    decl : AR.CommutativeRingDeclaration
+    expUnitalRing : AR.UnitalRingDeclaration
+    linkUnitalRing : AR.CommutativeRingDeclaration.underlyingRing decl ≡ expUnitalRing
+    status : B.Bool
+
+mkCommutativeRingAdapter :
+  (d : AR.CommutativeRingDeclaration) →
+  (ur : AR.UnitalRingDeclaration) →
+  (pur : AR.CommutativeRingDeclaration.underlyingRing d ≡ ur) →
+  CommutativeRingAdapter
+mkCommutativeRingAdapter d ur pur =
+  record { decl = d ; expUnitalRing = ur ; linkUnitalRing = pur ; status = B.true }
+
+isFilledCommutativeRing : CommutativeRingAdapter → B.Bool
+isFilledCommutativeRing a = CommutativeRingAdapter.status a
+
+-- DivisionRing
+record DivisionRingAdapter : Set₁ where
+  field
+    decl : AR.DivisionRingDeclaration
+    expUnitalRing : AR.UnitalRingDeclaration
+    linkUnitalRing : AR.DivisionRingDeclaration.underlyingRing decl ≡ expUnitalRing
+    status : B.Bool
+
+mkDivisionRingAdapter :
+  (d : AR.DivisionRingDeclaration) →
+  (ur : AR.UnitalRingDeclaration) →
+  (pur : AR.DivisionRingDeclaration.underlyingRing d ≡ ur) →
+  DivisionRingAdapter
+mkDivisionRingAdapter d ur pur =
+  record { decl = d ; expUnitalRing = ur ; linkUnitalRing = pur ; status = B.true }
+
+isFilledDivisionRing : DivisionRingAdapter → B.Bool
+isFilledDivisionRing a = DivisionRingAdapter.status a
+
+-- Field
+record FieldAdapter : Set₁ where
+  field
+    decl : AR.FieldDeclaration
+    expCommutativeRing : AR.CommutativeRingDeclaration
+    linkCommutativeRing : AR.FieldDeclaration.underlyingRing decl ≡ expCommutativeRing
+    status : B.Bool
+
+mkFieldAdapter :
+  (d : AR.FieldDeclaration) →
+  (cr : AR.CommutativeRingDeclaration) →
+  (pcr : AR.FieldDeclaration.underlyingRing d ≡ cr) →
+  FieldAdapter
+mkFieldAdapter d cr pcr =
+  record { decl = d ; expCommutativeRing = cr ; linkCommutativeRing = pcr ; status = B.true }
+
+isFilledField : FieldAdapter → B.Bool
+isFilledField a = FieldAdapter.status a
