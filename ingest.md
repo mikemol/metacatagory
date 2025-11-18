@@ -1,5 +1,6 @@
-  
-**Table of Contents**
+# Ingest Outline
+
+## Table of Contents
 
 * Preface (ix)  
 * Acknowledgments (ix)  
@@ -61,6 +62,7 @@
 **Chapter V: Fields and Galois Theory** (230)
 
 1. Field Extensions (231)  
+
 * Appendix: Ruler and Compass Constructions (230)  
   1. The Fundamental Theorem (238)  
 * Appendix: Symmetric Rational Functions (238)  
@@ -83,6 +85,7 @@
 
 1. Matrices and Maps (328)  
    2. Rank and Equivalence (335)  
+
 * Appendix: Abelian Groups Defined by Generators and Relations (343)  
   1. Determinants (348)  
   2. Decomposition of a Single Linear Transformation and Similarity (355)  
@@ -113,7 +116,7 @@
    2. Adjoint Functors (476)  
    3. Morphisms (480)
 
-**Back Matter**
+## Back Matter
 
 * List of Symbols (485)  
 * Bibliography (489)  

@@ -7,6 +7,7 @@ open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.Equality using (_≡_; refl)
 import Agda.Builtin.Bool as B
 open import Metamodel as M
+open import Core.CategoricalAdapter
 import Tests.ObligationAdapters as A
 import Algebra.Rings.Basic as AR
 import Algebra.Fields.Advanced as AFA
@@ -83,6 +84,12 @@ inseparable-adapter = A.mkInseparableExtensionAdapter F E inseparable (AFA.Insep
 inseparable-status : A.isFilledInseparableExtension inseparable-adapter ≡ B.true
 inseparable-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.inseparableExtensionCategorical inseparable-adapter) tt) ≡ A.InseparableExtensionAdapter.decl inseparable-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.inseparableExtensionCategorical inseparable-adapter) ≡ refl
+_ = refl
+
 purely : AFA.PurelyInseparableExtension F E
 purely = record { baseField = F ; extensionField = E ; isPurelyInseparable = M.mkId "purely" }
 
@@ -92,9 +99,13 @@ purely-adapter = A.mkPurelyInseparableExtensionAdapter F E purely (AFA.PurelyIns
 purely-status : A.isFilledPurelyInseparableExtension purely-adapter ≡ B.true
 purely-status = refl
 
-------------------------------------------------------------------------
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.purelyInseparableExtensionCategorical purely-adapter) tt) ≡ A.PurelyInseparableExtensionAdapter.decl purely-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.purelyInseparableExtensionCategorical purely-adapter) ≡ refl
+_ = refl
+
 -- Perfect and algebraically closed fields
-------------------------------------------------------------------------
 
 perfect : AFA.PerfectField F
 perfect = record { baseField = F ; isPerfect = M.mkId "perfect" }
@@ -105,6 +116,12 @@ perfect-adapter = A.mkPerfectFieldAdapter F perfect (AFA.PerfectField.baseField 
 perfect-status : A.isFilledPerfectField perfect-adapter ≡ B.true
 perfect-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.perfectFieldCategorical perfect-adapter) tt) ≡ A.PerfectFieldAdapter.decl perfect-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.perfectFieldCategorical perfect-adapter) ≡ refl
+_ = refl
+
 algClosed : AFA.AlgebraicallyClosedField F
 algClosed = record { baseField = F ; isAlgebraicallyClosed = M.mkId "aclosed" }
 
@@ -114,9 +131,13 @@ algClosed-adapter = A.mkAlgebraicallyClosedFieldAdapter F algClosed (AFA.Algebra
 algClosed-status : A.isFilledAlgebraicallyClosedField algClosed-adapter ≡ B.true
 algClosed-status = refl
 
-------------------------------------------------------------------------
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.algebraicallyClosedFieldCategorical algClosed-adapter) tt) ≡ A.AlgebraicallyClosedFieldAdapter.decl algClosed-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.algebraicallyClosedFieldCategorical algClosed-adapter) ≡ refl
+_ = refl
+
 -- Closures and Frobenius
-------------------------------------------------------------------------
 
 normalClosure : AFA.NormalClosure F E
 normalClosure = record { baseField = F ; extensionField = E ; normalClosure = E ; isNormalClosure = M.mkId "normal" }
@@ -127,6 +148,12 @@ normalClosure-adapter = A.mkNormalClosureAdapter F E normalClosure (AFA.NormalCl
 normalClosure-status : A.isFilledNormalClosure normalClosure-adapter ≡ B.true
 normalClosure-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.normalClosureCategorical normalClosure-adapter) tt) ≡ A.NormalClosureAdapter.decl normalClosure-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.normalClosureCategorical normalClosure-adapter) ≡ refl
+_ = refl
+
 galoisClosure : AFA.GaloisClosure F E
 galoisClosure = record { baseField = F ; extensionField = E ; galoisClosure = E ; isGaloisClosure = M.mkId "galois" }
 
@@ -135,6 +162,12 @@ galoisClosure-adapter = A.mkGaloisClosureAdapter F E galoisClosure (AFA.GaloisCl
 
 galoisClosure-status : A.isFilledGaloisClosure galoisClosure-adapter ≡ B.true
 galoisClosure-status = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.galoisClosureCategorical galoisClosure-adapter) tt) ≡ A.GaloisClosureAdapter.decl galoisClosure-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.galoisClosureCategorical galoisClosure-adapter) ≡ refl
+_ = refl
 
 frobenius : AFA.FrobeniusEndomorphism F
 frobenius = record { baseField = F ; frobeniusMap = M.mkId "φ" ; isFrobenius = M.mkId "frobenius" }
@@ -145,9 +178,13 @@ frobenius-adapter = A.mkFrobeniusEndomorphismAdapter F frobenius (AFA.FrobeniusE
 frobenius-status : A.isFilledFrobeniusEndomorphism frobenius-adapter ≡ B.true
 frobenius-status = refl
 
-------------------------------------------------------------------------
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.frobeniusEndomorphismCategorical frobenius-adapter) tt) ≡ A.FrobeniusEndomorphismAdapter.decl frobenius-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.frobeniusEndomorphismCategorical frobenius-adapter) ≡ refl
+_ = refl
+
 -- Function fields
-------------------------------------------------------------------------
 
 ratFF : AFA.RationalFunctionField K
 ratFF = record { baseField = K ; functionField = K ; isRationalFunctionField = M.mkId "ratff" }
@@ -158,6 +195,12 @@ ratFF-adapter = A.mkRationalFunctionFieldAdapter K ratFF (AFA.RationalFunctionFi
 ratFF-status : A.isFilledRationalFunctionField ratFF-adapter ≡ B.true
 ratFF-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.rationalFunctionFieldCategorical ratFF-adapter) tt) ≡ A.RationalFunctionFieldAdapter.decl ratFF-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.rationalFunctionFieldCategorical ratFF-adapter) ≡ refl
+_ = refl
+
 algFF : AFA.AlgebraicFunctionField K
 algFF = record { baseField = K ; functionField = K ; isAlgebraicFunctionField = M.mkId "algff" }
 
@@ -166,3 +209,9 @@ algFF-adapter = A.mkAlgebraicFunctionFieldAdapter K algFF (AFA.AlgebraicFunction
 
 algFF-status : A.isFilledAlgebraicFunctionField algFF-adapter ≡ B.true
 algFF-status = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.algebraicFunctionFieldCategorical algFF-adapter) tt) ≡ A.AlgebraicFunctionFieldAdapter.decl algFF-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.algebraicFunctionFieldCategorical algFF-adapter) ≡ refl
+_ = refl

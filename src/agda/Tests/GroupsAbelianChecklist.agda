@@ -5,6 +5,7 @@ module Tests.GroupsAbelianChecklist where
 import Agda.Builtin.Bool as B
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Metamodel as M
+open import Core.CategoricalAdapter
 
 -- Imports
 import Chapter1.Level1 as C1L
@@ -69,6 +70,12 @@ freeAbelianGroupAdapt = A.mkFreeAbelianGroupAdapter X freeAbelianGroupDecl (M.mk
 freeAbelianGroupStatus : A.isFilledFreeAbelianGroup freeAbelianGroupAdapt ≡ B.true
 freeAbelianGroupStatus = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.freeAbelianGroupCategorical freeAbelianGroupAdapt) tt) ≡ A.FreeAbelianGroupAdapter.decl freeAbelianGroupAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.freeAbelianGroupCategorical freeAbelianGroupAdapt) ≡ refl
+_ = refl
+
 -- Free-Forgetful adjunction Ab
 freeForgetfulAdjAbDecl : AGA.FreeForgetfulAdjunctionAb
 freeForgetfulAdjAbDecl = record
@@ -84,6 +91,12 @@ freeForgetfulAdjAbAdapt = A.mkFreeForgetfulAdjunctionAbAdapter freeForgetfulAdjA
 
 freeForgetfulAdjAbStatus : A.isFilledFreeForgetfulAdjunctionAb freeForgetfulAdjAbAdapt ≡ B.true
 freeForgetfulAdjAbStatus = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.freeForgetfulAdjunctionAbCategorical freeForgetfulAdjAbAdapt) tt) ≡ A.FreeForgetfulAdjunctionAbAdapter.decl freeForgetfulAdjAbAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.freeForgetfulAdjunctionAbCategorical freeForgetfulAdjAbAdapt) ≡ refl
+_ = refl
 
 -- Grothendieck group
 grothendieckGroupDecl : AGA.GrothendieckGroup monoidDecl
@@ -102,3 +115,9 @@ grothendieckGroupAdapt = A.mkGrothendieckGroupAdapter monoidDecl grothendieckGro
 
 grothendieckGroupStatus : A.isFilledGrothendieckGroup grothendieckGroupAdapt ≡ B.true
 grothendieckGroupStatus = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.grothendieckGroupCategorical grothendieckGroupAdapt) tt) ≡ A.GrothendieckGroupAdapter.decl grothendieckGroupAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.grothendieckGroupCategorical grothendieckGroupAdapt) ≡ refl
+_ = refl

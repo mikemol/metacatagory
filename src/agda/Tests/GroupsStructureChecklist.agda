@@ -5,6 +5,7 @@ module Tests.GroupsStructureChecklist where
 import Agda.Builtin.Bool as B
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Metamodel as M
+open import Core.CategoricalAdapter
 
 -- Imports
 import Chapter1.Level1 as C1L
@@ -96,6 +97,12 @@ invFactAdapt = A.mkInvariantFactorDecompositionAdapter fgAbelianGroupDecl invFac
 invFactStatus : A.isFilledInvariantFactorDecomposition invFactAdapt ≡ B.true
 invFactStatus = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.invariantFactorDecompositionCategorical invFactAdapt) tt) ≡ A.InvariantFactorDecompositionAdapter.decl invFactAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.invariantFactorDecompositionCategorical invFactAdapt) ≡ refl
+_ = refl
+
 -- Torsion subgroup
 torsionDecl : AGS.TorsionSubgroup abelianGroupDecl
 torsionDecl = record
@@ -116,12 +123,24 @@ torsionAdapt = A.mkTorsionSubgroupAdapter abelianGroupDecl torsionDecl abelianGr
 torsionStatus : A.isFilledTorsionSubgroup torsionAdapt ≡ B.true
 torsionStatus = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.torsionSubgroupCategorical torsionAdapt) tt) ≡ A.TorsionSubgroupAdapter.decl torsionAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.torsionSubgroupCategorical torsionAdapt) ≡ refl
+_ = refl
+
 -- Group action
 groupActionAdapt : A.GroupActionAdapter
 groupActionAdapt = A.mkGroupActionAdapter G X groupActionDecl G refl
 
 groupActionStatus : A.isFilledGroupAction groupActionAdapt ≡ B.true
 groupActionStatus = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.groupActionCategorical groupActionAdapt) tt) ≡ A.GroupActionAdapter.decl groupActionAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.groupActionCategorical groupActionAdapt) ≡ refl
+_ = refl
 
 -- Orbit
 orbitDecl : AGS.Orbit G X groupActionDecl x
@@ -136,6 +155,12 @@ orbitAdapt = A.mkOrbitAdapter G X groupActionDecl x orbitDecl groupActionDecl re
 
 orbitStatus : A.isFilledOrbit orbitAdapt ≡ B.true
 orbitStatus = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.orbitCategorical orbitAdapt) tt) ≡ A.OrbitAdapter.decl orbitAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.orbitCategorical orbitAdapt) ≡ refl
+_ = refl
 
 -- Stabilizer
 stabilizerDecl : AGS.Stabilizer G X groupActionDecl x
@@ -157,6 +182,12 @@ stabilizerAdapt = A.mkStabilizerAdapter G X groupActionDecl x stabilizerDecl gro
 stabilizerStatus : A.isFilledStabilizer stabilizerAdapt ≡ B.true
 stabilizerStatus = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.stabilizerCategorical stabilizerAdapt) tt) ≡ A.StabilizerAdapter.decl stabilizerAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.stabilizerCategorical stabilizerAdapt) ≡ refl
+_ = refl
+
 -- P-group
 pGroupDecl : AGS.PGroup p G
 pGroupDecl = record
@@ -170,6 +201,12 @@ pGroupAdapt = A.mkPGroupAdapter p G pGroupDecl p refl
 
 pGroupStatus : A.isFilledPGroup pGroupAdapt ≡ B.true
 pGroupStatus = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.pGroupCategorical pGroupAdapt) tt) ≡ A.PGroupAdapter.decl pGroupAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.pGroupCategorical pGroupAdapt) ≡ refl
+_ = refl
 
 -- Sylow p-subgroup
 sylowDecl : AGS.SylowPSubgroup p G
@@ -194,6 +231,12 @@ sylowAdapt = A.mkSylowPSubgroupAdapter p G sylowDecl p refl
 sylowStatus : A.isFilledSylowPSubgroup sylowAdapt ≡ B.true
 sylowStatus = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.sylowPSubgroupCategorical sylowAdapt) tt) ≡ A.SylowPSubgroupAdapter.decl sylowAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.sylowPSubgroupCategorical sylowAdapt) ≡ refl
+_ = refl
+
 -- Simple group
 simpleGroupDecl : AGS.SimpleGroup G
 simpleGroupDecl = record
@@ -206,6 +249,12 @@ simpleGroupAdapt = A.mkSimpleGroupAdapter G simpleGroupDecl G refl
 
 simpleGroupStatus : A.isFilledSimpleGroup simpleGroupAdapt ≡ B.true
 simpleGroupStatus = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.simpleGroupCategorical simpleGroupAdapt) tt) ≡ A.SimpleGroupAdapter.decl simpleGroupAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.simpleGroupCategorical simpleGroupAdapt) ≡ refl
+_ = refl
 
 -- Composition series
 compositionSeriesDecl : AGS.CompositionSeries G
@@ -220,6 +269,12 @@ compositionSeriesAdapt = A.mkCompositionSeriesAdapter G compositionSeriesDecl G 
 
 compositionSeriesStatus : A.isFilledCompositionSeries compositionSeriesAdapt ≡ B.true
 compositionSeriesStatus = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.compositionSeriesCategorical compositionSeriesAdapt) tt) ≡ A.CompositionSeriesAdapter.decl compositionSeriesAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.compositionSeriesCategorical compositionSeriesAdapt) ≡ refl
+_ = refl
 
 -- Solvable group
 solvableGroupDecl : AGS.SolvableGroup G
@@ -238,6 +293,12 @@ solvableGroupAdapt = A.mkSolvableGroupAdapter G solvableGroupDecl G refl
 solvableGroupStatus : A.isFilledSolvableGroup solvableGroupAdapt ≡ B.true
 solvableGroupStatus = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.solvableGroupCategorical solvableGroupAdapt) tt) ≡ A.SolvableGroupAdapter.decl solvableGroupAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.solvableGroupCategorical solvableGroupAdapt) ≡ refl
+_ = refl
+
 -- Nilpotent group
 nilpotentGroupDecl : AGS.NilpotentGroup G
 nilpotentGroupDecl = record
@@ -254,3 +315,9 @@ nilpotentGroupAdapt = A.mkNilpotentGroupAdapter G nilpotentGroupDecl G refl
 
 nilpotentGroupStatus : A.isFilledNilpotentGroup nilpotentGroupAdapt ≡ B.true
 nilpotentGroupStatus = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.nilpotentGroupCategorical nilpotentGroupAdapt) tt) ≡ A.NilpotentGroupAdapter.decl nilpotentGroupAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.nilpotentGroupCategorical nilpotentGroupAdapt) ≡ refl
+_ = refl

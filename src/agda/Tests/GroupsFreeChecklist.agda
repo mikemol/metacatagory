@@ -5,6 +5,7 @@ module Tests.GroupsFreeChecklist where
 import Agda.Builtin.Bool as B
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Metamodel as M
+open import Core.CategoricalAdapter
 
 -- Imports
 import Chapter1.Level1 as C1L
@@ -78,6 +79,12 @@ productInGrpAdapt = A.mkProductInGrpAdapter G H productInGrpDecl G refl
 productInGrpStatus : A.isFilledProductInGrp productInGrpAdapt ≡ B.true
 productInGrpStatus = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.productInGrpCategorical productInGrpAdapt) tt) ≡ A.ProductInGrpAdapter.decl productInGrpAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.productInGrpCategorical productInGrpAdapt) ≡ refl
+_ = refl
+
 -- Coproduct in Grp
 coproductInGrpDecl : AGF.CoproductInGrp G H
 coproductInGrpDecl = record
@@ -95,6 +102,12 @@ coproductInGrpAdapt = A.mkCoproductInGrpAdapter G H coproductInGrpDecl G refl
 coproductInGrpStatus : A.isFilledCoproductInGrp coproductInGrpAdapt ≡ B.true
 coproductInGrpStatus = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.coproductInGrpCategorical coproductInGrpAdapt) tt) ≡ A.CoproductInGrpAdapter.decl coproductInGrpAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.coproductInGrpCategorical coproductInGrpAdapt) ≡ refl
+_ = refl
+
 -- Free group object
 freeGroupObjectDecl : AGF.FreeGroupObject X
 freeGroupObjectDecl = record
@@ -108,6 +121,12 @@ freeGroupObjectAdapt = A.mkFreeGroupObjectAdapter X freeGroupObjectDecl X refl
 
 freeGroupObjectStatus : A.isFilledFreeGroupObject freeGroupObjectAdapt ≡ B.true
 freeGroupObjectStatus = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.freeGroupObjectCategorical freeGroupObjectAdapt) tt) ≡ A.FreeGroupObjectAdapter.decl freeGroupObjectAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.freeGroupObjectCategorical freeGroupObjectAdapt) ≡ refl
+_ = refl
 
 -- Free group
 freeGroupDecl : AGF.FreeGroup X
@@ -125,6 +144,12 @@ freeGroupAdapt = A.mkFreeGroupAdapter X freeGroupDecl X refl
 freeGroupStatus : A.isFilledFreeGroup freeGroupAdapt ≡ B.true
 freeGroupStatus = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.freeGroupCategorical freeGroupAdapt) tt) ≡ A.FreeGroupAdapter.decl freeGroupAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.freeGroupCategorical freeGroupAdapt) ≡ refl
+_ = refl
+
 -- Group presentation
 groupPresentationDecl : AGF.GroupPresentation
 groupPresentationDecl = record
@@ -138,6 +163,12 @@ groupPresentationAdapt = A.mkGroupPresentationAdapter groupPresentationDecl X re
 
 groupPresentationStatus : A.isFilledGroupPresentation groupPresentationAdapt ≡ B.true
 groupPresentationStatus = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.groupPresentationCategorical groupPresentationAdapt) tt) ≡ A.GroupPresentationAdapter.decl groupPresentationAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.groupPresentationCategorical groupPresentationAdapt) ≡ refl
+_ = refl
 
 -- Abelianization
 abelianizationDecl : AGF.Abelianization G
@@ -153,6 +184,12 @@ abelianizationAdapt = A.mkAbelianizationAdapter G abelianizationDecl G refl
 
 abelianizationStatus : A.isFilledAbelianization abelianizationAdapt ≡ B.true
 abelianizationStatus = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.abelianizationCategorical abelianizationAdapt) tt) ≡ A.AbelianizationAdapter.decl abelianizationAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.abelianizationCategorical abelianizationAdapt) ≡ refl
+_ = refl
 
 -- Finitely generated abelian group
 fgAbelianGroupDecl : AGF.FinitelyGeneratedAbelianGroup

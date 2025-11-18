@@ -7,6 +7,7 @@ open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.Equality using (_≡_; refl)
 import Agda.Builtin.Bool as B
 open import Metamodel as M
+open import Core.CategoricalAdapter
 import Tests.ObligationAdapters as A
 
 -- Algebra imports
@@ -90,6 +91,12 @@ leftModule-adapter = A.mkLeftModuleAdapter ringDecl Mmod (AM.LeftModule.ring Mmo
 leftModule-status : A.isFilledLeftModule leftModule-adapter ≡ B.true
 leftModule-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.leftModuleCategorical leftModule-adapter) tt) ≡ A.LeftModuleAdapter.decl leftModule-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.leftModuleCategorical leftModule-adapter) ≡ refl
+_ = refl
+
 hom : AM.ModuleHomomorphism ringDecl Mmod Nmod
 hom = record
   { ring = ringDecl
@@ -105,6 +112,12 @@ hom-adapter = A.mkModuleHomomorphismAdapter ringDecl Mmod Nmod hom (AM.ModuleHom
 
 hom-status : A.isFilledModuleHom hom-adapter ≡ B.true
 hom-status = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.moduleHomomorphismCategorical hom-adapter) tt) ≡ A.ModuleHomomorphismAdapter.decl hom-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.moduleHomomorphismCategorical hom-adapter) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Submodule, quotient, kernel, image, cokernel
@@ -136,6 +149,12 @@ submodule-adapter = A.mkSubmoduleAdapter ringDecl Mmod subM (AM.Submodule.ring s
 submodule-status : A.isFilledSubmodule submodule-adapter ≡ B.true
 submodule-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.submoduleCategorical submodule-adapter) tt) ≡ A.SubmoduleAdapter.decl submodule-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.submoduleCategorical submodule-adapter) ≡ refl
+_ = refl
+
 quotM : AM.QuotientModule ringDecl Mmod subM
 quotM = record
   { ring = ringDecl
@@ -150,6 +169,12 @@ quotient-adapter = A.mkQuotientModuleAdapter ringDecl Mmod subM quotM (AM.Quotie
 
 quotient-status : A.isFilledQuotientModule quotient-adapter ≡ B.true
 quotient-status = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.quotientModuleCategorical quotient-adapter) tt) ≡ A.QuotientModuleAdapter.decl quotient-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.quotientModuleCategorical quotient-adapter) ≡ refl
+_ = refl
 
 ker : AM.KernelOfModuleHomomorphism ringDecl (AM.ModuleHomomorphism.morphism hom)
 ker = record
@@ -166,6 +191,12 @@ kernel-adapter = A.mkKernelOfModuleHomomorphismAdapter ringDecl (AM.ModuleHomomo
 kernel-status : A.isFilledKernelModuleHom kernel-adapter ≡ B.true
 kernel-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.kernelOfModuleHomomorphismCategorical kernel-adapter) tt) ≡ A.KernelOfModuleHomomorphismAdapter.decl kernel-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.kernelOfModuleHomomorphismCategorical kernel-adapter) ≡ refl
+_ = refl
+
 img : AM.ImageOfModuleHomomorphism ringDecl (AM.ModuleHomomorphism.morphism hom)
 img = record
   { ring = ringDecl
@@ -181,6 +212,12 @@ image-adapter = A.mkImageOfModuleHomomorphismAdapter ringDecl (AM.ModuleHomomorp
 image-status : A.isFilledImageModuleHom image-adapter ≡ B.true
 image-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.imageOfModuleHomomorphismCategorical image-adapter) tt) ≡ A.ImageOfModuleHomomorphismAdapter.decl image-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.imageOfModuleHomomorphismCategorical image-adapter) ≡ refl
+_ = refl
+
 cok : AM.CokernelOfModuleHomomorphism ringDecl (AM.ModuleHomomorphism.morphism hom)
 cok = record
   { ring = ringDecl
@@ -195,6 +232,12 @@ cokernel-adapter = A.mkCokernelOfModuleHomomorphismAdapter ringDecl (AM.ModuleHo
 
 cokernel-status : A.isFilledCokernelModuleHom cokernel-adapter ≡ B.true
 cokernel-status = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.cokernelOfModuleHomomorphismCategorical cokernel-adapter) tt) ≡ A.CokernelOfModuleHomomorphismAdapter.decl cokernel-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.cokernelOfModuleHomomorphismCategorical cokernel-adapter) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Exact sequences
@@ -214,6 +257,12 @@ exseq-adapter = A.mkModuleExactSequenceAdapter ringDecl exseq (AM.ExactSequence.
 exseq-status : A.isFilledModuleExactSequence exseq-adapter ≡ B.true
 exseq-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.moduleExactSequenceCategorical exseq-adapter) tt) ≡ A.ModuleExactSequenceAdapter.decl exseq-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.moduleExactSequenceCategorical exseq-adapter) ≡ refl
+_ = refl
+
 ses : AM.ShortExactSequence ringDecl
 ses = record
   { ring = ringDecl
@@ -230,3 +279,9 @@ ses-adapter = A.mkModuleShortExactSequenceAdapter ringDecl ses (AM.ShortExactSeq
 
 ses-status : A.isFilledModuleShortExactSequence ses-adapter ≡ B.true
 ses-status = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.moduleShortExactSequenceCategorical ses-adapter) tt) ≡ A.ModuleShortExactSequenceAdapter.decl ses-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.moduleShortExactSequenceCategorical ses-adapter) ≡ refl
+_ = refl
