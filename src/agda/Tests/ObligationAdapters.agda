@@ -25,6 +25,8 @@ import Chapter2.Level2sub7 as C2S7
 import Chapter2.Level2sub8 as C2S8
 import Chapter3.Level3sub1 as C3S1
 import Chapter3.Level3sub2 as C3S2
+open import Agda.Primitive using (Level; lzero; lsuc)
+open import Core.CategoricalAdapter
 
 -- Algebra imports
 import Algebra.Foundation as AFo
@@ -193,8 +195,12 @@ record CanonicalFactorizationAdapter : Set₁ where
 mkCanonicalFactorizationAdapter :
   (d : C1S4.CanonicalFactorizationSystem) →
   (p : C1S4.CanonicalFactorizationSystem.unit d ≡ tt) →
+  (f : ⊤ → C1S4.CanonicalFactorizationSystem) →
   CanonicalFactorizationAdapter
-mkCanonicalFactorizationAdapter d p = record { decl = d ; link = p ; status = B.true }
+mkCanonicalFactorizationAdapter d p f = record { decl = d ; link = p ; status = B.true }
+
+canonicalFactorizationCategorical : CanonicalFactorizationAdapter → CategoricalAdapter {lsuc lzero} C1S4.CanonicalFactorizationSystem
+canonicalFactorizationCategorical adapt = mkCategoricalAdapter C1S4.CanonicalFactorizationSystem (λ _ → CanonicalFactorizationAdapter.decl adapt)
 
 isFilledCanonicalFactorization : CanonicalFactorizationAdapter → B.Bool
 isFilledCanonicalFactorization a = CanonicalFactorizationAdapter.status a
@@ -214,8 +220,12 @@ mkRegularFactorizationAdapter :
   (d : C2S2.RegularCategoryDeclaration) →
   (e : M.Identifier) →
   (p : C2S2.RegularCategoryDeclaration.regularEpiMonoFactorizationWitness d ≡ e) →
+  (f : ⊤ → C2S2.RegularCategoryDeclaration) →
   RegularFactorizationAdapter
-mkRegularFactorizationAdapter d e p = record { decl = d ; expected = e ; link = p ; status = B.true }
+mkRegularFactorizationAdapter d e p f = record { decl = d ; expected = e ; link = p ; status = B.true }
+
+regularFactorizationCategorical : RegularFactorizationAdapter → CategoricalAdapter {lsuc lzero} C2S2.RegularCategoryDeclaration
+regularFactorizationCategorical adapt = mkCategoricalAdapter C2S2.RegularCategoryDeclaration (λ _ → RegularFactorizationAdapter.decl adapt)
 
 isFilledRegularFactorization : RegularFactorizationAdapter → B.Bool
 isFilledRegularFactorization a = RegularFactorizationAdapter.status a
@@ -239,9 +249,13 @@ mkReflectiveLocalizationAdapter :
   (pr : C1S5.ReflectiveSubcategoryAsLocalizationTheorem.reflectiveSubcat d ≡ r) →
   (pc : C1S5.ReflectiveSubcategoryAsLocalizationTheorem.ambientCategory d ≡ c) →
   (pl : C1S5.ReflectiveSubcategoryAsLocalizationTheorem.reflector d ≡ l) →
+  (f : ⊤ → C1S5.ReflectiveSubcategoryAsLocalizationTheorem) →
   ReflectiveLocalizationAdapter
-mkReflectiveLocalizationAdapter d r c l pr pc pl =
+mkReflectiveLocalizationAdapter d r c l pr pc pl f =
   record { decl = d ; expR = r ; expC = c ; expL = l ; linkR = pr ; linkC = pc ; linkL = pl ; status = B.true }
+
+reflectiveLocalizationCategorical : ReflectiveLocalizationAdapter → CategoricalAdapter {lsuc lzero} C1S5.ReflectiveSubcategoryAsLocalizationTheorem
+reflectiveLocalizationCategorical adapt = mkCategoricalAdapter C1S5.ReflectiveSubcategoryAsLocalizationTheorem (λ _ → ReflectiveLocalizationAdapter.decl adapt)
 
 isFilledReflectiveLocalization : ReflectiveLocalizationAdapter → B.Bool
 isFilledReflectiveLocalization a = ReflectiveLocalizationAdapter.status a
@@ -270,10 +284,14 @@ mkKernelPairAdapter :
   (pk1 : C2S2.KernelPairDeclaration.projection1 d ≡ k1) →
   (pk2 : C2S2.KernelPairDeclaration.projection2 d ≡ k2) →
   (ppb : C2S2.KernelPairDeclaration.pullbackSquareWitness d ≡ pb) →
+  (f : ⊤ → C2S2.KernelPairDeclaration) →
   KernelPairAdapter
-mkKernelPairAdapter d m k1 k2 pb pm pk1 pk2 ppb =
+mkKernelPairAdapter d m k1 k2 pb pm pk1 pk2 ppb f =
   record { decl = d ; expM = m ; expK1 = k1 ; expK2 = k2 ; expPB = pb
          ; linkM = pm ; linkK1 = pk1 ; linkK2 = pk2 ; linkPB = ppb ; status = B.true }
+
+kernelPairCategorical : KernelPairAdapter → CategoricalAdapter {lsuc lzero} C2S2.KernelPairDeclaration
+kernelPairCategorical adapt = mkCategoricalAdapter C2S2.KernelPairDeclaration (λ _ → KernelPairAdapter.decl adapt)
 
 isFilledKernelPair : KernelPairAdapter → B.Bool
 isFilledKernelPair a = KernelPairAdapter.status a
@@ -293,8 +311,12 @@ mkStrongMonoAdapter :
   (d : C1S4.StrongMonomorphism) →
   (e : M.Identifier) →
   (p : C1S4.StrongMonomorphism.m d ≡ e) →
+  (f : ⊤ → C1S4.StrongMonomorphism) →
   StrongMonoAdapter
-mkStrongMonoAdapter d e p = record { decl = d ; expected = e ; link = p ; status = B.true }
+mkStrongMonoAdapter d e p f = record { decl = d ; expected = e ; link = p ; status = B.true }
+
+strongMonoCategorical : StrongMonoAdapter → CategoricalAdapter {lsuc lzero} C1S4.StrongMonomorphism
+strongMonoCategorical adapt = mkCategoricalAdapter C1S4.StrongMonomorphism (λ _ → StrongMonoAdapter.decl adapt)
 
 isFilledStrongMono : StrongMonoAdapter → B.Bool
 isFilledStrongMono a = StrongMonoAdapter.status a
@@ -320,10 +342,14 @@ mkInternalEquivalenceRelationAdapter :
   (pr1 : C2S2.InternalEquivalenceRelationDeclaration.relLeft d ≡ r1) →
   (pr2 : C2S2.InternalEquivalenceRelationDeclaration.relRight d ≡ r2) →
   (pmono : C2S2.InternalEquivalenceRelationDeclaration.monoIntoProductWitness d ≡ mono) →
+  (f : ⊤ → C2S2.InternalEquivalenceRelationDeclaration) →
   InternalEquivalenceRelationAdapter
-mkInternalEquivalenceRelationAdapter d r1 r2 mono pr1 pr2 pmono =
+mkInternalEquivalenceRelationAdapter d r1 r2 mono pr1 pr2 pmono f =
   record { decl = d ; expR1 = r1 ; expR2 = r2 ; expMono = mono
          ; linkR1 = pr1 ; linkR2 = pr2 ; linkMono = pmono ; status = B.true }
+
+internalEquivalenceRelationCategorical : InternalEquivalenceRelationAdapter → CategoricalAdapter {lsuc lzero} C2S2.InternalEquivalenceRelationDeclaration
+internalEquivalenceRelationCategorical adapt = mkCategoricalAdapter C2S2.InternalEquivalenceRelationDeclaration (λ _ → InternalEquivalenceRelationAdapter.decl adapt)
 
 isFilledInternalEquiv : InternalEquivalenceRelationAdapter → B.Bool
 isFilledInternalEquiv a = InternalEquivalenceRelationAdapter.status a
@@ -346,10 +372,14 @@ mkRegularExactSequenceAdapter :
   (k q : M.Identifier) →
   (pk : C2S2.KernelPairDeclaration.morphism (C2S2.RegularExactSequenceDeclaration.kernelPair d) ≡ k) →
   (pq : C2S2.RegularEpimorphismProperty.morphism (C2S2.RegularExactSequenceDeclaration.quotient d) ≡ q) →
+  (f : ⊤ → C2S2.RegularExactSequenceDeclaration) →
   RegularExactSequenceAdapter
-mkRegularExactSequenceAdapter d k q pk pq =
+mkRegularExactSequenceAdapter d k q pk pq f =
   record { decl = d ; expKernelMorphism = k ; expQuotientMorphism = q
          ; linkKernel = pk ; linkQuotient = pq ; status = B.true }
+
+regularExactSequenceCategorical : RegularExactSequenceAdapter → CategoricalAdapter {lsuc lzero} C2S2.RegularExactSequenceDeclaration
+regularExactSequenceCategorical adapt = mkCategoricalAdapter C2S2.RegularExactSequenceDeclaration (λ _ → RegularExactSequenceAdapter.decl adapt)
 
 isFilledRegularExact : RegularExactSequenceAdapter → B.Bool
 isFilledRegularExact a = RegularExactSequenceAdapter.status a
@@ -373,10 +403,14 @@ mkAdditiveCategoryAdapter :
   (zero : C2S1.HasZeroObjectProperty) →
   (pcat : C2S1.AdditiveCategoryDeclaration.category d ≡ cat) →
   (pzero : C2S1.AdditiveCategoryDeclaration.hasZeroObject d ≡ zero) →
+  (f : ⊤ → C2S1.AdditiveCategoryDeclaration) →
   AdditiveCategoryAdapter
-mkAdditiveCategoryAdapter d cat zero pcat pzero =
+mkAdditiveCategoryAdapter d cat zero pcat pzero f =
   record { decl = d ; expCategory = cat ; expZero = zero
          ; linkCat = pcat ; linkZero = pzero ; status = B.true }
+
+additiveCategoryCategorical : AdditiveCategoryAdapter → CategoricalAdapter {lsuc lzero} C2S1.AdditiveCategoryDeclaration
+additiveCategoryCategorical adapt = mkCategoricalAdapter C2S1.AdditiveCategoryDeclaration (λ _ → AdditiveCategoryAdapter.decl adapt)
 
 isFilledAdditive : AdditiveCategoryAdapter → B.Bool
 isFilledAdditive a = AdditiveCategoryAdapter.status a
@@ -396,10 +430,14 @@ mkAbelianCategoryAdapter :
   (add : C2S1.AdditiveCategoryDeclaration) →
   (pcat : C2S1.AbelianCategoryDeclaration.category d ≡ cat) →
   (padd : C2S1.AbelianCategoryDeclaration.additive d ≡ add) →
+  (f : ⊤ → C2S1.AbelianCategoryDeclaration) →
   AbelianCategoryAdapter
-mkAbelianCategoryAdapter d cat add pcat padd =
+mkAbelianCategoryAdapter d cat add pcat padd f =
   record { decl = d ; expCategory = cat ; expAdditive = add
          ; linkCat = pcat ; linkAdd = padd ; status = B.true }
+
+abelianCategoryCategorical : AbelianCategoryAdapter → CategoricalAdapter {lsuc lzero} C2S1.AbelianCategoryDeclaration
+abelianCategoryCategorical adapt = mkCategoricalAdapter C2S1.AbelianCategoryDeclaration (λ _ → AbelianCategoryAdapter.decl adapt)
 
 isFilledAbelian : AbelianCategoryAdapter → B.Bool
 isFilledAbelian a = AbelianCategoryAdapter.status a
@@ -421,10 +459,14 @@ mkBiproductAdapter :
   (pl : C2S1.BiproductObject.left d ≡ l) →
   (pr : C2S1.BiproductObject.right d ≡ r) →
   (pobj : C2S1.BiproductObject.object d ≡ obj) →
+  (f : ⊤ → C2S1.BiproductObject) →
   BiproductAdapter
-mkBiproductAdapter d l r obj pl pr pobj =
+mkBiproductAdapter d l r obj pl pr pobj f =
   record { decl = d ; expLeft = l ; expRight = r ; expObject = obj
          ; linkLeft = pl ; linkRight = pr ; linkObject = pobj ; status = B.true }
+
+biproductCategorical : BiproductAdapter → CategoricalAdapter {lsuc lzero} C2S1.BiproductObject
+biproductCategorical adapt = mkCategoricalAdapter C2S1.BiproductObject (λ _ → BiproductAdapter.decl adapt)
 
 isFilledBiproduct : BiproductAdapter → B.Bool
 isFilledBiproduct a = BiproductAdapter.status a
@@ -447,13 +489,17 @@ mkLawvereTheoryAdapter :
   (th base : M.Identifier) →
   (pth : C2S3.LawvereTheoryDeclaration.theoryCategory d ≡ th) →
   (pbase : C2S3.LawvereTheoryDeclaration.baseObject d ≡ base) →
+  (morph : ⊤ → C2S3.LawvereTheoryDeclaration) →
   LawvereTheoryAdapter
-mkLawvereTheoryAdapter d th base pth pbase =
+mkLawvereTheoryAdapter d th base pth pbase morph =
   record { decl = d ; expTheory = th ; expBase = base
          ; linkTheory = pth ; linkBase = pbase ; status = B.true }
 
 isFilledLawvereTheory : LawvereTheoryAdapter → B.Bool
 isFilledLawvereTheory a = LawvereTheoryAdapter.status a
+
+lawvereTheoryCategorical : LawvereTheoryAdapter → CategoricalAdapter {lsuc lzero} C2S3.LawvereTheoryDeclaration
+lawvereTheoryCategorical adapt = mkCategoricalAdapter C2S3.LawvereTheoryDeclaration (λ _ → LawvereTheoryAdapter.decl adapt)
 
 record AlgebraicCategoryAdapter : Set₁ where
   field
@@ -470,13 +516,17 @@ mkAlgebraicCategoryAdapter :
   (th : C2S3.LawvereTheoryDeclaration) →
   (pcat : C2S3.AlgebraicCategoryDeclaration.category d ≡ cat) →
   (pth : C2S3.AlgebraicCategoryDeclaration.witnessTheory d ≡ th) →
+  (morph : ⊤ → C2S3.AlgebraicCategoryDeclaration) →
   AlgebraicCategoryAdapter
-mkAlgebraicCategoryAdapter d cat th pcat pth =
+mkAlgebraicCategoryAdapter d cat th pcat pth morph =
   record { decl = d ; expCategory = cat ; expTheory = th
          ; linkCat = pcat ; linkTheory = pth ; status = B.true }
 
 isFilledAlgebraicCategory : AlgebraicCategoryAdapter → B.Bool
 isFilledAlgebraicCategory a = AlgebraicCategoryAdapter.status a
+
+algebraicCategoryCategorical : AlgebraicCategoryAdapter → CategoricalAdapter {lsuc lzero} C2S3.AlgebraicCategoryDeclaration
+algebraicCategoryCategorical adapt = mkCategoricalAdapter C2S3.AlgebraicCategoryDeclaration (λ _ → AlgebraicCategoryAdapter.decl adapt)
 
 -- ==========================================================
 -- Chapter 2, Level 2.4 (Monads)
@@ -692,10 +742,14 @@ mkFibrationAdapter :
   (d : C2S8.FibrationDeclaration) →
   (proj : C2S8.FibrationProjectionFunctor) →
   (pproj : C2S8.FibrationDeclaration.projectionFunctor d ≡ proj) →
+  (f : ⊤ → C2S8.FibrationDeclaration) →
   FibrationAdapter
-mkFibrationAdapter d proj pproj =
+mkFibrationAdapter d proj pproj f =
   record { decl = d ; expProjection = proj
          ; linkProjection = pproj ; status = B.true }
+
+fibrationCategorical : FibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.FibrationDeclaration
+fibrationCategorical adapt = mkCategoricalAdapter C2S8.FibrationDeclaration (λ _ → FibrationAdapter.decl adapt)
 
 isFilledFibration : FibrationAdapter → B.Bool
 isFilledFibration a = FibrationAdapter.status a
@@ -711,10 +765,14 @@ mkOpfibrationAdapter :
   (d : C2S8.OpfibrationDeclaration) →
   (proj : C2S8.FibrationProjectionFunctor) →
   (pproj : C2S8.OpfibrationDeclaration.projectionFunctor d ≡ proj) →
+  (f : ⊤ → C2S8.OpfibrationDeclaration) →
   OpfibrationAdapter
-mkOpfibrationAdapter d proj pproj =
+mkOpfibrationAdapter d proj pproj f =
   record { decl = d ; expProjection = proj
          ; linkProjection = pproj ; status = B.true }
+
+opfibrationCategorical : OpfibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.OpfibrationDeclaration
+opfibrationCategorical adapt = mkCategoricalAdapter C2S8.OpfibrationDeclaration (λ _ → OpfibrationAdapter.decl adapt)
 
 isFilledOpfibration : OpfibrationAdapter → B.Bool
 isFilledOpfibration a = OpfibrationAdapter.status a
@@ -3854,19 +3912,19 @@ isFilledRightModule a = RightModuleAdapter.status a
 -- Extension degree [E : F]
 record ExtensionDegreeAdapter : Set₁ where
   field
-    F E : AFB.FieldDeclaration
+    F E : AR.FieldDeclaration
     decl : AFB.ExtensionDegree F E
-    expected : AFB.FieldDeclaration
-    expExt : AFB.FieldDeclaration
+    expected : AR.FieldDeclaration
+    expExt : AR.FieldDeclaration
     link : AFB.ExtensionDegree.baseField decl ≡ expected
     linkExt : AFB.ExtensionDegree.extensionField decl ≡ expExt
     status : B.Bool
 
 mkExtensionDegreeAdapter :
-  (F E : AFB.FieldDeclaration) →
+  (F E : AR.FieldDeclaration) →
   (d : AFB.ExtensionDegree F E) →
-  (ef : AFB.FieldDeclaration) →
-  (ee : AFB.FieldDeclaration) →
+  (ef : AR.FieldDeclaration) →
+  (ee : AR.FieldDeclaration) →
   (pf : AFB.ExtensionDegree.baseField d ≡ ef) →
   (pe : AFB.ExtensionDegree.extensionField d ≡ ee) →
   ExtensionDegreeAdapter
@@ -3880,19 +3938,19 @@ isFilledExtensionDegree a = ExtensionDegreeAdapter.status a
 -- Inseparable degree [E : F]ᵢ
 record InseparableDegreeAdapter : Set₁ where
   field
-    F E : AFB.FieldDeclaration
+    F E : AR.FieldDeclaration
     decl : AFA.InseparableDegree F E
-    expected : AFB.FieldDeclaration
-    expExt : AFB.FieldDeclaration
+    expected : AR.FieldDeclaration
+    expExt : AR.FieldDeclaration
     link : AFA.InseparableDegree.baseField decl ≡ expected
     linkExt : AFA.InseparableDegree.extensionField decl ≡ expExt
     status : B.Bool
 
 mkInseparableDegreeAdapter :
-  (F E : AFB.FieldDeclaration) →
+  (F E : AR.FieldDeclaration) →
   (d : AFA.InseparableDegree F E) →
-  (ef : AFB.FieldDeclaration) →
-  (ee : AFB.FieldDeclaration) →
+  (ef : AR.FieldDeclaration) →
+  (ee : AR.FieldDeclaration) →
   (pf : AFA.InseparableDegree.baseField d ≡ ef) →
   (pe : AFA.InseparableDegree.extensionField d ≡ ee) →
   InseparableDegreeAdapter
@@ -3906,19 +3964,19 @@ isFilledInseparableDegree a = InseparableDegreeAdapter.status a
 -- Separable degree [E : F]ₛ
 record SeparableDegreeAdapter : Set₁ where
   field
-    F E : AFB.FieldDeclaration
+    F E : AR.FieldDeclaration
     decl : AFA.SeparableDegree F E
-    expected : AFB.FieldDeclaration
-    expExt : AFB.FieldDeclaration
+    expected : AR.FieldDeclaration
+    expExt : AR.FieldDeclaration
     link : AFA.SeparableDegree.baseField decl ≡ expected
     linkExt : AFA.SeparableDegree.extensionField decl ≡ expExt
     status : B.Bool
 
 mkSeparableDegreeAdapter :
-  (F E : AFB.FieldDeclaration) →
+  (F E : AR.FieldDeclaration) →
   (d : AFA.SeparableDegree F E) →
-  (ef : AFB.FieldDeclaration) →
-  (ee : AFB.FieldDeclaration) →
+  (ef : AR.FieldDeclaration) →
+  (ee : AR.FieldDeclaration) →
   (pf : AFA.SeparableDegree.baseField d ≡ ef) →
   (pe : AFA.SeparableDegree.extensionField d ≡ ee) →
   SeparableDegreeAdapter
@@ -3932,21 +3990,21 @@ isFilledSeparableDegree a = SeparableDegreeAdapter.status a
 -- Simple extension F(α)
 record SimpleExtensionAdapter : Set₁ where
   field
-    F E : AFB.FieldDeclaration
+    F E : AR.FieldDeclaration
     α : M.Identifier
     decl : AFB.SimpleExtension F E α
-    expected : AFB.FieldDeclaration
-    expExt : AFB.FieldDeclaration
+    expected : AR.FieldDeclaration
+    expExt : AR.FieldDeclaration
     link : AFB.SimpleExtension.baseField decl ≡ expected
     linkExt : AFB.SimpleExtension.extensionField decl ≡ expExt
     status : B.Bool
 
 mkSimpleExtensionAdapter :
-  (F E : AFB.FieldDeclaration) →
+  (F E : AR.FieldDeclaration) →
   (α : M.Identifier) →
   (d : AFB.SimpleExtension F E α) →
-  (ef : AFB.FieldDeclaration) →
-  (ee : AFB.FieldDeclaration) →
+  (ef : AR.FieldDeclaration) →
+  (ee : AR.FieldDeclaration) →
   (pf : AFB.SimpleExtension.baseField d ≡ ef) →
   (pe : AFB.SimpleExtension.extensionField d ≡ ee) →
   SimpleExtensionAdapter
@@ -3960,21 +4018,21 @@ isFilledSimpleExtension a = SimpleExtensionAdapter.status a
 -- Transcendental element
 record TranscendentalElementAdapter : Set₁ where
   field
-    F E : AFB.FieldDeclaration
+    F E : AR.FieldDeclaration
     α : M.Identifier
     decl : AFB.TranscendentalElement F E α
-    expected : AFB.FieldDeclaration
-    expExt : AFB.FieldDeclaration
+    expected : AR.FieldDeclaration
+    expExt : AR.FieldDeclaration
     link : AFB.TranscendentalElement.baseField decl ≡ expected
     linkExt : AFB.TranscendentalElement.extensionField decl ≡ expExt
     status : B.Bool
 
 mkTranscendentalElementAdapter :
-  (F E : AFB.FieldDeclaration) →
+  (F E : AR.FieldDeclaration) →
   (α : M.Identifier) →
   (d : AFB.TranscendentalElement F E α) →
-  (ef : AFB.FieldDeclaration) →
-  (ee : AFB.FieldDeclaration) →
+  (ef : AR.FieldDeclaration) →
+  (ee : AR.FieldDeclaration) →
   (pf : AFB.TranscendentalElement.baseField d ≡ ef) →
   (pe : AFB.TranscendentalElement.extensionField d ≡ ee) →
   TranscendentalElementAdapter
@@ -3988,19 +4046,19 @@ isFilledTranscendentalElement a = TranscendentalElementAdapter.status a
 -- Transcendence basis
 record TranscendenceBasisAdapter : Set₁ where
   field
-    F E : AFB.FieldDeclaration
+    F E : AR.FieldDeclaration
     decl : AFB.TranscendenceBasis F E
-    expected : AFB.FieldDeclaration
-    expExt : AFB.FieldDeclaration
+    expected : AR.FieldDeclaration
+    expExt : AR.FieldDeclaration
     link : AFB.TranscendenceBasis.baseField decl ≡ expected
     linkExt : AFB.TranscendenceBasis.extensionField decl ≡ expExt
     status : B.Bool
 
 mkTranscendenceBasisAdapter :
-  (F E : AFB.FieldDeclaration) →
+  (F E : AR.FieldDeclaration) →
   (d : AFB.TranscendenceBasis F E) →
-  (ef : AFB.FieldDeclaration) →
-  (ee : AFB.FieldDeclaration) →
+  (ef : AR.FieldDeclaration) →
+  (ee : AR.FieldDeclaration) →
   (pf : AFB.TranscendenceBasis.baseField d ≡ ef) →
   (pe : AFB.TranscendenceBasis.extensionField d ≡ ee) →
   TranscendenceBasisAdapter
@@ -4280,16 +4338,16 @@ isFilledCategoryOfModules a = CategoryOfModulesAdapter.status a
 -- Vector space over a field
 record VectorSpaceAdapter : Set₁ where
   field
-    F : AFB.FieldDeclaration
+    F : AR.FieldDeclaration
     decl : AM.VectorSpace F
-    expectedField : AFB.FieldDeclaration
+    expectedField : AR.FieldDeclaration
     link : AM.VectorSpace.field' decl ≡ expectedField
     status : B.Bool
 
 mkVectorSpaceAdapter :
-  (F : AFB.FieldDeclaration) →
+  (F : AR.FieldDeclaration) →
   (d : AM.VectorSpace F) →
-  (ef : AFB.FieldDeclaration) →
+  (ef : AR.FieldDeclaration) →
   (p : AM.VectorSpace.field' d ≡ ef) →
   VectorSpaceAdapter
 mkVectorSpaceAdapter F d ef p =
@@ -5177,9 +5235,13 @@ mkFibrationDeclarationAdapter :
   (d : C2S8.FibrationDeclaration) →
   (ep : M.Identifier) →
   (p : C2S8.FibrationProjectionFunctor.projectionFunctor (C2S8.FibrationDeclaration.projectionFunctor d) ≡ ep) →
+  (f : ⊤ → C2S8.FibrationDeclaration) →
   FibrationDeclarationAdapter
-mkFibrationDeclarationAdapter d ep p =
+mkFibrationDeclarationAdapter d ep p f =
   record { decl = d ; expectedProjection = ep ; link = p ; status = B.true }
+
+fibrationDeclarationCategorical : FibrationDeclarationAdapter → CategoricalAdapter {lsuc lzero} C2S8.FibrationDeclaration
+fibrationDeclarationCategorical adapt = mkCategoricalAdapter C2S8.FibrationDeclaration (λ _ → FibrationDeclarationAdapter.decl adapt)
 
 isFilledFibrationDeclaration : FibrationDeclarationAdapter → B.Bool
 isFilledFibrationDeclaration a = FibrationDeclarationAdapter.status a
@@ -5196,9 +5258,13 @@ mkCartesianArrowAdapter :
   (d : C2S8.CartesianArrow) →
   (ea : M.Identifier) →
   (p : C2S8.CartesianArrow.arrow d ≡ ea) →
+  (f : ⊤ → C2S8.CartesianArrow) →
   CartesianArrowAdapter
-mkCartesianArrowAdapter d ea p =
+mkCartesianArrowAdapter d ea p f =
   record { decl = d ; expectedArrow = ea ; link = p ; status = B.true }
+
+cartesianArrowCategorical : CartesianArrowAdapter → CategoricalAdapter {lsuc lzero} C2S8.CartesianArrow
+cartesianArrowCategorical adapt = mkCategoricalAdapter C2S8.CartesianArrow (λ _ → CartesianArrowAdapter.decl adapt)
 
 isFilledCartesianArrow : CartesianArrowAdapter → B.Bool
 isFilledCartesianArrow a = CartesianArrowAdapter.status a
@@ -5215,9 +5281,13 @@ mkCartesianFunctorDeclarationAdapter :
   (d : C2S8.CartesianFunctorDeclaration) →
   (ef : M.Identifier) →
   (p : C2S8.CartesianFunctorDeclaration.underlyingFunctor d ≡ ef) →
+  (f : ⊤ → C2S8.CartesianFunctorDeclaration) →
   CartesianFunctorDeclarationAdapter
-mkCartesianFunctorDeclarationAdapter d ef p =
+mkCartesianFunctorDeclarationAdapter d ef p f =
   record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+
+cartesianFunctorDeclarationCategorical : CartesianFunctorDeclarationAdapter → CategoricalAdapter {lsuc lzero} C2S8.CartesianFunctorDeclaration
+cartesianFunctorDeclarationCategorical adapt = mkCategoricalAdapter C2S8.CartesianFunctorDeclaration (λ _ → CartesianFunctorDeclarationAdapter.decl adapt)
 
 isFilledCartesianFunctorDeclaration : CartesianFunctorDeclarationAdapter → B.Bool
 isFilledCartesianFunctorDeclaration a = CartesianFunctorDeclarationAdapter.status a
@@ -5234,9 +5304,13 @@ mkCategoryOfFibrationsAdapter :
   (d : C2S8.CategoryOfFibrations) →
   (eb : M.Identifier) →
   (p : C2S8.CategoryOfFibrations.baseCategory d ≡ eb) →
+  (f : ⊤ → C2S8.CategoryOfFibrations) →
   CategoryOfFibrationsAdapter
-mkCategoryOfFibrationsAdapter d eb p =
+mkCategoryOfFibrationsAdapter d eb p f =
   record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+
+categoryOfFibrationsCategorical : CategoryOfFibrationsAdapter → CategoricalAdapter {lsuc lzero} C2S8.CategoryOfFibrations
+categoryOfFibrationsCategorical adapt = mkCategoricalAdapter C2S8.CategoryOfFibrations (λ _ → CategoryOfFibrationsAdapter.decl adapt)
 
 isFilledCategoryOfFibrations : CategoryOfFibrationsAdapter → B.Bool
 isFilledCategoryOfFibrations a = CategoryOfFibrationsAdapter.status a
@@ -5249,9 +5323,13 @@ record PseudofunctorFromFibrationAdapter : Set₁ where
 
 mkPseudofunctorFromFibrationAdapter :
   (d : C2S8.PseudofunctorFromFibration) →
+  (f : ⊤ → C2S8.PseudofunctorFromFibration) →
   PseudofunctorFromFibrationAdapter
-mkPseudofunctorFromFibrationAdapter d =
+mkPseudofunctorFromFibrationAdapter d f =
   record { decl = d ; status = B.true }
+
+pseudofunctorFromFibrationCategorical : PseudofunctorFromFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.PseudofunctorFromFibration
+pseudofunctorFromFibrationCategorical adapt = mkCategoricalAdapter C2S8.PseudofunctorFromFibration (λ _ → PseudofunctorFromFibrationAdapter.decl adapt)
 
 isFilledPseudofunctorFromFibration : PseudofunctorFromFibrationAdapter → B.Bool
 isFilledPseudofunctorFromFibration a = PseudofunctorFromFibrationAdapter.status a
@@ -5268,9 +5346,13 @@ mkGrothendieckConstructionAdapter :
   (d : C2S8.GrothendieckConstruction) →
   (et : M.Identifier) →
   (p : C2S8.GrothendieckConstruction.totalCategory d ≡ et) →
+  (f : ⊤ → C2S8.GrothendieckConstruction) →
   GrothendieckConstructionAdapter
-mkGrothendieckConstructionAdapter d et p =
+mkGrothendieckConstructionAdapter d et p f =
   record { decl = d ; expectedTotal = et ; link = p ; status = B.true }
+
+grothendieckConstructionCategorical : GrothendieckConstructionAdapter → CategoricalAdapter {lsuc lzero} C2S8.GrothendieckConstruction
+grothendieckConstructionCategorical adapt = mkCategoricalAdapter C2S8.GrothendieckConstruction (λ _ → GrothendieckConstructionAdapter.decl adapt)
 
 isFilledGrothendieckConstruction : GrothendieckConstructionAdapter → B.Bool
 isFilledGrothendieckConstruction a = GrothendieckConstructionAdapter.status a
@@ -5287,9 +5369,13 @@ mkGrothendieckEquivalenceTheoremAdapter :
   (d : C2S8.GrothendieckEquivalenceTheorem) →
   (eb : M.Identifier) →
   (p : C2S8.GrothendieckEquivalenceTheorem.baseCategory d ≡ eb) →
+  (f : ⊤ → C2S8.GrothendieckEquivalenceTheorem) →
   GrothendieckEquivalenceTheoremAdapter
-mkGrothendieckEquivalenceTheoremAdapter d eb p =
+mkGrothendieckEquivalenceTheoremAdapter d eb p f =
   record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+
+grothendieckEquivalenceTheoremCategorical : GrothendieckEquivalenceTheoremAdapter → CategoricalAdapter {lsuc lzero} C2S8.GrothendieckEquivalenceTheorem
+grothendieckEquivalenceTheoremCategorical adapt = mkCategoricalAdapter C2S8.GrothendieckEquivalenceTheorem (λ _ → GrothendieckEquivalenceTheoremAdapter.decl adapt)
 
 isFilledGrothendieckEquivalenceTheorem : GrothendieckEquivalenceTheoremAdapter → B.Bool
 isFilledGrothendieckEquivalenceTheorem a = GrothendieckEquivalenceTheoremAdapter.status a
@@ -5310,9 +5396,13 @@ mkFibredAdjunctionDeclarationAdapter :
   (er : M.Identifier) →
   (p1 : C2S8.FibredAdjunctionDeclaration.leftAdjoint d ≡ el) →
   (p2 : C2S8.FibredAdjunctionDeclaration.rightAdjoint d ≡ er) →
+  (f : ⊤ → C2S8.FibredAdjunctionDeclaration) →
   FibredAdjunctionDeclarationAdapter
-mkFibredAdjunctionDeclarationAdapter d el er p1 p2 =
+mkFibredAdjunctionDeclarationAdapter d el er p1 p2 f =
   record { decl = d ; expectedLeft = el ; expectedRight = er ; link1 = p1 ; link2 = p2 ; status = B.true }
+
+fibredAdjunctionDeclarationCategorical : FibredAdjunctionDeclarationAdapter → CategoricalAdapter {lsuc lzero} C2S8.FibredAdjunctionDeclaration
+fibredAdjunctionDeclarationCategorical adapt = mkCategoricalAdapter C2S8.FibredAdjunctionDeclaration (λ _ → FibredAdjunctionDeclarationAdapter.decl adapt)
 
 isFilledFibredAdjunctionDeclaration : FibredAdjunctionDeclarationAdapter → B.Bool
 isFilledFibredAdjunctionDeclaration a = FibredAdjunctionDeclarationAdapter.status a
@@ -5325,9 +5415,13 @@ record BeckChevalleyConditionAdapter : Set₁ where
 
 mkBeckChevalleyConditionAdapter :
   (d : C2S8.BeckChevalleyCondition) →
+  (f : ⊤ → C2S8.BeckChevalleyCondition) →
   BeckChevalleyConditionAdapter
-mkBeckChevalleyConditionAdapter d =
+mkBeckChevalleyConditionAdapter d f =
   record { decl = d ; status = B.true }
+
+beckChevalleyConditionCategorical : BeckChevalleyConditionAdapter → CategoricalAdapter {lsuc lzero} C2S8.BeckChevalleyCondition
+beckChevalleyConditionCategorical adapt = mkCategoricalAdapter C2S8.BeckChevalleyCondition (λ _ → BeckChevalleyConditionAdapter.decl adapt)
 
 isFilledBeckChevalleyCondition : BeckChevalleyConditionAdapter → B.Bool
 isFilledBeckChevalleyCondition a = BeckChevalleyConditionAdapter.status a
@@ -5340,9 +5434,13 @@ record FibrationCompletenessCriterionTheoremAdapter : Set₁ where
 
 mkFibrationCompletenessCriterionTheoremAdapter :
   (d : C2S8.FibrationCompletenessCriterionTheorem) →
+  (f : ⊤ → C2S8.FibrationCompletenessCriterionTheorem) →
   FibrationCompletenessCriterionTheoremAdapter
-mkFibrationCompletenessCriterionTheoremAdapter d =
+mkFibrationCompletenessCriterionTheoremAdapter d f =
   record { decl = d ; status = B.true }
+
+fibrationCompletenessCriterionTheoremCategorical : FibrationCompletenessCriterionTheoremAdapter → CategoricalAdapter {lsuc lzero} C2S8.FibrationCompletenessCriterionTheorem
+fibrationCompletenessCriterionTheoremCategorical adapt = mkCategoricalAdapter C2S8.FibrationCompletenessCriterionTheorem (λ _ → FibrationCompletenessCriterionTheoremAdapter.decl adapt)
 
 isFilledFibrationCompletenessCriterionTheorem : FibrationCompletenessCriterionTheoremAdapter → B.Bool
 isFilledFibrationCompletenessCriterionTheorem a = FibrationCompletenessCriterionTheoremAdapter.status a
@@ -5355,9 +5453,13 @@ record LocallySmallFibrationAdapter : Set₁ where
 
 mkLocallySmallFibrationAdapter :
   (d : C2S8.LocallySmallFibration) →
+  (f : ⊤ → C2S8.LocallySmallFibration) →
   LocallySmallFibrationAdapter
-mkLocallySmallFibrationAdapter d =
+mkLocallySmallFibrationAdapter d f =
   record { decl = d ; status = B.true }
+
+locallySmallFibrationCategorical : LocallySmallFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.LocallySmallFibration
+locallySmallFibrationCategorical adapt = mkCategoricalAdapter C2S8.LocallySmallFibration (λ _ → LocallySmallFibrationAdapter.decl adapt)
 
 isFilledLocallySmallFibration : LocallySmallFibrationAdapter → B.Bool
 isFilledLocallySmallFibration a = LocallySmallFibrationAdapter.status a
@@ -5374,9 +5476,13 @@ mkRefinedGrothendieckEquivalenceTheoremAdapter :
   (d : C2S8.RefinedGrothendieckEquivalenceTheorem) →
   (eb : M.Identifier) →
   (p : C2S8.RefinedGrothendieckEquivalenceTheorem.baseCategory d ≡ eb) →
+  (f : ⊤ → C2S8.RefinedGrothendieckEquivalenceTheorem) →
   RefinedGrothendieckEquivalenceTheoremAdapter
-mkRefinedGrothendieckEquivalenceTheoremAdapter d eb p =
+mkRefinedGrothendieckEquivalenceTheoremAdapter d eb p f =
   record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+
+refinedGrothendieckEquivalenceTheoremCategorical : RefinedGrothendieckEquivalenceTheoremAdapter → CategoricalAdapter {lsuc lzero} C2S8.RefinedGrothendieckEquivalenceTheorem
+refinedGrothendieckEquivalenceTheoremCategorical adapt = mkCategoricalAdapter C2S8.RefinedGrothendieckEquivalenceTheorem (λ _ → RefinedGrothendieckEquivalenceTheoremAdapter.decl adapt)
 
 isFilledRefinedGrothendieckEquivalenceTheorem : RefinedGrothendieckEquivalenceTheoremAdapter → B.Bool
 isFilledRefinedGrothendieckEquivalenceTheorem a = RefinedGrothendieckEquivalenceTheoremAdapter.status a
@@ -5393,9 +5499,13 @@ mkCodomainFibrationAdapter :
   (d : C2S8.CodomainFibration) →
   (eb : M.Identifier) →
   (p : C2S8.CodomainFibration.baseCategory d ≡ eb) →
+  (f : ⊤ → C2S8.CodomainFibration) →
   CodomainFibrationAdapter
-mkCodomainFibrationAdapter d eb p =
+mkCodomainFibrationAdapter d eb p f =
   record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+
+codomainFibrationCategorical : CodomainFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.CodomainFibration
+codomainFibrationCategorical adapt = mkCategoricalAdapter C2S8.CodomainFibration (λ _ → CodomainFibrationAdapter.decl adapt)
 
 isFilledCodomainFibration : CodomainFibrationAdapter → B.Bool
 isFilledCodomainFibration a = CodomainFibrationAdapter.status a
@@ -5408,9 +5518,13 @@ record LindenbaumTarskiFibrationAdapter : Set₁ where
 
 mkLindenbaumTarskiFibrationAdapter :
   (d : C2S8.LindenbaumTarskiFibration) →
+  (f : ⊤ → C2S8.LindenbaumTarskiFibration) →
   LindenbaumTarskiFibrationAdapter
-mkLindenbaumTarskiFibrationAdapter d =
+mkLindenbaumTarskiFibrationAdapter d f =
   record { decl = d ; status = B.true }
+
+lindenbaumTarskiFibrationCategorical : LindenbaumTarskiFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.LindenbaumTarskiFibration
+lindenbaumTarskiFibrationCategorical adapt = mkCategoricalAdapter C2S8.LindenbaumTarskiFibration (λ _ → LindenbaumTarskiFibrationAdapter.decl adapt)
 
 isFilledLindenbaumTarskiFibration : LindenbaumTarskiFibrationAdapter → B.Bool
 isFilledLindenbaumTarskiFibration a = LindenbaumTarskiFibrationAdapter.status a
@@ -5427,9 +5541,13 @@ mkFamiliesFibrationAdapter :
   (d : C2S8.FamiliesFibration) →
   (eb : M.Identifier) →
   (p : C2S8.FamiliesFibration.baseCategory d ≡ eb) →
+  (f : ⊤ → C2S8.FamiliesFibration) →
   FamiliesFibrationAdapter
-mkFamiliesFibrationAdapter d eb p =
+mkFamiliesFibrationAdapter d eb p f =
   record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+
+familiesFibrationCategorical : FamiliesFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.FamiliesFibration
+familiesFibrationCategorical adapt = mkCategoricalAdapter C2S8.FamiliesFibration (λ _ → FamiliesFibrationAdapter.decl adapt)
 
 isFilledFamiliesFibration : FamiliesFibrationAdapter → B.Bool
 isFilledFamiliesFibration a = FamiliesFibrationAdapter.status a
