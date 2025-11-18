@@ -109,6 +109,11 @@ mkLocalHomeomorphismAdapter d e p = record { decl = d ; expected = e ; link = p 
 isFilledLocalHomeo : LocalHomeomorphismAdapter → B.Bool
 isFilledLocalHomeo a = LocalHomeomorphismAdapter.status a
 
+-- Categorical view for Local Homeomorphism
+localHomeomorphismCategorical : LocalHomeomorphismAdapter → CategoricalAdapter {lsuc lzero} C3S2.MorphismPropertyAssertionLocalHomeomorphism
+localHomeomorphismCategorical adapt =
+  mkCategoricalAdapter C3S2.MorphismPropertyAssertionLocalHomeomorphism (λ _ → LocalHomeomorphismAdapter.decl adapt)
+
 record EtaleSpaceAdapter : Set₁ where
   field
     decl              : C3S2.EtaleSpaceOver
@@ -132,6 +137,10 @@ mkEtaleSpaceAdapter d p h pl hl = record
 isFilledEtale : EtaleSpaceAdapter → B.Bool
 isFilledEtale a = EtaleSpaceAdapter.status a
 
+-- Categorical view for Étale Space
+etaleSpaceCategorical : EtaleSpaceAdapter → CategoricalAdapter {lsuc lzero} C3S2.EtaleSpaceOver
+etaleSpaceCategorical adapt = mkCategoricalAdapter C3S2.EtaleSpaceOver (λ _ → EtaleSpaceAdapter.decl adapt)
+
 -- ==========================================================
 -- Chapter 3, Level 3.1 (locale–frame duality)
 -- ==========================================================
@@ -152,6 +161,10 @@ mkLocaleFrameDualityAdapter d op p = record { decl = d ; expectedOP = op ; link 
 
 isFilledDuality : LocaleFrameDualityAdapter → B.Bool
 isFilledDuality a = LocaleFrameDualityAdapter.status a
+
+-- Categorical view for Locale–Frame Duality Theorem
+localeFrameDualityCategorical : LocaleFrameDualityAdapter → CategoricalAdapter {lsuc lzero} C3S1.LocaleFrameDualityTheorem
+localeFrameDualityCategorical adapt = mkCategoricalAdapter C3S1.LocaleFrameDualityTheorem (λ _ → LocaleFrameDualityAdapter.decl adapt)
 
 -- ==========================================================
 -- Chapter 1, Level 1.3 (adjunction hom-set declaration)
@@ -976,6 +989,10 @@ mkHeytingAlgebraAdapter d =
 isFilledHeytingAlgebra : HeytingAlgebraAdapter → B.Bool
 isFilledHeytingAlgebra a = HeytingAlgebraAdapter.status a
 
+-- Categorical view for Heyting Algebra
+heytingAlgebraCategorical : HeytingAlgebraAdapter → CategoricalAdapter {lsuc lzero} C3S1.HeytingAlgebraDeclaration
+heytingAlgebraCategorical adapt = mkCategoricalAdapter C3S1.HeytingAlgebraDeclaration (λ _ → HeytingAlgebraAdapter.decl adapt)
+
 record FrameAdapter : Set₁ where
   field
     decl : C3S1.FrameDeclaration
@@ -995,6 +1012,10 @@ mkFrameAdapter d h ph =
 isFilledFrame : FrameAdapter → B.Bool
 isFilledFrame a = FrameAdapter.status a
 
+-- Categorical view for Frame
+frameCategorical : FrameAdapter → CategoricalAdapter {lsuc lzero} C3S1.FrameDeclaration
+frameCategorical adapt = mkCategoricalAdapter C3S1.FrameDeclaration (λ _ → FrameAdapter.decl adapt)
+
 record LocaleAdapter : Set₁ where
   field
     decl : C3S1.LocaleDeclaration
@@ -1013,6 +1034,10 @@ mkLocaleAdapter d f pf =
 
 isFilledLocale : LocaleAdapter → B.Bool
 isFilledLocale a = LocaleAdapter.status a
+
+-- Categorical view for Locale
+localeCategorical : LocaleAdapter → CategoricalAdapter {lsuc lzero} C3S1.LocaleDeclaration
+localeCategorical adapt = mkCategoricalAdapter C3S1.LocaleDeclaration (λ _ → LocaleAdapter.decl adapt)
 
 record LocaleMorphismAdapter : Set₁ where
   field
@@ -1036,6 +1061,10 @@ mkLocaleMorphismAdapter d src tgt psrc ptgt =
 isFilledLocaleMorphism : LocaleMorphismAdapter → B.Bool
 isFilledLocaleMorphism a = LocaleMorphismAdapter.status a
 
+-- Categorical view for Locale Morphism
+localeMorphismCategorical : LocaleMorphismAdapter → CategoricalAdapter {lsuc lzero} C3S1.LocaleMorphismDeclaration
+localeMorphismCategorical adapt = mkCategoricalAdapter C3S1.LocaleMorphismDeclaration (λ _ → LocaleMorphismAdapter.decl adapt)
+
 record NucleusAdapter : Set₁ where
   field
     decl : C3S1.NucleusDeclaration
@@ -1054,6 +1083,10 @@ mkNucleusAdapter d f pf =
 
 isFilledNucleus : NucleusAdapter → B.Bool
 isFilledNucleus a = NucleusAdapter.status a
+
+-- Categorical view for Nucleus
+nucleusCategorical : NucleusAdapter → CategoricalAdapter {lsuc lzero} C3S1.NucleusDeclaration
+nucleusCategorical adapt = mkCategoricalAdapter C3S1.NucleusDeclaration (λ _ → NucleusAdapter.decl adapt)
 
 record SublocaleAdapter : Set₁ where
   field
@@ -1078,6 +1111,10 @@ mkSublocaleAdapter d sub par psub ppar =
 isFilledSublocale : SublocaleAdapter → B.Bool
 isFilledSublocale a = SublocaleAdapter.status a
 
+-- Categorical view for Sublocale
+sublocaleCategorical : SublocaleAdapter → CategoricalAdapter {lsuc lzero} C3S1.SublocaleDeclaration
+sublocaleCategorical adapt = mkCategoricalAdapter C3S1.SublocaleDeclaration (λ _ → SublocaleAdapter.decl adapt)
+
 record OpenLocaleMorphismAdapter : Set₁ where
   field
     decl : C3S1.OpenLocaleMorphismDeclaration
@@ -1097,6 +1134,10 @@ mkOpenLocaleMorphismAdapter d m pm =
 isFilledOpenLocaleMorphism : OpenLocaleMorphismAdapter → B.Bool
 isFilledOpenLocaleMorphism a = OpenLocaleMorphismAdapter.status a
 
+-- Categorical view for Open Locale Morphism
+openLocaleMorphismCategorical : OpenLocaleMorphismAdapter → CategoricalAdapter {lsuc lzero} C3S1.OpenLocaleMorphismDeclaration
+openLocaleMorphismCategorical adapt = mkCategoricalAdapter C3S1.OpenLocaleMorphismDeclaration (λ _ → OpenLocaleMorphismAdapter.decl adapt)
+
 record SoberSpaceAdapter : Set₁ where
   field
     decl : C3S1.SoberSpaceDeclaration
@@ -1110,6 +1151,10 @@ mkSoberSpaceAdapter d =
 
 isFilledSoberSpace : SoberSpaceAdapter → B.Bool
 isFilledSoberSpace a = SoberSpaceAdapter.status a
+
+-- Categorical view for Sober Space
+soberSpaceCategorical : SoberSpaceAdapter → CategoricalAdapter {lsuc lzero} C3S1.SoberSpaceDeclaration
+soberSpaceCategorical adapt = mkCategoricalAdapter C3S1.SoberSpaceDeclaration (λ _ → SoberSpaceAdapter.decl adapt)
 
 record SpatialLocaleAdapter : Set₁ where
   field
@@ -1129,6 +1174,10 @@ mkSpatialLocaleAdapter d loc ploc =
 
 isFilledSpatialLocale : SpatialLocaleAdapter → B.Bool
 isFilledSpatialLocale a = SpatialLocaleAdapter.status a
+
+-- Categorical view for Spatial Locale
+spatialLocaleCategorical : SpatialLocaleAdapter → CategoricalAdapter {lsuc lzero} C3S1.SpatialLocaleDeclaration
+spatialLocaleCategorical adapt = mkCategoricalAdapter C3S1.SpatialLocaleDeclaration (λ _ → SpatialLocaleAdapter.decl adapt)
 
 -- ==========================================================
 -- Chapter 3, Level 3.2 (Sheaves & Toposes) - Additional
@@ -1153,6 +1202,10 @@ mkSheafOnLocaleAdapter d psh ppsh =
 isFilledSheafOnLocale : SheafOnLocaleAdapter → B.Bool
 isFilledSheafOnLocale a = SheafOnLocaleAdapter.status a
 
+-- Categorical view for Sheaf on Locale
+sheafOnLocaleCategorical : SheafOnLocaleAdapter → CategoricalAdapter {lsuc lzero} C3S2.SheafOnLocaleDeclaration
+sheafOnLocaleCategorical adapt = mkCategoricalAdapter C3S2.SheafOnLocaleDeclaration (λ _ → SheafOnLocaleAdapter.decl adapt)
+
 record GrothendieckToposAdapter : Set₁ where
   field
     decl : C3S2.GrothendieckToposDeclaration
@@ -1172,6 +1225,10 @@ mkGrothendieckToposAdapter d cat pcat =
 isFilledGrothendieckTopos : GrothendieckToposAdapter → B.Bool
 isFilledGrothendieckTopos a = GrothendieckToposAdapter.status a
 
+-- Categorical view for Grothendieck Topos
+grothendieckToposCategorical : GrothendieckToposAdapter → CategoricalAdapter {lsuc lzero} C3S2.GrothendieckToposDeclaration
+grothendieckToposCategorical adapt = mkCategoricalAdapter C3S2.GrothendieckToposDeclaration (λ _ → GrothendieckToposAdapter.decl adapt)
+
 record OmegaSetAdapter : Set₁ where
   field
     decl : C3S2.OmegaSetDeclarationVerified
@@ -1190,6 +1247,10 @@ mkOmegaSetAdapter d data' pdata =
 
 isFilledOmegaSet : OmegaSetAdapter → B.Bool
 isFilledOmegaSet a = OmegaSetAdapter.status a
+
+-- Categorical view for OmegaSet
+omegaSetCategorical : OmegaSetAdapter → CategoricalAdapter {lsuc lzero} C3S2.OmegaSetDeclarationVerified
+omegaSetCategorical adapt = mkCategoricalAdapter C3S2.OmegaSetDeclarationVerified (λ _ → OmegaSetAdapter.decl adapt)
 
 -- Presheaf on locale
 record PresheafOnLocaleAdapter : Set₁ where
@@ -1644,6 +1705,10 @@ mkMagmaAdapter d = record { decl = d ; status = B.true }
 isFilledMagma : MagmaAdapter → B.Bool
 isFilledMagma a = MagmaAdapter.status a
 
+-- Categorical view for Magma
+magmaCategorical : MagmaAdapter → CategoricalAdapter {lsuc lzero} AFo.MagmaDeclaration
+magmaCategorical adapt = mkCategoricalAdapter AFo.MagmaDeclaration (λ _ → MagmaAdapter.decl adapt)
+
 -- Semigroup
 record SemigroupAdapter : Set₁ where
   field
@@ -1662,6 +1727,10 @@ mkSemigroupAdapter d m pm =
 
 isFilledSemigroup : SemigroupAdapter → B.Bool
 isFilledSemigroup a = SemigroupAdapter.status a
+
+-- Categorical view for Semigroup
+semigroupCategorical : SemigroupAdapter → CategoricalAdapter {lsuc lzero} AFo.SemigroupDeclaration
+semigroupCategorical adapt = mkCategoricalAdapter AFo.SemigroupDeclaration (λ _ → SemigroupAdapter.decl adapt)
 
 -- Monoid
 record MonoidAdapter : Set₁ where
@@ -1682,6 +1751,10 @@ mkMonoidAdapter d s ps =
 isFilledMonoid : MonoidAdapter → B.Bool
 isFilledMonoid a = MonoidAdapter.status a
 
+-- Categorical view for Monoid
+monoidCategorical : MonoidAdapter → CategoricalAdapter {lsuc lzero} AFo.MonoidDeclaration
+monoidCategorical adapt = mkCategoricalAdapter AFo.MonoidDeclaration (λ _ → MonoidAdapter.decl adapt)
+
 -- Group
 record GroupAdapter : Set₁ where
   field
@@ -1700,6 +1773,10 @@ mkGroupAdapter d m pm =
 
 isFilledGroup : GroupAdapter → B.Bool
 isFilledGroup a = GroupAdapter.status a
+
+-- Categorical view for Group
+groupCategorical : GroupAdapter → CategoricalAdapter {lsuc lzero} AFo.GroupDeclaration
+groupCategorical adapt = mkCategoricalAdapter AFo.GroupDeclaration (λ _ → GroupAdapter.decl adapt)
 
 -- AbelianGroup
 record AbelianGroupAdapter : Set₁ where
@@ -1720,6 +1797,10 @@ mkAbelianGroupAdapter d g pg =
 isFilledAbelianGroup : AbelianGroupAdapter → B.Bool
 isFilledAbelianGroup a = AbelianGroupAdapter.status a
 
+-- Categorical view for Abelian Group
+abelianGroupCategorical : AbelianGroupAdapter → CategoricalAdapter {lsuc lzero} AFo.AbelianGroupDeclaration
+abelianGroupCategorical adapt = mkCategoricalAdapter AFo.AbelianGroupDeclaration (λ _ → AbelianGroupAdapter.decl adapt)
+
 -- Ring
 record RingAdapter : Set₁ where
   field
@@ -1738,6 +1819,10 @@ mkRingAdapter d ag pag =
 
 isFilledRing : RingAdapter → B.Bool
 isFilledRing a = RingAdapter.status a
+
+-- Categorical view for Ring
+ringCategorical : RingAdapter → CategoricalAdapter {lsuc lzero} AR.RingDeclaration
+ringCategorical adapt = mkCategoricalAdapter AR.RingDeclaration (λ _ → RingAdapter.decl adapt)
 
 -- UnitalRing
 record UnitalRingAdapter : Set₁ where
@@ -1758,6 +1843,10 @@ mkUnitalRingAdapter d r pr =
 isFilledUnitalRing : UnitalRingAdapter → B.Bool
 isFilledUnitalRing a = UnitalRingAdapter.status a
 
+-- Categorical view for Unital Ring
+unitalRingCategorical : UnitalRingAdapter → CategoricalAdapter {lsuc lzero} AR.UnitalRingDeclaration
+unitalRingCategorical adapt = mkCategoricalAdapter AR.UnitalRingDeclaration (λ _ → UnitalRingAdapter.decl adapt)
+
 -- CommutativeRing
 record CommutativeRingAdapter : Set₁ where
   field
@@ -1776,6 +1865,10 @@ mkCommutativeRingAdapter d ur pur =
 
 isFilledCommutativeRing : CommutativeRingAdapter → B.Bool
 isFilledCommutativeRing a = CommutativeRingAdapter.status a
+
+-- Categorical view for Commutative Ring
+commutativeRingCategorical : CommutativeRingAdapter → CategoricalAdapter {lsuc lzero} AR.CommutativeRingDeclaration
+commutativeRingCategorical adapt = mkCategoricalAdapter AR.CommutativeRingDeclaration (λ _ → CommutativeRingAdapter.decl adapt)
 
 -- DivisionRing
 record DivisionRingAdapter : Set₁ where
@@ -1796,6 +1889,10 @@ mkDivisionRingAdapter d ur pur =
 isFilledDivisionRing : DivisionRingAdapter → B.Bool
 isFilledDivisionRing a = DivisionRingAdapter.status a
 
+-- Categorical view for Division Ring
+divisionRingCategorical : DivisionRingAdapter → CategoricalAdapter {lsuc lzero} AR.DivisionRingDeclaration
+divisionRingCategorical adapt = mkCategoricalAdapter AR.DivisionRingDeclaration (λ _ → DivisionRingAdapter.decl adapt)
+
 -- Field
 record FieldAdapter : Set₁ where
   field
@@ -1814,6 +1911,10 @@ mkFieldAdapter d cr pcr =
 
 isFilledField : FieldAdapter → B.Bool
 isFilledField a = FieldAdapter.status a
+
+-- Categorical view for Field
+fieldCategorical : FieldAdapter → CategoricalAdapter {lsuc lzero} AR.FieldDeclaration
+fieldCategorical adapt = mkCategoricalAdapter AR.FieldDeclaration (λ _ → FieldAdapter.decl adapt)
 
 -- ==========================================================
 -- Core.UniversalProperties: adapters for general UMPs

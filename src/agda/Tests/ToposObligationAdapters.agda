@@ -482,6 +482,10 @@ mkOmegaSetAdapter d dat plink =
 isFilledOmegaSet : OmegaSetAdapter → B.Bool
 isFilledOmegaSet a = OmegaSetAdapter.status a
 
+-- Categorical view for OmegaSet (Topos-side)
+omegaSetCategorical : OmegaSetAdapter → CategoricalAdapter {lsuc lzero} C3S2.OmegaSetDeclarationVerified
+omegaSetCategorical adapt = mkCategoricalAdapter C3S2.OmegaSetDeclarationVerified (λ _ → OmegaSetAdapter.decl adapt)
+
 -- Ω-sets are complete Ω-sets theorem
 record SheavesAreCompleteOmegaSetsRefinedTheoremAdapter : Set₁ where
   field

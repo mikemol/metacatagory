@@ -5,6 +5,7 @@ module Tests.ToposTheoryChecklist where
 open import Agda.Builtin.Bool using (Bool; true; false)
 open import Agda.Builtin.Equality using (refl; _≡_)
 open import Agda.Builtin.Unit using (⊤; tt)
+open import Core.CategoricalAdapter
 open import Tests.ToposObligationAdapters as A
 open import Metamodel as M
 import Chapter3.Level3sub2 as S2
@@ -39,6 +40,10 @@ presheafAdapt = A.mkPresheafOnLocaleAdapter presheafDecl (λ _ → presheafDecl)
 
 _ : A.isFilledPresheafOnLocale presheafAdapt ≡ true
 _ = refl
+_ : (CategoricalAdapter.morphism (A.presheafCategorical presheafAdapt) tt) ≡ A.PresheafOnLocaleAdapter.decl presheafAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.presheafCategorical presheafAdapt) ≡ refl
+_ = refl
 
 -- SheafGluingAxiom
 gluingAxiomDecl : S2.SheafGluingAxiom
@@ -55,6 +60,10 @@ gluingAdapt = A.mkSheafGluingAxiomAdapter gluingAxiomDecl presheafDecl gluingLin
 
 _ : A.isFilledSheafGluingAxiom gluingAdapt ≡ true
 _ = refl
+_ : (CategoricalAdapter.morphism (A.sheafGluingCategorical gluingAdapt) tt) ≡ A.SheafGluingAxiomAdapter.decl gluingAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.sheafGluingCategorical gluingAdapt) ≡ refl
+_ = refl
 
 -- SheafOnLocaleDeclaration (already tested elsewhere, but we include for completeness)
 sheafDecl : S2.SheafOnLocaleDeclaration
@@ -70,6 +79,10 @@ sheafAdapt : A.SheafOnLocaleAdapter
 sheafAdapt = A.mkSheafOnLocaleAdapter sheafDecl presheafDecl sheafLink (λ _ → sheafDecl)
 
 _ : A.isFilledSheafOnLocale sheafAdapt ≡ true
+_ = refl
+_ : (CategoricalAdapter.morphism (A.sheafOnLocaleCategorical sheafAdapt) tt) ≡ A.SheafOnLocaleAdapter.decl sheafAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.sheafOnLocaleCategorical sheafAdapt) ≡ refl
 _ = refl
 
 ------------------------------------------------------------------------
@@ -93,6 +106,10 @@ sheafCatAdapt = A.mkCategoryOfSheavesAdapter sheafCatDecl catDecl sheafCatLink (
 
 _ : A.isFilledCategoryOfSheaves sheafCatAdapt ≡ true
 _ = refl
+_ : (CategoricalAdapter.morphism (A.categoryOfSheavesCategorical sheafCatAdapt) tt) ≡ A.CategoryOfSheavesAdapter.decl sheafCatAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.categoryOfSheavesCategorical sheafCatAdapt) ≡ refl
+_ = refl
 
 -- GrothendieckToposDeclaration (already tested in Chapter3Checklist)
 toposDecl : S2.GrothendieckToposDeclaration
@@ -110,6 +127,10 @@ toposAdapt : A.GrothendieckToposAdapter
 toposAdapt = A.mkGrothendieckToposAdapter toposDecl catDecl toposLink (λ _ → toposDecl)
 
 _ : A.isFilledGrothendieckTopos toposAdapt ≡ true
+_ = refl
+_ : (CategoricalAdapter.morphism (A.grothendieckToposCategorical toposAdapt) tt) ≡ A.GrothendieckToposAdapter.decl toposAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.grothendieckToposCategorical toposAdapt) ≡ refl
 _ = refl
 
 -- CategoryOfSheavesIsAToposTheorem
@@ -131,6 +152,10 @@ sheafToposTheoremAdapt = A.mkCategoryOfSheavesIsAToposTheoremAdapter
   sheafToposTheoremDecl sheafCatDecl toposDecl sheafToposLink1 sheafToposLink2 (λ _ → sheafToposTheoremDecl)
 
 _ : A.isFilledCategoryOfSheavesIsAToposTheorem sheafToposTheoremAdapt ≡ true
+_ = refl
+_ : (CategoricalAdapter.morphism (A.categoryOfSheavesIsAToposTheoremCategorical sheafToposTheoremAdapt) tt) ≡ A.CategoryOfSheavesIsAToposTheoremAdapter.decl sheafToposTheoremAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.categoryOfSheavesIsAToposTheoremCategorical sheafToposTheoremAdapt) ≡ refl
 _ = refl
 
 ------------------------------------------------------------------------
@@ -162,6 +187,10 @@ exponentialSheafAdapt = A.mkExponentialObjectSheafAdapter
 
 _ : A.isFilledExponentialObjectSheaf exponentialSheafAdapt ≡ true
 _ = refl
+_ : (CategoricalAdapter.morphism (A.exponentialObjectSheafCategorical exponentialSheafAdapt) tt) ≡ A.ExponentialObjectSheafAdapter.decl exponentialSheafAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.exponentialObjectSheafCategorical exponentialSheafAdapt) ≡ refl
+_ = refl
 
 -- SubobjectClassifierAxiom
 charMapDecl : S2.CharacteristicMapConstructor
@@ -188,6 +217,10 @@ subobjectClassifierAdapt = A.mkSubobjectClassifierAxiomAdapter
   subobjectClassifierDecl charMapDecl subobClassLink (λ _ → subobjectClassifierDecl)
 
 _ : A.isFilledSubobjectClassifierAxiom subobjectClassifierAdapt ≡ true
+_ = refl
+_ : (CategoricalAdapter.morphism (A.subobjectClassifierAxiomCategorical subobjectClassifierAdapt) tt) ≡ A.SubobjectClassifierAxiomAdapter.decl subobjectClassifierAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.subobjectClassifierAxiomCategorical subobjectClassifierAdapt) ≡ refl
 _ = refl
 
 ------------------------------------------------------------------------
@@ -219,6 +252,10 @@ etaleSpaceAdapt = A.mkEtaleSpaceOverAdapter etaleSpaceDecl projId etaleLink (λ 
 
 _ : A.isFilledEtaleSpaceOver etaleSpaceAdapt ≡ true
 _ = refl
+_ : (CategoricalAdapter.morphism (A.etaleSpaceOverCategorical etaleSpaceAdapt) tt) ≡ A.EtaleSpaceOverAdapter.decl etaleSpaceAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.etaleSpaceOverCategorical etaleSpaceAdapt) ≡ refl
+_ = refl
 
 -- CategoryOfEtaleSpaces
 etaleCatDecl : S2.CategoryOfEtaleSpaces
@@ -237,6 +274,10 @@ etaleCatAdapt = A.mkCategoryOfEtaleSpacesAdapter etaleCatDecl catDecl etaleCatLi
 
 _ : A.isFilledCategoryOfEtaleSpaces etaleCatAdapt ≡ true
 _ = refl
+_ : (CategoricalAdapter.morphism (A.categoryOfEtaleSpacesCategorical etaleCatAdapt) tt) ≡ A.CategoryOfEtaleSpacesAdapter.decl etaleCatAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.categoryOfEtaleSpacesCategorical etaleCatAdapt) ≡ refl
+_ = refl
 
 -- StalkConstructor
 stalkDecl : S2.StalkConstructor
@@ -253,6 +294,10 @@ stalkAdapt : A.StalkConstructorAdapter
 stalkAdapt = A.mkStalkConstructorAdapter stalkDecl presheafDecl stalkLink (λ _ → stalkDecl)
 
 _ : A.isFilledStalkConstructor stalkAdapt ≡ true
+_ = refl
+_ : (CategoricalAdapter.morphism (A.stalkConstructorCategorical stalkAdapt) tt) ≡ A.StalkConstructorAdapter.decl stalkAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.stalkConstructorCategorical stalkAdapt) ≡ refl
 _ = refl
 
 -- TotalSpaceOfStalks
@@ -272,6 +317,10 @@ totalSpaceAdapt : A.TotalSpaceOfStalksAdapter
 totalSpaceAdapt = A.mkTotalSpaceOfStalksAdapter totalSpaceDecl presheafDecl totalSpaceLink (λ _ → totalSpaceDecl)
 
 _ : A.isFilledTotalSpaceOfStalks totalSpaceAdapt ≡ true
+_ = refl
+_ : (CategoricalAdapter.morphism (A.totalSpaceOfStalksCategorical totalSpaceAdapt) tt) ≡ A.TotalSpaceOfStalksAdapter.decl totalSpaceAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.totalSpaceOfStalksCategorical totalSpaceAdapt) ≡ refl
 _ = refl
 
 -- SheafOfSectionsFunctor
@@ -293,6 +342,10 @@ sectionsFunctorAdapt = A.mkSheafOfSectionsFunctorAdapter
   sectionsFunctorDecl etaleSpaceDecl sheafDecl sectionsLink1 sectionsLink2 (λ _ → sectionsFunctorDecl)
 
 _ : A.isFilledSheafOfSectionsFunctor sectionsFunctorAdapt ≡ true
+_ = refl
+_ : (CategoricalAdapter.morphism (A.sheafOfSectionsFunctorCategorical sectionsFunctorAdapt) tt) ≡ A.SheafOfSectionsFunctorAdapter.decl sectionsFunctorAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.sheafOfSectionsFunctorCategorical sectionsFunctorAdapt) ≡ refl
 _ = refl
 
 -- SheafEtaleEquivalenceTheorem
@@ -331,6 +384,10 @@ sheafEtaleEquivAdapt = A.mkSheafEtaleEquivalenceTheoremAdapter
 
 _ : A.isFilledSheafEtaleEquivalenceTheorem sheafEtaleEquivAdapt ≡ true
 _ = refl
+_ : (CategoricalAdapter.morphism (A.sheafEtaleEquivalenceTheoremCategorical sheafEtaleEquivAdapt) tt) ≡ A.SheafEtaleEquivalenceTheoremAdapter.decl sheafEtaleEquivAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.sheafEtaleEquivalenceTheoremCategorical sheafEtaleEquivAdapt) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Change of Base
@@ -357,6 +414,10 @@ directImageAdapt = A.mkDirectImageFunctorLocaleAdapter directImageDecl directF d
 
 _ : A.isFilledDirectImageFunctorLocale directImageAdapt ≡ true
 _ = refl
+_ : (CategoricalAdapter.morphism (A.directImageFunctorLocaleCategorical directImageAdapt) tt) ≡ A.DirectImageFunctorLocaleAdapter.decl directImageAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.directImageFunctorLocaleCategorical directImageAdapt) ≡ refl
+_ = refl
 
 -- InverseImageFunctorLocale
 inverseF : M.Identifier
@@ -378,6 +439,10 @@ inverseImageAdapt : A.InverseImageFunctorLocaleAdapter
 inverseImageAdapt = A.mkInverseImageFunctorLocaleAdapter inverseImageDecl inverseF inverseImageLink (λ _ → inverseImageDecl)
 
 _ : A.isFilledInverseImageFunctorLocale inverseImageAdapt ≡ true
+_ = refl
+_ : (CategoricalAdapter.morphism (A.inverseImageFunctorLocaleCategorical inverseImageAdapt) tt) ≡ A.InverseImageFunctorLocaleAdapter.decl inverseImageAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.inverseImageFunctorLocaleCategorical inverseImageAdapt) ≡ refl
 _ = refl
 
 -- LocaleChangeOfBaseAdjunctionTheorem
@@ -408,6 +473,10 @@ changeOfBaseAdapt = A.mkLocaleChangeOfBaseAdjunctionTheoremAdapter
 
 _ : A.isFilledLocaleChangeOfBaseAdjunctionTheorem changeOfBaseAdapt ≡ true
 _ = refl
+_ : (CategoricalAdapter.morphism (A.localeChangeOfBaseAdjunctionTheoremCategorical changeOfBaseAdapt) tt) ≡ A.LocaleChangeOfBaseAdjunctionTheoremAdapter.decl changeOfBaseAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.localeChangeOfBaseAdjunctionTheoremCategorical changeOfBaseAdapt) ≡ refl
+_ = refl
 
 -- EtaleMorphismInducesSheafEquivalenceTheorem
 etaleEquivDecl : S2.EtaleMorphismInducesSheafEquivalenceTheorem
@@ -427,6 +496,10 @@ etaleEquivAdapt = A.mkEtaleMorphismInducesSheafEquivalenceTheoremAdapter
   etaleEquivDecl inverseImageDecl etaleEquivLink (λ _ → etaleEquivDecl)
 
 _ : A.isFilledEtaleMorphismInducesSheafEquivalenceTheorem etaleEquivAdapt ≡ true
+_ = refl
+_ : (CategoricalAdapter.morphism (A.etaleMorphismInducesSheafEquivalenceTheoremCategorical etaleEquivAdapt) tt) ≡ A.EtaleMorphismInducesSheafEquivalenceTheoremAdapter.decl etaleEquivAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.etaleMorphismInducesSheafEquivalenceTheoremCategorical etaleEquivAdapt) ≡ refl
 _ = refl
 
 ------------------------------------------------------------------------
@@ -457,6 +530,10 @@ omegaSetAdapt : A.OmegaSetAdapter
 omegaSetAdapt = A.mkOmegaSetAdapter omegaSetDecl omegaDataDecl omegaSetLink
 
 _ : A.isFilledOmegaSet omegaSetAdapt ≡ true
+_ = refl
+_ : (CategoricalAdapter.morphism (A.omegaSetCategorical omegaSetAdapt) tt) ≡ A.OmegaSetAdapter.decl omegaSetAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.omegaSetCategorical omegaSetAdapt) ≡ refl
 _ = refl
 
 -- CategoryOfOmegaSets
@@ -551,6 +628,10 @@ ringSheafAdapt = A.mkSheafOfRingsAdapter ringSheafDecl sheafDecl ringSheafLink (
 
 _ : A.isFilledSheafOfRings ringSheafAdapt ≡ true
 _ = refl
+_ : (CategoricalAdapter.morphism (A.sheafOfRingsCategorical ringSheafAdapt) tt) ≡ A.SheafOfRingsAdapter.decl ringSheafAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.sheafOfRingsCategorical ringSheafAdapt) ≡ refl
+_ = refl
 
 -- SheafOfOModules
 moduleSheafDecl : S2.SheafOfOModules
@@ -574,6 +655,10 @@ moduleSheafAdapt = A.mkSheafOfOModulesAdapter
 
 _ : A.isFilledSheafOfOModules moduleSheafAdapt ≡ true
 _ = refl
+_ : (CategoricalAdapter.morphism (A.sheafOfOModulesCategorical moduleSheafAdapt) tt) ≡ A.SheafOfOModulesAdapter.decl moduleSheafAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.sheafOfOModulesCategorical moduleSheafAdapt) ≡ refl
+_ = refl
 
 -- CategoryOfOModulesIsAbelianCorollary
 oModAbelianDecl : S2.CategoryOfOModulesIsAbelianCorollary
@@ -595,6 +680,10 @@ oModAbelianAdapt = A.mkCategoryOfOModulesIsAbelianCorollaryAdapter
   oModAbelianDecl ringSheafDecl catDecl oModAbelianLink1 oModAbelianLink2 (λ _ → oModAbelianDecl)
 
 _ : A.isFilledCategoryOfOModulesIsAbelianCorollary oModAbelianAdapt ≡ true
+_ = refl
+_ : (CategoricalAdapter.morphism (A.categoryOfOModulesIsAbelianCorollaryCategorical oModAbelianAdapt) tt) ≡ A.CategoryOfOModulesIsAbelianCorollaryAdapter.decl oModAbelianAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.categoryOfOModulesIsAbelianCorollaryCategorical oModAbelianAdapt) ≡ refl
 _ = refl
 
 ------------------------------------------------------------------------
