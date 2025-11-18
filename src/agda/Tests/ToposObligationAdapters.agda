@@ -45,9 +45,13 @@ mkSheafGluingAxiomAdapter :
   (d : C3S2.SheafGluingAxiom) →
   (psh : C3S2.PresheafOnLocale) →
   (ppsh : C3S2.SheafGluingAxiom.presheaf d ≡ psh) →
+  (f : ⊤ → C3S2.SheafGluingAxiom) →
   SheafGluingAxiomAdapter
-mkSheafGluingAxiomAdapter d psh ppsh =
+mkSheafGluingAxiomAdapter d psh ppsh f =
   record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = B.true }
+
+sheafGluingCategorical : SheafGluingAxiomAdapter → CategoricalAdapter {lsuc lzero} C3S2.SheafGluingAxiom
+sheafGluingCategorical adapt = mkCategoricalAdapter C3S2.SheafGluingAxiom (λ _ → SheafGluingAxiomAdapter.decl adapt)
 
 isFilledSheafGluingAxiom : SheafGluingAxiomAdapter → B.Bool
 isFilledSheafGluingAxiom a = SheafGluingAxiomAdapter.status a
@@ -64,9 +68,13 @@ mkSheafOnLocaleAdapter :
   (d : C3S2.SheafOnLocaleDeclaration) →
   (psh : C3S2.PresheafOnLocale) →
   (ppsh : C3S2.SheafOnLocaleDeclaration.underlyingPresheaf d ≡ psh) →
+  (f : ⊤ → C3S2.SheafOnLocaleDeclaration) →
   SheafOnLocaleAdapter
-mkSheafOnLocaleAdapter d psh ppsh =
+mkSheafOnLocaleAdapter d psh ppsh f =
   record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = B.true }
+
+sheafOnLocaleCategorical : SheafOnLocaleAdapter → CategoricalAdapter {lsuc lzero} C3S2.SheafOnLocaleDeclaration
+sheafOnLocaleCategorical adapt = mkCategoricalAdapter C3S2.SheafOnLocaleDeclaration (λ _ → SheafOnLocaleAdapter.decl adapt)
 
 isFilledSheafOnLocale : SheafOnLocaleAdapter → B.Bool
 isFilledSheafOnLocale a = SheafOnLocaleAdapter.status a
@@ -83,9 +91,13 @@ mkCategoryOfSheavesAdapter :
   (d : C3S2.CategoryOfSheaves) →
   (cat : C1S3.CategoryDeclaration) →
   (pcat : C3S2.CategoryOfSheaves.underlyingCategory d ≡ cat) →
+  (f : ⊤ → C3S2.CategoryOfSheaves) →
   CategoryOfSheavesAdapter
-mkCategoryOfSheavesAdapter d cat pcat =
+mkCategoryOfSheavesAdapter d cat pcat f =
   record { decl = d ; expCategory = cat ; linkCategory = pcat ; status = B.true }
+
+categoryOfSheavesCategorical : CategoryOfSheavesAdapter → CategoricalAdapter {lsuc lzero} C3S2.CategoryOfSheaves
+categoryOfSheavesCategorical adapt = mkCategoricalAdapter C3S2.CategoryOfSheaves (λ _ → CategoryOfSheavesAdapter.decl adapt)
 
 isFilledCategoryOfSheaves : CategoryOfSheavesAdapter → B.Bool
 isFilledCategoryOfSheaves a = CategoryOfSheavesAdapter.status a
@@ -102,9 +114,13 @@ mkGrothendieckToposAdapter :
   (d : C3S2.GrothendieckToposDeclaration) →
   (cat : C1S3.CategoryDeclaration) →
   (pcat : C3S2.GrothendieckToposDeclaration.category d ≡ cat) →
+  (f : ⊤ → C3S2.GrothendieckToposDeclaration) →
   GrothendieckToposAdapter
-mkGrothendieckToposAdapter d cat pcat =
+mkGrothendieckToposAdapter d cat pcat f =
   record { decl = d ; expCategory = cat ; linkCategory = pcat ; status = B.true }
+
+grothendieckToposCategorical : GrothendieckToposAdapter → CategoricalAdapter {lsuc lzero} C3S2.GrothendieckToposDeclaration
+grothendieckToposCategorical adapt = mkCategoricalAdapter C3S2.GrothendieckToposDeclaration (λ _ → GrothendieckToposAdapter.decl adapt)
 
 isFilledGrothendieckTopos : GrothendieckToposAdapter → B.Bool
 isFilledGrothendieckTopos a = GrothendieckToposAdapter.status a
@@ -125,10 +141,14 @@ mkCategoryOfSheavesIsAToposTheoremAdapter :
   (tp : C3S2.GrothendieckToposDeclaration) →
   (psc : C3S2.CategoryOfSheavesIsAToposTheorem.sheafCategory d ≡ sc) →
   (ptp : C3S2.CategoryOfSheavesIsAToposTheorem.isGrothendieckTopos d ≡ tp) →
+  (f : ⊤ → C3S2.CategoryOfSheavesIsAToposTheorem) →
   CategoryOfSheavesIsAToposTheoremAdapter
-mkCategoryOfSheavesIsAToposTheoremAdapter d sc tp psc ptp =
+mkCategoryOfSheavesIsAToposTheoremAdapter d sc tp psc ptp f =
   record { decl = d ; expSheafCat = sc ; expTopos = tp
          ; linkSheafCat = psc ; linkTopos = ptp ; status = B.true }
+
+categoryOfSheavesIsAToposTheoremCategorical : CategoryOfSheavesIsAToposTheoremAdapter → CategoricalAdapter {lsuc lzero} C3S2.CategoryOfSheavesIsAToposTheorem
+categoryOfSheavesIsAToposTheoremCategorical adapt = mkCategoricalAdapter C3S2.CategoryOfSheavesIsAToposTheorem (λ _ → CategoryOfSheavesIsAToposTheoremAdapter.decl adapt)
 
 isFilledCategoryOfSheavesIsAToposTheorem : CategoryOfSheavesIsAToposTheoremAdapter → B.Bool
 isFilledCategoryOfSheavesIsAToposTheorem a = CategoryOfSheavesIsAToposTheoremAdapter.status a
@@ -149,10 +169,14 @@ mkExponentialObjectSheafAdapter :
   (e : C3S2.SheafOnLocaleDeclaration) →
   (pb : C3S2.ExponentialObjectSheaf.baseSheaf d ≡ b) →
   (pe : C3S2.ExponentialObjectSheaf.exponentSheaf d ≡ e) →
+  (f : ⊤ → C3S2.ExponentialObjectSheaf) →
   ExponentialObjectSheafAdapter
-mkExponentialObjectSheafAdapter d b e pb pe =
+mkExponentialObjectSheafAdapter d b e pb pe f =
   record { decl = d ; expBase = b ; expExponent = e
          ; linkBase = pb ; linkExponent = pe ; status = B.true }
+
+exponentialObjectSheafCategorical : ExponentialObjectSheafAdapter → CategoricalAdapter {lsuc lzero} C3S2.ExponentialObjectSheaf
+exponentialObjectSheafCategorical adapt = mkCategoricalAdapter C3S2.ExponentialObjectSheaf (λ _ → ExponentialObjectSheafAdapter.decl adapt)
 
 isFilledExponentialObjectSheaf : ExponentialObjectSheafAdapter → B.Bool
 isFilledExponentialObjectSheaf a = ExponentialObjectSheafAdapter.status a
@@ -169,9 +193,13 @@ mkSubobjectClassifierAxiomAdapter :
   (d : C3S2.SubobjectClassifierAxiom) →
   (cm : C3S2.CharacteristicMapConstructor) →
   (pcm : C3S2.SubobjectClassifierAxiom.characteristicMap d ≡ cm) →
+  (f : ⊤ → C3S2.SubobjectClassifierAxiom) →
   SubobjectClassifierAxiomAdapter
-mkSubobjectClassifierAxiomAdapter d cm pcm =
+mkSubobjectClassifierAxiomAdapter d cm pcm f =
   record { decl = d ; expCharMap = cm ; linkCharMap = pcm ; status = B.true }
+
+subobjectClassifierAxiomCategorical : SubobjectClassifierAxiomAdapter → CategoricalAdapter {lsuc lzero} C3S2.SubobjectClassifierAxiom
+subobjectClassifierAxiomCategorical adapt = mkCategoricalAdapter C3S2.SubobjectClassifierAxiom (λ _ → SubobjectClassifierAxiomAdapter.decl adapt)
 
 isFilledSubobjectClassifierAxiom : SubobjectClassifierAxiomAdapter → B.Bool
 isFilledSubobjectClassifierAxiom a = SubobjectClassifierAxiomAdapter.status a
@@ -188,9 +216,13 @@ mkEtaleSpaceOverAdapter :
   (d : C3S2.EtaleSpaceOver) →
   (p : M.Identifier) →
   (pp : C3S2.EtaleSpaceOver.projection d ≡ p) →
+  (f : ⊤ → C3S2.EtaleSpaceOver) →
   EtaleSpaceOverAdapter
-mkEtaleSpaceOverAdapter d p pp =
+mkEtaleSpaceOverAdapter d p pp f =
   record { decl = d ; expProj = p ; linkProj = pp ; status = B.true }
+
+etaleSpaceOverCategorical : EtaleSpaceOverAdapter → CategoricalAdapter {lsuc lzero} C3S2.EtaleSpaceOver
+etaleSpaceOverCategorical adapt = mkCategoricalAdapter C3S2.EtaleSpaceOver (λ _ → EtaleSpaceOverAdapter.decl adapt)
 
 isFilledEtaleSpaceOver : EtaleSpaceOverAdapter → B.Bool
 isFilledEtaleSpaceOver a = EtaleSpaceOverAdapter.status a
@@ -207,9 +239,13 @@ mkCategoryOfEtaleSpacesAdapter :
   (d : C3S2.CategoryOfEtaleSpaces) →
   (cat : C1S3.CategoryDeclaration) →
   (pcat : C3S2.CategoryOfEtaleSpaces.categoryStructure d ≡ cat) →
+  (f : ⊤ → C3S2.CategoryOfEtaleSpaces) →
   CategoryOfEtaleSpacesAdapter
-mkCategoryOfEtaleSpacesAdapter d cat pcat =
+mkCategoryOfEtaleSpacesAdapter d cat pcat f =
   record { decl = d ; expCategory = cat ; linkCategory = pcat ; status = B.true }
+
+categoryOfEtaleSpacesCategorical : CategoryOfEtaleSpacesAdapter → CategoricalAdapter {lsuc lzero} C3S2.CategoryOfEtaleSpaces
+categoryOfEtaleSpacesCategorical adapt = mkCategoricalAdapter C3S2.CategoryOfEtaleSpaces (λ _ → CategoryOfEtaleSpacesAdapter.decl adapt)
 
 isFilledCategoryOfEtaleSpaces : CategoryOfEtaleSpacesAdapter → B.Bool
 isFilledCategoryOfEtaleSpaces a = CategoryOfEtaleSpacesAdapter.status a
@@ -226,9 +262,13 @@ mkStalkConstructorAdapter :
   (d : C3S2.StalkConstructor) →
   (psh : C3S2.PresheafOnLocale) →
   (ppsh : C3S2.StalkConstructor.presheaf d ≡ psh) →
+  (f : ⊤ → C3S2.StalkConstructor) →
   StalkConstructorAdapter
-mkStalkConstructorAdapter d psh ppsh =
+mkStalkConstructorAdapter d psh ppsh f =
   record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = B.true }
+
+stalkConstructorCategorical : StalkConstructorAdapter → CategoricalAdapter {lsuc lzero} C3S2.StalkConstructor
+stalkConstructorCategorical adapt = mkCategoricalAdapter C3S2.StalkConstructor (λ _ → StalkConstructorAdapter.decl adapt)
 
 isFilledStalkConstructor : StalkConstructorAdapter → B.Bool
 isFilledStalkConstructor a = StalkConstructorAdapter.status a
@@ -245,9 +285,13 @@ mkTotalSpaceOfStalksAdapter :
   (d : C3S2.TotalSpaceOfStalks) →
   (psh : C3S2.PresheafOnLocale) →
   (ppsh : C3S2.TotalSpaceOfStalks.presheaf d ≡ psh) →
+  (f : ⊤ → C3S2.TotalSpaceOfStalks) →
   TotalSpaceOfStalksAdapter
-mkTotalSpaceOfStalksAdapter d psh ppsh =
+mkTotalSpaceOfStalksAdapter d psh ppsh f =
   record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = B.true }
+
+totalSpaceOfStalksCategorical : TotalSpaceOfStalksAdapter → CategoricalAdapter {lsuc lzero} C3S2.TotalSpaceOfStalks
+totalSpaceOfStalksCategorical adapt = mkCategoricalAdapter C3S2.TotalSpaceOfStalks (λ _ → TotalSpaceOfStalksAdapter.decl adapt)
 
 isFilledTotalSpaceOfStalks : TotalSpaceOfStalksAdapter → B.Bool
 isFilledTotalSpaceOfStalks a = TotalSpaceOfStalksAdapter.status a
@@ -268,10 +312,14 @@ mkSheafOfSectionsFunctorAdapter :
   (sh : C3S2.SheafOnLocaleDeclaration) →
   (pet : C3S2.SheafOfSectionsFunctor.etaleSpace d ≡ et) →
   (psh : C3S2.SheafOfSectionsFunctor.isSheaf d ≡ sh) →
+  (f : ⊤ → C3S2.SheafOfSectionsFunctor) →
   SheafOfSectionsFunctorAdapter
-mkSheafOfSectionsFunctorAdapter d et sh pet psh =
+mkSheafOfSectionsFunctorAdapter d et sh pet psh f =
   record { decl = d ; expEtale = et ; expSheaf = sh
          ; linkEtale = pet ; linkSheaf = psh ; status = B.true }
+
+sheafOfSectionsFunctorCategorical : SheafOfSectionsFunctorAdapter → CategoricalAdapter {lsuc lzero} C3S2.SheafOfSectionsFunctor
+sheafOfSectionsFunctorCategorical adapt = mkCategoricalAdapter C3S2.SheafOfSectionsFunctor (λ _ → SheafOfSectionsFunctorAdapter.decl adapt)
 
 isFilledSheafOfSectionsFunctor : SheafOfSectionsFunctorAdapter → B.Bool
 isFilledSheafOfSectionsFunctor a = SheafOfSectionsFunctorAdapter.status a
@@ -300,12 +348,16 @@ mkSheafEtaleEquivalenceTheoremAdapter :
   (pec : C3S2.SheafEtaleEquivalenceTheorem.etaleCategory d ≡ ec) →
   (psf : C3S2.SheafEtaleEquivalenceTheorem.stalksToEtaleFunctor d ≡ sf) →
   (ptf : C3S2.SheafEtaleEquivalenceTheorem.sectionsToSheafFunctor d ≡ tf) →
+  (f : ⊤ → C3S2.SheafEtaleEquivalenceTheorem) →
   SheafEtaleEquivalenceTheoremAdapter
-mkSheafEtaleEquivalenceTheoremAdapter d sc ec sf tf psc pec psf ptf =
+mkSheafEtaleEquivalenceTheoremAdapter d sc ec sf tf psc pec psf ptf f =
   record { decl = d ; expSheafCat = sc ; expEtaleCat = ec
          ; expStalksF = sf ; expSectionsF = tf
          ; linkSheafCat = psc ; linkEtaleCat = pec
          ; linkStalksF = psf ; linkSectionsF = ptf ; status = B.true }
+
+sheafEtaleEquivalenceTheoremCategorical : SheafEtaleEquivalenceTheoremAdapter → CategoricalAdapter {lsuc lzero} C3S2.SheafEtaleEquivalenceTheorem
+sheafEtaleEquivalenceTheoremCategorical adapt = mkCategoricalAdapter C3S2.SheafEtaleEquivalenceTheorem (λ _ → SheafEtaleEquivalenceTheoremAdapter.decl adapt)
 
 isFilledSheafEtaleEquivalenceTheorem : SheafEtaleEquivalenceTheoremAdapter → B.Bool
 isFilledSheafEtaleEquivalenceTheorem a = SheafEtaleEquivalenceTheoremAdapter.status a
@@ -322,9 +374,13 @@ mkDirectImageFunctorLocaleAdapter :
   (d : C3S2.DirectImageFunctorLocale) →
   (f : M.Identifier) →
   (pf : C3S2.DirectImageFunctorLocale.underlyingFunctor d ≡ f) →
+  (morph : ⊤ → C3S2.DirectImageFunctorLocale) →
   DirectImageFunctorLocaleAdapter
-mkDirectImageFunctorLocaleAdapter d f pf =
+mkDirectImageFunctorLocaleAdapter d f pf morph =
   record { decl = d ; expFunctor = f ; linkFunctor = pf ; status = B.true }
+
+directImageFunctorLocaleCategorical : DirectImageFunctorLocaleAdapter → CategoricalAdapter {lsuc lzero} C3S2.DirectImageFunctorLocale
+directImageFunctorLocaleCategorical adapt = mkCategoricalAdapter C3S2.DirectImageFunctorLocale (λ _ → DirectImageFunctorLocaleAdapter.decl adapt)
 
 isFilledDirectImageFunctorLocale : DirectImageFunctorLocaleAdapter → B.Bool
 isFilledDirectImageFunctorLocale a = DirectImageFunctorLocaleAdapter.status a
@@ -341,9 +397,13 @@ mkInverseImageFunctorLocaleAdapter :
   (d : C3S2.InverseImageFunctorLocale) →
   (f : M.Identifier) →
   (pf : C3S2.InverseImageFunctorLocale.underlyingFunctor d ≡ f) →
+  (morph : ⊤ → C3S2.InverseImageFunctorLocale) →
   InverseImageFunctorLocaleAdapter
-mkInverseImageFunctorLocaleAdapter d f pf =
+mkInverseImageFunctorLocaleAdapter d f pf morph =
   record { decl = d ; expFunctor = f ; linkFunctor = pf ; status = B.true }
+
+inverseImageFunctorLocaleCategorical : InverseImageFunctorLocaleAdapter → CategoricalAdapter {lsuc lzero} C3S2.InverseImageFunctorLocale
+inverseImageFunctorLocaleCategorical adapt = mkCategoricalAdapter C3S2.InverseImageFunctorLocale (λ _ → InverseImageFunctorLocaleAdapter.decl adapt)
 
 isFilledInverseImageFunctorLocale : InverseImageFunctorLocaleAdapter → B.Bool
 isFilledInverseImageFunctorLocale a = InverseImageFunctorLocaleAdapter.status a
@@ -368,10 +428,14 @@ mkLocaleChangeOfBaseAdjunctionTheoremAdapter :
   (pinv : C3S2.LocaleChangeOfBaseAdjunctionTheorem.inverseImageFunctor d ≡ inv) →
   (pdir : C3S2.LocaleChangeOfBaseAdjunctionTheorem.directImageFunctor d ≡ dir) →
   (padj : C3S2.LocaleChangeOfBaseAdjunctionTheorem.adjunction d ≡ adj) →
+  (f : ⊤ → C3S2.LocaleChangeOfBaseAdjunctionTheorem) →
   LocaleChangeOfBaseAdjunctionTheoremAdapter
-mkLocaleChangeOfBaseAdjunctionTheoremAdapter d inv dir adj pinv pdir padj =
+mkLocaleChangeOfBaseAdjunctionTheoremAdapter d inv dir adj pinv pdir padj f =
   record { decl = d ; expInverse = inv ; expDirect = dir ; expAdj = adj
          ; linkInverse = pinv ; linkDirect = pdir ; linkAdj = padj ; status = B.true }
+
+localeChangeOfBaseAdjunctionTheoremCategorical : LocaleChangeOfBaseAdjunctionTheoremAdapter → CategoricalAdapter {lsuc lzero} C3S2.LocaleChangeOfBaseAdjunctionTheorem
+localeChangeOfBaseAdjunctionTheoremCategorical adapt = mkCategoricalAdapter C3S2.LocaleChangeOfBaseAdjunctionTheorem (λ _ → LocaleChangeOfBaseAdjunctionTheoremAdapter.decl adapt)
 
 isFilledLocaleChangeOfBaseAdjunctionTheorem : LocaleChangeOfBaseAdjunctionTheoremAdapter → B.Bool
 isFilledLocaleChangeOfBaseAdjunctionTheorem a = LocaleChangeOfBaseAdjunctionTheoremAdapter.status a
@@ -388,9 +452,13 @@ mkEtaleMorphismInducesSheafEquivalenceTheoremAdapter :
   (d : C3S2.EtaleMorphismInducesSheafEquivalenceTheorem) →
   (inv : C3S2.InverseImageFunctorLocale) →
   (pinv : C3S2.EtaleMorphismInducesSheafEquivalenceTheorem.inverseImageFunctor d ≡ inv) →
+  (f : ⊤ → C3S2.EtaleMorphismInducesSheafEquivalenceTheorem) →
   EtaleMorphismInducesSheafEquivalenceTheoremAdapter
-mkEtaleMorphismInducesSheafEquivalenceTheoremAdapter d inv pinv =
+mkEtaleMorphismInducesSheafEquivalenceTheoremAdapter d inv pinv f =
   record { decl = d ; expInverse = inv ; linkInverse = pinv ; status = B.true }
+
+etaleMorphismInducesSheafEquivalenceTheoremCategorical : EtaleMorphismInducesSheafEquivalenceTheoremAdapter → CategoricalAdapter {lsuc lzero} C3S2.EtaleMorphismInducesSheafEquivalenceTheorem
+etaleMorphismInducesSheafEquivalenceTheoremCategorical adapt = mkCategoricalAdapter C3S2.EtaleMorphismInducesSheafEquivalenceTheorem (λ _ → EtaleMorphismInducesSheafEquivalenceTheoremAdapter.decl adapt)
 
 isFilledEtaleMorphismInducesSheafEquivalenceTheorem : EtaleMorphismInducesSheafEquivalenceTheoremAdapter → B.Bool
 isFilledEtaleMorphismInducesSheafEquivalenceTheorem a = EtaleMorphismInducesSheafEquivalenceTheoremAdapter.status a
@@ -438,12 +506,16 @@ mkSheavesAreCompleteOmegaSetsRefinedTheoremAdapter :
   (poc : C3S2.SheavesAreCompleteOmegaSetsRefinedTheorem.completeOmegaSetCategory d ≡ oc) →
   (pfa : C3S2.SheavesAreCompleteOmegaSetsRefinedTheorem.functorA d ≡ fa) →
   (pfs : C3S2.SheavesAreCompleteOmegaSetsRefinedTheorem.functorS d ≡ fs) →
+  (f : ⊤ → C3S2.SheavesAreCompleteOmegaSetsRefinedTheorem) →
   SheavesAreCompleteOmegaSetsRefinedTheoremAdapter
-mkSheavesAreCompleteOmegaSetsRefinedTheoremAdapter d sc oc fa fs psc poc pfa pfs =
+mkSheavesAreCompleteOmegaSetsRefinedTheoremAdapter d sc oc fa fs psc poc pfa pfs f =
   record { decl = d ; expSheafCat = sc ; expOmegaCat = oc
          ; expFunctorA = fa ; expFunctorS = fs
          ; linkSheafCat = psc ; linkOmegaCat = poc
          ; linkFunctorA = pfa ; linkFunctorS = pfs ; status = B.true }
+
+sheavesAreCompleteOmegaSetsRefinedTheoremCategorical : SheavesAreCompleteOmegaSetsRefinedTheoremAdapter → CategoricalAdapter {lsuc lzero} C3S2.SheavesAreCompleteOmegaSetsRefinedTheorem
+sheavesAreCompleteOmegaSetsRefinedTheoremCategorical adapt = mkCategoricalAdapter C3S2.SheavesAreCompleteOmegaSetsRefinedTheorem (λ _ → SheavesAreCompleteOmegaSetsRefinedTheoremAdapter.decl adapt)
 
 isFilledSheavesAreCompleteOmegaSetsRefinedTheorem : SheavesAreCompleteOmegaSetsRefinedTheoremAdapter → B.Bool
 isFilledSheavesAreCompleteOmegaSetsRefinedTheorem a = SheavesAreCompleteOmegaSetsRefinedTheoremAdapter.status a
@@ -460,9 +532,13 @@ mkSheafOfRingsAdapter :
   (d : C3S2.SheafOfRings) →
   (sh : C3S2.SheafOnLocaleDeclaration) →
   (psh : C3S2.SheafOfRings.underlyingSheaf d ≡ sh) →
+  (f : ⊤ → C3S2.SheafOfRings) →
   SheafOfRingsAdapter
-mkSheafOfRingsAdapter d sh psh =
+mkSheafOfRingsAdapter d sh psh f =
   record { decl = d ; expSheaf = sh ; linkSheaf = psh ; status = B.true }
+
+sheafOfRingsCategorical : SheafOfRingsAdapter → CategoricalAdapter {lsuc lzero} C3S2.SheafOfRings
+sheafOfRingsCategorical adapt = mkCategoricalAdapter C3S2.SheafOfRings (λ _ → SheafOfRingsAdapter.decl adapt)
 
 isFilledSheafOfRings : SheafOfRingsAdapter → B.Bool
 isFilledSheafOfRings a = SheafOfRingsAdapter.status a
@@ -483,10 +559,14 @@ mkSheafOfOModulesAdapter :
   (ms : C3S2.SheafOnLocaleDeclaration) →
   (prs : C3S2.SheafOfOModules.sheafOfRings d ≡ rs) →
   (pms : C3S2.SheafOfOModules.underlyingSheaf d ≡ ms) →
+  (f : ⊤ → C3S2.SheafOfOModules) →
   SheafOfOModulesAdapter
-mkSheafOfOModulesAdapter d rs ms prs pms =
+mkSheafOfOModulesAdapter d rs ms prs pms f =
   record { decl = d ; expRingSheaf = rs ; expModSheaf = ms
          ; linkRingSheaf = prs ; linkModSheaf = pms ; status = B.true }
+
+sheafOfOModulesCategorical : SheafOfOModulesAdapter → CategoricalAdapter {lsuc lzero} C3S2.SheafOfOModules
+sheafOfOModulesCategorical adapt = mkCategoricalAdapter C3S2.SheafOfOModules (λ _ → SheafOfOModulesAdapter.decl adapt)
 
 isFilledSheafOfOModules : SheafOfOModulesAdapter → B.Bool
 isFilledSheafOfOModules a = SheafOfOModulesAdapter.status a
@@ -507,10 +587,14 @@ mkCategoryOfOModulesIsAbelianCorollaryAdapter :
   (cat : C1S3.CategoryDeclaration) →
   (prs : C3S2.CategoryOfOModulesIsAbelianCorollary.sheafOfRings d ≡ rs) →
   (pcat : C3S2.CategoryOfOModulesIsAbelianCorollary.categoryOfOModules d ≡ cat) →
+  (f : ⊤ → C3S2.CategoryOfOModulesIsAbelianCorollary) →
   CategoryOfOModulesIsAbelianCorollaryAdapter
-mkCategoryOfOModulesIsAbelianCorollaryAdapter d rs cat prs pcat =
+mkCategoryOfOModulesIsAbelianCorollaryAdapter d rs cat prs pcat f =
   record { decl = d ; expRingSheaf = rs ; expCategory = cat
          ; linkRingSheaf = prs ; linkCategory = pcat ; status = B.true }
+
+categoryOfOModulesIsAbelianCorollaryCategorical : CategoryOfOModulesIsAbelianCorollaryAdapter → CategoricalAdapter {lsuc lzero} C3S2.CategoryOfOModulesIsAbelianCorollary
+categoryOfOModulesIsAbelianCorollaryCategorical adapt = mkCategoricalAdapter C3S2.CategoryOfOModulesIsAbelianCorollary (λ _ → CategoryOfOModulesIsAbelianCorollaryAdapter.decl adapt)
 
 isFilledCategoryOfOModulesIsAbelianCorollary : CategoryOfOModulesIsAbelianCorollaryAdapter → B.Bool
 isFilledCategoryOfOModulesIsAbelianCorollary a = CategoryOfOModulesIsAbelianCorollaryAdapter.status a

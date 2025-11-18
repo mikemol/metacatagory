@@ -35,7 +35,7 @@ presheafDecl : S2.PresheafOnLocale
 presheafDecl = record { locale = dummyLocale ; underlyingFunctor = ⊤ }
 
 presheafAdapt : A.PresheafOnLocaleAdapter
-presheafAdapt = A.mkPresheafOnLocaleAdapter presheafDecl (λ _ → presheafDecl)
+presheafAdapt = A.mkPresheafOnLocaleAdapter presheafDecl (λ _ → presheafDecl) (λ _ → presheafDecl)
 
 _ : A.isFilledPresheafOnLocale presheafAdapt ≡ true
 _ = refl
@@ -51,7 +51,7 @@ gluingLink : S2.SheafGluingAxiom.presheaf gluingAxiomDecl ≡ presheafDecl
 gluingLink = refl
 
 gluingAdapt : A.SheafGluingAxiomAdapter
-gluingAdapt = A.mkSheafGluingAxiomAdapter gluingAxiomDecl presheafDecl gluingLink
+gluingAdapt = A.mkSheafGluingAxiomAdapter gluingAxiomDecl presheafDecl gluingLink (λ _ → gluingAxiomDecl)
 
 _ : A.isFilledSheafGluingAxiom gluingAdapt ≡ true
 _ = refl
@@ -67,7 +67,7 @@ sheafLink : S2.SheafOnLocaleDeclaration.underlyingPresheaf sheafDecl ≡ preshea
 sheafLink = refl
 
 sheafAdapt : A.SheafOnLocaleAdapter
-sheafAdapt = A.mkSheafOnLocaleAdapter sheafDecl presheafDecl sheafLink
+sheafAdapt = A.mkSheafOnLocaleAdapter sheafDecl presheafDecl sheafLink (λ _ → sheafDecl)
 
 _ : A.isFilledSheafOnLocale sheafAdapt ≡ true
 _ = refl
@@ -89,7 +89,7 @@ sheafCatLink : S2.CategoryOfSheaves.underlyingCategory sheafCatDecl ≡ catDecl
 sheafCatLink = refl
 
 sheafCatAdapt : A.CategoryOfSheavesAdapter
-sheafCatAdapt = A.mkCategoryOfSheavesAdapter sheafCatDecl catDecl sheafCatLink
+sheafCatAdapt = A.mkCategoryOfSheavesAdapter sheafCatDecl catDecl sheafCatLink (λ _ → sheafCatDecl)
 
 _ : A.isFilledCategoryOfSheaves sheafCatAdapt ≡ true
 _ = refl
@@ -107,7 +107,7 @@ toposLink : S2.GrothendieckToposDeclaration.category toposDecl ≡ catDecl
 toposLink = refl
 
 toposAdapt : A.GrothendieckToposAdapter
-toposAdapt = A.mkGrothendieckToposAdapter toposDecl catDecl toposLink
+toposAdapt = A.mkGrothendieckToposAdapter toposDecl catDecl toposLink (λ _ → toposDecl)
 
 _ : A.isFilledGrothendieckTopos toposAdapt ≡ true
 _ = refl
@@ -128,7 +128,7 @@ sheafToposLink2 = refl
 
 sheafToposTheoremAdapt : A.CategoryOfSheavesIsAToposTheoremAdapter
 sheafToposTheoremAdapt = A.mkCategoryOfSheavesIsAToposTheoremAdapter
-  sheafToposTheoremDecl sheafCatDecl toposDecl sheafToposLink1 sheafToposLink2
+  sheafToposTheoremDecl sheafCatDecl toposDecl sheafToposLink1 sheafToposLink2 (λ _ → sheafToposTheoremDecl)
 
 _ : A.isFilledCategoryOfSheavesIsAToposTheorem sheafToposTheoremAdapt ≡ true
 _ = refl
@@ -158,7 +158,7 @@ expSheafLink2 = refl
 
 exponentialSheafAdapt : A.ExponentialObjectSheafAdapter
 exponentialSheafAdapt = A.mkExponentialObjectSheafAdapter
-  exponentialSheafDecl sheafDecl sheafDecl expSheafLink1 expSheafLink2
+  exponentialSheafDecl sheafDecl sheafDecl expSheafLink1 expSheafLink2 (λ _ → exponentialSheafDecl)
 
 _ : A.isFilledExponentialObjectSheaf exponentialSheafAdapt ≡ true
 _ = refl
@@ -185,7 +185,7 @@ subobClassLink = refl
 
 subobjectClassifierAdapt : A.SubobjectClassifierAxiomAdapter
 subobjectClassifierAdapt = A.mkSubobjectClassifierAxiomAdapter
-  subobjectClassifierDecl charMapDecl subobClassLink
+  subobjectClassifierDecl charMapDecl subobClassLink (λ _ → subobjectClassifierDecl)
 
 _ : A.isFilledSubobjectClassifierAxiom subobjectClassifierAdapt ≡ true
 _ = refl
@@ -215,7 +215,7 @@ etaleLink : S2.EtaleSpaceOver.projection etaleSpaceDecl ≡ projId
 etaleLink = refl
 
 etaleSpaceAdapt : A.EtaleSpaceOverAdapter
-etaleSpaceAdapt = A.mkEtaleSpaceOverAdapter etaleSpaceDecl projId etaleLink
+etaleSpaceAdapt = A.mkEtaleSpaceOverAdapter etaleSpaceDecl projId etaleLink (λ _ → etaleSpaceDecl)
 
 _ : A.isFilledEtaleSpaceOver etaleSpaceAdapt ≡ true
 _ = refl
@@ -233,7 +233,7 @@ etaleCatLink : S2.CategoryOfEtaleSpaces.categoryStructure etaleCatDecl ≡ catDe
 etaleCatLink = refl
 
 etaleCatAdapt : A.CategoryOfEtaleSpacesAdapter
-etaleCatAdapt = A.mkCategoryOfEtaleSpacesAdapter etaleCatDecl catDecl etaleCatLink
+etaleCatAdapt = A.mkCategoryOfEtaleSpacesAdapter etaleCatDecl catDecl etaleCatLink (λ _ → etaleCatDecl)
 
 _ : A.isFilledCategoryOfEtaleSpaces etaleCatAdapt ≡ true
 _ = refl
@@ -250,7 +250,7 @@ stalkLink : S2.StalkConstructor.presheaf stalkDecl ≡ presheafDecl
 stalkLink = refl
 
 stalkAdapt : A.StalkConstructorAdapter
-stalkAdapt = A.mkStalkConstructorAdapter stalkDecl presheafDecl stalkLink
+stalkAdapt = A.mkStalkConstructorAdapter stalkDecl presheafDecl stalkLink (λ _ → stalkDecl)
 
 _ : A.isFilledStalkConstructor stalkAdapt ≡ true
 _ = refl
@@ -269,7 +269,7 @@ totalSpaceLink : S2.TotalSpaceOfStalks.presheaf totalSpaceDecl ≡ presheafDecl
 totalSpaceLink = refl
 
 totalSpaceAdapt : A.TotalSpaceOfStalksAdapter
-totalSpaceAdapt = A.mkTotalSpaceOfStalksAdapter totalSpaceDecl presheafDecl totalSpaceLink
+totalSpaceAdapt = A.mkTotalSpaceOfStalksAdapter totalSpaceDecl presheafDecl totalSpaceLink (λ _ → totalSpaceDecl)
 
 _ : A.isFilledTotalSpaceOfStalks totalSpaceAdapt ≡ true
 _ = refl
@@ -290,7 +290,7 @@ sectionsLink2 = refl
 
 sectionsFunctorAdapt : A.SheafOfSectionsFunctorAdapter
 sectionsFunctorAdapt = A.mkSheafOfSectionsFunctorAdapter
-  sectionsFunctorDecl etaleSpaceDecl sheafDecl sectionsLink1 sectionsLink2
+  sectionsFunctorDecl etaleSpaceDecl sheafDecl sectionsLink1 sectionsLink2 (λ _ → sectionsFunctorDecl)
 
 _ : A.isFilledSheafOfSectionsFunctor sectionsFunctorAdapt ≡ true
 _ = refl
@@ -327,7 +327,7 @@ sheafEtaleLink4 = refl
 sheafEtaleEquivAdapt : A.SheafEtaleEquivalenceTheoremAdapter
 sheafEtaleEquivAdapt = A.mkSheafEtaleEquivalenceTheoremAdapter
   sheafEtaleEquivDecl sheafCatDecl etaleCatDecl stalksF sectionsF
-  sheafEtaleLink1 sheafEtaleLink2 sheafEtaleLink3 sheafEtaleLink4
+  sheafEtaleLink1 sheafEtaleLink2 sheafEtaleLink3 sheafEtaleLink4 (λ _ → sheafEtaleEquivDecl)
 
 _ : A.isFilledSheafEtaleEquivalenceTheorem sheafEtaleEquivAdapt ≡ true
 _ = refl
@@ -353,7 +353,7 @@ directImageLink : S2.DirectImageFunctorLocale.underlyingFunctor directImageDecl 
 directImageLink = refl
 
 directImageAdapt : A.DirectImageFunctorLocaleAdapter
-directImageAdapt = A.mkDirectImageFunctorLocaleAdapter directImageDecl directF directImageLink
+directImageAdapt = A.mkDirectImageFunctorLocaleAdapter directImageDecl directF directImageLink (λ _ → directImageDecl)
 
 _ : A.isFilledDirectImageFunctorLocale directImageAdapt ≡ true
 _ = refl
@@ -375,7 +375,7 @@ inverseImageLink : S2.InverseImageFunctorLocale.underlyingFunctor inverseImageDe
 inverseImageLink = refl
 
 inverseImageAdapt : A.InverseImageFunctorLocaleAdapter
-inverseImageAdapt = A.mkInverseImageFunctorLocaleAdapter inverseImageDecl inverseF inverseImageLink
+inverseImageAdapt = A.mkInverseImageFunctorLocaleAdapter inverseImageDecl inverseF inverseImageLink (λ _ → inverseImageDecl)
 
 _ : A.isFilledInverseImageFunctorLocale inverseImageAdapt ≡ true
 _ = refl
@@ -404,7 +404,7 @@ changeOfBaseLink3 = refl
 changeOfBaseAdapt : A.LocaleChangeOfBaseAdjunctionTheoremAdapter
 changeOfBaseAdapt = A.mkLocaleChangeOfBaseAdjunctionTheoremAdapter
   changeOfBaseDecl inverseImageDecl directImageDecl adjId
-  changeOfBaseLink1 changeOfBaseLink2 changeOfBaseLink3
+  changeOfBaseLink1 changeOfBaseLink2 changeOfBaseLink3 (λ _ → changeOfBaseDecl)
 
 _ : A.isFilledLocaleChangeOfBaseAdjunctionTheorem changeOfBaseAdapt ≡ true
 _ = refl
@@ -424,7 +424,7 @@ etaleEquivLink = refl
 
 etaleEquivAdapt : A.EtaleMorphismInducesSheafEquivalenceTheoremAdapter
 etaleEquivAdapt = A.mkEtaleMorphismInducesSheafEquivalenceTheoremAdapter
-  etaleEquivDecl inverseImageDecl etaleEquivLink
+  etaleEquivDecl inverseImageDecl etaleEquivLink (λ _ → etaleEquivDecl)
 
 _ : A.isFilledEtaleMorphismInducesSheafEquivalenceTheorem etaleEquivAdapt ≡ true
 _ = refl
@@ -525,7 +525,7 @@ omegaEquivLink4 = refl
 omegaEquivAdapt : A.SheavesAreCompleteOmegaSetsRefinedTheoremAdapter
 omegaEquivAdapt = A.mkSheavesAreCompleteOmegaSetsRefinedTheoremAdapter
   omegaEquivDecl sheafCatDecl omegaCatDecl sheafToOmegaDecl omegaToSheafDecl
-  omegaEquivLink1 omegaEquivLink2 omegaEquivLink3 omegaEquivLink4
+  omegaEquivLink1 omegaEquivLink2 omegaEquivLink3 omegaEquivLink4 (λ _ → omegaEquivDecl)
 
 _ : A.isFilledSheavesAreCompleteOmegaSetsRefinedTheorem omegaEquivAdapt ≡ true
 _ = refl
@@ -547,7 +547,7 @@ ringSheafLink : S2.SheafOfRings.underlyingSheaf ringSheafDecl ≡ sheafDecl
 ringSheafLink = refl
 
 ringSheafAdapt : A.SheafOfRingsAdapter
-ringSheafAdapt = A.mkSheafOfRingsAdapter ringSheafDecl sheafDecl ringSheafLink
+ringSheafAdapt = A.mkSheafOfRingsAdapter ringSheafDecl sheafDecl ringSheafLink (λ _ → ringSheafDecl)
 
 _ : A.isFilledSheafOfRings ringSheafAdapt ≡ true
 _ = refl
@@ -570,7 +570,7 @@ moduleSheafLink2 = refl
 
 moduleSheafAdapt : A.SheafOfOModulesAdapter
 moduleSheafAdapt = A.mkSheafOfOModulesAdapter
-  moduleSheafDecl ringSheafDecl sheafDecl moduleSheafLink1 moduleSheafLink2
+  moduleSheafDecl ringSheafDecl sheafDecl moduleSheafLink1 moduleSheafLink2 (λ _ → moduleSheafDecl)
 
 _ : A.isFilledSheafOfOModules moduleSheafAdapt ≡ true
 _ = refl
@@ -592,7 +592,7 @@ oModAbelianLink2 = refl
 
 oModAbelianAdapt : A.CategoryOfOModulesIsAbelianCorollaryAdapter
 oModAbelianAdapt = A.mkCategoryOfOModulesIsAbelianCorollaryAdapter
-  oModAbelianDecl ringSheafDecl catDecl oModAbelianLink1 oModAbelianLink2
+  oModAbelianDecl ringSheafDecl catDecl oModAbelianLink1 oModAbelianLink2 (λ _ → oModAbelianDecl)
 
 _ : A.isFilledCategoryOfOModulesIsAbelianCorollary oModAbelianAdapt ≡ true
 _ = refl
