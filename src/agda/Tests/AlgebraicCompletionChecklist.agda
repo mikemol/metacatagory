@@ -3,6 +3,7 @@
 module Tests.AlgebraicCompletionChecklist where
 
 open import Agda.Builtin.Equality using (_≡_; refl)
+open import Agda.Builtin.Unit using (⊤)
 import Agda.Builtin.Nat as N
 import Agda.Builtin.String as S
 import Metamodel as M
@@ -13,6 +14,7 @@ import Algebra.Groups.Basic as AGB
 import Algebra.Groups.Abelian as AGA
 import Algebra.Modules.Basic as AM
 import Tests.ObligationAdapters as A
+import Core.CategoricalAdapter
 
 -- ============================================================================
 -- Setup: Basic structures for module category theory and R-algebras
@@ -497,3 +499,35 @@ algebraHomomorphismAdapt =
 
 _ : A.isFilledAlgebraHomomorphism algebraHomomorphismAdapt ≡ true
 _ = refl
+
+-- Categorical assertions
+_ : Core.CategoricalAdapter.morphism (A.exactSequenceCategorical exactSequenceAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.exactSequenceCategorical exactSequenceAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.exactSequenceCategorical exactSequenceAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.categoryOfModulesCategorical categoryOfModulesAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.categoryOfModulesCategorical categoryOfModulesAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.categoryOfModulesCategorical categoryOfModulesAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.vectorSpaceCategorical vectorSpaceAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.vectorSpaceCategorical vectorSpaceAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.vectorSpaceCategorical vectorSpaceAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.rAlgebraCategorical rAlgebraAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.rAlgebraCategorical rAlgebraAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.rAlgebraCategorical rAlgebraAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.algebraHomomorphismCategorical algebraHomomorphismAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.algebraHomomorphismCategorical algebraHomomorphismAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.algebraHomomorphismCategorical algebraHomomorphismAdapt) = refl
+_ = refl
+

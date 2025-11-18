@@ -23,6 +23,7 @@ import Chapter1.Level1sub3 as C1S3
 import Chapter1.Level1sub6 as C1S6
 import Chapter1.Level1 as C1L
 import Tests.ObligationAdapters as A
+open import Core.CategoricalAdapter
 
 -- TODO: These are smoke placeholders. Replace each with a constructed witness
 --       once concrete examples/bridges land:
@@ -55,10 +56,14 @@ addCatDecl = S1.ADDITIVE_CATEGORY (M.mkId "AddCat") zeroObj enrichment []
 
 -- Adapter for additive category
 add-cat-adapter : A.AdditiveCategoryAdapter
-add-cat-adapter = A.mkAdditiveCategoryAdapter addCatDecl (M.mkId "AddCat") zeroObj refl refl
+add-cat-adapter = A.mkAdditiveCategoryAdapter addCatDecl (M.mkId "AddCat") zeroObj refl refl (λ _ → addCatDecl)
 
 add-cat-status-is-filled : A.isFilledAdditive add-cat-adapter ≡ B.true
 add-cat-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.additiveCategoryCategorical add-cat-adapter) tt) ≡ A.AdditiveCategoryAdapter.decl add-cat-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.additiveCategoryCategorical add-cat-adapter) ≡ refl
+_ = refl
 
 -- Abelian category declaration
 abelianDecl : S1.AbelianCategoryDeclaration
@@ -66,10 +71,14 @@ abelianDecl = S1.ABELIAN_CATEGORY (M.mkId "Ab") addCatDecl true true true true
 
 -- Adapter for abelian category
 ab-cat-adapter : A.AbelianCategoryAdapter
-ab-cat-adapter = A.mkAbelianCategoryAdapter abelianDecl (M.mkId "Ab") addCatDecl refl refl
+ab-cat-adapter = A.mkAbelianCategoryAdapter abelianDecl (M.mkId "Ab") addCatDecl refl refl (λ _ → abelianDecl)
 
 ab-cat-status-is-filled : A.isFilledAbelian ab-cat-adapter ≡ true
 ab-cat-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.abelianCategoryCategorical ab-cat-adapter) tt) ≡ A.AbelianCategoryAdapter.decl ab-cat-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.abelianCategoryCategorical ab-cat-adapter) ≡ refl
+_ = refl
 
 -- Biproduct
 biproductDecl : S1.BiproductObject
@@ -85,10 +94,14 @@ biproductDecl = record
 
 -- Adapter for biproduct
 biprod-adapter : A.BiproductAdapter
-biprod-adapter = A.mkBiproductAdapter biproductDecl (M.mkId "A") (M.mkId "B") (M.mkId "A⊕B") refl refl refl
+biprod-adapter = A.mkBiproductAdapter biproductDecl (M.mkId "A") (M.mkId "B") (M.mkId "A⊕B") refl refl refl (λ _ → biproductDecl)
 
 biprod-status-is-filled : A.isFilledBiproduct biprod-adapter ≡ B.true
 biprod-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.biproductCategorical biprod-adapter) tt) ≡ A.BiproductAdapter.decl biprod-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.biproductCategorical biprod-adapter) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Level2sub2
@@ -129,37 +142,53 @@ reg-fact-link = refl
 reg-fact-adapter : A.RegularFactorizationAdapter
 reg-fact-adapter = A.mkRegularFactorizationAdapter regCatDecl
                      (S2.RegularEpimorphismProperty.coequalizerWitness chk2s2A)
-                     reg-fact-link
+                     reg-fact-link (λ _ → regCatDecl)
 
 reg-fact-status-is-filled : A.isFilledRegularFactorization reg-fact-adapter ≡ B.true
 reg-fact-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.regularFactorizationCategorical reg-fact-adapter) tt) ≡ A.RegularFactorizationAdapter.decl reg-fact-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.regularFactorizationCategorical reg-fact-adapter) ≡ refl
+_ = refl
 
 -- Link KernelPairDeclaration fields to chosen identifiers and assert status
 kp-adapter : A.KernelPairAdapter
 kp-adapter =
-    A.mkKernelPairAdapter chk2s2B (M.mkId "f") (M.mkId "k1") (M.mkId "k2") (M.mkId "pb")
-        refl refl refl refl
+  A.mkKernelPairAdapter chk2s2B (M.mkId "f") (M.mkId "k1") (M.mkId "k2") (M.mkId "pb")
+    refl refl refl refl (λ _ → chk2s2B)
 
 kp-status-is-filled : A.isFilledKernelPair kp-adapter ≡ B.true
 kp-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.kernelPairCategorical kp-adapter) tt) ≡ A.KernelPairAdapter.decl kp-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.kernelPairCategorical kp-adapter) ≡ refl
+_ = refl
 
 -- Link internal equivalence relation (r1,r2) and mono-into-product witness
 ier-adapter : A.InternalEquivalenceRelationAdapter
 ier-adapter =
-    A.mkInternalEquivalenceRelationAdapter chk2s2C (M.mkId "r1") (M.mkId "r2") (M.mkId "mono<r1,r2>")
-        refl refl refl
+  A.mkInternalEquivalenceRelationAdapter chk2s2C (M.mkId "r1") (M.mkId "r2") (M.mkId "mono<r1,r2>")
+    refl refl refl (λ _ → chk2s2C)
 
 ier-status-is-filled : A.isFilledInternalEquiv ier-adapter ≡ B.true
 ier-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.internalEquivalenceRelationCategorical ier-adapter) tt) ≡ A.InternalEquivalenceRelationAdapter.decl ier-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.internalEquivalenceRelationCategorical ier-adapter) ≡ refl
+_ = refl
 
 -- Link regular exact sequence’s kernel pair morphism and quotient morphism
 res-adapter : A.RegularExactSequenceAdapter
 res-adapter =
-    A.mkRegularExactSequenceAdapter chk2s2D (M.mkId "f") (M.mkId "e")
-        refl refl
+  A.mkRegularExactSequenceAdapter chk2s2D (M.mkId "f") (M.mkId "e")
+    refl refl (λ _ → chk2s2D)
 
 res-status-is-filled : A.isFilledRegularExact res-adapter ≡ B.true
 res-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.regularExactSequenceCategorical res-adapter) tt) ≡ A.RegularExactSequenceAdapter.decl res-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.regularExactSequenceCategorical res-adapter) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Level2sub3
@@ -170,20 +199,28 @@ lawvere = S3.LAWVERE_THEORY_WITH_base_object (M.mkId "T") (M.mkId "X") (M.mkId "
 
 -- Adapter for Lawvere theory
 lawvere-adapter : A.LawvereTheoryAdapter
-lawvere-adapter = A.mkLawvereTheoryAdapter lawvere (M.mkId "T") (M.mkId "X") refl refl
+lawvere-adapter = A.mkLawvereTheoryAdapter lawvere (M.mkId "T") (M.mkId "X") refl refl (λ _ → lawvere)
 
 lawvere-status-is-filled : A.isFilledLawvereTheory lawvere-adapter ≡ B.true
 lawvere-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.lawvereTheoryCategorical lawvere-adapter) tt) ≡ A.LawvereTheoryAdapter.decl lawvere-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.lawvereTheoryCategorical lawvere-adapter) ≡ refl
+_ = refl
 
 algCat : S3.AlgebraicCategoryDeclaration
 algCat = S3._is_ALGEBRAIC_CATEGORY (M.mkId "C") lawvere (M.mkId "equiv")
 
 -- Adapter for algebraic category
 alg-cat-adapter : A.AlgebraicCategoryAdapter
-alg-cat-adapter = A.mkAlgebraicCategoryAdapter algCat (M.mkId "C") lawvere refl refl
+alg-cat-adapter = A.mkAlgebraicCategoryAdapter algCat (M.mkId "C") lawvere refl refl (λ _ → algCat)
 
 alg-cat-status-is-filled : A.isFilledAlgebraicCategory alg-cat-adapter ≡ B.true
 alg-cat-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.algebraicCategoryCategorical alg-cat-adapter) tt) ≡ A.AlgebraicCategoryAdapter.decl alg-cat-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.algebraicCategoryCategorical alg-cat-adapter) ≡ refl
+_ = refl
 
 chk2s3A : S3.AlgebraicCategoriesAreRegularTheorem
 -- TODO(Ch2 §2.3): Replace with regularity witness derived from Mod(T,Set).
@@ -211,6 +248,10 @@ monad-adapter = A.mkMonadAdapter monadDecl (M.mkId "T") monadData refl refl
 
 monad-status-is-filled : A.isFilledMonad monad-adapter ≡ true
 monad-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.monadCategorical monad-adapter) tt) ≡ A.MonadAdapter.decl monad-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.monadCategorical monad-adapter) ≡ refl
+_ = refl
 
 algData : S4.TAlgebraData
 algData = S4.T_ALGEBRA_DATA monadDecl (M.mkId "A") (M.mkId "h")
@@ -221,6 +262,10 @@ talg-adapter = A.mkTAlgebraAdapter algData (M.mkId "A") monadDecl refl refl
 
 talg-status-is-filled : A.isFilledTAlgebra talg-adapter ≡ true
 talg-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.talgebraCategorical talg-adapter) tt) ≡ A.TAlgebraAdapter.decl talg-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.talgebraCategorical talg-adapter) ≡ refl
+_ = refl
 
 chk2s4A : S4.ListAlgebrasAreMonoidsTheorem
 -- TODO(Ch2 §2.4): Replace with (A,h) obtained from a concrete list-algebra.
@@ -257,6 +302,10 @@ lp-cat-adapter = A.mkLocallyPresentableAdapter locallyPresentableC catDeclC alph
 
 lp-cat-status-is-filled : A.isFilledLocallyPresentable lp-cat-adapter ≡ B.true
 lp-cat-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.locallyPresentableCategorical lp-cat-adapter) tt) ≡ A.LocallyPresentableAdapter.decl lp-cat-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.locallyPresentableCategorical lp-cat-adapter) ≡ refl
+_ = refl
 
 chk2s5A : S5.LocallyPresentableAreWellBehavedTheorem
 -- TODO(Ch2 §2.5): Replace with LP-category declaration built from small generators.
@@ -284,6 +333,10 @@ hom-adapter = A.mkHomObjectAdapter chk2s6A (M.mkId "HomAB") hom-link
 
 hom-status-is-filled : A.isFilledHom hom-adapter ≡ B.true
 hom-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.homObjectCategorical hom-adapter) tt) ≡ A.HomObjectAdapter.decl hom-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.homObjectCategorical hom-adapter) ≡ refl
+_ = refl
 
 idMor : C1L.MorphismDeclaration
 idMor = C1L.mor (M.mkId "id") (M.mkId "X") (M.mkId "X")
@@ -301,6 +354,10 @@ id-adapter = A.mkIdEnrichedAdapter chk2s6B idMor id-link
 
 id-status-is-filled : A.isFilledId id-adapter ≡ B.true
 id-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.idEnrichedCategorical id-adapter) tt) ≡ A.IdEnrichedAdapter.decl id-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.idEnrichedCategorical id-adapter) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Level2sub7 (Topological theorems)
@@ -361,6 +418,10 @@ ses-adapter = A.mkShortExactSequenceAdapter sesDecl (M.mkId "A") (M.mkId "B") (M
 
 ses-status-is-filled : A.isFilledShortExactSequence ses-adapter ≡ true
 ses-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.shortExactSequenceCategorical ses-adapter) tt) ≡ A.ShortExactSequenceAdapter.decl ses-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.shortExactSequenceCategorical ses-adapter) ≡ refl
+_ = refl
 
 zeroMorphDecl : S1.ZeroMorphismDeclaration
 zeroMorphDecl = S1.zero_mor (M.mkId "A") (M.mkId "B") (M.mkId "0") (M.mkId "f") (M.mkId "g")
@@ -370,6 +431,10 @@ zero-morph-adapter = A.mkZeroMorphismAdapter zeroMorphDecl (M.mkId "A") (M.mkId 
 
 zero-morph-status-is-filled : A.isFilledZeroMorphism zero-morph-adapter ≡ true
 zero-morph-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.zeroMorphismCategorical zero-morph-adapter) tt) ≡ A.ZeroMorphismAdapter.decl zero-morph-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.zeroMorphismCategorical zero-morph-adapter) ≡ refl
+_ = refl
 
 torsionTheoryDecl : S1.TorsionTheoryDeclaration
 torsionTheoryDecl = S1.TORSION_THEORY (M.mkId "C") (M.mkId "T") (M.mkId "F")
@@ -381,6 +446,10 @@ torsion-adapter = A.mkTorsionTheoryAdapter torsionTheoryDecl (M.mkId "C") (M.mkI
 
 torsion-status-is-filled : A.isFilledTorsionTheory torsion-adapter ≡ true
 torsion-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.torsionTheoryCategorical torsion-adapter) tt) ≡ A.TorsionTheoryAdapter.decl torsion-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.torsionTheoryCategorical torsion-adapter) ≡ refl
+_ = refl
 
 -- Level 2.3 additional adapters
 bialgebraDecl : S3.BialgebraDeclaration
@@ -394,6 +463,10 @@ bialgebra-adapter = A.mkBialgebraAdapter bialgebraDecl (M.mkId "S") (M.mkId "M1"
 
 bialgebra-status-is-filled : A.isFilledBialgebra bialgebra-adapter ≡ true
 bialgebra-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.bialgebraCategorical bialgebra-adapter) tt) ≡ A.BialgebraAdapter.decl bialgebra-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.bialgebraCategorical bialgebra-adapter) ≡ refl
+_ = refl
 
 -- Level 2.4 additional adapters
 comonadData : S4.ComonadData
@@ -410,6 +483,10 @@ comonad-adapter = A.mkComonadAdapter comonadDecl (M.mkId "G") comonadData refl r
 
 comonad-status-is-filled : A.isFilledComonad comonad-adapter ≡ true
 comonad-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.comonadCategorical comonad-adapter) tt) ≡ A.ComonadAdapter.decl comonad-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.comonadCategorical comonad-adapter) ≡ refl
+_ = refl
 
 -- Level 2.5 additional adapters
 accessibleCatDecl : S5.AccessibleCategoryDeclaration
@@ -429,6 +506,10 @@ accessible-adapter = A.mkAccessibleCategoryAdapter accessibleCatDecl
 
 accessible-status-is-filled : A.isFilledAccessibleCategory accessible-adapter ≡ true
 accessible-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.accessibleCategoryCategorical accessible-adapter) tt) ≡ A.AccessibleCategoryAdapter.decl accessible-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.accessibleCategoryCategorical accessible-adapter) ≡ refl
+_ = refl
 
 sketchDecl : S5.SketchDeclaration
 sketchDecl = record
@@ -443,6 +524,10 @@ sketch-adapter = A.mkSketchAdapter sketchDecl (C1S3.CATEGORY (M.mkId "S")) refl
 
 sketch-status-is-filled : A.isFilledSketch sketch-adapter ≡ true
 sketch-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.sketchCategorical sketch-adapter) tt) ≡ A.SketchAdapter.decl sketch-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.sketchCategorical sketch-adapter) ≡ refl
+_ = refl
 
 -- Level 2.6 adapters
 monoidalData : S6.MonoidalCategoryData
@@ -501,6 +586,10 @@ monoidal-adapter = A.mkMonoidalCategoryAdapter monoidalDecl monoidalData associa
 
 monoidal-status-is-filled : A.isFilledMonoidal monoidal-adapter ≡ true
 monoidal-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.monoidalCategoryCategorical monoidal-adapter) tt) ≡ A.MonoidalCategoryAdapter.decl monoidal-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.monoidalCategoryCategorical monoidal-adapter) ≡ refl
+_ = refl
 
 braidingDecl : S6.BraidingDeclaration
 braidingDecl = record
@@ -529,6 +618,10 @@ sym-monoidal-adapter = A.mkSymmetricMonoidalAdapter symMonoidalDecl monoidalDecl
 
 sym-monoidal-status-is-filled : A.isFilledSymmetricMonoidal sym-monoidal-adapter ≡ true
 sym-monoidal-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.symmetricMonoidalCategoryCategorical sym-monoidal-adapter) tt) ≡ A.SymmetricMonoidalAdapter.decl sym-monoidal-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.symmetricMonoidalCategoryCategorical sym-monoidal-adapter) ≡ refl
+_ = refl
 
 internalHomDecl : S6.InternalHomObjectDeclaration
 internalHomDecl = record
@@ -544,6 +637,14 @@ internal-hom-adapter = A.mkInternalHomAdapter internalHomDecl
 
 internal-hom-status-is-filled : A.isFilledInternalHom internal-hom-adapter ≡ true
 internal-hom-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.internalHomCategorical internal-hom-adapter) tt) ≡ A.InternalHomAdapter.decl internal-hom-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.internalHomCategorical internal-hom-adapter) ≡ refl
+_ = refl
+_ : (CategoricalAdapter.morphism (A.internalHomCategorical internal-hom-adapter) tt) ≡ A.InternalHomAdapter.decl internal-hom-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.internalHomCategorical internal-hom-adapter) ≡ refl
+_ = refl
 
 -- Level 2.7 adapters
 topCatCGWH : S7.TopologicalSpacesCategory
@@ -566,6 +667,14 @@ cgwh-adapter = A.mkCGWH_CategoryAdapter cgwhDecl topCatCGWH (C1S3.CATEGORY (M.mk
 
 cgwh-status-is-filled : A.isFilledCGWH cgwh-adapter ≡ true
 cgwh-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.cgwhCategoryCategorical cgwh-adapter) tt) ≡ A.CGWH_CategoryAdapter.decl cgwh-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.cgwhCategoryCategorical cgwh-adapter) ≡ refl
+_ = refl
+_ : (CategoricalAdapter.morphism (A.cgwhCategoryCategorical cgwh-adapter) tt) ≡ A.CGWH_CategoryAdapter.decl cgwh-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.cgwhCategoryCategorical cgwh-adapter) ≡ refl
+_ = refl
 
 topFunctorProp : S7.TopologicalFunctorProperty
 topFunctorProp = record
@@ -593,6 +702,14 @@ top-functor-adapter = A.mkTopologicalFunctorAdapter topFunctorProp (M.mkId "U") 
 
 top-functor-status-is-filled : A.isFilledTopologicalFunctor top-functor-adapter ≡ true
 top-functor-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.topologicalFunctorCategorical top-functor-adapter) tt) ≡ A.TopologicalFunctorAdapter.decl top-functor-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.topologicalFunctorCategorical top-functor-adapter) ≡ refl
+_ = refl
+_ : (CategoricalAdapter.morphism (A.topologicalFunctorCategorical top-functor-adapter) tt) ≡ A.TopologicalFunctorAdapter.decl top-functor-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.topologicalFunctorCategorical top-functor-adapter) ≡ refl
+_ = refl
 
 -- Level 2.8 adapters
 totalCat : C1S3.CategoryDeclaration
@@ -612,10 +729,18 @@ fibrationDecl = record
   }
 
 fibration-adapter : A.FibrationAdapter
-fibration-adapter = A.mkFibrationAdapter fibrationDecl fibProjection refl
+fibration-adapter = A.mkFibrationAdapter fibrationDecl fibProjection refl (λ _ → fibrationDecl)
 
 fibration-status-is-filled : A.isFilledFibration fibration-adapter ≡ true
 fibration-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.fibrationCategorical fibration-adapter) tt) ≡ A.FibrationAdapter.decl fibration-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.fibrationCategorical fibration-adapter) ≡ refl
+_ = refl
+_ : (CategoricalAdapter.morphism (A.fibrationCategorical fibration-adapter) tt) ≡ A.FibrationAdapter.decl fibration-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.fibrationCategorical fibration-adapter) ≡ refl
+_ = refl
 
 opfibrationDecl : S8.OpfibrationDeclaration
 opfibrationDecl = record
@@ -624,7 +749,15 @@ opfibrationDecl = record
   }
 
 opfibration-adapter : A.OpfibrationAdapter
-opfibration-adapter = A.mkOpfibrationAdapter opfibrationDecl fibProjection refl
+opfibration-adapter = A.mkOpfibrationAdapter opfibrationDecl fibProjection refl (λ _ → opfibrationDecl)
 
 opfibration-status-is-filled : A.isFilledOpfibration opfibration-adapter ≡ true
 opfibration-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.opfibrationCategorical opfibration-adapter) tt) ≡ A.OpfibrationAdapter.decl opfibration-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.opfibrationCategorical opfibration-adapter) ≡ refl
+_ = refl
+_ : (CategoricalAdapter.morphism (A.opfibrationCategorical opfibration-adapter) tt) ≡ A.OpfibrationAdapter.decl opfibration-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.opfibrationCategorical opfibration-adapter) ≡ refl
+_ = refl

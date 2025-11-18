@@ -5,11 +5,13 @@ module Tests.PolynomialExtensionsChecklist where
 
 open import Agda.Builtin.Equality
 open import Agda.Builtin.Bool as B
+open import Agda.Builtin.Unit using (⊤)
 
 import Metamodel as M
 import Algebra.Foundation as AF
 import Algebra.Rings.Basic as AR
 import Tests.ObligationAdapters as A
+import Core.CategoricalAdapter
 
 -- Minimal commutative ring
 commRingDecl : AR.CommutativeRingDeclaration
@@ -157,11 +159,43 @@ primeSpectrumAdapt = A.mkPrimeSpectrumAdapter commRingDecl primeSpectrumDecl (M.
 _ : A.isFilledMultivariatePolynomialRing multivariatePolyAdapt ≡ B.true
 _ = refl
 
+-- Categorical assertions for MultivariatePolynomialRing
+_ : Core.CategoricalAdapter.CategoricalAdapter.morphism (A.multivariatePolynomialRingCategorical multivariatePolyAdapt) ⊤ ⊤ ≡
+    Core.CategoricalAdapter.CategoricalAdapter.object (A.multivariatePolynomialRingCategorical multivariatePolyAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.CategoricalAdapter.isomorphism (A.multivariatePolynomialRingCategorical multivariatePolyAdapt) ⊤ ⊤ ≡ refl
+_ = refl
+
 _ : A.isFilledContentOfPolynomial contentAdapt ≡ B.true
+_ = refl
+
+-- Categorical assertions for ContentOfPolynomial
+_ : Core.CategoricalAdapter.CategoricalAdapter.morphism (A.contentOfPolynomialCategorical contentAdapt) ⊤ ⊤ ≡
+    Core.CategoricalAdapter.CategoricalAdapter.object (A.contentOfPolynomialCategorical contentAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.CategoricalAdapter.isomorphism (A.contentOfPolynomialCategorical contentAdapt) ⊤ ⊤ ≡ refl
 _ = refl
 
 _ : A.isFilledPrimitivePolynomial primPolyAdapt ≡ B.true
 _ = refl
 
+-- Categorical assertions for PrimitivePolynomial
+_ : Core.CategoricalAdapter.CategoricalAdapter.morphism (A.primitivePolynomialCategorical primPolyAdapt) ⊤ ⊤ ≡
+    Core.CategoricalAdapter.CategoricalAdapter.object (A.primitivePolynomialCategorical primPolyAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.CategoricalAdapter.isomorphism (A.primitivePolynomialCategorical primPolyAdapt) ⊤ ⊤ ≡ refl
+_ = refl
+
 _ : A.isFilledPrimeSpectrum primeSpectrumAdapt ≡ B.true
+_ = refl
+
+-- Categorical assertions for PrimeSpectrum
+_ : Core.CategoricalAdapter.CategoricalAdapter.morphism (A.primeSpectrumCategorical primeSpectrumAdapt) ⊤ ⊤ ≡
+    Core.CategoricalAdapter.CategoricalAdapter.object (A.primeSpectrumCategorical primeSpectrumAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.CategoricalAdapter.isomorphism (A.primeSpectrumCategorical primeSpectrumAdapt) ⊤ ⊤ ≡ refl
 _ = refl

@@ -7,6 +7,7 @@ open import Agda.Builtin.Unit using (⊤; tt)
 open import Metamodel as M
 import Agda.Builtin.Bool as B
 open import Agda.Builtin.Equality using (_≡_; refl)
+open import Core.CategoricalAdapter
 import Tests.ObligationAdapters as A
 
 -- TODO: These are smoke placeholders for Chapter 3. Replace with constructed
@@ -46,6 +47,11 @@ dual-adapter = A.mkLocaleFrameDualityAdapter chk3s1A ⊤ dual-link
 
 dual-status-is-filled : A.isFilledDuality dual-adapter ≡ B.true
 dual-status-is-filled = refl
+-- Categorical assertions for Locale–Frame Duality
+_ : (CategoricalAdapter.morphism (A.localeFrameDualityCategorical dual-adapter) tt) ≡ A.LocaleFrameDualityAdapter.decl dual-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.localeFrameDualityCategorical dual-adapter) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Level3sub2
@@ -64,6 +70,11 @@ loc-adapter = A.mkLocalHomeomorphismAdapter chk3s2A (M.mkId "p") loc-link
 
 loc-status-is-filled : A.isFilledLocalHomeo loc-adapter ≡ B.true
 loc-status-is-filled = refl
+-- Categorical assertions for Local Homeomorphism
+_ : (CategoricalAdapter.morphism (A.localHomeomorphismCategorical loc-adapter) tt) ≡ A.LocalHomeomorphismAdapter.decl loc-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.localHomeomorphismCategorical loc-adapter) ≡ refl
+_ = refl
 
 chk3s2B : S2.EtaleSpaceOver
 -- TODO(Ch3 §3.2): Replace with an étale space built from a sheaf example.
@@ -86,6 +97,11 @@ etal-adapter = A.mkEtaleSpaceAdapter chk3s2B (M.mkId "p") chk3s2A etal-proj-link
 
 etal-status-is-filled : A.isFilledEtale etal-adapter ≡ B.true
 etal-status-is-filled = refl
+-- Categorical assertions for Etale Space
+_ : (CategoricalAdapter.morphism (A.etaleSpaceCategorical etal-adapter) tt) ≡ A.EtaleSpaceAdapter.decl etal-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.etaleSpaceCategorical etal-adapter) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- New adapters for comprehensive Chapter 3 coverage
@@ -104,6 +120,11 @@ heyting-adapter = A.mkHeytingAlgebraAdapter heytingDecl
 
 heyting-status : A.isFilledHeytingAlgebra heyting-adapter ≡ B.true
 heyting-status = refl
+-- Categorical assertions for Heyting Algebra
+_ : (CategoricalAdapter.morphism (A.heytingAlgebraCategorical heyting-adapter) tt) ≡ A.HeytingAlgebraAdapter.decl heyting-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.heytingAlgebraCategorical heyting-adapter) ≡ refl
+_ = refl
 
 -- Frame
 frameDecl : S1.FrameDeclaration
@@ -121,6 +142,11 @@ frame-adapter = A.mkFrameAdapter frameDecl heytingDecl frame-link
 
 frame-status : A.isFilledFrame frame-adapter ≡ B.true
 frame-status = refl
+-- Categorical assertions for Frame
+_ : (CategoricalAdapter.morphism (A.frameCategorical frame-adapter) tt) ≡ A.FrameAdapter.decl frame-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.frameCategorical frame-adapter) ≡ refl
+_ = refl
 
 -- Locale
 localeDecl : S1.LocaleDeclaration
@@ -136,6 +162,11 @@ locale-adapter = A.mkLocaleAdapter localeDecl frameDecl locale-link
 
 locale-status : A.isFilledLocale locale-adapter ≡ B.true
 locale-status = refl
+-- Categorical assertions for Locale
+_ : (CategoricalAdapter.morphism (A.localeCategorical locale-adapter) tt) ≡ A.LocaleAdapter.decl locale-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.localeCategorical locale-adapter) ≡ refl
+_ = refl
 
 -- LocaleMorphism
 srcLocale : S1.LocaleDeclaration
@@ -163,6 +194,11 @@ locale-morph-adapter = A.mkLocaleMorphismAdapter localeMorphDecl srcLocale tgtLo
 
 locale-morph-status : A.isFilledLocaleMorphism locale-morph-adapter ≡ B.true
 locale-morph-status = refl
+-- Categorical assertions for Locale Morphism
+_ : (CategoricalAdapter.morphism (A.localeMorphismCategorical locale-morph-adapter) tt) ≡ A.LocaleMorphismAdapter.decl locale-morph-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.localeMorphismCategorical locale-morph-adapter) ≡ refl
+_ = refl
 
 -- Nucleus
 nucleusDecl : S1.NucleusDeclaration
@@ -183,6 +219,11 @@ nucleus-adapter = A.mkNucleusAdapter nucleusDecl frameDecl nucleus-link
 
 nucleus-status : A.isFilledNucleus nucleus-adapter ≡ B.true
 nucleus-status = refl
+-- Categorical assertions for Nucleus
+_ : (CategoricalAdapter.morphism (A.nucleusCategorical nucleus-adapter) tt) ≡ A.NucleusAdapter.decl nucleus-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.nucleusCategorical nucleus-adapter) ≡ refl
+_ = refl
 
 -- Sublocale
 sublocDecl : S1.SublocaleDeclaration
@@ -204,6 +245,11 @@ subloc-adapter = A.mkSublocaleAdapter sublocDecl localeDecl localeDecl
 
 subloc-status : A.isFilledSublocale subloc-adapter ≡ B.true
 subloc-status = refl
+-- Categorical assertions for Sublocale
+_ : (CategoricalAdapter.morphism (A.sublocaleCategorical subloc-adapter) tt) ≡ A.SublocaleAdapter.decl subloc-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.sublocaleCategorical subloc-adapter) ≡ refl
+_ = refl
 
 -- OpenLocaleMorphism
 openMorphDecl : S1.OpenLocaleMorphismDeclaration
@@ -221,6 +267,11 @@ open-morph-adapter = A.mkOpenLocaleMorphismAdapter openMorphDecl localeMorphDecl
 
 open-morph-status : A.isFilledOpenLocaleMorphism open-morph-adapter ≡ B.true
 open-morph-status = refl
+-- Categorical assertions for Open Locale Morphism
+_ : (CategoricalAdapter.morphism (A.openLocaleMorphismCategorical open-morph-adapter) tt) ≡ A.OpenLocaleMorphismAdapter.decl open-morph-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.openLocaleMorphismCategorical open-morph-adapter) ≡ refl
+_ = refl
 
 -- SoberSpace
 soberDecl : S1.SoberSpaceDeclaration
@@ -235,6 +286,11 @@ sober-adapter = A.mkSoberSpaceAdapter soberDecl
 
 sober-status : A.isFilledSoberSpace sober-adapter ≡ B.true
 sober-status = refl
+-- Categorical assertions for Sober Space
+_ : (CategoricalAdapter.morphism (A.soberSpaceCategorical sober-adapter) tt) ≡ A.SoberSpaceAdapter.decl sober-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.soberSpaceCategorical sober-adapter) ≡ refl
+_ = refl
 
 -- SpatialLocale
 spatialDecl : S1.SpatialLocaleDeclaration
@@ -252,6 +308,11 @@ spatial-adapter = A.mkSpatialLocaleAdapter spatialDecl localeDecl spatial-link
 
 spatial-status : A.isFilledSpatialLocale spatial-adapter ≡ B.true
 spatial-status = refl
+-- Categorical assertions for Spatial Locale
+_ : (CategoricalAdapter.morphism (A.spatialLocaleCategorical spatial-adapter) tt) ≡ A.SpatialLocaleAdapter.decl spatial-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.spatialLocaleCategorical spatial-adapter) ≡ refl
+_ = refl
 
 -- SheafOnLocale
 presheafDecl : S2.PresheafOnLocale
@@ -274,6 +335,11 @@ sheaf-adapter = A.mkSheafOnLocaleAdapter sheafDecl presheafDecl sheaf-link
 
 sheaf-status : A.isFilledSheafOnLocale sheaf-adapter ≡ B.true
 sheaf-status = refl
+-- Categorical assertions for Sheaf on Locale
+_ : (CategoricalAdapter.morphism (A.sheafOnLocaleCategorical sheaf-adapter) tt) ≡ A.SheafOnLocaleAdapter.decl sheaf-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.sheafOnLocaleCategorical sheaf-adapter) ≡ refl
+_ = refl
 
 -- GrothendieckTopos
 toposDecl : S2.GrothendieckToposDeclaration
@@ -292,6 +358,11 @@ topos-adapter = A.mkGrothendieckToposAdapter toposDecl catDecl topos-link
 
 topos-status : A.isFilledGrothendieckTopos topos-adapter ≡ B.true
 topos-status = refl
+-- Categorical assertions for Grothendieck Topos
+_ : (CategoricalAdapter.morphism (A.grothendieckToposCategorical topos-adapter) tt) ≡ A.GrothendieckToposAdapter.decl topos-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.grothendieckToposCategorical topos-adapter) ≡ refl
+_ = refl
 
 -- OmegaSet
 omegaData : S2.OmegaSetData
@@ -317,4 +388,9 @@ omega-adapter = A.mkOmegaSetAdapter omegaSetDecl omegaData omega-link
 
 omega-status : A.isFilledOmegaSet omega-adapter ≡ B.true
 omega-status = refl
+-- Categorical assertions for Omega Set
+_ : (CategoricalAdapter.morphism (A.omegaSetCategorical omega-adapter) tt) ≡ A.OmegaSetAdapter.decl omega-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.omegaSetCategorical omega-adapter) ≡ refl
+_ = refl
 

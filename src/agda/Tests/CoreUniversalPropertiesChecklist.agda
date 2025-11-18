@@ -7,6 +7,7 @@ open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.Equality using (_≡_; refl)
 import Agda.Builtin.Bool as B
 open import Metamodel as M
+open import Core.CategoricalAdapter
 import Tests.ObligationAdapters as A
 import Core.UniversalProperties as CUP
 
@@ -27,6 +28,12 @@ initial-adapter = A.mkInitialObjectAdapter initialObj (CUP.InitialObject.initial
 initial-status : A.isFilledInitialObject initial-adapter ≡ B.true
 initial-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.initialObjectCategorical initial-adapter) tt) ≡ A.InitialObjectAdapter.decl initial-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.initialObjectCategorical initial-adapter) ≡ refl
+_ = refl
+
 terminalObj : CUP.TerminalObject
 terminalObj = record
   { terminal = M.mkId "1"
@@ -39,6 +46,12 @@ terminal-adapter = A.mkTerminalObjectAdapter terminalObj (CUP.TerminalObject.ter
 
 terminal-status : A.isFilledTerminalObject terminal-adapter ≡ B.true
 terminal-status = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.terminalObjectCategorical terminal-adapter) tt) ≡ A.TerminalObjectAdapter.decl terminal-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.terminalObjectCategorical terminal-adapter) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Product and Coproduct
@@ -65,6 +78,12 @@ product-adapter = A.mkProductPropertyAdapter A₀ B₀ prodProp (CUP.ProductProp
 product-status : A.isFilledProductProperty product-adapter ≡ B.true
 product-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.productPropertyCategorical product-adapter) tt) ≡ A.ProductPropertyAdapter.decl product-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.productPropertyCategorical product-adapter) ≡ refl
+_ = refl
+
 coprodProp : CUP.CoproductProperty A₀ B₀
 coprodProp = record
   { coproduct = M.mkId "A+B"
@@ -81,6 +100,12 @@ coproduct-adapter = A.mkCoproductPropertyAdapter A₀ B₀ coprodProp (CUP.Copro
 
 coproduct-status : A.isFilledCoproductProperty coproduct-adapter ≡ B.true
 coproduct-status = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.coproductPropertyCategorical coproduct-adapter) tt) ≡ A.CoproductPropertyAdapter.decl coproduct-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.coproductPropertyCategorical coproduct-adapter) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Equalizer and Coequalizer
@@ -110,6 +135,12 @@ equalizer-adapter = A.mkEqualizerPropertyAdapter A₁ B₁ f g eqProp (CUP.Equal
 equalizer-status : A.isFilledEqualizerProperty equalizer-adapter ≡ B.true
 equalizer-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.equalizerPropertyCategorical equalizer-adapter) tt) ≡ A.EqualizerPropertyAdapter.decl equalizer-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.equalizerPropertyCategorical equalizer-adapter) ≡ refl
+_ = refl
+
 coeqProp : CUP.CoequalizerProperty A₁ B₁ f g
 coeqProp = record
   { coequalizer = M.mkId "Coeq(f,g)"
@@ -125,6 +156,12 @@ coequalizer-adapter = A.mkCoequalizerPropertyAdapter A₁ B₁ f g coeqProp (CUP
 
 coequalizer-status : A.isFilledCoequalizerProperty coequalizer-adapter ≡ B.true
 coequalizer-status = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.coequalizerPropertyCategorical coequalizer-adapter) tt) ≡ A.CoequalizerPropertyAdapter.decl coequalizer-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.coequalizerPropertyCategorical coequalizer-adapter) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Pullback and Pushout
@@ -157,6 +194,12 @@ pullback-adapter = A.mkPullbackPropertyAdapter A₂ B₂ C₂ f₂ g₂ pbProp (
 pullback-status : A.isFilledPullbackProperty pullback-adapter ≡ B.true
 pullback-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.pullbackPropertyCategorical pullback-adapter) tt) ≡ A.PullbackPropertyAdapter.decl pullback-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.pullbackPropertyCategorical pullback-adapter) ≡ refl
+_ = refl
+
 poProp : CUP.PushoutProperty A₂ B₂ C₂ f₂ g₂
 poProp = record
   { pushout = M.mkId "B₂+_{A₂}C₂"
@@ -174,6 +217,12 @@ pushout-adapter = A.mkPushoutPropertyAdapter A₂ B₂ C₂ f₂ g₂ poProp (CU
 
 pushout-status : A.isFilledPushoutProperty pushout-adapter ≡ B.true
 pushout-status = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.pushoutPropertyCategorical pushout-adapter) tt) ≡ A.PushoutPropertyAdapter.decl pushout-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.pushoutPropertyCategorical pushout-adapter) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Limits and Colimits
@@ -197,6 +246,12 @@ limit-adapter = A.mkLimitPropertyAdapter D limProp (CUP.LimitProperty.limit limP
 limit-status : A.isFilledLimitProperty limit-adapter ≡ B.true
 limit-status = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.limitPropertyCategorical limit-adapter) tt) ≡ A.LimitPropertyAdapter.decl limit-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.limitPropertyCategorical limit-adapter) ≡ refl
+_ = refl
+
 colimProp : CUP.ColimitProperty D
 colimProp = record
   { colimit = M.mkId "colim D"
@@ -211,3 +266,9 @@ colimit-adapter = A.mkColimitPropertyAdapter D colimProp (CUP.ColimitProperty.co
 
 colimit-status : A.isFilledColimitProperty colimit-adapter ≡ B.true
 colimit-status = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.colimitPropertyCategorical colimit-adapter) tt) ≡ A.ColimitPropertyAdapter.decl colimit-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.colimitPropertyCategorical colimit-adapter) ≡ refl
+_ = refl

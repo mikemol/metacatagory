@@ -5,11 +5,13 @@ module Tests.TensorProductChecklist where
 
 open import Agda.Builtin.Equality
 open import Agda.Builtin.Bool as B
+open import Agda.Builtin.Unit using (⊤)
 
 import Metamodel as M
 import Algebra.Foundation as AF
 import Algebra.Groups.Abelian as AGA
 import Tests.ObligationAdapters as A
+import Core.CategoricalAdapter
 
 -- Minimal abelian groups for tensor product
 abelianGroupDeclA : AF.AbelianGroupDeclaration
@@ -107,4 +109,12 @@ tensorProdAbAdapt = A.mkTensorProductAbAdapter abelianGroupDeclA abelianGroupDec
 
 -- Status assertion
 _ : A.isFilledTensorProductAb tensorProdAbAdapt ≡ B.true
+_ = refl
+
+-- Categorical assertions for TensorProductAb
+_ : Core.CategoricalAdapter.CategoricalAdapter.morphism (A.tensorProductAbCategorical tensorProdAbAdapt) ⊤ ⊤ ≡
+    Core.CategoricalAdapter.CategoricalAdapter.object (A.tensorProductAbCategorical tensorProdAbAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.CategoricalAdapter.isomorphism (A.tensorProductAbCategorical tensorProdAbAdapt) ⊤ ⊤ ≡ refl
 _ = refl

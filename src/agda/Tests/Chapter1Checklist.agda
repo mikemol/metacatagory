@@ -18,6 +18,7 @@ import Chapter1.Level1sub6 as S6
 import Chapter1.Level1sub7 as S7
 import Chapter1.Level1sub8 as S8
 import Tests.ObligationAdapters as A
+open import Core.CategoricalAdapter
 
 -- TODO: These are smoke placeholders. Replace each with a constructed witness
 --       from one of the following when available:
@@ -65,6 +66,11 @@ adj-adapter = A.mkAdjunctionHomAdapter chk1s3A (M.mkId "F") (M.mkId "G") (M.mkId
 
 adj-status-is-filled : A.isFilledAdjunction adj-adapter ≡ B.true
 adj-status-is-filled = refl
+-- Categorical assertions for adjunction hom adapter
+_ : (CategoricalAdapter.morphism (A.adjunctionHomCategorical adj-adapter) tt) ≡ A.AdjunctionHomAdapter.decl adj-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.adjunctionHomCategorical adj-adapter) ≡ refl
+_ = refl
 
 -- TODO(Ch1 §1.3): Use Core bridges when RightAdjointsPreserveLimits proof is wired.
 chk1s3B : S3.RightAdjointsPreserveLimits
@@ -87,10 +93,14 @@ strong-mono-link : S4.StrongMonomorphism.m chk1s4B ≡ M.mkId "m"
 strong-mono-link = refl
 
 strong-mono-adapter : A.StrongMonoAdapter
-strong-mono-adapter = A.mkStrongMonoAdapter chk1s4B (M.mkId "m") strong-mono-link
+strong-mono-adapter = A.mkStrongMonoAdapter chk1s4B (M.mkId "m") strong-mono-link (λ _ → chk1s4B)
 
 strong-mono-status-is-filled : A.isFilledStrongMono strong-mono-adapter ≡ B.true
 strong-mono-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.strongMonoCategorical strong-mono-adapter) tt) ≡ A.StrongMonoAdapter.decl strong-mono-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.strongMonoCategorical strong-mono-adapter) ≡ refl
+_ = refl
 
 -- Canonical factorization system: add adapter-based status coverage
 chk1s4C : S4.CanonicalFactorizationSystem
@@ -100,10 +110,14 @@ can-fs-link : S4.CanonicalFactorizationSystem.unit chk1s4C ≡ tt
 can-fs-link = refl
 
 can-fs-adapter : A.CanonicalFactorizationAdapter
-can-fs-adapter = A.mkCanonicalFactorizationAdapter chk1s4C can-fs-link
+can-fs-adapter = A.mkCanonicalFactorizationAdapter chk1s4C can-fs-link (λ _ → chk1s4C)
 
 can-fs-status-is-filled : A.isFilledCanonicalFactorization can-fs-adapter ≡ B.true
 can-fs-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.canonicalFactorizationCategorical can-fs-adapter) tt) ≡ A.CanonicalFactorizationAdapter.decl can-fs-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.canonicalFactorizationCategorical can-fs-adapter) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Level1sub5
@@ -125,10 +139,14 @@ refl-L-link = refl
 
 refl-adapter : A.ReflectiveLocalizationAdapter
 refl-adapter = A.mkReflectiveLocalizationAdapter chk1s5A (M.mkId "R") (M.mkId "C") (M.mkId "L")
-                                refl-R-link refl-C-link refl-L-link
+                                refl-R-link refl-C-link refl-L-link (λ _ → chk1s5A)
 
 refl-status-is-filled : A.isFilledReflectiveLocalization refl-adapter ≡ B.true
 refl-status-is-filled = refl
+_ : (CategoricalAdapter.morphism (A.reflectiveLocalizationCategorical refl-adapter) tt) ≡ A.ReflectiveLocalizationAdapter.decl refl-adapter
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.reflectiveLocalizationCategorical refl-adapter) ≡ refl
+_ = refl
 
 -- TODO(Ch1 §1.5): Bind to concrete (E,M) once canonical system example is added.
 chk1s5B : S5.FactorizationSystemPair

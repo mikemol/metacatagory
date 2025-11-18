@@ -5,6 +5,7 @@ module Tests.VectorSpaceChecklist where
 
 open import Agda.Builtin.Equality
 open import Agda.Builtin.Bool as B
+open import Core.CategoricalAdapter
 
 import Metamodel as M
 import Algebra.Foundation as AF
@@ -124,5 +125,17 @@ dimensionAdapt = A.mkDimensionAdapter fieldDecl vectorSpaceDecl dimensionDecl (M
 _ : A.isFilledBasisOfVectorSpace basisAdapt ≡ B.true
 _ = refl
 
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.basisOfVectorSpaceCategorical basisAdapt) tt) ≡ A.BasisOfVectorSpaceAdapter.decl basisAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.basisOfVectorSpaceCategorical basisAdapt) ≡ refl
+_ = refl
+
 _ : A.isFilledDimension dimensionAdapt ≡ B.true
+_ = refl
+
+-- Categorical assertions
+_ : (CategoricalAdapter.morphism (A.dimensionCategorical dimensionAdapt) tt) ≡ A.DimensionAdapter.decl dimensionAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.dimensionCategorical dimensionAdapt) ≡ refl
 _ = refl

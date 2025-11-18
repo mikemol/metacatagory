@@ -6,12 +6,14 @@ module Tests.ModuleTheoryChecklist where
 
 open import Agda.Builtin.Equality
 open import Agda.Builtin.Bool as B
+open import Agda.Builtin.Unit using (⊤)
 
 import Metamodel as M
 import Algebra.Foundation as AF
 import Algebra.Rings.Basic as AR
 import Algebra.Modules.Basic as AM
 import Tests.ObligationAdapters as A
+import Core.CategoricalAdapter
 
 -- Minimal ring declaration
 ringDecl : AR.RingDeclaration
@@ -381,4 +383,53 @@ _ : A.isFilledForgetfulModuleFunctor forgetfulModuleFunctorAdapt ≡ B.true
 _ = refl
 
 _ : A.isFilledRightModule rightModuleAdapt ≡ B.true
+_ = refl
+
+-- Categorical assertions
+_ : Core.CategoricalAdapter.morphism (A.homFunctorCategorical homFunctorAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.homFunctorCategorical homFunctorAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.homFunctorCategorical homFunctorAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.dualModuleCategorical dualModuleAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.dualModuleCategorical dualModuleAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.dualModuleCategorical dualModuleAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.reflexiveModuleCategorical reflexiveModuleAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.reflexiveModuleCategorical reflexiveModuleAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.reflexiveModuleCategorical reflexiveModuleAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.tensorProductModuleCategorical tensorProductModuleAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.tensorProductModuleCategorical tensorProductModuleAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.tensorProductModuleCategorical tensorProductModuleAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.freeModuleCategorical freeModuleAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.freeModuleCategorical freeModuleAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.freeModuleCategorical freeModuleAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.freeModuleFunctorCategorical freeModuleFunctorAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.freeModuleFunctorCategorical freeModuleFunctorAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.freeModuleFunctorCategorical freeModuleFunctorAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.forgetfulModuleFunctorCategorical forgetfulModuleFunctorAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.forgetfulModuleFunctorCategorical forgetfulModuleFunctorAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.forgetfulModuleFunctorCategorical forgetfulModuleFunctorAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.rightModuleCategorical rightModuleAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.rightModuleCategorical rightModuleAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.rightModuleCategorical rightModuleAdapt) = refl
 _ = refl
