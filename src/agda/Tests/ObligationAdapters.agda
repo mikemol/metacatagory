@@ -66,6 +66,11 @@ mkIdEnrichedAdapter d e p = record { decl = d ; expected = e ; link = p ; status
 isFilledId : IdEnrichedAdapter → B.Bool
 isFilledId a = IdEnrichedAdapter.status a
 
+idEnrichedCategorical : IdEnrichedAdapter →
+  CategoricalAdapter {lsuc lzero} S6.IdentityMorphismDeclaration_Enriched
+idEnrichedCategorical adapt =
+  mkCategoricalAdapter S6.IdentityMorphismDeclaration_Enriched (λ _ → IdEnrichedAdapter.decl adapt)
+
 -- Adapter: Hom-object declaration in an enriched setting
 record HomObjectAdapter : Set₁ where
   field
@@ -83,6 +88,11 @@ mkHomObjectAdapter d e p = record { decl = d ; expected = e ; link = p ; status 
 
 isFilledHom : HomObjectAdapter → B.Bool
 isFilledHom a = HomObjectAdapter.status a
+
+homObjectCategorical : HomObjectAdapter →
+  CategoricalAdapter {lsuc lzero} S6.HomObjectDeclaration
+homObjectCategorical adapt =
+  mkCategoricalAdapter S6.HomObjectDeclaration (λ _ → HomObjectAdapter.decl adapt)
 
 -- ==========================================================
 -- Chapter 3, Level 3.2 (local homeomorphisms and étale spaces)
@@ -194,6 +204,12 @@ mkAdjunctionHomAdapter d f g c d' pf pg pc pd =
 
 isFilledAdjunction : AdjunctionHomAdapter → B.Bool
 isFilledAdjunction a = AdjunctionHomAdapter.status a
+
+-- Categorical view for AdjunctionHom
+adjunctionHomCategorical : AdjunctionHomAdapter →
+  CategoricalAdapter {lzero} C1S3.AdjunctionHomDecl
+adjunctionHomCategorical adapt =
+  mkCategoricalAdapter C1S3.AdjunctionHomDecl (λ _ → AdjunctionHomAdapter.decl adapt)
 
 -- ==========================================================
 -- Chapter 1, Level 1.4 (canonical factorization system)
@@ -568,6 +584,12 @@ mkMonadAdapter d n dat pn pdat =
 isFilledMonad : MonadAdapter → B.Bool
 isFilledMonad a = MonadAdapter.status a
 
+-- Categorical view for Monad
+monadCategorical : MonadAdapter →
+  CategoricalAdapter {lzero} C2S4.MonadDeclaration
+monadCategorical adapt =
+  mkCategoricalAdapter C2S4.MonadDeclaration (λ _ → MonadAdapter.decl adapt)
+
 record TAlgebraAdapter : Set₁ where
   field
     decl : C2S4.TAlgebraData
@@ -590,6 +612,12 @@ mkTAlgebraAdapter d c m pc pm =
 
 isFilledTAlgebra : TAlgebraAdapter → B.Bool
 isFilledTAlgebra a = TAlgebraAdapter.status a
+
+-- Categorical view for TAlgebra
+talgebraCategorical : TAlgebraAdapter →
+  CategoricalAdapter {lzero} C2S4.TAlgebraData
+talgebraCategorical adapt =
+  mkCategoricalAdapter C2S4.TAlgebraData (λ _ → TAlgebraAdapter.decl adapt)
 
 -- ==========================================================
 -- Chapter 2, Level 2.5 (Locally presentable categories)
@@ -618,6 +646,11 @@ mkLocallyPresentableAdapter d cat rk pcat prk =
 isFilledLocallyPresentable : LocallyPresentableAdapter → B.Bool
 isFilledLocallyPresentable a = LocallyPresentableAdapter.status a
 
+locallyPresentableCategorical : LocallyPresentableAdapter →
+  CategoricalAdapter {lsuc lzero} C2S5.LocallyPresentableCategoryDeclaration
+locallyPresentableCategorical adapt =
+  mkCategoricalAdapter C2S5.LocallyPresentableCategoryDeclaration (λ _ → LocallyPresentableAdapter.decl adapt)
+
 -- ==========================================================
 -- Chapter 2, Level 2.6 (Monoidal/Enriched categories)
 -- ==========================================================
@@ -645,6 +678,11 @@ mkMonoidalCategoryAdapter d dat assoc pdat passoc =
 isFilledMonoidal : MonoidalCategoryAdapter → B.Bool
 isFilledMonoidal a = MonoidalCategoryAdapter.status a
 
+monoidalCategoryCategorical : MonoidalCategoryAdapter →
+  CategoricalAdapter {lsuc lzero} S6.MonoidalCategoryDeclaration
+monoidalCategoryCategorical adapt =
+  mkCategoricalAdapter S6.MonoidalCategoryDeclaration (λ _ → MonoidalCategoryAdapter.decl adapt)
+
 record SymmetricMonoidalAdapter : Set₁ where
   field
     decl : S6.SymmetricMonoidalCategoryDeclaration
@@ -667,6 +705,11 @@ mkSymmetricMonoidalAdapter d mon br pmon pbr =
 
 isFilledSymmetricMonoidal : SymmetricMonoidalAdapter → B.Bool
 isFilledSymmetricMonoidal a = SymmetricMonoidalAdapter.status a
+
+symmetricMonoidalCategoryCategorical : SymmetricMonoidalAdapter →
+  CategoricalAdapter {lsuc lzero} S6.SymmetricMonoidalCategoryDeclaration
+symmetricMonoidalCategoryCategorical adapt =
+  mkCategoricalAdapter S6.SymmetricMonoidalCategoryDeclaration (λ _ → SymmetricMonoidalAdapter.decl adapt)
 
 record InternalHomAdapter : Set₁ where
   field
@@ -693,6 +736,11 @@ mkInternalHomAdapter d cat src tgt pcat psrc ptgt =
 
 isFilledInternalHom : InternalHomAdapter → B.Bool
 isFilledInternalHom a = InternalHomAdapter.status a
+
+internalHomCategorical : InternalHomAdapter →
+  CategoricalAdapter {lsuc lzero} S6.InternalHomObjectDeclaration
+internalHomCategorical adapt =
+  mkCategoricalAdapter S6.InternalHomObjectDeclaration (λ _ → InternalHomAdapter.decl adapt)
 
 -- ==========================================================
 -- Chapter 2, Level 2.7 (Topological categories)
@@ -721,6 +769,11 @@ mkCGWH_CategoryAdapter d topcat cat ptop pcat =
 isFilledCGWH : CGWH_CategoryAdapter → B.Bool
 isFilledCGWH a = CGWH_CategoryAdapter.status a
 
+cgwhCategoryCategorical : CGWH_CategoryAdapter →
+  CategoricalAdapter {lsuc lzero} C2S7.CGWH_CategoryDeclaration
+cgwhCategoryCategorical adapt =
+  mkCategoricalAdapter C2S7.CGWH_CategoryDeclaration (λ _ → CGWH_CategoryAdapter.decl adapt)
+
 record TopologicalFunctorAdapter : Set₁ where
   field
     decl : C2S7.TopologicalFunctorProperty
@@ -739,6 +792,11 @@ mkTopologicalFunctorAdapter d f pf =
 
 isFilledTopologicalFunctor : TopologicalFunctorAdapter → B.Bool
 isFilledTopologicalFunctor a = TopologicalFunctorAdapter.status a
+
+topologicalFunctorCategorical : TopologicalFunctorAdapter →
+  CategoricalAdapter {lsuc lzero} C2S7.TopologicalFunctorProperty
+topologicalFunctorCategorical adapt =
+  mkCategoricalAdapter C2S7.TopologicalFunctorProperty (λ _ → TopologicalFunctorAdapter.decl adapt)
 
 -- ==========================================================
 -- Chapter 2, Level 2.8 (Fibrations)
@@ -819,6 +877,11 @@ mkShortExactSequenceAdapter d a b c pa pb pc =
 isFilledShortExactSequence : ShortExactSequenceAdapter → B.Bool
 isFilledShortExactSequence a = ShortExactSequenceAdapter.status a
 
+shortExactSequenceCategorical : ShortExactSequenceAdapter →
+  CategoricalAdapter {lzero} C2S1.ShortExactSequenceDeclaration
+shortExactSequenceCategorical adapt =
+  mkCategoricalAdapter C2S1.ShortExactSequenceDeclaration (λ _ → ShortExactSequenceAdapter.decl adapt)
+
 record ZeroMorphismAdapter : Set₁ where
   field
     decl : C2S1.ZeroMorphismDeclaration
@@ -844,6 +907,11 @@ mkZeroMorphismAdapter d from to via pfrom pto pvia =
 isFilledZeroMorphism : ZeroMorphismAdapter → B.Bool
 isFilledZeroMorphism a = ZeroMorphismAdapter.status a
 
+zeroMorphismCategorical : ZeroMorphismAdapter →
+  CategoricalAdapter {lzero} C2S1.ZeroMorphismDeclaration
+zeroMorphismCategorical adapt =
+  mkCategoricalAdapter C2S1.ZeroMorphismDeclaration (λ _ → ZeroMorphismAdapter.decl adapt)
+
 record TorsionTheoryAdapter : Set₁ where
   field
     decl : C2S1.TorsionTheoryDeclaration
@@ -868,6 +936,11 @@ mkTorsionTheoryAdapter d cat tclass tfclass pcat pt ptf =
 
 isFilledTorsionTheory : TorsionTheoryAdapter → B.Bool
 isFilledTorsionTheory a = TorsionTheoryAdapter.status a
+
+torsionTheoryCategorical : TorsionTheoryAdapter →
+  CategoricalAdapter {lzero} C2S1.TorsionTheoryDeclaration
+torsionTheoryCategorical adapt =
+  mkCategoricalAdapter C2S1.TorsionTheoryDeclaration (λ _ → TorsionTheoryAdapter.decl adapt)
 
 -- ==========================================================
 -- Additional Chapter 2, Level 2.3 adapters
@@ -898,6 +971,11 @@ mkBialgebraAdapter d car m1 m2 pcar pm1 pm2 =
 isFilledBialgebra : BialgebraAdapter → B.Bool
 isFilledBialgebra a = BialgebraAdapter.status a
 
+bialgebraCategorical : BialgebraAdapter →
+  CategoricalAdapter {lzero} C2S3.BialgebraDeclaration
+bialgebraCategorical adapt =
+  mkCategoricalAdapter C2S3.BialgebraDeclaration (λ _ → BialgebraAdapter.decl adapt)
+
 -- ==========================================================
 -- Additional Chapter 2, Level 2.4 adapters
 -- ==========================================================
@@ -924,6 +1002,11 @@ mkComonadAdapter d n dat pn pdat =
 
 isFilledComonad : ComonadAdapter → B.Bool
 isFilledComonad a = ComonadAdapter.status a
+
+comonadCategorical : ComonadAdapter →
+  CategoricalAdapter {lzero} C2S4.ComonadDeclaration
+comonadCategorical adapt =
+  mkCategoricalAdapter C2S4.ComonadDeclaration (λ _ → ComonadAdapter.decl adapt)
 
 -- ==========================================================
 -- Additional Chapter 2, Level 2.5 adapters
@@ -952,6 +1035,11 @@ mkAccessibleCategoryAdapter d cat rk pcat prk =
 isFilledAccessibleCategory : AccessibleCategoryAdapter → B.Bool
 isFilledAccessibleCategory a = AccessibleCategoryAdapter.status a
 
+accessibleCategoryCategorical : AccessibleCategoryAdapter →
+  CategoricalAdapter {lsuc lzero} C2S5.AccessibleCategoryDeclaration
+accessibleCategoryCategorical adapt =
+  mkCategoricalAdapter C2S5.AccessibleCategoryDeclaration (λ _ → AccessibleCategoryAdapter.decl adapt)
+
 record SketchAdapter : Set₁ where
   field
     decl : C2S5.SketchDeclaration
@@ -970,6 +1058,11 @@ mkSketchAdapter d cat pcat =
 
 isFilledSketch : SketchAdapter → B.Bool
 isFilledSketch a = SketchAdapter.status a
+
+sketchCategorical : SketchAdapter →
+  CategoricalAdapter {lsuc lzero} C2S5.SketchDeclaration
+sketchCategorical adapt =
+  mkCategoricalAdapter C2S5.SketchDeclaration (λ _ → SketchAdapter.decl adapt)
 
 -- ==========================================================
 -- Chapter 3, Level 3.1 (Locales & Frames) - Additional
