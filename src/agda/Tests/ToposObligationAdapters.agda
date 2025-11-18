@@ -4,9 +4,12 @@ module Tests.ToposObligationAdapters where
 
 import Agda.Builtin.Bool as B
 open import Agda.Builtin.Equality using (_≡_)
+open import Agda.Builtin.Unit using (⊤)
+open import Agda.Primitive using (Level; lzero; lsuc)
 open import Metamodel as M
 import Chapter1.Level1sub3 as C1S3
 import Chapter3.Level3sub2 as C3S2
+open import Core.CategoricalAdapter
 
 -- Presheaf on locale
 record PresheafOnLocaleAdapter : Set₁ where
@@ -14,8 +17,18 @@ record PresheafOnLocaleAdapter : Set₁ where
     decl : C3S2.PresheafOnLocale
     status : B.Bool
 
-mkPresheafOnLocaleAdapter : C3S2.PresheafOnLocale → PresheafOnLocaleAdapter
-mkPresheafOnLocaleAdapter d = record { decl = d ; status = B.true }
+mkPresheafOnLocaleAdapter : 
+  C3S2.PresheafOnLocale → 
+  (⊤ → C3S2.PresheafOnLocale) →
+  PresheafOnLocaleAdapter
+mkPresheafOnLocaleAdapter d f = record 
+  { decl = d 
+  ; status = B.true 
+  }
+
+-- Categorical view (separate from adapter record to avoid universe issues)
+presheafCategorical : PresheafOnLocaleAdapter → CategoricalAdapter {lsuc lzero} C3S2.PresheafOnLocale
+presheafCategorical adapt = mkCategoricalAdapter C3S2.PresheafOnLocale (λ _ → PresheafOnLocaleAdapter.decl adapt)
 
 isFilledPresheafOnLocale : PresheafOnLocaleAdapter → B.Bool
 isFilledPresheafOnLocale a = PresheafOnLocaleAdapter.status a

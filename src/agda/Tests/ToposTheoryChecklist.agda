@@ -35,7 +35,7 @@ presheafDecl : S2.PresheafOnLocale
 presheafDecl = record { locale = dummyLocale ; underlyingFunctor = ⊤ }
 
 presheafAdapt : A.PresheafOnLocaleAdapter
-presheafAdapt = A.mkPresheafOnLocaleAdapter presheafDecl
+presheafAdapt = A.mkPresheafOnLocaleAdapter presheafDecl (λ _ → presheafDecl)
 
 _ : A.isFilledPresheafOnLocale presheafAdapt ≡ true
 _ = refl
