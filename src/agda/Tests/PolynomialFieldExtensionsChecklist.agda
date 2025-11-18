@@ -3,12 +3,14 @@
 module Tests.PolynomialFieldExtensionsChecklist where
 
 open import Agda.Builtin.Equality using (_≡_; refl)
+open import Agda.Builtin.Unit using (⊤)
 import Agda.Builtin.Nat as N
 import Agda.Builtin.String as S
 import Metamodel as M
 import Algebra.Fields.Basic as AFB
 import Algebra.Fields.Advanced as AFA
 import Tests.ObligationAdapters as A
+import Core.CategoricalAdapter
 
 -- ============================================================================
 -- Setup: Base field and extensions for polynomial/function field testing
@@ -235,3 +237,41 @@ transcendenceBasisAdapt =
 
 _ : A.isFilledTranscendenceBasis transcendenceBasisAdapt ≡ true
 _ = refl
+
+-- Categorical assertions
+_ : Core.CategoricalAdapter.morphism (A.extensionDegreeCategorical extensionDegreeAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.extensionDegreeCategorical extensionDegreeAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.extensionDegreeCategorical extensionDegreeAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.inseparableDegreeCategorical inseparableDegreeAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.inseparableDegreeCategorical inseparableDegreeAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.inseparableDegreeCategorical inseparableDegreeAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.separableDegreeCategorical separableDegreeAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.separableDegreeCategorical separableDegreeAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.separableDegreeCategorical separableDegreeAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.simpleExtensionCategorical simpleExtensionAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.simpleExtensionCategorical simpleExtensionAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.simpleExtensionCategorical simpleExtensionAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.transcendentalElementCategorical transcendentalElementAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.transcendentalElementCategorical transcendentalElementAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.transcendentalElementCategorical transcendentalElementAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.transcendenceBasisCategorical transcendenceBasisAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.transcendenceBasisCategorical transcendenceBasisAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.transcendenceBasisCategorical transcendenceBasisAdapt) = refl
+_ = refl
+

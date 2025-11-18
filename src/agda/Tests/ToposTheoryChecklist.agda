@@ -606,6 +606,10 @@ omegaEquivAdapt = A.mkSheavesAreCompleteOmegaSetsRefinedTheoremAdapter
 
 _ : A.isFilledSheavesAreCompleteOmegaSetsRefinedTheorem omegaEquivAdapt ≡ true
 _ = refl
+_ : (CategoricalAdapter.morphism (A.sheavesAreCompleteOmegaSetsRefinedTheoremCategorical omegaEquivAdapt) tt) ≡ A.SheavesAreCompleteOmegaSetsRefinedTheoremAdapter.decl omegaEquivAdapt
+_ = refl
+_ : CategoricalAdapter.isomorphism (A.sheavesAreCompleteOmegaSetsRefinedTheoremCategorical omegaEquivAdapt) ≡ refl
+_ = refl
 
 ------------------------------------------------------------------------
 -- Sheaves of Rings and Modules

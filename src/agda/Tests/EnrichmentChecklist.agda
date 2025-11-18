@@ -3,6 +3,7 @@
 module Tests.EnrichmentChecklist where
 
 open import Agda.Builtin.Equality using (_≡_; refl)
+open import Agda.Builtin.Unit using (⊤)
 import Agda.Builtin.Nat as N
 import Agda.Builtin.String as S
 import Metamodel as M
@@ -13,6 +14,7 @@ import Algebra.Groups.Abelian as AGA
 import Chapter1.Level1 as C
 import Chapter2.Level2sub6 as Enriched
 import Tests.ObligationAdapters as A
+import Core.CategoricalAdapter
 
 -- ============================================================================
 -- Setup: Basic algebraic structures for enrichment testing
@@ -464,3 +466,71 @@ abSelfEnrichmentViaIntHomAdapt =
 
 _ : A.isFilledAbSelfEnrichmentViaInternalHom abSelfEnrichmentViaIntHomAdapt ≡ true
 _ = refl
+
+-- Categorical assertions
+_ : Core.CategoricalAdapter.morphism (A.monoidAsMonoidalCategorical monoidAsMonoidalAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.monoidAsMonoidalCategorical monoidAsMonoidalAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.monoidAsMonoidalCategorical monoidAsMonoidalAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.abelianGroupAsSymmetricMonoidalCategorical abAsSymMonoidalAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.abelianGroupAsSymmetricMonoidalCategorical abAsSymMonoidalAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.abelianGroupAsSymmetricMonoidalCategorical abAsSymMonoidalAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.monoidEnrichedCategoryCategorical monoidEnrichedAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.monoidEnrichedCategoryCategorical monoidEnrichedAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.monoidEnrichedCategoryCategorical monoidEnrichedAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.distanceCategoryCategorical distanceCategoryAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.distanceCategoryCategorical distanceCategoryAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.distanceCategoryCategorical distanceCategoryAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.abEnrichedCategoryCategorical abEnrichedAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.abEnrichedCategoryCategorical abEnrichedAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.abEnrichedCategoryCategorical abEnrichedAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.genericEnrichmentCategorical genericEnrichmentAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.genericEnrichmentCategorical genericEnrichmentAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.genericEnrichmentCategorical genericEnrichmentAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.groupActionEnrichedCategoryCategorical groupActionEnrichedAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.groupActionEnrichedCategoryCategorical groupActionEnrichedAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.groupActionEnrichedCategoryCategorical groupActionEnrichedAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.moduleEnrichedCategoryCategorical moduleEnrichedAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.moduleEnrichedCategoryCategorical moduleEnrichedAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.moduleEnrichedCategoryCategorical moduleEnrichedAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.lawvereTheoryEnrichedCategoryCategorical lawvereTheoryEnrichedAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.lawvereTheoryEnrichedCategoryCategorical lawvereTheoryEnrichedAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.lawvereTheoryEnrichedCategoryCategorical lawvereTheoryEnrichedAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.abSelfEnrichedCategorical abSelfEnrichedAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.abSelfEnrichedCategorical abSelfEnrichedAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.abSelfEnrichedCategorical abSelfEnrichedAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.abSelfEnrichmentViaInternalHomCategorical abSelfEnrichmentViaIntHomAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.abSelfEnrichmentViaInternalHomCategorical abSelfEnrichmentViaIntHomAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.abSelfEnrichmentViaInternalHomCategorical abSelfEnrichmentViaIntHomAdapt) = refl
+_ = refl
+

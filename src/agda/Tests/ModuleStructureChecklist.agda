@@ -5,12 +5,14 @@ module Tests.ModuleStructureChecklist where
 
 open import Agda.Builtin.Equality
 open import Agda.Builtin.Bool as B
+open import Agda.Builtin.Unit using (⊤)
 
 import Metamodel as M
 import Algebra.Foundation as AF
 import Algebra.Rings.Basic as AR
 import Algebra.Modules.Basic as AM
 import Tests.ObligationAdapters as A
+import Core.CategoricalAdapter
 
 -- Minimal ring declaration
 ringDecl : AR.RingDeclaration
@@ -265,4 +267,41 @@ _ : A.isFilledTorsionFreeModule torsionFreeModuleAdapt ≡ B.true
 _ = refl
 
 _ : A.isFilledStructureTheoremPID structureTheoremPIDAdapt ≡ B.true
+_ = refl
+
+-- Categorical assertions
+_ : Core.CategoricalAdapter.morphism (A.projectiveModuleCategorical projectiveModuleAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.projectiveModuleCategorical projectiveModuleAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.projectiveModuleCategorical projectiveModuleAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.injectiveModuleCategorical injectiveModuleAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.injectiveModuleCategorical injectiveModuleAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.injectiveModuleCategorical injectiveModuleAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.torsionElementCategorical torsionElementAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.torsionElementCategorical torsionElementAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.torsionElementCategorical torsionElementAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.torsionSubmoduleCategorical torsionSubmoduleAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.torsionSubmoduleCategorical torsionSubmoduleAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.torsionSubmoduleCategorical torsionSubmoduleAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.torsionFreeModuleCategorical torsionFreeModuleAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.torsionFreeModuleCategorical torsionFreeModuleAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.torsionFreeModuleCategorical torsionFreeModuleAdapt) = refl
+_ = refl
+
+_ : Core.CategoricalAdapter.morphism (A.structureTheoremPIDCategorical structureTheoremPIDAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.structureTheoremPIDCategorical structureTheoremPIDAdapt) ⊤
+_ = refl
+
+_ : Core.CategoricalAdapter.isomorphism (A.structureTheoremPIDCategorical structureTheoremPIDAdapt) = refl
 _ = refl

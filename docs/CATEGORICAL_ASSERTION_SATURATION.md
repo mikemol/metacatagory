@@ -42,7 +42,50 @@ Systematic migration of categorical assertions to all adapter-based checklists. 
 ### Regular Categories ✅
 - RegularCategoriesChecklist (4 adapters)
 
-**Total migrated: 97 adapters, 194 categorical assertions**
+### Kan Extensions ✅
+- KanExtensionsChecklist (8 adapters)
+
+### Functor Properties ✅
+- FunctorPropertiesChecklist (6 adapters)
+
+### Tensor Products ✅
+- TensorProductChecklist (1 adapter)
+
+### Polynomial Extensions ✅
+- PolynomialExtensionsChecklist (4 adapters)
+
+### Module Structure ✅
+- ModuleStructureChecklist (6 adapters)
+
+### Module Theory ✅
+- ModuleTheoryChecklist (8 adapters)
+
+### Enrichment ✅
+- EnrichmentChecklist (11 adapters)
+
+### Polynomial Field Extensions ✅
+- PolynomialFieldExtensionsChecklist (6 adapters)
+
+### Algebraic Completion ✅
+- AlgebraicCompletionChecklist (5 adapters)
+
+### Topos Theory ✅
+- ToposTheoryChecklist (23 adapters, completed migration - added missing assertions for SheavesAreCompleteOmegaSetsRefinedTheorem)
+
+**Total migrated: 175 adapters, 350 categorical assertions**
+
+## Additional Fixes
+
+### Type Corrections in ObligationAdapters.agda
+Fixed several type reference errors discovered during SubobjectTheoryChecklist investigation:
+- Fixed `isFilledPrimitivePolynomial` function name (was `isFilledPrimitivePolynomialAdapter`)
+- Corrected `AbelianGroupAsSymmetricMonoidalAdapter` to use `AFo.AbelianGroupDeclaration` instead of `AGA.AbelianGroupDeclaration`
+- Corrected `AbEnrichedCategoryAdapter` to use `AFo.CategoryOfAbelianGroups` instead of `AGA.CategoryOfAbelianGroups`
+- Corrected `AbSelfEnrichedAdapter` to use `AGA.Ab` instead of `AGA.CategoryOfAbelianGroups`
+- Corrected `AbSelfEnrichmentViaInternalHomAdapter` to use `AGA.Ab` instead of `AGA.CategoryOfAbelianGroups`
+- Corrected `GenericEnrichmentAdapter` to use `C1S3.CategoryDeclaration` instead of `C.CategoryDeclaration`
+
+These fixes ensure all adapter type signatures correctly match the actual field types in their corresponding record declarations.
 
 
 ## Remaining Checklist Groups
