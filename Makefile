@@ -24,6 +24,9 @@ AGDA_INDEX_3 = src/agda/Chapter3/Level3Index.agda
 AGDA_INDEX_ALGEBRA = src/agda/Algebra/Index.agda
 AGDA_INDEXES = $(AGDA_INDEX_1) $(AGDA_INDEX_2) $(AGDA_INDEX_3) $(AGDA_INDEX_ALGEBRA)
 
+# Test modules (exclude coverage metadata which has its own target)
+AGDA_TESTS = $(filter-out $(AGDA_COVERAGE_METADATA),$(wildcard src/agda/Tests/*.agda))
+
 # Test infrastructure (type-checked metadata)
 AGDA_COVERAGE_METADATA = src/agda/Tests/CoverageReport.agda
 
@@ -40,7 +43,7 @@ DIAGRAMS_DIR = $(BUILD_DIR)/diagrams
 .PHONY: venv report diagram search test-tools
 
 # Default: typecheck everything
-all: check
+all: check check-tests
 
 # Typecheck all chapter indexes
 check:
@@ -56,6 +59,16 @@ check-coverage:
 	@echo "Validating test coverage metadata..."
 	@$(AGDA) $(AGDA_FLAGS) $(AGDA_INCLUDE) $(AGDA_COVERAGE_METADATA)
 	@echo "✓ Coverage metadata validated by Agda type system"
+
+# Typecheck all test modules (ensures placeholder contradictions surface)
+.PHONY: check-tests
+check-tests:
+	@echo "Typechecking Agda test modules..."
+	@for file in $(AGDA_TESTS); do \
+		echo "Checking $$file..."; \
+		$(AGDA) $(AGDA_FLAGS) $(AGDA_INCLUDE) $$file || exit 1; \
+	done
+	@echo "Test module typecheck complete."
 
 # Generate HTML documentation for all chapters
 docs: | $(HTML_DIR)

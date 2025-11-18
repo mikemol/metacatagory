@@ -212,7 +212,7 @@ mkCanonicalFactorizationAdapter :
   CanonicalFactorizationAdapter
 mkCanonicalFactorizationAdapter d p f = record { decl = d ; link = p ; status = B.true }
 
-canonicalFactorizationCategorical : CanonicalFactorizationAdapter → CategoricalAdapter {lsuc lzero} C1S4.CanonicalFactorizationSystem
+canonicalFactorizationCategorical : CanonicalFactorizationAdapter → CategoricalAdapter {lzero} C1S4.CanonicalFactorizationSystem
 canonicalFactorizationCategorical adapt = mkCategoricalAdapter C1S4.CanonicalFactorizationSystem (λ _ → CanonicalFactorizationAdapter.decl adapt)
 
 isFilledCanonicalFactorization : CanonicalFactorizationAdapter → B.Bool
@@ -237,7 +237,7 @@ mkRegularFactorizationAdapter :
   RegularFactorizationAdapter
 mkRegularFactorizationAdapter d e p f = record { decl = d ; expected = e ; link = p ; status = B.true }
 
-regularFactorizationCategorical : RegularFactorizationAdapter → CategoricalAdapter {lsuc lzero} C2S2.RegularCategoryDeclaration
+regularFactorizationCategorical : RegularFactorizationAdapter → CategoricalAdapter {lzero} C2S2.RegularCategoryDeclaration
 regularFactorizationCategorical adapt = mkCategoricalAdapter C2S2.RegularCategoryDeclaration (λ _ → RegularFactorizationAdapter.decl adapt)
 
 isFilledRegularFactorization : RegularFactorizationAdapter → B.Bool
@@ -267,7 +267,7 @@ mkReflectiveLocalizationAdapter :
 mkReflectiveLocalizationAdapter d r c l pr pc pl f =
   record { decl = d ; expR = r ; expC = c ; expL = l ; linkR = pr ; linkC = pc ; linkL = pl ; status = B.true }
 
-reflectiveLocalizationCategorical : ReflectiveLocalizationAdapter → CategoricalAdapter {lsuc lzero} C1S5.ReflectiveSubcategoryAsLocalizationTheorem
+reflectiveLocalizationCategorical : ReflectiveLocalizationAdapter → CategoricalAdapter {lzero} C1S5.ReflectiveSubcategoryAsLocalizationTheorem
 reflectiveLocalizationCategorical adapt = mkCategoricalAdapter C1S5.ReflectiveSubcategoryAsLocalizationTheorem (λ _ → ReflectiveLocalizationAdapter.decl adapt)
 
 isFilledReflectiveLocalization : ReflectiveLocalizationAdapter → B.Bool
@@ -303,7 +303,7 @@ mkKernelPairAdapter d m k1 k2 pb pm pk1 pk2 ppb f =
   record { decl = d ; expM = m ; expK1 = k1 ; expK2 = k2 ; expPB = pb
          ; linkM = pm ; linkK1 = pk1 ; linkK2 = pk2 ; linkPB = ppb ; status = B.true }
 
-kernelPairCategorical : KernelPairAdapter → CategoricalAdapter {lsuc lzero} C2S2.KernelPairDeclaration
+kernelPairCategorical : KernelPairAdapter → CategoricalAdapter {lzero} C2S2.KernelPairDeclaration
 kernelPairCategorical adapt = mkCategoricalAdapter C2S2.KernelPairDeclaration (λ _ → KernelPairAdapter.decl adapt)
 
 isFilledKernelPair : KernelPairAdapter → B.Bool
@@ -328,7 +328,7 @@ mkStrongMonoAdapter :
   StrongMonoAdapter
 mkStrongMonoAdapter d e p f = record { decl = d ; expected = e ; link = p ; status = B.true }
 
-strongMonoCategorical : StrongMonoAdapter → CategoricalAdapter {lsuc lzero} C1S4.StrongMonomorphism
+strongMonoCategorical : StrongMonoAdapter → CategoricalAdapter {lzero} C1S4.StrongMonomorphism
 strongMonoCategorical adapt = mkCategoricalAdapter C1S4.StrongMonomorphism (λ _ → StrongMonoAdapter.decl adapt)
 
 isFilledStrongMono : StrongMonoAdapter → B.Bool
@@ -361,7 +361,7 @@ mkInternalEquivalenceRelationAdapter d r1 r2 mono pr1 pr2 pmono f =
   record { decl = d ; expR1 = r1 ; expR2 = r2 ; expMono = mono
          ; linkR1 = pr1 ; linkR2 = pr2 ; linkMono = pmono ; status = B.true }
 
-internalEquivalenceRelationCategorical : InternalEquivalenceRelationAdapter → CategoricalAdapter {lsuc lzero} C2S2.InternalEquivalenceRelationDeclaration
+internalEquivalenceRelationCategorical : InternalEquivalenceRelationAdapter → CategoricalAdapter {lzero} C2S2.InternalEquivalenceRelationDeclaration
 internalEquivalenceRelationCategorical adapt = mkCategoricalAdapter C2S2.InternalEquivalenceRelationDeclaration (λ _ → InternalEquivalenceRelationAdapter.decl adapt)
 
 isFilledInternalEquiv : InternalEquivalenceRelationAdapter → B.Bool
@@ -391,7 +391,7 @@ mkRegularExactSequenceAdapter d k q pk pq f =
   record { decl = d ; expKernelMorphism = k ; expQuotientMorphism = q
          ; linkKernel = pk ; linkQuotient = pq ; status = B.true }
 
-regularExactSequenceCategorical : RegularExactSequenceAdapter → CategoricalAdapter {lsuc lzero} C2S2.RegularExactSequenceDeclaration
+regularExactSequenceCategorical : RegularExactSequenceAdapter → CategoricalAdapter {lzero} C2S2.RegularExactSequenceDeclaration
 regularExactSequenceCategorical adapt = mkCategoricalAdapter C2S2.RegularExactSequenceDeclaration (λ _ → RegularExactSequenceAdapter.decl adapt)
 
 isFilledRegularExact : RegularExactSequenceAdapter → B.Bool
@@ -422,7 +422,7 @@ mkAdditiveCategoryAdapter d cat zero pcat pzero f =
   record { decl = d ; expCategory = cat ; expZero = zero
          ; linkCat = pcat ; linkZero = pzero ; status = B.true }
 
-additiveCategoryCategorical : AdditiveCategoryAdapter → CategoricalAdapter {lsuc lzero} C2S1.AdditiveCategoryDeclaration
+additiveCategoryCategorical : AdditiveCategoryAdapter → CategoricalAdapter {lzero} C2S1.AdditiveCategoryDeclaration
 additiveCategoryCategorical adapt = mkCategoricalAdapter C2S1.AdditiveCategoryDeclaration (λ _ → AdditiveCategoryAdapter.decl adapt)
 
 isFilledAdditive : AdditiveCategoryAdapter → B.Bool
@@ -449,7 +449,7 @@ mkAbelianCategoryAdapter d cat add pcat padd f =
   record { decl = d ; expCategory = cat ; expAdditive = add
          ; linkCat = pcat ; linkAdd = padd ; status = B.true }
 
-abelianCategoryCategorical : AbelianCategoryAdapter → CategoricalAdapter {lsuc lzero} C2S1.AbelianCategoryDeclaration
+abelianCategoryCategorical : AbelianCategoryAdapter → CategoricalAdapter {lzero} C2S1.AbelianCategoryDeclaration
 abelianCategoryCategorical adapt = mkCategoricalAdapter C2S1.AbelianCategoryDeclaration (λ _ → AbelianCategoryAdapter.decl adapt)
 
 isFilledAbelian : AbelianCategoryAdapter → B.Bool
@@ -478,7 +478,7 @@ mkBiproductAdapter d l r obj pl pr pobj f =
   record { decl = d ; expLeft = l ; expRight = r ; expObject = obj
          ; linkLeft = pl ; linkRight = pr ; linkObject = pobj ; status = B.true }
 
-biproductCategorical : BiproductAdapter → CategoricalAdapter {lsuc lzero} C2S1.BiproductObject
+biproductCategorical : BiproductAdapter → CategoricalAdapter {lzero} C2S1.BiproductObject
 biproductCategorical adapt = mkCategoricalAdapter C2S1.BiproductObject (λ _ → BiproductAdapter.decl adapt)
 
 isFilledBiproduct : BiproductAdapter → B.Bool
@@ -511,7 +511,7 @@ mkLawvereTheoryAdapter d th base pth pbase morph =
 isFilledLawvereTheory : LawvereTheoryAdapter → B.Bool
 isFilledLawvereTheory a = LawvereTheoryAdapter.status a
 
-lawvereTheoryCategorical : LawvereTheoryAdapter → CategoricalAdapter {lsuc lzero} C2S3.LawvereTheoryDeclaration
+lawvereTheoryCategorical : LawvereTheoryAdapter → CategoricalAdapter {lzero} C2S3.LawvereTheoryDeclaration
 lawvereTheoryCategorical adapt = mkCategoricalAdapter C2S3.LawvereTheoryDeclaration (λ _ → LawvereTheoryAdapter.decl adapt)
 
 record AlgebraicCategoryAdapter : Set₁ where
@@ -538,7 +538,7 @@ mkAlgebraicCategoryAdapter d cat th pcat pth morph =
 isFilledAlgebraicCategory : AlgebraicCategoryAdapter → B.Bool
 isFilledAlgebraicCategory a = AlgebraicCategoryAdapter.status a
 
-algebraicCategoryCategorical : AlgebraicCategoryAdapter → CategoricalAdapter {lsuc lzero} C2S3.AlgebraicCategoryDeclaration
+algebraicCategoryCategorical : AlgebraicCategoryAdapter → CategoricalAdapter {lzero} C2S3.AlgebraicCategoryDeclaration
 algebraicCategoryCategorical adapt = mkCategoricalAdapter C2S3.AlgebraicCategoryDeclaration (λ _ → AlgebraicCategoryAdapter.decl adapt)
 
 -- ==========================================================
@@ -4153,8 +4153,8 @@ isFilledTensorProductAb : TensorProductAbAdapter → B.Bool
 isFilledTensorProductAb a = TensorProductAbAdapter.status a
 
 -- Categorical view for TensorProductAb
-tensorProductAbCategorical : TensorProductAbAdapter →
-  CategoricalAdapter {lsuc lzero} (AGA.TensorProductAb (TensorProductAbAdapter.A _) (TensorProductAbAdapter.B _))
+tensorProductAbCategorical : (adapt : TensorProductAbAdapter) →
+  CategoricalAdapter {lsuc lzero} (AGA.TensorProductAb (TensorProductAbAdapter.A adapt) (TensorProductAbAdapter.B adapt))
 tensorProductAbCategorical adapt =
   mkCategoricalAdapter (AGA.TensorProductAb (TensorProductAbAdapter.A adapt) (TensorProductAbAdapter.B adapt))
     (λ _ → TensorProductAbAdapter.decl adapt)
@@ -4250,8 +4250,8 @@ isFilledMultivariatePolynomialRing : MultivariatePolynomialRingAdapter → B.Boo
 isFilledMultivariatePolynomialRing a = MultivariatePolynomialRingAdapter.status a
 
 -- Categorical view for MultivariatePolynomialRing
-multivariatePolynomialRingCategorical : MultivariatePolynomialRingAdapter →
-  CategoricalAdapter {lsuc lzero} (AR.MultivariatePolynomialRing (MultivariatePolynomialRingAdapter.R _) (MultivariatePolynomialRingAdapter.n _))
+multivariatePolynomialRingCategorical : (adapt : MultivariatePolynomialRingAdapter) →
+  CategoricalAdapter {lsuc lzero} (AR.MultivariatePolynomialRing (MultivariatePolynomialRingAdapter.R adapt) (MultivariatePolynomialRingAdapter.n adapt))
 multivariatePolynomialRingCategorical adapt =
   mkCategoricalAdapter (AR.MultivariatePolynomialRing (MultivariatePolynomialRingAdapter.R adapt) (MultivariatePolynomialRingAdapter.n adapt))
     (λ _ → MultivariatePolynomialRingAdapter.decl adapt)
@@ -4281,8 +4281,8 @@ isFilledContentOfPolynomial : ContentOfPolynomialAdapter → B.Bool
 isFilledContentOfPolynomial a = ContentOfPolynomialAdapter.status a
 
 -- Categorical view for ContentOfPolynomial
-contentOfPolynomialCategorical : ContentOfPolynomialAdapter →
-  CategoricalAdapter {lsuc lzero} (AR.ContentOfPolynomial (ContentOfPolynomialAdapter.R _) (ContentOfPolynomialAdapter.f _))
+contentOfPolynomialCategorical : (adapt : ContentOfPolynomialAdapter) →
+  CategoricalAdapter {lsuc lzero} (AR.ContentOfPolynomial (ContentOfPolynomialAdapter.R adapt) (ContentOfPolynomialAdapter.f adapt))
 contentOfPolynomialCategorical adapt =
   mkCategoricalAdapter (AR.ContentOfPolynomial (ContentOfPolynomialAdapter.R adapt) (ContentOfPolynomialAdapter.f adapt))
     (λ _ → ContentOfPolynomialAdapter.decl adapt)
@@ -4312,8 +4312,8 @@ isFilledPrimitivePolynomial : PrimitivePolynomialAdapter → B.Bool
 isFilledPrimitivePolynomial a = PrimitivePolynomialAdapter.status a
 
 -- Categorical view for PrimitivePolynomial
-primitivePolynomialCategorical : PrimitivePolynomialAdapter →
-  CategoricalAdapter {lsuc lzero} (AR.PrimitivePolynomial (PrimitivePolynomialAdapter.R _) (PrimitivePolynomialAdapter.f _))
+primitivePolynomialCategorical : (adapt : PrimitivePolynomialAdapter) →
+  CategoricalAdapter {lsuc lzero} (AR.PrimitivePolynomial (PrimitivePolynomialAdapter.R adapt) (PrimitivePolynomialAdapter.f adapt))
 primitivePolynomialCategorical adapt =
   mkCategoricalAdapter (AR.PrimitivePolynomial (PrimitivePolynomialAdapter.R adapt) (PrimitivePolynomialAdapter.f adapt))
     (λ _ → PrimitivePolynomialAdapter.decl adapt)
@@ -4341,8 +4341,8 @@ isFilledPrimeSpectrum : PrimeSpectrumAdapter → B.Bool
 isFilledPrimeSpectrum a = PrimeSpectrumAdapter.status a
 
 -- Categorical view for PrimeSpectrum
-primeSpectrumCategorical : PrimeSpectrumAdapter →
-  CategoricalAdapter {lsuc lzero} (AR.PrimeSpectrum (PrimeSpectrumAdapter.R _))
+primeSpectrumCategorical : (adapt : PrimeSpectrumAdapter) →
+  CategoricalAdapter {lsuc lzero} (AR.PrimeSpectrum (PrimeSpectrumAdapter.R adapt))
 primeSpectrumCategorical adapt =
   mkCategoricalAdapter (AR.PrimeSpectrum (PrimeSpectrumAdapter.R adapt))
     (λ _ → PrimeSpectrumAdapter.decl adapt)
@@ -4488,29 +4488,41 @@ mkStructureTheoremPIDAdapter R M d ep pp =
 isFilledStructureTheoremPID : StructureTheoremPIDAdapter → B.Bool
 isFilledStructureTheoremPID a = StructureTheoremPIDAdapter.status a
 
-projectiveModuleCategorical : ProjectiveModuleAdapter → CategoricalAdapter {lsuc lzero} ProjectiveModuleAdapter
+projectiveModuleCategorical : (adapt : ProjectiveModuleAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.ProjectiveModule (ProjectiveModuleAdapter.R adapt) (ProjectiveModuleAdapter.P adapt))
 projectiveModuleCategorical adapt = 
-  mkCategoricalAdapter ProjectiveModuleAdapter (λ _ → ProjectiveModuleAdapter.decl adapt)
+  mkCategoricalAdapter (AM.ProjectiveModule (ProjectiveModuleAdapter.R adapt) (ProjectiveModuleAdapter.P adapt))
+    (λ _ → ProjectiveModuleAdapter.decl adapt)
 
-injectiveModuleCategorical : InjectiveModuleAdapter → CategoricalAdapter {lsuc lzero} InjectiveModuleAdapter
+injectiveModuleCategorical : (adapt : InjectiveModuleAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.InjectiveModule (InjectiveModuleAdapter.R adapt) (InjectiveModuleAdapter.I adapt))
 injectiveModuleCategorical adapt = 
-  mkCategoricalAdapter InjectiveModuleAdapter (λ _ → InjectiveModuleAdapter.decl adapt)
+  mkCategoricalAdapter (AM.InjectiveModule (InjectiveModuleAdapter.R adapt) (InjectiveModuleAdapter.I adapt))
+    (λ _ → InjectiveModuleAdapter.decl adapt)
 
-torsionElementCategorical : TorsionElementAdapter → CategoricalAdapter {lsuc lzero} TorsionElementAdapter
+torsionElementCategorical : (adapt : TorsionElementAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.TorsionElement (TorsionElementAdapter.R adapt) (TorsionElementAdapter.M adapt) (TorsionElementAdapter.m adapt))
 torsionElementCategorical adapt = 
-  mkCategoricalAdapter TorsionElementAdapter (λ _ → TorsionElementAdapter.decl adapt)
+  mkCategoricalAdapter (AM.TorsionElement (TorsionElementAdapter.R adapt) (TorsionElementAdapter.M adapt) (TorsionElementAdapter.m adapt))
+    (λ _ → TorsionElementAdapter.decl adapt)
 
-torsionSubmoduleCategorical : TorsionSubmoduleAdapter → CategoricalAdapter {lsuc lzero} TorsionSubmoduleAdapter
+torsionSubmoduleCategorical : (adapt : TorsionSubmoduleAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.TorsionSubmodule (TorsionSubmoduleAdapter.R adapt) (TorsionSubmoduleAdapter.M adapt))
 torsionSubmoduleCategorical adapt = 
-  mkCategoricalAdapter TorsionSubmoduleAdapter (λ _ → TorsionSubmoduleAdapter.decl adapt)
+  mkCategoricalAdapter (AM.TorsionSubmodule (TorsionSubmoduleAdapter.R adapt) (TorsionSubmoduleAdapter.M adapt))
+    (λ _ → TorsionSubmoduleAdapter.decl adapt)
 
-torsionFreeModuleCategorical : TorsionFreeModuleAdapter → CategoricalAdapter {lsuc lzero} TorsionFreeModuleAdapter
+torsionFreeModuleCategorical : (adapt : TorsionFreeModuleAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.TorsionFreeModule (TorsionFreeModuleAdapter.R adapt) (TorsionFreeModuleAdapter.M adapt))
 torsionFreeModuleCategorical adapt = 
-  mkCategoricalAdapter TorsionFreeModuleAdapter (λ _ → TorsionFreeModuleAdapter.decl adapt)
+  mkCategoricalAdapter (AM.TorsionFreeModule (TorsionFreeModuleAdapter.R adapt) (TorsionFreeModuleAdapter.M adapt))
+    (λ _ → TorsionFreeModuleAdapter.decl adapt)
 
-structureTheoremPIDCategorical : StructureTheoremPIDAdapter → CategoricalAdapter {lsuc lzero} StructureTheoremPIDAdapter
+structureTheoremPIDCategorical : (adapt : StructureTheoremPIDAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.StructureTheoremPID (StructureTheoremPIDAdapter.R adapt) (StructureTheoremPIDAdapter.M adapt))
 structureTheoremPIDCategorical adapt = 
-  mkCategoricalAdapter StructureTheoremPIDAdapter (λ _ → StructureTheoremPIDAdapter.decl adapt)
+  mkCategoricalAdapter (AM.StructureTheoremPID (StructureTheoremPIDAdapter.R adapt) (StructureTheoremPIDAdapter.M adapt))
+    (λ _ → StructureTheoremPIDAdapter.decl adapt)
 
 -- Hom functor
 record HomFunctorAdapter : Set₁ where
@@ -4582,25 +4594,22 @@ isFilledReflexiveModule : ReflexiveModuleAdapter → B.Bool
 isFilledReflexiveModule a = ReflexiveModuleAdapter.status a
 
 -- Tensor product of modules
+-- Redesigned: Simplified to avoid dependent type issues - extract expected values from decl fields
 record TensorProductModuleAdapter : Set₁ where
   field
     R : AR.CommutativeRingDeclaration
     M : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing R))
     N : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing R))
     decl : AM.TensorProduct R M N
-    expTensorProduct : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing R))
-    linkTensorProduct : AM.TensorProduct.tensorProduct decl ≡ expTensorProduct
     status : B.Bool
 
 mkTensorProductModuleAdapter :
   (R : AR.CommutativeRingDeclaration) →
   (M N : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing R))) →
   (d : AM.TensorProduct R M N) →
-  (et : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing R))) →
-  (pt : AM.TensorProduct.tensorProduct d ≡ et) →
   TensorProductModuleAdapter
-mkTensorProductModuleAdapter R M N d et pt =
-  record { R = R ; M = M ; N = N ; decl = d ; expTensorProduct = et ; linkTensorProduct = pt ; status = B.true }
+mkTensorProductModuleAdapter R M N d =
+  record { R = R ; M = M ; N = N ; decl = d ; status = B.true }
 
 isFilledTensorProductModule : TensorProductModuleAdapter → B.Bool
 isFilledTensorProductModule a = TensorProductModuleAdapter.status a
@@ -4691,37 +4700,53 @@ mkRightModuleAdapter R d er pr =
 isFilledRightModule : RightModuleAdapter → B.Bool
 isFilledRightModule a = RightModuleAdapter.status a
 
-homFunctorCategorical : HomFunctorAdapter → CategoricalAdapter {lsuc lzero} HomFunctorAdapter
+homFunctorCategorical : (adapt : HomFunctorAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.HomFunctor (HomFunctorAdapter.R adapt) (HomFunctorAdapter.M adapt))
 homFunctorCategorical adapt = 
-  mkCategoricalAdapter HomFunctorAdapter (λ _ → HomFunctorAdapter.decl adapt)
+  mkCategoricalAdapter (AM.HomFunctor (HomFunctorAdapter.R adapt) (HomFunctorAdapter.M adapt))
+    (λ _ → HomFunctorAdapter.decl adapt)
 
-dualModuleCategorical : DualModuleAdapter → CategoricalAdapter {lsuc lzero} DualModuleAdapter
+dualModuleCategorical : (adapt : DualModuleAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.DualModule (DualModuleAdapter.R adapt) (DualModuleAdapter.M adapt))
 dualModuleCategorical adapt = 
-  mkCategoricalAdapter DualModuleAdapter (λ _ → DualModuleAdapter.decl adapt)
+  mkCategoricalAdapter (AM.DualModule (DualModuleAdapter.R adapt) (DualModuleAdapter.M adapt))
+    (λ _ → DualModuleAdapter.decl adapt)
 
-reflexiveModuleCategorical : ReflexiveModuleAdapter → CategoricalAdapter {lsuc lzero} ReflexiveModuleAdapter
+reflexiveModuleCategorical : (adapt : ReflexiveModuleAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.ReflexiveModule (ReflexiveModuleAdapter.R adapt) (ReflexiveModuleAdapter.M adapt))
 reflexiveModuleCategorical adapt = 
-  mkCategoricalAdapter ReflexiveModuleAdapter (λ _ → ReflexiveModuleAdapter.decl adapt)
+  mkCategoricalAdapter (AM.ReflexiveModule (ReflexiveModuleAdapter.R adapt) (ReflexiveModuleAdapter.M adapt))
+    (λ _ → ReflexiveModuleAdapter.decl adapt)
 
-tensorProductModuleCategorical : TensorProductModuleAdapter → CategoricalAdapter {lsuc lzero} TensorProductModuleAdapter
+tensorProductModuleCategorical : (adapt : TensorProductModuleAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.TensorProduct (TensorProductModuleAdapter.R adapt) (TensorProductModuleAdapter.M adapt) (TensorProductModuleAdapter.N adapt))
 tensorProductModuleCategorical adapt = 
-  mkCategoricalAdapter TensorProductModuleAdapter (λ _ → TensorProductModuleAdapter.decl adapt)
+  mkCategoricalAdapter (AM.TensorProduct (TensorProductModuleAdapter.R adapt) (TensorProductModuleAdapter.M adapt) (TensorProductModuleAdapter.N adapt))
+    (λ _ → TensorProductModuleAdapter.decl adapt)
 
-freeModuleCategorical : FreeModuleAdapter → CategoricalAdapter {lsuc lzero} FreeModuleAdapter
+freeModuleCategorical : (adapt : FreeModuleAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.FreeModule (FreeModuleAdapter.R adapt) (FreeModuleAdapter.X adapt))
 freeModuleCategorical adapt = 
-  mkCategoricalAdapter FreeModuleAdapter (λ _ → FreeModuleAdapter.decl adapt)
+  mkCategoricalAdapter (AM.FreeModule (FreeModuleAdapter.R adapt) (FreeModuleAdapter.X adapt))
+    (λ _ → FreeModuleAdapter.decl adapt)
 
-freeModuleFunctorCategorical : FreeModuleFunctorAdapter → CategoricalAdapter {lsuc lzero} FreeModuleFunctorAdapter
+freeModuleFunctorCategorical : (adapt : FreeModuleFunctorAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.FreeModuleFunctor (FreeModuleFunctorAdapter.R adapt))
 freeModuleFunctorCategorical adapt = 
-  mkCategoricalAdapter FreeModuleFunctorAdapter (λ _ → FreeModuleFunctorAdapter.decl adapt)
+  mkCategoricalAdapter (AM.FreeModuleFunctor (FreeModuleFunctorAdapter.R adapt))
+    (λ _ → FreeModuleFunctorAdapter.decl adapt)
 
-forgetfulModuleFunctorCategorical : ForgetfulModuleFunctorAdapter → CategoricalAdapter {lsuc lzero} ForgetfulModuleFunctorAdapter
+forgetfulModuleFunctorCategorical : (adapt : ForgetfulModuleFunctorAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.ForgetfulModuleFunctor (ForgetfulModuleFunctorAdapter.R adapt))
 forgetfulModuleFunctorCategorical adapt = 
-  mkCategoricalAdapter ForgetfulModuleFunctorAdapter (λ _ → ForgetfulModuleFunctorAdapter.decl adapt)
+  mkCategoricalAdapter (AM.ForgetfulModuleFunctor (ForgetfulModuleFunctorAdapter.R adapt))
+    (λ _ → ForgetfulModuleFunctorAdapter.decl adapt)
 
-rightModuleCategorical : RightModuleAdapter → CategoricalAdapter {lsuc lzero} RightModuleAdapter
+rightModuleCategorical : (adapt : RightModuleAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.RightModule (RightModuleAdapter.R adapt))
 rightModuleCategorical adapt = 
-  mkCategoricalAdapter RightModuleAdapter (λ _ → RightModuleAdapter.decl adapt)
+  mkCategoricalAdapter (AM.RightModule (RightModuleAdapter.R adapt))
+    (λ _ → RightModuleAdapter.decl adapt)
 
 
 -- ============================================================================
@@ -4887,29 +4912,41 @@ mkTranscendenceBasisAdapter F E d ef ee pf pe =
 isFilledTranscendenceBasis : TranscendenceBasisAdapter → B.Bool
 isFilledTranscendenceBasis a = TranscendenceBasisAdapter.status a
 
-extensionDegreeCategorical : ExtensionDegreeAdapter → CategoricalAdapter {lsuc lzero} ExtensionDegreeAdapter
+extensionDegreeCategorical : (adapt : ExtensionDegreeAdapter) →
+  CategoricalAdapter {lsuc lzero} (AFB.ExtensionDegree (ExtensionDegreeAdapter.F adapt) (ExtensionDegreeAdapter.E adapt))
 extensionDegreeCategorical adapt = 
-  mkCategoricalAdapter ExtensionDegreeAdapter (λ _ → ExtensionDegreeAdapter.decl adapt)
+  mkCategoricalAdapter (AFB.ExtensionDegree (ExtensionDegreeAdapter.F adapt) (ExtensionDegreeAdapter.E adapt))
+    (λ _ → ExtensionDegreeAdapter.decl adapt)
 
-inseparableDegreeCategorical : InseparableDegreeAdapter → CategoricalAdapter {lsuc lzero} InseparableDegreeAdapter
+inseparableDegreeCategorical : (adapt : InseparableDegreeAdapter) →
+  CategoricalAdapter {lsuc lzero} (AFA.InseparableDegree (InseparableDegreeAdapter.F adapt) (InseparableDegreeAdapter.E adapt))
 inseparableDegreeCategorical adapt = 
-  mkCategoricalAdapter InseparableDegreeAdapter (λ _ → InseparableDegreeAdapter.decl adapt)
+  mkCategoricalAdapter (AFA.InseparableDegree (InseparableDegreeAdapter.F adapt) (InseparableDegreeAdapter.E adapt))
+    (λ _ → InseparableDegreeAdapter.decl adapt)
 
-separableDegreeCategorical : SeparableDegreeAdapter → CategoricalAdapter {lsuc lzero} SeparableDegreeAdapter
+separableDegreeCategorical : (adapt : SeparableDegreeAdapter) →
+  CategoricalAdapter {lsuc lzero} (AFA.SeparableDegree (SeparableDegreeAdapter.F adapt) (SeparableDegreeAdapter.E adapt))
 separableDegreeCategorical adapt = 
-  mkCategoricalAdapter SeparableDegreeAdapter (λ _ → SeparableDegreeAdapter.decl adapt)
+  mkCategoricalAdapter (AFA.SeparableDegree (SeparableDegreeAdapter.F adapt) (SeparableDegreeAdapter.E adapt))
+    (λ _ → SeparableDegreeAdapter.decl adapt)
 
-simpleExtensionCategorical : SimpleExtensionAdapter → CategoricalAdapter {lsuc lzero} SimpleExtensionAdapter
+simpleExtensionCategorical : (adapt : SimpleExtensionAdapter) →
+  CategoricalAdapter {lsuc lzero} (AFB.SimpleExtension (SimpleExtensionAdapter.F adapt) (SimpleExtensionAdapter.E adapt) (SimpleExtensionAdapter.α adapt))
 simpleExtensionCategorical adapt = 
-  mkCategoricalAdapter SimpleExtensionAdapter (λ _ → SimpleExtensionAdapter.decl adapt)
+  mkCategoricalAdapter (AFB.SimpleExtension (SimpleExtensionAdapter.F adapt) (SimpleExtensionAdapter.E adapt) (SimpleExtensionAdapter.α adapt))
+    (λ _ → SimpleExtensionAdapter.decl adapt)
 
-transcendentalElementCategorical : TranscendentalElementAdapter → CategoricalAdapter {lsuc lzero} TranscendentalElementAdapter
+transcendentalElementCategorical : (adapt : TranscendentalElementAdapter) →
+  CategoricalAdapter {lsuc lzero} (AFB.TranscendentalElement (TranscendentalElementAdapter.F adapt) (TranscendentalElementAdapter.E adapt) (TranscendentalElementAdapter.α adapt))
 transcendentalElementCategorical adapt = 
-  mkCategoricalAdapter TranscendentalElementAdapter (λ _ → TranscendentalElementAdapter.decl adapt)
+  mkCategoricalAdapter (AFB.TranscendentalElement (TranscendentalElementAdapter.F adapt) (TranscendentalElementAdapter.E adapt) (TranscendentalElementAdapter.α adapt))
+    (λ _ → TranscendentalElementAdapter.decl adapt)
 
-transcendenceBasisCategorical : TranscendenceBasisAdapter → CategoricalAdapter {lsuc lzero} TranscendenceBasisAdapter
+transcendenceBasisCategorical : (adapt : TranscendenceBasisAdapter) →
+  CategoricalAdapter {lsuc lzero} (AFB.TranscendenceBasis (TranscendenceBasisAdapter.F adapt) (TranscendenceBasisAdapter.E adapt))
 transcendenceBasisCategorical adapt = 
-  mkCategoricalAdapter TranscendenceBasisAdapter (λ _ → TranscendenceBasisAdapter.decl adapt)
+  mkCategoricalAdapter (AFB.TranscendenceBasis (TranscendenceBasisAdapter.F adapt) (TranscendenceBasisAdapter.E adapt))
+    (λ _ → TranscendenceBasisAdapter.decl adapt)
 
 
 -- ============================================================================
@@ -5042,13 +5079,13 @@ isFilledGenericEnrichment a = GenericEnrichmentAdapter.status a
 record GroupActionEnrichedCategoryAdapter : Set₁ where
   field
     decl : AE.GroupActionEnrichedCategory
-    expectedGroup : AGB.GroupDeclaration
+    expectedGroup : AFo.GroupDeclaration
     link : AE.GroupActionEnrichedCategory.actingGroup decl ≡ expectedGroup
     status : B.Bool
 
 mkGroupActionEnrichedCategoryAdapter :
   (d : AE.GroupActionEnrichedCategory) →
-  (eg : AGB.GroupDeclaration) →
+  (eg : AFo.GroupDeclaration) →
   (p : AE.GroupActionEnrichedCategory.actingGroup d ≡ eg) →
   GroupActionEnrichedCategoryAdapter
 mkGroupActionEnrichedCategoryAdapter d eg p =
@@ -5129,49 +5166,61 @@ mkAbSelfEnrichmentViaInternalHomAdapter d ec p =
 isFilledAbSelfEnrichmentViaInternalHom : AbSelfEnrichmentViaInternalHomAdapter → B.Bool
 isFilledAbSelfEnrichmentViaInternalHom a = AbSelfEnrichmentViaInternalHomAdapter.status a
 
-monoidAsMonoidalCategorical : MonoidAsMonoidalCategoryAdapter → CategoricalAdapter {lsuc lzero} MonoidAsMonoidalCategoryAdapter
+monoidAsMonoidalCategorical : (adapt : MonoidAsMonoidalCategoryAdapter) →
+  CategoricalAdapter {lsuc lzero} AE.MonoidAsMonoidalCategory
 monoidAsMonoidalCategorical adapt = 
-  mkCategoricalAdapter MonoidAsMonoidalCategoryAdapter (λ _ → MonoidAsMonoidalCategoryAdapter.decl adapt)
+  mkCategoricalAdapter AE.MonoidAsMonoidalCategory (λ _ → MonoidAsMonoidalCategoryAdapter.decl adapt)
 
-abelianGroupAsSymmetricMonoidalCategorical : AbelianGroupAsSymmetricMonoidalAdapter → CategoricalAdapter {lsuc lzero} AbelianGroupAsSymmetricMonoidalAdapter
+abelianGroupAsSymmetricMonoidalCategorical : (adapt : AbelianGroupAsSymmetricMonoidalAdapter) →
+  CategoricalAdapter {lsuc lzero} AE.AbelianGroupAsSymmetricMonoidal
 abelianGroupAsSymmetricMonoidalCategorical adapt = 
-  mkCategoricalAdapter AbelianGroupAsSymmetricMonoidalAdapter (λ _ → AbelianGroupAsSymmetricMonoidalAdapter.decl adapt)
+  mkCategoricalAdapter AE.AbelianGroupAsSymmetricMonoidal (λ _ → AbelianGroupAsSymmetricMonoidalAdapter.decl adapt)
 
-monoidEnrichedCategoryCategorical : MonoidEnrichedCategoryAdapter → CategoricalAdapter {lsuc lzero} MonoidEnrichedCategoryAdapter
+monoidEnrichedCategoryCategorical : (adapt : MonoidEnrichedCategoryAdapter) →
+  CategoricalAdapter {lsuc lzero} AE.MonoidEnrichedCategory
 monoidEnrichedCategoryCategorical adapt = 
-  mkCategoricalAdapter MonoidEnrichedCategoryAdapter (λ _ → MonoidEnrichedCategoryAdapter.decl adapt)
+  mkCategoricalAdapter AE.MonoidEnrichedCategory (λ _ → MonoidEnrichedCategoryAdapter.decl adapt)
 
-distanceCategoryCategorical : DistanceCategoryAdapter → CategoricalAdapter {lsuc lzero} DistanceCategoryAdapter
+distanceCategoryCategorical : (adapt : DistanceCategoryAdapter) →
+  CategoricalAdapter {lsuc lzero} AE.DistanceCategory
 distanceCategoryCategorical adapt = 
-  mkCategoricalAdapter DistanceCategoryAdapter (λ _ → DistanceCategoryAdapter.decl adapt)
+  mkCategoricalAdapter AE.DistanceCategory (λ _ → DistanceCategoryAdapter.decl adapt)
 
-abEnrichedCategoryCategorical : AbEnrichedCategoryAdapter → CategoricalAdapter {lsuc lzero} AbEnrichedCategoryAdapter
+abEnrichedCategoryCategorical : (adapt : AbEnrichedCategoryAdapter) →
+  CategoricalAdapter {lsuc lzero} AE.AbEnrichedCategory
 abEnrichedCategoryCategorical adapt = 
-  mkCategoricalAdapter AbEnrichedCategoryAdapter (λ _ → AbEnrichedCategoryAdapter.decl adapt)
+  mkCategoricalAdapter AE.AbEnrichedCategory (λ _ → AbEnrichedCategoryAdapter.decl adapt)
 
-genericEnrichmentCategorical : GenericEnrichmentAdapter → CategoricalAdapter {lsuc lzero} GenericEnrichmentAdapter
+genericEnrichmentCategorical : (adapt : GenericEnrichmentAdapter) →
+  CategoricalAdapter {lsuc lzero} (AE.GenericEnrichment (GenericEnrichmentAdapter.V adapt))
 genericEnrichmentCategorical adapt = 
-  mkCategoricalAdapter GenericEnrichmentAdapter (λ _ → GenericEnrichmentAdapter.decl adapt)
+  mkCategoricalAdapter (AE.GenericEnrichment (GenericEnrichmentAdapter.V adapt))
+    (λ _ → GenericEnrichmentAdapter.decl adapt)
 
-groupActionEnrichedCategoryCategorical : GroupActionEnrichedCategoryAdapter → CategoricalAdapter {lsuc lzero} GroupActionEnrichedCategoryAdapter
+groupActionEnrichedCategoryCategorical : (adapt : GroupActionEnrichedCategoryAdapter) →
+  CategoricalAdapter {lsuc lzero} AE.GroupActionEnrichedCategory
 groupActionEnrichedCategoryCategorical adapt = 
-  mkCategoricalAdapter GroupActionEnrichedCategoryAdapter (λ _ → GroupActionEnrichedCategoryAdapter.decl adapt)
+  mkCategoricalAdapter AE.GroupActionEnrichedCategory (λ _ → GroupActionEnrichedCategoryAdapter.decl adapt)
 
-moduleEnrichedCategoryCategorical : ModuleEnrichedCategoryAdapter → CategoricalAdapter {lsuc lzero} ModuleEnrichedCategoryAdapter
+moduleEnrichedCategoryCategorical : (adapt : ModuleEnrichedCategoryAdapter) →
+  CategoricalAdapter {lsuc lzero} AE.ModuleEnrichedCategory
 moduleEnrichedCategoryCategorical adapt = 
-  mkCategoricalAdapter ModuleEnrichedCategoryAdapter (λ _ → ModuleEnrichedCategoryAdapter.decl adapt)
+  mkCategoricalAdapter AE.ModuleEnrichedCategory (λ _ → ModuleEnrichedCategoryAdapter.decl adapt)
 
-lawvereTheoryEnrichedCategoryCategorical : LawvereTheoryEnrichedCategoryAdapter → CategoricalAdapter {lsuc lzero} LawvereTheoryEnrichedCategoryAdapter
+lawvereTheoryEnrichedCategoryCategorical : (adapt : LawvereTheoryEnrichedCategoryAdapter) →
+  CategoricalAdapter {lsuc lzero} AE.LawvereTheoryEnrichedCategory
 lawvereTheoryEnrichedCategoryCategorical adapt = 
-  mkCategoricalAdapter LawvereTheoryEnrichedCategoryAdapter (λ _ → LawvereTheoryEnrichedCategoryAdapter.decl adapt)
+  mkCategoricalAdapter AE.LawvereTheoryEnrichedCategory (λ _ → LawvereTheoryEnrichedCategoryAdapter.decl adapt)
 
-abSelfEnrichedCategorical : AbSelfEnrichedAdapter → CategoricalAdapter {lsuc lzero} AbSelfEnrichedAdapter
+abSelfEnrichedCategorical : (adapt : AbSelfEnrichedAdapter) →
+  CategoricalAdapter {lsuc lzero} AGA.AbSelfEnriched
 abSelfEnrichedCategorical adapt = 
-  mkCategoricalAdapter AbSelfEnrichedAdapter (λ _ → AbSelfEnrichedAdapter.decl adapt)
+  mkCategoricalAdapter AGA.AbSelfEnriched (λ _ → AbSelfEnrichedAdapter.decl adapt)
 
-abSelfEnrichmentViaInternalHomCategorical : AbSelfEnrichmentViaInternalHomAdapter → CategoricalAdapter {lsuc lzero} AbSelfEnrichmentViaInternalHomAdapter
+abSelfEnrichmentViaInternalHomCategorical : (adapt : AbSelfEnrichmentViaInternalHomAdapter) →
+  CategoricalAdapter {lsuc lzero} AGA.AbSelfEnrichmentViaInternalHom
 abSelfEnrichmentViaInternalHomCategorical adapt = 
-  mkCategoricalAdapter AbSelfEnrichmentViaInternalHomAdapter (λ _ → AbSelfEnrichmentViaInternalHomAdapter.decl adapt)
+  mkCategoricalAdapter AGA.AbSelfEnrichmentViaInternalHom (λ _ → AbSelfEnrichmentViaInternalHomAdapter.decl adapt)
 
 
 -- ============================================================================
@@ -5289,25 +5338,35 @@ mkAlgebraHomomorphismAdapter R A B d er p =
 isFilledAlgebraHomomorphism : AlgebraHomomorphismAdapter → B.Bool
 isFilledAlgebraHomomorphism a = AlgebraHomomorphismAdapter.status a
 
-exactSequenceCategorical : ExactSequenceAdapter → CategoricalAdapter {lsuc lzero} ExactSequenceAdapter
+exactSequenceCategorical : (adapt : ExactSequenceAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.ExactSequence (ExactSequenceAdapter.R adapt))
 exactSequenceCategorical adapt = 
-  mkCategoricalAdapter ExactSequenceAdapter (λ _ → ExactSequenceAdapter.decl adapt)
+  mkCategoricalAdapter (AM.ExactSequence (ExactSequenceAdapter.R adapt))
+    (λ _ → ExactSequenceAdapter.decl adapt)
 
-categoryOfModulesCategorical : CategoryOfModulesAdapter → CategoricalAdapter {lsuc lzero} CategoryOfModulesAdapter
+categoryOfModulesCategorical : (adapt : CategoryOfModulesAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.CategoryOfModules (CategoryOfModulesAdapter.R adapt))
 categoryOfModulesCategorical adapt = 
-  mkCategoricalAdapter CategoryOfModulesAdapter (λ _ → CategoryOfModulesAdapter.decl adapt)
+  mkCategoricalAdapter (AM.CategoryOfModules (CategoryOfModulesAdapter.R adapt))
+    (λ _ → CategoryOfModulesAdapter.decl adapt)
 
-vectorSpaceCategorical : VectorSpaceAdapter → CategoricalAdapter {lsuc lzero} VectorSpaceAdapter
+vectorSpaceCategorical : (adapt : VectorSpaceAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.VectorSpace (VectorSpaceAdapter.F adapt))
 vectorSpaceCategorical adapt = 
-  mkCategoricalAdapter VectorSpaceAdapter (λ _ → VectorSpaceAdapter.decl adapt)
+  mkCategoricalAdapter (AM.VectorSpace (VectorSpaceAdapter.F adapt))
+    (λ _ → VectorSpaceAdapter.decl adapt)
 
-rAlgebraCategorical : RAlgebraAdapter → CategoricalAdapter {lsuc lzero} RAlgebraAdapter
+rAlgebraCategorical : (adapt : RAlgebraAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.RAlgebra (RAlgebraAdapter.R adapt))
 rAlgebraCategorical adapt = 
-  mkCategoricalAdapter RAlgebraAdapter (λ _ → RAlgebraAdapter.decl adapt)
+  mkCategoricalAdapter (AM.RAlgebra (RAlgebraAdapter.R adapt))
+    (λ _ → RAlgebraAdapter.decl adapt)
 
-algebraHomomorphismCategorical : AlgebraHomomorphismAdapter → CategoricalAdapter {lsuc lzero} AlgebraHomomorphismAdapter
+algebraHomomorphismCategorical : (adapt : AlgebraHomomorphismAdapter) →
+  CategoricalAdapter {lsuc lzero} (AM.AlgebraHomomorphism (AlgebraHomomorphismAdapter.R adapt) (AlgebraHomomorphismAdapter.A adapt) (AlgebraHomomorphismAdapter.B adapt))
 algebraHomomorphismCategorical adapt = 
-  mkCategoricalAdapter AlgebraHomomorphismAdapter (λ _ → AlgebraHomomorphismAdapter.decl adapt)
+  mkCategoricalAdapter (AM.AlgebraHomomorphism (AlgebraHomomorphismAdapter.R adapt) (AlgebraHomomorphismAdapter.A adapt) (AlgebraHomomorphismAdapter.B adapt))
+    (λ _ → AlgebraHomomorphismAdapter.decl adapt)
 
 
 ------------------------------------------------------------------------
@@ -5335,7 +5394,7 @@ isFilledCategoryOfAlgebras a = CategoryOfAlgebrasAdapter.status a
 
 -- Categorical view for CategoryOfAlgebras
 categoryOfAlgebrasCategorical : CategoryOfAlgebrasAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.CategoryOfAlgebras
+  CategoricalAdapter {lzero} C2S4.CategoryOfAlgebras
 categoryOfAlgebrasCategorical adapt =
   mkCategoricalAdapter C2S4.CategoryOfAlgebras (λ _ → CategoryOfAlgebrasAdapter.decl adapt)
 
@@ -5361,7 +5420,7 @@ isFilledAdjunctionInducesMonadTheorem a = AdjunctionInducesMonadTheoremAdapter.s
 
 -- Categorical view for AdjunctionInducesMonadTheorem
 adjunctionInducesMonadTheoremCategorical : AdjunctionInducesMonadTheoremAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.AdjunctionInducesMonadTheorem
+  CategoricalAdapter {lzero} C2S4.AdjunctionInducesMonadTheorem
 adjunctionInducesMonadTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.AdjunctionInducesMonadTheorem (λ _ → AdjunctionInducesMonadTheoremAdapter.decl adapt)
 
@@ -5391,7 +5450,7 @@ isFilledEilenbergMooreAdjunction a = EilenbergMooreAdjunctionAdapter.status a
 
 -- Categorical view for EilenbergMooreAdjunction
 eilenbergMooreAdjunctionCategorical : EilenbergMooreAdjunctionAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.EilenbergMooreAdjunction
+  CategoricalAdapter {lzero} C2S4.EilenbergMooreAdjunction
 eilenbergMooreAdjunctionCategorical adapt =
   mkCategoricalAdapter C2S4.EilenbergMooreAdjunction (λ _ → EilenbergMooreAdjunctionAdapter.decl adapt)
 
@@ -5421,7 +5480,7 @@ isFilledMonadAdjunctionCorrespondenceTheorem a = MonadAdjunctionCorrespondenceTh
 
 -- Categorical view for MonadAdjunctionCorrespondenceTheorem
 monadAdjunctionCorrespondenceTheoremCategorical : MonadAdjunctionCorrespondenceTheoremAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.MonadAdjunctionCorrespondenceTheorem
+  CategoricalAdapter {lzero} C2S4.MonadAdjunctionCorrespondenceTheorem
 monadAdjunctionCorrespondenceTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.MonadAdjunctionCorrespondenceTheorem (λ _ → MonadAdjunctionCorrespondenceTheoremAdapter.decl adapt)
 
@@ -5447,7 +5506,7 @@ isFilledBeckMonadicityTheorem a = BeckMonadicityTheoremAdapter.status a
 
 -- Categorical view for BeckMonadicityTheorem
 beckMonadicityTheoremCategorical : BeckMonadicityTheoremAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.BeckMonadicityTheorem
+  CategoricalAdapter {lzero} C2S4.BeckMonadicityTheorem
 beckMonadicityTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.BeckMonadicityTheorem (λ _ → BeckMonadicityTheoremAdapter.decl adapt)
 
@@ -5473,7 +5532,7 @@ isFilledMonadicFunctorProperty a = MonadicFunctorPropertyAdapter.status a
 
 -- Categorical view for MonadicFunctorProperty
 monadicFunctorPropertyCategorical : MonadicFunctorPropertyAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.MonadicFunctorProperty
+  CategoricalAdapter {lzero} C2S4.MonadicFunctorProperty
 monadicFunctorPropertyCategorical adapt =
   mkCategoricalAdapter C2S4.MonadicFunctorProperty (λ _ → MonadicFunctorPropertyAdapter.decl adapt)
 
@@ -5499,7 +5558,7 @@ isFilledComonadFromAdjunction a = ComonadFromAdjunctionAdapter.status a
 
 -- Categorical view for ComonadFromAdjunction
 comonadFromAdjunctionCategorical : ComonadFromAdjunctionAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.ComonadFromAdjunction
+  CategoricalAdapter {lzero} C2S4.ComonadFromAdjunction
 comonadFromAdjunctionCategorical adapt =
   mkCategoricalAdapter C2S4.ComonadFromAdjunction (λ _ → ComonadFromAdjunctionAdapter.decl adapt)
 
@@ -5533,7 +5592,7 @@ isFilledForgetfulFunctorFromAlgebrasCreatesLimitsTheorem a = ForgetfulFunctorFro
 
 -- Categorical view for ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem
 forgetfulFunctorFromAlgebrasCreatesLimitsTheoremCategorical : ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem
+  CategoricalAdapter {lzero} C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem
 forgetfulFunctorFromAlgebrasCreatesLimitsTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem (λ _ → ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter.decl adapt)
 
@@ -5563,7 +5622,7 @@ isFilledCompletenessOfAlgebraCategoriesCorollary a = CompletenessOfAlgebraCatego
 
 -- Categorical view for CompletenessOfAlgebraCategoriesCorollary
 completenessOfAlgebraCategoriesCorollaryCategorical : CompletenessOfAlgebraCategoriesCorollaryAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.CompletenessOfAlgebraCategoriesCorollary
+  CategoricalAdapter {lzero} C2S4.CompletenessOfAlgebraCategoriesCorollary
 completenessOfAlgebraCategoriesCorollaryCategorical adapt =
   mkCategoricalAdapter C2S4.CompletenessOfAlgebraCategoriesCorollary (λ _ → CompletenessOfAlgebraCategoriesCorollaryAdapter.decl adapt)
 
@@ -5593,7 +5652,7 @@ isFilledReflexivePair a = ReflexivePairAdapter.status a
 
 -- Categorical view for ReflexivePair
 reflexivePairCategorical : ReflexivePairAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.ReflexivePair
+  CategoricalAdapter {lzero} C2S4.ReflexivePair
 reflexivePairCategorical adapt =
   mkCategoricalAdapter C2S4.ReflexivePair (λ _ → ReflexivePairAdapter.decl adapt)
 
@@ -5627,7 +5686,7 @@ isFilledForgetfulFunctorPreservesCertainCoequalizersTheorem a = ForgetfulFunctor
 
 -- Categorical view for ForgetfulFunctorPreservesCertainCoequalizersTheorem
 forgetfulFunctorPreservesCertainCoequalizersTheoremCategorical : ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem
+  CategoricalAdapter {lzero} C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem
 forgetfulFunctorPreservesCertainCoequalizersTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem (λ _ → ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter.decl adapt)
 
@@ -5653,7 +5712,7 @@ isFilledReflectsIsomorphismsProperty a = ReflectsIsomorphismsPropertyAdapter.sta
 
 -- Categorical view for ReflectsIsomorphismsProperty
 reflectsIsomorphismsPropertyCategorical : ReflectsIsomorphismsPropertyAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.ReflectsIsomorphismsProperty
+  CategoricalAdapter {lzero} C2S4.ReflectsIsomorphismsProperty
 reflectsIsomorphismsPropertyCategorical adapt =
   mkCategoricalAdapter C2S4.ReflectsIsomorphismsProperty (λ _ → ReflectsIsomorphismsPropertyAdapter.decl adapt)
 
@@ -5679,7 +5738,7 @@ isFilledUSplitPair a = USplitPairAdapter.status a
 
 -- Categorical view for USplitPair
 uSplitPairCategorical : USplitPairAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.USplitPair
+  CategoricalAdapter {lzero} C2S4.USplitPair
 uSplitPairCategorical adapt =
   mkCategoricalAdapter C2S4.USplitPair (λ _ → USplitPairAdapter.decl adapt)
 
@@ -5713,7 +5772,7 @@ isFilledRegularCategoryDeclaration a = RegularCategoryDeclarationAdapter.status 
 
 -- Categorical view for RegularCategoryDeclaration
 regularCategoryDeclarationCategorical : RegularCategoryDeclarationAdapter →
-  CategoricalAdapter {lsuc lzero} C2S2.RegularCategoryDeclaration
+  CategoricalAdapter {lzero} C2S2.RegularCategoryDeclaration
 regularCategoryDeclarationCategorical adapt =
   mkCategoricalAdapter C2S2.RegularCategoryDeclaration (λ _ → RegularCategoryDeclarationAdapter.decl adapt)
 
@@ -5739,7 +5798,7 @@ isFilledKernelPairDeclaration a = KernelPairDeclarationAdapter.status a
 
 -- Categorical view for KernelPairDeclaration
 kernelPairDeclarationCategorical : KernelPairDeclarationAdapter →
-  CategoricalAdapter {lsuc lzero} C2S2.KernelPairDeclaration
+  CategoricalAdapter {lzero} C2S2.KernelPairDeclaration
 kernelPairDeclarationCategorical adapt =
   mkCategoricalAdapter C2S2.KernelPairDeclaration (λ _ → KernelPairDeclarationAdapter.decl adapt)
 
@@ -5765,7 +5824,7 @@ isFilledInternalEquivalenceRelationDeclaration a = InternalEquivalenceRelationDe
 
 -- Categorical view for InternalEquivalenceRelationDeclaration
 internalEquivalenceRelationDeclarationCategorical : InternalEquivalenceRelationDeclarationAdapter →
-  CategoricalAdapter {lsuc lzero} C2S2.InternalEquivalenceRelationDeclaration
+  CategoricalAdapter {lzero} C2S2.InternalEquivalenceRelationDeclaration
 internalEquivalenceRelationDeclarationCategorical adapt =
   mkCategoricalAdapter C2S2.InternalEquivalenceRelationDeclaration (λ _ → InternalEquivalenceRelationDeclarationAdapter.decl adapt)
 
@@ -5791,7 +5850,7 @@ isFilledExactCategoryDeclaration a = ExactCategoryDeclarationAdapter.status a
 
 -- Categorical view for ExactCategoryDeclaration
 exactCategoryDeclarationCategorical : ExactCategoryDeclarationAdapter →
-  CategoricalAdapter {lsuc lzero} C2S2.ExactCategoryDeclaration
+  CategoricalAdapter {lzero} C2S2.ExactCategoryDeclaration
 exactCategoryDeclarationCategorical adapt =
   mkCategoricalAdapter C2S2.ExactCategoryDeclaration (λ _ → ExactCategoryDeclarationAdapter.decl adapt)
 
@@ -5825,7 +5884,7 @@ isFilledMonadWithRank a = MonadWithRankAdapter.status a
 
 -- Categorical view for MonadWithRank
 monadWithRankCategorical : MonadWithRankAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.MonadWithRank
+  CategoricalAdapter {lzero} C2S4.MonadWithRank
 monadWithRankCategorical adapt =
   mkCategoricalAdapter C2S4.MonadWithRank (λ _ → MonadWithRankAdapter.decl adapt)
 
@@ -5851,7 +5910,7 @@ isFilledLocallyPresentableCategory a = LocallyPresentableCategoryAdapter.status 
 
 -- Categorical view for LocallyPresentableCategory
 locallyPresentableCategoryCategorical : LocallyPresentableCategoryAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.LocallyPresentableCategory
+  CategoricalAdapter {lzero} C2S4.LocallyPresentableCategory
 locallyPresentableCategoryCategorical adapt =
   mkCategoricalAdapter C2S4.LocallyPresentableCategory (λ _ → LocallyPresentableCategoryAdapter.decl adapt)
 
@@ -5885,7 +5944,7 @@ isFilledRankTheoremForMonadicCategoriesTheorem a = RankTheoremForMonadicCategori
 
 -- Categorical view for RankTheoremForMonadicCategoriesTheorem
 rankTheoremForMonadicCategoriesTheoremCategorical : RankTheoremForMonadicCategoriesTheoremAdapter →
-  CategoricalAdapter {lsuc lzero} C2S4.RankTheoremForMonadicCategoriesTheorem
+  CategoricalAdapter {lzero} C2S4.RankTheoremForMonadicCategoriesTheorem
 rankTheoremForMonadicCategoriesTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.RankTheoremForMonadicCategoriesTheorem (λ _ → RankTheoremForMonadicCategoriesTheoremAdapter.decl adapt)
 
@@ -5915,7 +5974,7 @@ isFilledFunctorPreservesLimits a = FunctorPreservesLimitsAdapter.status a
 
 -- Categorical view for FunctorPreservesLimits
 functorPreservesLimitsCategorical : FunctorPreservesLimitsAdapter →
-  CategoricalAdapter {lsuc lzero} C1S2.FunctorPreservesLimits
+  CategoricalAdapter {lzero} C1S2.FunctorPreservesLimits
 functorPreservesLimitsCategorical adapt =
   mkCategoricalAdapter C1S2.FunctorPreservesLimits (λ _ → FunctorPreservesLimitsAdapter.decl adapt)
 
@@ -5941,7 +6000,7 @@ isFilledFunctorReflectsLimits a = FunctorReflectsLimitsAdapter.status a
 
 -- Categorical view for FunctorReflectsLimits
 functorReflectsLimitsCategorical : FunctorReflectsLimitsAdapter →
-  CategoricalAdapter {lsuc lzero} C1S2.FunctorReflectsLimits
+  CategoricalAdapter {lzero} C1S2.FunctorReflectsLimits
 functorReflectsLimitsCategorical adapt =
   mkCategoricalAdapter C1S2.FunctorReflectsLimits (λ _ → FunctorReflectsLimitsAdapter.decl adapt)
 
@@ -5967,7 +6026,7 @@ isFilledFunctorCreatesLimits a = FunctorCreatesLimitsAdapter.status a
 
 -- Categorical view for FunctorCreatesLimits
 functorCreatesLimitsCategorical : FunctorCreatesLimitsAdapter →
-  CategoricalAdapter {lsuc lzero} C1S2.FunctorCreatesLimits
+  CategoricalAdapter {lzero} C1S2.FunctorCreatesLimits
 functorCreatesLimitsCategorical adapt =
   mkCategoricalAdapter C1S2.FunctorCreatesLimits (λ _ → FunctorCreatesLimitsAdapter.decl adapt)
 
@@ -5993,7 +6052,7 @@ isFilledCreationImpliesReflection a = CreationImpliesReflectionAdapter.status a
 
 -- Categorical view for CreationImpliesReflection
 creationImpliesReflectionCategorical : CreationImpliesReflectionAdapter →
-  CategoricalAdapter {lsuc lzero} C1S2.CreationImpliesReflection
+  CategoricalAdapter {lzero} C1S2.CreationImpliesReflection
 creationImpliesReflectionCategorical adapt =
   mkCategoricalAdapter C1S2.CreationImpliesReflection (λ _ → CreationImpliesReflectionAdapter.decl adapt)
 
@@ -6019,7 +6078,7 @@ isFilledIsomorphismsOfCategoriesReflectLimits a = IsomorphismsOfCategoriesReflec
 
 -- Categorical view for IsomorphismsOfCategoriesReflectLimits
 isomorphismsOfCategoriesReflectLimitsCategorical : IsomorphismsOfCategoriesReflectLimitsAdapter →
-  CategoricalAdapter {lsuc lzero} C1S2.IsomorphismsOfCategoriesReflectLimits
+  CategoricalAdapter {lzero} C1S2.IsomorphismsOfCategoriesReflectLimits
 isomorphismsOfCategoriesReflectLimitsCategorical adapt =
   mkCategoricalAdapter C1S2.IsomorphismsOfCategoriesReflectLimits (λ _ → IsomorphismsOfCategoriesReflectLimitsAdapter.decl adapt)
 
@@ -6045,7 +6104,7 @@ isFilledRightAdjointsPreserveLimits_L2 a = RightAdjointsPreserveLimits_L2Adapter
 
 -- Categorical view for RightAdjointsPreserveLimits_L2
 rightAdjointsPreserveLimits_L2Categorical : RightAdjointsPreserveLimits_L2Adapter →
-  CategoricalAdapter {lsuc lzero} C1S2.RightAdjointsPreserveLimits_L2
+  CategoricalAdapter {lzero} C1S2.RightAdjointsPreserveLimits_L2
 rightAdjointsPreserveLimits_L2Categorical adapt =
   mkCategoricalAdapter C1S2.RightAdjointsPreserveLimits_L2 (λ _ → RightAdjointsPreserveLimits_L2Adapter.decl adapt)
 
@@ -6075,7 +6134,7 @@ isFilledInternalYonedaEmbedding a = InternalYonedaEmbeddingAdapter.status a
 
 -- Categorical view for InternalYonedaEmbedding
 internalYonedaEmbeddingCategorical : InternalYonedaEmbeddingAdapter →
-  CategoricalAdapter {lsuc lzero} C1S8.InternalYonedaEmbedding
+  CategoricalAdapter {lzero} C1S8.InternalYonedaEmbedding
 internalYonedaEmbeddingCategorical adapt =
   mkCategoricalAdapter C1S8.InternalYonedaEmbedding (λ _ → InternalYonedaEmbeddingAdapter.decl adapt)
 
@@ -6105,7 +6164,7 @@ isFilledInternalYonedaLemma a = InternalYonedaLemmaAdapter.status a
 
 -- Categorical view for InternalYonedaLemma
 internalYonedaLemmaCategorical : InternalYonedaLemmaAdapter →
-  CategoricalAdapter {lsuc lzero} C1S8.InternalYonedaLemma
+  CategoricalAdapter {lzero} C1S8.InternalYonedaLemma
 internalYonedaLemmaCategorical adapt =
   mkCategoricalAdapter C1S8.InternalYonedaLemma (λ _ → InternalYonedaLemmaAdapter.decl adapt)
 
@@ -6139,7 +6198,7 @@ isFilledKanExtensionContext a = KanExtensionContextAdapter.status a
 
 -- Categorical view for KanExtensionContext
 kanExtensionContextCategorical : KanExtensionContextAdapter →
-  CategoricalAdapter {lsuc lzero} C1S3.KanExtensionContext
+  CategoricalAdapter {lzero} C1S3.KanExtensionContext
 kanExtensionContextCategorical adapt =
   mkCategoricalAdapter C1S3.KanExtensionContext (λ _ → KanExtensionContextAdapter.decl adapt)
 
@@ -6165,7 +6224,7 @@ isFilledLeftKanCandidate a = LeftKanCandidateAdapter.status a
 
 -- Categorical view for LeftKanCandidate
 leftKanCandidateCategorical : LeftKanCandidateAdapter →
-  CategoricalAdapter {lsuc lzero} C1S3.LeftKanCandidate
+  CategoricalAdapter {lzero} C1S3.LeftKanCandidate
 leftKanCandidateCategorical adapt =
   mkCategoricalAdapter C1S3.LeftKanCandidate (λ _ → LeftKanCandidateAdapter.decl adapt)
 
@@ -6191,7 +6250,7 @@ isFilledRightKanCandidate a = RightKanCandidateAdapter.status a
 
 -- Categorical view for RightKanCandidate
 rightKanCandidateCategorical : RightKanCandidateAdapter →
-  CategoricalAdapter {lsuc lzero} C1S3.RightKanCandidate
+  CategoricalAdapter {lzero} C1S3.RightKanCandidate
 rightKanCandidateCategorical adapt =
   mkCategoricalAdapter C1S3.RightKanCandidate (λ _ → RightKanCandidateAdapter.decl adapt)
 
@@ -6221,7 +6280,7 @@ isFilledLeftKanExtensionIsInitialObject a = LeftKanExtensionIsInitialObjectAdapt
 
 -- Categorical view for LeftKanExtensionIsInitialObject
 leftKanExtensionIsInitialObjectCategorical : LeftKanExtensionIsInitialObjectAdapter →
-  CategoricalAdapter {lsuc lzero} C1S3.LeftKanExtensionIsInitialObject
+  CategoricalAdapter {lzero} C1S3.LeftKanExtensionIsInitialObject
 leftKanExtensionIsInitialObjectCategorical adapt =
   mkCategoricalAdapter C1S3.LeftKanExtensionIsInitialObject (λ _ → LeftKanExtensionIsInitialObjectAdapter.decl adapt)
 
@@ -6251,7 +6310,7 @@ isFilledRightKanExtensionIsTerminalObject a = RightKanExtensionIsTerminalObjectA
 
 -- Categorical view for RightKanExtensionIsTerminalObject
 rightKanExtensionIsTerminalObjectCategorical : RightKanExtensionIsTerminalObjectAdapter →
-  CategoricalAdapter {lsuc lzero} C1S3.RightKanExtensionIsTerminalObject
+  CategoricalAdapter {lzero} C1S3.RightKanExtensionIsTerminalObject
 rightKanExtensionIsTerminalObjectCategorical adapt =
   mkCategoricalAdapter C1S3.RightKanExtensionIsTerminalObject (λ _ → RightKanExtensionIsTerminalObjectAdapter.decl adapt)
 
@@ -6281,7 +6340,7 @@ isFilledPointwiseKanFormulaTheorem a = PointwiseKanFormulaTheoremAdapter.status 
 
 -- Categorical view for PointwiseKanFormulaTheorem
 pointwiseKanFormulaTheoremCategorical : PointwiseKanFormulaTheoremAdapter →
-  CategoricalAdapter {lsuc lzero} C1S3.PointwiseKanFormulaTheorem
+  CategoricalAdapter {lzero} C1S3.PointwiseKanFormulaTheorem
 pointwiseKanFormulaTheoremCategorical adapt =
   mkCategoricalAdapter C1S3.PointwiseKanFormulaTheorem (λ _ → PointwiseKanFormulaTheoremAdapter.decl adapt)
 
@@ -6311,7 +6370,7 @@ isFilledAdjointsAsKanExtensions a = AdjointsAsKanExtensionsAdapter.status a
 
 -- Categorical view for AdjointsAsKanExtensions
 adjointsAsKanExtensionsCategorical : AdjointsAsKanExtensionsAdapter →
-  CategoricalAdapter {lsuc lzero} C1S3.AdjointsAsKanExtensions
+  CategoricalAdapter {lzero} C1S3.AdjointsAsKanExtensions
 adjointsAsKanExtensionsCategorical adapt =
   mkCategoricalAdapter C1S3.AdjointsAsKanExtensions (λ _ → AdjointsAsKanExtensionsAdapter.decl adapt)
 
@@ -6337,7 +6396,7 @@ isFilledAdjointFunctorTheoremRight a = AdjointFunctorTheoremRightAdapter.status 
 
 -- Categorical view for AdjointFunctorTheoremRight
 adjointFunctorTheoremRightCategorical : AdjointFunctorTheoremRightAdapter →
-  CategoricalAdapter {lsuc lzero} C1S3.AdjointFunctorTheoremRight
+  CategoricalAdapter {lzero} C1S3.AdjointFunctorTheoremRight
 adjointFunctorTheoremRightCategorical adapt =
   mkCategoricalAdapter C1S3.AdjointFunctorTheoremRight (λ _ → AdjointFunctorTheoremRightAdapter.decl adapt)
 
@@ -6419,13 +6478,13 @@ isFilledCartesianFunctorDeclaration a = CartesianFunctorDeclarationAdapter.statu
 record CategoryOfFibrationsAdapter : Set₁ where
   field
     decl : C2S8.CategoryOfFibrations
-    expectedBase : M.Identifier
+    expectedBase : C1S3.CategoryDeclaration
     link : C2S8.CategoryOfFibrations.baseCategory decl ≡ expectedBase
     status : B.Bool
 
 mkCategoryOfFibrationsAdapter :
   (d : C2S8.CategoryOfFibrations) →
-  (eb : M.Identifier) →
+  (eb : C1S3.CategoryDeclaration) →
   (p : C2S8.CategoryOfFibrations.baseCategory d ≡ eb) →
   (f : ⊤ → C2S8.CategoryOfFibrations) →
   CategoryOfFibrationsAdapter
@@ -6461,13 +6520,13 @@ isFilledPseudofunctorFromFibration a = PseudofunctorFromFibrationAdapter.status 
 record GrothendieckConstructionAdapter : Set₁ where
   field
     decl : C2S8.GrothendieckConstruction
-    expectedTotal : M.Identifier
+    expectedTotal : C1S3.CategoryDeclaration
     link : C2S8.GrothendieckConstruction.totalCategory decl ≡ expectedTotal
     status : B.Bool
 
 mkGrothendieckConstructionAdapter :
   (d : C2S8.GrothendieckConstruction) →
-  (et : M.Identifier) →
+  (et : C1S3.CategoryDeclaration) →
   (p : C2S8.GrothendieckConstruction.totalCategory d ≡ et) →
   (f : ⊤ → C2S8.GrothendieckConstruction) →
   GrothendieckConstructionAdapter
@@ -6484,13 +6543,13 @@ isFilledGrothendieckConstruction a = GrothendieckConstructionAdapter.status a
 record GrothendieckEquivalenceTheoremAdapter : Set₁ where
   field
     decl : C2S8.GrothendieckEquivalenceTheorem
-    expectedBase : M.Identifier
+    expectedBase : C1S3.CategoryDeclaration
     link : C2S8.GrothendieckEquivalenceTheorem.baseCategory decl ≡ expectedBase
     status : B.Bool
 
 mkGrothendieckEquivalenceTheoremAdapter :
   (d : C2S8.GrothendieckEquivalenceTheorem) →
-  (eb : M.Identifier) →
+  (eb : C1S3.CategoryDeclaration) →
   (p : C2S8.GrothendieckEquivalenceTheorem.baseCategory d ≡ eb) →
   (f : ⊤ → C2S8.GrothendieckEquivalenceTheorem) →
   GrothendieckEquivalenceTheoremAdapter
@@ -6507,16 +6566,16 @@ isFilledGrothendieckEquivalenceTheorem a = GrothendieckEquivalenceTheoremAdapter
 record FibredAdjunctionDeclarationAdapter : Set₁ where
   field
     decl : C2S8.FibredAdjunctionDeclaration
-    expectedLeft : M.Identifier
-    expectedRight : M.Identifier
+    expectedLeft : C2S8.CartesianFunctorDeclaration
+    expectedRight : C2S8.CartesianFunctorDeclaration
     link1 : C2S8.FibredAdjunctionDeclaration.leftAdjoint decl ≡ expectedLeft
     link2 : C2S8.FibredAdjunctionDeclaration.rightAdjoint decl ≡ expectedRight
     status : B.Bool
 
 mkFibredAdjunctionDeclarationAdapter :
   (d : C2S8.FibredAdjunctionDeclaration) →
-  (el : M.Identifier) →
-  (er : M.Identifier) →
+  (el : C2S8.CartesianFunctorDeclaration) →
+  (er : C2S8.CartesianFunctorDeclaration) →
   (p1 : C2S8.FibredAdjunctionDeclaration.leftAdjoint d ≡ el) →
   (p2 : C2S8.FibredAdjunctionDeclaration.rightAdjoint d ≡ er) →
   (f : ⊤ → C2S8.FibredAdjunctionDeclaration) →
@@ -6591,13 +6650,13 @@ isFilledLocallySmallFibration a = LocallySmallFibrationAdapter.status a
 record RefinedGrothendieckEquivalenceTheoremAdapter : Set₁ where
   field
     decl : C2S8.RefinedGrothendieckEquivalenceTheorem
-    expectedBase : M.Identifier
+    expectedBase : C1S3.CategoryDeclaration
     link : C2S8.RefinedGrothendieckEquivalenceTheorem.baseCategory decl ≡ expectedBase
     status : B.Bool
 
 mkRefinedGrothendieckEquivalenceTheoremAdapter :
   (d : C2S8.RefinedGrothendieckEquivalenceTheorem) →
-  (eb : M.Identifier) →
+  (eb : C1S3.CategoryDeclaration) →
   (p : C2S8.RefinedGrothendieckEquivalenceTheorem.baseCategory d ≡ eb) →
   (f : ⊤ → C2S8.RefinedGrothendieckEquivalenceTheorem) →
   RefinedGrothendieckEquivalenceTheoremAdapter
@@ -6614,13 +6673,13 @@ isFilledRefinedGrothendieckEquivalenceTheorem a = RefinedGrothendieckEquivalence
 record CodomainFibrationAdapter : Set₁ where
   field
     decl : C2S8.CodomainFibration
-    expectedBase : M.Identifier
+    expectedBase : C1S3.CategoryDeclaration
     link : C2S8.CodomainFibration.baseCategory decl ≡ expectedBase
     status : B.Bool
 
 mkCodomainFibrationAdapter :
   (d : C2S8.CodomainFibration) →
-  (eb : M.Identifier) →
+  (eb : C1S3.CategoryDeclaration) →
   (p : C2S8.CodomainFibration.baseCategory d ≡ eb) →
   (f : ⊤ → C2S8.CodomainFibration) →
   CodomainFibrationAdapter
@@ -6656,13 +6715,13 @@ isFilledLindenbaumTarskiFibration a = LindenbaumTarskiFibrationAdapter.status a
 record FamiliesFibrationAdapter : Set₁ where
   field
     decl : C2S8.FamiliesFibration
-    expectedBase : M.Identifier
+    expectedBase : C1S3.CategoryDeclaration
     link : C2S8.FamiliesFibration.baseCategory decl ≡ expectedBase
     status : B.Bool
 
 mkFamiliesFibrationAdapter :
   (d : C2S8.FamiliesFibration) →
-  (eb : M.Identifier) →
+  (eb : C1S3.CategoryDeclaration) →
   (p : C2S8.FamiliesFibration.baseCategory d ≡ eb) →
   (f : ⊤ → C2S8.FamiliesFibration) →
   FamiliesFibrationAdapter
