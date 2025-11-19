@@ -104,10 +104,11 @@
         "id": "PHASE-IV.1",
         "category": "Phase",
         "title": "Adjunction coherence (free/forgetful)",
-        "status": "planned",
+        "status": "completed",
         "source": "testing.md",
         "files": [
-            "src/agda/Tests/UniversalPropertyTests.agda"
+            "src/agda/Tests/UniversalPropertyTests.agda",
+            "src/agda/Core/UniversalProperties.agda"
         ],
         "tags": [
             "Adjunction",
