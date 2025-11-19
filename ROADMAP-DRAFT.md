@@ -5,6 +5,7 @@ Sources Integrated: `testing.md`, `docs/ARCHITECTURE.md`, `README.md`, `DEFERRED
 Scope: Full depth / full breadth – phases, architectural follow‑ups, ingestion curriculum, deferred items, future research vectors.
 
 ---
+
 ## 1. High-Level Phase Status Snapshot
 
 | Phase | Name / Focus                                    | Current State            | Source of Truth                                | Notes                                                           |
@@ -28,10 +29,13 @@ Scope: Full depth / full breadth – phases, architectural follow‑ups, ingesti
 Legend: COMPLETE / IN PROGRESS / PLANNED / DEFERRED.
 
 ---
+
 ## 2. Detailed Phase Action Inventory
+
 (Verbatim distilled from `testing.md` with normalization)
 
 ### Phase 0
+
 | Index | Action                                                               | Target Pattern        | Files                               |
 | ----- | -------------------------------------------------------------------- | --------------------- | ----------------------------------- |
 | 0.1   | Replace product postulate with constructive mediating cone proof     | P3 Constructive Proof | `Tests/UniversalPropertyTests.agda` |
@@ -40,6 +44,7 @@ Legend: COMPLETE / IN PROGRESS / PLANNED / DEFERRED.
 | 0.4   | Implement pullback & pushout constructive proofs                     | P3                    | `Tests/UniversalPropertyTests.agda` |
 
 ### Phase I
+
 | Index | Action                                                  | Target                           | Files                                           |
 | ----- | ------------------------------------------------------- | -------------------------------- | ----------------------------------------------- |
 | 1.1   | Static coordinate assignment for all declarations       | Well-Founded Indexed Composition | `Metamodel.agda`                                |
@@ -49,20 +54,22 @@ Legend: COMPLETE / IN PROGRESS / PLANNED / DEFERRED.
 | 1.5   | Packed node reuse for generic proofs                    | P5 Reuse                         | `Core/AlgebraicAlgorithms.agda`                 |
 
 ### Phase II
+
 (Indices 2.1.0 – 2.5 summarized)
-| Index | Action                                                             | Pattern        | Files                                     |
+| Index | Action | Pattern | Files |
 | ----- | ------------------------------------------------------------------ | -------------- | ----------------------------------------- |
-| 2.1.0 | Replace bridge-level postulates with constructive identifier stubs | P2             | `Core/AlgorithmUniversality.agda`         |
-| 2.1.1 | Witness ↔ UMP coherence probes                                     | P2 Coherence   | `Tests/ConstructiveWitnessTests.agda`     |
-| 2.1.2 | Dual extraction minimal polynomial (alg vs UMP)                    | P2             | `Tests/UniversalPropertyTests.agda`       |
-| 2.2   | Terminality concretization (division scaffold)                     | P4 Terminality | `Core/ConstructiveWitnesses.agda` + tests |
-| 2.3.0 | Splitting-field mediating extraction probe                         | P4 Initiality  | `Tests/UniversalPropertyTests.agda`       |
-| 2.3.1 | Galois-closure mediating extraction probe                          | P4 Initiality  | `Tests/UniversalPropertyTests.agda`       |
-| 2.4.0 | Indexed composition scaffolding (`mkIdAt`)                         | P5             | `Tests/UniversalPropertyTests.agda`       |
-| 2.4.1 | Ordering enforcement `<ⁱ`                                          | P5             | `Tests/UniversalPropertyTests.agda`       |
-| 2.5   | Global logical closure (no metas)                                  | Total Symmetry | `Tests/Index.agda`                        |
+| 2.1.0 | Replace bridge-level postulates with constructive identifier stubs | P2 | `Core/AlgorithmUniversality.agda` |
+| 2.1.1 | Witness ↔ UMP coherence probes | P2 Coherence | `Tests/ConstructiveWitnessTests.agda` |
+| 2.1.2 | Dual extraction minimal polynomial (alg vs UMP) | P2 | `Tests/UniversalPropertyTests.agda` |
+| 2.2 | Terminality concretization (division scaffold) | P4 Terminality | `Core/ConstructiveWitnesses.agda` + tests |
+| 2.3.0 | Splitting-field mediating extraction probe | P4 Initiality | `Tests/UniversalPropertyTests.agda` |
+| 2.3.1 | Galois-closure mediating extraction probe | P4 Initiality | `Tests/UniversalPropertyTests.agda` |
+| 2.4.0 | Indexed composition scaffolding (`mkIdAt`) | P5 | `Tests/UniversalPropertyTests.agda` |
+| 2.4.1 | Ordering enforcement `<ⁱ` | P5 | `Tests/UniversalPropertyTests.agda` |
+| 2.5 | Global logical closure (no metas) | Total Symmetry | `Tests/Index.agda` |
 
 ### Phase III (Completed Units)
+
 | Index | Action                                                       | Impact                               |
 | ----- | ------------------------------------------------------------ | ------------------------------------ |
 | 3.1   | Multi-step pipeline ordering/dag validation                  | Validates deep composition ordering  |
@@ -72,13 +79,17 @@ Legend: COMPLETE / IN PROGRESS / PLANNED / DEFERRED.
 | 3.5   | Topos checklist alignment (optional)                         | Remaining validation deferral        |
 
 ### Phase IV (Planned)
+
 Adjunction proofs, Yoneda lemma, Grothendieck fibrations bridging latent space indexing.
 
 ### Phase V (Planned)
+
 Gödelian limit reification, growth rate instrumentation, composite HoTT path.
 
 ---
+
 ## 3. Deferrals & Technical Debt Classes
+
 (Sourced from `DEFERRED-TRACKING.md` + testing notes)
 
 | Tier | Item                                              | Category             | Status   | Rationale                                    |
@@ -92,6 +103,7 @@ Gödelian limit reification, growth rate instrumentation, composite HoTT path.
 Current Global Counts (2025-11-19): Postulates 366, TODO 68, PLANNED 0, FIXME 0, DeviationLog 16, Total 450.
 
 ### Future Debt Visibility Enhancements
+
 - Category breakdown in PR comments
 - Historical trending graph
 - Auto sub-issue generation for DeviationLog
@@ -99,7 +111,9 @@ Current Global Counts (2025-11-19): Postulates 366, TODO 68, PLANNED 0, FIXME 0,
 - Kanban integration
 
 ---
+
 ## 4. Ingestion Curriculum Mapping (From `ingest.md`)
+
 Each textbook section represented as an ingestion target for later formalization/witness coverage. No statuses yet – baseline = NOT STARTED.
 
 | Chapter | Section                                              | Planned Symbolic Focus                                                          | Status      |
@@ -172,8 +186,11 @@ Each textbook section represented as an ingestion target for later formalization
 Back Matter (Symbols, Bibliography, Index) deferred until broad coverage maturity.
 
 ---
+
 ## 5. Future Enhancements & Research Vectors
+
 (From README, Architecture, Testing notes)
+
 - Replace splitting-field id postulate with deterministic propagation.
 - Branching/diamond DAG examples expansion.
 - Adjunction correctness (free structures) constructive witnesses.
@@ -189,8 +206,11 @@ Back Matter (Symbols, Bibliography, Index) deferred until broad coverage maturit
 - Composite HoTT Path aggregator for final closure.
 
 ---
+
 ## 6. Normalized Task Schema (For Automation / Issue Generation)
+
 Each task entry may be modeled as:
+
 ```json
 {
   "id": "PHASE-2.4.1",
@@ -205,17 +225,22 @@ Each task entry may be modeled as:
   "tags": ["P5", "Ordering", "Index"]
 }
 ```
+
 Deferred ingestion tasks can use `category = "Ingestion"` and research items `category = "Research"`.
 
 ---
+
 ## 7. Immediate Next Actions (To Progress Toward Final ROADMAP.md)
-1. Classify ingestion tasks into near-term (Phase IV prerequisites) vs long-term (Phase V / research).  
-2. Generate JSON index of tasks for potential script-driven GitHub issue updates.  
-3. Fold deferral metrics into a lightweight badge (optional).  
-4. Promote this draft to `ROADMAP.md` after user review & prioritization annotations.  
+
+1. Classify ingestion tasks into near-term (Phase IV prerequisites) vs long-term (Phase V / research).
+2. Generate JSON index of tasks for potential script-driven GitHub issue updates.
+3. Fold deferral metrics into a lightweight badge (optional).
+4. Promote this draft to `ROADMAP.md` after user review & prioritization annotations.
 
 ---
+
 ## 8. Review Checklist
+
 - [x] Phases 0–III detailed actions captured
 - [x] Deferral tiers summarized
 - [x] Full ingestion outline mapped to tasks
@@ -225,4 +250,5 @@ Deferred ingestion tasks can use `category = "Ingestion"` and research items `ca
 - [ ] Prioritization labels (pending)
 
 ---
+
 Generated automatically by consolidation pass (LLM agent). Edit freely for refinement.

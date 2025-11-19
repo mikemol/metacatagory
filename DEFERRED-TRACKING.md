@@ -7,9 +7,11 @@ The repository now has automated tracking of deferred items (technical debt) thr
 ## What Gets Tracked
 
 ### 1. **DeviationLog Entries** (16 found)
+
 Documented deviations from ideal implementation with rationale and future plans.
 
 **Example:**
+
 ```agda
 -- DeviationLog [2025-11-18]: Removed inline validation proof that Group index
 -- is greater than Monoid index. Validation now covered in Tests.HierarchyValidation
@@ -17,21 +19,26 @@ Documented deviations from ideal implementation with rationale and future plans.
 ```
 
 ### 2. **Postulates** (366 found)
+
 Axioms or assumptions not yet proven constructively. Many are intentional placeholders for future work.
 
 **Example:**
+
 ```agda
 postulate
   F E : FieldDeclaration
 ```
 
 ### 3. **TODO Items** (68 found)
+
 General tasks marked for future work.
 
 ### 4. **PLANNED Items** (0 found)
+
 Features or work explicitly planned in documentation (currently tracked in `testing.md` phases).
 
 ### 5. **FIXME Items** (0 found)
+
 Known issues requiring immediate fixes.
 
 ## How It Works
@@ -47,7 +54,7 @@ Known issues requiring immediate fixes.
 
 ### On Every Pull Request
 
-1. **Compare Before/After** 
+1. **Compare Before/After**
    - Scans both base and PR branches
    - Calculates the delta (increase/decrease/unchanged)
 2. **Post Informational Comment**
@@ -105,14 +112,14 @@ This system embodies a **trust-based, informational approach**:
 
 ### Current State (as of 2025-11-19)
 
-| Category | Count | Context |
-|----------|-------|---------|
-| **DeviationLog** | 16 | Documented architectural decisions |
-| **Postulates** | 366 | Mix of placeholders and to-be-proven theorems |
-| **TODO** | 68 | Future work items |
-| **PLANNED** | 0 | Tracked in `testing.md` phases instead |
-| **FIXME** | 0 | No urgent issues |
-| **Total** | 450 | Healthy for a research codebase |
+| Category         | Count | Context                                       |
+| ---------------- | ----- | --------------------------------------------- |
+| **DeviationLog** | 16    | Documented architectural decisions            |
+| **Postulates**   | 366   | Mix of placeholders and to-be-proven theorems |
+| **TODO**         | 68    | Future work items                             |
+| **PLANNED**      | 0     | Tracked in `testing.md` phases instead        |
+| **FIXME**        | 0     | No urgent issues                              |
+| **Total**        | 450   | Healthy for a research codebase               |
 
 ### Interpreting Postulates
 

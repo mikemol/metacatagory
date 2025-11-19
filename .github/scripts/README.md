@@ -7,6 +7,7 @@ This directory contains automation scripts used by the CI/CD workflows.
 ### `detect-deferred-items.sh`
 
 Scans the codebase for deferred items including:
+
 - **DeviationLog** entries: Documented deviations from ideal implementation
 - **Postulates**: Axioms or assumptions not yet proven constructively
 - **TODO** items: General tasks marked for future work
@@ -14,11 +15,13 @@ Scans the codebase for deferred items including:
 - **FIXME** items: Known issues requiring fixes
 
 **Usage:**
+
 ```bash
 ./detect-deferred-items.sh [output-file]
 ```
 
 **Outputs:**
+
 - Markdown report with all findings
 - JSON summary for programmatic access
 - GitHub Actions outputs (when running in CI)
@@ -28,11 +31,13 @@ Scans the codebase for deferred items including:
 Creates or updates a GitHub issue to track deferred items. The issue serves as a central tracking point for all deferred work.
 
 **Usage:**
+
 ```bash
 GH_TOKEN=<token> ./create-or-update-tracking-issue.sh <report-file> <summary-file>
 ```
 
 **Behavior:**
+
 - Creates a new tracking issue if none exists
 - Updates existing tracking issue with latest report
 - Issue stays open as long as deferred items remain
@@ -42,6 +47,7 @@ GH_TOKEN=<token> ./create-or-update-tracking-issue.sh <report-file> <summary-fil
 ### `ci.yml`
 
 Main CI workflow that:
+
 1. Type-checks Agda code
 2. Builds documentation
 3. Tracks deferred items (on main branch pushes)
@@ -50,6 +56,7 @@ Main CI workflow that:
 ### `deferred-items.yml`
 
 Dedicated deferred items review workflow that:
+
 1. Runs weekly on schedule
 2. Runs on every PR
 3. Compares deferred items between PR and base branch
