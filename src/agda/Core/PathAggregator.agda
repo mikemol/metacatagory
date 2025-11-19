@@ -301,6 +301,21 @@ record PathGrowthEvolution : Set₁ where
     phaseAligned : PathSnapshot.snapshotPhase pathSnapshot ≡ GM.GrowthSnapshot.snapshotTimestamp growthSnapshot
     evolutionValid : Bool'
 
+-- Timeline of evolution states across phases
+record EvolutionTimeline : Set₁ where
+  constructor mkEvolutionTimeline
+  field
+    evolutions : List PathGrowthEvolution
+    timelineLength : Nat
+    allValid : Bool'
+
+validateTimeline : EvolutionTimeline → Bool'
+validateTimeline tl = check (EvolutionTimeline.evolutions tl)
+  where
+    check : List PathGrowthEvolution → Bool'
+    check [] = true
+    check (e ∷ es) = (PathGrowthEvolution.evolutionValid e) andPath (check es)
+
 -- Construct an evolution record given alignment proof
 mkEvolution : (p : PathSnapshot) → (g : GM.GrowthSnapshot) →
               PathSnapshot.snapshotPhase p ≡ GM.GrowthSnapshot.snapshotTimestamp g →
@@ -326,6 +341,82 @@ metacatagoryEvolution = mkEvolution alignedPathSnapshot GM.metacatagoryGrowthSna
 
 -- Verification: Evolution validity flag is true
 _ : PathGrowthEvolution.evolutionValid metacatagoryEvolution ≡ true
+_ = refl
+
+-- Root snapshot at phase 0 (simplified placeholder)
+rootPathSnapshot : PathSnapshot
+rootPathSnapshot = mkPathSnapshot 0 metacatagoryGlobalClosure 3 2 true
+
+rootGrowthAllocations : List GM.CoordinateAllocation
+rootGrowthAllocations =
+  record { coordinate = M.mkCoord 0 0
+         ; timestamp = 0
+         ; context = "root-initial" } ∷ []
+
+rootGrowthSnapshot : GM.GrowthSnapshot
+rootGrowthSnapshot = GM.captureGrowthSnapshot 0 rootGrowthAllocations
+
+rootEvolution : PathGrowthEvolution
+rootEvolution = mkEvolution rootPathSnapshot rootGrowthSnapshot refl
+
+-- Timeline combining root, aligned, and current snapshots
+evolutionTimeline : EvolutionTimeline
+evolutionTimeline = mkEvolutionTimeline
+  (rootEvolution ∷ metacatagoryEvolution ∷ [])
+  2
+  true
+
+-- Verify timeline validity via validator
+_ : validateTimeline evolutionTimeline ≡ true
+_ = refl
+
+-- ============================================================================
+-- Non-Reflexive Transformation Paths
+-- ============================================================================
+
+-- General transformation path with explicit forward/backward functions
+record TransformationPath (A : Set) : Set where
+  constructor mkTransformationPath
+  field
+    source : A
+    target : A
+    forward : A → A
+    sourceCoord : M.Coordinate
+    targetCoord : M.Coordinate
+
+-- Composition of transformation paths (requires alignment)
+composeTransformation : {A : Set} → TransformationPath A → TransformationPath A → TransformationPath A
+composeTransformation p₁ p₂ = mkTransformationPath
+  (TransformationPath.source p₁)
+  (TransformationPath.target p₂)
+  (λ a → TransformationPath.forward p₂ (TransformationPath.forward p₁ a))
+  (TransformationPath.sourceCoord p₁)
+  (TransformationPath.targetCoord p₂)
+
+-- Example non-reflexive transformation path instances
+exampleTransPath1 : TransformationPath M.Identifier
+exampleTransPath1 = mkTransformationPath
+  (M.mkIdAt "t1" 1 0)
+  (M.mkIdAt "t1'" 1 1)
+  (λ x → M.mkIdAt "t1'" 1 1)
+  (M.mkCoord 1 0)
+  (M.mkCoord 1 1)
+
+exampleTransPath2 : TransformationPath M.Identifier
+exampleTransPath2 = mkTransformationPath
+  (M.mkIdAt "t1'" 1 1)
+  (M.mkIdAt "t1''" 1 2)
+  (λ x → M.mkIdAt "t1''" 1 2)
+  (M.mkCoord 1 1)
+  (M.mkCoord 1 2)
+
+composedTransformation : TransformationPath M.Identifier
+composedTransformation = composeTransformation exampleTransPath1 exampleTransPath2
+
+_ : TransformationPath.source composedTransformation ≡ M.mkIdAt "t1" 1 0
+_ = refl
+
+_ : TransformationPath.target composedTransformation ≡ M.mkIdAt "t1''" 1 2
 _ = refl
 
 -- ============================================================================
