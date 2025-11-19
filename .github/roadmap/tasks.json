@@ -119,10 +119,11 @@
         "id": "PHASE-IV.2",
         "category": "Phase",
         "title": "Yoneda lemma constructive instance",
-        "status": "planned",
+        "status": "completed",
         "source": "testing.md",
         "files": [
-            "src/agda/Tests/YonedaChecklist.agda"
+            "src/agda/Tests/YonedaChecklist.agda",
+            "src/agda/Core/Yoneda.agda"
         ],
         "tags": [
             "Yoneda",
