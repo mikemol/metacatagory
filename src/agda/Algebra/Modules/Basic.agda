@@ -18,6 +18,28 @@ open import Metamodel as M
 -- IV.1: Modules, Homomorphisms and Exact Sequences
 -- ============================================================================
 
+-- ============================================================================
+-- Concrete Examples (for testing and verification)
+-- ============================================================================
+module ConcreteExamples where
+  -- Example: Z as a Z-module
+  Z-as-Z-module : M.Identifier
+  Z-as-Z-module = M.mkId "ℤ-as-ℤ-module"
+  
+  -- Example: Z/nZ as a Z-module
+  ZnZ-as-Z-module : M.Identifier → M.Identifier
+  ZnZ-as-Z-module n = M.mkId "ℤ/nℤ-as-ℤ-module"
+  
+  -- Example: R^n as free R-module
+  R-power-n : M.Identifier → M.Identifier → M.Identifier
+  R-power-n R n = M.mkId "R^n-free-module"
+  
+  -- Example: Field F as vector space over itself
+  F-as-F-vectorspace : M.Identifier → M.Identifier
+  F-as-F-vectorspace F = M.mkId "F-as-F-vectorspace"
+
+open ConcreteExamples public
+
 -- Left R-module
 record LeftModule (R : RingDeclaration) : Set₁ where
   field
@@ -144,30 +166,14 @@ record CategoryOfModules (R : RingDeclaration) : Set₁ where
     -- R-Mod is abelian
     isAbelian : M.Identifier
 
--- R-Mod has kernels and cokernels (from abelian category structure)
+-- R-Mod categorical properties (Hungerford IV.1)
+-- Combines: kernels/cokernels, limits/colimits, isomorphism theorems, exact sequences
 postulate
-  RMod-Has-Kernels-Cokernels :
+  RMod-Categorical-Properties :
     (R : RingDeclaration) →
-    M.Identifier  -- Every morphism has kernel and cokernel
-
--- R-Mod has all limits and colimits
-postulate
-  RMod-Is-Complete-Cocomplete :
-    (R : RingDeclaration) →
-    M.Identifier  -- R-Mod has all (small) limits and colimits
-
--- First Isomorphism Theorem (categorical: image factorization)
-postulate
-  Module-First-Isomorphism :
-    (R : RingDeclaration) →
-    (f : M.Identifier) →
-    M.Identifier  -- M/ker(f) ≅ im(f)
-
--- Connection to Chapter2.Level2sub1: Exact sequences
-postulate
-  RMod-Exact-Sequences-Categorical :
-    (R : RingDeclaration) →
-    M.Identifier  -- Exact sequences in R-Mod reflect categorical ker/coker
+    M.Identifier  -- R-Mod is abelian: has kernels, cokernels, limits, colimits;
+                  -- First Isomorphism Theorem: M/ker(f) ≅ im(f);
+                  -- Exact sequences reflect categorical ker/coker
 
 -- ============================================================================
 -- IV.2: Free Modules and Vector Spaces
@@ -201,7 +207,7 @@ record ForgetfulModuleFunctor (R : RingDeclaration) : Set₁ where
     preservesIdentity : M.Identifier
     preservesComposition : M.Identifier
 
--- F ⊣ U adjunction
+-- F ⊣ U adjunction (Hungerford IV.2, universal property of free modules)
 postulate
   Free-Module-Adjunction :
     (R : RingDeclaration) →
@@ -232,7 +238,7 @@ record Dimension (F : FieldDeclaration) (V : VectorSpace F) : Set₁ where
     vectorSpace : VectorSpace field'
     dimension : M.Identifier  -- |basis| (well-defined)
 
--- All bases have same cardinality
+-- All bases have same cardinality (well-definedness of dimension, Hungerford IV.2)
 postulate
   Basis-Cardinality-Invariant :
     (F : FieldDeclaration) →
@@ -253,7 +259,7 @@ record ProjectiveModule (R : RingDeclaration) (P : LeftModule R) : Set₁ where
     -- ∃ lift h : P → B with g ∘ h = f
     liftingProperty : M.Identifier
 
--- Free modules are projective
+-- Free modules are projective (lifting property from basis, Hungerford IV.3)
 postulate
   Free-Implies-Projective :
     (R : RingDeclaration) →
@@ -270,24 +276,14 @@ record InjectiveModule (R : RingDeclaration) (I : LeftModule R) : Set₁ where
     -- ∃ extension h : B → I with h ∘ f = g
     extensionProperty : M.Identifier
 
--- Projective modules and split exact sequences
+-- Projective and injective modules (Hungerford IV.3)
+-- Characterizations via split exact sequences and resolutions
 postulate
-  Projective-Split-SES :
+  Projective-Injective-Properties :
     (R : RingDeclaration) →
-    (P : LeftModule R) →
-    M.Identifier  -- P projective iff every SES 0 → A → B → P → 0 splits
-
--- Injective modules and split exact sequences
-postulate
-  Injective-Split-SES :
-    (R : RingDeclaration) →
-    (I : LeftModule R) →
-    M.Identifier  -- I injective iff every SES 0 → I → B → C → 0 splits
-
--- Connection to homological algebra
-postulate
-  Projective-Injective-Resolutions :
-    M.Identifier  -- Every module has projective and injective resolutions
+    M.Identifier  -- P projective iff every SES 0→A→B→P→0 splits;
+                  -- I injective iff every SES 0→I→B→C→0 splits;
+                  -- Every module has projective and injective resolutions
 
 -- ============================================================================
 -- IV.4: Hom and Duality
@@ -305,7 +301,7 @@ record HomFunctor (R : RingDeclaration) (M : LeftModule R) : Set₁ where
     -- Contravariant in first argument, covariant in second
     functoriality : M.Identifier
 
--- Hom is left exact
+-- Hom is left exact (contravariant exactness, Hungerford IV.4)
 postulate
   Hom-Left-Exact :
     (R : RingDeclaration) →
@@ -352,31 +348,14 @@ record TensorProduct (R : CommutativeRingDeclaration) (M N : LeftModule (UnitalR
     -- Universal property
     universalProperty : M.Identifier
 
--- Tensor product is right exact
+-- Tensor product properties (Hungerford IV.5)
 postulate
-  Tensor-Right-Exact :
+  Tensor-Product-Properties :
     (R : CommutativeRingDeclaration) →
-    (M : LeftModule (UnitalRingDeclaration.underlyingRing (CommutativeRingDeclaration.underlyingRing R))) →
-    M.Identifier  -- A → B → C → 0 exact implies M⊗A → M⊗B → M⊗C → 0 exact
-
--- Tensor-Hom adjunction (when R commutative)
-postulate
-  Tensor-Hom-Adjunction :
-    (R : CommutativeRingDeclaration) →
-    (M N P : LeftModule (UnitalRingDeclaration.underlyingRing (CommutativeRingDeclaration.underlyingRing R))) →
-    M.Identifier  -- Hom_R(M ⊗_R N, P) ≅ Hom_R(M, Hom_R(N, P))
-
--- Tensor product over ℤ (for abelian groups)
-postulate
-  Tensor-Over-Z :
-    (A B : AbelianGroupDeclaration) →
-    M.Identifier  -- A ⊗_ℤ B exists (from Ab self-enrichment)
-
--- Symmetric monoidal structure on R-Mod
-postulate
-  RMod-Symmetric-Monoidal :
-    (R : CommutativeRingDeclaration) →
-    M.Identifier  -- (R-Mod, ⊗_R, R) is symmetric monoidal
+    M.Identifier  -- Right exact: A→B→C→0 exact ⟹ M⊗A→M⊗B→M⊗C→0 exact;
+                  -- Tensor-Hom adjunction: Hom(M⊗N,P) ≅ Hom(M,Hom(N,P));
+                  -- Symmetric monoidal: (R-Mod, ⊗_R, R) is symmetric monoidal;
+                  -- Specializes to ℤ: abelian groups have A⊗_ℤB
 
 -- ============================================================================
 -- IV.6: Modules over Principal Ideal Domains
@@ -414,11 +393,13 @@ record StructureTheoremPID (R : PrincipalIdealDomain) (M : LeftModule (UnitalRin
     -- M ≅ R^r ⊕ R/(a₁) ⊕ ... ⊕ R/(aₙ) where aᵢ | aᵢ₊₁
     decomposition : M.Identifier
 
--- Classification over PID generalizes fundamental theorem for abelian groups
+-- Classification over PID (Structure theorem, Hungerford IV.6)
+-- Generalizes fundamental theorem for finitely generated abelian groups
 postulate
   PID-Module-Classification :
     (R : PrincipalIdealDomain) →
-    M.Identifier  -- Finitely generated R-modules classified by invariant factors
+    M.Identifier  -- Finitely generated R-modules classified by invariant factors:
+                  -- M ≅ R^r ⊕ R/(a₁) ⊕ ... ⊕ R/(aₙ) where aᵢ | aᵢ₊₁
 
 -- ============================================================================
 -- IV.7: Algebras
@@ -445,7 +426,7 @@ record AlgebraHomomorphism (R : CommutativeRingDeclaration) (A B : RAlgebra R) :
     ringHomomorphism : M.Identifier
     moduleHomomorphism : M.Identifier
 
--- Polynomial ring as free algebra
+-- Polynomial ring as free algebra (universal property, Hungerford IV.7)
 postulate
   Polynomial-Ring-Free-RAlgebra :
     (R : CommutativeRingDeclaration) →
@@ -455,37 +436,14 @@ postulate
 -- Integration with Abelian Categories (Chapter2.Level2sub1)
 -- ============================================================================
 
--- R-Mod IS the prototypical abelian category
+-- Integration with Abelian Categories and Homological Algebra
+-- (Chapter2.Level2sub1 connection, Hungerford IV.1-IV.5)
 postulate
-  RMod-Is-Abelian-Category :
+  RMod-Homological-Algebra-Package :
     (R : RingDeclaration) →
-    M.Identifier  -- R-Mod satisfies all axioms of abelian category
-
--- Exact sequences in R-Mod = exact sequences in abelian category sense
-postulate
-  Module-Exact-Equals-Categorical-Exact :
-    (R : RingDeclaration) →
-    M.Identifier  -- Module-theoretic exactness ≡ categorical exactness
-
--- Snake Lemma (diagram chasing in abelian categories)
-postulate
-  Snake-Lemma :
-    (R : RingDeclaration) →
-    M.Identifier  -- Commutative diagram with exact rows gives long exact sequence
-
--- Five Lemma (from abelian categories)
-postulate
-  Five-Lemma :
-    (R : RingDeclaration) →
-    M.Identifier  -- Diagram with exact rows: outer 4 isomorphisms → middle is isomorphism
-
--- Connection to derived functors and homological algebra
-postulate
-  Module-Homological-Algebra :
-    (R : RingDeclaration) →
-    M.Identifier  -- Ext and Tor functors via projective/injective resolutions
-
--- Every abelian category embeds in a category of modules (Freyd-Mitchell)
-postulate
-  Freyd-Mitchell-Embedding :
-    M.Identifier  -- Every small abelian category embeds fully faithfully in R-Mod
+    M.Identifier  -- R-Mod is the prototypical abelian category;
+                  -- Module exactness ≡ categorical exactness;
+                  -- Snake Lemma: commutative diagram → long exact sequence;
+                  -- Five Lemma: outer 4 isomorphisms → middle is isomorphism;
+                  -- Ext and Tor functors via resolutions;
+                  -- Freyd-Mitchell: every small abelian category embeds in R-Mod
