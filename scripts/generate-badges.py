@@ -28,10 +28,11 @@ def generate_roadmap_badges(tasks: list) -> Dict[str, Dict[str, Any]]:
     
     # Count tasks by status
     status_counts = {
-        'not-started': 0,
-        'in-progress': 0,
-        'completed': 0,
-        'deferred': 0
+        "not-started": 0,
+        "in-progress": 0,
+        "completed": 0,
+        "deferred": 0,
+        "planned": 0,
     }
     
     for task in tasks:
@@ -42,6 +43,7 @@ def generate_roadmap_badges(tasks: list) -> Dict[str, Dict[str, Any]]:
     completed = status_counts['completed']
     in_progress = status_counts['in-progress']
     not_started = status_counts['not-started']
+    deferred_count = status_counts["deferred"]
     
     # Overall progress badge
     if total > 0:
@@ -73,7 +75,23 @@ def generate_roadmap_badges(tasks: list) -> Dict[str, Dict[str, Any]]:
         "message": str(not_started),
         "color": "orange" if not_started > 0 else "lightgrey"
     }
-    
+
+    # Deferred tasks badge
+    badges["roadmap-deferred"] = {
+        "schemaVersion": 1,
+        "label": "deferred",
+        "message": str(deferred_count),
+        "color": "red" if deferred_count > 0 else "brightgreen",
+    }
+    # Planned tasks badge
+    planned_count = status_counts["planned"]
+    badges["roadmap-planned"] = {
+        "schemaVersion": 1,
+        "label": "planned",
+        "message": str(planned_count),
+        "color": "blue" if planned_count > 0 else "lightgrey",
+    }
+
     return badges
 
 
@@ -136,8 +154,73 @@ def generate_deferred_badges(summary: Dict[str, Any]) -> Dict[str, Dict[str, Any
         "message": str(fixme),
         "color": "red" if fixme > 10 else "orange" if fixme > 0 else "lightgrey"
     }
+    # Planned items badge
+    badges["deferred-planned"] = {
+        "schemaVersion": 1,
+        "label": "planned",
+        "message": str(planned),
+        "color": "blue" if planned > 0 else "lightgrey",
+    }
     
     return badges
+
+
+def scan_repository_for_deferred(repo_root: Path) -> Dict[str, Any]:
+    """Scan source tree for postulates, TODO, FIXME, and deviation markers.
+    Returns a summary dict compatible with generate_deferred_badges.
+    """
+    postulates = 0
+    todo = 0
+    fixme = 0
+    deviation_log = 0
+
+    # File extensions to scan for TODO/FIXME markers
+    text_exts = {".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"}
+
+    for path in repo_root.rglob("*"):
+        if not path.is_file():
+            continue
+        ext = path.suffix.lower()
+        if ext not in text_exts:
+            continue
+        try:
+            with open(path, "r", encoding="utf-8", errors="ignore") as f:
+                for line in f:
+                    stripped = line.strip()
+                    # Ignore Agda single-line comments for postulate counting
+                    if "postulate" in stripped and not stripped.startswith("--"):
+                        postulates += stripped.count("postulate")
+                    if "TODO" in line:
+                        todo += line.count("TODO")
+                    if "FIXME" in line:
+                        fixme += line.count("FIXME")
+                    if "DeviationLog" in line or "DEVIATION" in line:
+                        deviation_log += 1
+        except Exception:
+            # Ignore unreadable files
+            pass
+
+    # Planned tasks count derived from tasks.json for completeness
+    tasks_file = repo_root / ".github" / "roadmap" / "tasks.json"
+    planned = 0
+    if tasks_file.exists():
+        try:
+            with open(tasks_file, "r", encoding="utf-8") as f:
+                tasks_data = json.load(f)
+            if isinstance(tasks_data, list):
+                planned = sum(1 for t in tasks_data if t.get("status") == "planned")
+        except Exception:
+            pass
+
+    total = postulates + todo + fixme + deviation_log
+    return {
+        "total": total,
+        "deviation_log": deviation_log,
+        "postulates": postulates,
+        "todo": todo,
+        "planned": planned,
+        "fixme": fixme,
+    }
 
 
 def generate_build_badge() -> Dict[str, Any]:
@@ -169,6 +252,9 @@ def main():
         tasks = []  # Handle empty or malformed file
     
     deferred = load_json_file(deferred_summary)
+    # If no deferred summary or empty, dynamically compute from source tree
+    if not deferred or deferred.get("total", 0) == 0:
+        deferred = scan_repository_for_deferred(repo_root)
     
     # Generate all badges
     all_badges = {}
@@ -202,6 +288,16 @@ def main():
     print(f"Generated: {manifest_file}")
     
     print(f"\n✅ Generated {len(all_badges)} badge JSON files in {output_dir}")
+    # Optionally write back a refreshed deferred summary for future runs
+    refreshed_summary = repo_root / "deferred-summary.json"
+    with open(refreshed_summary, "w") as f:
+        json.dump(deferred, f, indent=2)
+    print(
+        "Refreshed deferred-summary.json "
+        f"postulates={deferred.get('postulates')} "
+        f"TODO={deferred.get('todo')} "
+        f"FIXME={deferred.get('fixme')}"
+    )
 
 
 if __name__ == '__main__':

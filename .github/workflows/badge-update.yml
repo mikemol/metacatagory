@@ -7,6 +7,15 @@ on:
       - '.github/roadmap/tasks.json'
       - 'deferred-summary.json'
       - 'scripts/generate-badges.py'
+      # Trigger when Agda source changes (postulates, TODO/FIXME counts)
+      - 'src/agda/**/*.agda'
+      # Trigger when documentation or roadmap content changes (may affect planned/deferred metrics)
+      - 'docs/**/*.md'
+      - 'ROADMAP*.md'
+      # Trigger when README badge section changes
+      - 'README.md'
+      # If other helper scripts are added that influence badge generation
+      - 'scripts/*.py'
   schedule:
     # Run daily at 00:00 UTC
     - cron: '0 0 * * *'

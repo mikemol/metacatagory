@@ -4,11 +4,14 @@
     "roadmap-progress",
     "roadmap-active",
     "roadmap-todo",
+    "roadmap-deferred",
+    "roadmap-planned",
     "deferred-total",
     "deferred-deviations",
     "deferred-postulates",
     "deferred-todo",
     "deferred-fixme",
+    "deferred-planned",
     "last-updated"
   ]
 }
