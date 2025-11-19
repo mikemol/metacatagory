@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 module Metamodel where
 
 -- Minimal builtins to avoid external stdlib dependencies
@@ -55,20 +55,20 @@ _<ᶜ_ : Coordinate -> Coordinate -> Bool
 mkCoord x₁ y₁ <ᶜ mkCoord x₂ y₂ = orBool (lessThanNat x₁ x₂) (andBool (equalNat x₁ x₂) (lessThanNat y₁ y₂))
   where
     open import Agda.Builtin.Bool using (Bool; true; false)
-
+    
     orBool : Bool -> Bool -> Bool
     orBool true _ = true
     orBool false b = b
-
+    
     andBool : Bool -> Bool -> Bool
     andBool true b = b
     andBool false _ = false
-
+    
     equalNat : Nat -> Nat -> Bool
     equalNat Agda.Builtin.Nat.zero Agda.Builtin.Nat.zero = true
     equalNat (Agda.Builtin.Nat.suc m) (Agda.Builtin.Nat.suc n) = equalNat m n
     equalNat _ _ = false
-
+    
     lessThanNat : Nat -> Nat -> Bool
     lessThanNat _ Agda.Builtin.Nat.zero = false
     lessThanNat Agda.Builtin.Nat.zero (Agda.Builtin.Nat.suc _) = true

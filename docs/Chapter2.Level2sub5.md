@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 -- Level2_5: Accessible Categories (Chapter 2, Section 5)
 -- This module encodes the structural content of Section 5 from the EBNF grammar.
 -- It covers locally presentable categories, accessible categories, raising degrees,
@@ -201,9 +201,9 @@ record GabrielUlmerDualityTheorem : Set₁ where
     category : CategoryDeclaration
     -- The equivalence: C is locally presentable ⟺ C ≅ Mod(S, Set) for some sketch S
     -- Direction 1: Locally presentable implies models of a sketch
-    locallyPresentableImpliesSketchModels :
-      LocallyPresentableCategoryDeclaration →
-      (sketch : SketchDeclaration) →
+    locallyPresentableImpliesSketchModels : 
+      LocallyPresentableCategoryDeclaration → 
+      (sketch : SketchDeclaration) → 
       Set  -- C ≅ Mod(sketch, Set)
     -- Direction 2: Models of a sketch implies locally presentable
     sketchModelsImpliesLocallyPresentable :

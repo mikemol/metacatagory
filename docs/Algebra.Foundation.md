@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 -- Algebra.Foundation: Foundational algebraic structures grounded in category theory
 -- This module defines the basic algebraic hierarchy (Magma → Semigroup → Monoid → Group)
 -- as enrichments of the categorical framework in Core, reusing existing axiom infrastructure.
@@ -72,7 +72,7 @@ record MonoidDeclaration : Set₁ where
     -- Reuse existing IdentityAxiom from Chapter1.Level1
     identityAxiom : IdentityAxiom
     index : AlgebraIndex     -- Phase I.1.3: Well-founded hierarchy index
-
+    
   -- Re-export semigroup properties
   open SemigroupDeclaration underlyingSemigroup public
 
@@ -98,7 +98,7 @@ record GroupDeclaration : Set₁ where
     underlyingMonoid : MonoidDeclaration
     inverseOperation : InverseOperation
     index : AlgebraIndex     -- Phase I.1.3: Well-founded hierarchy index
-
+    
   -- Re-export monoid properties
   open MonoidDeclaration underlyingMonoid public
 
@@ -127,7 +127,7 @@ record AbelianGroupDeclaration : Set₁ where
     underlyingGroup : GroupDeclaration
     commutativity : CommutativityAxiom
     index : AlgebraIndex     -- Phase I.1.3: Well-founded hierarchy index
-
+    
   -- Re-export group properties
   open GroupDeclaration underlyingGroup public
 
@@ -153,7 +153,7 @@ record MagmaHomomorphism (M N : MagmaDeclaration) : Set₁ where
 -- Semigroup homomorphism (automatically preserves associativity)
 record SemigroupHomomorphism (S T : SemigroupDeclaration) : Set₁ where
   field
-    underlyingMagmaMap : MagmaHomomorphism
+    underlyingMagmaMap : MagmaHomomorphism 
       (SemigroupDeclaration.underlyingMagma S)
       (SemigroupDeclaration.underlyingMagma T)
 
@@ -218,11 +218,11 @@ SemigroupCategoryId = M.mkId "SemigroupCategory"
 postulate
   -- Free-forgetful adjunction: Free ⊣ U : Grp → Set
   FreeGroupAdjunction : M.Identifier
-
+  
   -- Grp has all small limits and colimits
   Grp-HasLimits : M.Identifier
   Grp-HasColimits : M.Identifier
-
+  
   -- Ab is an abelian category
   Ab-IsAbelian : M.Identifier
 ```

@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 -- Level2_8: Fibred Categories (Chapter 2, Section 8)
 -- This module encodes the structural content of Section 8 from the EBNF grammar.
 -- It covers fibrations, Cartesian arrows, Cartesian functors, Grothendieck construction,

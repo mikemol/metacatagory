@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 -- Algebra.Groups.Basic: Fundamental group theory (Hungerford Ch I, sections 1-6)
 -- This module covers semigroups through symmetric groups, grounded in category theory.
 
@@ -68,8 +68,8 @@ record ElementOrder (g : M.Identifier) (G : GroupDeclaration) : Set₁ where
 
 -- Classification of cyclic groups (integration point: this connects to ℤ and ℤ/nℤ)
 postulate
-  CyclicGroup-Classification :
-    (G : CyclicGroup) →
+  CyclicGroup-Classification : 
+    (G : CyclicGroup) → 
     M.Identifier  -- G ≅ ℤ or G ≅ ℤ/nℤ for some n
 
 -- ============================================================================

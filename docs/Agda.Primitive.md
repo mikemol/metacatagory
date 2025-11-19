@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 -- The Agda primitives (preloaded).
 
 {-# OPTIONS --cubical-compatible --no-import-sorts #-}

@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 -- Core.Algorithms.Registry: Centralized algorithm discovery and dispatch
 -- This module provides a unified interface for finding and invoking algebraic algorithms
 -- based on field types and problem categories, enabling systematic extension and reuse.
@@ -80,23 +80,21 @@ open Classifiable public
 -- Instance Declarations (with lazy construction to avoid cycles)
 -- ============================================================================
 
--- CRITICAL: These instances take evidence as explicit parameters, NOT instance arguments
--- This breaks the cycle: instance search finds these, but doesn't recurse
+-- CRITICAL: These are NOT instances - they are smart constructors
+-- They take evidence as explicit parameters and should be called manually
+-- Making them instances with explicit arguments has no effect on instance search
 
--- Instance: finite field evidence → classifiable
-instance
-  finiteFieldClassifiable : {F : FieldDeclaration} (ev : IsFiniteField F) → Classifiable F
-  finiteFieldClassifiable {F} ev = record { classification = (FiniteFieldType , ev) }
+-- Smart constructor: finite field evidence → classifiable
+finiteFieldClassifiable : {F : FieldDeclaration} (ev : IsFiniteField F) → Classifiable F
+finiteFieldClassifiable {F} ev = record { classification = (FiniteFieldType , ev) }
 
--- Instance: number field evidence → classifiable
-instance
-  numberFieldClassifiable : {F : FieldDeclaration} (ev : IsNumberField F) → Classifiable F
-  numberFieldClassifiable {F} ev = record { classification = (NumberFieldType , ev) }
+-- Smart constructor: number field evidence → classifiable  
+numberFieldClassifiable : {F : FieldDeclaration} (ev : IsNumberField F) → Classifiable F
+numberFieldClassifiable {F} ev = record { classification = (NumberFieldType , ev) }
 
--- Instance: function field evidence → classifiable
-instance
-  functionFieldClassifiable : {F : FieldDeclaration} (ev : IsFunctionField F) → Classifiable F
-  functionFieldClassifiable {F} ev = record { classification = (FunctionFieldType , ev) }
+-- Smart constructor: function field evidence → classifiable
+functionFieldClassifiable : {F : FieldDeclaration} (ev : IsFunctionField F) → Classifiable F
+functionFieldClassifiable {F} ev = record { classification = (FunctionFieldType , ev) }
 
 -- ============================================================================
 -- Smart Constructors (for explicit use when instances aren't available)
@@ -199,23 +197,23 @@ module _ where
 -- ============================================================================
 
 -- Dispatch helper: given classification pairs, select appropriate bundle
-dispatchBundle : (F E : FieldDeclaration)
-               → FieldClassification F
-               → FieldClassification E
+dispatchBundle : (F E : FieldDeclaration) 
+               → FieldClassification F 
+               → FieldClassification E 
                → AlgorithmBundle F E
-dispatchBundle F E (FiniteFieldType , evF) (FiniteFieldType , evE) =
+dispatchBundle F E (FiniteFieldType , evF) (FiniteFieldType , evE) = 
   finiteFieldBundle F E evF evE
-dispatchBundle F E (NumberFieldType , evF) (NumberFieldType , evE) =
+dispatchBundle F E (NumberFieldType , evF) (NumberFieldType , evE) = 
   numberFieldBundle F E evF evE
 dispatchBundle F E (FunctionFieldType , evF) (FunctionFieldType , evE) =
   functionFieldBundle F E evF evE
-dispatchBundle F E _ _ =
+dispatchBundle F E _ _ = 
   genericAlgorithmBundle F E  -- Fallback for unsupported/mixed combinations
 
 -- Dispatch with explicit classifications (uses classifyAsFiniteField/classifyAsNumberField defined above)
-lookupAlgorithmBundleWithClassification : (F E : FieldDeclaration)
-                                        → FieldClassification F
-                                        → FieldClassification E
+lookupAlgorithmBundleWithClassification : (F E : FieldDeclaration) 
+                                        → FieldClassification F 
+                                        → FieldClassification E 
                                         → AlgorithmBundle F E
 lookupAlgorithmBundleWithClassification = dispatchBundle
 
@@ -226,11 +224,11 @@ lookupAlgorithmBundleWithClassification = dispatchBundle
 -- Automatic bundle lookup using lazy instance resolution
 -- The instances above take explicit evidence parameters, breaking the cycle
 -- Users provide evidence explicitly, instances convert to Classifiable lazily
-lookupAlgorithmBundleAuto : (F E : FieldDeclaration)
-                          → ⦃ cF : Classifiable F ⦄
-                          → ⦃ cE : Classifiable E ⦄
+lookupAlgorithmBundleAuto : (F E : FieldDeclaration) 
+                          → ⦃ cF : Classifiable F ⦄ 
+                          → ⦃ cE : Classifiable E ⦄ 
                           → AlgorithmBundle F E
-lookupAlgorithmBundleAuto F E ⦃ cF ⦄ ⦃ cE ⦄ =
+lookupAlgorithmBundleAuto F E ⦃ cF ⦄ ⦃ cE ⦄ = 
   dispatchBundle F E (classification cF) (classification cE)
 
 -- ============================================================================
@@ -282,87 +280,87 @@ lookupGaloisClosure F E = AlgorithmBundle.galoisClosureAlg (lookupAlgorithmBundl
 -- These variants accept explicit field classifications for smart dispatch
 -- Use classifyAsFiniteField or classifyAsNumberField to construct classifications
 
-lookupMinimalPolynomialWithClassification : (F E : FieldDeclaration)
-                                          → FieldClassification F
-                                          → FieldClassification E
+lookupMinimalPolynomialWithClassification : (F E : FieldDeclaration) 
+                                          → FieldClassification F 
+                                          → FieldClassification E 
                                           → MinimalPolynomialAlgorithm F E
-lookupMinimalPolynomialWithClassification F E cF cE =
+lookupMinimalPolynomialWithClassification F E cF cE = 
   AlgorithmBundle.minimalPolynomialAlg (dispatchBundle F E cF cE)
 
-lookupGaloisGroupWithClassification : (F E : FieldDeclaration)
-                                    → FieldClassification F
-                                    → FieldClassification E
+lookupGaloisGroupWithClassification : (F E : FieldDeclaration) 
+                                    → FieldClassification F 
+                                    → FieldClassification E 
                                     → GaloisGroupAlgorithm F E
-lookupGaloisGroupWithClassification F E cF cE =
+lookupGaloisGroupWithClassification F E cF cE = 
   AlgorithmBundle.galoisGroupAlg (dispatchBundle F E cF cE)
 
-lookupSplittingFieldWithClassification : (F : FieldDeclaration)
-                                       → FieldClassification F
+lookupSplittingFieldWithClassification : (F : FieldDeclaration) 
+                                       → FieldClassification F 
                                        → SplittingFieldAlgorithm F
-lookupSplittingFieldWithClassification F cF =
+lookupSplittingFieldWithClassification F cF = 
   AlgorithmBundle.splittingFieldAlg (dispatchBundle F F cF cF)
 
-lookupExtensionDegreeWithClassification : (F E : FieldDeclaration)
-                                        → FieldClassification F
-                                        → FieldClassification E
+lookupExtensionDegreeWithClassification : (F E : FieldDeclaration) 
+                                        → FieldClassification F 
+                                        → FieldClassification E 
                                         → FieldExtensionDegreeAlgorithm F E
-lookupExtensionDegreeWithClassification F E cF cE =
+lookupExtensionDegreeWithClassification F E cF cE = 
   AlgorithmBundle.extensionDegreeAlg (dispatchBundle F E cF cE)
 
-lookupSubfieldEnumerationWithClassification : (F E : FieldDeclaration)
-                                            → FieldClassification F
-                                            → FieldClassification E
+lookupSubfieldEnumerationWithClassification : (F E : FieldDeclaration) 
+                                            → FieldClassification F 
+                                            → FieldClassification E 
                                             → SubfieldEnumerationAlgorithm F E
-lookupSubfieldEnumerationWithClassification F E cF cE =
+lookupSubfieldEnumerationWithClassification F E cF cE = 
   AlgorithmBundle.subfieldEnumAlg (dispatchBundle F E cF cE)
 
-lookupSubgroupEnumerationWithClassification : (F E : FieldDeclaration)
-                                            → FieldClassification F
-                                            → FieldClassification E
+lookupSubgroupEnumerationWithClassification : (F E : FieldDeclaration) 
+                                            → FieldClassification F 
+                                            → FieldClassification E 
                                             → SubgroupEnumerationAlgorithm F E
-lookupSubgroupEnumerationWithClassification F E cF cE =
+lookupSubgroupEnumerationWithClassification F E cF cE = 
   AlgorithmBundle.subgroupEnumAlg (dispatchBundle F E cF cE)
 
-lookupAlgebraicityDecisionWithClassification : (F E : FieldDeclaration)
-                                             → FieldClassification F
-                                             → FieldClassification E
+lookupAlgebraicityDecisionWithClassification : (F E : FieldDeclaration) 
+                                             → FieldClassification F 
+                                             → FieldClassification E 
                                              → AlgebraicityDecisionAlgorithm F E
-lookupAlgebraicityDecisionWithClassification F E cF cE =
+lookupAlgebraicityDecisionWithClassification F E cF cE = 
   AlgorithmBundle.algebraicityAlg (dispatchBundle F E cF cE)
 
-lookupPrimitiveElementWithClassification : (F E : FieldDeclaration)
-                                         → FieldClassification F
-                                         → FieldClassification E
+lookupPrimitiveElementWithClassification : (F E : FieldDeclaration) 
+                                         → FieldClassification F 
+                                         → FieldClassification E 
                                          → PrimitiveElementAlgorithm F E
-lookupPrimitiveElementWithClassification F E cF cE =
+lookupPrimitiveElementWithClassification F E cF cE = 
   AlgorithmBundle.primitiveElementAlg (dispatchBundle F E cF cE)
 
-lookupNormalityDecisionWithClassification : (F E : FieldDeclaration)
-                                          → FieldClassification F
-                                          → FieldClassification E
+lookupNormalityDecisionWithClassification : (F E : FieldDeclaration) 
+                                          → FieldClassification F 
+                                          → FieldClassification E 
                                           → NormalityDecisionAlgorithm F E
-lookupNormalityDecisionWithClassification F E cF cE =
+lookupNormalityDecisionWithClassification F E cF cE = 
   AlgorithmBundle.normalityAlg (dispatchBundle F E cF cE)
 
-lookupSeparabilityDecisionWithClassification : (F E : FieldDeclaration)
-                                             → FieldClassification F
-                                             → FieldClassification E
+lookupSeparabilityDecisionWithClassification : (F E : FieldDeclaration) 
+                                             → FieldClassification F 
+                                             → FieldClassification E 
                                              → SeparabilityDecisionAlgorithm F E
-lookupSeparabilityDecisionWithClassification F E cF cE =
+lookupSeparabilityDecisionWithClassification F E cF cE = 
   AlgorithmBundle.separabilityAlg (dispatchBundle F E cF cE)
 
-lookupNormalClosureWithClassification : (F E : FieldDeclaration)
-                                      → FieldClassification F
-                                      → FieldClassification E
+lookupNormalClosureWithClassification : (F E : FieldDeclaration) 
+                                      → FieldClassification F 
+                                      → FieldClassification E 
                                       → NormalClosureAlgorithm F E
-lookupNormalClosureWithClassification F E cF cE =
+lookupNormalClosureWithClassification F E cF cE = 
   AlgorithmBundle.normalClosureAlg (dispatchBundle F E cF cE)
 
-lookupGaloisClosureWithClassification : (F E : FieldDeclaration)
-                                      → FieldClassification F
-                                      → FieldClassification E
+lookupGaloisClosureWithClassification : (F E : FieldDeclaration) 
+                                      → FieldClassification F 
+                                      → FieldClassification E 
                                       → GaloisClosureAlgorithm F E
-lookupGaloisClosureWithClassification F E cF cE =
+lookupGaloisClosureWithClassification F E cF cE = 
   AlgorithmBundle.galoisClosureAlg (dispatchBundle F E cF cE)
 
 -- ============================================================================
@@ -373,74 +371,74 @@ lookupGaloisClosureWithClassification F E cF cE =
 -- Usage: provide evidence explicitly, instances convert it lazily
 -- Example: lookupGaloisGroupAuto F E ⦃ finiteFieldClassifiable evF ⦄ ⦃ finiteFieldClassifiable evE ⦄
 
-lookupMinimalPolynomialAuto : (F E : FieldDeclaration)
-                            → ⦃ _ : Classifiable F ⦄
-                            → ⦃ _ : Classifiable E ⦄
+lookupMinimalPolynomialAuto : (F E : FieldDeclaration) 
+                            → ⦃ _ : Classifiable F ⦄ 
+                            → ⦃ _ : Classifiable E ⦄ 
                             → MinimalPolynomialAlgorithm F E
 lookupMinimalPolynomialAuto F E = AlgorithmBundle.minimalPolynomialAlg (lookupAlgorithmBundleAuto F E)
 
-lookupGaloisGroupAuto : (F E : FieldDeclaration)
-                      → ⦃ _ : Classifiable F ⦄
-                      → ⦃ _ : Classifiable E ⦄
+lookupGaloisGroupAuto : (F E : FieldDeclaration) 
+                      → ⦃ _ : Classifiable F ⦄ 
+                      → ⦃ _ : Classifiable E ⦄ 
                       → GaloisGroupAlgorithm F E
 lookupGaloisGroupAuto F E = AlgorithmBundle.galoisGroupAlg (lookupAlgorithmBundleAuto F E)
 
-lookupSplittingFieldAuto : (F : FieldDeclaration)
-                         → ⦃ _ : Classifiable F ⦄
+lookupSplittingFieldAuto : (F : FieldDeclaration) 
+                         → ⦃ _ : Classifiable F ⦄ 
                          → SplittingFieldAlgorithm F
 lookupSplittingFieldAuto F = AlgorithmBundle.splittingFieldAlg (lookupAlgorithmBundleAuto F F)
 
-lookupExtensionDegreeAuto : (F E : FieldDeclaration)
-                          → ⦃ _ : Classifiable F ⦄
-                          → ⦃ _ : Classifiable E ⦄
+lookupExtensionDegreeAuto : (F E : FieldDeclaration) 
+                          → ⦃ _ : Classifiable F ⦄ 
+                          → ⦃ _ : Classifiable E ⦄ 
                           → FieldExtensionDegreeAlgorithm F E
 lookupExtensionDegreeAuto F E = AlgorithmBundle.extensionDegreeAlg (lookupAlgorithmBundleAuto F E)
 
-lookupSubfieldEnumerationAuto : (F E : FieldDeclaration)
-                              → ⦃ _ : Classifiable F ⦄
-                              → ⦃ _ : Classifiable E ⦄
+lookupSubfieldEnumerationAuto : (F E : FieldDeclaration) 
+                              → ⦃ _ : Classifiable F ⦄ 
+                              → ⦃ _ : Classifiable E ⦄ 
                               → SubfieldEnumerationAlgorithm F E
 lookupSubfieldEnumerationAuto F E = AlgorithmBundle.subfieldEnumAlg (lookupAlgorithmBundleAuto F E)
 
-lookupSubgroupEnumerationAuto : (F E : FieldDeclaration)
-                              → ⦃ _ : Classifiable F ⦄
-                              → ⦃ _ : Classifiable E ⦄
+lookupSubgroupEnumerationAuto : (F E : FieldDeclaration) 
+                              → ⦃ _ : Classifiable F ⦄ 
+                              → ⦃ _ : Classifiable E ⦄ 
                               → SubgroupEnumerationAlgorithm F E
 lookupSubgroupEnumerationAuto F E = AlgorithmBundle.subgroupEnumAlg (lookupAlgorithmBundleAuto F E)
 
-lookupAlgebraicityDecisionAuto : (F E : FieldDeclaration)
-                               → ⦃ _ : Classifiable F ⦄
-                               → ⦃ _ : Classifiable E ⦄
+lookupAlgebraicityDecisionAuto : (F E : FieldDeclaration) 
+                               → ⦃ _ : Classifiable F ⦄ 
+                               → ⦃ _ : Classifiable E ⦄ 
                                → AlgebraicityDecisionAlgorithm F E
 lookupAlgebraicityDecisionAuto F E = AlgorithmBundle.algebraicityAlg (lookupAlgorithmBundleAuto F E)
 
-lookupPrimitiveElementAuto : (F E : FieldDeclaration)
-                           → ⦃ _ : Classifiable F ⦄
-                           → ⦃ _ : Classifiable E ⦄
+lookupPrimitiveElementAuto : (F E : FieldDeclaration) 
+                           → ⦃ _ : Classifiable F ⦄ 
+                           → ⦃ _ : Classifiable E ⦄ 
                            → PrimitiveElementAlgorithm F E
 lookupPrimitiveElementAuto F E = AlgorithmBundle.primitiveElementAlg (lookupAlgorithmBundleAuto F E)
 
-lookupNormalityDecisionAuto : (F E : FieldDeclaration)
-                            → ⦃ _ : Classifiable F ⦄
-                            → ⦃ _ : Classifiable E ⦄
+lookupNormalityDecisionAuto : (F E : FieldDeclaration) 
+                            → ⦃ _ : Classifiable F ⦄ 
+                            → ⦃ _ : Classifiable E ⦄ 
                             → NormalityDecisionAlgorithm F E
 lookupNormalityDecisionAuto F E = AlgorithmBundle.normalityAlg (lookupAlgorithmBundleAuto F E)
 
-lookupSeparabilityDecisionAuto : (F E : FieldDeclaration)
-                               → ⦃ _ : Classifiable F ⦄
-                               → ⦃ _ : Classifiable E ⦄
+lookupSeparabilityDecisionAuto : (F E : FieldDeclaration) 
+                               → ⦃ _ : Classifiable F ⦄ 
+                               → ⦃ _ : Classifiable E ⦄ 
                                → SeparabilityDecisionAlgorithm F E
 lookupSeparabilityDecisionAuto F E = AlgorithmBundle.separabilityAlg (lookupAlgorithmBundleAuto F E)
 
-lookupNormalClosureAuto : (F E : FieldDeclaration)
-                        → ⦃ _ : Classifiable F ⦄
-                        → ⦃ _ : Classifiable E ⦄
+lookupNormalClosureAuto : (F E : FieldDeclaration) 
+                        → ⦃ _ : Classifiable F ⦄ 
+                        → ⦃ _ : Classifiable E ⦄ 
                         → NormalClosureAlgorithm F E
 lookupNormalClosureAuto F E = AlgorithmBundle.normalClosureAlg (lookupAlgorithmBundleAuto F E)
 
-lookupGaloisClosureAuto : (F E : FieldDeclaration)
-                        → ⦃ _ : Classifiable F ⦄
-                        → ⦃ _ : Classifiable E ⦄
+lookupGaloisClosureAuto : (F E : FieldDeclaration) 
+                        → ⦃ _ : Classifiable F ⦄ 
+                        → ⦃ _ : Classifiable E ⦄ 
                         → GaloisClosureAlgorithm F E
 lookupGaloisClosureAuto F E = AlgorithmBundle.galoisClosureAlg (lookupAlgorithmBundleAuto F E)
 
@@ -488,8 +486,8 @@ lookupGaloisClosureAuto F E = AlgorithmBundle.galoisClosureAlg (lookupAlgorithmB
 --   lookupGaloisGroupAuto F E ⦃ finiteFieldClassifiable evF ⦄ ⦃ finiteFieldClassifiable evE ⦄
 
 -- Pattern B: With classification (when you want to see the pair)
---   lookupGaloisGroupWithClassification F E
---     (classifyAsFiniteField F evF)
+--   lookupGaloisGroupWithClassification F E 
+--     (classifyAsFiniteField F evF) 
 --     (classifyAsFiniteField E evE)
 
 -- Pattern C: Evidence-based (when you already have typed evidence)
@@ -500,9 +498,9 @@ lookupGaloisClosureAuto F E = AlgorithmBundle.galoisClosureAlg (lookupAlgorithmB
 -- Example pattern for finite fields (already implemented):
 -- classifyAsFiniteField : (F : FieldDeclaration) → IsFiniteField F → FieldClassification F
 -- classifyAsFiniteField F ev = (FiniteFieldType , ev)
---
+-- 
 -- Usage:
--- lookupGaloisGroupWithClassification Q GF8
---   (classifyAsNumberField Q nfEvidence)
+-- lookupGaloisGroupWithClassification Q GF8 
+--   (classifyAsNumberField Q nfEvidence) 
 --   (classifyAsFiniteField GF8 ffEvidence)
 ```

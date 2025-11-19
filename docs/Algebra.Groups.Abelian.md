@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 -- Algebra.Groups.Abelian: Abelian groups and their categorical properties
 -- This module develops the theory of abelian groups, showing how Ab is enriched over itself
 -- and serves as the foundation for homological algebra (Grothendieck, Eilenberg-Mac Lane).
@@ -37,16 +37,16 @@ record HomAbelianGroup (A B : AbelianGroupDeclaration) : Set₁ where
   field
     -- The underlying set of homomorphisms
     homSet : M.Identifier
-
+    
     -- Pointwise addition: (f + g)(x) = f(x) + g(x)
     pointwiseAddition : M.Identifier
-
+    
     -- Zero homomorphism: 0(x) = 0_B for all x
     zeroHomomorphism : M.Identifier
-
+    
     -- Negation: (-f)(x) = -(f(x))
     negation : M.Identifier
-
+    
     -- This forms an abelian group
     abelianGroupStructure : AbelianGroupDeclaration
 
@@ -54,17 +54,17 @@ record HomAbelianGroup (A B : AbelianGroupDeclaration) : Set₁ where
 record AbSelfEnriched : Set₁ where
   field
     category : Ab
-
+    
     -- For each pair of abelian groups, hom-object is an abelian group
     homObject : (A B : AbelianGroupDeclaration) → HomAbelianGroup A B
-
+    
     -- Composition is bilinear (a group homomorphism in each variable)
     -- comp : Hom(B,C) ⊗ Hom(A,B) → Hom(A,C)
     compositionIsBilinear : M.Identifier
-
+    
     -- Identity is the zero homomorphism from Z → Hom(A,A)
     identityStructure : M.Identifier
-
+    
     -- This makes Ab into an Ab-enriched category
     enrichedStructure : AbEnrichedCategory
 
@@ -122,19 +122,19 @@ record GrothendieckGroup (M : MonoidDeclaration) : Set₁ where
     -- Construction: K(M) = (M × M) / ~
     -- where (a,b) ~ (c,d) iff ∃e. a+d+e = b+c+e
     underlyingSet : M.Identifier
-
+    
     -- The group operation: [(a,b)] + [(c,d)] = [(a+c, b+d)]
     groupOperation : M.Identifier
-
+    
     -- Identity: [(0,0)]
     identityElement : M.Identifier
-
+    
     -- Inverse: -[(a,b)] = [(b,a)]
     inverseOperation : M.Identifier
-
+    
     -- This forms an abelian group
     abelianGroupStructure : AbelianGroupDeclaration
-
+    
     -- Universal property: M → K(M) is universal among monoid homomorphisms to groups
     universalMap : M.Identifier
     universalProperty : M.Identifier
@@ -145,13 +145,13 @@ record GrothendieckFunctor : Set₁ where
     -- K : CMon → Ab (commutative monoids to abelian groups)
     sourceCat : M.Identifier  -- Category of commutative monoids
     targetCat : Ab
-
+    
     -- On objects: M ↦ K(M)
     onObjects : MonoidDeclaration → AbelianGroupDeclaration
-
+    
     -- On morphisms: f : M → N induces K(f) : K(M) → K(N)
     onMorphisms : M.Identifier
-
+    
     -- This is a functor
     functorStructure : M.Identifier
 
@@ -164,10 +164,10 @@ record FreeAbelianGroup (X : M.Identifier) : Set₁ where
   field
     -- Construction: ℤ[X] = formal integer linear combinations of elements of X
     underlyingSet : M.Identifier
-
+    
     -- Universal property: Set(X, U(A)) ≅ Ab(ℤ[X], A)
     universalProperty : M.Identifier
-
+    
     -- The abelian group structure
     abelianGroupStructure : AbelianGroupDeclaration
 
@@ -176,16 +176,16 @@ record FreeForgetfulAdjunctionAb : Set₁ where
   field
     -- F : Set → Ab (free abelian group functor)
     freeFunctor : M.Identifier
-
+    
     -- U : Ab → Set (forgetful functor)
     forgetfulFunctor : M.Identifier
-
+    
     -- Natural isomorphism: Set(X, U(A)) ≅ Ab(F(X), A)
     adjunctionIsomorphism : M.Identifier
-
+    
     -- Unit: η : X → U(F(X)) (send x to the "basis element" x)
     unit : M.Identifier
-
+    
     -- Counit: ε : F(U(A)) → A (evaluate formal sums)
     counit : M.Identifier
 
@@ -198,11 +198,11 @@ record TensorProductAb (A B : AbelianGroupDeclaration) : Set₁ where
   field
     -- Construction: A ⊗ B = free abelian group on A × B modulo bilinearity
     underlyingSet : M.Identifier
-
-    -- Universal property: bilinear maps A × B → C correspond to
+    
+    -- Universal property: bilinear maps A × B → C correspond to 
     -- group homomorphisms A ⊗ B → C
     universalProperty : M.Identifier
-
+    
     -- The resulting abelian group
     tensorProduct : AbelianGroupDeclaration
 
@@ -210,19 +210,19 @@ record TensorProductAb (A B : AbelianGroupDeclaration) : Set₁ where
 record AbAsSymmetricMonoidalCategory : Set₁ where
   field
     category : Ab
-
+    
     -- Tensor product bifunctor
     tensorBifunctor : M.Identifier
-
+    
     -- Unit object is ℤ
     unitObject : AbelianGroupDeclaration  -- The integers
-
+    
     -- Associator, unitors, braiding
     associator : M.Identifier
     leftUnitor : M.Identifier
     rightUnitor : M.Identifier
     braiding : M.Identifier
-
+    
     -- Coherence axioms
     symmetricMonoidalStructure : Enriched.SymmetricMonoidalCategoryDeclaration
 
@@ -234,17 +234,17 @@ record AbAsSymmetricMonoidalCategory : Set₁ where
 record AbIsClosed : Set₁ where
   field
     symmetricMonoidal : AbAsSymmetricMonoidalCategory
-
+    
     -- Internal hom: Hom(A, B) is an object in Ab
     internalHom : (A B : AbelianGroupDeclaration) → AbelianGroupDeclaration
-
+    
     -- Adjunction: Ab(A ⊗ B, C) ≅ Ab(A, Hom(B,C))
     -- This is the tensor-hom adjunction
     tensorHomAdjunction : M.Identifier
-
+    
     -- Evaluation morphism: Hom(A,B) ⊗ A → B
     evaluation : M.Identifier
-
+    
     -- This makes Ab a closed symmetric monoidal category
     closedStructure : M.Identifier
 
@@ -258,7 +258,7 @@ record AbSelfEnrichmentViaInternalHom : Set₁ where
     category : Ab
     selfEnriched : AbSelfEnriched
     closed : AbIsClosed
-
+    
     -- The enrichment via Hom(A,B) as an abelian group
     -- coincides with the closed structure's internal hom
     enrichmentCoincides : M.Identifier

@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 module Chapter3.Level3Index where
 
 -- Aggregator for chapter 3 EBNF-derived modules

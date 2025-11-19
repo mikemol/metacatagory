@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 -- Level2_6: Enriched Category Theory (Chapter 2, Section 6)
 -- This module encodes the structural content of Section 6 from the EBNF grammar.
 -- It covers symmetric monoidal closed categories, enriched categories, change of base,

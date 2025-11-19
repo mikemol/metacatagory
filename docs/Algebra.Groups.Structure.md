@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 -- Algebra.Groups.Structure: Structure theory of groups (Hungerford Ch II)
 -- This module covers finitely generated abelian groups, Sylow theorems, and group actions.
 

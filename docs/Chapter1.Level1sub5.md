@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 module Chapter1.Level1sub5 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
@@ -313,7 +313,7 @@ postulate
     : (thm : PathCategoryAdjunction)
     -> (G : M.Identifier)  -- Graph
     -> (C : M.Identifier)  -- Cat category
-    -> Proof (C.AdjunctionS (PathCategoryAdjunction.freeCatFunctor thm)
+    -> Proof (C.AdjunctionS (PathCategoryAdjunction.freeCatFunctor thm) 
                             (PathCategoryAdjunction.forgetfulFunctor thm) G C)
              C.TriangleIdentitiesName
 

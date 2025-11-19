@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 -- Algebra.Index: Aggregator for algebraic structure modules
 -- This module re-exports the algebraic hierarchy for easy importing
 

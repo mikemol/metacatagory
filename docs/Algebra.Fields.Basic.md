@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 -- Algebra.Fields.Basic: Field theory and Galois theory (Hungerford Ch V-VI)
 -- This module covers field extensions, Galois theory, and connections to rings and modules.
 

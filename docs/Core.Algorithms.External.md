@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 -- Core.Algorithms.External: Bridge to external computer algebra systems
 -- This module provides oracle/IO hooks for verified computation using Sage, Pari, SymPy, etc.
 -- Computational content is delegated to external tools with typed evidence stubs returned to Agda.
@@ -16,6 +16,7 @@ open import Core.Algorithms.Bundle
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String using (String)
+open import Agda.Builtin.Maybe using (Maybe; nothing; just)
 open import Agda.Primitive using (Level; lzero; lsuc; _⊔_)
 
 private
@@ -68,8 +69,8 @@ externalMinimalPolynomial F E α config = extractResult {ℓ₀} {ℓ₀} oracle
     -- Serialize inputs to external system (e.g., "minpoly(alpha, F)")
     input : M.Identifier
     input = M.mkId "compute-minpoly"  -- Placeholder; actual serialization would encode F, E, α
-
-
+    
+    
     oracle : ExternalCall {ℓ₀} {ℓ₀} M.Identifier M.Identifier
     oracle = runExternal {ℓ₀} {ℓ₀} config "minpoly" input
 
@@ -78,6 +79,7 @@ externalMinimalPolynomialAlgorithm : (F E : FieldDeclaration) → ExternalConfig
 externalMinimalPolynomialAlgorithm F E config = record
   { minimalPolynomial = λ α → externalMinimalPolynomial F E α config
   ; isAlgebraic = λ α → yes (mkAlgebraicElementWithPoly F E α (externalMinimalPolynomial F E α config))
+  ; limitation = nothing
   }
 
 -- ============================================================================
@@ -90,8 +92,8 @@ externalGaloisGroup F E f config = extractResult {ℓ₀} {ℓ₁} oracle
   where
     input : M.Identifier
     input = M.mkId "compute-galois-group"
-
-
+    
+    
     oracle : ExternalCall {ℓ₀} {ℓ₁} M.Identifier (GaloisGroup F E)
     oracle = runExternal {ℓ₀} {ℓ₁} config "galois" input
 
@@ -101,6 +103,7 @@ externalGaloisGroupAlgorithm F E config = record
   { galoisGroup   = λ f → externalGaloisGroup F E f config
   ; automorphisms = λ f → []  -- Could also call external system to enumerate
   ; isSolvable    = λ f → M.mkId "external-solvable-check"
+  ; limitation = nothing
   }
 
 -- ============================================================================
@@ -112,8 +115,8 @@ externalSplittingField F f config = extractResult {ℓ₀} {ℓ₁} oracle
   where
     input : M.Identifier
     input = M.mkId "compute-splitting-field"
-
-
+    
+    
     oracle : ExternalCall {ℓ₀} {ℓ₁} M.Identifier (SplittingField F f)
     oracle = runExternal {ℓ₀} {ℓ₁} config "splitting" input
 
@@ -122,8 +125,8 @@ externalRoots F f config = extractResult {ℓ₀} {ℓ₀} oracle
   where
     input : M.Identifier
     input = M.mkId "compute-roots"
-
-
+    
+    
     oracle : ExternalCall {ℓ₀} {ℓ₀} M.Identifier (List M.Identifier)
     oracle = runExternal {ℓ₀} {ℓ₀} config "roots" input
 
@@ -131,6 +134,7 @@ externalSplittingFieldAlgorithm : (F : FieldDeclaration) → ExternalConfig → 
 externalSplittingFieldAlgorithm F config = record
   { splittingField = λ f → externalSplittingField F f config
   ; roots = λ f → externalRoots F f config
+  ; limitation = nothing
   }
 
 -- ============================================================================
@@ -142,8 +146,8 @@ externalExtensionDegree F E config = extractResult {ℓ₀} {ℓ₁} oracle
   where
     input : M.Identifier
     input = M.mkId "compute-extension-degree"
-
-
+    
+    
     oracle : ExternalCall {ℓ₀} {ℓ₁} M.Identifier (ExtensionDegree F E)
     oracle = runExternal {ℓ₀} {ℓ₁} config "degree" input
 
@@ -152,8 +156,8 @@ externalBasis F E config = extractResult {ℓ₀} {ℓ₀} oracle
   where
     input : M.Identifier
     input = M.mkId "compute-basis"
-
-
+    
+    
     oracle : ExternalCall {ℓ₀} {ℓ₀} M.Identifier (List M.Identifier)
     oracle = runExternal {ℓ₀} {ℓ₀} config "basis" input
 
@@ -172,8 +176,8 @@ externalSubfields F E config = extractResult {ℓ₀} {ℓ₁} oracle
   where
     input : M.Identifier
     input = M.mkId "enumerate-subfields"
-
-
+    
+    
     oracle : ExternalCall {ℓ₀} {ℓ₁} M.Identifier (List (Subfield E))
     oracle = runExternal {ℓ₀} {ℓ₁} config "subfields" input
 
@@ -187,8 +191,8 @@ externalSubgroups F E config = extractResult {ℓ₀} {ℓ₁} oracle
   where
     input : M.Identifier
     input = M.mkId "enumerate-subgroups"
-
-
+    
+    
     oracle : ExternalCall {ℓ₀} {ℓ₁} M.Identifier (List GroupDeclaration)
     oracle = runExternal {ℓ₀} {ℓ₁} config "subgroups" input
 

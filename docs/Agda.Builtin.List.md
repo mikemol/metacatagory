@@ -1,4 +1,4 @@
-```Agda
+``` Agda
 {-# OPTIONS --cubical-compatible --safe --no-sized-types --no-guardedness #-}
 
 module Agda.Builtin.List where
