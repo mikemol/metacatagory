@@ -94,6 +94,10 @@ import Tests.AbelianCategoriesChecklist
 import Tests.SubobjectTheoryChecklist
 import Tests.ToposTheoryChecklist
 
+-- Gödel boundary and incompleteness witnesses (Phase 13)
+-- Validates: Limit objects, self-reference, reflection boundaries, incompleteness theorems
+import Tests.GodelBoundaryTests
+
 -- Proof obligation status checks (ensures selected obligations are filled
 -- and linked to constructive witnesses in examples)
 import Tests.ProofObligationStatus
