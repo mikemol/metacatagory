@@ -100,6 +100,7 @@ import Tests.GodelBoundaryTests
 -- Global HoTT path aggregation and closure (Phase 15)
 -- Validates: Composite path witnesses, coordinate preservation, system-wide closure
 import Core.PathAggregator
+import Tests.PathAggregatorTests
 
 
 -- Proof obligation status checks (ensures selected obligations are filled

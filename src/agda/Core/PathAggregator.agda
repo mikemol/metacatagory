@@ -17,6 +17,7 @@ open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Bool using (true; false) renaming (Bool to Bool')
 open import Agda.Builtin.String using (String)
 open import Agda.Primitive using (Level; lzero; lsuc; _⊔_)
+open import Core.GrowthMetrics as GM  -- Link growth metrics
 
 -- ============================================================================
 -- Path Evidence: Individual roundtrip witnesses
@@ -179,20 +180,20 @@ verifyPathSnapshot snapshot =
     andBool false _ = false
 
 -- ============================================================================
--- Helper: Boolean operations
+-- Helper: Boolean operations (local versions renamed to avoid clashes)
 -- ============================================================================
 
-_&&_ : Bool' → Bool' → Bool'
-true && b = b
-false && _ = false
+_andPath_ : Bool' → Bool' → Bool'
+true andPath b = b
+false andPath _ = false
 
-_||_ : Bool' → Bool' → Bool'
-true || _ = true
-false || b = b
+_orPath_ : Bool' → Bool' → Bool'
+true orPath _ = true
+false orPath b = b
 
-not : Bool' → Bool'
-not true = false
-not false = true
+notPath : Bool' → Bool'
+notPath true = false
+notPath false = true
 
 -- ============================================================================
 -- Example: Metacatagory Global Closure
@@ -285,6 +286,46 @@ _ = refl
 
 -- Verification: All orderings are preserved
 _ : allOrderingsPreserved orderingPreservationCollection ≡ true
+_ = refl
+
+-- ============================================================================
+-- Integrated Path + Growth Evolution
+-- ============================================================================
+
+-- Combined evolution record tying path closure to growth metrics at an aligned phase
+record PathGrowthEvolution : Set₁ where
+  constructor mkPathGrowthEvolution
+  field
+    pathSnapshot : PathSnapshot
+    growthSnapshot : GM.GrowthSnapshot
+    phaseAligned : PathSnapshot.snapshotPhase pathSnapshot ≡ GM.GrowthSnapshot.snapshotTimestamp growthSnapshot
+    evolutionValid : Bool'
+
+-- Construct an evolution record given alignment proof
+mkEvolution : (p : PathSnapshot) → (g : GM.GrowthSnapshot) →
+              PathSnapshot.snapshotPhase p ≡ GM.GrowthSnapshot.snapshotTimestamp g →
+              PathGrowthEvolution
+mkEvolution p g align =
+  let pathOk  = verifyPathSnapshot p
+      growthOk = GM.verifyGrowthSnapshot g
+      bothOk   = pathOk andPath growthOk
+  in mkPathGrowthEvolution p g align bothOk
+
+-- Aligned path snapshot (phase 9 to match growth snapshot timestamp)
+alignedPathSnapshot : PathSnapshot
+alignedPathSnapshot = mkPathSnapshot
+  9  -- Align with GM.metacatagoryGrowthSnapshot timestamp
+  metacatagoryGlobalClosure
+  3  -- Total paths
+  2  -- Total orderings
+  true
+
+-- Evolution instance combining path and growth state
+metacatagoryEvolution : PathGrowthEvolution
+metacatagoryEvolution = mkEvolution alignedPathSnapshot GM.metacatagoryGrowthSnapshot refl
+
+-- Verification: Evolution validity flag is true
+_ : PathGrowthEvolution.evolutionValid metacatagoryEvolution ≡ true
 _ = refl
 
 -- ============================================================================
