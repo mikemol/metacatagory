@@ -1,0 +1,162 @@
+name: Deferred Items Review
+
+on:
+  schedule:
+    # Run weekly on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  pull_request:
+    types: [opened, synchronize]
+  workflow_dispatch:  # Allow manual triggering
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  review-deferred-items:
+    name: Review and Report Deferred Items
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout base branch
+        uses: actions/checkout@v4
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: base
+
+      - name: Checkout current branch
+        uses: actions/checkout@v4
+        with:
+          path: current
+
+      - name: Make scripts executable
+        run: |
+          chmod +x current/.github/scripts/*.sh
+
+      - name: Scan current branch for deferred items
+        run: |
+          cd current
+          ../.github/scripts/detect-deferred-items.sh deferred-items-current.md
+
+      - name: Scan base branch for deferred items (PR only)
+        if: github.event_name == 'pull_request'
+        run: |
+          cd base
+          ../current/.github/scripts/detect-deferred-items.sh deferred-items-base.md
+
+      - name: Compare deferred items (PR only)
+        if: github.event_name == 'pull_request'
+        id: compare
+        run: |
+          CURRENT_TOTAL=$(jq -r '.total' current/deferred-summary.json)
+          BASE_TOTAL=$(jq -r '.total' base/deferred-summary.json)
+          DIFF=$((CURRENT_TOTAL - BASE_TOTAL))
+          
+          echo "current_total=$CURRENT_TOTAL" >> $GITHUB_OUTPUT
+          echo "base_total=$BASE_TOTAL" >> $GITHUB_OUTPUT
+          echo "diff=$DIFF" >> $GITHUB_OUTPUT
+          
+          if [ $DIFF -gt 0 ]; then
+            echo "status=increased" >> $GITHUB_OUTPUT
+            echo "emoji=⚠️" >> $GITHUB_OUTPUT
+          elif [ $DIFF -lt 0 ]; then
+            echo "status=decreased" >> $GITHUB_OUTPUT
+            echo "emoji=✅" >> $GITHUB_OUTPUT
+          else
+            echo "status=unchanged" >> $GITHUB_OUTPUT
+            echo "emoji=➡️" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const currentTotal = ${{ steps.compare.outputs.current_total }};
+            const baseTotal = ${{ steps.compare.outputs.base_total }};
+            const diff = ${{ steps.compare.outputs.diff }};
+            const emoji = '${{ steps.compare.outputs.emoji }}';
+            const status = '${{ steps.compare.outputs.status }}';
+            
+            let statusMessage = '';
+            if (diff > 0) {
+              statusMessage = `⚠️ This PR **increases** deferred items by **${diff}**`;
+            } else if (diff < 0) {
+              statusMessage = `✅ This PR **reduces** deferred items by **${Math.abs(diff)}** 🎉`;
+            } else {
+              statusMessage = `➡️ This PR does not change the number of deferred items`;
+            }
+            
+            const currentReport = fs.readFileSync('current/deferred-items-current.md', 'utf8');
+            
+            const body = `## ${emoji} Deferred Items Review
+            
+            ${statusMessage}
+            
+            **Current total:** ${currentTotal}  
+            **Base total:** ${baseTotal}
+            
+            <details>
+            <summary>📊 View detailed report</summary>
+            
+            ${currentReport}
+            
+            </details>
+            
+            ---
+            
+            *This is an informational notice only and does not block the PR. Review deferred items and consider addressing them when appropriate.*
+            `;
+            
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('Deferred Items Review')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body
+              });
+            }
+
+      - name: Upload reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: deferred-items-reports
+          path: |
+            current/deferred-items-*.md
+            current/deferred-summary.json
+            base/deferred-items-*.md
+            base/deferred-summary.json
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Post summary
+        run: |
+          cd current
+          TOTAL=$(jq -r '.total' deferred-summary.json)
+          DEVIATION_LOG=$(jq -r '.deviation_log' deferred-summary.json)
+          POSTULATES=$(jq -r '.postulates' deferred-summary.json)
+          TODO=$(jq -r '.todo' deferred-summary.json)
+          PLANNED=$(jq -r '.planned' deferred-summary.json)
+          FIXME=$(jq -r '.fixme' deferred-summary.json)
+          
+          echo "::notice title=Deferred Items Summary::Total: $TOTAL (DeviationLog: $DEVIATION_LOG, Postulates: $POSTULATES, TODO: $TODO, PLANNED: $PLANNED, FIXME: $FIXME)"

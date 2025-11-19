@@ -37,6 +37,26 @@ make clean
 
 For a current, concise map of layers, modules, and test phases, see `docs/ARCHITECTURE.md`.
 
+### Deferred Items Tracking
+
+The repository includes automated tracking of technical debt (DeviationLog entries, postulates, TODOs, etc.). This provides visibility into deferred work without blocking progress.
+
+**Key Points:**
+
+* 📊 **Automated scanning** on every push and PR
+* 🎯 **Central tracking issue** updated automatically
+* ⚠️ **PR comments** show impact on deferred items (informational only)
+* ✅ **Non-blocking** - increases are allowed if justified
+
+**Current Status:** ~450 deferred items tracked (mostly intentional placeholders)
+
+For details, see [`DEFERRED-TRACKING.md`](DEFERRED-TRACKING.md) or run locally:
+
+```bash
+.github/scripts/detect-deferred-items.sh
+cat deferred-items.md
+```
+
 ### Tools & Automation
 
 The project includes Python-based automation tools for test coverage analysis, phase diagrams, and code search. These tools run in a virtual environment and generate reports and visualizations.
