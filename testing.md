@@ -119,6 +119,100 @@ The subsequent steps for structured, high-impact improvements to the testing reg
 
 ---
 
+## Deferral Resolution & Phase III Sequencing
+
+The codebase contains 7 DeviationLog entries documenting deliberate deferrals. These fall into **3 priority tiers** relative to Phase III–V progression:
+
+### Tier 1: Critical Blockers (Affects Phase I Completeness)
+
+**SubobjectTheoryChecklist (line 39)**: Type error `String != M.Identifier`
+- **Impact**: Blocks Phase I.1.4 (Specification Validation) full closure
+- **Fix**: Replace `""` with `M.mkId ""` in 5 adapter declarations
+- **Effort**: 15 minutes
+- **Priority**: **Fix before Phase III** to achieve clean Phase I foundation
+
+### Tier 2: Strategic Deferrals (Documented Stubs)
+
+**Field Algorithm Stubs** (FiniteFields, NumberFields, FunctionFields)
+- **Impact**: Algorithms delegate to generic defaults; functionality limited but typed correctly
+- **Fix**: Implement specialized field arithmetic (10-20 hours)
+- **Phase Relationship**: **Does not block Phase III** (architectural tests independent of algorithm optimizations)
+- **Priority**: Defer to Phase IV.0 ("Algorithmic Foundations Completion") or later
+
+**ToposTheoryChecklist Validation** (SpecificationValidation line 32)
+- **Impact**: Constructor arity mismatches prevent validation; doesn't break compilation
+- **Fix**: Align adapter constructors with declaration structure (2-3 hours)
+- **Priority**: Defer to Phase III.5 or later (non-blocking for core Phase III work)
+
+### Tier 3: Architectural Evolution (Removed Proofs)
+
+**Inline Validation Removals** (CoverageReport, Algebra.Foundation, SpecificationValidation)
+- **Impact**: Brittle equality proofs removed; validation moved to dedicated modules
+- **Status**: **Resolved**—Bool-based checks in Tests.HierarchyValidation replace fragile inline proofs
+- **No Action Needed**: Deliberate architectural improvement
+
+### Recommended Implementation Sequence
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ IMMEDIATE: SubobjectTheoryChecklist Fix                │
+│ Achieves: Complete Phase I.1.4, clean foundation       │
+│ Effort: 15 min                                          │
+└─────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────┐
+│ PHASE III.1: Complexity Classification (3.3)            │
+│ Add complexity annotations to existing algorithms       │
+│ Effort: 1-2 hours                                       │
+└─────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────┐
+│ PHASE III.2: DAG Compositional Validation (3.1)         │
+│ Multi-step pipeline index ordering checks               │
+│ Effort: 2-3 hours                                       │
+└─────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────┐
+│ PHASE III.3: Error-as-Specification (3.2)               │
+│ LimitationEvidence record + tests                       │
+│ Effort: 1-2 hours                                       │
+└─────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────┐
+│ PHASE III.4: Serialization Roundtrip (3.4)              │
+│ Identifier isomorphism validation                       │
+│ Effort: 1-2 hours                                       │
+└─────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────┐
+│ PHASE III.5: ToposTheoryChecklist Alignment (optional)  │
+│ Complete Phase I.1.4 full closure                       │
+│ Effort: 2-3 hours                                       │
+└─────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────┐
+│ PHASE IV: Categorical Infrastructure                    │
+│ Adjunctions, Functor Categories (enables 4.1, 4.2, 4.3) │
+│ Effort: 5-10 hours                                      │
+└─────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────┐
+│ PHASE IV.0 (Optional): Algorithmic Foundations          │
+│ Replace field algorithm stubs with real implementations │
+│ Effort: 10-20 hours                                     │
+└─────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────┐
+│ PHASE V: Aspirational (Long-term Research)              │
+│ Metamodel extensions for reflection/Gödelian tracking   │
+│ Effort: Research project (weeks/months)                 │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Key Principle**: Fix SubobjectTheoryChecklist immediately (15 min quick win) to achieve psychological and formal closure on Phase I before advancing to Phase III. Field algorithm stubs are safely deferred—they don't block architectural boundary tests.
+
+---
+
 ## Phase III: Boundary Validation and Performance Quantification
 
 This phase focuses on complex composition, system coherence with external interfaces, and establishing the formal **reference point for efficiency** by specifying limitations.
