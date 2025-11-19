@@ -29,6 +29,7 @@ toUnit _ = tt
 -- Import the specific checklists cited by CoverageReport
 import Tests.GrothendieckFibrationsChecklist as GF
 import Tests.AbelianCategoriesChecklist as AC
+import Tests.SubobjectTheoryChecklist as ST
 -- DeviationLog [2025-11-18]: ToposTheoryChecklist has constructor arity/type mismatches
 -- in adapter creation at present. We'll validate it after placeholders are aligned.
 
@@ -69,9 +70,21 @@ countAC = length (
   []
   )
 
--- DeviationLog [2025-11-18]: SubobjectTheoryChecklist currently has type
--- mismatches in placeholder declarations. We temporarily skip its validation
--- here to keep Phase I.1.4 focused and green. Add back once placeholders are normalized.
+countST : Nat
+countST = length (
+  toUnit ST.emptySubobjectLatticeAdapter ∷
+  toUnit ST.emptyWellPoweredCategoryAdapter ∷
+  toUnit ST.emptySubobjectLatticeIsCompleteAdapter ∷
+  toUnit ST.emptyStrongEpimorphismAdapter ∷
+  toUnit ST.emptyCanonicalFactorizationSystemAdapter ∷
+  toUnit ST.emptyMorphismFactorizationAdapter ∷
+  toUnit ST.emptyHasGeneratorObjectAdapter ∷
+  toUnit ST.emptyProjectiveObjectAdapter ∷
+  toUnit ST.emptyInjectiveObjectAdapter ∷
+  toUnit ST.emptyHasEnoughProjectivesAdapter ∷
+  toUnit ST.emptyHasEnoughInjectivesAdapter ∷
+  []
+  )
 
 -- Topos theory checklist can be long; count a representative subset for now.
 -- DeviationLog [2025-11-18]: Partial enumeration to keep compile time fast.
@@ -89,8 +102,8 @@ expectedGF = 15
 expectedAC : Nat
 expectedAC = 11
 
--- expectedST : Nat
--- expectedST = 11
+expectedST : Nat
+expectedST = 11
 
 -- expectedTT : Nat
 -- expectedTT = 25
@@ -110,14 +123,14 @@ matchesGF = equalNat countGF expectedGF
 matchesAC : Bool
 matchesAC = equalNat countAC expectedAC
 
--- matchesST : Bool
--- matchesST = equalNat countST expectedST
+matchesST : Bool
+matchesST = equalNat countST expectedST
 
 -- matchesTT : Bool
 -- matchesTT = equalNat countTT expectedTT
 
 allMatch : Bool
-allMatch = and matchesGF matchesAC
+allMatch = and matchesGF (and matchesAC matchesST)
   where
     and : Bool → Bool → Bool
     and true b  = b

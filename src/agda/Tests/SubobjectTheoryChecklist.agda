@@ -36,7 +36,7 @@ _ = refl
 
 -- TODO: Provide concrete strong epi (e.g., quotient map in Set) via mkStrongEpimorphismAdapter.
 emptyStrongEpimorphismAdapter : A.StrongEpimorphismAdapter
-emptyStrongEpimorphismAdapter = record { decl = record { e = "" } ; expectedE = "" ; link = refl ; status = false }
+emptyStrongEpimorphismAdapter = record { decl = record { e = M.mkId "" } ; expectedE = M.mkId "" ; link = refl ; status = false }
 
 _ : A.isFilledStrongEpimorphism emptyStrongEpimorphismAdapter ≡ false
 _ = refl
@@ -50,42 +50,42 @@ _ = refl
 
 -- TODO: Provide actual factorization f = m ∘ e with witness identifiers.
 emptyMorphismFactorizationAdapter : A.MorphismFactorizationAdapter
-emptyMorphismFactorizationAdapter = record { decl = record { f = "" ; e = "" ; m = "" ; I = "" } ; expectedF = "" ; expectedE = "" ; expectedM = "" ; link1 = refl ; link2 = refl ; link3 = refl ; status = false }
+emptyMorphismFactorizationAdapter = record { decl = record { f = M.mkId "" ; e = M.mkId "" ; m = M.mkId "" ; I = M.mkId "" } ; expectedF = M.mkId "" ; expectedE = M.mkId "" ; expectedM = M.mkId "" ; link1 = refl ; link2 = refl ; link3 = refl ; status = false }
 
 _ : A.isFilledMorphismFactorization emptyMorphismFactorizationAdapter ≡ false
 _ = refl
 
 -- TODO: Provide generator object for a concrete category (e.g., singleton set for Set).
 emptyHasGeneratorObjectAdapter : A.HasGeneratorObjectAdapter
-emptyHasGeneratorObjectAdapter = record { decl = record { C = "" ; G = "" } ; expectedC = "" ; expectedG = "" ; link1 = refl ; link2 = refl ; status = false }
+emptyHasGeneratorObjectAdapter = record { decl = record { C = M.mkId "" ; G = M.mkId "" } ; expectedC = M.mkId "" ; expectedG = M.mkId "" ; link1 = refl ; link2 = refl ; status = false }
 
 _ : A.isFilledHasGeneratorObject emptyHasGeneratorObjectAdapter ≡ false
 _ = refl
 
 -- TODO: Use free module or free object example for projective witness.
 emptyProjectiveObjectAdapter : A.ProjectiveObjectAdapter
-emptyProjectiveObjectAdapter = record { decl = record { P = "" } ; expectedP = "" ; link = refl ; status = false }
+emptyProjectiveObjectAdapter = record { decl = record { P = M.mkId "" } ; expectedP = M.mkId "" ; link = refl ; status = false }
 
 _ : A.isFilledProjectiveObject emptyProjectiveObjectAdapter ≡ false
 _ = refl
 
 -- TODO: Provide injective object (e.g., divisible group) using constructor adapter.
 emptyInjectiveObjectAdapter : A.InjectiveObjectAdapter
-emptyInjectiveObjectAdapter = record { decl = record { I = "" } ; expectedI = "" ; link = refl ; status = false }
+emptyInjectiveObjectAdapter = record { decl = record { I = M.mkId "" } ; expectedI = M.mkId "" ; link = refl ; status = false }
 
 _ : A.isFilledInjectiveObject emptyInjectiveObjectAdapter ≡ false
 _ = refl
 
 -- TODO: Replace with category having enough projectives proof.
 emptyHasEnoughProjectivesAdapter : A.HasEnoughProjectivesAdapter
-emptyHasEnoughProjectivesAdapter = record { decl = record { C = "" } ; expectedC = "" ; link = refl ; status = false }
+emptyHasEnoughProjectivesAdapter = record { decl = record { C = M.mkId "" } ; expectedC = M.mkId "" ; link = refl ; status = false }
 
 _ : A.isFilledHasEnoughProjectives emptyHasEnoughProjectivesAdapter ≡ false
 _ = refl
 
 -- TODO: Replace with category having enough injectives proof.
 emptyHasEnoughInjectivesAdapter : A.HasEnoughInjectivesAdapter
-emptyHasEnoughInjectivesAdapter = record { decl = record { C = "" } ; expectedC = "" ; link = refl ; status = false }
+emptyHasEnoughInjectivesAdapter = record { decl = record { C = M.mkId "" } ; expectedC = M.mkId "" ; link = refl ; status = false }
 
 _ : A.isFilledHasEnoughInjectives emptyHasEnoughInjectivesAdapter ≡ false
 _ = refl
