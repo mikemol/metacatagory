@@ -36,67 +36,16 @@ open FunctionFieldAlgorithms public
 
 functionFieldAlgorithms : ∀ {F E} → (Fff : IsFunctionField F) → (Eff : IsFunctionField E)
                         → FunctionFieldAlgorithms F E Fff Eff
+-- DeviationLog [2025-11-18]: Stubbing function field algorithms to generic defaults
+-- (similar rationale as finite & number fields) to unblock Phase II 2.5.
 functionFieldAlgorithms {F} {E} Fff Eff = record
-  { minimalPolynomialAlg = record
-      { minimalPolynomial = λ α → M.mkId "minpoly-F(t)"
-      ; isAlgebraic       = λ α → yes (mkAlgebraicElement F E α)
-      }
-  ; galoisGroupAlg = record
-      { galoisGroup   = λ f → record
-          { baseField      = F
-          ; extensionField = E
-          ; group          = record
-              { underlyingMonoid = record
-                  { underlyingSemigroup = record
-                      { underlyingMagma = record
-                          { underlyingSet = M.mkId "Gal(E/F)"
-                          ; binaryOp      = M.mkId "∘"
-                          }
-                      ; associativity = record { over = M.mkId "Gal(E/F)-assoc" }
-                      }
-                  ; identityElement = M.mkId "id"
-                  ; identityAxiom   = record { over = M.mkId "Gal(E/F)-id" }
-                  }
-              ; inverseOperation = record
-                  { forMonoid = record
-                      { underlyingSemigroup = record
-                          { underlyingMagma = record
-                              { underlyingSet = M.mkId "Gal(E/F)"
-                              ; binaryOp      = M.mkId "∘"
-                              }
-                          ; associativity = record { over = M.mkId "Gal(E/F)-assoc" }
-                          }
-                      ; identityElement = M.mkId "id"
-                      ; identityAxiom   = record { over = M.mkId "Gal(E/F)-id" }
-                      }
-                  ; inverseMap  = M.mkId "inv"
-                  ; inverseAxiom = M.mkId "inverse-ax"
-                  }
-              }
-          ; automorphisms  = M.mkId "symbolic-auts-F(t)"
-          }
-      ; automorphisms = λ f → []
-      ; isSolvable    = λ f → M.mkId "unknown-solvable"
-      }
-  ; splittingFieldAlg = record
-      { splittingField = λ f → mkSplittingField F f E
-      ; roots          = λ f → []
-      }
-  ; extensionDegreeAlg = record
-      { extensionDegree = mkExtensionDegree F E
-      ; basis           = defaultBasis F E
-      }
-  ; subfieldEnumAlg = record
-      { subfields = trivialSubfield F E
-      }
-  ; algebraicityAlg = record
-      { isAlgebraic      = λ α → yes (mkAlgebraicElement F E α)
-      ; isTranscendental = λ α → no
-      }
-  ; primitiveElementAlg = record
-      { primitiveElement       = M.mkId "primitive-F(t)"
-      ; witnessSimpleExtension = mkSimpleExtension F E (M.mkId "primitive-F(t)")
-      }
+  { minimalPolynomialAlg = MinimalPolynomialAlgorithm-generic {F} {E}
+  ; galoisGroupAlg       = GaloisGroupAlgorithm-generic {F} {E}
+  ; splittingFieldAlg    = SplittingFieldAlgorithm-generic {F}
+  ; extensionDegreeAlg   = FieldExtensionDegreeAlgorithm-generic {F} {E}
+  ; subfieldEnumAlg      = SubfieldEnumerationAlgorithm-generic {F} {E}
+  ; algebraicityAlg      = AlgebraicityDecisionAlgorithm-generic {F} {E}
+  ; primitiveElementAlg  = PrimitiveElementAlgorithm-generic {F} {E}
   }
 
 -- Convenience: construct full registry bundle for function fields
@@ -111,7 +60,7 @@ functionFieldBundle F E Fff Eff =
     ; splittingFieldAlg    = FunctionFieldAlgorithms.splittingFieldAlg ff
     ; extensionDegreeAlg   = FunctionFieldAlgorithms.extensionDegreeAlg ff
     ; subfieldEnumAlg      = FunctionFieldAlgorithms.subfieldEnumAlg ff
-    ; subgroupEnumAlg      = SubgroupEnumerationAlgorithm-generic {F} {E}
+    ; subgroupEnumAlg      = SubgroupEnumerationAlgorithm-generic {F} {E}  -- Already generic
     ; algebraicityAlg      = FunctionFieldAlgorithms.algebraicityAlg ff
     ; primitiveElementAlg  = FunctionFieldAlgorithms.primitiveElementAlg ff
     ; normalityAlg         = NormalityDecisionAlgorithm-generic {F} {E}
