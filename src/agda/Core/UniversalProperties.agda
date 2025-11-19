@@ -292,6 +292,34 @@ record FreeAdjunction (U : M.Identifier) (F : M.Identifier) : Set₁ where
     triangle₁ : (X : M.Identifier) → M.Identifier
     triangle₂ : (A : M.Identifier) → M.Identifier
 
+-- General adjunction F ⊣ G: natural isomorphism Hom(FX, Y) ≅ Hom(X, GY)
+-- This is the most general form capturing the free-forgetful pattern
+record Adjunction (C D : M.Identifier) (F G : M.Identifier) : Set₁ where
+  field
+    -- Functors
+    leftAdjoint : M.Identifier   -- F : C → D
+    rightAdjoint : M.Identifier  -- G : D → C
+    
+    -- Unit: Id_C ⇒ G∘F
+    unit : (X : M.Identifier) → M.Identifier
+    
+    -- Counit: F∘G ⇒ Id_D
+    counit : (Y : M.Identifier) → M.Identifier
+    
+    -- Natural bijection: Hom(FX, Y) → Hom(X, GY)
+    φ : (X Y : M.Identifier) → M.Identifier → M.Identifier
+    ψ : (X Y : M.Identifier) → M.Identifier → M.Identifier
+    
+    -- Triangle identities (adjunction coherence)
+    -- (G∘ε) ∘ (η∘G) = id_G
+    triangleLeft : (X : M.Identifier) → M.Identifier
+    -- (ε∘F) ∘ (F∘η) = id_F
+    triangleRight : (Y : M.Identifier) → M.Identifier
+    
+    -- Natural isomorphism witnesses
+    φ-ψ-inverse₁ : (X Y : M.Identifier) → (f : M.Identifier) → M.Identifier
+    φ-ψ-inverse₂ : (X Y : M.Identifier) → (g : M.Identifier) → M.Identifier
+
 -- ============================================================================
 -- Limits and Colimits (General)
 -- ============================================================================

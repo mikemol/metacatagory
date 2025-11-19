@@ -1,5 +1,13 @@
 # MetaCategory: A Computable Formalization of Category Theory
 
+[![Build Status](https://github.com/mikemol/metacatagory/actions/workflows/ci.yml/badge.svg)](https://github.com/mikemol/metacatagory/actions/workflows/ci.yml)
+[![Roadmap Progress](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mikemol/metacatagory/stripped/.github/badges/roadmap-progress.json)](ROADMAP.md)
+[![Deferred Items](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mikemol/metacatagory/stripped/.github/badges/deferred-total.json)](https://github.com/mikemol/metacatagory/issues?q=label%3Adeferred-tracking)
+[![Postulates](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mikemol/metacatagory/stripped/.github/badges/deferred-postulates.json)](https://github.com/mikemol/metacatagory/issues?q=label%3Adeferred-tracking)
+[![Weighted Debt](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mikemol/metacatagory/stripped/.github/badges/deferred-weighted.json)](DEFERRED-TRACKING.md)
+[![Debt Trend](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mikemol/metacatagory/stripped/.github/badges/deferred-trend.json)](.github/badges/deferred-history.json)
+[![7d Avg Trend](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mikemol/metacatagory/stripped/.github/badges/deferred-trend-weekly.json)](.github/badges/deferred-history.json)
+
 > Project status (2025-11): The original EBNF-based grammar has been retired from the build. The repository now centers on Agda modules under `src/agda`, with a simple Makefile for typechecking and generating HTML/Markdown docs. The EBNF description below is preserved as historical context and a conceptual map; it is no longer part of an active build pipeline.
 
 ## Getting started (Agda)
@@ -70,6 +78,45 @@ bash .github/scripts/sync-roadmap-issues.sh
 ```
 
 Roadmap issues are labeled `roadmap`; update statuses by editing the JSON and re-running the sync.
+
+### Status Badges
+
+The repository uses dynamic badges powered by Shields.io to display current project status:
+
+* **Roadmap Progress**: Shows completion percentage of roadmap tasks
+* **Deferred Items**: Displays total count of tracked technical debt
+* **Postulates**: Count of postulated (unproven) definitions
+* **Weighted Debt**: Severity‑weighted aggregate technical debt score
+* **Debt Trend**: Daily delta (negative = improvement)
+* **7d Avg Trend**: Weekly moving average of weighted debt change
+* **Build Status**: CI typecheck results from GitHub Actions
+* **Top Offenders**: See generated table of highest weighted debt files
+
+Badge data is automatically generated from `.github/roadmap/tasks.json` and `deferred-summary.json` by the `Badge Update` workflow, which runs:
+
+* On schedule (daily)
+* When roadmap tasks or deferred items change
+* On manual trigger
+
+Badge JSON files are committed to `.github/badges/` and served via raw.githubusercontent.com. To regenerate locally:
+
+```bash
+python scripts/generate-badges.py
+```
+
+#### Top Offenders (Weighted)
+
+A generated markdown table lists the highest weighted technical debt sources:
+`raw/.github/badges/top-offenders.md` (updated by badge workflow). Weighted scoring uses:
+
+| Category  | Weight |
+| --------- | ------ |
+| Postulate | 2.0    |
+| TODO      | 1.0    |
+| FIXME     | 1.5    |
+| Deviation | 3.0    |
+
+Debt trend badge shows daily delta in weighted total (negative is improvement).
 
 ### Markdown Linting
 
