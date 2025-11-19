@@ -18,6 +18,7 @@ open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
 open import Agda.Builtin.Equality using (_≡_; refl)
+open import Agda.Builtin.Maybe using (Maybe; nothing; just)
 import Agda.Builtin.Bool as B
 open B using () renaming (Bool to Boolean; true to tt; false to ff)
 
@@ -95,6 +96,7 @@ minimalPolynomialCorrectness F E α cmp = record
   { algorithm = record
       { minimalPolynomial = λ _ → M.mkId "computed-poly"
       ; isAlgebraic = λ β → yes (mkAlgebraicElement F E β)
+      ; limitation = nothing
       }
   ; specification = record
       { baseField = F
@@ -162,6 +164,7 @@ splittingFieldCorrectness F poly csf = record
   { algorithm = record
       { splittingField = λ f → mkSplittingField F f (ConstructiveSplittingField.splittingField csf)
       ; roots = λ _ → []
+      ; limitation = nothing
       }
   ; specification = record
       { baseField = F
@@ -233,6 +236,7 @@ galoisGroupCorrectness F E cgg = record
       { galoisGroup = λ _ → constructGaloisGroupFromConstructive F E cgg
       ; automorphisms = λ _ → []
       ; isSolvable = λ _ → M.mkId "solvable-check"
+      ; limitation = nothing
       }
   ; specification = record
       { baseField = F

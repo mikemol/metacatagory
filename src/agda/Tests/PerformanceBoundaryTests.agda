@@ -351,8 +351,10 @@ module Phase10-AlgorithmComplexityAnnotations where
   minPolyExample = record
     { minimalPolynomial = λ α → M.mkId "minPoly-result"
     ; isAlgebraic = λ α → no
+    ; limitation = nothing
     }
     where open import Core.AlgebraicAlgorithms using (Dec; no)
+          open import Agda.Builtin.Maybe using (nothing)
   
   annotatedMinPoly : AnnotatedAlgorithm (MinimalPolynomialAlgorithm F E)
   annotatedMinPoly = annotateAlgorithm minPolyExample minPolyComplexity

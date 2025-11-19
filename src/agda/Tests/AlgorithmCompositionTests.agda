@@ -54,7 +54,8 @@ module Phase1-SingleAlgorithmValidity where
     splitAlg : SplittingFieldAlgorithm F
     poly : M.Identifier
   
-  test-split-output : SplittingField F SplittingFieldPhaseId
+  -- Adjusted expected polynomial identifier to the local postulated `poly`
+  test-split-output : SplittingField F poly
   test-split-output = SplittingFieldAlgorithm.splittingField splitAlg poly
 
 -- ============================================================================
