@@ -37,13 +37,13 @@ jobs:
       - name: Scan current branch for deferred items
         run: |
           cd current
-          ../.github/scripts/detect-deferred-items.sh deferred-items-current.md
+          .github/scripts/detect-deferred-items.sh deferred-items-current.md
 
       - name: Scan base branch for deferred items (PR only)
         if: github.event_name == 'pull_request'
         run: |
           cd base
-          ../current/.github/scripts/detect-deferred-items.sh deferred-items-base.md
+          .github/scripts/detect-deferred-items.sh deferred-items-base.md
 
       - name: Compare deferred items (PR only)
         if: github.event_name == 'pull_request'
