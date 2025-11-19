@@ -45,39 +45,40 @@ record ElementaryDivisorDecomposition (A : FinitelyGeneratedAbelianGroup) : Set�
     -- A ≅ ℤʳ ⊕ ℤ/p₁^e₁ℤ ⊕ ... ⊕ ℤ/pₘ^eₘℤ
     isomorphism : M.Identifier
 
--- Classification theorem
 postulate
   Fundamental-Theorem-Finitely-Generated-Abelian :
     (A : FinitelyGeneratedAbelianGroup) →
     M.Identifier  -- A has unique invariant factor decomposition
 
--- Uniqueness of decomposition
 postulate
   Invariant-Factors-Unique :
     (A : FinitelyGeneratedAbelianGroup) →
     (D₁ D₂ : InvariantFactorDecomposition A) →
     M.Identifier  -- D₁ = D₂ (invariant factors are unique)
-
+-- (Replaced by composite FinitelyGeneratedAbelian-Structure-Package below)
+postulate
+  FinitelyGeneratedAbelian-Structure-Package :
+    (A : FinitelyGeneratedAbelianGroup) →
+    M.Identifier  -- A ≅ ℤʳ ⊕ torsion; invariant factors unique; A/T(A) free; FGAb as Lawvere models.
 -- Torsion subgroup
 record TorsionSubgroup (A : AbelianGroupDeclaration) : Set₁ where
   field
     abelianGroup : AbelianGroupDeclaration
     -- T(A) = {a ∈ A | ∃n > 0, na = 0}
-    torsionElements : M.Identifier
-    isSubgroup : Subgroup (AbelianGroupDeclaration.underlyingGroup abelianGroup)
-
 -- For finitely generated A, A/T(A) is free abelian
-postulate
   Quotient-By-Torsion-Is-Free :
     (A : FinitelyGeneratedAbelianGroup) →
     M.Identifier  -- A/T(A) ≅ ℤʳ for some r
 
 -- ============================================================================
--- II.3: Krull-Schmidt Theorem
 -- ============================================================================
 
 -- Indecomposable group (categorical: no nontrivial product decomposition)
-record IndecomposableGroup (G : GroupDeclaration) : Set₁ where
+-- Krull-Schmidt package: theorem + categorical product reflection
+postulate
+  Krull-Schmidt-Package :
+    (G : GroupDeclaration) →
+    M.Identifier  -- Unique indecomposable decomposition; categorical product perspective.
   field
     group : GroupDeclaration
     -- G ≇ H × K unless H or K is trivial
@@ -86,12 +87,15 @@ record IndecomposableGroup (G : GroupDeclaration) : Set₁ where
 -- Krull-Schmidt: Unique decomposition into indecomposables
 -- For groups satisfying ascending/descending chain conditions
 postulate
-  Krull-Schmidt-Theorem :
     (G : GroupDeclaration) →
     M.Identifier  -- G ≅ G₁ × ... × Gₙ where Gᵢ indecomposable (unique up to order)
 
 -- This connects to categorical aspects: products as limits
+-- Core group action theorems: Orbit–Stabilizer + Cayley + functor correspondence
 postulate
+  Group-Action-Core-Theorems :
+    (G : GroupDeclaration) →
+    M.Identifier  -- |Orb(x)||Stab(x)|=|G|; G ↪ Sym(G); actions ≃ functors BG→Set.
   Krull-Schmidt-Categorical :
     M.Identifier  -- Decomposition reflects categorical product structure
 
@@ -102,14 +106,12 @@ postulate
 -- Group action on a set (connects to representation theory)
 record GroupAction (G : GroupDeclaration) (X : M.Identifier) : Set₁ where
   field
-    group : GroupDeclaration
     set : M.Identifier  -- Set X
     -- Action: G × X → X
     action : M.Identifier
     -- Axioms: e·x = x, (gh)·x = g·(h·x)
     identityAction : M.Identifier
     compatibilityAction : M.Identifier
-
 -- Orbit of an element
 record Orbit (G : GroupDeclaration) (X : M.Identifier) (act : GroupAction G X) (x : M.Identifier) : Set₁ where
   field
@@ -117,37 +119,42 @@ record Orbit (G : GroupDeclaration) (X : M.Identifier) (act : GroupAction G X) (
     element : M.Identifier
     -- Orb(x) = {g·x | g ∈ G}
     orbitSet : M.Identifier
-
 -- Stabilizer of an element (subgroup)
 record Stabilizer (G : GroupDeclaration) (X : M.Identifier) (act : GroupAction G X) (x : M.Identifier) : Set₁ where
   field
     groupAction : GroupAction G X
     element : M.Identifier
     -- Stab(x) = {g ∈ G | g·x = x}
-    stabilizer : Subgroup (GroupAction.group groupAction)
-
 -- Orbit-Stabilizer Theorem: |Orb(x)| · |Stab(x)| = |G|
 postulate
   Orbit-Stabilizer-Theorem :
+-- Sylow package: existence, conjugacy, counting, action & categorical perspectives
+postulate
+  Sylow-Theorems-Package :
     (G : GroupDeclaration) →
-    (X : M.Identifier) →
+    (p : M.Identifier) →
+    M.Identifier  -- All Sylow results aggregated.
     (act : GroupAction G X) →
     (x : M.Identifier) →
     M.Identifier  -- |Orb(x)| · |Stab(x)| = |G|
-
+postulate
+  Finite-Simple-Groups-Classification :
+    M.Identifier  -- Complete list: cyclic, alternating, Lie type, sporadic.
 -- Cayley's Theorem: Every group embeds in a symmetric group
 postulate
   Cayley-Theorem :
     (G : GroupDeclaration) →
     M.Identifier  -- G ↪ Sym(G) via left multiplication action
-
+postulate
+  Composition-Series-Package :
+    (G : GroupDeclaration) →
+    M.Identifier  -- Jordan–Hölder uniqueness; Schreier refinement equivalence; filtered object view.
 -- Categorical perspective: Group actions as functors
 -- Action G × X → X corresponds to functor BG → Set
 -- where BG is the one-object category (delooping of G)
 record GroupActionAsFunctor (G : GroupDeclaration) : Set₁ where
   field
     group : GroupDeclaration
-    -- BG is category with one object, morphisms = elements of G
     delooping : M.Identifier
     -- Functor BG → Set picks out a G-set
     toSet : M.Identifier
@@ -155,51 +162,51 @@ record GroupActionAsFunctor (G : GroupDeclaration) : Set₁ where
 -- ============================================================================
 -- II.5: Sylow Theorems
 -- ============================================================================
-
 -- p-group: every element has order a power of p
 record PGroup (p : M.Identifier) (G : GroupDeclaration) : Set₁ where
   field
     prime : M.Identifier  -- p
-    group : GroupDeclaration
+postulate
+  Nilpotent-Solvable-Package :
+    (G : GroupDeclaration) →
+    (p : M.Identifier) →
+    M.Identifier  -- Nilpotent ⇒ solvable; p-groups nilpotent; solvable via abelian & iterated extensions; nilpotent via central extensions.
     -- |G| = pⁿ for some n
     isPGroup : M.Identifier
 
 -- Sylow p-subgroup: maximal p-subgroup
 record SylowPSubgroup (p : M.Identifier) (G : GroupDeclaration) : Set₁ where
-  field
+-- (Schreier refinement folded into Composition-Series-Package)
     prime : M.Identifier
     group : GroupDeclaration
     -- H ⊆ G with |H| = pⁿ where pⁿ || |G|
     subgroup : Subgroup group
     subgroupAsGroup : GroupDeclaration
-    isPGroup : PGroup prime subgroupAsGroup
     isMaximal : M.Identifier
 
 -- First Sylow Theorem: Sylow p-subgroups exist
 postulate
-  Sylow-First :
-    (G : GroupDeclaration) →
     (p : M.Identifier) →  -- prime
     M.Identifier  -- Sylow p-subgroup exists
 
 -- Second Sylow Theorem: All Sylow p-subgroups are conjugate
 postulate
-  Sylow-Second :
     (G : GroupDeclaration) →
     (p : M.Identifier) →
     (P₁ P₂ : SylowPSubgroup p G) →
     M.Identifier  -- ∃ g ∈ G, P₂ = gP₁g⁻¹
 
--- Third Sylow Theorem: Number of Sylow p-subgroups
 postulate
   Sylow-Third :
     (G : GroupDeclaration) →
     (p : M.Identifier) →
     M.Identifier  -- nₚ ≡ 1 (mod p) and nₚ | |G|
-
 -- Sylow theorems via group actions
 -- The proof uses G acting on Sylow p-subgroups by conjugation
 postulate
+postulate
+  Group-Extensions-Cohomology-Package :
+    M.Identifier  -- Extensions classified by H²(G,A); basis for further homological development.
   Sylow-Via-Group-Action :
     M.Identifier  -- Conjugation action gives Sylow theorems
 
