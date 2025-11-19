@@ -79,23 +79,21 @@ open Classifiable public
 -- Instance Declarations (with lazy construction to avoid cycles)
 -- ============================================================================
 
--- CRITICAL: These instances take evidence as explicit parameters, NOT instance arguments
--- This breaks the cycle: instance search finds these, but doesn't recurse
+-- CRITICAL: These are NOT instances - they are smart constructors
+-- They take evidence as explicit parameters and should be called manually
+-- Making them instances with explicit arguments has no effect on instance search
 
--- Instance: finite field evidence → classifiable
-instance
-  finiteFieldClassifiable : {F : FieldDeclaration} (ev : IsFiniteField F) → Classifiable F
-  finiteFieldClassifiable {F} ev = record { classification = (FiniteFieldType , ev) }
+-- Smart constructor: finite field evidence → classifiable
+finiteFieldClassifiable : {F : FieldDeclaration} (ev : IsFiniteField F) → Classifiable F
+finiteFieldClassifiable {F} ev = record { classification = (FiniteFieldType , ev) }
 
--- Instance: number field evidence → classifiable  
-instance
-  numberFieldClassifiable : {F : FieldDeclaration} (ev : IsNumberField F) → Classifiable F
-  numberFieldClassifiable {F} ev = record { classification = (NumberFieldType , ev) }
+-- Smart constructor: number field evidence → classifiable  
+numberFieldClassifiable : {F : FieldDeclaration} (ev : IsNumberField F) → Classifiable F
+numberFieldClassifiable {F} ev = record { classification = (NumberFieldType , ev) }
 
--- Instance: function field evidence → classifiable
-instance
-  functionFieldClassifiable : {F : FieldDeclaration} (ev : IsFunctionField F) → Classifiable F
-  functionFieldClassifiable {F} ev = record { classification = (FunctionFieldType , ev) }
+-- Smart constructor: function field evidence → classifiable
+functionFieldClassifiable : {F : FieldDeclaration} (ev : IsFunctionField F) → Classifiable F
+functionFieldClassifiable {F} ev = record { classification = (FunctionFieldType , ev) }
 
 -- ============================================================================
 -- Smart Constructors (for explicit use when instances aren't available)
