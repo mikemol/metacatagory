@@ -10,6 +10,7 @@ module Tests.PerformanceBoundaryTests where
 
 open import Core
 open import Core.Phase
+open import Core.AlgorithmComplexity  -- Phase III.1 (3.3)
 open import Algebra.Rings.Basic using (FieldDeclaration)
 open import Algebra.Fields.Basic
 open import Core.AlgebraicAlgorithms
@@ -18,24 +19,15 @@ open import Core.Algorithms.Registry
 open import Core.Algorithms.FiniteFields
 open import Metamodel as M
 open import Agda.Builtin.String using (String)
+open import Agda.Builtin.Unit using (⊤)
+open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Primitive using (Level; _⊔_)
 
--- ============================================================================
--- Complexity Classification
--- ============================================================================
+-- Re-export complexity classification from Core.AlgorithmComplexity
+open Core.AlgorithmComplexity public using (ComplexityClass; Constant; Logarithmic; Linear; Linearithmic; Quadratic; Cubic; Polynomial; Exponential; Factorial; Unknown)
 
--- Complexity classes for algorithm analysis
-data ComplexityClass : Set where
-  Constant : ComplexityClass
-  Logarithmic : ComplexityClass
-  Linear : ComplexityClass
-  QuasiLinear : ComplexityClass  -- O(n log n)
-  Polynomial : ComplexityClass
-  Exponential : ComplexityClass
-  Unknown : ComplexityClass
-
--- Annotate phases with complexity
-record ComplexityAnnotation {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
+-- Phase-based complexity annotation (for Phase transitions)
+record PhaseComplexityAnnotation {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
   field
     phase : Phase A B
     complexity : ComplexityClass
@@ -48,7 +40,7 @@ record ComplexityAnnotation {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : Set �
 module Phase1-ConstantComplexity where
 
   -- Identifier creation is O(1)
-  createId : ComplexityAnnotation M.Identifier M.Identifier
+  createId : PhaseComplexityAnnotation M.Identifier M.Identifier
   createId = record
     { phase = idPhase
     ; complexity = Constant
@@ -59,7 +51,7 @@ module Phase1-ConstantComplexity where
   postulate
     compareIds : Phase (Core.Phase._×_ M.Identifier M.Identifier) M.Identifier
   
-  compareAnnotated : ComplexityAnnotation (Core.Phase._×_ M.Identifier M.Identifier) M.Identifier
+  compareAnnotated : PhaseComplexityAnnotation (Core.Phase._×_ M.Identifier M.Identifier) M.Identifier
   compareAnnotated = record
     { phase = compareIds
     ; complexity = Constant
@@ -77,7 +69,7 @@ module Phase2-PolynomialComplexity where
     ev : IsFiniteField F
   
   -- Classification involves type analysis - O(n) where n is type size
-  classifyAnnotated : ComplexityAnnotation (IsFiniteField F) (FieldClassification F)
+  classifyAnnotated : PhaseComplexityAnnotation (IsFiniteField F) (FieldClassification F)
   classifyAnnotated = record
     { phase = mkPhase (classifyAsFiniteField F)
     ; complexity = Polynomial
@@ -98,7 +90,7 @@ module Phase3-ExponentialComplexity where
   postulate
     minPolyPhase : Phase M.Identifier M.Identifier
   
-  minPolyAnnotated : ComplexityAnnotation M.Identifier M.Identifier
+  minPolyAnnotated : PhaseComplexityAnnotation M.Identifier M.Identifier
   minPolyAnnotated = record
     { phase = minPolyPhase
     ; complexity = Exponential
@@ -117,7 +109,7 @@ module Phase4-ComplexityBoundaries where
     step2 : Phase M.Identifier M.Identifier
   
   -- Step 1 is polynomial
-  step1Annotated : ComplexityAnnotation M.Identifier M.Identifier
+  step1Annotated : PhaseComplexityAnnotation M.Identifier M.Identifier
   step1Annotated = record
     { phase = step1
     ; complexity = Polynomial
@@ -125,7 +117,7 @@ module Phase4-ComplexityBoundaries where
     }
   
   -- Step 2 is exponential - COMPLEXITY BOUNDARY
-  step2Annotated : ComplexityAnnotation M.Identifier M.Identifier
+  step2Annotated : PhaseComplexityAnnotation M.Identifier M.Identifier
   step2Annotated = record
     { phase = step2
     ; complexity = Exponential
@@ -150,7 +142,7 @@ module Phase5-LogarithmicComplexity where
   postulate
     dispatchPhase : Phase (FieldClassification F) (AlgorithmBundle F E)
   
-  dispatchAnnotated : ComplexityAnnotation (FieldClassification F) (AlgorithmBundle F E)
+  dispatchAnnotated : PhaseComplexityAnnotation (FieldClassification F) (AlgorithmBundle F E)
   dispatchAnnotated = record
     { phase = dispatchPhase
     ; complexity = Constant
@@ -201,14 +193,14 @@ module Phase7-OptimizationOpportunities where
     fastPath : Phase M.Identifier M.Identifier
   
   -- Annotate optimization potential
-  slowPathAnnotated : ComplexityAnnotation M.Identifier M.Identifier
+  slowPathAnnotated : PhaseComplexityAnnotation M.Identifier M.Identifier
   slowPathAnnotated = record
     { phase = slowPath
     ; complexity = Exponential
     ; description = "Slow path - optimization candidate"
     }
   
-  fastPathAnnotated : ComplexityAnnotation M.Identifier M.Identifier
+  fastPathAnnotated : PhaseComplexityAnnotation M.Identifier M.Identifier
   fastPathAnnotated = record
     { phase = fastPath
     ; complexity = Polynomial
@@ -236,7 +228,7 @@ module Phase8-FactorialComplexity where
   postulate
     galoisPhase : Phase M.Identifier (GaloisGroup F E)
   
-  galoisAnnotated : ComplexityAnnotation M.Identifier (GaloisGroup F E)
+  galoisAnnotated : PhaseComplexityAnnotation M.Identifier (GaloisGroup F E)
   galoisAnnotated = record
     { phase = galoisPhase
     ; complexity = Exponential  -- Simplified (actually factorial)
@@ -254,7 +246,7 @@ module Phase9-ProfiledComplexity where
     step : Phase M.Identifier M.Identifier
   
   -- Complexity-annotated profiled phase
-  complexityProfiled : ComplexityAnnotation M.Identifier M.Identifier
+  complexityProfiled : PhaseComplexityAnnotation M.Identifier M.Identifier
   complexityProfiled = record
     { phase = step
     ; complexity = Polynomial
@@ -265,12 +257,105 @@ module Phase9-ProfiledComplexity where
   toProfiled : ProfiledPhase M.Identifier M.Identifier
   toProfiled = profile (annotate
     "Polynomial Step"
-    (ComplexityAnnotation.description complexityProfiled)
-    (ComplexityAnnotation.phase complexityProfiled))
+    (PhaseComplexityAnnotation.description complexityProfiled)
+    (PhaseComplexityAnnotation.phase complexityProfiled))
   
   -- Execute with both static (complexity) and dynamic (profiling) tracking
   test-tracked : M.Identifier → M.Identifier
   test-tracked = ProfiledPhase.execute toProfiled
+
+-- ============================================================================
+-- Phase 10: Algorithm Complexity Annotations (Phase III.1 - 3.3)
+-- Direct complexity classification of core algorithms using indexed properties
+-- ============================================================================
+
+module Phase10-AlgorithmComplexityAnnotations where
+  open Core.AlgorithmComplexity
+
+  postulate
+    F E : FieldDeclaration
+  
+  -- Annotate MinimalPolynomialAlgorithm with complexity
+  -- Complexity: Polynomial (degree-dependent, typically O(d³) for degree d)
+  minPolyComplexity : ComplexityAnnotation
+  minPolyComplexity = mkComplexityAnnotation
+    (M.mkId "minimalPolynomial")
+    Polynomial
+    "Minimal polynomial computation via resultants or eigenvalue methods"
+    "For extension of degree d; actual complexity O(d³) to O(d⁴)"
+  
+  -- Extract and verify complexity class
+  test-minpoly-complexity : ComplexityClass
+  test-minpoly-complexity = getComplexity minPolyComplexity
+  
+  _ : test-minpoly-complexity ≡ Polynomial
+  _ = refl
+  
+  -- Annotate GaloisGroupAlgorithm with complexity
+  -- Complexity: Exponential to Factorial (depending on Galois group structure)
+  galoisGroupComplexity : ComplexityAnnotation
+  galoisGroupComplexity = mkComplexityAnnotation
+    (M.mkId "galoisGroup")
+    Factorial
+    "Galois group computation via automorphism enumeration"
+    "For degree n extension; worst case O(n!) for symmetric group"
+  
+  test-galois-complexity : ComplexityClass
+  test-galois-complexity = getComplexity galoisGroupComplexity
+  
+  _ : test-galois-complexity ≡ Factorial
+  _ = refl
+  
+  -- Annotate SplittingFieldAlgorithm with complexity
+  -- Complexity: Exponential (depends on polynomial degree and factorization)
+  splittingFieldComplexity : ComplexityAnnotation
+  splittingFieldComplexity = mkComplexityAnnotation
+    (M.mkId "splittingField")
+    Exponential
+    "Splitting field construction via iterated adjoining roots"
+    "For polynomial of degree n; complexity O(2^n) worst case"
+  
+  test-splitting-complexity : ComplexityClass
+  test-splitting-complexity = getComplexity splittingFieldComplexity
+  
+  _ : test-splitting-complexity ≡ Exponential
+  _ = refl
+  
+  -- Annotate identifier operations (baseline)
+  idOpComplexity : ComplexityAnnotation
+  idOpComplexity = mkComplexityAnnotation
+    (M.mkId "mkId")
+    Constant
+    "Identifier construction from string"
+    "O(1) - direct constructor application"
+  
+  test-id-complexity : ComplexityClass
+  test-id-complexity = getComplexity idOpComplexity
+  
+  _ : test-id-complexity ≡ Constant
+  _ = refl
+  
+  -- Complexity ordering validation: Constant < Polynomial < Exponential < Factorial
+  _ : Constant ≤ᶜ Polynomial
+  _ = _  -- Inhabitant of ⊤
+  
+  _ : Polynomial ≤ᶜ Exponential
+  _ = _
+  
+  _ : Exponential ≤ᶜ Factorial
+  _ = _
+  
+  -- Example: Annotated minimal polynomial algorithm record
+  -- (Demonstrates how to annotate algorithm interfaces, not implementations)
+  minPolyExample : MinimalPolynomialAlgorithm F E
+  minPolyExample = record
+    { minimalPolynomial = λ α → M.mkId "minPoly-result"
+    ; isAlgebraic = λ α → no
+    }
+    where open import Core.AlgebraicAlgorithms using (Dec; no)
+  
+  annotatedMinPoly : AnnotatedAlgorithm (MinimalPolynomialAlgorithm F E)
+  annotatedMinPoly = annotateAlgorithm minPolyExample minPolyComplexity
 
 -- ============================================================================
 -- Summary: Performance Boundary Coverage
@@ -287,6 +372,7 @@ module Phase9-ProfiledComplexity where
 -- 7. Optimization opportunities: Fast/slow path identification
 -- 8. Factorial complexity: Galois group enumeration
 -- 9. Profiled complexity: Static and dynamic tracking
+-- 10. Algorithm annotations (Phase III.1): Indexed complexity properties for core algorithms
 --
--- Coverage: 9 phases tracking computational complexity boundaries
+-- Coverage: 10 phases tracking computational complexity boundaries
 
