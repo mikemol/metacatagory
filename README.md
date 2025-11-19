@@ -33,6 +33,10 @@ make docs3
 make clean
 ```
 
+## Architecture
+
+For a current, concise map of layers, modules, and test phases, see `docs/ARCHITECTURE.md`.
+
 ### Tools & Automation
 
 The project includes Python-based automation tools for test coverage analysis, phase diagrams, and code search. These tools run in a virtual environment and generate reports and visualizations.

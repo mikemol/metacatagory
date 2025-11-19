@@ -9,6 +9,7 @@ open import Algebra.Fields.Basic
 open import Algebra.Fields.Advanced
 open import Algebra.Groups.Basic
 open import Algebra.Foundation
+open import Core.Limitations
 open import Metamodel as M
 
 -- Minimal local decision type to avoid stdlib dependency (target Set₁ in this codebase)
@@ -18,6 +19,7 @@ data Dec (A : Set₁) : Set₁ where
 
 -- Lists from builtins (avoid stdlib dependency)
 open import Agda.Builtin.List using (List; []; _∷_)
+open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 
 -- ==========================================================================
 -- Packed Nodes: Reusable dummy algebraic structures for smoke tests (Phase I.1.5)
@@ -181,6 +183,8 @@ record MinimalPolynomialAlgorithm (F : FieldDeclaration) (E : FieldDeclaration) 
     minimalPolynomial : (α : M.Identifier) → M.Identifier
     -- Decision procedure: is α algebraic?
     isAlgebraic : (α : M.Identifier) → Dec (AlgebraicElement F E α)
+    -- Optional limitation evidence for the algorithm
+    limitation : Maybe LimitationEvidence
 
 -- ============================================================================
 -- Galois Group Computation
@@ -194,6 +198,8 @@ record GaloisGroupAlgorithm (F : FieldDeclaration) (E : FieldDeclaration) : Set�
     automorphisms : (f : M.Identifier) → List (FieldAutomorphism F E)
     -- Decision: is Gal(E/F) solvable?
     isSolvable : (f : M.Identifier) → M.Identifier
+    -- Optional limitation evidence for the algorithm
+    limitation : Maybe LimitationEvidence
 
 -- ============================================================================
 -- Splitting Field Construction
@@ -205,6 +211,8 @@ record SplittingFieldAlgorithm (F : FieldDeclaration) : Set₁ where
     splittingField : (f : M.Identifier) → SplittingField F f
     -- Enumerate roots in splitting field
     roots : (f : M.Identifier) → List M.Identifier
+    -- Optional limitation evidence for the algorithm
+    limitation : Maybe LimitationEvidence
 
 -- ============================================================================
 -- Field Extension Degree Calculation
@@ -330,6 +338,7 @@ MinimalPolynomialAlgorithm-generic : ∀ {F E} → MinimalPolynomialAlgorithm F 
 MinimalPolynomialAlgorithm-generic {F} {E} = record
   { minimalPolynomial = λ α → defaultMinimalPolynomial F E α
   ; isAlgebraic = λ α → defaultIsAlgebraic F E α
+  ; limitation = nothing
   }
 
 GaloisGroupAlgorithm-generic : ∀ {F E} → GaloisGroupAlgorithm F E
@@ -337,12 +346,14 @@ GaloisGroupAlgorithm-generic {F} {E} = record
   { galoisGroup = λ f → defaultGaloisGroup F E f
   ; automorphisms = λ f → defaultAutomorphisms F E f
   ; isSolvable = λ f → defaultIsSolvable F E f
+  ; limitation = nothing
   }
 
 SplittingFieldAlgorithm-generic : ∀ {F} → SplittingFieldAlgorithm F
 SplittingFieldAlgorithm-generic {F} = record
   { splittingField = λ f → defaultSplittingField F f
   ; roots = λ f → defaultRoots F f
+  ; limitation = nothing
   }
 
 FieldExtensionDegreeAlgorithm-generic : ∀ {F E} → FieldExtensionDegreeAlgorithm F E
