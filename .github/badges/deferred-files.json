@@ -1,12 +1,4 @@
 {
-  "src/agda/Tests/AlgorithmCompositionTests.agda": {
-    "postulates": 29,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 29,
-    "weighted_total": 58.0
-  },
   "src/agda/Algebra/Modules/Basic.agda": {
     "postulates": 24,
     "todo": 0,
@@ -40,6 +32,14 @@
     "weighted_total": 44.0
   },
   "src/agda/Tests/ConstructiveWitnessTests.agda": {
+    "postulates": 21,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 21,
+    "weighted_total": 42.0
+  },
+  "src/agda/Tests/AlgorithmCompositionTests.agda": {
     "postulates": 21,
     "todo": 0,
     "fixme": 0,
@@ -455,14 +455,6 @@
     "total": 2,
     "weighted_total": 4.0
   },
-  "src/agda/Tests/DispatchBehaviorTests.agda": {
-    "postulates": 2,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 2,
-    "weighted_total": 4.0
-  },
   "src/agda/Tests/CoverageReport.agda": {
     "postulates": 0,
     "todo": 1,
@@ -632,6 +624,14 @@
     "weighted_total": 2.0
   },
   "src/agda/Tests/YonedaChecklist.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  "src/agda/Tests/DispatchBehaviorTests.agda": {
     "postulates": 1,
     "todo": 0,
     "fixme": 0,

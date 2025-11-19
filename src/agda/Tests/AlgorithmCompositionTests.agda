@@ -24,39 +24,72 @@ open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Bool as B using () renaming (Bool to BoolB; true to trueB; false to falseB)
 
 -- ============================================================================
+-- Test Data: Concrete Examples
+-- ============================================================================
+
+module TestData where
+  -- Concrete field declarations for testing
+  F-base : FieldDeclaration
+  F-base = record
+    { carrier = M.mkId "ℚ"
+    ; zero = M.mkId "0"
+    ; one = M.mkId "1"
+    ; add = M.mkId "+"
+    ; mul = M.mkId "×"
+    ; neg = M.mkId "-"
+    ; inv = M.mkId "⁻¹"
+    ; isField = M.mkId "ℚ-is-field"
+    }
+  
+  E-extension : FieldDeclaration
+  E-extension = record
+    { carrier = M.mkId "ℚ[√2]"
+    ; zero = M.mkId "0"
+    ; one = M.mkId "1"
+    ; add = M.mkId "+"
+    ; mul = M.mkId "×"
+    ; neg = M.mkId "-"
+    ; inv = M.mkId "⁻¹"
+    ; isField = M.mkId "ℚ[√2]-is-field"
+    }
+  
+  -- Concrete identifiers
+  α-example : M.Identifier
+  α-example = M.mkId "√2"
+  
+  poly-example : M.Identifier
+  poly-example = M.mkId "X²-2"
+
+open TestData
+
+-- ============================================================================
 -- Phase 1: Single Algorithm Output Validity
 -- Tests that individual algorithm outputs are well-typed
 -- ============================================================================
 
 module Phase1-SingleAlgorithmValidity where
-
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
-    
+  
   -- Test: Minimal polynomial algorithm produces identifier
   postulate
-    minPolyAlg : MinimalPolynomialAlgorithm F E
+    minPolyAlg : MinimalPolynomialAlgorithm F-base E-extension
   
   test-minpoly-output : M.Identifier
-  test-minpoly-output = MinimalPolynomialAlgorithm.minimalPolynomial minPolyAlg α
+  test-minpoly-output = MinimalPolynomialAlgorithm.minimalPolynomial minPolyAlg α-example
   
   -- Test: Galois group algorithm produces group
   postulate
-    galoisAlg : GaloisGroupAlgorithm F E
-    f : M.Identifier
+    galoisAlg : GaloisGroupAlgorithm F-base E-extension
   
-  test-galois-output : GaloisGroup F E
-  test-galois-output = GaloisGroupAlgorithm.galoisGroup galoisAlg f
+  test-galois-output : GaloisGroup F-base E-extension
+  test-galois-output = GaloisGroupAlgorithm.galoisGroup galoisAlg poly-example
   
   -- Test: Splitting field algorithm produces field
   postulate
-    splitAlg : SplittingFieldAlgorithm F
-    poly : M.Identifier
+    splitAlg : SplittingFieldAlgorithm F-base
   
   -- Adjusted expected polynomial identifier to the local postulated `poly`
-  test-split-output : SplittingField F poly
-  test-split-output = SplittingFieldAlgorithm.splittingField splitAlg poly
+  test-split-output : SplittingField F-base poly-example
+  test-split-output = SplittingFieldAlgorithm.splittingField splitAlg poly-example
 
 -- ============================================================================
 -- Phase 2: Two-Step Algorithm Composition
@@ -64,21 +97,17 @@ module Phase1-SingleAlgorithmValidity where
 -- ============================================================================
 
 module Phase2-TwoStepComposition where
-
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
   
   -- Step 1: Compute minimal polynomial
   postulate
-    minPolyAlg : MinimalPolynomialAlgorithm F E
+    minPolyAlg : MinimalPolynomialAlgorithm F-base E-extension
   
   minPoly : M.Identifier
-  minPoly = MinimalPolynomialAlgorithm.minimalPolynomial minPolyAlg α
+  minPoly = MinimalPolynomialAlgorithm.minimalPolynomial minPolyAlg α-example
   
   -- Step 2: Use minimal polynomial to build splitting field
   postulate
-    splitAlg : SplittingFieldAlgorithm F
+    splitAlg : SplittingFieldAlgorithm F-base
   
   splittingField : SplittingField F minPoly
   splittingField = SplittingFieldAlgorithm.splittingField splitAlg minPoly
@@ -94,24 +123,20 @@ module Phase2-TwoStepComposition where
 -- ============================================================================
 
 module Phase3-ThreeStepPipeline where
-
-  postulate
-    F E : FieldDeclaration
-    poly : M.Identifier
   
   -- Step 1: Build splitting field from polynomial
   postulate
-    splitAlg : SplittingFieldAlgorithm F
+    splitAlg : SplittingFieldAlgorithm F-base
   
-  splitting : SplittingField F poly
-  splitting = SplittingFieldAlgorithm.splittingField splitAlg poly
+  splitting : SplittingField F-base poly-example
+  splitting = SplittingFieldAlgorithm.splittingField splitAlg poly-example
   
   -- Step 2: Extract Galois group from extension
   postulate
-    galoisAlg : GaloisGroupAlgorithm F E
+    galoisAlg : GaloisGroupAlgorithm F-base E-extension
   
-  galoisGroup : GaloisGroup F E
-  galoisGroup = GaloisGroupAlgorithm.galoisGroup galoisAlg poly
+  galoisGroup : GaloisGroup F-base E-extension
+  galoisGroup = GaloisGroupAlgorithm.galoisGroup galoisAlg poly-example
   
   -- Step 3: Enumerate automorphisms
   automorphisms : M.Identifier  -- List simplified to Identifier
@@ -132,19 +157,17 @@ module Phase3-ThreeStepPipeline where
 module Phase4-BundleComposition where
 
   postulate
-    F E : FieldDeclaration
-    bundle : AlgorithmBundle F E
-    α : M.Identifier
+    bundle : AlgorithmBundle F-base E-extension
   
   -- Extract algorithms from bundle
-  minPolyAlg : MinimalPolynomialAlgorithm F E
+  minPolyAlg : MinimalPolynomialAlgorithm F-base E-extension
   minPolyAlg = AlgorithmBundle.minimalPolynomialAlg bundle
   
-  galoisAlg : GaloisGroupAlgorithm F E
+  galoisAlg : GaloisGroupAlgorithm F-base E-extension
   galoisAlg = AlgorithmBundle.galoisGroupAlg bundle
   
   -- Compose algorithms from same bundle
-  test-bundle-composition : M.Identifier → GaloisGroup F E
+  test-bundle-composition : M.Identifier → GaloisGroup F-base E-extension
   test-bundle-composition element =
     let poly = MinimalPolynomialAlgorithm.minimalPolynomial minPolyAlg element
     in GaloisGroupAlgorithm.galoisGroup galoisAlg poly
@@ -155,10 +178,6 @@ module Phase4-BundleComposition where
 -- ============================================================================
 
 module Phase5-InvariantPreservation where
-
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
   
   -- Invariant: field identity is preserved (simplified to avoid universe issues)
   identityInvariant : Invariant M.Identifier
@@ -202,16 +221,11 @@ module Phase5-InvariantPreservation where
 -- ============================================================================
 
 module Phase6-UniversalPropertyComposition where
-
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
-    poly : M.Identifier
   
   -- Individual universal properties
   postulate
-    minPolyProp : MinimalPolynomialProperty F E α
-    splitProp : SplittingFieldProperty F poly
+    minPolyProp : MinimalPolynomialProperty F-base E-extension α-example
+    splitProp : SplittingFieldProperty F-base poly-example
   
   -- The minimal polynomial from the property
   minimalPoly : M.Identifier
@@ -223,7 +237,7 @@ module Phase6-UniversalPropertyComposition where
   
   -- Composite property: minimal polynomial satisfies splitting field property
   postulate
-    compositeProperty : SplittingFieldProperty F minimalPoly
+    compositeProperty : SplittingFieldProperty F-base minimalPoly
   
   test-composite-ump : FieldDeclaration
   test-composite-ump = SplittingFieldProperty.splittingField compositeProperty
@@ -256,10 +270,6 @@ module Phase7-ErrorPropagation where
 -- ============================================================================
 
 module Phase8-ProfiledComposition where
-
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
   
   -- Create profiled phases for each step
   postulate
@@ -292,22 +302,19 @@ module Phase8-ProfiledComposition where
 -- ============================================================================
 
 module Phase9-DependentComposition where
-
-  postulate
-    F : FieldDeclaration
   
   -- Dependent phase: result type depends on classification
   postulate
-    ResultType : FieldClassification F → Set₁
-    step1Dep : DependentPhase (FieldClassification F) ResultType
+    ResultType : FieldClassification F-base → Set₁
+    step1Dep : DependentPhase (FieldClassification F-base) ResultType
   
   -- Second dependent phase uses first's result
   postulate
-    FinalType : (c : FieldClassification F) → ResultType c → Set₁
-    step2Dep : (c : FieldClassification F) → DependentPhase (ResultType c) (FinalType c)
+    FinalType : (c : FieldClassification F-base) → ResultType c → Set₁
+    step2Dep : (c : FieldClassification F-base) → DependentPhase (ResultType c) (FinalType c)
   
   -- Compose dependent phases
-  dependentPipeline : DependentPhase (FieldClassification F)
+  dependentPipeline : DependentPhase (FieldClassification F-base)
                                      (λ c → FinalType c (step1Dep $ᵈ c))
   dependentPipeline = step1Dep ⟫ᵈ step2Dep
 
@@ -320,11 +327,6 @@ module Phase10-DAGCompositionalValidation where
 
 
   open import Agda.Builtin.Nat as N using (Nat; suc)
-
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
-    initialPoly : M.Identifier
   
   -- ========================================================================
   -- Multi-step pipeline: MinimalPolynomial → SplittingField → GaloisGroup
@@ -332,17 +334,17 @@ module Phase10-DAGCompositionalValidation where
   
   -- Step 1: Compute minimal polynomial (produces intermediate node)
   postulate
-    minPolyAlg : MinimalPolynomialAlgorithm F E
+    minPolyAlg : MinimalPolynomialAlgorithm F-base E-extension
   
   step1-minPoly : M.Identifier
-  step1-minPoly = MinimalPolynomialAlgorithm.minimalPolynomial minPolyAlg α
+  step1-minPoly = MinimalPolynomialAlgorithm.minimalPolynomial minPolyAlg α-example
   
   -- Step 2: Build splitting field from minimal polynomial (produces another intermediate node)
   postulate
-    splitAlg : SplittingFieldAlgorithm F
+    splitAlg : SplittingFieldAlgorithm F-base
   
   -- Construct splitting field object
-  step2-splitting : SplittingField F step1-minPoly
+  step2-splitting : SplittingField F-base step1-minPoly
   step2-splitting = SplittingFieldAlgorithm.splittingField splitAlg step1-minPoly
 
   -- Derive an identifier for the constructed splitting field node (test-local naming)
@@ -355,9 +357,9 @@ module Phase10-DAGCompositionalValidation where
   
   -- Step 3: Compute Galois group (final node in pipeline)
   postulate
-    galoisAlg : GaloisGroupAlgorithm F E
+    galoisAlg : GaloisGroupAlgorithm F-base E-extension
   
-  step3-galoisGroup : GaloisGroup F E
+  step3-galoisGroup : GaloisGroup F-base E-extension
   step3-galoisGroup = GaloisGroupAlgorithm.galoisGroup galoisAlg step1-minPoly
   
   -- Extract Galois group identifier for ordering validation
