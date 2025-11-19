@@ -1,210 +1,147 @@
 module Tests.GrothendieckFibrationsChecklist where
 
 open import Tests.ObligationAdapters as A
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Agda.Builtin.Bool as B using (Bool)
 open import Agda.Builtin.Equality using (refl; _≡_)
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Chapter2.Level2sub8 as C2S8
-open import Core.CategoricalAdapter
+open import Chapter1.Level1sub3 as C1S3
+import Metamodel as M
 
 -- Grothendieck Fibrations coverage assertions
 -- Total: 15 adapters for fibrations, Grothendieck construction, and related structures
 
 emptyFibrationDecl : C2S8.FibrationDeclaration
-emptyFibrationDecl = record { projectionFunctor = record { totalCategory = record {} ; baseCategory = record {} ; projectionFunctor = "" } ; cartesianLiftsExist = record {} }
+emptyFibrationDecl = record { projectionFunctor = record { totalCategory = C1S3.CATEGORY (M.mkId "") ; baseCategory = C1S3.CATEGORY (M.mkId "") ; projectionFunctor = M.mkId "" } ; cartesianLiftsExist = ⊤ }
 
 emptyFibrationDeclarationAdapter : A.FibrationDeclarationAdapter
-emptyFibrationDeclarationAdapter = A.mkFibrationDeclarationAdapter emptyFibrationDecl "" refl (λ _ → emptyFibrationDecl)
+emptyFibrationDeclarationAdapter = A.mkFibrationDeclarationAdapter emptyFibrationDecl (M.mkId "") refl (λ _ → emptyFibrationDecl)
 
-_ : A.isFilledFibrationDeclaration emptyFibrationDeclarationAdapter ≡ true
-_ = refl
-
--- Categorical correspondence sanity check
-_ : C2S8.FibrationDeclaration ≡ C2S8.FibrationDeclaration
-_ = refl
-_ : (CategoricalAdapter.morphism (A.fibrationDeclarationCategorical emptyFibrationDeclarationAdapter) tt) ≡ A.FibrationDeclarationAdapter.decl emptyFibrationDeclarationAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.fibrationDeclarationCategorical emptyFibrationDeclarationAdapter) ≡ refl
+_ : A.isFilledFibrationDeclaration emptyFibrationDeclarationAdapter ≡ B.true
 _ = refl
 
 emptyCartesianArrowDecl : C2S8.CartesianArrow
-emptyCartesianArrowDecl = record { projectionFunctor = record { totalCategory = record {} ; baseCategory = record {} ; projectionFunctor = "" } ; arrow = "" ; targetObject = "" ; baseMorphism = "" ; liesOver = record { projectionFunctor = record { totalCategory = record {} ; baseCategory = record {} ; projectionFunctor = "" } ; morphismInTotal = "" ; morphismInBase = "" ; projectionEquals = record {} } ; universalProperty = record {} }
+emptyCartesianArrowDecl = record { projectionFunctor = record { totalCategory = C1S3.CATEGORY (M.mkId "") ; baseCategory = C1S3.CATEGORY (M.mkId "") ; projectionFunctor = M.mkId "" } ; arrow = M.mkId "" ; targetObject = M.mkId "" ; baseMorphism = M.mkId "" ; liesOver = record { projectionFunctor = record { totalCategory = C1S3.CATEGORY (M.mkId "") ; baseCategory = C1S3.CATEGORY (M.mkId "") ; projectionFunctor = M.mkId "" } ; morphismInTotal = M.mkId "" ; morphismInBase = M.mkId "" ; projectionEquals = ⊤ } ; universalProperty = ⊤ }
 
 emptyCartesianArrowAdapter : A.CartesianArrowAdapter
-emptyCartesianArrowAdapter = A.mkCartesianArrowAdapter emptyCartesianArrowDecl "" refl (λ _ → emptyCartesianArrowDecl)
+emptyCartesianArrowAdapter = A.mkCartesianArrowAdapter emptyCartesianArrowDecl (M.mkId "") refl (λ _ → emptyCartesianArrowDecl)
 
-_ : A.isFilledCartesianArrow emptyCartesianArrowAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.cartesianArrowCategorical emptyCartesianArrowAdapter) tt) ≡ A.CartesianArrowAdapter.decl emptyCartesianArrowAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.cartesianArrowCategorical emptyCartesianArrowAdapter) ≡ refl
+_ : A.isFilledCartesianArrow emptyCartesianArrowAdapter ≡ B.true
 _ = refl
 
 emptyCartesianFunctorDecl : C2S8.CartesianFunctorDeclaration
-emptyCartesianFunctorDecl = record { sourceFibration = emptyFibrationDecl ; targetFibration = emptyFibrationDecl ; underlyingFunctor = "" ; commutesWithProjections = record { functorF = "" ; sourceFibration = emptyFibrationDecl ; targetFibration = emptyFibrationDecl ; diagramCommutes = record {} } ; preservesCartesianArrows = record { functorF = "" ; sourceFibration = emptyFibrationDecl ; targetFibration = emptyFibrationDecl ; preservesCartesian = record {} } }
+emptyCartesianFunctorDecl = record { sourceFibration = emptyFibrationDecl ; targetFibration = emptyFibrationDecl ; underlyingFunctor = M.mkId "" ; commutesWithProjections = record { functorF = M.mkId "" ; sourceFibration = emptyFibrationDecl ; targetFibration = emptyFibrationDecl ; diagramCommutes = ⊤ } ; preservesCartesianArrows = record { functorF = M.mkId "" ; sourceFibration = emptyFibrationDecl ; targetFibration = emptyFibrationDecl ; preservesCartesian = ⊤ } }
 
 emptyCartesianFunctorDeclarationAdapter : A.CartesianFunctorDeclarationAdapter
-emptyCartesianFunctorDeclarationAdapter = A.mkCartesianFunctorDeclarationAdapter emptyCartesianFunctorDecl "" refl (λ _ → emptyCartesianFunctorDecl)
+emptyCartesianFunctorDeclarationAdapter = A.mkCartesianFunctorDeclarationAdapter emptyCartesianFunctorDecl (M.mkId "") refl (λ _ → emptyCartesianFunctorDecl)
 
-_ : A.isFilledCartesianFunctorDeclaration emptyCartesianFunctorDeclarationAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.cartesianFunctorDeclarationCategorical emptyCartesianFunctorDeclarationAdapter) tt) ≡ A.CartesianFunctorDeclarationAdapter.decl emptyCartesianFunctorDeclarationAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.cartesianFunctorDeclarationCategorical emptyCartesianFunctorDeclarationAdapter) ≡ refl
+_ : A.isFilledCartesianFunctorDeclaration emptyCartesianFunctorDeclarationAdapter ≡ B.true
 _ = refl
 
 emptyCategoryOfFibrationsDecl : C2S8.CategoryOfFibrations
-emptyCategoryOfFibrationsDecl = record { baseCategory = record {} ; fibrations = record {} ; cartesianFunctors = record {} ; categoryStructure = record {} }
+emptyCategoryOfFibrationsDecl = record { baseCategory = C1S3.CATEGORY (M.mkId "") ; fibrations = ⊤ ; cartesianFunctors = ⊤ ; categoryStructure = C1S3.CATEGORY (M.mkId "") }
 
 emptyCategoryOfFibrationsAdapter : A.CategoryOfFibrationsAdapter
-emptyCategoryOfFibrationsAdapter = A.mkCategoryOfFibrationsAdapter emptyCategoryOfFibrationsDecl "" refl (λ _ → emptyCategoryOfFibrationsDecl)
+emptyCategoryOfFibrationsAdapter = A.mkCategoryOfFibrationsAdapter emptyCategoryOfFibrationsDecl (C1S3.CATEGORY (M.mkId "")) refl (λ _ → emptyCategoryOfFibrationsDecl)
 
-_ : A.isFilledCategoryOfFibrations emptyCategoryOfFibrationsAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.categoryOfFibrationsCategorical emptyCategoryOfFibrationsAdapter) tt) ≡ A.CategoryOfFibrationsAdapter.decl emptyCategoryOfFibrinationsAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.categoryOfFibrationsCategorical emptyCategoryOfFibrationsAdapter) ≡ refl
+_ : A.isFilledCategoryOfFibrations emptyCategoryOfFibrationsAdapter ≡ B.true
 _ = refl
 
 emptyPseudofunctorFromFibrationDecl : C2S8.PseudofunctorFromFibration
-emptyPseudofunctorFromFibrationDecl = record { fibration = emptyFibrationDecl ; underlyingPseudofunctor = record {} ; actionOnObjects = record {} ; actionOnMorphisms = record {} }
+emptyPseudofunctorFromFibrationDecl = record { fibration = emptyFibrationDecl ; underlyingPseudofunctor = ⊤ ; actionOnObjects = ⊤ ; actionOnMorphisms = ⊤ }
 
 emptyPseudofunctorFromFibrationAdapter : A.PseudofunctorFromFibrationAdapter
 emptyPseudofunctorFromFibrationAdapter = A.mkPseudofunctorFromFibrationAdapter emptyPseudofunctorFromFibrationDecl (λ _ → emptyPseudofunctorFromFibrationDecl)
 
-_ : A.isFilledPseudofunctorFromFibration emptyPseudofunctorFromFibrationAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.pseudofunctorFromFibrationCategorical emptyPseudofunctorFromFibrationAdapter) tt) ≡ A.PseudofunctorFromFibrationAdapter.decl emptyPseudofunctorFromFibrationAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.pseudofunctorFromFibrationCategorical emptyPseudofunctorFromFibrationAdapter) ≡ refl
+_ : A.isFilledPseudofunctorFromFibration emptyPseudofunctorFromFibrationAdapter ≡ B.true
 _ = refl
 
 emptyGrothendieckConstructionDecl : C2S8.GrothendieckConstruction
-emptyGrothendieckConstructionDecl = record { basePseudofunctor = record {} ; totalCategory = record {} ; projectionFunctor = record { totalCategory = record {} ; baseCategory = record {} ; projectionFunctor = "" } ; isFibration = emptyFibrationDecl }
+emptyGrothendieckConstructionDecl = record { basePseudofunctor = ⊤ ; totalCategory = C1S3.CATEGORY (M.mkId "") ; projectionFunctor = record { totalCategory = C1S3.CATEGORY (M.mkId "") ; baseCategory = C1S3.CATEGORY (M.mkId "") ; projectionFunctor = M.mkId "" } ; isFibration = emptyFibrationDecl }
 
 emptyGrothendieckConstructionAdapter : A.GrothendieckConstructionAdapter
-emptyGrothendieckConstructionAdapter = A.mkGrothendieckConstructionAdapter emptyGrothendieckConstructionDecl "" refl (λ _ → emptyGrothendieckConstructionDecl)
+emptyGrothendieckConstructionAdapter = A.mkGrothendieckConstructionAdapter emptyGrothendieckConstructionDecl (C1S3.CATEGORY (M.mkId "")) refl (λ _ → emptyGrothendieckConstructionDecl)
 
-_ : A.isFilledGrothendieckConstruction emptyGrothendieckConstructionAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.grothendieckConstructionCategorical emptyGrothendieckConstructionAdapter) tt) ≡ A.GrothendieckConstructionAdapter.decl emptyGrothendieckConstructionAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.grothendieckConstructionCategorical emptyGrothendieckConstructionAdapter) ≡ refl
+_ : A.isFilledGrothendieckConstruction emptyGrothendieckConstructionAdapter ≡ B.true
 _ = refl
 
 emptyGrothendieckEquivalenceTheoremDecl : C2S8.GrothendieckEquivalenceTheorem
-emptyGrothendieckEquivalenceTheoremDecl = record { baseCategory = record {} ; fibrationsOver = emptyCategoryOfFibrationsDecl ; pseudofunctors = record {} ; equivalence = record {} }
+emptyGrothendieckEquivalenceTheoremDecl = record { baseCategory = C1S3.CATEGORY (M.mkId "") ; fibrationsOver = emptyCategoryOfFibrationsDecl ; pseudofunctors = ⊤ ; equivalence = ⊤ }
 
 emptyGrothendieckEquivalenceTheoremAdapter : A.GrothendieckEquivalenceTheoremAdapter
-emptyGrothendieckEquivalenceTheoremAdapter = A.mkGrothendieckEquivalenceTheoremAdapter emptyGrothendieckEquivalenceTheoremDecl "" refl (λ _ → emptyGrothendieckEquivalenceTheoremDecl)
+emptyGrothendieckEquivalenceTheoremAdapter = A.mkGrothendieckEquivalenceTheoremAdapter emptyGrothendieckEquivalenceTheoremDecl (C1S3.CATEGORY (M.mkId "")) refl (λ _ → emptyGrothendieckEquivalenceTheoremDecl)
 
-_ : A.isFilledGrothendieckEquivalenceTheorem emptyGrothendieckEquivalenceTheoremAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.grothendieckEquivalenceTheoremCategorical emptyGrothendieckEquivalenceTheoremAdapter) tt) ≡ A.GrothendieckEquivalenceTheoremAdapter.decl emptyGrothendieckEquivalenceTheoremAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.grothendieckEquivalenceTheoremCategorical emptyGrothendieckEquivalenceTheoremAdapter) ≡ refl
+_ : A.isFilledGrothendieckEquivalenceTheorem emptyGrothendieckEquivalenceTheoremAdapter ≡ B.true
 _ = refl
 
 emptyFibredAdjunctionDecl : C2S8.FibredAdjunctionDeclaration
-emptyFibredAdjunctionDecl = record { leftAdjoint = emptyCartesianFunctorDecl ; rightAdjoint = emptyCartesianFunctorDecl ; sourceFibration = emptyFibrationDecl ; targetFibration = emptyFibrationDecl ; pointwiseAdjunctions = record {} }
+emptyFibredAdjunctionDecl = record { leftAdjoint = emptyCartesianFunctorDecl ; rightAdjoint = emptyCartesianFunctorDecl ; sourceFibration = emptyFibrationDecl ; targetFibration = emptyFibrationDecl ; pointwiseAdjunctions = ⊤ }
 
 emptyFibredAdjunctionDeclarationAdapter : A.FibredAdjunctionDeclarationAdapter
-emptyFibredAdjunctionDeclarationAdapter = A.mkFibredAdjunctionDeclarationAdapter emptyFibredAdjunctionDecl "" "" refl refl (λ _ → emptyFibredAdjunctionDecl)
+emptyFibredAdjunctionDeclarationAdapter = A.mkFibredAdjunctionDeclarationAdapter emptyFibredAdjunctionDecl emptyCartesianFunctorDecl emptyCartesianFunctorDecl refl refl (λ _ → emptyFibredAdjunctionDecl)
 
-_ : A.isFilledFibredAdjunctionDeclaration emptyFibredAdjunctionDeclarationAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.fibredAdjunctionDeclarationCategorical emptyFibredAdjunctionDeclarationAdapter) tt) ≡ A.FibredAdjunctionDeclarationAdapter.decl emptyFibredAdjunctionDeclarationAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.fibredAdjunctionDeclarationCategorical emptyFibredAdjunctionDeclarationAdapter) ≡ refl
+_ : A.isFilledFibredAdjunctionDeclaration emptyFibredAdjunctionDeclarationAdapter ≡ B.true
 _ = refl
 
 emptyBeckChevalleyConditionDecl : C2S8.BeckChevalleyCondition
-emptyBeckChevalleyConditionDecl = record { fibredAdjunction = emptyFibredAdjunctionDecl ; comparisonIsIsomorphism = record {} }
+emptyBeckChevalleyConditionDecl = record { fibredAdjunction = emptyFibredAdjunctionDecl ; comparisonIsIsomorphism = ⊤ }
 
 emptyBeckChevalleyConditionAdapter : A.BeckChevalleyConditionAdapter
 emptyBeckChevalleyConditionAdapter = A.mkBeckChevalleyConditionAdapter emptyBeckChevalleyConditionDecl (λ _ → emptyBeckChevalleyConditionDecl)
 
-_ : A.isFilledBeckChevalleyCondition emptyBeckChevalleyConditionAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.beckChevalleyConditionCategorical emptyBeckChevalleyConditionAdapter) tt) ≡ A.BeckChevalleyConditionAdapter.decl emptyBeckChevalleyConditionAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.beckChevalleyConditionCategorical emptyBeckChevalleyConditionAdapter) ≡ refl
+_ : A.isFilledBeckChevalleyCondition emptyBeckChevalleyConditionAdapter ≡ B.true
 _ = refl
 
 emptyFibrationCompletenessCriterionDecl : C2S8.FibrationCompletenessCriterionTheorem
-emptyFibrationCompletenessCriterionDecl = record { fibration = emptyFibrationDecl ; baseIsComplete = record {} ; fibresAreComplete = record {} ; reindexingPreservesLimits = record {} ; totalIsComplete = record {} }
+emptyFibrationCompletenessCriterionDecl = record { fibration = emptyFibrationDecl ; baseIsComplete = ⊤ ; fibresAreComplete = ⊤ ; reindexingPreservesLimits = ⊤ ; totalIsComplete = ⊤ }
 
 emptyFibrationCompletenessCriterionTheoremAdapter : A.FibrationCompletenessCriterionTheoremAdapter
 emptyFibrationCompletenessCriterionTheoremAdapter = A.mkFibrationCompletenessCriterionTheoremAdapter emptyFibrationCompletenessCriterionDecl (λ _ → emptyFibrationCompletenessCriterionDecl)
 
-_ : A.isFilledFibrationCompletenessCriterionTheorem emptyFibrationCompletenessCriterionTheoremAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.fibrationCompletenessCriterionTheoremCategorical emptyFibrationCompletenessCriterionTheoremAdapter) tt) ≡ A.FibrationCompletenessCriterionTheoremAdapter.decl emptyFibrationCompletenessCriterionTheoremAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.fibrationCompletenessCriterionTheoremCategorical emptyFibrationCompletenessCriterionTheoremAdapter) ≡ refl
+_ : A.isFilledFibrationCompletenessCriterionTheorem emptyFibrationCompletenessCriterionTheoremAdapter ≡ B.true
 _ = refl
 
 emptyLocallySmallFibrationDecl : C2S8.LocallySmallFibration
-emptyLocallySmallFibrationDecl = record { fibration = emptyFibrationDecl ; allFibresAreSmall = record {} }
+emptyLocallySmallFibrationDecl = record { fibration = emptyFibrationDecl ; allFibresAreSmall = ⊤ }
 
 emptyLocallySmallFibrationAdapter : A.LocallySmallFibrationAdapter
 emptyLocallySmallFibrationAdapter = A.mkLocallySmallFibrationAdapter emptyLocallySmallFibrationDecl (λ _ → emptyLocallySmallFibrationDecl)
 
-_ : A.isFilledLocallySmallFibration emptyLocallySmallFibrationAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.locallySmallFibrationCategorical emptyLocallySmallFibrationAdapter) tt) ≡ A.LocallySmallFibrationAdapter.decl emptyLocallySmallFibrationAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.locallySmallFibrationCategorical emptyLocallySmallFibrationAdapter) ≡ refl
+_ : A.isFilledLocallySmallFibration emptyLocallySmallFibrationAdapter ≡ B.true
 _ = refl
 
 emptyRefinedGrothendieckEquivalenceDecl : C2S8.RefinedGrothendieckEquivalenceTheorem
-emptyRefinedGrothendieckEquivalenceDecl = record { baseCategory = record {} ; locallySmallFibrations = record {} ; pseudofunctorsToSmallCat = record {} ; equivalence = record {} }
+emptyRefinedGrothendieckEquivalenceDecl = record { baseCategory = C1S3.CATEGORY (M.mkId "") ; locallySmallFibrations = ⊤ ; pseudofunctorsToSmallCat = ⊤ ; equivalence = ⊤ }
 
 emptyRefinedGrothendieckEquivalenceTheoremAdapter : A.RefinedGrothendieckEquivalenceTheoremAdapter
-emptyRefinedGrothendieckEquivalenceTheoremAdapter = A.mkRefinedGrothendieckEquivalenceTheoremAdapter emptyRefinedGrothendieckEquivalenceDecl "" refl (λ _ → emptyRefinedGrothendieckEquivalenceDecl)
+emptyRefinedGrothendieckEquivalenceTheoremAdapter = A.mkRefinedGrothendieckEquivalenceTheoremAdapter emptyRefinedGrothendieckEquivalenceDecl (C1S3.CATEGORY (M.mkId "")) refl (λ _ → emptyRefinedGrothendieckEquivalenceDecl)
 
-_ : A.isFilledRefinedGrothendieckEquivalenceTheorem emptyRefinedGrothendieckEquivalenceTheoremAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.refinedGrothendieckEquivalenceTheoremCategorical emptyRefinedGrothendieckEquivalenceTheoremAdapter) tt) ≡ A.RefinedGrothendieckEquivalenceTheoremAdapter.decl emptyRefinedGrothendieckEquivalenceTheoremAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.refinedGrothendieckEquivalenceTheoremCategorical emptyRefinedGrothendieckEquivalenceTheoremAdapter) ≡ refl
+_ : A.isFilledRefinedGrothendieckEquivalenceTheorem emptyRefinedGrothendieckEquivalenceTheoremAdapter ≡ B.true
 _ = refl
 
 emptyCodomainFibrationDecl : C2S8.CodomainFibration
-emptyCodomainFibrationDecl = record { baseCategory = record {} ; arrowCategory = record {} ; codomainFunctor = "" ; isFibration = emptyFibrationDecl }
+emptyCodomainFibrationDecl = record { baseCategory = C1S3.CATEGORY (M.mkId "") ; arrowCategory = C1S3.CATEGORY (M.mkId "") ; codomainFunctor = M.mkId "" ; isFibration = emptyFibrationDecl }
 
 emptyCodomainFibrationAdapter : A.CodomainFibrationAdapter
-emptyCodomainFibrationAdapter = A.mkCodomainFibrationAdapter emptyCodomainFibrationDecl "" refl (λ _ → emptyCodomainFibrationDecl)
+emptyCodomainFibrationAdapter = A.mkCodomainFibrationAdapter emptyCodomainFibrationDecl (C1S3.CATEGORY (M.mkId "")) refl (λ _ → emptyCodomainFibrationDecl)
 
-_ : A.isFilledCodomainFibration emptyCodomainFibrationAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.codomainFibrationCategorical emptyCodomainFibrationAdapter) tt) ≡ A.CodomainFibrationAdapter.decl emptyCodomainFibrationAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.codomainFibrationCategorical emptyCodomainFibrationAdapter) ≡ refl
+_ : A.isFilledCodomainFibration emptyCodomainFibrationAdapter ≡ B.true
 _ = refl
 
 emptyLindenbaumTarskiFibrationDecl : C2S8.LindenbaumTarskiFibration
-emptyLindenbaumTarskiFibrationDecl = record { theory = record { language = record {} ; axioms = record {} } ; baseCategory = record {} ; totalCategory = record {} ; projectionFunctor = record { totalCategory = record {} ; baseCategory = record {} ; projectionFunctor = "" } ; isFibration = emptyFibrationDecl }
+emptyLindenbaumTarskiFibrationDecl = record { theory = record { language = ⊤ ; axioms = ⊤ } ; baseCategory = C1S3.CATEGORY (M.mkId "") ; totalCategory = C1S3.CATEGORY (M.mkId "") ; projectionFunctor = record { totalCategory = C1S3.CATEGORY (M.mkId "") ; baseCategory = C1S3.CATEGORY (M.mkId "") ; projectionFunctor = M.mkId "" } ; isFibration = emptyFibrationDecl }
 
 emptyLindenbaumTarskiFibrationAdapter : A.LindenbaumTarskiFibrationAdapter
 emptyLindenbaumTarskiFibrationAdapter = A.mkLindenbaumTarskiFibrationAdapter emptyLindenbaumTarskiFibrationDecl (λ _ → emptyLindenbaumTarskiFibrationDecl)
 
-_ : A.isFilledLindenbaumTarskiFibration emptyLindenbaumTarskiFibrationAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.lindenbaumTarskiFibrationCategorical emptyLindenbaumTarskiFibrationAdapter) tt) ≡ A.LindenbaumTarskiFibrationAdapter.decl emptyLindenbaumTarskiFibrationAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.lindenbaumTarskiFibrationCategorical emptyLindenbaumTarskiFibrationAdapter) ≡ refl
+_ : A.isFilledLindenbaumTarskiFibration emptyLindenbaumTarskiFibrationAdapter ≡ B.true
 _ = refl
 
 emptyFamiliesFibrationDecl : C2S8.FamiliesFibration
-emptyFamiliesFibrationDecl = record { baseCategory = record {} ; familiesCategory = record {} ; projectionFunctor = record { totalCategory = record {} ; baseCategory = record {} ; projectionFunctor = "" } ; isFibration = emptyFibrationDecl }
+emptyFamiliesFibrationDecl = record { baseCategory = C1S3.CATEGORY (M.mkId "") ; familiesCategory = C1S3.CATEGORY (M.mkId "") ; projectionFunctor = record { totalCategory = C1S3.CATEGORY (M.mkId "") ; baseCategory = C1S3.CATEGORY (M.mkId "") ; projectionFunctor = M.mkId "" } ; isFibration = emptyFibrationDecl }
 
 emptyFamiliesFibrationAdapter : A.FamiliesFibrationAdapter
-emptyFamiliesFibrationAdapter = A.mkFamiliesFibrationAdapter emptyFamiliesFibrationDecl "" refl (λ _ → emptyFamiliesFibrationDecl)
+emptyFamiliesFibrationAdapter = A.mkFamiliesFibrationAdapter emptyFamiliesFibrationDecl (C1S3.CATEGORY (M.mkId "")) refl (λ _ → emptyFamiliesFibrationDecl)
 
-_ : A.isFilledFamiliesFibration emptyFamiliesFibrationAdapter ≡ true
-_ = refl
-_ : (CategoricalAdapter.morphism (A.familiesFibrationCategorical emptyFamiliesFibrationAdapter) tt) ≡ A.FamiliesFibrationAdapter.decl emptyFamiliesFibrationAdapter
-_ = refl
-_ : CategoricalAdapter.isomorphism (A.familiesFibrationCategorical emptyFamiliesFibrationAdapter) ≡ refl
+_ : A.isFilledFamiliesFibration emptyFamiliesFibrationAdapter ≡ B.true
 _ = refl

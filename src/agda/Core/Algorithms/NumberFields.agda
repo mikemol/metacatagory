@@ -37,67 +37,17 @@ open NumberFieldAlgorithms public
 -- A simple, symbolic number field bundle (placeholders wired via witnesses)
 numberFieldAlgorithms : ∀ {F E} → (Fnf : IsNumberField F) → (Enf : IsNumberField E)
                        → NumberFieldAlgorithms F E Fnf Enf
+-- DeviationLog [2025-11-18]: Stubbing number field algorithms to generic defaults
+-- to unblock full test index (Phase II 2.5). Restore concrete symbolic
+-- constructions once related metas are resolved.
 numberFieldAlgorithms {F} {E} Fnf Enf = record
-  { minimalPolynomialAlg = record
-      { minimalPolynomial = λ α → M.mkId "minpoly-ℚ"
-      ; isAlgebraic       = λ α → yes (mkAlgebraicElement F E α)
-      }
-  ; galoisGroupAlg = record
-      { galoisGroup   = λ f → record
-          { baseField      = F
-          ; extensionField = E
-          ; group          = record
-              { underlyingMonoid = record
-                  { underlyingSemigroup = record
-                      { underlyingMagma = record
-                          { underlyingSet = M.mkId "Gal(E/F)"
-                          ; binaryOp = M.mkId "∘"
-                          }
-                      ; associativity = record { over = M.mkId "Gal(E/F)-assoc" }
-                      }
-                  ; identityElement = M.mkId "id"
-                  ; identityAxiom = record { over = M.mkId "Gal(E/F)-id" }
-                  }
-              ; inverseOperation = record
-                  { forMonoid = record
-                      { underlyingSemigroup = record
-                          { underlyingMagma = record
-                              { underlyingSet = M.mkId "Gal(E/F)"
-                              ; binaryOp = M.mkId "∘"
-                              }
-                          ; associativity = record { over = M.mkId "Gal(E/F)-assoc" }
-                          }
-                      ; identityElement = M.mkId "id"
-                      ; identityAxiom = record { over = M.mkId "Gal(E/F)-id" }
-                      }
-                  ; inverseMap = M.mkId "inv"
-                  ; inverseAxiom = M.mkId "inverse-ax"
-                  }
-              }
-          ; automorphisms  = M.mkId "symbolic-auts"
-          }
-      ; automorphisms = λ f → []
-      ; isSolvable    = λ f → M.mkId "unknown-solvable"
-      }
-  ; splittingFieldAlg = record
-      { splittingField = λ f → mkSplittingField F f E
-      ; roots          = λ f → []
-      }
-  ; extensionDegreeAlg = record
-      { extensionDegree = mkExtensionDegree F E
-      ; basis           = defaultBasis F E
-      }
-  ; subfieldEnumAlg = record
-      { subfields = trivialSubfield F E
-      }
-  ; algebraicityAlg = record
-      { isAlgebraic      = λ α → yes (mkAlgebraicElement F E α)
-      ; isTranscendental = λ α → no
-      }
-  ; primitiveElementAlg = record
-      { primitiveElement = M.mkId "primitive-ℚ"
-      ; witnessSimpleExtension = mkSimpleExtension F E (M.mkId "primitive-ℚ")
-      }
+  { minimalPolynomialAlg = MinimalPolynomialAlgorithm-generic {F} {E}
+  ; galoisGroupAlg       = GaloisGroupAlgorithm-generic {F} {E}
+  ; splittingFieldAlg    = SplittingFieldAlgorithm-generic {F}
+  ; extensionDegreeAlg   = FieldExtensionDegreeAlgorithm-generic {F} {E}
+  ; subfieldEnumAlg      = SubfieldEnumerationAlgorithm-generic {F} {E}
+  ; algebraicityAlg      = AlgebraicityDecisionAlgorithm-generic {F} {E}
+  ; primitiveElementAlg  = PrimitiveElementAlgorithm-generic {F} {E}
   }
 
 -- Convenience: construct full registry bundle for number fields
@@ -110,7 +60,7 @@ numberFieldBundle F E Fnf Enf =
     ; splittingFieldAlg    = NumberFieldAlgorithms.splittingFieldAlg nf
     ; extensionDegreeAlg   = NumberFieldAlgorithms.extensionDegreeAlg nf
     ; subfieldEnumAlg      = NumberFieldAlgorithms.subfieldEnumAlg nf
-    ; subgroupEnumAlg      = SubgroupEnumerationAlgorithm-generic {F} {E}
+    ; subgroupEnumAlg      = SubgroupEnumerationAlgorithm-generic {F} {E}  -- Already generic
     ; algebraicityAlg      = NumberFieldAlgorithms.algebraicityAlg nf
     ; primitiveElementAlg  = NumberFieldAlgorithms.primitiveElementAlg nf
     ; normalityAlg         = NormalityDecisionAlgorithm-generic {F} {E}

@@ -2,12 +2,14 @@
 
 module Tests.AlgebraicCompletionChecklist where
 
-open import Agda.Builtin.Bool using (Bool; true; false)
+import Agda.Builtin.Bool as B
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤)
 import Agda.Builtin.Nat as N
 import Agda.Builtin.String as S
 import Metamodel as M
+-- Imports
+import Chapter1.Level1 as C1L
 import Algebra.Foundation as AFo
 import Algebra.Rings.Basic as AR
 import Algebra.Fields.Basic as AFB
@@ -27,38 +29,40 @@ ringId = M.mkId "ℤ"
 
 abGroupMagmaDecl : AFo.MagmaDeclaration
 abGroupMagmaDecl = record
-  { magmaId = M.mkId "ℤ-magma"
-  ; operation = M.mkId "+"
+  { underlyingSet = M.mkId "ℤ"
+  ; binaryOp = M.mkId "+"
   }
 
 abGroupSemigroupDecl : AFo.SemigroupDeclaration
 abGroupSemigroupDecl = record
-  { semigroupId = M.mkId "ℤ-semigroup"
-  ; underlyingMagma = abGroupMagmaDecl
-  ; isAssociative = M.mkId "+-assoc"
+  { underlyingMagma = abGroupMagmaDecl
+  ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
   }
 
 abGroupMonoidDecl : AFo.MonoidDeclaration
 abGroupMonoidDecl = record
-  { monoidId = M.mkId "ℤ-monoid"
-  ; underlyingSemigroup = abGroupSemigroupDecl
-  ; identity = M.mkId "0"
-  ; hasIdentity = M.mkId "0-identity"
+  { underlyingSemigroup = abGroupSemigroupDecl
+  ; identityElement = M.mkId "0"
+  ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
   }
 
 abGroupGroupDecl : AFo.GroupDeclaration
 abGroupGroupDecl = record
-  { groupId = M.mkId "ℤ-group"
-  ; underlyingMonoid = abGroupMonoidDecl
-  ; inverse = M.mkId "neg"
-  ; hasInverse = M.mkId "neg-property"
+  { underlyingMonoid = abGroupMonoidDecl
+  ; inverseOperation = record
+    { forMonoid = abGroupMonoidDecl
+    ; inverseMap = M.mkId "neg"
+    ; inverseAxiom = M.mkId "neg-property"
+    }
   }
 
 abGroupDecl : AFo.AbelianGroupDeclaration
 abGroupDecl = record
-  { abelianGroupId = M.mkId "ℤ"
-  ; underlyingGroup = abGroupGroupDecl
-  ; isCommutative = M.mkId "+-comm"
+  { underlyingGroup = abGroupGroupDecl
+  ; commutativity = record
+    { forGroup = abGroupGroupDecl
+    ; axiom = M.mkId "+-comm"
+    }
   }
 
 ringDecl : AR.RingDeclaration
@@ -74,43 +78,34 @@ ringDecl = record
 -- Commutative ring (also ℤ)
 commRingDecl : AR.CommutativeRingDeclaration
 commRingDecl = record
-  { commutativeRingId = M.mkId "ℤ-comm"
-  ; underlyingRing = record
-    { unitalRingId = M.mkId "ℤ-unital"
-    ; underlyingRing = ringDecl
+  { underlyingRing = record
+    { underlyingRing = ringDecl
     ; multiplicativeIdentity = M.mkId "1"
-    ; hasMultiplicativeIdentity = M.mkId "1-identity"
+    ; leftIdentity = M.mkId "1-left-id"
+    ; rightIdentity = M.mkId "1-right-id"
     }
-  ; isCommutative = M.mkId "·-comm"
+  ; commutativity = M.mkId "·-comm"
   }
 
 -- Field ℚ
 fieldId : M.Identifier
 fieldId = M.mkId "ℚ"
 
+private
+  ℚ-magma : AFo.MagmaDeclaration
+  ℚ-magma = record { underlyingSet = M.mkId "ℚ⁺" ; binaryOp = M.mkId "+" }
+
+  ℚ-semigroup : AFo.SemigroupDeclaration
+  ℚ-semigroup = record { underlyingMagma = ℚ-magma ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc") }
+
+  ℚ-monoid : AFo.MonoidDeclaration
+  ℚ-monoid = record { underlyingSemigroup = ℚ-semigroup ; identityElement = M.mkId "0" ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity") }
+
+  ℚ-group : AFo.GroupDeclaration
+  ℚ-group = record { underlyingMonoid = ℚ-monoid ; inverseOperation = record { forMonoid = ℚ-monoid ; inverseMap = M.mkId "neg" ; inverseAxiom = M.mkId "neg-property" } }
+
 fieldAbGroupDecl : AFo.AbelianGroupDeclaration
-fieldAbGroupDecl = record
-  { abelianGroupId = M.mkId "ℚ⁺"
-  ; underlyingGroup = record
-    { groupId = M.mkId "ℚ-add-group"
-    ; underlyingMonoid = record
-      { monoidId = M.mkId "ℚ-add-monoid"
-      ; underlyingSemigroup = record
-        { semigroupId = M.mkId "ℚ-add-semigroup"
-        ; underlyingMagma = record
-          { magmaId = M.mkId "ℚ-add-magma"
-          ; operation = M.mkId "+"
-          }
-        ; isAssociative = M.mkId "+-assoc"
-        }
-      ; identity = M.mkId "0"
-      ; hasIdentity = M.mkId "0-identity"
-      }
-    ; inverse = M.mkId "neg"
-    ; hasInverse = M.mkId "neg-property"
-    }
-  ; isCommutative = M.mkId "+-comm"
-  }
+fieldAbGroupDecl = record { underlyingGroup = ℚ-group ; commutativity = record { forGroup = ℚ-group ; axiom = M.mkId "+-comm" } }
 
 fieldRingDecl : AR.RingDeclaration
 fieldRingDecl = record
@@ -124,46 +119,44 @@ fieldRingDecl = record
 
 fieldDecl : AR.FieldDeclaration
 fieldDecl = record
-  { fieldId = fieldId
-  ; characteristic = M.mkId "0"
-  ; additiveGroup = M.mkId "ℚ⁺"
-  ; multiplicativeGroup = M.mkId "ℚ*"
+  { underlyingRing = record
+    { underlyingRing = record
+      { underlyingRing = fieldRingDecl
+      ; multiplicativeIdentity = M.mkId "1"
+      ; leftIdentity = M.mkId "1-left-id"
+      ; rightIdentity = M.mkId "1-right-id"
+      }
+    ; commutativity = M.mkId "·-comm"
+    }
+  ; inverses = M.mkId "ℚ*"
   }
 
 -- Modules
 moduleId1 : M.Identifier
 moduleId1 = M.mkId "M"
 
+private
+  M-magma : AFo.MagmaDeclaration
+  M-magma = record { underlyingSet = M.mkId "M-group" ; binaryOp = M.mkId "+" }
+
+  M-semigroup : AFo.SemigroupDeclaration
+  M-semigroup = record { underlyingMagma = M-magma ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc") }
+
+  M-monoid : AFo.MonoidDeclaration
+  M-monoid = record { underlyingSemigroup = M-semigroup ; identityElement = M.mkId "0" ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity") }
+
+  M-group : AFo.GroupDeclaration
+  M-group = record { underlyingMonoid = M-monoid ; inverseOperation = record { forMonoid = M-monoid ; inverseMap = M.mkId "neg" ; inverseAxiom = M.mkId "neg-property" } }
+
 moduleAbGroup1 : AFo.AbelianGroupDeclaration
-moduleAbGroup1 = record
-  { abelianGroupId = M.mkId "M-group"
-  ; underlyingGroup = record
-    { groupId = M.mkId "M-underlying"
-    ; underlyingMonoid = record
-      { monoidId = M.mkId "M-monoid"
-      ; underlyingSemigroup = record
-        { semigroupId = M.mkId "M-semigroup"
-        ; underlyingMagma = record
-          { magmaId = M.mkId "M-magma"
-          ; operation = M.mkId "+"
-          }
-        ; isAssociative = M.mkId "+-assoc"
-        }
-      ; identity = M.mkId "0"
-      ; hasIdentity = M.mkId "0-identity"
-      }
-    ; inverse = M.mkId "neg"
-    ; hasInverse = M.mkId "neg-property"
-    }
-  ; isCommutative = M.mkId "+-comm"
-  }
+moduleAbGroup1 = record { underlyingGroup = M-group ; commutativity = record { forGroup = M-group ; axiom = M.mkId "+-comm" } }
 
 unitalRingDecl : AR.UnitalRingDeclaration
 unitalRingDecl = record
-  { unitalRingId = M.mkId "ℤ-unital"
-  ; underlyingRing = ringDecl
+  { underlyingRing = ringDecl
   ; multiplicativeIdentity = M.mkId "1"
-  ; hasMultiplicativeIdentity = M.mkId "1-identity"
+  ; leftIdentity = M.mkId "1-left-id"
+  ; rightIdentity = M.mkId "1-right-id"
   }
 
 module1 : AM.LeftModule ringDecl
@@ -171,74 +164,128 @@ module1 = record
   { ring = ringDecl
   ; underlyingAbelianGroup = moduleAbGroup1
   ; scalarMultiplication = M.mkId "·"
-  ; compatibilityAssoc = M.mkId "r(sm)=(rs)m"
-  ; compatibilityId = M.mkId "1m=m"
-  ; distributivityScalar = M.mkId "r(m+n)=rm+rn"
-  ; distributivityModule = M.mkId "(r+s)m=rm+sm"
+  ; distributiveOverAddition = M.mkId "r(m+n)=rm+rn"
+  ; distributiveOverRingAddition = M.mkId "(r+s)m=rm+sm"
+  ; associativeScalar = M.mkId "(rs)m=r(sm)"
+  ; unitalAction = M.mkId "1m=m"
   }
 
 module2 : AM.LeftModule ringDecl
 module2 = record
   { ring = ringDecl
   ; underlyingAbelianGroup = record
-    { abelianGroupId = M.mkId "N"
-    ; underlyingGroup = record
-      { groupId = M.mkId "N-group"
-      ; underlyingMonoid = record
-        { monoidId = M.mkId "N-monoid"
-        ; underlyingSemigroup = record
-          { semigroupId = M.mkId "N-semigroup"
-          ; underlyingMagma = record
-            { magmaId = M.mkId "N-magma"
-            ; operation = M.mkId "+"
-            }
-          ; isAssociative = M.mkId "+-assoc"
+    { underlyingGroup = record
+      { underlyingMonoid = record
+        { underlyingSemigroup = record
+          { underlyingMagma = record { underlyingSet = M.mkId "N" ; binaryOp = M.mkId "+" }
+          ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
           }
-        ; identity = M.mkId "0"
-        ; hasIdentity = M.mkId "0-identity"
+        ; identityElement = M.mkId "0"
+        ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
         }
-      ; inverse = M.mkId "neg"
-      ; hasInverse = M.mkId "neg-property"
+      ; inverseOperation = record
+        { forMonoid = record
+          { underlyingSemigroup = record
+            { underlyingMagma = record { underlyingSet = M.mkId "N" ; binaryOp = M.mkId "+" }
+            ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+            }
+          ; identityElement = M.mkId "0"
+          ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+          }
+        ; inverseMap = M.mkId "neg"
+        ; inverseAxiom = M.mkId "neg-property"
+        }
       }
-    ; isCommutative = M.mkId "+-comm"
+    ; commutativity = record
+      { forGroup = record
+        { underlyingMonoid = record
+          { underlyingSemigroup = record
+            { underlyingMagma = record { underlyingSet = M.mkId "N" ; binaryOp = M.mkId "+" }
+            ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+            }
+          ; identityElement = M.mkId "0"
+          ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+          }
+        ; inverseOperation = record
+          { forMonoid = record
+            { underlyingSemigroup = record
+              { underlyingMagma = record { underlyingSet = M.mkId "N" ; binaryOp = M.mkId "+" }
+              ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+              }
+            ; identityElement = M.mkId "0"
+            ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+            }
+          ; inverseMap = M.mkId "neg"
+          ; inverseAxiom = M.mkId "neg-property"
+          }
+        }
+      ; axiom = M.mkId "+-comm"
+      }
     }
   ; scalarMultiplication = M.mkId "·"
-  ; compatibilityAssoc = M.mkId "r(sm)=(rs)m"
-  ; compatibilityId = M.mkId "1m=m"
-  ; distributivityScalar = M.mkId "r(m+n)=rm+rn"
-  ; distributivityModule = M.mkId "(r+s)m=rm+sm"
+  ; distributiveOverAddition = M.mkId "r(m+n)=rm+rn"
+  ; distributiveOverRingAddition = M.mkId "(r+s)m=rm+sm"
+  ; associativeScalar = M.mkId "(rs)m=r(sm)"
+  ; unitalAction = M.mkId "1m=m"
   }
 
 module3 : AM.LeftModule ringDecl
 module3 = record
   { ring = ringDecl
   ; underlyingAbelianGroup = record
-    { abelianGroupId = M.mkId "P"
-    ; underlyingGroup = record
-      { groupId = M.mkId "P-group"
-      ; underlyingMonoid = record
-        { monoidId = M.mkId "P-monoid"
-        ; underlyingSemigroup = record
-          { semigroupId = M.mkId "P-semigroup"
-          ; underlyingMagma = record
-            { magmaId = M.mkId "P-magma"
-            ; operation = M.mkId "+"
-            }
-          ; isAssociative = M.mkId "+-assoc"
+    { underlyingGroup = record
+      { underlyingMonoid = record
+        { underlyingSemigroup = record
+          { underlyingMagma = record { underlyingSet = M.mkId "P" ; binaryOp = M.mkId "+" }
+          ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
           }
-        ; identity = M.mkId "0"
-        ; hasIdentity = M.mkId "0-identity"
+        ; identityElement = M.mkId "0"
+        ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
         }
-      ; inverse = M.mkId "neg"
-      ; hasInverse = M.mkId "neg-property"
+      ; inverseOperation = record
+        { forMonoid = record
+          { underlyingSemigroup = record
+            { underlyingMagma = record { underlyingSet = M.mkId "P" ; binaryOp = M.mkId "+" }
+            ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+            }
+          ; identityElement = M.mkId "0"
+          ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+          }
+        ; inverseMap = M.mkId "neg"
+        ; inverseAxiom = M.mkId "neg-property"
+        }
       }
-    ; isCommutative = M.mkId "+-comm"
+    ; commutativity = record
+      { forGroup = record
+        { underlyingMonoid = record
+          { underlyingSemigroup = record
+            { underlyingMagma = record { underlyingSet = M.mkId "P" ; binaryOp = M.mkId "+" }
+            ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+            }
+          ; identityElement = M.mkId "0"
+          ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+          }
+        ; inverseOperation = record
+          { forMonoid = record
+            { underlyingSemigroup = record
+              { underlyingMagma = record { underlyingSet = M.mkId "P" ; binaryOp = M.mkId "+" }
+              ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+              }
+            ; identityElement = M.mkId "0"
+            ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+            }
+          ; inverseMap = M.mkId "neg"
+          ; inverseAxiom = M.mkId "neg-property"
+          }
+        }
+      ; axiom = M.mkId "+-comm"
+      }
     }
   ; scalarMultiplication = M.mkId "·"
-  ; compatibilityAssoc = M.mkId "r(sm)=(rs)m"
-  ; compatibilityId = M.mkId "1m=m"
-  ; distributivityScalar = M.mkId "r(m+n)=rm+rn"
-  ; distributivityModule = M.mkId "(r+s)m=rm+sm"
+  ; distributiveOverAddition = M.mkId "r(m+n)=rm+rn"
+  ; distributiveOverRingAddition = M.mkId "(r+s)m=rm+sm"
+  ; associativeScalar = M.mkId "(rs)m=r(sm)"
+  ; unitalAction = M.mkId "1m=m"
   }
 
 -- ============================================================================
@@ -261,7 +308,7 @@ exactSequenceAdapt =
     ringDecl
     refl
 
-_ : A.isFilledExactSequence exactSequenceAdapt ≡ true
+_ : A.isFilledExactSequence exactSequenceAdapt ≡ B.true
 _ = refl
 
 -- ============================================================================
@@ -283,7 +330,7 @@ categoryOfModulesAdapt =
     ringDecl
     refl
 
-_ : A.isFilledCategoryOfModules categoryOfModulesAdapt ≡ true
+_ : A.isFilledCategoryOfModules categoryOfModulesAdapt ≡ B.true
 _ = refl
 
 -- ============================================================================
@@ -293,17 +340,16 @@ _ = refl
 -- Extract underlying ring from field
 fieldUnitalRing : AR.UnitalRingDeclaration
 fieldUnitalRing = record
-  { unitalRingId = M.mkId "ℚ-unital"
-  ; underlyingRing = fieldRingDecl
+  { underlyingRing = fieldRingDecl
   ; multiplicativeIdentity = M.mkId "1"
-  ; hasMultiplicativeIdentity = M.mkId "1-identity"
+  ; leftIdentity = M.mkId "1-left-id"
+  ; rightIdentity = M.mkId "1-right-id"
   }
 
 fieldCommRing : AR.CommutativeRingDeclaration
 fieldCommRing = record
-  { commutativeRingId = M.mkId "ℚ-comm"
-  ; underlyingRing = fieldUnitalRing
-  ; isCommutative = M.mkId "·-comm"
+  { underlyingRing = fieldUnitalRing
+  ; commutativity = M.mkId "·-comm"
   }
 
 fieldAsRing : AR.RingDeclaration
@@ -313,32 +359,59 @@ vectorSpaceModule : AM.LeftModule fieldAsRing
 vectorSpaceModule = record
   { ring = fieldAsRing
   ; underlyingAbelianGroup = record
-    { abelianGroupId = M.mkId "V"
-    ; underlyingGroup = record
-      { groupId = M.mkId "V-group"
-      ; underlyingMonoid = record
-        { monoidId = M.mkId "V-monoid"
-        ; underlyingSemigroup = record
-          { semigroupId = M.mkId "V-semigroup"
-          ; underlyingMagma = record
-            { magmaId = M.mkId "V-magma"
-            ; operation = M.mkId "+"
-            }
-          ; isAssociative = M.mkId "+-assoc"
+    { underlyingGroup = record
+      { underlyingMonoid = record
+        { underlyingSemigroup = record
+          { underlyingMagma = record { underlyingSet = M.mkId "V" ; binaryOp = M.mkId "+" }
+          ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
           }
-        ; identity = M.mkId "0"
-        ; hasIdentity = M.mkId "0-identity"
+        ; identityElement = M.mkId "0"
+        ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
         }
-      ; inverse = M.mkId "neg"
-      ; hasInverse = M.mkId "neg-property"
+      ; inverseOperation = record
+        { forMonoid = record
+          { underlyingSemigroup = record
+            { underlyingMagma = record { underlyingSet = M.mkId "V" ; binaryOp = M.mkId "+" }
+            ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+            }
+          ; identityElement = M.mkId "0"
+          ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+          }
+        ; inverseMap = M.mkId "neg"
+        ; inverseAxiom = M.mkId "neg-property"
+        }
       }
-    ; isCommutative = M.mkId "+-comm"
+    ; commutativity = record
+      { forGroup = record
+        { underlyingMonoid = record
+          { underlyingSemigroup = record
+            { underlyingMagma = record { underlyingSet = M.mkId "V" ; binaryOp = M.mkId "+" }
+            ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+            }
+          ; identityElement = M.mkId "0"
+          ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+          }
+        ; inverseOperation = record
+          { forMonoid = record
+            { underlyingSemigroup = record
+              { underlyingMagma = record { underlyingSet = M.mkId "V" ; binaryOp = M.mkId "+" }
+              ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+              }
+            ; identityElement = M.mkId "0"
+            ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+            }
+          ; inverseMap = M.mkId "neg"
+          ; inverseAxiom = M.mkId "neg-property"
+          }
+        }
+      ; axiom = M.mkId "+-comm"
+      }
     }
   ; scalarMultiplication = M.mkId "·"
-  ; compatibilityAssoc = M.mkId "r(sm)=(rs)m"
-  ; compatibilityId = M.mkId "1v=v"
-  ; distributivityScalar = M.mkId "r(v+w)=rv+rw"
-  ; distributivityModule = M.mkId "(r+s)v=rv+sv"
+  ; distributiveOverAddition = M.mkId "r(v+w)=rv+rw"
+  ; distributiveOverRingAddition = M.mkId "(r+s)v=rv+sv"
+  ; associativeScalar = M.mkId "(rs)v=r(sv)"
+  ; unitalAction = M.mkId "1v=v"
   }
 
 vectorSpace : AM.VectorSpace fieldDecl
@@ -355,7 +428,7 @@ vectorSpaceAdapt =
     fieldDecl
     refl
 
-_ : A.isFilledVectorSpace vectorSpaceAdapt ≡ true
+_ : A.isFilledVectorSpace vectorSpaceAdapt ≡ B.true
 _ = refl
 
 -- ============================================================================
@@ -367,26 +440,53 @@ polyRingDecl : AR.RingDeclaration
 polyRingDecl = record
   { identifier = M.mkId "ℤ[X]"
   ; additiveGroup = record
-    { abelianGroupId = M.mkId "ℤ[X]⁺"
-    ; underlyingGroup = record
-      { groupId = M.mkId "ℤ[X]-group"
-      ; underlyingMonoid = record
-        { monoidId = M.mkId "ℤ[X]-monoid"
-        ; underlyingSemigroup = record
-          { semigroupId = M.mkId "ℤ[X]-semigroup"
-          ; underlyingMagma = record
-            { magmaId = M.mkId "ℤ[X]-magma"
-            ; operation = M.mkId "+"
-            }
-          ; isAssociative = M.mkId "+-assoc"
+    { underlyingGroup = record
+      { underlyingMonoid = record
+        { underlyingSemigroup = record
+          { underlyingMagma = record { underlyingSet = M.mkId "ℤ[X]⁺" ; binaryOp = M.mkId "+" }
+          ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
           }
-        ; identity = M.mkId "0"
-        ; hasIdentity = M.mkId "0-identity"
+        ; identityElement = M.mkId "0"
+        ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
         }
-      ; inverse = M.mkId "neg"
-      ; hasInverse = M.mkId "neg-property"
+      ; inverseOperation = record
+        { forMonoid = record
+          { underlyingSemigroup = record
+            { underlyingMagma = record { underlyingSet = M.mkId "ℤ[X]⁺" ; binaryOp = M.mkId "+" }
+            ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+            }
+          ; identityElement = M.mkId "0"
+          ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+          }
+        ; inverseMap = M.mkId "neg"
+        ; inverseAxiom = M.mkId "neg-property"
+        }
       }
-    ; isCommutative = M.mkId "+-comm"
+    ; commutativity = record
+      { forGroup = record
+        { underlyingMonoid = record
+          { underlyingSemigroup = record
+            { underlyingMagma = record { underlyingSet = M.mkId "ℤ[X]⁺" ; binaryOp = M.mkId "+" }
+            ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+            }
+          ; identityElement = M.mkId "0"
+          ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+          }
+        ; inverseOperation = record
+          { forMonoid = record
+            { underlyingSemigroup = record
+              { underlyingMagma = record { underlyingSet = M.mkId "ℤ[X]⁺" ; binaryOp = M.mkId "+" }
+              ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+              }
+            ; identityElement = M.mkId "0"
+            ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+            }
+          ; inverseMap = M.mkId "neg"
+          ; inverseAxiom = M.mkId "neg-property"
+          }
+        }
+      ; axiom = M.mkId "+-comm"
+      }
     }
   ; multiplication = M.mkId "·"
   ; multAssociative = M.mkId "·-assoc"
@@ -399,10 +499,10 @@ polyModuleStructure = record
   { ring = AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing commRingDecl)
   ; underlyingAbelianGroup = AR.RingDeclaration.additiveGroup polyRingDecl
   ; scalarMultiplication = M.mkId "r·p"
-  ; compatibilityAssoc = M.mkId "r(s·p)=(rs)·p"
-  ; compatibilityId = M.mkId "1·p=p"
-  ; distributivityScalar = M.mkId "r(p+q)=rp+rq"
-  ; distributivityModule = M.mkId "(r+s)p=rp+sp"
+  ; distributiveOverAddition = M.mkId "r(p+q)=rp+rq"
+  ; distributiveOverRingAddition = M.mkId "(r+s)p=rp+sp"
+  ; associativeScalar = M.mkId "(rs)p=r(sp)"
+  ; unitalAction = M.mkId "1·p=p"
   }
 
 rAlgebra : AM.RAlgebra commRingDecl
@@ -421,7 +521,7 @@ rAlgebraAdapt =
     commRingDecl
     refl
 
-_ : A.isFilledRAlgebra rAlgebraAdapt ≡ true
+_ : A.isFilledRAlgebra rAlgebraAdapt ≡ B.true
 _ = refl
 
 -- ============================================================================
@@ -433,26 +533,53 @@ polyRingDecl2 : AR.RingDeclaration
 polyRingDecl2 = record
   { identifier = M.mkId "ℤ[Y]"
   ; additiveGroup = record
-    { abelianGroupId = M.mkId "ℤ[Y]⁺"
-    ; underlyingGroup = record
-      { groupId = M.mkId "ℤ[Y]-group"
-      ; underlyingMonoid = record
-        { monoidId = M.mkId "ℤ[Y]-monoid"
-        ; underlyingSemigroup = record
-          { semigroupId = M.mkId "ℤ[Y]-semigroup"
-          ; underlyingMagma = record
-            { magmaId = M.mkId "ℤ[Y]-magma"
-            ; operation = M.mkId "+"
-            }
-          ; isAssociative = M.mkId "+-assoc"
+    { underlyingGroup = record
+      { underlyingMonoid = record
+        { underlyingSemigroup = record
+          { underlyingMagma = record { underlyingSet = M.mkId "ℤ[Y]⁺" ; binaryOp = M.mkId "+" }
+          ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
           }
-        ; identity = M.mkId "0"
-        ; hasIdentity = M.mkId "0-identity"
+        ; identityElement = M.mkId "0"
+        ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
         }
-      ; inverse = M.mkId "neg"
-      ; hasInverse = M.mkId "neg-property"
+      ; inverseOperation = record
+        { forMonoid = record
+          { underlyingSemigroup = record
+            { underlyingMagma = record { underlyingSet = M.mkId "ℤ[Y]⁺" ; binaryOp = M.mkId "+" }
+            ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+            }
+          ; identityElement = M.mkId "0"
+          ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+          }
+        ; inverseMap = M.mkId "neg"
+        ; inverseAxiom = M.mkId "neg-property"
+        }
       }
-    ; isCommutative = M.mkId "+-comm"
+    ; commutativity = record
+      { forGroup = record
+        { underlyingMonoid = record
+          { underlyingSemigroup = record
+            { underlyingMagma = record { underlyingSet = M.mkId "ℤ[Y]⁺" ; binaryOp = M.mkId "+" }
+            ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+            }
+          ; identityElement = M.mkId "0"
+          ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+          }
+        ; inverseOperation = record
+          { forMonoid = record
+            { underlyingSemigroup = record
+              { underlyingMagma = record { underlyingSet = M.mkId "ℤ[Y]⁺" ; binaryOp = M.mkId "+" }
+              ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+              }
+            ; identityElement = M.mkId "0"
+            ; identityAxiom = C1L.AXIOM_Identity (M.mkId "0-identity")
+            }
+          ; inverseMap = M.mkId "neg"
+          ; inverseAxiom = M.mkId "neg-property"
+          }
+        }
+      ; axiom = M.mkId "+-comm"
+      }
     }
   ; multiplication = M.mkId "·"
   ; multAssociative = M.mkId "·-assoc"
@@ -465,10 +592,10 @@ polyModuleStructure2 = record
   { ring = AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing commRingDecl)
   ; underlyingAbelianGroup = AR.RingDeclaration.additiveGroup polyRingDecl2
   ; scalarMultiplication = M.mkId "r·p"
-  ; compatibilityAssoc = M.mkId "r(s·p)=(rs)·p"
-  ; compatibilityId = M.mkId "1·p=p"
-  ; distributivityScalar = M.mkId "r(p+q)=rp+rq"
-  ; distributivityModule = M.mkId "(r+s)p=rp+sp"
+  ; distributiveOverAddition = M.mkId "r(p+q)=rp+rq"
+  ; distributiveOverRingAddition = M.mkId "(r+s)p=rp+sp"
+  ; associativeScalar = M.mkId "(rs)p=r(sp)"
+  ; unitalAction = M.mkId "1·p=p"
   }
 
 rAlgebra2 : AM.RAlgebra commRingDecl
@@ -498,37 +625,5 @@ algebraHomomorphismAdapt =
     commRingDecl
     refl
 
-_ : A.isFilledAlgebraHomomorphism algebraHomomorphismAdapt ≡ true
+_ : A.isFilledAlgebraHomomorphism algebraHomomorphismAdapt ≡ B.true
 _ = refl
-
--- Categorical assertions
--- TODO: Fix malformed test: _ : Core.CategoricalAdapter.morphism (A.exactSequenceCategorical exactSequenceAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.exactSequenceCategorical exactSequenceAdapt) ⊤
-_ = refl
-
--- TODO: Fix malformed test: _ : Core.CategoricalAdapter.isomorphism (A.exactSequenceCategorical exactSequenceAdapt) ≡ refl
-_ = refl
-
--- TODO: Fix malformed test: _ : Core.CategoricalAdapter.morphism (A.categoryOfModulesCategorical categoryOfModulesAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.categoryOfModulesCategorical categoryOfModulesAdapt) ⊤
-_ = refl
-
--- TODO: Fix malformed test: _ : Core.CategoricalAdapter.isomorphism (A.categoryOfModulesCategorical categoryOfModulesAdapt) ≡ refl
-_ = refl
-
--- TODO: Fix malformed test: _ : Core.CategoricalAdapter.morphism (A.vectorSpaceCategorical vectorSpaceAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.vectorSpaceCategorical vectorSpaceAdapt) ⊤
-_ = refl
-
--- TODO: Fix malformed test: _ : Core.CategoricalAdapter.isomorphism (A.vectorSpaceCategorical vectorSpaceAdapt) ≡ refl
-_ = refl
-
--- TODO: Fix malformed test: _ : Core.CategoricalAdapter.morphism (A.rAlgebraCategorical rAlgebraAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.rAlgebraCategorical rAlgebraAdapt) ⊤
-_ = refl
-
--- TODO: Fix malformed test: _ : Core.CategoricalAdapter.isomorphism (A.rAlgebraCategorical rAlgebraAdapt) ≡ refl
-_ = refl
-
--- TODO: Fix malformed test: _ : Core.CategoricalAdapter.morphism (A.algebraHomomorphismCategorical algebraHomomorphismAdapt) ⊤ ⊤ ≡ Core.CategoricalAdapter.object (A.algebraHomomorphismCategorical algebraHomomorphismAdapt) ⊤
-_ = refl
-
--- TODO: Fix malformed test: _ : Core.CategoricalAdapter.isomorphism (A.algebraHomomorphismCategorical algebraHomomorphismAdapt) ≡ refl
-_ = refl
-

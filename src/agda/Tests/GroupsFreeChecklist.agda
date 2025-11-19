@@ -4,6 +4,7 @@ module Tests.GroupsFreeChecklist where
 
 import Agda.Builtin.Bool as B
 open import Agda.Builtin.Equality using (_≡_; refl)
+open import Agda.Builtin.Unit using (⊤; tt)
 open import Metamodel as M
 open import Core.CategoricalAdapter
 
@@ -15,23 +16,21 @@ import Tests.ObligationAdapters as A
 
 -- Build minimal algebra scaffolding
 magmaDecl : AF.MagmaDeclaration
-magmaDecl = record { binaryOp = M.mkId "grpOp" }
+magmaDecl = record { underlyingSet = M.mkId "grpCarrier" ; binaryOp = M.mkId "grpOp" ; index = AF.magmaIndex }
 
 semigroupDecl : AF.SemigroupDeclaration
 semigroupDecl = record
   { underlyingMagma = magmaDecl
-  ; associativity = M.mkId "grpAssoc"
+  ; associativity = C1L.AXIOM_Associativity (M.mkId "grpAssoc")
+  ; index = AF.semigroupIndex
   }
 
 monoidDecl : AF.MonoidDeclaration
 monoidDecl = record
   { underlyingSemigroup = semigroupDecl
-  ; identityElement = record
-    { forSemigroup = semigroupDecl
-    ; element = M.mkId "grpId"
-    ; leftIdentity = M.mkId "grpLId"
-    ; rightIdentity = M.mkId "grpRId"
-    }
+  ; identityElement = M.mkId "grpId"
+  ; identityAxiom = C1L.AXIOM_Identity (M.mkId "grpIdAx")
+  ; index = AF.monoidIndex
   }
 
 groupDecl : AF.GroupDeclaration
@@ -39,9 +38,10 @@ groupDecl = record
   { underlyingMonoid = monoidDecl
   ; inverseOperation = record
     { forMonoid = monoidDecl
-    ; operation = M.mkId "grpInv"
+    ; inverseMap = M.mkId "grpInv"
     ; inverseAxiom = M.mkId "grpInvAx"
     }
+  ; index = AF.groupIndex
   }
 
 abelianGroupDecl : AF.AbelianGroupDeclaration
@@ -51,6 +51,7 @@ abelianGroupDecl = record
     { forGroup = groupDecl
     ; axiom = M.mkId "grpComm"
     }
+  ; index = AF.abelianGroupIndex
   }
 
 G : AF.GroupDeclaration

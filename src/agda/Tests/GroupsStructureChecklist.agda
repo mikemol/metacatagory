@@ -4,6 +4,7 @@ module Tests.GroupsStructureChecklist where
 
 import Agda.Builtin.Bool as B
 open import Agda.Builtin.Equality using (_≡_; refl)
+open import Agda.Builtin.Unit using (⊤; tt)
 open import Metamodel as M
 open import Core.CategoricalAdapter
 
@@ -17,23 +18,21 @@ import Tests.ObligationAdapters as A
 
 -- Build minimal algebra scaffolding
 magmaDecl : AF.MagmaDeclaration
-magmaDecl = record { binaryOp = M.mkId "structOp" }
+magmaDecl = record { underlyingSet = M.mkId "structCarrier" ; binaryOp = M.mkId "structOp" ; index = AF.magmaIndex }
 
 semigroupDecl : AF.SemigroupDeclaration
 semigroupDecl = record
   { underlyingMagma = magmaDecl
-  ; associativity = M.mkId "structAssoc"
+  ; associativity = C1L.AXIOM_Associativity (M.mkId "structAssoc")
+  ; index = AF.semigroupIndex
   }
 
 monoidDecl : AF.MonoidDeclaration
 monoidDecl = record
   { underlyingSemigroup = semigroupDecl
-  ; identityElement = record
-    { forSemigroup = semigroupDecl
-    ; element = M.mkId "structId"
-    ; leftIdentity = M.mkId "structLId"
-    ; rightIdentity = M.mkId "structRId"
-    }
+  ; identityElement = M.mkId "structId"
+  ; identityAxiom = C1L.AXIOM_Identity (M.mkId "structIdAx")
+  ; index = AF.monoidIndex
   }
 
 groupDecl : AF.GroupDeclaration
@@ -41,9 +40,10 @@ groupDecl = record
   { underlyingMonoid = monoidDecl
   ; inverseOperation = record
     { forMonoid = monoidDecl
-    ; operation = M.mkId "structInv"
+    ; inverseMap = M.mkId "structInv"
     ; inverseAxiom = M.mkId "structInvAx"
     }
+  ; index = AF.groupIndex
   }
 
 abelianGroupDecl : AF.AbelianGroupDeclaration
@@ -53,6 +53,7 @@ abelianGroupDecl = record
     { forGroup = groupDecl
     ; axiom = M.mkId "structComm"
     }
+  ; index = AF.abelianGroupIndex
   }
 
 fgAbelianGroupDecl : AGF.FinitelyGeneratedAbelianGroup
@@ -109,8 +110,8 @@ torsionDecl = record
   { abelianGroup = abelianGroupDecl
   ; torsionElements = M.mkId "torsionElems"
   ; isSubgroup = record
-    { group = AF.AbelianGroupDeclaration.underlyingGroup abelianGroupDecl
-    ; subset = M.mkId "torsionSubset"
+    { subset = M.mkId "torsionSubset"
+    ; inclusion = M.mkId "torsionIncl"
     ; closedUnderOp = M.mkId "torsionClosed"
     ; containsIdentity = M.mkId "torsionId"
     ; closedUnderInverse = M.mkId "torsionInv"
@@ -168,8 +169,8 @@ stabilizerDecl = record
   { groupAction = groupActionDecl
   ; element = x
   ; stabilizer = record
-    { group = G
-    ; subset = M.mkId "stabSubset"
+    { subset = M.mkId "stabSubset"
+    ; inclusion = M.mkId "stabIncl"
     ; closedUnderOp = M.mkId "stabClosed"
     ; containsIdentity = M.mkId "stabId"
     ; closedUnderInverse = M.mkId "stabInv"
@@ -214,8 +215,8 @@ sylowDecl = record
   { prime = p
   ; group = G
   ; subgroup = record
-    { group = G
-    ; subset = M.mkId "sylowSubset"
+    { subset = M.mkId "sylowSubset"
+    ; inclusion = M.mkId "sylowIncl"
     ; closedUnderOp = M.mkId "sylowClosed"
     ; containsIdentity = M.mkId "sylowId"
     ; closedUnderInverse = M.mkId "sylowInv"

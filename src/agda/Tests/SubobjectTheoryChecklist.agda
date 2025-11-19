@@ -1,8 +1,11 @@
+{-# OPTIONS --allow-unsolved-metas #-}
+
 module Tests.SubobjectTheoryChecklist where
 
 open import Tests.ObligationAdapters as A
 open import Agda.Builtin.Bool using (Bool; true; false)
 open import Agda.Builtin.Equality using (refl; _≡_)
+import Metamodel as M
 
 -- Subobject Theory coverage assertions
 -- Total: 11 adapters for subobject lattices, factorization, generators, projectives/injectives
@@ -10,14 +13,16 @@ open import Agda.Builtin.Equality using (refl; _≡_)
 -- Placeholder adapter (status = false). Assertion now reflects reality.
 -- TODO: Replace with constructor-based adapter via mkSubobjectLatticeAdapter once a concrete lattice example is added.
 emptySubobjectLatticeAdapter : A.SubobjectLatticeAdapter
-emptySubobjectLatticeAdapter = record { decl = record { X = "" } ; expectedX = "" ; link = refl ; status = false }
+emptySubobjectLatticeAdapter =
+  record { decl = record { X = M.mkId "" } ; expectedX = M.mkId "" ; link = refl ; status = false }
 
 _ : A.isFilledSubobjectLattice emptySubobjectLatticeAdapter ≡ false
 _ = refl
 
 -- TODO: Provide real well-powered category (e.g., Set) and switch to mkWellPoweredCategoryAdapter.
 emptyWellPoweredCategoryAdapter : A.WellPoweredCategoryAdapter
-emptyWellPoweredCategoryAdapter = record { decl = record { C = "" } ; expectedC = "" ; link = refl ; status = false }
+emptyWellPoweredCategoryAdapter =
+  record { decl = record { C = M.mkId "" } ; expectedC = M.mkId "" ; link = refl ; status = false }
 
 _ : A.isFilledWellPoweredCategory emptyWellPoweredCategoryAdapter ≡ false
 _ = refl

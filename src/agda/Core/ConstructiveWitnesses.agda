@@ -8,6 +8,7 @@ open import Core
 open import Core.Phase
 open import Core.AlgebraicAlgorithms
 open import Core.Witnesses
+open import Core.UniversalProperties
 open import Algebra.Foundation
 open import Algebra.Rings.Basic
 open import Algebra.Fields.Basic
@@ -18,6 +19,29 @@ open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
 import Agda.Builtin.Bool as B
 open B using () renaming (Bool to Boolean; true to tt; false to ff)
+-- Helper to convert builtin Bool to our renamed Boolean
+toBoolean : B.Bool → Boolean
+toBoolean B.true  = tt
+toBoolean B.false = ff
+open import Core.PolynomialsF2 as F2
+
+-- ============================================================================
+-- Warning Flags (value + provenance identifier)
+-- ============================================================================
+
+record Flag : Set where
+  field
+    value   : Boolean
+    warning : M.Identifier
+
+mkPlaceholderFlag : Boolean → M.Identifier → Flag
+mkPlaceholderFlag v w = record { value = v ; warning = w }
+
+flagValue : Flag → Boolean
+flagValue f = Flag.value f
+
+flagWarning : Flag → M.Identifier
+flagWarning f = Flag.warning f
 
 -- ============================================================================
 -- Constructive Witness Infrastructure
@@ -404,6 +428,129 @@ verifyGaloisGroup F E cgg = record
       M.mkId "fundamental-theorem" ∷ []
   }
 
+-- =========================================================================
+-- Minimal Polynomial Divides Evidence (Scaffold for P4 Terminality)
+-- =========================================================================
+
+-- Smoke-level evidence tying UMP.divides to identifiers for constructive scaffolding
+record MinpolyDividesEvidence (F E : FieldDeclaration) (α : M.Identifier) : Set where
+  field
+    minPoly : M.Identifier
+    forPolynomial : M.Identifier
+    quotient : M.Identifier
+    remainder : M.Identifier
+    dividesWitness : M.Identifier
+    remainderZeroFlag : Flag
+
+-- Build evidence by threading through MinimalPolynomialProperty.divides
+mkMinpolyDividesEvidence :
+  (F E : FieldDeclaration) →
+  (α : M.Identifier) →
+  MinimalPolynomialProperty F E α →
+  (p : M.Identifier) →
+  (vanishes monic : M.Identifier) →
+  MinpolyDividesEvidence F E α
+mkMinpolyDividesEvidence F E α ump p vanishes monic = record
+  { minPoly = MinimalPolynomialProperty.minPoly ump
+  ; forPolynomial = p
+  ; quotient = M.mkId "q"
+  ; remainder = M.mkId "r"
+  ; dividesWitness = MinimalPolynomialProperty.divides ump p vanishes monic
+  ; remainderZeroFlag = mkPlaceholderFlag tt (M.mkId "WARNING: remainderZeroFlag placeholder (division correctness deferral)")
+  }
+
+-- =========================================================================
+-- Division Scaffold and Conversion
+-- =========================================================================
+
+-- Minimal structural scaffold for polynomial division
+record DivisionScaffold : Set where
+  field
+    dividend : M.Identifier
+    divisor : M.Identifier
+    quotient : M.Identifier
+    remainder : M.Identifier
+    remainderZeroFlag : Flag
+
+-- Convert divides evidence into a division scaffold
+toDivisionScaffold :
+  {F E : FieldDeclaration} → {α : M.Identifier} →
+  MinpolyDividesEvidence F E α →
+  DivisionScaffold
+toDivisionScaffold {F} {E} {α} ev = record
+  { dividend = MinpolyDividesEvidence.forPolynomial ev
+  ; divisor = MinpolyDividesEvidence.minPoly ev
+  ; quotient = MinpolyDividesEvidence.quotient ev
+  ; remainder = MinpolyDividesEvidence.remainder ev
+  ; remainderZeroFlag = MinpolyDividesEvidence.remainderZeroFlag ev
+  }
+
+-- =========================================================================
+-- Division Algorithm Scaffold
+-- =========================================================================
+
+-- Minimal polynomial division scaffold (function signature for Phase II 2.2)
+-- Given divisor (minimal polynomial) and dividend (target polynomial),
+-- return quotient and remainder identifiers with a Bool flag for terminality.
+-- Implementation will thread through UMP.divides or use explicit polynomial arithmetic.
+dividePolynomials : M.Identifier → M.Identifier → DivisionScaffold
+dividePolynomials divisor dividend = record
+  { dividend = dividend
+  ; divisor = divisor
+  ; quotient = M.mkId "quotient-placeholder"
+  ; remainder = M.mkId "remainder-placeholder"
+  ; remainderZeroFlag = mkPlaceholderFlag ff (M.mkId "WARNING: generic division remainderZeroFlag unknown")
+  }
+
+-- Bridge division directly from existing divides evidence (Phase II 2.2 refinement)
+dividePolynomialsFromEvidence :
+  {F E : FieldDeclaration} {α : M.Identifier} →
+  MinpolyDividesEvidence F E α → DivisionScaffold
+dividePolynomialsFromEvidence ev = toDivisionScaffold ev
+
+-- UMP-based helper: divide a polynomial by the minimal polynomial using UMP evidence
+divideByMinimalPolynomial :
+  {F E : FieldDeclaration} → {α : M.Identifier} →
+  (ump : MinimalPolynomialProperty F E α) →
+  (p vanishes monic : M.Identifier) →
+  DivisionScaffold
+divideByMinimalPolynomial {F} {E} {α} ump p vanishes monic =
+  toDivisionScaffold (mkMinpolyDividesEvidence F E α ump p vanishes monic)
+
+-- Refinement: replace a generic division result with UMP-derived evidence
+refineDivisionByUMP :
+  {F E : FieldDeclaration} → {α : M.Identifier} →
+  (ump : MinimalPolynomialProperty F E α) →
+  (p vanishes monic : M.Identifier) →
+  (base : DivisionScaffold) →
+  DivisionScaffold
+refineDivisionByUMP {F} {E} {α} ump p vanishes monic base =
+  divideByMinimalPolynomial {F} {E} {α} ump p vanishes monic
+
+-- Refinement: replace a generic division result with explicit evidence
+refineDivisionWithEvidence :
+  {F E : FieldDeclaration} {α : M.Identifier} →
+  (base : DivisionScaffold) →
+  MinpolyDividesEvidence F E α →
+  DivisionScaffold
+refineDivisionWithEvidence base ev = dividePolynomialsFromEvidence ev
+
+-- =========================================================================
+-- F2 Polynomial Division Wrapper
+-- =========================================================================
+
+-- Divide two F2 polynomials and produce a DivisionScaffold with computed flag
+dividePolynomialsF2 : F2.PolyF2 → F2.PolyF2 → DivisionScaffold
+dividePolynomialsF2 dvr dvsr =
+  let dr = F2.divideF2 dvr dvsr in
+  record
+    { dividend = M.mkId "f2-dividend"
+    ; divisor = M.mkId "f2-divisor"
+    ; quotient = M.mkId "f2-quotient"
+    ; remainder = M.mkId "f2-remainder"
+    ; remainderZeroFlag = mkPlaceholderFlag (toBoolean (F2.remainderZero? dr)) (M.mkId "INFO: F2 division remainder computed")
+    }
+
 -- ============================================================================
 -- Constructive Witness Bundles
 -- ============================================================================
@@ -462,3 +609,13 @@ extractProof : {W P : Set₁} → (W → CorrectnessProof P) → Phase W (Correc
 extractProof verifier = record
   { transform = verifier
   }
+
+-- =========================================================================
+-- Warning Aggregators
+-- =========================================================================
+
+evidenceWarnings : {F E : FieldDeclaration} {α : M.Identifier} → MinpolyDividesEvidence F E α → List M.Identifier
+evidenceWarnings ev = Flag.warning (MinpolyDividesEvidence.remainderZeroFlag ev) ∷ []
+
+divisionWarnings : DivisionScaffold → List M.Identifier
+divisionWarnings ds = Flag.warning (DivisionScaffold.remainderZeroFlag ds) ∷ []

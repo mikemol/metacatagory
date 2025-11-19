@@ -21,11 +21,61 @@ record NonEmpty (A : Set) : Set where
     tail : List A
 open NonEmpty public
 
--- Identifiers and Terminals
+------------------------------------------------------------------------
+-- Phase I.1.1: Static Coordinate Assignment
+-- Every declaration receives a unique (x, y) coordinate to establish
+-- well-founded indexed composition per Axiom of Well-Founded Indexed Composition
+------------------------------------------------------------------------
+
+record Coordinate : Set where
+  constructor mkCoord
+  field
+    x : Nat  -- horizontal position (e.g., dependency depth)
+    y : Nat  -- vertical position (e.g., declaration order within level)
+
 record Identifier : Set where
-  constructor mkId
-  field name : String
+  constructor mkIdWithCoord
+  field
+    name : String
+    coord : Coordinate  -- Static absolute coordinate assignment
 open Identifier public
+
+-- Backward-compatible constructor (assigns default coordinate (0, 0))
+mkId : String -> Identifier
+mkId s = mkIdWithCoord s (mkCoord 0 0)
+
+-- Constructor for explicit coordinate assignment
+mkIdAt : String -> Nat -> Nat -> Identifier
+mkIdAt s x y = mkIdWithCoord s (mkCoord x y)
+
+-- Coordinate ordering helper (lexicographic: compare x first, then y)
+-- Used to verify well-founded indexed composition
+_<ᶜ_ : Coordinate -> Coordinate -> Bool
+mkCoord x₁ y₁ <ᶜ mkCoord x₂ y₂ = orBool (lessThanNat x₁ x₂) (andBool (equalNat x₁ x₂) (lessThanNat y₁ y₂))
+  where
+    open import Agda.Builtin.Bool using (Bool; true; false)
+    
+    orBool : Bool -> Bool -> Bool
+    orBool true _ = true
+    orBool false b = b
+    
+    andBool : Bool -> Bool -> Bool
+    andBool true b = b
+    andBool false _ = false
+    
+    equalNat : Nat -> Nat -> Bool
+    equalNat Agda.Builtin.Nat.zero Agda.Builtin.Nat.zero = true
+    equalNat (Agda.Builtin.Nat.suc m) (Agda.Builtin.Nat.suc n) = equalNat m n
+    equalNat _ _ = false
+    
+    lessThanNat : Nat -> Nat -> Bool
+    lessThanNat _ Agda.Builtin.Nat.zero = false
+    lessThanNat Agda.Builtin.Nat.zero (Agda.Builtin.Nat.suc _) = true
+    lessThanNat (Agda.Builtin.Nat.suc m) (Agda.Builtin.Nat.suc n) = lessThanNat m n
+
+-- Identifier ordering based on coordinates
+_<ⁱ_ : Identifier -> Identifier -> Bool
+mkIdWithCoord _ c₁ <ⁱ mkIdWithCoord _ c₂ = c₁ <ᶜ c₂
 
 record Terminal : Set where
   constructor mkTerm
