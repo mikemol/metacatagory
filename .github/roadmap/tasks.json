@@ -1,0 +1,232 @@
+[
+    {
+        "id": "PHASE-0.1",
+        "category": "Phase",
+        "title": "Replace product postulate with constructive mediating cone proof",
+        "status": "completed",
+        "source": "testing.md",
+        "files": [
+            "src/agda/Tests/UniversalPropertyTests.agda"
+        ],
+        "tags": [
+            "P3",
+            "UniversalProperty"
+        ]
+    },
+    {
+        "id": "PHASE-0.2",
+        "category": "Phase",
+        "title": "Replace coproduct postulate with constructive mediating cocone proof",
+        "status": "completed",
+        "source": "testing.md",
+        "files": [
+            "src/agda/Tests/UniversalPropertyTests.agda"
+        ],
+        "tags": [
+            "P3",
+            "UniversalProperty"
+        ]
+    },
+    {
+        "id": "PHASE-I.1",
+        "category": "Phase",
+        "title": "Static coordinate assignment for all declarations",
+        "status": "completed",
+        "source": "testing.md",
+        "files": [
+            "src/agda/Metamodel.agda"
+        ],
+        "tags": [
+            "Indexing",
+            "WellFounded"
+        ]
+    },
+    {
+        "id": "PHASE-II.2.5",
+        "category": "Phase",
+        "title": "Global logical closure (no metas)",
+        "status": "completed",
+        "source": "testing.md",
+        "files": [
+            "src/agda/Tests/Index.agda"
+        ],
+        "tags": [
+            "Symmetry",
+            "Index"
+        ]
+    },
+    {
+        "id": "PHASE-III.2",
+        "category": "Phase",
+        "title": "Error-as-Specification integration (AlgorithmResult, LimitationEvidence)",
+        "status": "completed",
+        "source": "Core/Limitations.agda",
+        "files": [
+            "src/agda/Core/Limitations.agda",
+            "src/agda/Tests/ErrorAsSpecificationTests.agda"
+        ],
+        "tags": [
+            "PhaseIII",
+            "ErrorHandling",
+            "Specification"
+        ]
+    },
+    {
+        "id": "PHASE-III.4",
+        "category": "Phase",
+        "title": "Serialization roundtrip HoTT Path isomorphism",
+        "status": "completed",
+        "source": "Tests/SerializationTests.agda",
+        "files": [
+            "src/agda/Tests/SerializationTests.agda"
+        ],
+        "tags": [
+            "Serialization",
+            "HoTT",
+            "Coordinates"
+        ]
+    },
+    {
+        "id": "PHASE-III.5",
+        "category": "Phase",
+        "title": "ToposTheoryChecklist alignment (constructor arities)",
+        "status": "deferred",
+        "source": "testing.md",
+        "files": [
+            "src/agda/Tests/SpecificationValidation.agda"
+        ],
+        "tags": [
+            "Topos",
+            "Validation"
+        ]
+    },
+    {
+        "id": "PHASE-IV.1",
+        "category": "Phase",
+        "title": "Adjunction coherence (free/forgetful)",
+        "status": "planned",
+        "source": "testing.md",
+        "files": [
+            "src/agda/Tests/UniversalPropertyTests.agda"
+        ],
+        "tags": [
+            "Adjunction",
+            "PhaseIV"
+        ]
+    },
+    {
+        "id": "PHASE-IV.2",
+        "category": "Phase",
+        "title": "Yoneda lemma constructive instance",
+        "status": "planned",
+        "source": "testing.md",
+        "files": [
+            "src/agda/Tests/YonedaChecklist.agda"
+        ],
+        "tags": [
+            "Yoneda",
+            "PhaseIV"
+        ]
+    },
+    {
+        "id": "PHASE-IV.3",
+        "category": "Phase",
+        "title": "Grothendieck fibration Beck-Chevalley proof",
+        "status": "planned",
+        "source": "testing.md",
+        "files": [
+            "src/agda/Tests/GrothendieckFibrationsChecklist.agda"
+        ],
+        "tags": [
+            "Fibration",
+            "PhaseIV"
+        ]
+    },
+    {
+        "id": "PHASE-IV.0",
+        "category": "Phase",
+        "title": "Algorithmic foundations (replace field arithmetic stubs)",
+        "status": "deferred",
+        "source": "testing.md",
+        "files": [
+            "src/agda/Core/Algorithms/FiniteFields.agda",
+            "src/agda/Core/Algorithms/NumberFields.agda"
+        ],
+        "tags": [
+            "Arithmetic",
+            "Algorithms"
+        ]
+    },
+    {
+        "id": "PHASE-V.1",
+        "category": "Phase",
+        "title": "Reification of limit object (Gödel boundary)",
+        "status": "planned",
+        "source": "testing.md",
+        "files": [
+            "src/agda/Tests/Index.agda"
+        ],
+        "tags": [
+            "Godel",
+            "Limit"
+        ]
+    },
+    {
+        "id": "PHASE-V.2",
+        "category": "Phase",
+        "title": "Solution space growth rate instrumentation",
+        "status": "planned",
+        "source": "testing.md",
+        "files": [
+            "src/agda/Tests/PerformanceBoundaryTests.agda"
+        ],
+        "tags": [
+            "Metrics",
+            "Growth"
+        ]
+    },
+    {
+        "id": "PHASE-V.3",
+        "category": "Phase",
+        "title": "Composite HoTT path aggregator (global closure)",
+        "status": "planned",
+        "source": "testing.md",
+        "files": [
+            "src/agda/Tests/Index.agda"
+        ],
+        "tags": [
+            "HoTT",
+            "Closure"
+        ]
+    },
+    {
+        "id": "INGEST-Ch1-Groups-Cyclic",
+        "category": "Ingestion",
+        "title": "Ingest Cyclic Groups (generator witness abstraction)",
+        "status": "planned",
+        "source": "ingest.md",
+        "files": [
+            "src/agda/Algebra/Groups/Basic.agda"
+        ],
+        "tags": [
+            "Groups",
+            "Cyclic",
+            "Ingestion"
+        ]
+    },
+    {
+        "id": "INGEST-Ch3-Ideals-Lattice",
+        "category": "Ingestion",
+        "title": "Ideal lattice ingestion (prime/primary metadata)",
+        "status": "planned",
+        "source": "ingest.md",
+        "files": [
+            "src/agda/Algebra/Rings/Basic.agda"
+        ],
+        "tags": [
+            "Rings",
+            "Ideals",
+            "Lattice"
+        ]
+    }
+]

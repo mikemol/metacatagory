@@ -1,0 +1,20 @@
+name: Roadmap Sync
+on:
+  push:
+    paths:
+      - '.github/roadmap/tasks.json'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 10 * * 1'
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync roadmap issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/sync-roadmap-issues.sh

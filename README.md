@@ -57,6 +57,20 @@ For details, see [`DEFERRED-TRACKING.md`](DEFERRED-TRACKING.md) or run locally:
 cat deferred-items.md
 ```
 
+### Roadmap
+
+The consolidated project roadmap (phases, ingestion curriculum, and research tasks) lives in `ROADMAP.md` with a narrative companion `ROADMAP-DRAFT.md`. GitHub Issues are auto-synchronized from `.github/roadmap/tasks.json` using the workflow in `.github/workflows/roadmap-sync.yml`.
+
+Key commands:
+
+```bash
+# Edit tasks then sync issues manually
+vim .github/roadmap/tasks.json
+bash .github/scripts/sync-roadmap-issues.sh
+```
+
+Roadmap issues are labeled `roadmap`; update statuses by editing the JSON and re-running the sync.
+
 ### Tools & Automation
 
 The project includes Python-based automation tools for test coverage analysis, phase diagrams, and code search. These tools run in a virtual environment and generate reports and visualizations.
