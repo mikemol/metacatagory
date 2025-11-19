@@ -22,6 +22,9 @@ open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Unit using (⊤)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Primitive using (Level; _⊔_)
+open import Agda.Builtin.Nat using (Nat; zero; suc)
+open import Agda.Builtin.Bool using (true; false) renaming (Bool to Bool')
+open import Agda.Builtin.List using (List; []; _∷_)
 
 -- Re-export complexity classification from Core.AlgorithmComplexity
 open Core.AlgorithmComplexity public using (ComplexityClass; Constant; Logarithmic; Linear; Linearithmic; Quadratic; Cubic; Polynomial; Exponential; Factorial; Unknown)
@@ -360,6 +363,76 @@ module Phase10-AlgorithmComplexityAnnotations where
   annotatedMinPoly = annotateAlgorithm minPolyExample minPolyComplexity
 
 -- ============================================================================
+-- Phase 14: Solution Space Growth Rate Instrumentation (PHASE-V.2)
+-- ============================================================================
+
+module Phase14-GrowthInstrumentation where
+  open import Core.GrowthMetrics as GM
+  
+  -- Test: Allocation history tracking
+  test-allocation-history : List GM.CoordinateAllocation
+  test-allocation-history = GM.metacatagoryGrowthHistory
+  
+  -- Test: Capture growth snapshot
+  test-growth-snapshot : GM.GrowthSnapshot
+  test-growth-snapshot = GM.metacatagoryGrowthSnapshot
+  
+  -- Test: Phase density calculation
+  test-phase-density : GM.PhaseDensity
+  test-phase-density = GM.phase13Density
+  
+  -- Test: Y-coordinate distribution
+  test-y-distribution : GM.YCoordinateDistribution
+  test-y-distribution = GM.phase13YDistribution
+  
+  -- Test: Growth rate metrics
+  test-growth-rate : GM.GrowthRate
+  test-growth-rate = GM.metacatagoryGrowthRate
+  
+  -- Test: Expansion pattern classification
+  test-expansion-pattern : GM.ExpansionPattern
+  test-expansion-pattern = GM.metacatagoryExpansionPattern
+  
+  -- Verify: Growth rate is valid
+  test-verify-growth-rate : Bool'
+  test-verify-growth-rate = GM.verifyGrowthRate test-growth-rate
+  
+  _ : test-verify-growth-rate ≡ true
+  _ = refl
+  
+  -- Verify: Phase density is consistent
+  test-verify-density : Bool'
+  test-verify-density = GM.verifyPhaseDensity test-phase-density
+  
+  _ : test-verify-density ≡ true
+  _ = refl
+  
+  -- Verify: Snapshot is well-formed
+  test-verify-snapshot : Bool'
+  test-verify-snapshot = GM.verifyGrowthSnapshot test-growth-snapshot
+  
+  _ : test-verify-snapshot ≡ true
+  _ = refl
+  
+  -- Test: Phase 13 has objects allocated
+  test-phase13-has-objects : Bool'
+  test-phase13-has-objects =
+    let count = GM.PhaseDensity.objectCount test-phase-density
+    in GM.ltNat zero count
+  
+  _ : test-phase13-has-objects ≡ true
+  _ = refl
+  
+  -- Test: Multiple phases are used
+  test-multiple-phases : Bool'
+  test-multiple-phases =
+    let phaseCount = GM.GrowthRate.phasesUsed test-growth-rate
+    in GM.ltNat (suc zero) phaseCount
+  
+  _ : test-multiple-phases ≡ true
+  _ = refl
+
+-- ============================================================================
 -- Summary: Performance Boundary Coverage
 -- ============================================================================
 
@@ -375,6 +448,7 @@ module Phase10-AlgorithmComplexityAnnotations where
 -- 8. Factorial complexity: Galois group enumeration
 -- 9. Profiled complexity: Static and dynamic tracking
 -- 10. Algorithm annotations (Phase III.1): Indexed complexity properties for core algorithms
+-- 11. Growth rate instrumentation (Phase 14 / PHASE-V.2): Track solution space expansion patterns
 --
--- Coverage: 10 phases tracking computational complexity boundaries
+-- Coverage: 11 phases tracking computational complexity boundaries and growth metrics
 

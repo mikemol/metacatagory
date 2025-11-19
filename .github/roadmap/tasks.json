@@ -180,14 +180,16 @@
         "id": "PHASE-V.2",
         "category": "Phase",
         "title": "Solution space growth rate instrumentation",
-        "status": "planned",
+        "status": "completed",
         "source": "testing.md",
         "files": [
+            "src/agda/Core/GrowthMetrics.agda",
             "src/agda/Tests/PerformanceBoundaryTests.agda"
         ],
         "tags": [
             "Metrics",
-            "Growth"
+            "Growth",
+            "PhaseV"
         ]
     },
     {
