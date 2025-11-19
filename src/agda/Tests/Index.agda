@@ -97,6 +97,10 @@ import Tests.ToposTheoryChecklist
 -- Gödel boundary and incompleteness witnesses (Phase 13)
 -- Validates: Limit objects, self-reference, reflection boundaries, incompleteness theorems
 import Tests.GodelBoundaryTests
+-- Global HoTT path aggregation and closure (Phase 15)
+-- Validates: Composite path witnesses, coordinate preservation, system-wide closure
+import Core.PathAggregator
+
 
 -- Proof obligation status checks (ensures selected obligations are filled
 -- and linked to constructive witnesses in examples)

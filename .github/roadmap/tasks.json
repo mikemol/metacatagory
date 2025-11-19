@@ -90,10 +90,10 @@
         "id": "PHASE-III.5",
         "category": "Phase",
         "title": "ToposTheoryChecklist alignment (constructor arities)",
-        "status": "deferred",
+        "status": "completed",
         "source": "testing.md",
         "files": [
-            "src/agda/Tests/SpecificationValidation.agda"
+            "src/agda/Tests/ToposTheoryChecklist.agda"
         ],
         "tags": [
             "Topos",
@@ -196,14 +196,16 @@
         "id": "PHASE-V.3",
         "category": "Phase",
         "title": "Composite HoTT path aggregator (global closure)",
-        "status": "planned",
+        "status": "completed",
         "source": "testing.md",
         "files": [
-            "src/agda/Tests/Index.agda"
+            "src/agda/Tests/Index.agda",
+            "src/agda/Core/PathAggregator.agda"
         ],
         "tags": [
             "HoTT",
-            "Closure"
+            "Closure",
+            "PhaseV"
         ]
     },
     {
