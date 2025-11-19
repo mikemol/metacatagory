@@ -20,13 +20,13 @@ import Chapter1.Level1 as C1L
 
 -- Minimal field scaffold
 magmaDecl : AF.MagmaDeclaration
-magmaDecl = record { underlyingSet = M.mkId "M" ; binaryOp = M.mkId "∙" }
+magmaDecl = record { underlyingSet = M.mkId "M" ; binaryOp = M.mkId "∙" ; index = AF.magmaIndex }
 
 assocAxiom : C1L.AssociativityAxiom
 assocAxiom = record { over = M.mkId "∙" }
 
 semigroupDecl : AF.SemigroupDeclaration
-semigroupDecl = record { underlyingMagma = magmaDecl ; associativity = assocAxiom }
+semigroupDecl = record { underlyingMagma = magmaDecl ; associativity = assocAxiom ; index = AF.semigroupIndex }
 
 identityAxiom : C1L.IdentityAxiom
 identityAxiom = record { over = M.mkId "e" }
@@ -36,16 +36,18 @@ monoidDecl = record
   { underlyingSemigroup = semigroupDecl
   ; identityElement = M.mkId "e"
   ; identityAxiom = identityAxiom
+  ; index = AF.monoidIndex
   }
 
 groupDecl : AF.GroupDeclaration
 groupDecl = record
   { underlyingMonoid = monoidDecl
   ; inverseOperation = record { forMonoid = monoidDecl ; inverseMap = M.mkId "inv" ; inverseAxiom = M.mkId "inv-proof" }
+  ; index = AF.groupIndex
   }
 
 abelianGroupDecl : AF.AbelianGroupDeclaration
-abelianGroupDecl = record { underlyingGroup = groupDecl ; commutativity = record { forGroup = groupDecl ; axiom = M.mkId "comm" } }
+abelianGroupDecl = record { underlyingGroup = groupDecl ; commutativity = record { forGroup = groupDecl ; axiom = M.mkId "comm" } ; index = AF.abelianGroupIndex }
 
 ringDecl : AR.RingDeclaration
 ringDecl = record

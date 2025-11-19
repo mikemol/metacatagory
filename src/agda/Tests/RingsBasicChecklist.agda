@@ -4,6 +4,7 @@ module Tests.RingsBasicChecklist where
 
 import Agda.Builtin.Bool as B
 open import Agda.Builtin.Equality using (_≡_; refl)
+open import Agda.Builtin.Unit using (⊤; tt)
 open import Metamodel as M
 open import Core.CategoricalAdapter
 
@@ -16,23 +17,21 @@ import Tests.ObligationAdapters as A
 
 -- Build minimal algebra scaffolding
 magmaDecl : AF.MagmaDeclaration
-magmaDecl = record { binaryOp = M.mkId "ringOp" }
+magmaDecl = record { underlyingSet = M.mkId "ringCarrier" ; binaryOp = M.mkId "ringOp" ; index = AF.magmaIndex }
 
 semigroupDecl : AF.SemigroupDeclaration
 semigroupDecl = record
   { underlyingMagma = magmaDecl
-  ; associativity = M.mkId "ringAssoc"
+  ; associativity = C1L.AXIOM_Associativity (M.mkId "ringAssoc")
+  ; index = AF.semigroupIndex
   }
 
 monoidDecl : AF.MonoidDeclaration
 monoidDecl = record
   { underlyingSemigroup = semigroupDecl
-  ; identityElement = record
-    { forSemigroup = semigroupDecl
-    ; element = M.mkId "ringId"
-    ; leftIdentity = M.mkId "ringLId"
-    ; rightIdentity = M.mkId "ringRId"
-    }
+  ; identityElement = M.mkId "ringId"
+  ; identityAxiom = C1L.AXIOM_Identity (M.mkId "ringIdAx")
+  ; index = AF.monoidIndex
   }
 
 groupDecl : AF.GroupDeclaration
@@ -40,9 +39,10 @@ groupDecl = record
   { underlyingMonoid = monoidDecl
   ; inverseOperation = record
     { forMonoid = monoidDecl
-    ; operation = M.mkId "ringInv"
+    ; inverseMap = M.mkId "ringInv"
     ; inverseAxiom = M.mkId "ringInvAx"
     }
+  ; index = AF.groupIndex
   }
 
 abelianGroupDecl : AF.AbelianGroupDeclaration
@@ -52,6 +52,7 @@ abelianGroupDecl = record
     { forGroup = groupDecl
     ; axiom = M.mkId "ringComm"
     }
+  ; index = AF.abelianGroupIndex
   }
 
 ringDecl : AR.RingDeclaration
@@ -80,8 +81,8 @@ commRingDecl = record
 
 subgroupDecl : AGB.Subgroup (AF.AbelianGroupDeclaration.underlyingGroup abelianGroupDecl)
 subgroupDecl = record
-  { group = AF.AbelianGroupDeclaration.underlyingGroup abelianGroupDecl
-  ; subset = M.mkId "subgroupSubset"
+  { subset = M.mkId "subgroupSubset"
+  ; inclusion = M.mkId "subgroupIncl"
   ; closedUnderOp = M.mkId "subgroupClosed"
   ; containsIdentity = M.mkId "subgroupId"
   ; closedUnderInverse = M.mkId "subgroupInv"

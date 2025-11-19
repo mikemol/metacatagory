@@ -26,6 +26,7 @@ magmaDecl : AF.MagmaDeclaration
 magmaDecl = record
   { underlyingSet = M.mkId "M"
   ; binaryOp = M.mkId "∙"
+  ; index = AF.magmaIndex
   }
 
 magma-adapter : A.MagmaAdapter
@@ -49,6 +50,7 @@ semigroupDecl : AF.SemigroupDeclaration
 semigroupDecl = record
   { underlyingMagma = magmaDecl
   ; associativity = assocAxiom
+  ; index = AF.semigroupIndex
   }
 
 semigroup-link : AF.SemigroupDeclaration.underlyingMagma semigroupDecl ≡ magmaDecl
@@ -76,6 +78,7 @@ monoidDecl = record
   { underlyingSemigroup = semigroupDecl
   ; identityElement = M.mkId "e"
   ; identityAxiom = identityAxiom
+  ; index = AF.monoidIndex
   }
 
 monoid-link : AF.MonoidDeclaration.underlyingSemigroup monoidDecl ≡ semigroupDecl
@@ -104,6 +107,7 @@ groupDecl : AF.GroupDeclaration
 groupDecl = record
   { underlyingMonoid = monoidDecl
   ; inverseOperation = inverseOp
+  ; index = AF.groupIndex
   }
 
 group-link : AF.GroupDeclaration.underlyingMonoid groupDecl ≡ monoidDecl
@@ -131,6 +135,7 @@ abelianGroupDecl : AF.AbelianGroupDeclaration
 abelianGroupDecl = record
   { underlyingGroup = groupDecl
   ; commutativity = commutAxiom
+  ; index = AF.abelianGroupIndex
   }
 
 abelian-link : AF.AbelianGroupDeclaration.underlyingGroup abelianGroupDecl ≡ groupDecl

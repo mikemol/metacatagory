@@ -19,143 +19,67 @@ open import Agda.Builtin.List using (List; []; _∷_)
 -- Dummy Field Structures for Testing
 -- ============================================================================
 
--- Build Magma → Semigroup → Monoid → Group → AbelianGroup for (+)
+-- Reuse packed base chain from Core.AlgebraicAlgorithms
 dummyMagma : MagmaDeclaration
-dummyMagma = record
-  { underlyingSet = M.mkId "DummyField"
-  ; binaryOp = M.mkId "dummy-add"
-  }
+dummyMagma = packedMagmaBase
 
 dummySemigroup : SemigroupDeclaration
-dummySemigroup = record
-  { underlyingMagma = dummyMagma
-  ; associativity = record { over = M.mkId "dummy-add-assoc" }
-  }
+dummySemigroup = packedSemigroupBase
 
 dummyMonoid : MonoidDeclaration
-dummyMonoid = record
-  { underlyingSemigroup = dummySemigroup
-  ; identityElement = M.mkId "dummy-zero"
-  ; identityAxiom = record { over = M.mkId "dummy-add-id" }
-  }
+dummyMonoid = packedMonoidBase
 
 dummyInverse : InverseOperation
-dummyInverse = record
-  { forMonoid = dummyMonoid
-  ; inverseMap = M.mkId "dummy-neg"
-  ; inverseAxiom = M.mkId "dummy-inv-ax"
-  }
+dummyInverse = packedInverseBase
 
 dummyGroup : GroupDeclaration
-dummyGroup = record
-  { underlyingMonoid = dummyMonoid
-  ; inverseOperation = dummyInverse
-  }
+dummyGroup = packedGroupBase
 
 dummyAdditiveGroup : AbelianGroupDeclaration
-dummyAdditiveGroup = record
-  { underlyingGroup = dummyGroup
-  ; commutativity = record { forGroup = dummyGroup ; axiom = M.mkId "dummy-add-comm" }
-  }
+dummyAdditiveGroup = packedAbelianGroupBase
 
 dummyRing : RingDeclaration
-dummyRing = record
-  { identifier = M.mkId "DummyRing"
-  ; additiveGroup = dummyAdditiveGroup
-  ; multiplication = M.mkId "dummy-mul"
-  ; multAssociative = M.mkId "dummy-mul-assoc"
-  ; leftDistributive = M.mkId "dummy-left-dist"
-  ; rightDistributive = M.mkId "dummy-right-dist"
-  }
+dummyRing = packedRingBase
 
 dummyUnitalRing : UnitalRingDeclaration
-dummyUnitalRing = record
-  { underlyingRing = dummyRing
-  ; multiplicativeIdentity = M.mkId "dummy-one"
-  ; leftIdentity = M.mkId "dummy-left-id"
-  ; rightIdentity = M.mkId "dummy-right-id"
-  }
+dummyUnitalRing = packedUnitalRingBase
 
 dummyCommRing : CommutativeRingDeclaration
-dummyCommRing = record
-  { underlyingRing = dummyUnitalRing
-  ; commutativity = M.mkId "dummy-mul-comm"
-  }
+dummyCommRing = packedCommRingBase
 
 dummyField : FieldDeclaration
-dummyField = record
-  { underlyingRing = dummyCommRing
-  ; inverses = M.mkId "dummy-inverses"
-  }
+dummyField = packedFieldBase
 
--- Extension field
+-- Extension field: reuse packed extension chain
 dummyExtMagma : MagmaDeclaration
-dummyExtMagma = record
-  { underlyingSet = M.mkId "DummyExtension"
-  ; binaryOp = M.mkId "ext-add"
-  }
+dummyExtMagma = packedMagmaExt
 
 dummyExtSemigroup : SemigroupDeclaration
-dummyExtSemigroup = record
-  { underlyingMagma = dummyExtMagma
-  ; associativity = record { over = M.mkId "ext-add-assoc" }
-  }
+dummyExtSemigroup = packedSemigroupExt
 
 dummyExtMonoid : MonoidDeclaration
-dummyExtMonoid = record
-  { underlyingSemigroup = dummyExtSemigroup
-  ; identityElement = M.mkId "ext-zero"
-  ; identityAxiom = record { over = M.mkId "ext-add-id" }
-  }
+dummyExtMonoid = packedMonoidExt
 
 dummyExtInverse : InverseOperation
-dummyExtInverse = record
-  { forMonoid = dummyExtMonoid
-  ; inverseMap = M.mkId "ext-neg"
-  ; inverseAxiom = M.mkId "ext-inv-ax"
-  }
+dummyExtInverse = packedInverseExt
 
 dummyExtGroup : GroupDeclaration
-dummyExtGroup = record
-  { underlyingMonoid = dummyExtMonoid
-  ; inverseOperation = dummyExtInverse
-  }
+dummyExtGroup = packedGroupExt
 
 dummyExtAdditiveGroup : AbelianGroupDeclaration
-dummyExtAdditiveGroup = record
-  { underlyingGroup = dummyExtGroup
-  ; commutativity = record { forGroup = dummyExtGroup ; axiom = M.mkId "ext-add-comm" }
-  }
+dummyExtAdditiveGroup = packedAbelianGroupExt
 
 dummyExtRing : RingDeclaration
-dummyExtRing = record
-  { identifier = M.mkId "DummyExtensionRing"
-  ; additiveGroup = dummyExtAdditiveGroup
-  ; multiplication = M.mkId "ext-mul"
-  ; multAssociative = M.mkId "ext-mul-assoc"
-  ; leftDistributive = M.mkId "ext-left-dist"
-  ; rightDistributive = M.mkId "ext-right-dist"
-  }
+dummyExtRing = packedRingExt
 
 dummyExtUnitalRing : UnitalRingDeclaration
-dummyExtUnitalRing = record
-  { underlyingRing = dummyExtRing
-  ; multiplicativeIdentity = M.mkId "ext-one"
-  ; leftIdentity = M.mkId "ext-left-id"
-  ; rightIdentity = M.mkId "ext-right-id"
-  }
+dummyExtUnitalRing = packedUnitalRingExt
 
 dummyExtCommRing : CommutativeRingDeclaration
-dummyExtCommRing = record
-  { underlyingRing = dummyExtUnitalRing
-  ; commutativity = M.mkId "ext-mul-comm"
-  }
+dummyExtCommRing = packedCommRingExt
 
 dummyExtension : FieldDeclaration
-dummyExtension = record
-  { underlyingRing = dummyExtCommRing
-  ; inverses = M.mkId "ext-inverses"
-  }
+dummyExtension = packedFieldExt
 
 -- ============================================================================
 -- Smoke Test 1: MinimalPolynomialAlgorithm

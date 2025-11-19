@@ -1,0 +1,21 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.39.0
+    hooks:
+      - id: markdownlint
+        args: ["--config", ".markdownlint.yml"]
+  - repo: local
+    hooks:
+      - id: prettier-markdown-fix
+        name: Prettier format Markdown
+        entry: bash scripts/fix_markdown.sh
+        language: system
+        files: ".*\\.md$"
+        pass_filenames: false

@@ -2,9 +2,9 @@
 
 ## Table of Contents
 
-* Preface (ix)  
-* Acknowledgments (ix)  
-* Suggestions on the Use of This Book (xv)
+- Preface (ix)
+- Acknowledgments (ix)
+- Suggestions on the Use of This Book (xv)
 
 **Introduction: Prerequisites and Preliminaries** (1)
 
@@ -61,20 +61,20 @@
 
 **Chapter V: Fields and Galois Theory** (230)
 
-1. Field Extensions (231)  
+1. Field Extensions (231)
 
-* Appendix: Ruler and Compass Constructions (230)  
-  1. The Fundamental Theorem (238)  
-* Appendix: Symmetric Rational Functions (238)  
-  1. Splitting Fields, Algebraic Closure and Normality (243)  
-  2. The Galois Group of a Polynomial (252)  
-  3. Finite Fields (257)  
-  4. Separability (265)  
-* Appendix: The Fundamental Theorem of Algebra (278)  
-  1. Cyclic Extensions (269)  
-  2. Cyclotomic Extensions (278)  
-  3. Radical Extensions (282)  
-* Appendix: The General Equation of Degree n (302)
+- Appendix: Ruler and Compass Constructions (230)
+  1. The Fundamental Theorem (238)
+- Appendix: Symmetric Rational Functions (238)
+  1. Splitting Fields, Algebraic Closure and Normality (243)
+  2. The Galois Group of a Polynomial (252)
+  3. Finite Fields (257)
+  4. Separability (265)
+- Appendix: The Fundamental Theorem of Algebra (278)
+  1. Cyclic Extensions (269)
+  2. Cyclotomic Extensions (278)
+  3. Radical Extensions (282)
+- Appendix: The General Equation of Degree n (302)
 
 **Chapter VI: The Structure of Fields** (307)
 
@@ -84,11 +84,11 @@
 **Chapter VII: Linear Algebra** (327)
 
 1. Matrices and Maps (328)  
-   2. Rank and Equivalence (335)  
+   2. Rank and Equivalence (335)
 
-* Appendix: Abelian Groups Defined by Generators and Relations (343)  
-  1. Determinants (348)  
-  2. Decomposition of a Single Linear Transformation and Similarity (355)  
+- Appendix: Abelian Groups Defined by Generators and Relations (343)
+  1. Determinants (348)
+  2. Decomposition of a Single Linear Transformation and Similarity (355)
   3. The Characteristic Polynomial, Eigenvectors and Eigenvalues (366)
 
 **Chapter VIII: Commutative Rings and Modules** (371)
@@ -118,6 +118,6 @@
 
 ## Back Matter
 
-* List of Symbols (485)  
-* Bibliography (489)  
-* Index (493)
+- List of Symbols (485)
+- Bibliography (489)
+- Index (493)

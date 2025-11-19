@@ -4,6 +4,7 @@ module Tests.GroupsAbelianChecklist where
 
 import Agda.Builtin.Bool as B
 open import Agda.Builtin.Equality using (_≡_; refl)
+open import Agda.Builtin.Unit using (⊤; tt)
 open import Metamodel as M
 open import Core.CategoricalAdapter
 
@@ -15,23 +16,21 @@ import Tests.ObligationAdapters as A
 
 -- Build minimal algebra scaffolding
 magmaDecl : AF.MagmaDeclaration
-magmaDecl = record { binaryOp = M.mkId "abOp" }
+magmaDecl = record { underlyingSet = M.mkId "abCarrier" ; binaryOp = M.mkId "abOp" ; index = AF.magmaIndex }
 
 semigroupDecl : AF.SemigroupDeclaration
 semigroupDecl = record
   { underlyingMagma = magmaDecl
-  ; associativity = M.mkId "abAssoc"
+  ; associativity = C1L.AXIOM_Associativity (M.mkId "abAssoc")
+  ; index = AF.semigroupIndex
   }
 
 monoidDecl : AF.MonoidDeclaration
 monoidDecl = record
   { underlyingSemigroup = semigroupDecl
-  ; identityElement = record
-    { forSemigroup = semigroupDecl
-    ; element = M.mkId "abId"
-    ; leftIdentity = M.mkId "abLId"
-    ; rightIdentity = M.mkId "abRId"
-    }
+  ; identityElement = M.mkId "abId"
+  ; identityAxiom = C1L.AXIOM_Identity (M.mkId "abIdAx")
+  ; index = AF.monoidIndex
   }
 
 groupDecl : AF.GroupDeclaration
@@ -39,9 +38,10 @@ groupDecl = record
   { underlyingMonoid = monoidDecl
   ; inverseOperation = record
     { forMonoid = monoidDecl
-    ; operation = M.mkId "abInv"
+    ; inverseMap = M.mkId "abInv"
     ; inverseAxiom = M.mkId "abInvAx"
     }
+  ; index = AF.groupIndex
   }
 
 abelianGroupDecl : AF.AbelianGroupDeclaration
@@ -51,6 +51,7 @@ abelianGroupDecl = record
     { forGroup = groupDecl
     ; axiom = M.mkId "abComm"
     }
+  ; index = AF.abelianGroupIndex
   }
 
 X : M.Identifier

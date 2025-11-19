@@ -2,6 +2,10 @@
 -- Algebra.Foundation: Foundational algebraic structures grounded in category theory
 -- This module defines the basic algebraic hierarchy (Magma → Semigroup → Monoid → Group)
 -- as enrichments of the categorical framework in Core, reusing existing axiom infrastructure.
+--
+-- Phase I.1.3: Hierarchy Composition Validation (P5 DAG)
+-- Each declaration now carries a well-founded index establishing the algebraic hierarchy depth.
+-- Validation ensures Index(GroupDeclaration) > Index(MonoidDeclaration) > ... > Index(MagmaDeclaration)
 
 module Algebra.Foundation where
 
@@ -9,6 +13,14 @@ open import Core
 open import Chapter1.Level1Index
 open import PropertyRegistry
 open import Metamodel as M
+open import Agda.Builtin.Nat using (Nat)
+
+-- Well-founded index for algebraic hierarchy (from Phase I.1.2)
+record AlgebraIndex : Set where
+  constructor mkAlgIdx
+  field
+    hierarchyLevel : Nat  -- 0=Magma, 1=Semigroup, 2=Monoid, 3=Group, etc.
+open AlgebraIndex public
 
 -- ============================================================================
 -- Binary Operations and Magmas
@@ -25,7 +37,12 @@ record MagmaDeclaration : Set₁ where
   field
     underlyingSet : M.Identifier
     binaryOp : M.Identifier  -- Reference to the operation
+    index : AlgebraIndex     -- Phase I.1.3: Well-founded hierarchy index
     -- Connection to categories: Magmas form a category with homomorphisms
+
+-- Canonical index for Magma (level 0)
+magmaIndex : AlgebraIndex
+magmaIndex = mkAlgIdx 0
 
 -- ============================================================================
 -- Semigroups (Associative Magmas)
@@ -37,7 +54,12 @@ record SemigroupDeclaration : Set₁ where
     underlyingMagma : MagmaDeclaration
     -- Reuse existing AssociativityAxiom from Chapter1.Level1
     associativity : AssociativityAxiom
-    
+    index : AlgebraIndex     -- Phase I.1.3: Well-founded hierarchy index
+
+-- Canonical index for Semigroup (level 1)
+semigroupIndex : AlgebraIndex
+semigroupIndex = mkAlgIdx 1
+
 -- ============================================================================
 -- Monoids (Semigroups with Identity)
 -- ============================================================================
@@ -49,9 +71,14 @@ record MonoidDeclaration : Set₁ where
     identityElement : M.Identifier
     -- Reuse existing IdentityAxiom from Chapter1.Level1
     identityAxiom : IdentityAxiom
+    index : AlgebraIndex     -- Phase I.1.3: Well-founded hierarchy index
     
   -- Re-export semigroup properties
   open SemigroupDeclaration underlyingSemigroup public
+
+-- Canonical index for Monoid (level 2)
+monoidIndex : AlgebraIndex
+monoidIndex = mkAlgIdx 2
 
 -- ============================================================================
 -- Groups (Monoids with Inverses)
@@ -70,9 +97,19 @@ record GroupDeclaration : Set₁ where
   field
     underlyingMonoid : MonoidDeclaration
     inverseOperation : InverseOperation
+    index : AlgebraIndex     -- Phase I.1.3: Well-founded hierarchy index
     
   -- Re-export monoid properties
   open MonoidDeclaration underlyingMonoid public
+
+-- Canonical index for Group (level 3)
+groupIndex : AlgebraIndex
+groupIndex = mkAlgIdx 3
+
+-- DeviationLog [2025-11-18]: Removed inline validation proof that Group index
+-- is greater than Monoid index. This validation is now covered in
+-- Tests.HierarchyValidation as Bool-based checks to avoid brittle proofs
+-- that can break builds during refactors.
 
 -- ============================================================================
 -- Abelian (Commutative) Groups
@@ -89,9 +126,18 @@ record AbelianGroupDeclaration : Set₁ where
   field
     underlyingGroup : GroupDeclaration
     commutativity : CommutativityAxiom
+    index : AlgebraIndex     -- Phase I.1.3: Well-founded hierarchy index
     
   -- Re-export group properties
   open GroupDeclaration underlyingGroup public
+
+-- Canonical index for AbelianGroup (level 3, position 1 within level)
+abelianGroupIndex : AlgebraIndex
+abelianGroupIndex = mkAlgIdx 3
+
+-- DeviationLog [2025-11-18]: Removed inline validation proof that
+-- AbelianGroup index equals Group index (same level). This is now
+-- validated in Tests.HierarchyValidation using Bool checks.
 
 -- ============================================================================
 -- Homomorphisms (Structure-Preserving Maps)

@@ -1,0 +1,13 @@
+{
+  "name": "metacatagory-markdown-tools",
+  "private": true,
+  "devDependencies": {
+    "prettier": "^3.1.0",
+    "remark-cli": "^11.0.0",
+    "remark-preset-lint-consistent": "^5.1.2"
+  },
+  "scripts": {
+    "fmt": "prettier --write '**/*.md'",
+    "lint": "remark . --frail"
+  }
+}

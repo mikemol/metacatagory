@@ -31,20 +31,24 @@ Yes! Ab being enriched over itself is deeply connected to Grothendieck's work an
 ### Why This Matters
 
 **Homological Algebra**:
+
 - Chain complexes are Ab-enriched functors
 - Derived functors use the abelian group structure on Hom
 - Ext and Tor arise from this enrichment
 
 **K-Theory** (Grothendieck):
+
 - K₀(R) = Grothendieck group of finitely generated projective R-modules
 - Vector bundles → K-theory via the Grothendieck construction
 - Connects topology, algebra, and geometry
 
 **Representation Theory**:
-- Character groups use the abelian group structure on Hom(G, ℂ*)
+
+- Character groups use the abelian group structure on Hom(G, ℂ\*)
 - Pontryagin duality for locally compact abelian groups
 
 **Category Theory**:
+
 - Ab is the prototypical abelian category
 - Template for derived categories and triangulated categories
 - Foundation for Grothendieck's six operations in algebraic geometry
@@ -52,6 +56,7 @@ Yes! Ab being enriched over itself is deeply connected to Grothendieck's work an
 ### In This Codebase
 
 See `Algebra/Groups/Abelian.agda` for:
+
 - `AbSelfEnriched`: The enrichment structure
 - `GrothendieckGroup`: Universal construction adding inverses
 - `AbIsClosed`: The closed monoidal structure
@@ -62,6 +67,7 @@ See `Algebra/Groups/Abelian.agda` for:
 ### Further Reading
 
 The self-enrichment of Ab is central to:
+
 - Grothendieck's "Tôhoku" paper (1957) - founded homological algebra
 - Eilenberg-Mac Lane's foundations of category theory
 - Kan extensions and enriched category theory (Kelly)

@@ -16,6 +16,7 @@ open import Core.Algorithms.Bundle
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String using (String)
+open import Agda.Builtin.Maybe using (Maybe; nothing; just)
 open import Agda.Primitive using (Level; lzero; lsuc; _⊔_)
 
 private
@@ -78,6 +79,7 @@ externalMinimalPolynomialAlgorithm : (F E : FieldDeclaration) → ExternalConfig
 externalMinimalPolynomialAlgorithm F E config = record
   { minimalPolynomial = λ α → externalMinimalPolynomial F E α config
   ; isAlgebraic = λ α → yes (mkAlgebraicElementWithPoly F E α (externalMinimalPolynomial F E α config))
+  ; limitation = nothing
   }
 
 -- ============================================================================
@@ -101,6 +103,7 @@ externalGaloisGroupAlgorithm F E config = record
   { galoisGroup   = λ f → externalGaloisGroup F E f config
   ; automorphisms = λ f → []  -- Could also call external system to enumerate
   ; isSolvable    = λ f → M.mkId "external-solvable-check"
+  ; limitation = nothing
   }
 
 -- ============================================================================
@@ -131,6 +134,7 @@ externalSplittingFieldAlgorithm : (F : FieldDeclaration) → ExternalConfig → 
 externalSplittingFieldAlgorithm F config = record
   { splittingField = λ f → externalSplittingField F f config
   ; roots = λ f → externalRoots F f config
+  ; limitation = nothing
   }
 
 -- ============================================================================

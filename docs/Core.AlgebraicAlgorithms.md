@@ -10,6 +10,7 @@ open import Algebra.Fields.Basic
 open import Algebra.Fields.Advanced
 open import Algebra.Groups.Basic
 open import Algebra.Foundation
+open import Core.Limitations
 open import Metamodel as M
 
 -- Minimal local decision type to avoid stdlib dependency (target Set₁ in this codebase)
@@ -19,6 +20,159 @@ data Dec (A : Set₁) : Set₁ where
 
 -- Lists from builtins (avoid stdlib dependency)
 open import Agda.Builtin.List using (List; []; _∷_)
+open import Agda.Builtin.Maybe using (Maybe; just; nothing)
+
+-- ==========================================================================
+-- Packed Nodes: Reusable dummy algebraic structures for smoke tests (Phase I.1.5)
+-- ==========================================================================
+
+-- Base chain: Magma → Semigroup → Monoid → Group → AbelianGroup → Ring → ... → Field
+packedMagmaBase : MagmaDeclaration
+packedMagmaBase = record
+  { underlyingSet = M.mkId "DummyField"
+  ; binaryOp = M.mkId "dummy-add"
+  ; index = magmaIndex
+  }
+
+packedSemigroupBase : SemigroupDeclaration
+packedSemigroupBase = record
+  { underlyingMagma = packedMagmaBase
+  ; associativity = record { over = M.mkId "dummy-add-assoc" }
+  ; index = semigroupIndex
+  }
+
+packedMonoidBase : MonoidDeclaration
+packedMonoidBase = record
+  { underlyingSemigroup = packedSemigroupBase
+  ; identityElement = M.mkId "dummy-zero"
+  ; identityAxiom = record { over = M.mkId "dummy-add-id" }
+  ; index = monoidIndex
+  }
+
+packedInverseBase : InverseOperation
+packedInverseBase = record
+  { forMonoid = packedMonoidBase
+  ; inverseMap = M.mkId "dummy-neg"
+  ; inverseAxiom = M.mkId "dummy-inv-ax"
+  }
+
+packedGroupBase : GroupDeclaration
+packedGroupBase = record
+  { underlyingMonoid = packedMonoidBase
+  ; inverseOperation = packedInverseBase
+  ; index = groupIndex
+  }
+
+packedAbelianGroupBase : AbelianGroupDeclaration
+packedAbelianGroupBase = record
+  { underlyingGroup = packedGroupBase
+  ; commutativity = record { forGroup = packedGroupBase ; axiom = M.mkId "dummy-add-comm" }
+  ; index = abelianGroupIndex
+  }
+
+packedRingBase : RingDeclaration
+packedRingBase = record
+  { identifier = M.mkId "DummyRing"
+  ; additiveGroup = packedAbelianGroupBase
+  ; multiplication = M.mkId "dummy-mul"
+  ; multAssociative = M.mkId "dummy-mul-assoc"
+  ; leftDistributive = M.mkId "dummy-left-dist"
+  ; rightDistributive = M.mkId "dummy-right-dist"
+  }
+
+packedUnitalRingBase : UnitalRingDeclaration
+packedUnitalRingBase = record
+  { underlyingRing = packedRingBase
+  ; multiplicativeIdentity = M.mkId "dummy-one"
+  ; leftIdentity = M.mkId "dummy-left-id"
+  ; rightIdentity = M.mkId "dummy-right-id"
+  }
+
+packedCommRingBase : CommutativeRingDeclaration
+packedCommRingBase = record
+  { underlyingRing = packedUnitalRingBase
+  ; commutativity = M.mkId "dummy-mul-comm"
+  }
+
+packedFieldBase : FieldDeclaration
+packedFieldBase = record
+  { underlyingRing = packedCommRingBase
+  ; inverses = M.mkId "dummy-inverses"
+  }
+
+-- Extension chain: same as base, with "ext-" labels
+packedMagmaExt : MagmaDeclaration
+packedMagmaExt = record
+  { underlyingSet = M.mkId "DummyExtension"
+  ; binaryOp = M.mkId "ext-add"
+  ; index = magmaIndex
+  }
+
+packedSemigroupExt : SemigroupDeclaration
+packedSemigroupExt = record
+  { underlyingMagma = packedMagmaExt
+  ; associativity = record { over = M.mkId "ext-add-assoc" }
+  ; index = semigroupIndex
+  }
+
+packedMonoidExt : MonoidDeclaration
+packedMonoidExt = record
+  { underlyingSemigroup = packedSemigroupExt
+  ; identityElement = M.mkId "ext-zero"
+  ; identityAxiom = record { over = M.mkId "ext-add-id" }
+  ; index = monoidIndex
+  }
+
+packedInverseExt : InverseOperation
+packedInverseExt = record
+  { forMonoid = packedMonoidExt
+  ; inverseMap = M.mkId "ext-neg"
+  ; inverseAxiom = M.mkId "ext-inv-ax"
+  }
+
+packedGroupExt : GroupDeclaration
+packedGroupExt = record
+  { underlyingMonoid = packedMonoidExt
+  ; inverseOperation = packedInverseExt
+  ; index = groupIndex
+  }
+
+packedAbelianGroupExt : AbelianGroupDeclaration
+packedAbelianGroupExt = record
+  { underlyingGroup = packedGroupExt
+  ; commutativity = record { forGroup = packedGroupExt ; axiom = M.mkId "ext-add-comm" }
+  ; index = abelianGroupIndex
+  }
+
+packedRingExt : RingDeclaration
+packedRingExt = record
+  { identifier = M.mkId "DummyExtensionRing"
+  ; additiveGroup = packedAbelianGroupExt
+  ; multiplication = M.mkId "ext-mul"
+  ; multAssociative = M.mkId "ext-mul-assoc"
+  ; leftDistributive = M.mkId "ext-left-dist"
+  ; rightDistributive = M.mkId "ext-right-dist"
+  }
+
+packedUnitalRingExt : UnitalRingDeclaration
+packedUnitalRingExt = record
+  { underlyingRing = packedRingExt
+  ; multiplicativeIdentity = M.mkId "ext-one"
+  ; leftIdentity = M.mkId "ext-left-id"
+  ; rightIdentity = M.mkId "ext-right-id"
+  }
+
+packedCommRingExt : CommutativeRingDeclaration
+packedCommRingExt = record
+  { underlyingRing = packedUnitalRingExt
+  ; commutativity = M.mkId "ext-mul-comm"
+  }
+
+packedFieldExt : FieldDeclaration
+packedFieldExt = record
+  { underlyingRing = packedCommRingExt
+  ; inverses = M.mkId "ext-inverses"
+  }
 
 -- ============================================================================
 -- Minimal Polynomial Computation
@@ -30,6 +184,8 @@ record MinimalPolynomialAlgorithm (F : FieldDeclaration) (E : FieldDeclaration) 
     minimalPolynomial : (α : M.Identifier) → M.Identifier
     -- Decision procedure: is α algebraic?
     isAlgebraic : (α : M.Identifier) → Dec (AlgebraicElement F E α)
+    -- Optional limitation evidence for the algorithm
+    limitation : Maybe LimitationEvidence
 
 -- ============================================================================
 -- Galois Group Computation
@@ -43,6 +199,8 @@ record GaloisGroupAlgorithm (F : FieldDeclaration) (E : FieldDeclaration) : Set�
     automorphisms : (f : M.Identifier) → List (FieldAutomorphism F E)
     -- Decision: is Gal(E/F) solvable?
     isSolvable : (f : M.Identifier) → M.Identifier
+    -- Optional limitation evidence for the algorithm
+    limitation : Maybe LimitationEvidence
 
 -- ============================================================================
 -- Splitting Field Construction
@@ -54,6 +212,8 @@ record SplittingFieldAlgorithm (F : FieldDeclaration) : Set₁ where
     splittingField : (f : M.Identifier) → SplittingField F f
     -- Enumerate roots in splitting field
     roots : (f : M.Identifier) → List M.Identifier
+    -- Optional limitation evidence for the algorithm
+    limitation : Maybe LimitationEvidence
 
 -- ============================================================================
 -- Field Extension Degree Calculation
@@ -179,6 +339,7 @@ MinimalPolynomialAlgorithm-generic : ∀ {F E} → MinimalPolynomialAlgorithm F 
 MinimalPolynomialAlgorithm-generic {F} {E} = record
   { minimalPolynomial = λ α → defaultMinimalPolynomial F E α
   ; isAlgebraic = λ α → defaultIsAlgebraic F E α
+  ; limitation = nothing
   }
 
 GaloisGroupAlgorithm-generic : ∀ {F E} → GaloisGroupAlgorithm F E
@@ -186,12 +347,14 @@ GaloisGroupAlgorithm-generic {F} {E} = record
   { galoisGroup = λ f → defaultGaloisGroup F E f
   ; automorphisms = λ f → defaultAutomorphisms F E f
   ; isSolvable = λ f → defaultIsSolvable F E f
+  ; limitation = nothing
   }
 
 SplittingFieldAlgorithm-generic : ∀ {F} → SplittingFieldAlgorithm F
 SplittingFieldAlgorithm-generic {F} = record
   { splittingField = λ f → defaultSplittingField F f
   ; roots = λ f → defaultRoots F f
+  ; limitation = nothing
   }
 
 FieldExtensionDegreeAlgorithm-generic : ∀ {F E} → FieldExtensionDegreeAlgorithm F E

@@ -5,6 +5,7 @@ module Tests.VectorSpaceChecklist where
 
 open import Agda.Builtin.Equality
 open import Agda.Builtin.Bool as B
+open import Agda.Builtin.Unit using (⊤; tt)
 open import Core.CategoricalAdapter
 
 import Metamodel as M
@@ -12,106 +13,146 @@ import Algebra.Foundation as AF
 import Algebra.Rings.Basic as AR
 import Algebra.Modules.Basic as AM
 import Tests.ObligationAdapters as A
+import Chapter1.Level1 as C1L
 
 -- Minimal field (reusing ring structure)
 fieldDecl : AR.FieldDeclaration
-fieldDecl = record
-  { underlyingDivisionRing = record
-    { underlyingUnitalRing = record
-      { underlyingRing = record
-        { additiveGroup = record
-          { underlyingGroup = record
-            { underlyingMonoid = record
-              { underlyingSemigroup = record
-                { underlyingMagma = record
-                  { carrier = M.mkId "Q"
-                  ; operation = M.mkId "+"
-                  }
-                ; associativity = M.mkId "+-assoc"
-                }
-              ; identityElement = M.mkId "0"
-              ; leftIdentity = M.mkId "+-left-id"
-              ; rightIdentity = M.mkId "+-right-id"
-              }
-            ; inverseOp = record
-              { inverse = M.mkId "neg"
-              ; leftInverse = M.mkId "+-left-inv"
-              ; rightInverse = M.mkId "+-right-inv"
-              }
-            }
-          ; commutativityAxiom = record
-            { commutativity = M.mkId "+-comm"
-            }
-          }
-        ; multiplicativeSemigroup = record
-          { underlyingMagma = record
-            { carrier = M.mkId "Q"
-            ; operation = M.mkId "*"
-            }
-          ; associativity = M.mkId "*-assoc"
-          }
-        ; leftDistributivity = M.mkId "left-dist"
-        ; rightDistributivity = M.mkId "right-dist"
-        }
-      ; multiplicativeIdentity = M.mkId "1"
-      ; leftUnital = M.mkId "*-left-id"
-      ; rightUnital = M.mkId "*-right-id"
+fieldDecl =
+  let
+    plusSemigroup : AF.SemigroupDeclaration
+    plusSemigroup = record
+      { underlyingMagma = record { underlyingSet = M.mkId "Q" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
+      ; associativity = C1L.AXIOM_Associativity (M.mkId "+-assoc")
+      ; index = AF.semigroupIndex
       }
-    ; multiplicativeInverse = M.mkId "inv"
-    ; inverseProperty = M.mkId "mult-inv"
+
+    plusMonoid : AF.MonoidDeclaration
+    plusMonoid = record
+      { underlyingSemigroup = plusSemigroup
+      ; identityElement = M.mkId "0"
+      ; identityAxiom = C1L.AXIOM_Identity (M.mkId "+-id")
+      ; index = AF.monoidIndex
+      }
+
+    plusGroup : AF.GroupDeclaration
+    plusGroup = record
+      { underlyingMonoid = plusMonoid
+      ; inverseOperation =
+          record
+            { forMonoid = plusMonoid
+            ; inverseMap = M.mkId "neg"
+            ; inverseAxiom = M.mkId "+-left-inv"
+            }
+      ; index = AF.groupIndex
+      }
+
+    addAbelian : AF.AbelianGroupDeclaration
+    addAbelian = record
+      { underlyingGroup = plusGroup
+      ; commutativity = record { forGroup = plusGroup ; axiom = M.mkId "+-comm" }
+      ; index = AF.abelianGroupIndex
+      }
+
+    ringDecl : AR.RingDeclaration
+    ringDecl = record
+      { identifier = M.mkId "Q"
+      ; additiveGroup = addAbelian
+      ; multiplication = M.mkId "*"
+      ; multAssociative = M.mkId "*-assoc"
+      ; leftDistributive = M.mkId "left-dist"
+      ; rightDistributive = M.mkId "right-dist"
+      }
+
+    unitalRing : AR.UnitalRingDeclaration
+    unitalRing = record
+      { underlyingRing = ringDecl
+      ; multiplicativeIdentity = M.mkId "1"
+      ; leftIdentity = M.mkId "*-left-id"
+      ; rightIdentity = M.mkId "*-right-id"
+      }
+
+    commRing : AR.CommutativeRingDeclaration
+    commRing = record
+      { underlyingRing = unitalRing
+      ; commutativity = M.mkId "*-comm"
+      }
+  in
+  record
+    { underlyingRing = commRing
+    ; inverses = M.mkId "mult-inv"
     }
-  ; commutativity = M.mkId "*-comm"
-  }
 
 -- Vector space
 vectorSpaceDecl : AM.VectorSpace fieldDecl
-vectorSpaceDecl = record
-  { underlyingModule = record
-    { underlyingAbelianGroup = record
-      { underlyingGroup = record
-        { underlyingMonoid = record
-          { underlyingSemigroup = record
-            { underlyingMagma = record
-              { carrier = M.mkId "V"
-              ; operation = M.mkId "+V"
-              }
-            ; associativity = M.mkId "V-assoc"
-            }
-          ; identityElement = M.mkId "0V"
-          ; leftIdentity = M.mkId "V-left-id"
-          ; rightIdentity = M.mkId "V-right-id"
-          }
-        ; inverseOp = record
-          { inverse = M.mkId "negV"
-          ; leftInverse = M.mkId "V-left-inv"
-          ; rightInverse = M.mkId "V-right-inv"
-          }
-        }
-      ; commutativityAxiom = record
-        { commutativity = M.mkId "V-comm"
-        }
+vectorSpaceDecl =
+  let
+    vPlusSemigroup : AF.SemigroupDeclaration
+    vPlusSemigroup = record
+      { underlyingMagma = record { underlyingSet = M.mkId "V" ; binaryOp = M.mkId "+V" ; index = AF.magmaIndex }
+      ; associativity = C1L.AXIOM_Associativity (M.mkId "V-assoc")
+      ; index = AF.semigroupIndex
       }
-    ; scalarMultiplication = M.mkId "·"
-    ; scalarIdentity = M.mkId "scalar-id"
-    ; scalarAssociativity = M.mkId "scalar-assoc"
-    ; scalarDistributivityOverVectorAddition = M.mkId "scalar-dist-V"
-    ; scalarDistributivityOverScalarAddition = M.mkId "scalar-dist-F"
+
+    vPlusMonoid : AF.MonoidDeclaration
+    vPlusMonoid = record
+      { underlyingSemigroup = vPlusSemigroup
+      ; identityElement = M.mkId "0V"
+      ; identityAxiom = C1L.AXIOM_Identity (M.mkId "V-id")
+      ; index = AF.monoidIndex
+      }
+
+    vPlusGroup : AF.GroupDeclaration
+    vPlusGroup = record
+      { underlyingMonoid = vPlusMonoid
+      ; inverseOperation =
+          record
+            { forMonoid = vPlusMonoid
+            ; inverseMap = M.mkId "negV"
+            ; inverseAxiom = M.mkId "V-left-inv"
+            }
+      ; index = AF.groupIndex
+      }
+
+    vAbelian : AF.AbelianGroupDeclaration
+    vAbelian = record
+      { underlyingGroup = vPlusGroup
+      ; commutativity = record { forGroup = vPlusGroup ; axiom = M.mkId "V-comm" }
+      ; index = AF.abelianGroupIndex
+      }
+
+    baseRing : AR.RingDeclaration
+    baseRing = AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing (AR.FieldDeclaration.underlyingRing fieldDecl))
+  in
+  record
+    { field' = fieldDecl
+    ; underlyingModule =
+        record
+          { ring = baseRing
+          ; underlyingAbelianGroup = vAbelian
+          ; scalarMultiplication = M.mkId "·"
+          ; distributiveOverAddition = M.mkId "scalar-dist-V"
+          ; distributiveOverRingAddition = M.mkId "scalar-dist-F"
+          ; associativeScalar = M.mkId "scalar-assoc"
+          ; unitalAction = M.mkId "scalar-id"
+          }
     }
-  }
 
 -- Basis of vector space
 basisDecl : AM.BasisOfVectorSpace fieldDecl vectorSpaceDecl
 basisDecl = record
-  { basisSet = M.mkId "{e1,e2,e3}"
-  ; linearlyIndependent = M.mkId "lin-indep"
-  ; spansSpace = M.mkId "spans-V"
+  { field' = fieldDecl
+  ; vectorSpace = vectorSpaceDecl
+  ; basisSet = M.mkId "{e1,e2,e3}"
+  ; linearIndependence = M.mkId "lin-indep"
+  ; spanning = M.mkId "spans-V"
   }
 
 -- Dimension
 dimensionDecl : AM.Dimension fieldDecl vectorSpaceDecl
 dimensionDecl = record
-  { dimensionValue = M.mkId "3"
-  ; wellDefined = M.mkId "dim-well-def"
+  { field' = fieldDecl
+  ; vectorSpace = vectorSpaceDecl
+  ; dimension = M.mkId "3"
   }
 
 -- Adapter instances

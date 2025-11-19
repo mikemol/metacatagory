@@ -9,6 +9,8 @@ open import Core.Phase
 open import Core.Witnesses
 open import Core.ConstructiveWitnesses
 open import Core.AlgebraicAlgorithms
+open import Core.AlgorithmUniversality hiding (proof)
+open import Core.UniversalProperties
 open import Algebra.Foundation
 open import Algebra.Rings.Basic using (FieldDeclaration)
 open import Algebra.Fields.Basic
@@ -481,3 +483,227 @@ module BundleConsistencyTest where
   
   extDegSize : Nat
   extDegSize = ConstructiveExtensionDegree.basisSize extDeg
+
+-- =========================================================================
+-- Test 16b: Minimal Polynomial Divides Evidence (Scaffold)
+-- =========================================================================
+
+module MinpolyDividesEvidenceTest where
+  
+  postulate
+    F E : FieldDeclaration
+    α p : M.Identifier
+    vanishes monic : M.Identifier
+    minpolyAlg : MinimalPolynomialAlgorithm F E
+  
+  ump : MinimalPolynomialProperty F E α
+  ump = minimalPolynomialImplementsUniversality F E minpolyAlg α
+  
+  evidence : MinpolyDividesEvidence F E α
+  evidence = mkMinpolyDividesEvidence F E α ump p vanishes monic
+  
+  minpolyId : M.Identifier
+  minpolyId = MinpolyDividesEvidence.minPoly evidence
+  
+  dividesId : M.Identifier
+  dividesId = MinpolyDividesEvidence.dividesWitness evidence
+
+  qId : M.Identifier
+  qId = MinpolyDividesEvidence.quotient evidence
+
+  rId : M.Identifier
+  rId = MinpolyDividesEvidence.remainder evidence
+
+  remainderZero : Boolean
+  remainderZero = flagValue (MinpolyDividesEvidence.remainderZeroFlag evidence)
+
+  -- Division scaffold conversion
+  divScaffold : DivisionScaffold
+  divScaffold = toDivisionScaffold evidence
+
+  dividendId : M.Identifier
+  dividendId = DivisionScaffold.dividend divScaffold
+
+  divisorId : M.Identifier
+  divisorId = DivisionScaffold.divisor divScaffold
+
+  divRemainderZero : Boolean
+  divRemainderZero = flagValue (DivisionScaffold.remainderZeroFlag divScaffold)
+
+-- =========================================================================
+-- Test 16c: Division Algorithm Scaffold Integration
+-- =========================================================================
+
+module DivisionAlgorithmScaffoldTest where
+  
+  -- Build a division scaffold directly using the minimal division algorithm
+  dummyDivisor : M.Identifier
+  dummyDivisor = M.mkId "minpoly-x3-2"
+
+  dummyDividend : M.Identifier
+  dummyDividend = M.mkId "target-poly-p"
+
+  divResult : DivisionScaffold
+  divResult = dividePolynomials dummyDivisor dummyDividend
+
+  -- Extract components
+  computedQuotient : M.Identifier
+  computedQuotient = DivisionScaffold.quotient divResult
+
+  computedRemainder : M.Identifier
+  computedRemainder = DivisionScaffold.remainder divResult
+
+  remainderIsZero : Boolean
+  remainderIsZero = flagValue (DivisionScaffold.remainderZeroFlag divResult)
+
+  -- Ensure scaffold fields are present
+  divDivisor : M.Identifier
+  divDivisor = DivisionScaffold.divisor divResult
+
+  divDividend : M.Identifier
+  divDividend = DivisionScaffold.dividend divResult
+
+-- =========================================================================
+-- Test 16d: Evidence-Based Division Bridge
+-- =========================================================================
+
+module DivisionAlgorithmEvidenceBridgeTest where
+  postulate
+    F E : FieldDeclaration
+    α p vanishes monic : M.Identifier
+    ump : MinimalPolynomialProperty F E α
+
+  evidence : MinpolyDividesEvidence F E α
+  evidence = mkMinpolyDividesEvidence F E α ump p vanishes monic
+
+  bridged : DivisionScaffold
+  bridged = dividePolynomialsFromEvidence evidence
+
+  bridgedQuotient : M.Identifier
+  bridgedQuotient = DivisionScaffold.quotient bridged
+
+  bridgedRemainder : M.Identifier
+  bridgedRemainder = DivisionScaffold.remainder bridged
+
+  bridgedRemainderZero : Boolean
+  bridgedRemainderZero = flagValue (DivisionScaffold.remainderZeroFlag bridged)
+
+-- =========================================================================
+-- Test 16e: UMP-Based Division Helper
+-- =========================================================================
+
+module DivisionByMinpolyUMPHelperTest where
+  postulate
+    F E : FieldDeclaration
+    α p vanishes monic : M.Identifier
+    ump : MinimalPolynomialProperty F E α
+
+  ds : DivisionScaffold
+  ds = divideByMinimalPolynomial {F} {E} {α} ump p vanishes monic
+
+  dsQuot : M.Identifier
+  dsQuot = DivisionScaffold.quotient ds
+
+  dsRem : M.Identifier
+  dsRem = DivisionScaffold.remainder ds
+
+  dsZero : Boolean
+  dsZero = flagValue (DivisionScaffold.remainderZeroFlag ds)
+
+-- =========================================================================
+-- Test 16f: Refinement of Generic Division via UMP
+-- =========================================================================
+
+module DivisionRefinementByUMPTest where
+  postulate
+    F E : FieldDeclaration
+    α p vanishes monic : M.Identifier
+    ump : MinimalPolynomialProperty F E α
+
+  -- Start with a generic division using the minimal polynomial as divisor
+  genericDS : DivisionScaffold
+  genericDS = dividePolynomials (MinimalPolynomialProperty.minPoly ump) p
+
+  genericZero : Boolean
+  genericZero = flagValue (DivisionScaffold.remainderZeroFlag genericDS)
+
+  -- Refine the generic division using UMP evidence
+  refinedDS : DivisionScaffold
+  refinedDS = refineDivisionByUMP {F} {E} {α} ump p vanishes monic genericDS
+
+  refinedZero : Boolean
+  refinedZero = flagValue (DivisionScaffold.remainderZeroFlag refinedDS)
+
+-- =========================================================================
+-- Test 16g: F2 Polynomial Division (Concrete Remainder Flag)
+-- =========================================================================
+
+module F2PolynomialDivisionTest where
+  open import Core.PolynomialsF2 as PF2
+  import Agda.Builtin.Bool as BB
+  -- Example: (x^2 + 1) / (x + 1) over F2 has zero remainder
+  -- dividend = [true, false, true]
+  -- divisor  = [true, true]
+  dividendF2 : PF2.PolyF2
+  dividendF2 = PF2.normalize (BB.true ∷ BB.false ∷ BB.true ∷ [])
+
+  divisorF2 : PF2.PolyF2
+  divisorF2 = PF2.normalize (BB.true ∷ BB.true ∷ [])
+
+  dsF2 : DivisionScaffold
+  dsF2 = dividePolynomialsF2 dividendF2 divisorF2
+
+  f2RemainderZero : Boolean
+  f2RemainderZero = flagValue (DivisionScaffold.remainderZeroFlag dsF2)
+
+-- =========================================================================
+-- Test 16: Algorithm-to-UMP Coherence (Constructive)
+-- =========================================================================
+
+module ConstructiveUMPBridgeCoherence where
+  
+  postulate
+    F E : FieldDeclaration
+    α : M.Identifier
+    f : M.Identifier
+    minpolyAlg : MinimalPolynomialAlgorithm F E
+    splitAlg : SplittingFieldAlgorithm F
+    gcAlg : GaloisClosureAlgorithm F E
+    computedSF : M.Identifier
+  
+  -- Build constructive witnesses from algorithms
+  cmp : ConstructiveMinimalPolynomial F E α
+  cmp = mkConstructiveMinimalPolynomial F E α minpolyAlg
+  
+  csf : ConstructiveSplittingField F f
+  csf = mkConstructiveSplittingField F f splitAlg computedSF
+  
+  -- Obtain UMP records from the same algorithms
+  ump-minpoly : MinimalPolynomialProperty F E α
+  ump-minpoly = minimalPolynomialImplementsUniversality F E minpolyAlg α
+  
+  ump-splitting : SplittingFieldProperty F f
+  ump-splitting = splittingFieldImplementsUniversality F splitAlg f
+  
+  ump-galois-closure : GaloisClosureProperty F E
+  ump-galois-closure = galoisClosureImplementsUniversality F E gcAlg
+  
+  -- Coherence probes: simply ensure key components are present
+  cmp-has-degree : Nat
+  cmp-has-degree = ConstructiveMinimalPolynomial.degreeComputation cmp
+  
+  ump-minpoly-monic : M.Identifier
+  ump-minpoly-monic = MinimalPolynomialProperty.isMonic ump-minpoly
+  
+  csf-has-structure : M.Identifier
+  csf-has-structure = ConstructiveSplittingField.fieldStructure csf
+  
+  ump-split-has-roots : M.Identifier
+  ump-split-has-roots = SplittingFieldProperty.hasAllRoots ump-splitting
+  
+  gc-normal : M.Identifier
+  gc-normal = GaloisClosureProperty.isNormal ump-galois-closure
+  
+  -- A simple coherence marker to enforce type-level linkage exists
+  coherenceMarker : M.Identifier
+  coherenceMarker = M.mkId "✓ constructive↔UMP coherence (types)"

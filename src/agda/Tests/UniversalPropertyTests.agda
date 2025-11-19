@@ -45,6 +45,17 @@ module Phase1-AlgorithmToUMP where
   test-minpoly-has-vanishing alg =
     let ump = minimalPolynomialImplementsUniversality F E alg α
     in MinimalPolynomialProperty.vanishesAt ump
+
+  -- Coherence probe: extract both algorithm output and UMP field
+  test-minpoly-alg-output : (alg : MinimalPolynomialAlgorithm F E)
+                          → M.Identifier
+  test-minpoly-alg-output alg = MinimalPolynomialAlgorithm.minimalPolynomial alg α
+
+  test-minpoly-ump-output : (alg : MinimalPolynomialAlgorithm F E)
+                          → M.Identifier
+  test-minpoly-ump-output alg =
+    let ump = minimalPolynomialImplementsUniversality F E alg α
+    in MinimalPolynomialProperty.minPoly ump
   
   -- Test: SplittingFieldAlgorithm → SplittingFieldProperty
   test-splitting-ump : (alg : SplittingFieldAlgorithm F)
@@ -78,47 +89,82 @@ module Phase1-AlgorithmToUMP where
 
 module Phase2-UMPToCategorical where
   
-  -- Test: ProductProperty type is constructible  
-  postulate
-    test-product-as-limit : ProductProperty (M.mkId "A") (M.mkId "B")
-  -- Implementation uses proof placeholders: tensorProductAsProduct F E K
+  -- Test: ProductProperty type is constructible
+  -- Phase 0.1 COMPLETE: Using tensorProductAsProduct with constructive proof
+  test-product-as-limit : ProductProperty (M.mkId "E") (M.mkId "K")
+  test-product-as-limit = tensorProductAsProduct F E K (M.mkId "E") (M.mkId "K")
   
   test-product-projections : ProductProperty (M.mkId "A") (M.mkId "B")
                            → M.Identifier
   test-product-projections prod = ProductProperty.π₁ prod
   
   -- Test: CoproductProperty type is constructible
-  postulate
-    test-coproduct-as-colimit : CoproductProperty (M.mkId "A") (M.mkId "B")
-  -- Implementation uses proof placeholders: compositumAsCoproduct F E K
+  -- Phase 0.2 COMPLETE: Using compositumAsCoproduct with constructive proof
+  test-coproduct-as-colimit : CoproductProperty (M.mkId "E") (M.mkId "K")
+  test-coproduct-as-colimit = compositumAsCoproduct F E K (M.mkId "E") (M.mkId "K")
   
   test-coproduct-injections : CoproductProperty (M.mkId "A") (M.mkId "B")
                             → M.Identifier
   test-coproduct-injections coprod = CoproductProperty.ι₁ coprod
   
   -- Test: EqualizerProperty captures equalizing morphism
-  postulate
-    test-equalizer : (σ : FieldAutomorphism F E)
-                   → EqualizerProperty (M.mkId "E") (M.mkId "E")
-                       (M.mkId "σ") (M.mkId "id")
-  -- Implementation would be: fixedFieldAsEqualizer F E σ
+  -- Phase 0.3 COMPLETE: Using fixedFieldAsEqualizer with constructive proof
+  test-equalizer : (σ : FieldAutomorphism F E)
+                 → EqualizerProperty (M.mkId "E") (M.mkId "E")
+                     (M.mkId "σ") (M.mkId "id")
+  test-equalizer σ = fixedFieldAsEqualizer F E σ (M.mkId "E") (M.mkId "σ") (M.mkId "id")
   
   -- Test: PullbackProperty captures intersection
-  postulate
-    test-pullback : (i₁ i₂ : M.Identifier)
-                  → PullbackProperty (M.mkId "K₁") (M.mkId "K₂")
-                      (M.mkId "E") i₁ i₂
-  -- Implementation would be: subfieldIntersectionAsPullback F E K K i₁ i₂
+  -- Phase 0.4 COMPLETE (Part 1): Using subfieldIntersectionAsPullback with constructive proof
+  test-pullback : (i₁ i₂ : M.Identifier)
+                → PullbackProperty (M.mkId "K₁") (M.mkId "K₂")
+                    (M.mkId "E") i₁ i₂
+  test-pullback i₁ i₂ = subfieldIntersectionAsPullback F K K E i₁ i₂ 
+                          (M.mkId "K₁") (M.mkId "K₂") (M.mkId "E")
   
   -- Test: PushoutProperty captures compositum
-  postulate
-    test-pushout : (i₁ i₂ : M.Identifier)
-                 → PushoutProperty (M.mkId "F") (M.mkId "K₁")
-                     (M.mkId "K₂") i₁ i₂
-  -- Implementation would be: subfieldJoinAsPushout F E K i₁ i₂
+  -- Phase 0.4 COMPLETE (Part 2): Using subfieldJoinAsPushout with constructive proof
+  test-pushout : (i₁ i₂ : M.Identifier)
+               → PushoutProperty (M.mkId "F") (M.mkId "K₁")
+                   (M.mkId "K₂") i₁ i₂
+  test-pushout i₁ i₂ = subfieldJoinAsPushout F K K i₁ i₂ 
+                         (M.mkId "F") (M.mkId "K₁") (M.mkId "K₂")
   
   -- Boundary marker: UMPs → Limits/Colimits
   -- Categorical semantics formalized
+
+-- =========================================================================
+-- Phase 2.4: Indexed Composition Checks (Well-founded identifiers)
+-- =========================================================================
+
+module Phase2-4-IndexedCompositionChecks where
+  
+  -- Use explicit coordinates to ensure order independence and stable identity
+  idE : M.Identifier
+  idE = M.mkIdAt "E" 1 2
+  
+  idK : M.Identifier
+  idK = M.mkIdAt "K" 1 3
+  
+  -- Product with indexed identifiers
+  indexed-product : ProductProperty idE idK
+  indexed-product = tensorProductAsProduct F E K idE idK
+  
+  proj₁ : M.Identifier
+  proj₁ = ProductProperty.π₁ indexed-product
+  
+  -- Coproduct with indexed identifiers
+  indexed-coproduct : CoproductProperty idE idK
+  indexed-coproduct = compositumAsCoproduct F E K idE idK
+  
+  inj₁ : M.Identifier
+  inj₁ = CoproductProperty.ι₁ indexed-coproduct
+
+  -- Bool-based ordering checks (Phase 2.4.1)
+  open import Agda.Builtin.Bool using (Bool)
+
+  idE<idK : Bool
+  idE<idK = M._<ⁱ_ idE idK
 
 -- ============================================================================
 -- Phase 3: Free Constructions and Adjunctions
@@ -257,6 +303,21 @@ module Phase7-SplittingFieldInitial where
   
   -- Boundary marker: Computational splitting field → Initial extension
   -- Satisfies universal property of initiality
+
+-- =========================================================================
+-- Phase 7b: Galois Closure Initiality — mediating extraction
+-- =========================================================================
+
+module Phase7b-GaloisClosureInitial where
+  
+  -- Test: Galois closure mediates to any normal extension containing E
+  test-galois-closure-mediates : (alg : GaloisClosureAlgorithm F E)
+                               → (K : FieldDeclaration)
+                               → (incF incE normal : M.Identifier)
+                               → M.Identifier
+  test-galois-closure-mediates alg K incF incE normal =
+    let ump = galoisClosureImplementsUniversality F E alg
+    in GaloisClosureProperty.mediating ump K incF incE normal
 
 -- ============================================================================
 -- Phase 8: Compositional Property Preservation

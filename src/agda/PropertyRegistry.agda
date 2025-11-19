@@ -15,12 +15,17 @@ ExactCategoryId = M.mkId "ExactCategory"
 BarrExactCategoryId : M.Identifier
 BarrExactCategoryId = M.mkId "BarrExactCategory"
 
+
 FiniteLimitsId : M.Identifier
 FiniteLimitsId = M.mkId "FiniteLimits"
 
--- Relation effectiveness property
 EffectiveEquivalenceRelationsId : M.Identifier
 EffectiveEquivalenceRelationsId = M.mkId "EffectiveEquivalenceRelations"
+
+-- Relation effectiveness property
+
+SplittingFieldPhaseId : M.Identifier
+SplittingFieldPhaseId = M.mkId "SplittingFieldPhase"
 
 -- Morphism classes and closure notions
 RegularEpiClassId : M.Identifier

@@ -6,12 +6,14 @@ on:
   pull_request:
     branches: [ "**" ]
 
+permissions:
+  contents: write
+  issues: write
+
 jobs:
   build:
     name: Typecheck and Docs
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -50,3 +52,43 @@ jobs:
           else
             echo "No changes in docs/ to commit."
           fi
+
+  deferred-items-check:
+    name: Track Deferred Items
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Make scripts executable
+        run: chmod +x .github/scripts/*.sh
+
+      - name: Scan for deferred items
+        id: scan
+        run: |
+          .github/scripts/detect-deferred-items.sh deferred-items.md
+
+      - name: Upload deferred items report
+        uses: actions/upload-artifact@v4
+        with:
+          name: deferred-items-report
+          path: |
+            deferred-items.md
+            deferred-summary.json
+          retention-days: 90
+
+      - name: Create or update tracking issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          .github/scripts/create-or-update-tracking-issue.sh deferred-items.md deferred-summary.json
+
+      - name: Post summary comment
+        if: steps.scan.outputs.total > 0
+        run: |
+          echo "::notice title=Deferred Items::Found ${{ steps.scan.outputs.total }} deferred items: ${{ steps.scan.outputs.deviation_log }} DeviationLog, ${{ steps.scan.outputs.postulates }} postulates, ${{ steps.scan.outputs.todo }} TODOs, ${{ steps.scan.outputs.planned }} PLANNED, ${{ steps.scan.outputs.fixme }} FIXMEs"
