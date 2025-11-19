@@ -134,10 +134,11 @@
         "id": "PHASE-IV.3",
         "category": "Phase",
         "title": "Grothendieck fibration Beck-Chevalley proof",
-        "status": "planned",
+        "status": "completed",
         "source": "testing.md",
         "files": [
-            "src/agda/Tests/GrothendieckFibrationsChecklist.agda"
+            "src/agda/Tests/GrothendieckFibrationsChecklist.agda",
+            "src/agda/Core/GrothendieckFibrations.agda"
         ],
         "tags": [
             "Fibration",
