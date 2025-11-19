@@ -1,12 +1,4 @@
 {
-  "src/agda/Algebra/Modules/Basic.agda": {
-    "postulates": 24,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 24,
-    "weighted_total": 48.0
-  },
   "src/agda/Algebra/Groups/Structure.agda": {
     "postulates": 24,
     "todo": 0,
@@ -112,6 +104,14 @@
     "weighted_total": 26.0
   },
   "src/agda/Tests/PhaseExamples.agda": {
+    "postulates": 11,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 11,
+    "weighted_total": 22.0
+  },
+  "src/agda/Algebra/Modules/Basic.agda": {
     "postulates": 11,
     "todo": 0,
     "fixme": 0,
