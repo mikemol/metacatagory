@@ -9,7 +9,11 @@ import json
 import sys
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, Any
+from typing import Dict, Any, Iterable
+
+# Constants controlling repository scan behavior
+FILE_SCAN_EXTENSIONS = {".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"}
+EXCLUDED_DIRS = {".git", "venv", ".github/badges"}
 
 
 def load_json_file(filepath: Path) -> Dict[str, Any]:
@@ -167,6 +171,7 @@ def generate_deferred_badges(summary: Dict[str, Any]) -> Dict[str, Dict[str, Any
 
 def scan_repository_for_deferred(repo_root: Path) -> Dict[str, Any]:
     """Scan source tree for postulates, TODO, FIXME, and deviation markers.
+    Skips excluded directories and only processes files with allowed extensions.
     Returns a summary dict compatible with generate_deferred_badges.
     """
     postulates = 0
@@ -174,14 +179,15 @@ def scan_repository_for_deferred(repo_root: Path) -> Dict[str, Any]:
     fixme = 0
     deviation_log = 0
 
-    # File extensions to scan for TODO/FIXME markers
-    text_exts = {".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"}
-
     for path in repo_root.rglob("*"):
         if not path.is_file():
             continue
+        # Skip excluded directories early
+        rel_parts: Iterable[str] = path.relative_to(repo_root).parts
+        if any(part in EXCLUDED_DIRS for part in rel_parts):
+            continue
         ext = path.suffix.lower()
-        if ext not in text_exts:
+        if ext not in FILE_SCAN_EXTENSIONS:
             continue
         try:
             with open(path, "r", encoding="utf-8", errors="ignore") as f:
