@@ -1,4 +1,4 @@
-``` Agda
+```Agda
 -- Level3_2: Sheaves on Locales (Chapter 3, Section 2)
 -- This module encodes the structural content of Section 2 from the EBNF grammar.
 -- It covers presheaves, sheaves, gluing axioms, Grothendieck toposes, etale spaces,

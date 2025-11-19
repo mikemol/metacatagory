@@ -1,4 +1,4 @@
-``` Agda
+```Agda
 -- Core.Algorithms.FiniteFields: Instances of algebraic algorithms for finite fields
 
 module Core.Algorithms.FiniteFields where

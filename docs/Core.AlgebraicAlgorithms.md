@@ -1,4 +1,4 @@
-``` Agda
+```Agda
 -- Core.AlgebraicAlgorithms: Generic interfaces for computational algebraic algorithms
 -- These records provide extensible, type-safe infrastructure for algebraic computation in Agda.
 

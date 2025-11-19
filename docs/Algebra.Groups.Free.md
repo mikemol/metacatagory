@@ -1,4 +1,4 @@
-``` Agda
+```Agda
 -- Algebra.Groups.Free: Free groups, products, and categorical perspective (Hungerford Ch I.7-9)
 -- This module bridges classical group theory with our category theory framework.
 

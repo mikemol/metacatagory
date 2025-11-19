@@ -1,4 +1,4 @@
-``` Agda
+```Agda
 -- Algebra.Modules.Basic: Module theory (Hungerford Ch IV)
 -- This module covers modules, exact sequences, and tensor products.
 -- KEY INTEGRATION: Connects deeply with Chapter2.Level2sub1 (abelian categories).

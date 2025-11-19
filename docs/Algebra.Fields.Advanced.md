@@ -1,4 +1,4 @@
-``` Agda
+```Agda
 -- Algebra.Fields.Advanced: Advanced field theory (Hungerford Ch VI)
 -- This module covers inseparable extensions, perfect fields, algebraic closure,
 -- and connections to algebraic geometry beyond basic Galois theory.

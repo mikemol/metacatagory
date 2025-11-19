@@ -1,4 +1,4 @@
-``` Agda
+```Agda
 module Chapter2.Level2sub4 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

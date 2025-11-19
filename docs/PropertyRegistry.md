@@ -1,4 +1,4 @@
-``` Agda
+```Agda
 module PropertyRegistry where
 
 open import Metamodel as M

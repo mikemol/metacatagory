@@ -1,4 +1,4 @@
-``` Agda
+```Agda
 module Chapter2.Level2Index where
 
 open import Chapter2.Level2sub1 public

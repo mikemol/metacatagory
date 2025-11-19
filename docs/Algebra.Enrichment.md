@@ -1,4 +1,4 @@
-``` Agda
+```Agda
 -- Algebra.Enrichment: Bridging algebraic structures with enriched category theory
 -- This module shows how categories can be enriched over algebraic structures,
 -- demonstrating the constructive connection between abstract algebra and enriched categories.
@@ -87,20 +87,20 @@ record GenericEnrichment (V : Enriched.MonoidalCategoryDeclaration) : Set₁ whe
     -- The enriching category (could be from algebra or anywhere)
     enrichingCategory : CategoryDeclaration
     monoidalStructure : Enriched.MonoidalCategoryDeclaration
-    
+
     -- A V-enriched category C has:
     -- 1. A set of objects
     objects : Set
-    
+
     -- 2. For each pair (A,B), a hom-object C(A,B) in V
     homObject : M.Identifier → M.Identifier → M.Identifier
-    
+
     -- 3. Composition morphisms in V
     compositionInV : (A B C : M.Identifier) → M.Identifier
-    
+
     -- 4. Identity morphisms in V
     identityInV : (A : M.Identifier) → M.Identifier
-    
+
     -- 5. Axioms (associativity and unit laws in V)
     enrichedCategory : Enriched.EnrichedCategoryDeclaration
 
@@ -150,7 +150,7 @@ postulate
     → M.Identifier  -- Evidence of cokernels
     → M.Identifier  -- Proof that C is abelian
 
--- Change of enrichment: if V → W is lax monoidal, 
+-- Change of enrichment: if V → W is lax monoidal,
 -- then V-categories can be seen as W-categories
 postulate
   ChangeOfBase :

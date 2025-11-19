@@ -1,4 +1,4 @@
-``` Agda
+```Agda
 module Chapter2.Level2sub1 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
@@ -596,14 +596,14 @@ postulate
   threeByThreeLemmaBridge
     : (thm : ThreeByThreeLemmaTheorem)
     -> C.Proof (C.DiagramLemmaS (ThreeByThreeLemmaTheorem.setup thm .DiagrammaticAssertion.name)) C.ThreeByThreeLemmaName
-  
+
   torsionDecompositionBridge
     : (seq : TorsionDecompositionSequence)
     -> C.Proof (C.TorsionDecompositionS (TorsionDecompositionSequence.objectX seq)
                                         (TorsionDecompositionSequence.torsionPart seq)
                                         (TorsionDecompositionSequence.torsionFreePart seq)
                                         (TorsionDecompositionSequence.category seq)) C.TorsionDecompositionName
-  
+
   torsionClassClosureQuotientsBridge
     : (decl : TorsionTheoryDeclaration)
     -> C.Proof (C.TorsionClassClosureQuotientsS (TorsionTheoryDeclaration.torsionClass decl)

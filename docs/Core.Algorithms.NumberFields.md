@@ -1,4 +1,4 @@
-``` Agda
+```Agda
 -- Core.Algorithms.NumberFields: Specialization of algebraic algorithms for number fields
 
 module Core.Algorithms.NumberFields where
