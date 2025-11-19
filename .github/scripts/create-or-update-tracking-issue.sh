@@ -64,6 +64,11 @@ $(cat "$REPORT_FILE")
 EOF
 )
 
+# Ensure label exists
+echo "Ensuring label exists..."
+gh label create "$ISSUE_LABEL" --description "Tracks deferred items and technical debt" --color "d73a4a" --force 2>/dev/null || true
+gh label create "enhancement" --description "New feature or request" --color "a2eeef" --force 2>/dev/null || true
+
 # Check if tracking issue already exists
 echo "Checking for existing tracking issue..."
 EXISTING_ISSUE=$(gh issue list --label "$ISSUE_LABEL" --state open --json number,title --jq ".[] | select(.title == \"$ISSUE_TITLE\") | .number" || echo "")
