@@ -316,11 +316,14 @@ def scan_repository_for_deferred(
                     # Postulate: only in .agda files, skip comments and string literals
                     if ext == ".agda" and "postulate" in stripped:
                         if not stripped.startswith("--"):
-                            # Exclude variable names and dictionary keys
+                            # Exclude variable names (postulates, postulated), dictionary keys, and string literals
+                            # But count standalone 'postulate' keyword
+                            words = line.split()
                             if (
                                 '"postulate' not in line
                                 and "'postulate" not in line
-                                and "postulates" not in line
+                                and "postulates" not in words
+                                and "postulated" not in words
                             ):
                                 c = stripped.count("postulate")
                                 postulates += c
