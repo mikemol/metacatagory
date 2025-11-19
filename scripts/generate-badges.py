@@ -9,11 +9,45 @@ import json
 import sys
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, Any, Iterable
+from typing import Dict, Any, Iterable, List, Tuple
 
 # Constants controlling repository scan behavior
 FILE_SCAN_EXTENSIONS = {".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"}
 EXCLUDED_DIRS = {".git", "venv", ".github/badges"}
+
+# Thresholds: list of (limit, color) evaluated in order for value < limit
+ROADMAP_PROGRESS_THRESHOLDS: List[Tuple[int, str]] = [
+    (30, "red"),
+    (70, "yellow"),
+    (101, "brightgreen"),
+]
+DEFERRED_TOTAL_THRESHOLDS: List[Tuple[int, str]] = [
+    (1, "brightgreen"),
+    (100, "yellow"),
+    (300, "orange"),
+    (10_000_000, "red"),
+]
+POSTULATES_THRESHOLDS: List[Tuple[int, str]] = [
+    (21, "brightgreen"),
+    (51, "yellow"),
+    (10_000_000, "orange"),
+]
+TODO_THRESHOLDS: List[Tuple[int, str]] = [
+    (1, "lightgrey"),
+    (10_000_000, "blue"),
+]
+FIXME_THRESHOLDS: List[Tuple[int, str]] = [
+    (1, "lightgrey"),
+    (11, "orange"),
+    (10_000_000, "red"),
+]
+
+
+def color_for(value: int, thresholds: List[Tuple[int, str]], default: str = "lightgrey") -> str:
+    for limit, color in thresholds:
+        if value < limit:
+            return color
+    return default
 
 
 def load_json_file(filepath: Path) -> Dict[str, Any]:
@@ -52,10 +86,10 @@ def generate_roadmap_badges(tasks: list) -> Dict[str, Dict[str, Any]]:
     # Overall progress badge
     if total > 0:
         progress_pct = int((completed / total) * 100)
-        color = 'red' if progress_pct < 30 else 'yellow' if progress_pct < 70 else 'brightgreen'
+        color = color_for(progress_pct, ROADMAP_PROGRESS_THRESHOLDS, default="lightgrey")
     else:
         progress_pct = 0
-        color = 'lightgrey'
+        color = "lightgrey"
     
     badges['roadmap-progress'] = {
         "schemaVersion": 1,
@@ -113,12 +147,8 @@ def generate_deferred_badges(summary: Dict[str, Any]) -> Dict[str, Dict[str, Any
     # Total deferred items badge
     if total == 0:
         color = 'brightgreen'
-    elif total < 100:
-        color = 'yellow'
-    elif total < 300:
-        color = 'orange'
     else:
-        color = 'red'
+        color = color_for(total, DEFERRED_TOTAL_THRESHOLDS, default='red')
     
     badges['deferred-total'] = {
         "schemaVersion": 1,
@@ -140,7 +170,7 @@ def generate_deferred_badges(summary: Dict[str, Any]) -> Dict[str, Dict[str, Any
         "schemaVersion": 1,
         "label": "postulates",
         "message": str(postulates),
-        "color": "orange" if postulates > 50 else "yellow" if postulates > 20 else "brightgreen"
+        "color": color_for(postulates, POSTULATES_THRESHOLDS, default='orange')
     }
     
     # TODO items badge
@@ -148,7 +178,7 @@ def generate_deferred_badges(summary: Dict[str, Any]) -> Dict[str, Dict[str, Any
         "schemaVersion": 1,
         "label": "TODO",
         "message": str(todo),
-        "color": "blue" if todo > 0 else "lightgrey"
+        "color": color_for(todo, TODO_THRESHOLDS, default='lightgrey')
     }
     
     # FIXME items badge
@@ -156,7 +186,7 @@ def generate_deferred_badges(summary: Dict[str, Any]) -> Dict[str, Dict[str, Any
         "schemaVersion": 1,
         "label": "FIXME",
         "message": str(fixme),
-        "color": "red" if fixme > 10 else "orange" if fixme > 0 else "lightgrey"
+        "color": color_for(fixme, FIXME_THRESHOLDS, default='red')
     }
     # Planned items badge
     badges["deferred-planned"] = {
@@ -178,6 +208,7 @@ def scan_repository_for_deferred(repo_root: Path) -> Dict[str, Any]:
     todo = 0
     fixme = 0
     deviation_log = 0
+    file_counts: Dict[str, Dict[str, int]] = {}
 
     for path in repo_root.rglob("*"):
         if not path.is_file():
@@ -189,22 +220,40 @@ def scan_repository_for_deferred(repo_root: Path) -> Dict[str, Any]:
         ext = path.suffix.lower()
         if ext not in FILE_SCAN_EXTENSIONS:
             continue
+        rel_file = str(path.relative_to(repo_root))
+        local_postulates = 0
+        local_todo = 0
+        local_fixme = 0
+        local_deviation = 0
         try:
             with open(path, "r", encoding="utf-8", errors="ignore") as f:
                 for line in f:
                     stripped = line.strip()
-                    # Ignore Agda single-line comments for postulate counting
                     if "postulate" in stripped and not stripped.startswith("--"):
-                        postulates += stripped.count("postulate")
+                        c = stripped.count("postulate")
+                        postulates += c
+                        local_postulates += c
                     if "TODO" in line:
-                        todo += line.count("TODO")
+                        c = line.count("TODO")
+                        todo += c
+                        local_todo += c
                     if "FIXME" in line:
-                        fixme += line.count("FIXME")
+                        c = line.count("FIXME")
+                        fixme += c
+                        local_fixme += c
                     if "DeviationLog" in line or "DEVIATION" in line:
                         deviation_log += 1
+                        local_deviation += 1
         except Exception:
-            # Ignore unreadable files
-            pass
+            continue
+        if any([local_postulates, local_todo, local_fixme, local_deviation]):
+            file_counts[rel_file] = {
+                "postulates": local_postulates,
+                "todo": local_todo,
+                "fixme": local_fixme,
+                "deviation": local_deviation,
+                "total": local_postulates + local_todo + local_fixme + local_deviation,
+            }
 
     # Planned tasks count derived from tasks.json for completeness
     tasks_file = repo_root / ".github" / "roadmap" / "tasks.json"
@@ -226,6 +275,7 @@ def scan_repository_for_deferred(repo_root: Path) -> Dict[str, Any]:
         "todo": todo,
         "planned": planned,
         "fixme": fixme,
+        "files": file_counts,
     }
 
 
@@ -297,13 +347,20 @@ def main():
     # Optionally write back a refreshed deferred summary for future runs
     refreshed_summary = repo_root / "deferred-summary.json"
     with open(refreshed_summary, "w") as f:
-        json.dump(deferred, f, indent=2)
+        json.dump({k: v for k, v in deferred.items() if k != "files"}, f, indent=2)
     print(
         "Refreshed deferred-summary.json "
         f"postulates={deferred.get('postulates')} "
         f"TODO={deferred.get('todo')} "
         f"FIXME={deferred.get('fixme')}"
     )
+
+    # Write per-file detailed counts
+    detailed_file = output_dir / "deferred-files.json"
+    files_sorted = sorted(deferred.get("files", {}).items(), key=lambda x: x[1]["total"], reverse=True)
+    with open(detailed_file, "w") as f:
+        json.dump({fn: data for fn, data in files_sorted}, f, indent=2)
+    print(f"Generated: {detailed_file} (per-file counts)")
 
 
 if __name__ == '__main__':

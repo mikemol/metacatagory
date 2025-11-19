@@ -8,11 +8,8 @@ on:
       - 'deferred-summary.json'
       - 'scripts/**/*.py'
       - 'src/agda/**/*.agda'
-      - 'docs/**/*.md'
+      # Narrowed triggers: remove docs & README to reduce churn
       - 'ROADMAP*.md'
-      - 'README.md'
-    paths-ignore:
-      - '.github/badges/**'
   pull_request:
     branches: [main, master, stripped]
     paths:
@@ -20,11 +17,7 @@ on:
       - 'deferred-summary.json'
       - 'scripts/**/*.py'
       - 'src/agda/**/*.agda'
-      - 'docs/**/*.md'
       - 'ROADMAP*.md'
-      - 'README.md'
-    paths-ignore:
-      - '.github/badges/**'
   schedule:
     # Run daily at 00:00 UTC
     - cron: '0 0 * * *'
