@@ -1,5 +1,10 @@
 # MetaCategory: A Computable Formalization of Category Theory
 
+[![Build Status](https://github.com/mikemol/metacatagory/actions/workflows/ci.yml/badge.svg)](https://github.com/mikemol/metacatagory/actions/workflows/ci.yml)
+[![Roadmap Progress](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mikemol/metacatagory/stripped/.github/badges/roadmap-progress.json)](ROADMAP.md)
+[![Deferred Items](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mikemol/metacatagory/stripped/.github/badges/deferred-total.json)](https://github.com/mikemol/metacatagory/issues?q=label%3Adeferred-tracking)
+[![Postulates](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mikemol/metacatagory/stripped/.github/badges/deferred-postulates.json)](https://github.com/mikemol/metacatagory/issues?q=label%3Adeferred-tracking)
+
 > Project status (2025-11): The original EBNF-based grammar has been retired from the build. The repository now centers on Agda modules under `src/agda`, with a simple Makefile for typechecking and generating HTML/Markdown docs. The EBNF description below is preserved as historical context and a conceptual map; it is no longer part of an active build pipeline.
 
 ## Getting started (Agda)
@@ -70,6 +75,27 @@ bash .github/scripts/sync-roadmap-issues.sh
 ```
 
 Roadmap issues are labeled `roadmap`; update statuses by editing the JSON and re-running the sync.
+
+### Status Badges
+
+The repository uses dynamic badges powered by Shields.io to display current project status:
+
+* **Roadmap Progress**: Shows completion percentage of roadmap tasks
+* **Deferred Items**: Displays total count of tracked technical debt
+* **Postulates**: Shows count of postulated (unproven) definitions
+* **Build Status**: CI typecheck results from GitHub Actions
+
+Badge data is automatically generated from `.github/roadmap/tasks.json` and `deferred-summary.json` by the `Badge Update` workflow, which runs:
+
+* On schedule (daily)
+* When roadmap tasks or deferred items change
+* On manual trigger
+
+Badge JSON files are committed to `.github/badges/` and served via raw.githubusercontent.com. To regenerate locally:
+
+```bash
+python scripts/generate-badges.py
+```
 
 ### Markdown Linting
 

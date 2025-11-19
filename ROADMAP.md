@@ -1,5 +1,9 @@
 # MetaCategory Roadmap
 
+[![Roadmap Progress](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mikemol/metacatagory/stripped/.github/badges/roadmap-progress.json)](https://github.com/mikemol/metacatagory/issues?q=label%3Aroadmap)
+[![Active Tasks](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mikemol/metacatagory/stripped/.github/badges/roadmap-active.json)](https://github.com/mikemol/metacatagory/issues?q=label%3Aroadmap+is%3Aopen)
+[![TODO Tasks](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mikemol/metacatagory/stripped/.github/badges/roadmap-todo.json)](https://github.com/mikemol/metacatagory/issues?q=label%3Aroadmap+is%3Aopen)
+
 > Authoritative consolidated roadmap integrating phases, ingestion curriculum, deferrals, and future research tasks. Generated from `ROADMAP-DRAFT.md` and normalized for automation.
 
 For full contextual detail see `ROADMAP-DRAFT.md`. This file focuses on actionable tracking and GitHub issue integration.
