@@ -8,7 +8,7 @@ Outputs badge data files that can be served via GitHub Pages or committed to the
 import json
 import sys
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any, Iterable, List, Tuple
 
 # Constants controlling repository scan behavior
@@ -408,7 +408,7 @@ def generate_build_badge() -> Dict[str, Any]:
     return {
         "schemaVersion": 1,
         "label": "last updated",
-        "message": datetime.utcnow().strftime("%Y-%m-%d"),
+        "message": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "color": "informational",
     }
 
@@ -418,7 +418,6 @@ def main():
     # Paths
     repo_root = Path(__file__).parent.parent
     tasks_file = repo_root / ".github" / "roadmap" / "tasks.json"
-    deferred_summary = repo_root / "deferred-summary.json"
     output_dir = repo_root / ".github" / "badges"
 
     # Create output directory
@@ -432,10 +431,9 @@ def main():
     if isinstance(tasks, dict):
         tasks = []  # Handle empty or malformed file
 
-    deferred = load_json_file(deferred_summary)
-    # If no deferred summary or empty, dynamically compute from source tree
-    if not deferred or deferred.get("total", 0) == 0:
-        deferred = scan_repository_for_deferred(repo_root, weights)
+    # Always compute fresh deferred data from the source tree to ensure per-file details
+    # This avoids stale summaries without 'files' causing empty top-offenders tables.
+    deferred = scan_repository_for_deferred(repo_root, weights)
 
     # History tracking for trend badge
     history_file = output_dir / "deferred-history.json"
@@ -448,7 +446,7 @@ def main():
                     history = data
         except Exception:
             history = []
-    today = datetime.utcnow().strftime("%Y-%m-%d")
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     last_entry_date = history[-1]["date"] if history else None
     current_weighted = deferred.get("weighted_total", 0)
 
@@ -515,7 +513,7 @@ def main():
     
     # Write manifest file listing all badges
     manifest = {
-        "generated": datetime.utcnow().isoformat() + "Z",
+        "generated": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "badges": list(all_badges.keys())
     }
     manifest_file = output_dir / 'manifest.json'
@@ -552,7 +550,7 @@ def main():
     lines = [
         "# Top Technical Debt Offenders (Weighted)",
         "",
-        f"Generated: {datetime.utcnow().isoformat()}Z",
+        f"Generated: {datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')}",
         "",
         "| Rank | File | P | TODO | FIXME | DEV | Raw | Wtd |",
         "|------|------|---|------|-------|-----|-----|-----|",

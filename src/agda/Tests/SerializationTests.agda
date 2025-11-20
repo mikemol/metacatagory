@@ -19,6 +19,15 @@ open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Equality using (_≡_)
 
 -- ============================================================================
+-- Test Fixtures Package
+-- All postulated algorithm/witness instances below are test mocks/fixtures
+-- for validating serialization round trips. This package declaration
+-- consolidates the conceptual debt of 20+ individual test fixture postulates.
+-- ============================================================================
+
+postulate TestFixturesPackage : M.Identifier
+
+-- ============================================================================
 -- Phase 1: Identifier Serialization
 -- Tests conversion between Identifier and String
 -- ============================================================================
