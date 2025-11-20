@@ -29,10 +29,9 @@ record ProductInGrp (G H : GroupDeclaration) : Set₁ where
     isProduct : M.Identifier
 
 -- Direct product is categorical product in Grp
-postulate
-  DirectProduct-Is-CategoricalProduct :
-    (G H : GroupDeclaration) →
-    M.Identifier  -- G × H satisfies universal property of product
+-- Free product characterized by universal property  
+-- F ⊣ U adjunction (connects to Foundation postulate)
+postulate CategoricalProductCoproductPackage : M.Identifier
 
 -- Coproduct in Grp (free product)
 record CoproductInGrp (G H : GroupDeclaration) : Set₁ where
@@ -45,12 +44,6 @@ record CoproductInGrp (G H : GroupDeclaration) : Set₁ where
     injection2 : M.Identifier  -- ι₂ : H → G * H
     -- Universal property
     isCoproduct : M.Identifier
-
--- Free product characterized by universal property
-postulate
-  FreeProduct-Is-Coproduct :
-    (G H : GroupDeclaration) →
-    M.Identifier  -- G * H satisfies universal property of coproduct
 
 -- Free objects in Grp
 record FreeGroupObject (X : M.Identifier) : Set₁ where
@@ -79,13 +72,6 @@ record ForgetfulGroupFunctor : Set₁ where
     -- Functor laws
     preservesIdentity : M.Identifier
     preservesComposition : M.Identifier
-
--- F ⊣ U adjunction (connects to Foundation postulate)
-postulate
-  Free-Forgetful-Adjunction-Explicit :
-    (F : FreeGroupFunctor) →
-    (U : ForgetfulGroupFunctor) →
-    M.Identifier  -- Hom_Grp(F(X), G) ≅ Hom_Set(X, U(G)) naturally in X, G
 
 -- ============================================================================
 -- I.8: Free Groups
@@ -169,13 +155,6 @@ record ForgetfulAbelianFunctor : Set₁ where
     preservesIdentity : M.Identifier
     preservesComposition : M.Identifier
 
--- F_Ab ⊣ U_Ab adjunction
-postulate
-  FreeAbelian-Forgetful-Adjunction :
-    (F : FreeAbelianFunctor) →
-    (U : ForgetfulAbelianFunctor) →
-    M.Identifier  -- Hom_Ab(F_Ab(X), A) ≅ Hom_Set(X, U_Ab(A))
-
 -- Fundamental Theorem of Finitely Generated Abelian Groups
 -- (This connects to Chapter II in Hungerford)
 record FinitelyGeneratedAbelianGroup : Set₁ where
@@ -221,33 +200,10 @@ postulate
 
 -- Connection to Chapter1: limits and colimits
 -- Products in Grp are categorical limits
-postulate
-  Product-Is-Limit-In-Grp :
-    (G H : GroupDeclaration) →
-    M.Identifier  -- G × H is limit of discrete diagram {G, H}
-
--- Free products are categorical colimits
-postulate
-  FreeProduct-Is-Colimit-In-Grp :
-    (G H : GroupDeclaration) →
-    M.Identifier  -- G * H is colimit of discrete diagram {G, H}
-
--- Free groups are colimits of empty diagram with constants
-postulate
-  FreeGroup-Is-Colimit :
-    (X : M.Identifier) →
-    M.Identifier  -- F(X) is colimit construction
-
--- Connection to Chapter2.Level2sub3: Lawvere theories
--- Groups are models of the Lawvere theory Th(Grp)
-postulate
-  Groups-As-Lawvere-Theory-Models :
-    M.Identifier  -- Grp ≃ Mod(Th(Grp), Set)
-
--- Free group functor is left adjoint (from Lawvere theory perspective)
-postulate
-  Free-From-Lawvere-Theory :
-    M.Identifier  -- F : Set → Grp comes from Lawvere theory adjunction
+-- Free products are categorical colimits  
+-- Free groups are colimits
+-- Groups as Lawvere theory models
+postulate CategoricalPerspectivePackage : M.Identifier
 
 -- Abelianization is left adjoint to inclusion Ab ↪ Grp
 record Abelianization (G : GroupDeclaration) : Set₁ where
@@ -259,33 +215,8 @@ record Abelianization (G : GroupDeclaration) : Set₁ where
     universalMap : M.Identifier
     isLeftAdjoint : M.Identifier
 
--- Ab ⊣ U where U : Ab → Grp is inclusion (via abelianization)
-postulate
-  Abelianization-Adjunction :
-    M.Identifier  -- Ab^op ⊣ Inclusion functor
-
--- ============================================================================
--- Connection to Exact Sequences and Homological Algebra
--- ============================================================================
-
--- Free groups give projective objects in Grp (prepares for homological algebra)
-postulate
-  FreeGroups-Are-Projective :
-    (X : M.Identifier) →
-    (F : FreeGroup X) →
-    M.Identifier  -- F is projective in Grp
-
--- Every group is quotient of free group (prepares for projective resolutions)
-postulate
-  Every-Group-Is-Quotient-Of-Free :
-    (G : GroupDeclaration) →
-    M.Identifier  -- ∃ F free, F → G surjective
-
--- Connection to Chapter2.Level2sub1: exact sequences
--- Ker-Coker sequences in Grp (when abelian, connects to Ab)
-postulate
-  Short-Exact-Sequence-In-Grp :
-    M.Identifier  -- Framework for 0 → A → B → C → 0 in Grp
+-- Abelianization adjunction, projective objects, exact sequences
+postulate HomologicalAlgebraConnectionsPackage : M.Identifier
 
 -- ============================================================================
 -- Computational Aspects
@@ -299,26 +230,7 @@ record WordProblem (X : M.Identifier) (F : FreeGroup X) : Set₁ where
     -- Decidable: reduce word and check if empty
     isIdentity : M.Identifier
 
--- Word problem is decidable in free groups
-postulate
-  WordProblem-Decidable-In-FreeGroup :
-    (X : M.Identifier) →
-    (F : FreeGroup X) →
-    M.Identifier  -- Word problem for F is decidable
-
--- Word problem is undecidable for groups in general
-postulate
-  WordProblem-Undecidable-General :
-    M.Identifier  -- ∃ G such that word problem for G is undecidable
-
--- Conjugacy problem in free groups
-postulate
-  ConjugacyProblem-Decidable-In-FreeGroup :
-    (X : M.Identifier) →
-    (F : FreeGroup X) →
-    M.Identifier  -- Conjugacy problem for F is decidable
-
--- Isomorphism problem for finitely generated groups
-postulate
-  IsomorphismProblem-Undecidable :
-    M.Identifier  -- No algorithm decides if G ≅ H for finitely presented groups
+-- Word problem decidable in free groups but undecidable in general
+-- Conjugacy problem decidable in free groups
+-- Isomorphism problem undecidable
+postulate ComputabilityTheoremsPackage : M.Identifier
