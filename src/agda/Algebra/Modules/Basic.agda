@@ -23,20 +23,17 @@ open import Metamodel as M
 -- ============================================================================
 module ConcreteExamples where
   -- Example: Z as a Z-module
-  Z-as-Z-module : M.Identifier
-  Z-as-Z-module = M.mkId "ℤ-as-ℤ-module"
+  ZAsZModule : M.Identifier
+  ZAsZModule = M.mkId "ℤ-as-ℤ-module"
   
   -- Example: Z/nZ as a Z-module
-  ZnZ-as-Z-module : M.Identifier → M.Identifier
-  ZnZ-as-Z-module n = M.mkId "ℤ/nℤ-as-ℤ-module"
+  postulate ZnZAsZModule : M.Identifier → M.Identifier
   
   -- Example: R^n as free R-module
-  R-power-n : M.Identifier → M.Identifier → M.Identifier
-  R-power-n R n = M.mkId "R^n-free-module"
+  postulate RPowerN : M.Identifier → M.Identifier → M.Identifier
   
   -- Example: Field F as vector space over itself
-  F-as-F-vectorspace : M.Identifier → M.Identifier
-  F-as-F-vectorspace F = M.mkId "F-as-F-vectorspace"
+  postulate FAsFVectorspace : M.Identifier → M.Identifier
 
 open ConcreteExamples public
 
