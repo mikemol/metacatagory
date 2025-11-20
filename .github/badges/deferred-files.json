@@ -1,12 +1,4 @@
 {
-  ".github/scripts/detect-deferred-items.sh": {
-    "postulates": 0,
-    "todo": 10,
-    "fixme": 9,
-    "deviation": 8,
-    "total": 27,
-    "weighted_total": 47.5
-  },
   "src/agda/Algebra/Groups/Free.agda": {
     "postulates": 22,
     "todo": 0,
@@ -14,6 +6,14 @@
     "deviation": 0,
     "total": 22,
     "weighted_total": 44.0
+  },
+  "src/agda/Tests/ConstructiveWitnessTests.agda": {
+    "postulates": 21,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 21,
+    "weighted_total": 42.0
   },
   "src/agda/Tests/AlgorithmCompositionTests.agda": {
     "postulates": 21,
@@ -24,14 +24,6 @@
     "weighted_total": 42.0
   },
   "src/agda/Tests/SerializationTests.agda": {
-    "postulates": 21,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 21,
-    "weighted_total": 42.0
-  },
-  "src/agda/Tests/ConstructiveWitnessTests.agda": {
     "postulates": 21,
     "todo": 0,
     "fixme": 0,
@@ -63,14 +55,6 @@
     "total": 17,
     "weighted_total": 34.0
   },
-  "src/agda/Examples/AlgorithmCorrectnessExamples.agda": {
-    "postulates": 15,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 15,
-    "weighted_total": 30.0
-  },
   "src/agda/Tests/ErrorHandlingTests.agda": {
     "postulates": 15,
     "todo": 0,
@@ -79,7 +63,15 @@
     "total": 15,
     "weighted_total": 30.0
   },
-  "src/agda/Algebra/Modules/Basic.agda": {
+  "src/agda/Examples/AlgorithmCorrectnessExamples.agda": {
+    "postulates": 15,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 15,
+    "weighted_total": 30.0
+  },
+  "src/agda/Tests/PerformanceBoundaryTests.agda": {
     "postulates": 14,
     "todo": 0,
     "fixme": 0,
@@ -87,7 +79,7 @@
     "total": 14,
     "weighted_total": 28.0
   },
-  "src/agda/Tests/PerformanceBoundaryTests.agda": {
+  "src/agda/Algebra/Modules/Basic.agda": {
     "postulates": 14,
     "todo": 0,
     "fixme": 0,
@@ -134,14 +126,6 @@
     "deviation": 0,
     "total": 10,
     "weighted_total": 20.0
-  },
-  ".github/scripts/create-or-update-tracking-issue.sh": {
-    "postulates": 0,
-    "todo": 4,
-    "fixme": 4,
-    "deviation": 3,
-    "total": 11,
-    "weighted_total": 19.0
   },
   "DEFERRED-TRACKING.md": {
     "postulates": 0,
@@ -199,14 +183,6 @@
     "total": 5,
     "weighted_total": 14.0
   },
-  ".github/workflows/deferred-items.yml": {
-    "postulates": 0,
-    "todo": 3,
-    "fixme": 3,
-    "deviation": 2,
-    "total": 8,
-    "weighted_total": 13.5
-  },
   "src/agda/Tests/AdvancedMonadTheoryChecklist.agda": {
     "postulates": 1,
     "todo": 10,
@@ -263,7 +239,7 @@
     "total": 5,
     "weighted_total": 11.0
   },
-  "src/agda/Core/Algorithms/AutomaticEvidence.agda": {
+  "src/agda/Chapter1/Level1.agda": {
     "postulates": 5,
     "todo": 0,
     "fixme": 0,
@@ -279,7 +255,7 @@
     "total": 5,
     "weighted_total": 10.0
   },
-  "src/agda/Chapter1/Level1.agda": {
+  "src/agda/Core/Algorithms/AutomaticEvidence.agda": {
     "postulates": 5,
     "todo": 0,
     "fixme": 0,
@@ -294,6 +270,14 @@
     "deviation": 3,
     "total": 3,
     "weighted_total": 9.0
+  },
+  "src/agda/Tests/UniversalPropertyTests.agda": {
+    "postulates": 4,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 4,
+    "weighted_total": 8.0
   },
   "src/agda/Examples/LazyHybridDemo.agda": {
     "postulates": 4,
@@ -312,14 +296,6 @@
     "weighted_total": 8.0
   },
   "src/agda/Core/Algorithms/External.agda": {
-    "postulates": 4,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 4,
-    "weighted_total": 8.0
-  },
-  "src/agda/Tests/UniversalPropertyTests.agda": {
     "postulates": 4,
     "todo": 0,
     "fixme": 0,
@@ -375,22 +351,6 @@
     "total": 2,
     "weighted_total": 6.0
   },
-  ".github/scripts/README.md": {
-    "postulates": 0,
-    "todo": 1,
-    "fixme": 1,
-    "deviation": 1,
-    "total": 3,
-    "weighted_total": 5.5
-  },
-  ".github/workflows/ci.yml": {
-    "postulates": 0,
-    "todo": 1,
-    "fixme": 1,
-    "deviation": 1,
-    "total": 3,
-    "weighted_total": 5.5
-  },
   "src/agda/Core/Algorithms/FunctionFields.agda": {
     "postulates": 1,
     "todo": 0,
@@ -415,6 +375,62 @@
     "total": 4,
     "weighted_total": 4.0
   },
+  "src/agda/Core/ConstructiveWitnesses.agda": {
+    "postulates": 2,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 4.0
+  },
+  "src/agda/Core/Phase.agda": {
+    "postulates": 2,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 4.0
+  },
+  "src/agda/Core/PhaseCategory.agda": {
+    "postulates": 2,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 4.0
+  },
+  "src/agda/Tests/WitnessConstructionTests.agda": {
+    "postulates": 2,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 4.0
+  },
+  "src/agda/Tests/PropertyRegistryTests.agda": {
+    "postulates": 2,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 4.0
+  },
+  "src/agda/Tests/CoverageReport.agda": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 1,
+    "total": 2,
+    "weighted_total": 4.0
+  },
+  "src/agda/Examples/AutomaticEvidenceDemo.agda": {
+    "postulates": 2,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 4.0
+  },
   "src/agda/Examples/RealWorldAlgorithms.agda": {
     "postulates": 2,
     "todo": 0,
@@ -423,7 +439,7 @@
     "total": 2,
     "weighted_total": 4.0
   },
-  "src/agda/Examples/AutomaticEvidenceDemo.agda": {
+  "src/agda/Examples/FunctionField/F2x.agda": {
     "postulates": 2,
     "todo": 0,
     "fixme": 0,
@@ -447,61 +463,13 @@
     "total": 2,
     "weighted_total": 4.0
   },
-  "src/agda/Examples/FunctionField/F2x.agda": {
-    "postulates": 2,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 2,
-    "weighted_total": 4.0
-  },
-  "src/agda/Core/PhaseCategory.agda": {
-    "postulates": 2,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 2,
-    "weighted_total": 4.0
-  },
-  "src/agda/Core/Phase.agda": {
-    "postulates": 2,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 2,
-    "weighted_total": 4.0
-  },
-  "src/agda/Core/ConstructiveWitnesses.agda": {
-    "postulates": 2,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 2,
-    "weighted_total": 4.0
-  },
-  "src/agda/Tests/CoverageReport.agda": {
+  "docs/Core.Algorithms.FunctionFields.md": {
     "postulates": 0,
-    "todo": 1,
+    "todo": 0,
     "fixme": 0,
     "deviation": 1,
-    "total": 2,
-    "weighted_total": 4.0
-  },
-  "src/agda/Tests/PropertyRegistryTests.agda": {
-    "postulates": 2,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 2,
-    "weighted_total": 4.0
-  },
-  "src/agda/Tests/WitnessConstructionTests.agda": {
-    "postulates": 2,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 2,
-    "weighted_total": 4.0
+    "total": 1,
+    "weighted_total": 3.0
   },
   "docs/Core.Algorithms.NumberFields.md": {
     "postulates": 0,
@@ -511,22 +479,6 @@
     "total": 1,
     "weighted_total": 3.0
   },
-  "docs/Core.Algorithms.FunctionFields.md": {
-    "postulates": 0,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 1,
-    "total": 1,
-    "weighted_total": 3.0
-  },
-  ".github/badges/top-offenders.md": {
-    "postulates": 0,
-    "todo": 1,
-    "fixme": 1,
-    "deviation": 0,
-    "total": 2,
-    "weighted_total": 2.5
-  },
   "ROADMAP.md": {
     "postulates": 0,
     "todo": 2,
@@ -535,7 +487,7 @@
     "total": 2,
     "weighted_total": 2.0
   },
-  "src/agda/Core/AlgorithmUniversality.agda": {
+  "src/agda/Core/AlgorithmCorrectness.agda": {
     "postulates": 1,
     "todo": 0,
     "fixme": 0,
@@ -543,7 +495,7 @@
     "total": 1,
     "weighted_total": 2.0
   },
-  "src/agda/Core/AlgorithmCorrectness.agda": {
+  "src/agda/Core/AlgorithmUniversality.agda": {
     "postulates": 1,
     "todo": 0,
     "fixme": 0,
@@ -567,7 +519,47 @@
     "total": 1,
     "weighted_total": 2.0
   },
-  "src/agda/Core/Algorithms/InductiveClassification.agda": {
+  "src/agda/Chapter1/Level1sub8.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  "src/agda/Chapter1/Level1sub3.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  "src/agda/Chapter1/Level1sub4.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  "src/agda/Chapter1/Level1sub7.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  "src/agda/Chapter1/Level1sub6.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  "src/agda/Chapter1/Level1sub5.agda": {
     "postulates": 1,
     "todo": 0,
     "fixme": 0,
@@ -576,6 +568,14 @@
     "weighted_total": 2.0
   },
   "src/agda/Tests/EnrichmentChecklist.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  "src/agda/Tests/YonedaChecklist.agda": {
     "postulates": 1,
     "todo": 0,
     "fixme": 0,
@@ -599,63 +599,7 @@
     "total": 1,
     "weighted_total": 2.0
   },
-  "src/agda/Tests/YonedaChecklist.agda": {
-    "postulates": 1,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 1,
-    "weighted_total": 2.0
-  },
-  "src/agda/Chapter1/Level1sub6.agda": {
-    "postulates": 1,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 1,
-    "weighted_total": 2.0
-  },
-  "src/agda/Chapter1/Level1sub4.agda": {
-    "postulates": 1,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 1,
-    "weighted_total": 2.0
-  },
-  "src/agda/Chapter1/Level1sub8.agda": {
-    "postulates": 1,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 1,
-    "weighted_total": 2.0
-  },
-  "src/agda/Chapter1/Level1sub7.agda": {
-    "postulates": 1,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 1,
-    "weighted_total": 2.0
-  },
-  "src/agda/Chapter1/Level1sub5.agda": {
-    "postulates": 1,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 1,
-    "weighted_total": 2.0
-  },
-  "src/agda/Chapter1/Level1sub3.agda": {
-    "postulates": 1,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 1,
-    "weighted_total": 2.0
-  },
-  "src/agda/1/Level1sub6.agda": {
+  "src/agda/1/Level1sub8.agda": {
     "postulates": 1,
     "todo": 0,
     "fixme": 0,
@@ -671,7 +615,7 @@
     "total": 1,
     "weighted_total": 2.0
   },
-  "src/agda/1/Level1sub8.agda": {
+  "src/agda/1/Level1sub7.agda": {
     "postulates": 1,
     "todo": 0,
     "fixme": 0,
@@ -679,7 +623,7 @@
     "total": 1,
     "weighted_total": 2.0
   },
-  "src/agda/1/Level1sub7.agda": {
+  "src/agda/1/Level1sub6.agda": {
     "postulates": 1,
     "todo": 0,
     "fixme": 0,
@@ -695,31 +639,7 @@
     "total": 1,
     "weighted_total": 2.0
   },
-  "src/agda/2/Level2sub1.agda": {
-    "postulates": 1,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 1,
-    "weighted_total": 2.0
-  },
-  "src/agda/2/Level2sub3.agda": {
-    "postulates": 1,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 1,
-    "weighted_total": 2.0
-  },
-  "src/agda/2/Level2sub2.agda": {
-    "postulates": 1,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 1,
-    "weighted_total": 2.0
-  },
-  "src/agda/Chapter2/Level2sub1.agda": {
+  "src/agda/Chapter2/Level2sub2.agda": {
     "postulates": 1,
     "todo": 0,
     "fixme": 0,
@@ -735,7 +655,39 @@
     "total": 1,
     "weighted_total": 2.0
   },
-  "src/agda/Chapter2/Level2sub2.agda": {
+  "src/agda/Chapter2/Level2sub1.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  "src/agda/2/Level2sub2.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  "src/agda/2/Level2sub3.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  "src/agda/2/Level2sub1.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  "src/agda/Core/Algorithms/InductiveClassification.agda": {
     "postulates": 1,
     "todo": 0,
     "fixme": 0,
@@ -744,6 +696,14 @@
     "weighted_total": 2.0
   },
   "scripts/improved_test_report_design.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.0
+  },
+  "node_modules/semver/README.md": {
     "postulates": 0,
     "todo": 1,
     "fixme": 0,
