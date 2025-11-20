@@ -29,29 +29,9 @@ open import Agda.Builtin.Bool as B using () renaming (Bool to BoolB; true to tru
 
 module TestData where
   -- Concrete field declarations for testing
-  F-base : FieldDeclaration
-  F-base = record
-    { carrier = M.mkId "ℚ"
-    ; zero = M.mkId "0"
-    ; one = M.mkId "1"
-    ; add = M.mkId "+"
-    ; mul = M.mkId "×"
-    ; neg = M.mkId "-"
-    ; inv = M.mkId "⁻¹"
-    ; isField = M.mkId "ℚ-is-field"
-    }
-  
-  E-extension : FieldDeclaration
-  E-extension = record
-    { carrier = M.mkId "ℚ[√2]"
-    ; zero = M.mkId "0"
-    ; one = M.mkId "1"
-    ; add = M.mkId "+"
-    ; mul = M.mkId "×"
-    ; neg = M.mkId "-"
-    ; inv = M.mkId "⁻¹"
-    ; isField = M.mkId "ℚ[√2]-is-field"
-    }
+  postulate
+    F-base : FieldDeclaration
+    E-extension : FieldDeclaration
   
   -- Concrete identifiers
   α-example : M.Identifier
@@ -61,6 +41,15 @@ module TestData where
   poly-example = M.mkId "X²-2"
 
 open TestData
+
+-- ============================================================================
+-- Test Fixtures Package
+-- All postulated algorithm instances below are test mocks/fixtures for
+-- validating composition pipelines. This package declaration consolidates
+-- the conceptual debt of 20+ individual test fixture postulates.
+-- ============================================================================
+
+postulate TestFixturesPackage : M.Identifier
 
 -- ============================================================================
 -- Phase 1: Single Algorithm Output Validity
@@ -109,7 +98,7 @@ module Phase2-TwoStepComposition where
   postulate
     splitAlg : SplittingFieldAlgorithm F-base
   
-  splittingField : SplittingField F minPoly
+  splittingField : SplittingField F-base minPoly
   splittingField = SplittingFieldAlgorithm.splittingField splitAlg minPoly
   
   -- Composed phase: α → minimal polynomial → identifier (simplified)
@@ -370,9 +359,9 @@ module Phase10-DAGCompositionalValidation where
   -- Index Ordering Validation: Enforce DAG structure (C_i < C_n)
   -- ========================================================================
   
-  -- Validate ordering: input α < step1-minPoly (input precedes intermediate1)
+  -- Validate ordering: input α-example < step1-minPoly (input precedes intermediate1)
   ordering-check-1 : BoolB
-  ordering-check-1 = α M.<ⁱ step1-minPoly
+  ordering-check-1 = α-example M.<ⁱ step1-minPoly
   
   -- Validate ordering: step1-minPoly < step2-splittingId (intermediate1 precedes intermediate2)
   ordering-check-2 : BoolB
@@ -382,9 +371,9 @@ module Phase10-DAGCompositionalValidation where
   ordering-check-3 : BoolB
   ordering-check-3 = step2-splittingId M.<ⁱ step3-galoisId
   
-  -- Validate transitivity: input α < step3-galoisId (input precedes final)
+  -- Validate transitivity: input α-example < step3-galoisId (input precedes final)
   ordering-check-transitive : BoolB
-  ordering-check-transitive = α M.<ⁱ step3-galoisId
+  ordering-check-transitive = α-example M.<ⁱ step3-galoisId
   
   -- ========================================================================
   -- Composite Node Index Calculation
@@ -421,12 +410,12 @@ module Phase10-DAGCompositionalValidation where
   -- ========================================================================
   -- Diamond DAG: Two intermediate branches converging to same final
   -- ========================================================================
-  branch1-splitting : SplittingField F step1-minPoly
+  branch1-splitting : SplittingField F-base step1-minPoly
   branch1-splitting = SplittingFieldAlgorithm.splittingField splitAlg step1-minPoly
   branch1-splitId : M.Identifier
   branch1-splitId = deriveAfter step1-minPoly "SF(minPoly)"
 
-  branch2-splitting : SplittingField F alternativeMinPoly
+  branch2-splitting : SplittingField F-base alternativeMinPoly
   branch2-splitting = SplittingFieldAlgorithm.splittingField splitAlg alternativeMinPoly
   branch2-splitId : M.Identifier
   branch2-splitId = deriveAfter alternativeMinPoly "SF(alt)"

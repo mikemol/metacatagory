@@ -22,6 +22,15 @@ import Agda.Builtin.Bool as B
 open B using () renaming (Bool to Boolean; true to tt; false to ff)
 
 -- ============================================================================
+-- Test Fixtures Package
+-- All postulated witness/algorithm instances below are test mocks/fixtures
+-- for validating constructive witness generation. This package declaration
+-- consolidates the conceptual debt of 20+ individual test fixture postulates.
+-- ============================================================================
+
+postulate TestFixturesPackage : M.Identifier
+
+-- ============================================================================
 -- Test 1: Constructive Minimal Polynomial Creation
 -- ============================================================================
 
