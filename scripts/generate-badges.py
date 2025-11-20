@@ -13,7 +13,7 @@ from typing import Dict, Any, Iterable, List, Tuple
 
 # Constants controlling repository scan behavior
 FILE_SCAN_EXTENSIONS = {".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"}
-EXCLUDED_DIRS = {".git", "venv", ".github/badges"}
+EXCLUDED_DIRS = {".git", "venv", ".github"}
 
 # Thresholds: list of (limit, color) evaluated in order for value < limit
 ROADMAP_PROGRESS_THRESHOLDS: List[Tuple[int, str]] = [
