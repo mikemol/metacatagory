@@ -1,7 +1,12 @@
 [
   {
     "date": "2025-11-19",
-    "total": 568,
-    "weighted_total": 1067.0
+    "total": 552,
+    "weighted_total": 1035.0
+  },
+  {
+    "date": "2025-11-20",
+    "total": 545,
+    "weighted_total": 1021.0
   }
 ]

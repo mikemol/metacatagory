@@ -1,28 +1,4 @@
 {
-  "src/agda/Tests/AlgorithmCompositionTests.agda": {
-    "postulates": 29,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 29,
-    "weighted_total": 58.0
-  },
-  "src/agda/Algebra/Modules/Basic.agda": {
-    "postulates": 24,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 24,
-    "weighted_total": 48.0
-  },
-  "src/agda/Algebra/Groups/Structure.agda": {
-    "postulates": 24,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 24,
-    "weighted_total": 48.0
-  },
   ".github/scripts/detect-deferred-items.sh": {
     "postulates": 0,
     "todo": 10,
@@ -47,6 +23,14 @@
     "total": 21,
     "weighted_total": 42.0
   },
+  "src/agda/Tests/AlgorithmCompositionTests.agda": {
+    "postulates": 21,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 21,
+    "weighted_total": 42.0
+  },
   "src/agda/Tests/SerializationTests.agda": {
     "postulates": 21,
     "todo": 0,
@@ -54,6 +38,14 @@
     "deviation": 0,
     "total": 21,
     "weighted_total": 42.0
+  },
+  "src/agda/Algebra/Groups/Structure.agda": {
+    "postulates": 20,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 20,
+    "weighted_total": 40.0
   },
   "src/agda/Algebra/Rings/Basic.agda": {
     "postulates": 18,
@@ -88,6 +80,14 @@
     "weighted_total": 30.0
   },
   "src/agda/Tests/PerformanceBoundaryTests.agda": {
+    "postulates": 14,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 14,
+    "weighted_total": 28.0
+  },
+  "src/agda/Algebra/Modules/Basic.agda": {
     "postulates": 14,
     "todo": 0,
     "fixme": 0,
@@ -455,14 +455,6 @@
     "total": 2,
     "weighted_total": 4.0
   },
-  "src/agda/Tests/DispatchBehaviorTests.agda": {
-    "postulates": 2,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 2,
-    "weighted_total": 4.0
-  },
   "src/agda/Tests/CoverageReport.agda": {
     "postulates": 0,
     "todo": 1,
@@ -632,6 +624,14 @@
     "weighted_total": 2.0
   },
   "src/agda/Tests/YonedaChecklist.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  "src/agda/Tests/DispatchBehaviorTests.agda": {
     "postulates": 1,
     "todo": 0,
     "fixme": 0,
