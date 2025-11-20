@@ -1,12 +1,4 @@
 {
-  "src/agda/Algebra/Groups/Structure.agda": {
-    "postulates": 30,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 30,
-    "weighted_total": 60.0
-  },
   ".github/scripts/detect-deferred-items.sh": {
     "postulates": 0,
     "todo": 10,
@@ -46,6 +38,14 @@
     "deviation": 0,
     "total": 21,
     "weighted_total": 42.0
+  },
+  "src/agda/Algebra/Groups/Structure.agda": {
+    "postulates": 20,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 20,
+    "weighted_total": 40.0
   },
   "src/agda/Algebra/Rings/Basic.agda": {
     "postulates": 18,
@@ -87,6 +87,14 @@
     "total": 14,
     "weighted_total": 28.0
   },
+  "src/agda/Algebra/Modules/Basic.agda": {
+    "postulates": 14,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 14,
+    "weighted_total": 28.0
+  },
   "src/agda/Examples/ConstructiveWitnessExamples.agda": {
     "postulates": 13,
     "todo": 0,
@@ -104,14 +112,6 @@
     "weighted_total": 26.0
   },
   "src/agda/Tests/PhaseExamples.agda": {
-    "postulates": 11,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 11,
-    "weighted_total": 22.0
-  },
-  "src/agda/Algebra/Modules/Basic.agda": {
     "postulates": 11,
     "todo": 0,
     "fixme": 0,
