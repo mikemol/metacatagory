@@ -1,11 +1,11 @@
 {
   ".github/badges/deferred-files.json": {
-    "postulates": 130,
+    "postulates": 131,
     "todo": 0,
     "fixme": 0,
     "deviation": 0,
-    "total": 130,
-    "weighted_total": 260.0
+    "total": 131,
+    "weighted_total": 262.0
   },
   "scripts/generate-badges.py": {
     "postulates": 28,

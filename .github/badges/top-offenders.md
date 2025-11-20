@@ -1,10 +1,10 @@
 # Top Technical Debt Offenders (Weighted)
 
-Generated: 2025-11-19T22:37:25.164404Z
+Generated: 2025-11-20T00:24:14.796355Z
 
 | Rank | File | P | TODO | FIXME | DEV | Raw | Wtd |
 |------|------|---|------|-------|-----|-----|-----|
-| 1 | .github/badges/deferred-files.json | 130 | 0 | 0 | 0 | 130 | 260 |
+| 1 | .github/badges/deferred-files.json | 131 | 0 | 0 | 0 | 131 | 262 |
 | 2 | scripts/generate-badges.py | 28 | 9 | 9 | 2 | 48 | 84 |
 | 3 | .github/scripts/detect-deferred-items.sh | 5 | 13 | 12 | 9 | 39 | 68 |
 | 4 | src/agda/Tests/AlgorithmCompositionTests.agda | 29 | 0 | 0 | 0 | 29 | 58 |
