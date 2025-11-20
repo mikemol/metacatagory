@@ -446,3 +446,62 @@ module Phase10-HoTTPathIsomorphism where
 --
 -- Coverage: 10 phases validating witness ↔ external representation with HoTT Path integrity
 
+open import Agda.Builtin.List
+open import Agda.Builtin.String
+open import Agda.Builtin.Int
+
+-- Priority as a free abelian group, with dependencies
+record Priority : Set where
+  constructor mkPriority
+  field
+    terms     : List (String × Int)
+    dependsOn : List Priority
+
+open Priority public
+
+-- Technical debt annotation record with priority
+record DebtAnnotation : Set where
+  constructor mkDebt
+  field
+    id        : M.Identifier
+    rationale : String
+    status    : String
+    priority  : Priority
+
+open DebtAnnotation public
+
+-- Example priorities
+lowPriority : Priority
+lowPriority = mkPriority (("test-fixture", 1) ∷ []) []
+
+highPriority : Priority
+highPriority = mkPriority (("core-serialization", 1) ∷ []) (lowPriority ∷ [])
+
+-- Annotate key test fixture postulates
+TestFixturesPackageDebt : DebtAnnotation
+TestFixturesPackageDebt = mkDebt TestFixturesPackage "Test mocks for serialization validation" "open" lowPriority
+
+serializeFieldDebt : DebtAnnotation
+serializeFieldDebt = mkDebt (M.mkId "serializeField") "Serialization algorithm is a test fixture" "open" highPriority
+
+deserializeFieldDebt : DebtAnnotation
+deserializeFieldDebt = mkDebt (M.mkId "deserializeField") "Deserialization algorithm is a test fixture" "open" highPriority
+
+-- Registry of technical debt items in this module
+technicalDebtRegistry : List DebtAnnotation
+technicalDebtRegistry = TestFixturesPackageDebt ∷ serializeFieldDebt ∷ deserializeFieldDebt ∷ []
+
+-- Export rationale/status/priority for reporting
+rationales : List String
+rationales = List.map DebtAnnotation.rationale technicalDebtRegistry
+
+statuses : List String
+statuses = List.map DebtAnnotation.status technicalDebtRegistry
+
+priorities : List Priority
+priorities = List.map DebtAnnotation.priority technicalDebtRegistry
+
+-- Check for cycles in priority dependencies (simple demo)
+noCycles : List Priority → Bool
+noCycles ps = true  -- Placeholder: implement cycle detection as needed
+

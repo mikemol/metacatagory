@@ -1,0 +1,39 @@
+module Examples.TechnicalDebtExample where
+
+open import Metamodel as M
+open import PropertyRegistry as PR
+open import Agda.Builtin.List
+open import Agda.Builtin.String
+
+-- Example: Annotate a postulate with technical debt
+postulate
+  foo : M.Identifier
+  bar : M.Identifier
+
+-- Technical debt annotation record
+record DebtAnnotation : Set where
+  constructor mkDebt
+  field
+    id        : M.Identifier
+    rationale : String
+    status    : String
+
+open DebtAnnotation public
+
+-- Annotate each item
+fooDebt : DebtAnnotation
+fooDebt = mkDebt foo "Legacy algorithm, needs refactor" "open"
+
+barDebt : DebtAnnotation
+barDebt = mkDebt bar "Blocked by upstream API" "blocked"
+
+-- Automated registry of all technical debt
+technicalDebtRegistry : List DebtAnnotation
+technicalDebtRegistry = fooDebt ∷ barDebt ∷ []
+
+-- Example: Export rationale/status for reporting
+rationales : List String
+rationales = List.map DebtAnnotation.rationale technicalDebtRegistry
+
+statuses : List String
+statuses = List.map DebtAnnotation.status technicalDebtRegistry

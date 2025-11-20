@@ -88,6 +88,19 @@ data DenotationExpr : Set where
   dStr : String -> DenotationExpr
 
 ------------------------------------------------------------------------
+-- Technical Debt Annotation (for cybernetic code quality)
+------------------------------------------------------------------------
+
+-- ...existing code...
+
+------------------------------------------------------------------------
+-- Technical Debt Predicate (Curry-Howard-Lambek style)
+------------------------------------------------------------------------
+
+TechnicalDebt : Identifier → Set
+TechnicalDebt id = ⊤
+
+------------------------------------------------------------------------
 -- II. Syntax Primitives
 ------------------------------------------------------------------------
 

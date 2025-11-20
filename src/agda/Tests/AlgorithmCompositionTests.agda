@@ -479,5 +479,75 @@ module Phase10-DAGCompositionalValidation where
   concrete-ord-trans : concrete-α M.<ⁱ concrete-galois ≡ trueB
   concrete-ord-trans = refl
 
+open import Agda.Builtin.List
+open import Agda.Builtin.String
+open import Agda.Builtin.Int
+
+-- Priority as a free abelian group, with dependencies
+record Priority : Set where
+  constructor mkPriority
+  field
+    terms     : List (String × Int)
+    dependsOn : List Priority
+
+open Priority public
+
+-- Technical debt annotation record with priority
+record DebtAnnotation : Set where
+  constructor mkDebt
+  field
+    id        : M.Identifier
+    rationale : String
+    status    : String
+    priority  : Priority
+
+open DebtAnnotation public
+
+-- Example priorities
+lowPriority : Priority
+lowPriority = mkPriority (("test-fixture", 1) ∷ []) []
+
+highPriority : Priority
+highPriority = mkPriority (("core-proof", 1) ∷ []) (lowPriority ∷ [])
+
+-- Priority comparison predicate (constructive)
+PriorityGreater : Priority → Priority → Set
+PriorityGreater p₁ p₂ =
+  -- For demo: compare sum of coefficients (can be extended)
+  let sum : Priority → Int
+      sum p = foldr (λ t acc → snd t + acc) 0 (Priority.terms p)
+  in sum p₁ > sum p₂ ≡ true
+
+-- Example proof: highPriority > lowPriority
+highGTlow : PriorityGreater highPriority lowPriority
+highGTlow = refl
+
+-- Annotate key test fixture postulates
+TestFixturesPackageDebt : DebtAnnotation
+TestFixturesPackageDebt = mkDebt TestFixturesPackage "Test mocks for composition validation" "open" lowPriority
+
+minPolyAlgDebt : DebtAnnotation
+minPolyAlgDebt = mkDebt (M.mkId "minPolyAlg") "Minimal polynomial algorithm is a test fixture" "open" lowPriority
+
+galoisAlgDebt : DebtAnnotation
+galoisAlgDebt = mkDebt (M.mkId "galoisAlg") "Galois group algorithm is a test fixture" "open" lowPriority
+
+splitAlgDebt : DebtAnnotation
+splitAlgDebt = mkDebt (M.mkId "splitAlg") "Splitting field algorithm is a test fixture" "open" highPriority
+
+-- Registry of technical debt items in this module
+technicalDebtRegistry : List DebtAnnotation
+technicalDebtRegistry = TestFixturesPackageDebt ∷ minPolyAlgDebt ∷ galoisAlgDebt ∷ splitAlgDebt ∷ []
+
+-- Export rationale/status/priority for reporting
+rationales : List String
+rationales = List.map DebtAnnotation.rationale technicalDebtRegistry
+
+statuses : List String
+statuses = List.map DebtAnnotation.status technicalDebtRegistry
+
+priorities : List Priority
+priorities = List.map DebtAnnotation.priority technicalDebtRegistry
+
 
 

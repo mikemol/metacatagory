@@ -76,3 +76,7 @@ HasGeneratorId = M.mkId "HasGenerator"
 -- Functor-level properties
 AlgebraicFunctorId : M.Identifier
 AlgebraicFunctorId = M.mkId "AlgebraicFunctor"
+
+-- Technical debt property identifier
+TechnicalDebtId : M.Identifier
+TechnicalDebtId = M.mkId "TechnicalDebt"
