@@ -8,7 +8,7 @@ open import Algebra.Foundation
 open import Algebra.Rings.Basic
 open import Algebra.Fields.Basic
 open import Metamodel as M
-open import Agda.Builtin.Sigma using (Σ; _,_)
+open import Agda.Builtin.Sigma using (Σ) hiding (_,_)
 
 -- ============================================================================
 -- Experiment: Automatic Evidence Detection
