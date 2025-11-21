@@ -65,7 +65,6 @@ p₁ ⟫ p₂ = mkPhase (λ a → p₂ $ₚ (p₁ $ₚ a))
 
 infixr 8 _⟫_
 
--- Product type for parallel composition (since we don't have stdlib)
 record _×_ {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
   constructor _,_
   field
@@ -76,6 +75,22 @@ open _×_ public
 
 infixr 4 _×_
 infixr 5 _,_
+
+-- Dependent pair (Sigma type)
+record Σ {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : A → Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
+  constructor _,ₛ_
+  field
+    fst : A
+    snd : B fst
+
+open Σ public
+
+infixr 4 Σ
+infixr 5 _,ₛ_
+
+-- Example usage:
+--   Σ ℕ (λ n → List n)
+--   (n ,ₛ xs)
 
 -- Parallel composition: two independent phases that can run simultaneously
 -- Output is a product (pair) of results

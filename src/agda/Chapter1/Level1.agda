@@ -1,35 +1,13 @@
 module Chapter1.Level1 where
 
+open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Unit     using (⊤; tt)
-open import Agda.Builtin.Bool     using (Bool)
-open import Agda.Builtin.String   using (String)
-open import Agda.Builtin.List     using (List; []; _∷_)
-open import Agda.Builtin.Equality using (_≡_)
+open import Agda.Builtin.Equality using (_≡_; refl)
+open import Agda.Builtin.String using (String)
 
--- Reuse basic identifiers/terminals and logical propositions from the metamodel
 open import Metamodel as M
 open import PropertyRegistry as P
-
-------------------------------------------------------------------------
--- Helpers
-------------------------------------------------------------------------
--- NonEmpty is defined in Metamodel
-open M using (NonEmpty; ne)
-open NonEmpty public
-
--- Product type (used throughout)
-infixr 4 _,_
-record _×_ (A B : Set) : Set where
-  constructor _,_
-  field fst : A
-        snd : B
-open _×_ public
-
-------------------------------------------------------------------------
--- Supporting primitives for this level
-------------------------------------------------------------------------
-
--- Names of axioms referenced in promotions
+open import Core.Phase using (_×_; _,_) public
 data AxiomName : Set where
   IdentityAxiomName         : AxiomName
   AssociativityAxiomName    : AxiomName
@@ -876,25 +854,25 @@ record DualityMappingAxiom : Set where
 
 -- Fixed mapping presets captured by constructors (using × defined earlier)
 DualityMappingPreset : Set
-DualityMappingPreset = List (ConceptName × ConceptName)
+DualityMappingPreset = List (Core.Phase.Σ ConceptName (λ _ → ConceptName))
 
 -- (_×_ product type defined earlier in Helpers section)
 
 -- Example canonical preset list (TERMINAL↔INITIAL, PRODUCT↔COPRODUCT, ...)
 DUALITY_PRESET : DualityMappingPreset
 DUALITY_PRESET =
-  (TERMINAL_OBJECT , INITIAL_OBJECT) ∷
-  (INITIAL_OBJECT  , TERMINAL_OBJECT) ∷
-  (PRODUCT         , COPRODUCT)      ∷
-  (COPRODUCT       , PRODUCT)        ∷
-  (PULLBACK        , PUSHOUT)        ∷
-  (PUSHOUT         , PULLBACK)       ∷
-  (EQUALIZER       , COEQUALIZER)    ∷
-  (COEQUALIZER     , EQUALIZER)      ∷
-  (LIMIT           , COLIMIT)        ∷
-  (COLIMIT         , LIMIT)          ∷
-  (MONOMORPHISM    , EPIMORPHISM)    ∷
-  (EPIMORPHISM     , MONOMORPHISM)   ∷
+  Core.Phase._,ₛ_ TERMINAL_OBJECT INITIAL_OBJECT ∷
+  Core.Phase._,ₛ_ INITIAL_OBJECT TERMINAL_OBJECT ∷
+  Core.Phase._,ₛ_ PRODUCT COPRODUCT ∷
+  Core.Phase._,ₛ_ COPRODUCT PRODUCT ∷
+  Core.Phase._,ₛ_ PULLBACK PUSHOUT ∷
+  Core.Phase._,ₛ_ PUSHOUT PULLBACK ∷
+  Core.Phase._,ₛ_ EQUALIZER COEQUALIZER ∷
+  Core.Phase._,ₛ_ COEQUALIZER EQUALIZER ∷
+  Core.Phase._,ₛ_ LIMIT COLIMIT ∷
+  Core.Phase._,ₛ_ COLIMIT LIMIT ∷
+  Core.Phase._,ₛ_ MONOMORPHISM EPIMORPHISM ∷
+  Core.Phase._,ₛ_ EPIMORPHISM MONOMORPHISM ∷
   []
 
 -- Dual theorem inference
