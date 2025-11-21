@@ -1,19 +1,28 @@
-# flag_unannotated_debt.py
-"""
-Script to flag unannotated technical debt in Agda registries.
-"""
-import sys
-import re
+import json
 
-def flag_unannotated(filename):
-    with open(filename) as f:
-        lines = f.readlines()
-    for i, line in enumerate(lines):
-        if 'TODO' in line or 'FIXME' in line:
-            print(f"Line {i+1}: {line.strip()}")
+# Load badge script output (e.g., deferred-files.json)
+with open(".github/badges/deferred-files.json") as f:
+    badge_data = json.load(f)
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: flag_unannotated_debt.py <agda_file>")
-        sys.exit(1)
-    flag_unannotated(sys.argv[1])
+# Load Agda registry export
+with open("agda-technicaldebt.json") as f:
+    agda_registry = json.load(f)
+
+# Extract all annotated IDs from Agda registry
+agda_ids = set(item["id"] for item in agda_registry)
+
+# Find all postulates/TODOs/FIXMEs in badge data
+unannotated = []
+for filename, data in badge_data.items():
+    for key in ["postulates", "todo", "fixme"]:
+        count = data.get(key, 0)
+        if count > 0:
+            # For each, check if annotated in Agda registry
+            # (You may want to extract actual identifiers from source for finer granularity)
+            if filename not in agda_ids:
+                unannotated.append({"file": filename, "type": key, "count": count})
+
+# Report unannotated debt
+print("Unannotated technical debt items:")
+for item in unannotated:
+    print(f"{item['file']}: {item['type']} ({item['count']})")
