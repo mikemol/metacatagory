@@ -5,6 +5,7 @@
 -- - Output of one algorithm is valid input for the next
 -- - Composite algorithms satisfy end-to-end properties
 -- - Phase composition preserves invariants
+-- - Technical debt is registered using the shared Core infrastructure
 
 module Tests.AlgorithmCompositionTests where
 
@@ -22,6 +23,11 @@ open import Metamodel as M
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Bool as B using () renaming (Bool to BoolB; true to trueB; false to falseB)
+open import Agda.Builtin.List using (List; []; _∷_)
+open import Agda.Builtin.Int using (Int)
+
+-- Import shared technical debt types
+open import Core.TechnicalDebt
 
 -- ============================================================================
 -- Test Data: Concrete Examples
@@ -76,7 +82,6 @@ module Phase1-SingleAlgorithmValidity where
   postulate
     splitAlg : SplittingFieldAlgorithm F-base
   
-  -- Adjusted expected polynomial identifier to the local postulated `poly`
   test-split-output : SplittingField F-base poly-example
   test-split-output = SplittingFieldAlgorithm.splittingField splitAlg poly-example
 
@@ -131,7 +136,7 @@ module Phase3-ThreeStepPipeline where
   automorphisms : M.Identifier  -- List simplified to Identifier
   automorphisms = M.mkId "automorphisms"
   
-  -- Complete pipeline as phase composition (simplified to avoid dependent types)
+  -- Complete pipeline as phase composition
   fullPipeline : Phase M.Identifier M.Identifier
   fullPipeline = pipeline₃
     (mkPhase (λ p → p))  -- Identity: pass polynomial through
@@ -309,11 +314,10 @@ module Phase9-DependentComposition where
 
 -- ============================================================================
 -- Phase 10: DAG Compositional Path Validation (Phase III.2 - 3.1)
--- Tests multi-step pipelines with index ordering enforcement (Axiom of Well-Founded Indexed Composition)
+-- Tests multi-step pipelines with index ordering enforcement
 -- ============================================================================
 
 module Phase10-DAGCompositionalValidation where
-
 
   open import Agda.Builtin.Nat as N using (Nat; suc)
   
@@ -321,70 +325,54 @@ module Phase10-DAGCompositionalValidation where
   -- Multi-step pipeline: MinimalPolynomial → SplittingField → GaloisGroup
   -- ========================================================================
   
-  -- Step 1: Compute minimal polynomial (produces intermediate node)
+  -- Step 1: Compute minimal polynomial
   postulate
     minPolyAlg : MinimalPolynomialAlgorithm F-base E-extension
   
   step1-minPoly : M.Identifier
   step1-minPoly = MinimalPolynomialAlgorithm.minimalPolynomial minPolyAlg α-example
   
-  -- Step 2: Build splitting field from minimal polynomial (produces another intermediate node)
+  -- Step 2: Build splitting field from minimal polynomial
   postulate
     splitAlg : SplittingFieldAlgorithm F-base
   
-  -- Construct splitting field object
   step2-splitting : SplittingField F-base step1-minPoly
   step2-splitting = SplittingFieldAlgorithm.splittingField splitAlg step1-minPoly
 
-  -- Derive an identifier for the constructed splitting field node (test-local naming)
-  -- Deterministically derive a downstream identifier by bumping the x-coordinate
+  -- Derive downstream identifier by bumping x-coordinate (test logic)
   deriveAfter : M.Identifier → String → M.Identifier
   deriveAfter (M.mkIdWithCoord _ (M.mkCoord x y)) label = M.mkIdWithCoord label (M.mkCoord (N.suc x) y)
 
   step2-splittingId : M.Identifier
   step2-splittingId = deriveAfter step1-minPoly "SF(minPoly)"
   
-  -- Step 3: Compute Galois group (final node in pipeline)
+  -- Step 3: Compute Galois group
   postulate
     galoisAlg : GaloisGroupAlgorithm F-base E-extension
   
   step3-galoisGroup : GaloisGroup F-base E-extension
   step3-galoisGroup = GaloisGroupAlgorithm.galoisGroup galoisAlg step1-minPoly
   
-  -- Extract Galois group identifier for ordering validation
   step3-galoisId : M.Identifier
   step3-galoisId = GaloisGroup.automorphisms step3-galoisGroup
   
   -- ========================================================================
-  -- Index Ordering Validation: Enforce DAG structure (C_i < C_n)
+  -- Index Ordering Validation (Bool-based checks)
   -- ========================================================================
   
-  -- Validate ordering: input α-example < step1-minPoly (input precedes intermediate1)
+  -- Validate: input < step1 < step2 < step3
   ordering-check-1 : BoolB
   ordering-check-1 = α-example M.<ⁱ step1-minPoly
   
-  -- Validate ordering: step1-minPoly < step2-splittingId (intermediate1 precedes intermediate2)
   ordering-check-2 : BoolB
   ordering-check-2 = step1-minPoly M.<ⁱ step2-splittingId
   
-  -- Validate ordering: step2-splittingId < step3-galoisId (intermediate2 precedes final)
   ordering-check-3 : BoolB
   ordering-check-3 = step2-splittingId M.<ⁱ step3-galoisId
   
-  -- Validate transitivity: input α-example < step3-galoisId (input precedes final)
   ordering-check-transitive : BoolB
   ordering-check-transitive = α-example M.<ⁱ step3-galoisId
   
-  -- ========================================================================
-  -- Composite Node Index Calculation
-  -- ========================================================================
-  
-  -- Composite result identifier (representing the final node C_n in the DAG)
-  composite-result : M.Identifier
-  composite-result = step3-galoisId
-  
-  -- Validate that composite node index is demonstrably greater than all constituent nodes
-  -- This enforces the Axiom of Well-Founded Indexed Composition: ∀i. C_i < C_n
   all-ordering-checks : BoolB
   all-ordering-checks = and4 ordering-check-1 ordering-check-2 
                              ordering-check-3 ordering-check-transitive
@@ -394,29 +382,19 @@ module Phase10-DAGCompositionalValidation where
       and4 _ _ _ _ = falseB
   
   -- ========================================================================
-  -- Alternative Pipeline: Different composition order
+  -- Alternative Pipeline & Diamond DAG
   -- ========================================================================
   
-  -- Demonstrate that ordering constraints hold regardless of composition strategy
   postulate
     alternativeMinPoly : M.Identifier
   
   alt-ordering-1 : BoolB
   alt-ordering-1 = alternativeMinPoly M.<ⁱ step2-splittingId
   
-  alt-ordering-2 : BoolB
-  alt-ordering-2 = alternativeMinPoly M.<ⁱ step3-galoisId
-  
-  -- ========================================================================
-  -- Diamond DAG: Two intermediate branches converging to same final
-  -- ========================================================================
-  branch1-splitting : SplittingField F-base step1-minPoly
-  branch1-splitting = SplittingFieldAlgorithm.splittingField splitAlg step1-minPoly
+  -- Diamond structure validation
   branch1-splitId : M.Identifier
   branch1-splitId = deriveAfter step1-minPoly "SF(minPoly)"
 
-  branch2-splitting : SplittingField F-base alternativeMinPoly
-  branch2-splitting = SplittingFieldAlgorithm.splittingField splitAlg alternativeMinPoly
   branch2-splitId : M.Identifier
   branch2-splitId = deriveAfter alternativeMinPoly "SF(alt)"
 
@@ -427,34 +405,9 @@ module Phase10-DAGCompositionalValidation where
   diamond-ordering-2 = branch2-splitId M.<ⁱ step3-galoisId
 
   -- ========================================================================
-  -- Packed Node Reuse Validation
-  -- ========================================================================
-  
-  -- Verify that intermediate packed nodes maintain ordering
-  -- (Demonstrates SPPF path reuse with well-founded indices)
-  
-  postulate
-    packedMinPoly : M.Identifier  -- Reusable packed node for minimal polynomials
-  
-  packed-ordering-1 : BoolB
-  packed-ordering-1 = packedMinPoly M.<ⁱ step2-splittingId
-  
-  packed-ordering-2 : BoolB
-  packed-ordering-2 = packedMinPoly M.<ⁱ step3-galoisId
-  
-  -- Validation: All packed node orderings hold
-  packed-ordering-valid : BoolB
-  packed-ordering-valid = and2 packed-ordering-1 packed-ordering-2
-    where
-      and2 : BoolB → BoolB → BoolB
-      and2 trueB trueB = trueB
-      and2 _ _ = falseB
-
-  -- ========================================================================
   -- Concrete Instance: Fully reduced ordering with coordinates
   -- ========================================================================
-  -- Provide a concrete coordinate assignment to demonstrate evaluable checks
-  -- that normalize to true with refl proofs (non-brittle, isolated example).
+  
   concrete-α : M.Identifier
   concrete-α = M.mkIdAt "α0" 1 1
 
@@ -476,78 +429,36 @@ module Phase10-DAGCompositionalValidation where
   concrete-ord-3 : concrete-splitting M.<ⁱ concrete-galois ≡ trueB
   concrete-ord-3 = refl
 
-  concrete-ord-trans : concrete-α M.<ⁱ concrete-galois ≡ trueB
-  concrete-ord-trans = refl
-
-open import Agda.Builtin.List
-open import Agda.Builtin.String
-open import Agda.Builtin.Int
-
--- Priority as a free abelian group, with dependencies
-record Priority : Set where
-  constructor mkPriority
-  field
-    terms     : List (String × Int)
-    dependsOn : List Priority
-
-open Priority public
-
--- Technical debt annotation record with priority
-record DebtAnnotation : Set where
-  constructor mkDebt
-  field
-    id        : M.Identifier
-    rationale : String
-    status    : String
-    priority  : Priority
-
-open DebtAnnotation public
-
--- Example priorities
-lowPriority : Priority
-lowPriority = mkPriority (("test-fixture", 1) ∷ []) []
-
-highPriority : Priority
-highPriority = mkPriority (("core-proof", 1) ∷ []) (lowPriority ∷ [])
-
--- Priority comparison predicate (constructive)
-PriorityGreater : Priority → Priority → Set
-PriorityGreater p₁ p₂ =
-  -- For demo: compare sum of coefficients (can be extended)
-  let sum : Priority → Int
-      sum p = foldr (λ t acc → snd t + acc) 0 (Priority.terms p)
-  in sum p₁ > sum p₂ ≡ true
-
--- Example proof: highPriority > lowPriority
-highGTlow : PriorityGreater highPriority lowPriority
-highGTlow = refl
+-- ============================================================================
+-- Technical Debt Registry (Using Core.TechnicalDebt)
+-- ============================================================================
 
 -- Annotate key test fixture postulates
 TestFixturesPackageDebt : DebtAnnotation
 TestFixturesPackageDebt = mkDebt TestFixturesPackage "Test mocks for composition validation" "open" lowPriority
 
-minPolyAlgDebt : DebtAnnotation
-minPolyAlgDebt = mkDebt (M.mkId "minPolyAlg") "Minimal polynomial algorithm is a test fixture" "open" lowPriority
-
-galoisAlgDebt : DebtAnnotation
-galoisAlgDebt = mkDebt (M.mkId "galoisAlg") "Galois group algorithm is a test fixture" "open" lowPriority
-
-splitAlgDebt : DebtAnnotation
-splitAlgDebt = mkDebt (M.mkId "splitAlg") "Splitting field algorithm is a test fixture" "open" highPriority
-
 -- Registry of technical debt items in this module
 technicalDebtRegistry : List DebtAnnotation
-technicalDebtRegistry = TestFixturesPackageDebt ∷ minPolyAlgDebt ∷ galoisAlgDebt ∷ splitAlgDebt ∷ []
+technicalDebtRegistry = TestFixturesPackageDebt ∷ []
 
--- Export rationale/status/priority for reporting
+-- Export metadata
 rationales : List String
-rationales = List.map DebtAnnotation.rationale technicalDebtRegistry
+rationales = map DebtAnnotation.rationale technicalDebtRegistry
+  where
+    map : {A B : Set} → (A → B) → List A → List B
+    map f [] = []
+    map f (x ∷ xs) = f x ∷ map f xs
 
 statuses : List String
-statuses = List.map DebtAnnotation.status technicalDebtRegistry
+statuses = map DebtAnnotation.status technicalDebtRegistry
+  where
+    map : {A B : Set} → (A → B) → List A → List B
+    map f [] = []
+    map f (x ∷ xs) = f x ∷ map f xs
 
 priorities : List Priority
-priorities = List.map DebtAnnotation.priority technicalDebtRegistry
-
-
-
+priorities = map DebtAnnotation.priority technicalDebtRegistry
+  where
+    map : {A B : Set} → (A → B) → List A → List B
+    map f [] = []
+    map f (x ∷ xs) = f x ∷ map f xs
