@@ -40,7 +40,7 @@ DIAGRAMS_DIR = $(BUILD_DIR)/diagrams
 # --- Targets ---
 
 .PHONY: all check check-coverage docs docs-md docs1 docs2 docs3 docs-algebra clean help
-.PHONY: venv report diagram search test-tools
+.PHONY: venv report diagram search test-tools combined-agda-txt
 
 # Default: typecheck everything
 all: check check-tests
@@ -164,6 +164,10 @@ test-tools: venv
 	@$(PYTHON) scripts/phase_diagram.py --out-dir /tmp/metacatagory-test
 	@$(PYTHON) scripts/search_algo.py --q "test"
 	@echo "All tools tested successfully."
+
+# Combine Agda files into a single artifact
+combined-agda-txt:
+	python3 scripts/combine_agda.py
 
 # Ensure directories exist
 $(REPORTS_DIR):
