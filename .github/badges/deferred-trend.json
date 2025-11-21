@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
   "label": "debt \u0394",
-  "message": "+2",
-  "color": "red"
+  "message": "0",
+  "color": "lightgrey"
 }
