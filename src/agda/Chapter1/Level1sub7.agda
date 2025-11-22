@@ -406,7 +406,7 @@ postulate
     -> Proof (CategoryPropertyS C) CauchyViaDistributorsName
 
 ------------------------------------------------------------------------
--- Notes: Structural encoding of 1/7.ebnf covering 2-categories, 2-functors,
+-- Notes: Structural encoding of 2-Categories, Bicategories, and Distributors, 2-functors,
 -- modifications, n-categories, 2-limits, bilimits, lax functors, pseudo-functors,
 -- bicategories, distributors, and Cauchy completeness via distributors.
 -- CATEGORY prose preserved as comments. Bridge postulates connect axiom

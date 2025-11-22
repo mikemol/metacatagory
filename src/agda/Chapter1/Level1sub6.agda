@@ -315,7 +315,7 @@ postulate
     -> Proof (C.AdjunctionS F G C D) C.TriangleIdentitiesName
 
 ------------------------------------------------------------------------
--- Notes: Structural encoding of 1/6.ebnf covering exact functors, left exact
+-- Notes: Structural encoding of Exact Functors and Regular Cardinals, left exact
 -- reflection, flat functors, regular cardinals, Cauchy completeness, and the
 -- general adjoint functor theorem. CATEGORY prose preserved as comments.
 -- Bridge postulates connect theorem records to Core.Proof.

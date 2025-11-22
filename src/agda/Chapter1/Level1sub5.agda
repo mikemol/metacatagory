@@ -359,7 +359,7 @@ postulate
     -> Proof (CategoryPropertyS C) C.SubobjectLatticeCompletenessName
 
 ------------------------------------------------------------------------
--- Notes: Structural encoding of 1/5.ebnf covering graphs, path categories,
+-- Notes: Structural encoding of Graphs, Fractions, and Factorization, path categories,
 -- calculus of fractions, orthogonal subcategories, factorization systems,
 -- and universal closure operations. CATEGORY prose preserved as comments.
 -- Bridge postulates connect theorem records to Core.Proof.

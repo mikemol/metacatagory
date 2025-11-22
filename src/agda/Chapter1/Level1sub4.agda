@@ -242,6 +242,6 @@ postulate
     -> Proof (InjectiveS (InjectiveObject.I obj)) InjectiveLiftingName
 
 ------------------------------------------------------------------------
--- Notes: Structural encoding of 1/4.ebnf. CATEGORY prose preserved as
+-- Notes: Structural encoding of Subobject Theory. CATEGORY prose preserved as
 -- comments. Bridge postulates connect axiom records to Core.Proof.
 ------------------------------------------------------------------------

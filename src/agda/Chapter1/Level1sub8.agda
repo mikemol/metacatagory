@@ -198,6 +198,6 @@ postulate
 
 ------------------------------------------------------------------------
 -- Notes: Structural encoding of Chapter 8 (Internal Category Theory).
--- Records mirror EBNF productions. Bridge postulates connect new constructs
+-- Records mirror the formal categorical definition structure. Bridge postulates connect new constructs
 -- to unified Proof system via ambient category properties.
 ------------------------------------------------------------------------
