@@ -630,5 +630,5 @@ postulate
                                  (TorsionTheoryDeclaration.category decl)) C.TorsionTheoryAxiomsName
 
 ------------------------------------------------------------------------
--- End of structural encoding for 2/1.ebnf (Abelian categories & related concepts)
+-- End of structural encoding for Abelian categories & related concepts
 ------------------------------------------------------------------------

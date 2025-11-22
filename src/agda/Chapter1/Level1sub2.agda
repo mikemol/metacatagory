@@ -11,7 +11,7 @@ open import Core      as C
 
 -- Local helpers
 
--- A simple stand-in for expression-like terms appearing in EBNF equations
+-- A simple stand-in for expression-like terms appearing in structural equations
 Expr : Set
 Expr = String
 
@@ -440,7 +440,7 @@ record InitialityEquivalence : Set where
   field unit : ⊤
 
 ------------------------------------------------------------------------
--- Notes: This module mirrors src/ebnf/1/2.ebnf with structural records.
+-- Notes: This module formalizes Limits and Colimits with structural records.
 -- Many fields are simplified to Identifiers and Strings (Expr) to keep
 -- the module self-contained. CATEGORY narratives are preserved as comments.
 ------------------------------------------------------------------------

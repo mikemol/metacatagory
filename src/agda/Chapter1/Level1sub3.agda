@@ -348,7 +348,7 @@ postulate
                C.LeftAdjPreservesColimitsName
 
 ------------------------------------------------------------------------
--- Notes: Structural encoding of 1/3.ebnf. CATEGORY narratives preserved
+-- Notes: Structural encoding of Adjunctions. CATEGORY narratives preserved
 -- as comments near each construct. Bridge functions into the unified proof
 -- layer (Core.Proof) can be added incrementally where needed.
 ------------------------------------------------------------------------

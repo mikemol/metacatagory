@@ -1,5 +1,5 @@
 -- Level3_2: Sheaves on Locales (Chapter 3, Section 2)
--- This module encodes the structural content of Section 2 from the EBNF grammar.
+-- This module encodes the structural content of Section 2 (Sheaves on Locales).
 -- It covers presheaves, sheaves, gluing axioms, Grothendieck toposes, etale spaces,
 -- stalks, change of base functors, Ω-sets, and sheaves of rings/modules.
 

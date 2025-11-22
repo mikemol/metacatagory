@@ -458,8 +458,8 @@ record EffectiveDescentMorphism : Set where
 
 -- Note: Monad-related structures can be integrated with the proof layer
 -- using the generic scaffolding when needed. For now, structural records
--- capture the semantic content from 2/4.ebnf.
+-- capture the semantic content of Monad Theory.
 
 ------------------------------------------------------------------------
--- End of structural encoding for 2/4.ebnf (Monads)
+-- End of structural encoding for Monads
 ------------------------------------------------------------------------

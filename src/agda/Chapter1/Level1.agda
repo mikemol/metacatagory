@@ -8,6 +8,7 @@ open import Agda.Builtin.String using (String)
 open import Metamodel as M
 open import PropertyRegistry as P
 open import Core.Phase using (_×_; _,_) public
+
 data AxiomName : Set where
   IdentityAxiomName         : AxiomName
   AssociativityAxiomName    : AxiomName
@@ -175,7 +176,7 @@ postulate
   Holds     : M.Proposition -> Set
   AxiomProp : (subject : Subject) -> (ax : AxiomName) -> M.Proposition
 
--- Concrete proposition constructors reflecting the EBNF typing prose
+-- Concrete proposition constructors reflecting the categorical typing prose
 postulate
   AssocProp    : (G : M.Identifier) -> M.Proposition
   IdProp       : (G : M.Identifier) -> M.Proposition
@@ -693,7 +694,7 @@ record MorphismMapping : Set where
 open MorphismMapping public
 
 ------------------------------------------------------------------------
--- Declarations mirroring the EBNF productions
+-- Declarations mirroring the categorical productions
 ------------------------------------------------------------------------
 
 -- PreCategoryDeclaration ::= PRECATEGORY ...
@@ -819,7 +820,8 @@ record InverseMorphism : Set where
   field f : M.Identifier
 
 -- Theorems
-record TheoremDeclaration : Set where
+-- FIXED: TheoremDeclaration needs to be Set₁ because it contains M.Proposition (which is Set₁)
+record TheoremDeclaration : Set₁ where
   constructor THEOREM
   field name : String
         prop : M.Proposition
@@ -843,7 +845,8 @@ record CategoryPropertyDefinition : Set where
 postulate
   op : M.Proposition -> M.Proposition
 
-record DualStatement : Set where
+-- FIXED: DualStatement needs to be Set₁ because it contains M.Proposition (which is Set₁)
+record DualStatement : Set₁ where
   constructor _^op
   field P : M.Proposition
 
@@ -883,7 +886,7 @@ record DualTheoremInference : Set where
 -- CATEGORY: Functorial mapping of proofs under duality.
 
 ------------------------------------------------------------------------
--- Notes: This file mirrors src/ebnf/1/1.ebnf as Agda records/enums.
+-- Notes: This file formalizes the base Category Theory concepts as Agda records/enums.
 -- The typing/CATEGORY annotations are preserved as comments or opaque
 -- proof placeholders (⊤) when appropriate would be added later.
 ------------------------------------------------------------------------

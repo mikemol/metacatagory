@@ -245,5 +245,5 @@ postulate
               C.BarrEmbeddingTheoremName
 
 ------------------------------------------------------------------------
--- End of structural encoding for 2/2.ebnf (Regular & Barr-exact categories)
+-- End of structural encoding for Regular & Barr-exact categories
 ------------------------------------------------------------------------
