@@ -1,7 +1,7 @@
 module Tests.GrothendieckFibrationsChecklist where
 
 open import Tests.ObligationAdapters as A
-open import Agda.Builtin.Bool as B using (Bool)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (refl; _≡_)
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Chapter2.Level2sub8 as C2S8
@@ -22,7 +22,7 @@ emptyFibrationDecl = record { projectionFunctor = record { totalCategory = C1S3.
 emptyFibrationDeclarationAdapter : A.FibrationDeclarationAdapter
 emptyFibrationDeclarationAdapter = A.mkFibrationDeclarationAdapter emptyFibrationDecl (M.mkId "") refl (λ _ → emptyFibrationDecl)
 
-_ : A.isFilledFibrationDeclaration emptyFibrationDeclarationAdapter ≡ B.true
+_ : A.isFilledFibrationDeclaration emptyFibrationDeclarationAdapter ≡ true
 _ = refl
 
 emptyCartesianArrowDecl : C2S8.CartesianArrow
@@ -31,7 +31,7 @@ emptyCartesianArrowDecl = record { projectionFunctor = record { totalCategory = 
 emptyCartesianArrowAdapter : A.CartesianArrowAdapter
 emptyCartesianArrowAdapter = A.mkCartesianArrowAdapter emptyCartesianArrowDecl (M.mkId "") refl (λ _ → emptyCartesianArrowDecl)
 
-_ : A.isFilledCartesianArrow emptyCartesianArrowAdapter ≡ B.true
+_ : A.isFilledCartesianArrow emptyCartesianArrowAdapter ≡ true
 _ = refl
 
 emptyCartesianFunctorDecl : C2S8.CartesianFunctorDeclaration
@@ -40,7 +40,7 @@ emptyCartesianFunctorDecl = record { sourceFibration = emptyFibrationDecl ; targ
 emptyCartesianFunctorDeclarationAdapter : A.CartesianFunctorDeclarationAdapter
 emptyCartesianFunctorDeclarationAdapter = A.mkCartesianFunctorDeclarationAdapter emptyCartesianFunctorDecl (M.mkId "") refl (λ _ → emptyCartesianFunctorDecl)
 
-_ : A.isFilledCartesianFunctorDeclaration emptyCartesianFunctorDeclarationAdapter ≡ B.true
+_ : A.isFilledCartesianFunctorDeclaration emptyCartesianFunctorDeclarationAdapter ≡ true
 _ = refl
 
 emptyCategoryOfFibrationsDecl : C2S8.CategoryOfFibrations
@@ -49,7 +49,7 @@ emptyCategoryOfFibrationsDecl = record { baseCategory = C1S3.CATEGORY (M.mkId ""
 emptyCategoryOfFibrationsAdapter : A.CategoryOfFibrationsAdapter
 emptyCategoryOfFibrationsAdapter = A.mkCategoryOfFibrationsAdapter emptyCategoryOfFibrationsDecl (C1S3.CATEGORY (M.mkId "")) refl (λ _ → emptyCategoryOfFibrationsDecl)
 
-_ : A.isFilledCategoryOfFibrations emptyCategoryOfFibrationsAdapter ≡ B.true
+_ : A.isFilledCategoryOfFibrations emptyCategoryOfFibrationsAdapter ≡ true
 _ = refl
 
 emptyPseudofunctorFromFibrationDecl : C2S8.PseudofunctorFromFibration
@@ -58,7 +58,7 @@ emptyPseudofunctorFromFibrationDecl = record { fibration = emptyFibrationDecl ; 
 emptyPseudofunctorFromFibrationAdapter : A.PseudofunctorFromFibrationAdapter
 emptyPseudofunctorFromFibrationAdapter = A.mkPseudofunctorFromFibrationAdapter emptyPseudofunctorFromFibrationDecl (λ _ → emptyPseudofunctorFromFibrationDecl)
 
-_ : A.isFilledPseudofunctorFromFibration emptyPseudofunctorFromFibrationAdapter ≡ B.true
+_ : A.isFilledPseudofunctorFromFibration emptyPseudofunctorFromFibrationAdapter ≡ true
 _ = refl
 
 emptyGrothendieckConstructionDecl : C2S8.GrothendieckConstruction
@@ -67,7 +67,7 @@ emptyGrothendieckConstructionDecl = record { basePseudofunctor = ⊤ ; totalCate
 emptyGrothendieckConstructionAdapter : A.GrothendieckConstructionAdapter
 emptyGrothendieckConstructionAdapter = A.mkGrothendieckConstructionAdapter emptyGrothendieckConstructionDecl (C1S3.CATEGORY (M.mkId "")) refl (λ _ → emptyGrothendieckConstructionDecl)
 
-_ : A.isFilledGrothendieckConstruction emptyGrothendieckConstructionAdapter ≡ B.true
+_ : A.isFilledGrothendieckConstruction emptyGrothendieckConstructionAdapter ≡ true
 _ = refl
 
 emptyGrothendieckEquivalenceTheoremDecl : C2S8.GrothendieckEquivalenceTheorem
@@ -76,7 +76,7 @@ emptyGrothendieckEquivalenceTheoremDecl = record { baseCategory = C1S3.CATEGORY 
 emptyGrothendieckEquivalenceTheoremAdapter : A.GrothendieckEquivalenceTheoremAdapter
 emptyGrothendieckEquivalenceTheoremAdapter = A.mkGrothendieckEquivalenceTheoremAdapter emptyGrothendieckEquivalenceTheoremDecl (C1S3.CATEGORY (M.mkId "")) refl (λ _ → emptyGrothendieckEquivalenceTheoremDecl)
 
-_ : A.isFilledGrothendieckEquivalenceTheorem emptyGrothendieckEquivalenceTheoremAdapter ≡ B.true
+_ : A.isFilledGrothendieckEquivalenceTheorem emptyGrothendieckEquivalenceTheoremAdapter ≡ true
 _ = refl
 
 emptyFibredAdjunctionDecl : C2S8.FibredAdjunctionDeclaration
@@ -85,7 +85,7 @@ emptyFibredAdjunctionDecl = record { leftAdjoint = emptyCartesianFunctorDecl ; r
 emptyFibredAdjunctionDeclarationAdapter : A.FibredAdjunctionDeclarationAdapter
 emptyFibredAdjunctionDeclarationAdapter = A.mkFibredAdjunctionDeclarationAdapter emptyFibredAdjunctionDecl emptyCartesianFunctorDecl emptyCartesianFunctorDecl refl refl (λ _ → emptyFibredAdjunctionDecl)
 
-_ : A.isFilledFibredAdjunctionDeclaration emptyFibredAdjunctionDeclarationAdapter ≡ B.true
+_ : A.isFilledFibredAdjunctionDeclaration emptyFibredAdjunctionDeclarationAdapter ≡ true
 _ = refl
 
 emptyBeckChevalleyConditionDecl : C2S8.BeckChevalleyCondition
@@ -94,7 +94,7 @@ emptyBeckChevalleyConditionDecl = record { fibredAdjunction = emptyFibredAdjunct
 emptyBeckChevalleyConditionAdapter : A.BeckChevalleyConditionAdapter
 emptyBeckChevalleyConditionAdapter = A.mkBeckChevalleyConditionAdapter emptyBeckChevalleyConditionDecl (λ _ → emptyBeckChevalleyConditionDecl)
 
-_ : A.isFilledBeckChevalleyCondition emptyBeckChevalleyConditionAdapter ≡ B.true
+_ : A.isFilledBeckChevalleyCondition emptyBeckChevalleyConditionAdapter ≡ true
 _ = refl
 
 emptyFibrationCompletenessCriterionDecl : C2S8.FibrationCompletenessCriterionTheorem
@@ -103,7 +103,7 @@ emptyFibrationCompletenessCriterionDecl = record { fibration = emptyFibrationDec
 emptyFibrationCompletenessCriterionTheoremAdapter : A.FibrationCompletenessCriterionTheoremAdapter
 emptyFibrationCompletenessCriterionTheoremAdapter = A.mkFibrationCompletenessCriterionTheoremAdapter emptyFibrationCompletenessCriterionDecl (λ _ → emptyFibrationCompletenessCriterionDecl)
 
-_ : A.isFilledFibrationCompletenessCriterionTheorem emptyFibrationCompletenessCriterionTheoremAdapter ≡ B.true
+_ : A.isFilledFibrationCompletenessCriterionTheorem emptyFibrationCompletenessCriterionTheoremAdapter ≡ true
 _ = refl
 
 emptyLocallySmallFibrationDecl : C2S8.LocallySmallFibration
@@ -112,7 +112,7 @@ emptyLocallySmallFibrationDecl = record { fibration = emptyFibrationDecl ; allFi
 emptyLocallySmallFibrationAdapter : A.LocallySmallFibrationAdapter
 emptyLocallySmallFibrationAdapter = A.mkLocallySmallFibrationAdapter emptyLocallySmallFibrationDecl (λ _ → emptyLocallySmallFibrationDecl)
 
-_ : A.isFilledLocallySmallFibration emptyLocallySmallFibrationAdapter ≡ B.true
+_ : A.isFilledLocallySmallFibration emptyLocallySmallFibrationAdapter ≡ true
 _ = refl
 
 emptyRefinedGrothendieckEquivalenceDecl : C2S8.RefinedGrothendieckEquivalenceTheorem
@@ -121,7 +121,7 @@ emptyRefinedGrothendieckEquivalenceDecl = record { baseCategory = C1S3.CATEGORY 
 emptyRefinedGrothendieckEquivalenceTheoremAdapter : A.RefinedGrothendieckEquivalenceTheoremAdapter
 emptyRefinedGrothendieckEquivalenceTheoremAdapter = A.mkRefinedGrothendieckEquivalenceTheoremAdapter emptyRefinedGrothendieckEquivalenceDecl (C1S3.CATEGORY (M.mkId "")) refl (λ _ → emptyRefinedGrothendieckEquivalenceDecl)
 
-_ : A.isFilledRefinedGrothendieckEquivalenceTheorem emptyRefinedGrothendieckEquivalenceTheoremAdapter ≡ B.true
+_ : A.isFilledRefinedGrothendieckEquivalenceTheorem emptyRefinedGrothendieckEquivalenceTheoremAdapter ≡ true
 _ = refl
 
 emptyCodomainFibrationDecl : C2S8.CodomainFibration
@@ -130,7 +130,7 @@ emptyCodomainFibrationDecl = record { baseCategory = C1S3.CATEGORY (M.mkId "") ;
 emptyCodomainFibrationAdapter : A.CodomainFibrationAdapter
 emptyCodomainFibrationAdapter = A.mkCodomainFibrationAdapter emptyCodomainFibrationDecl (C1S3.CATEGORY (M.mkId "")) refl (λ _ → emptyCodomainFibrationDecl)
 
-_ : A.isFilledCodomainFibration emptyCodomainFibrationAdapter ≡ B.true
+_ : A.isFilledCodomainFibration emptyCodomainFibrationAdapter ≡ true
 _ = refl
 
 emptyLindenbaumTarskiFibrationDecl : C2S8.LindenbaumTarskiFibration
@@ -139,7 +139,7 @@ emptyLindenbaumTarskiFibrationDecl = record { theory = record { language = ⊤ ;
 emptyLindenbaumTarskiFibrationAdapter : A.LindenbaumTarskiFibrationAdapter
 emptyLindenbaumTarskiFibrationAdapter = A.mkLindenbaumTarskiFibrationAdapter emptyLindenbaumTarskiFibrationDecl (λ _ → emptyLindenbaumTarskiFibrationDecl)
 
-_ : A.isFilledLindenbaumTarskiFibration emptyLindenbaumTarskiFibrationAdapter ≡ B.true
+_ : A.isFilledLindenbaumTarskiFibration emptyLindenbaumTarskiFibrationAdapter ≡ true
 _ = refl
 
 emptyFamiliesFibrationDecl : C2S8.FamiliesFibration
@@ -148,7 +148,7 @@ emptyFamiliesFibrationDecl = record { baseCategory = C1S3.CATEGORY (M.mkId "") ;
 emptyFamiliesFibrationAdapter : A.FamiliesFibrationAdapter
 emptyFamiliesFibrationAdapter = A.mkFamiliesFibrationAdapter emptyFamiliesFibrationDecl (C1S3.CATEGORY (M.mkId "")) refl (λ _ → emptyFamiliesFibrationDecl)
 
-_ : A.isFilledFamiliesFibration emptyFamiliesFibrationAdapter ≡ B.true
+_ : A.isFilledFamiliesFibration emptyFamiliesFibrationAdapter ≡ true
 _ = refl
 
 -- ============================================================================
@@ -296,14 +296,14 @@ test-verify-comparison-component =
   let obj = M.mkIdAt "extension-E" 12 130
   in GF.verifyComparisonComponent test-base-change obj
 
-_ : test-verify-comparison-component ≡ B.true
+_ : test-verify-comparison-component ≡ true
 _ = refl
 
 -- Verify: Beck-Chevalley isomorphism exists
 test-verify-beck-chevalley-iso : Bool
 test-verify-beck-chevalley-iso = GF.verifyBeckChevalleyIsomorphism test-beck-chevalley
 
-_ : test-verify-beck-chevalley-iso ≡ B.true
+_ : test-verify-beck-chevalley-iso ≡ true
 _ = refl
 
 -- Verify: Global Beck-Chevalley for specific square
@@ -311,7 +311,7 @@ test-verify-global-beck-chevalley : Bool
 test-verify-global-beck-chevalley = 
   GF.verifyGlobalBeckChevalley test-beck-chevalley-fibration test-pullback-square
 
-_ : test-verify-global-beck-chevalley ≡ B.true
+_ : test-verify-global-beck-chevalley ≡ true
 _ = refl
 
 -- ============================================================================
@@ -361,7 +361,7 @@ test-lift-id = GF.CartesianLift.liftId test-cartesian-lift
 
 -- All Beck-Chevalley work uses phase 12
 test-phase-consistency : Bool
-test-phase-consistency = B.true  -- All identifiers use phase 12 coordinates
+test-phase-consistency = true  -- All identifiers use phase 12 coordinates
 
-_ : test-phase-consistency ≡ B.true
+_ : test-phase-consistency ≡ true
 _ = refl

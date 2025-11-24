@@ -23,8 +23,8 @@ open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Equality using (_≡_)
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Core.Phase using (Maybe; just; nothing)
-open import Agda.Builtin.Nat using (Nat)
-open import Agda.Builtin.Bool as B using (Bool; true; false)
+open import Agda.Builtin.Nat using (Nat; zero; suc)
+open import Core.Phase using (Bool; true; false)
 
 -- ============================================================================
 -- Test Fixtures Package
@@ -328,7 +328,7 @@ module Phase10-HoTTPathIsomorphism where
   -- ========================================================================
   
   -- Test: Coordinate ordering is preserved after roundtrip
-  test-ordering-preserved : M.Identifier → M.Identifier → B.Bool
+  test-ordering-preserved : M.Identifier → M.Identifier → Bool
   test-ordering-preserved id₁ id₂ =
     let id₁' = roundtripPhase $ₚ id₁
         id₂' = roundtripPhase $ₚ id₂
@@ -336,13 +336,13 @@ module Phase10-HoTTPathIsomorphism where
         roundtrip-order = id₁' M.<ⁱ id₂'
     in equalBool original-order roundtrip-order
     where
-      equalBool : B.Bool → B.Bool → B.Bool
-      equalBool B.true B.true = B.true
-      equalBool B.false B.false = B.true
-      equalBool _ _ = B.false
+      equalBool : Bool → Bool → Bool
+      equalBool true true = true
+      equalBool false false = true
+      equalBool _ _ = false
   
   -- Test: Specific coordinate values are preserved
-  test-coordinate-preservation : M.Identifier → B.Bool
+  test-coordinate-preservation : M.Identifier → Bool
   test-coordinate-preservation id =
     let ext = serializeIdWithCoord id
         id' = deserializeIdWithCoord ext
@@ -350,14 +350,14 @@ module Phase10-HoTTPathIsomorphism where
         M.mkIdWithCoord _ (M.mkCoord x' y') = id'
     in andBool (equalNat x x') (equalNat y y')
     where
-      equalNat : Nat → Nat → B.Bool
-      equalNat Agda.Builtin.Nat.zero Agda.Builtin.Nat.zero = B.true
-      equalNat (Agda.Builtin.Nat.suc m) (Agda.Builtin.Nat.suc n) = equalNat m n
-      equalNat _ _ = B.false
+      equalNat : Nat → Nat → Bool
+      equalNat zero zero = true
+      equalNat (suc m) (suc n) = equalNat m n
+      equalNat _ _ = false
       
-      andBool : B.Bool → B.Bool → B.Bool
-      andBool B.true b = b
-      andBool B.false _ = B.false
+      andBool : Bool → Bool → Bool
+      andBool true b = b
+      andBool false _ = false
   
   -- ========================================================================
   -- Concrete Validation Examples
@@ -374,20 +374,20 @@ module Phase10-HoTTPathIsomorphism where
   exId3 = M.mkIdAt "gamma" 1 5
   
   -- Validate coordinate preservation for concrete examples
-  test-ex1-preserved : test-coordinate-preservation exId1 ≡ B.true
+  test-ex1-preserved : test-coordinate-preservation exId1 ≡ true
   test-ex1-preserved = _≡_.refl
   
-  test-ex2-preserved : test-coordinate-preservation exId2 ≡ B.true
+  test-ex2-preserved : test-coordinate-preservation exId2 ≡ true
   test-ex2-preserved = _≡_.refl
   
-  test-ex3-preserved : test-coordinate-preservation exId3 ≡ B.true
+  test-ex3-preserved : test-coordinate-preservation exId3 ≡ true
   test-ex3-preserved = _≡_.refl
   
   -- Validate ordering preservation
-  test-ordering-ex1-ex2 : test-ordering-preserved exId1 exId2 ≡ B.true
+  test-ordering-ex1-ex2 : test-ordering-preserved exId1 exId2 ≡ true
   test-ordering-ex1-ex2 = _≡_.refl
   
-  test-ordering-ex1-ex3 : test-ordering-preserved exId1 exId3 ≡ B.true
+  test-ordering-ex1-ex3 : test-ordering-preserved exId1 exId3 ≡ true
   test-ordering-ex1-ex3 = _≡_.refl
   
   -- ========================================================================
@@ -418,7 +418,7 @@ module Phase10-HoTTPathIsomorphism where
       }
   
   -- Validate that pipeline ordering constraints are preserved
-  validatePipelineOrdering : ExternalPipeline → B.Bool
+  validatePipelineOrdering : ExternalPipeline → Bool
   validatePipelineOrdering pipe =
     let α' = deserializeIdWithCoord (ExternalPipeline.inputId pipe)
         minPoly' = deserializeIdWithCoord (ExternalPipeline.intermediateId pipe)
@@ -430,7 +430,7 @@ module Phase10-HoTTPathIsomorphism where
   
   -- Defer concrete validation (would require evaluating minPolyAlg)
   postulate
-    test-pipeline-ordering : validatePipelineOrdering (serializePipeline testAlpha) ≡ B.true
+    test-pipeline-ordering : validatePipelineOrdering (serializePipeline testAlpha) ≡ true
 
 -- ============================================================================
 -- Technical Debt Registry (Updated to use Core)

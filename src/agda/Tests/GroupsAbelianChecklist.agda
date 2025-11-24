@@ -2,7 +2,7 @@
 
 module Tests.GroupsAbelianChecklist where
 
-import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Metamodel as M
@@ -68,7 +68,7 @@ freeAbelianGroupDecl = record
 freeAbelianGroupAdapt : A.FreeAbelianGroupAdapter
 freeAbelianGroupAdapt = A.mkFreeAbelianGroupAdapter X freeAbelianGroupDecl (M.mkId "freeAbSet") refl
 
-freeAbelianGroupStatus : A.isFilledFreeAbelianGroup freeAbelianGroupAdapt ≡ B.true
+freeAbelianGroupStatus : A.isFilledFreeAbelianGroup freeAbelianGroupAdapt ≡ true
 freeAbelianGroupStatus = refl
 
 -- Categorical assertions
@@ -90,7 +90,7 @@ freeForgetfulAdjAbDecl = record
 freeForgetfulAdjAbAdapt : A.FreeForgetfulAdjunctionAbAdapter
 freeForgetfulAdjAbAdapt = A.mkFreeForgetfulAdjunctionAbAdapter freeForgetfulAdjAbDecl (M.mkId "freeAbFunctor") refl
 
-freeForgetfulAdjAbStatus : A.isFilledFreeForgetfulAdjunctionAb freeForgetfulAdjAbAdapt ≡ B.true
+freeForgetfulAdjAbStatus : A.isFilledFreeForgetfulAdjunctionAb freeForgetfulAdjAbAdapt ≡ true
 freeForgetfulAdjAbStatus = refl
 
 -- Categorical assertions
@@ -114,7 +114,7 @@ grothendieckGroupDecl = record
 grothendieckGroupAdapt : A.GrothendieckGroupAdapter
 grothendieckGroupAdapt = A.mkGrothendieckGroupAdapter monoidDecl grothendieckGroupDecl (M.mkId "grothSet") refl
 
-grothendieckGroupStatus : A.isFilledGrothendieckGroup grothendieckGroupAdapt ≡ B.true
+grothendieckGroupStatus : A.isFilledGrothendieckGroup grothendieckGroupAdapt ≡ true
 grothendieckGroupStatus = refl
 
 -- Categorical assertions

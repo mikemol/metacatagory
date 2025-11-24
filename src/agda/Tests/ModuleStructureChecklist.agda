@@ -4,7 +4,7 @@
 module Tests.ModuleStructureChecklist where
 
 open import Agda.Builtin.Equality
-open import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤; tt)
 
 import Metamodel as M
@@ -328,22 +328,22 @@ structureTheoremPIDAdapt : A.StructureTheoremPIDAdapter
 structureTheoremPIDAdapt = A.mkStructureTheoremPIDAdapter pidDecl leftModuleOverPIDDecl structureTheoremPIDDecl pidDecl refl
 
 -- Status assertions
-_ : A.isFilledProjectiveModule projectiveModuleAdapt ≡ B.true
+_ : A.isFilledProjectiveModule projectiveModuleAdapt ≡ true
 _ = refl
 
-_ : A.isFilledInjectiveModule injectiveModuleAdapt ≡ B.true
+_ : A.isFilledInjectiveModule injectiveModuleAdapt ≡ true
 _ = refl
 
-_ : A.isFilledTorsionElement torsionElementAdapt ≡ B.true
+_ : A.isFilledTorsionElement torsionElementAdapt ≡ true
 _ = refl
 
-_ : A.isFilledTorsionSubmodule torsionSubmoduleAdapt ≡ B.true
+_ : A.isFilledTorsionSubmodule torsionSubmoduleAdapt ≡ true
 _ = refl
 
-_ : A.isFilledTorsionFreeModule torsionFreeModuleAdapt ≡ B.true
+_ : A.isFilledTorsionFreeModule torsionFreeModuleAdapt ≡ true
 _ = refl
 
-_ : A.isFilledStructureTheoremPID structureTheoremPIDAdapt ≡ B.true
+_ : A.isFilledStructureTheoremPID structureTheoremPIDAdapt ≡ true
 _ = refl
 
 -- Categorical assertions (omitted; covered by adapter wiring)

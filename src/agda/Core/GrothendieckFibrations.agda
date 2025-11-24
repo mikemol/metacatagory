@@ -8,7 +8,7 @@ open import Metamodel as M
 open import Algebra.Foundation
 open import Chapter2.Level2sub8 as C2S8
 open import Chapter1.Level1sub3 as C1S3
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤)
 
 -- ============================================================================

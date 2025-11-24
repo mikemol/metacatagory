@@ -3,7 +3,7 @@
 module Core.PolynomialsF2 where
 
 open import Agda.Builtin.List using (List; []; _∷_)
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
 open import Agda.Primitive using (Level; lzero)
 
@@ -13,17 +13,20 @@ PolyF2 : Set
 PolyF2 = List Bool
 
 -- xor for Bool
+
 _xor_ : Bool → Bool → Bool
 false xor b = b
 true  xor false = true
 true  xor true  = false
 
 -- and for Bool
+
 _and_ : Bool → Bool → Bool
 false and _ = false
 true  and b = b
 
 -- Check if polynomial is zero (all coefficients false)
+
 polyZero? : PolyF2 → Bool
 polyZero? [] = true
 polyZero? (false ∷ xs) = polyZero? xs

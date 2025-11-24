@@ -5,7 +5,7 @@
 
 module Tests.YonedaChecklist where
 
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤)
 open import Tests.ObligationAdapters as A

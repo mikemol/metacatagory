@@ -16,8 +16,8 @@ open import Algebra.Fields.Advanced
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
-import Agda.Builtin.Bool as B
-open B using () renaming (Bool to Boolean; true to tt; false to ff)
+open import Core.Phase using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 
 -- ============================================================================
 -- Example 1: Constructive Minimal Polynomial

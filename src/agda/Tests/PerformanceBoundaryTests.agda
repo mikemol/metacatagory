@@ -23,7 +23,7 @@ open import Agda.Builtin.Unit using (⊤)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Primitive using (Level; _⊔_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
-open import Agda.Builtin.Bool using (true; false) renaming (Bool to Bool')
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.List using (List; []; _∷_)
 
 -- Re-export complexity classification from Core.AlgorithmComplexity
@@ -395,28 +395,28 @@ module Phase14-GrowthInstrumentation where
   test-expansion-pattern = GM.metacatagoryExpansionPattern
   
   -- Verify: Growth rate is valid
-  test-verify-growth-rate : Bool'
+  test-verify-growth-rate : Bool
   test-verify-growth-rate = GM.verifyGrowthRate test-growth-rate
   
   _ : test-verify-growth-rate ≡ true
   _ = refl
   
   -- Verify: Phase density is consistent
-  test-verify-density : Bool'
+  test-verify-density : Bool
   test-verify-density = GM.verifyPhaseDensity test-phase-density
   
   _ : test-verify-density ≡ true
   _ = refl
   
   -- Verify: Snapshot is well-formed
-  test-verify-snapshot : Bool'
+  test-verify-snapshot : Bool
   test-verify-snapshot = GM.verifyGrowthSnapshot test-growth-snapshot
   
   _ : test-verify-snapshot ≡ true
   _ = refl
   
   -- Test: Phase 13 has objects allocated
-  test-phase13-has-objects : Bool'
+  test-phase13-has-objects : Bool
   test-phase13-has-objects =
     let count = GM.PhaseDensity.objectCount test-phase-density
     in ltNat zero count
@@ -425,7 +425,7 @@ module Phase14-GrowthInstrumentation where
   _ = refl
   
   -- Test: Multiple phases are used
-  test-multiple-phases : Bool'
+  test-multiple-phases : Bool
   test-multiple-phases =
     let phaseCount = GM.GrowthRate.phasesUsed test-growth-rate
     in ltNat (suc zero) phaseCount

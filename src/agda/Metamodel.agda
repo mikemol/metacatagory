@@ -3,7 +3,7 @@ module Metamodel where
 -- Minimal builtins to avoid external stdlib dependencies
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit     using (⊤; tt)
-open import Agda.Builtin.Bool     using (Bool)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Nat      using (Nat)
 open import Agda.Builtin.Char     using (Char)
 open import Agda.Builtin.String   using (String)
@@ -51,7 +51,7 @@ mkIdAt s x y = mkIdWithCoord s (mkCoord x y)
 _<ᶜ_ : Coordinate -> Coordinate -> Bool
 mkCoord x₁ y₁ <ᶜ mkCoord x₂ y₂ = orBool (lessThanNat x₁ x₂) (andBool (equalNat x₁ x₂) (lessThanNat y₁ y₂))
   where
-    open import Agda.Builtin.Bool using (Bool; true; false)
+    open import Core.Phase using (Bool; true; false)
     
     orBool : Bool -> Bool -> Bool
     orBool true _ = true

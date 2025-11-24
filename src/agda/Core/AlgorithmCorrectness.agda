@@ -19,8 +19,8 @@ open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Core.Phase using (Maybe; nothing; just)
-import Agda.Builtin.Bool as B
-open B using () renaming (Bool to Boolean; true to tt; false to ff)
+open import Core.Phase using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 
 -- ============================================================================
 -- Correctness Specification Infrastructure
@@ -40,7 +40,7 @@ record AlgorithmSatisfiesSpec (Input Output Property : Set₁)
   field
     proof : M.Identifier  -- Actual proof term
     verificationSteps : List M.Identifier
-    isComplete : Boolean
+    isComplete : Bool
 
 -- Correctness certificate bundles specification with proof
 record CorrectnessCertificate (Input Output Property : Set₁) : Set₁ where
@@ -84,7 +84,7 @@ record MinimalPolynomialCorrectness (F E : FieldDeclaration) (α : M.Identifier)
     proveCoefficientsInF : M.Identifier
     
     -- Overall correctness
-    isCorrect : Boolean
+    isCorrect : Bool
 
 -- Build correctness proof from constructive witness
 minimalPolynomialCorrectness :
@@ -114,7 +114,7 @@ minimalPolynomialCorrectness F E α cmp = record
   ; proveMinimality = ConstructiveMinimalPolynomial.minimalityProof cmp
   ; proveMonic = M.mkId "monic-proof"
   ; proveCoefficientsInF = M.mkId "coeffs-proof"
-  ; isCorrect = tt
+  ; isCorrect = true
   }
 
 -- ============================================================================
@@ -152,7 +152,7 @@ record SplittingFieldCorrectness (F : FieldDeclaration) (poly : M.Identifier) : 
     proveMultiplicities : M.Identifier
     
     -- Overall correctness
-    isCorrect : Boolean
+    isCorrect : Bool
 
 -- Build correctness proof from constructive witness
 splittingFieldCorrectness :
@@ -182,7 +182,7 @@ splittingFieldCorrectness F poly csf = record
   ; proveMinimalField = ConstructiveSplittingField.minimalityProof csf
   ; proveFieldExtension = ConstructiveSplittingField.fieldStructure csf
   ; proveMultiplicities = M.mkId "mult-proof"
-  ; isCorrect = tt
+  ; isCorrect = true
   }
 
 -- ============================================================================
@@ -224,7 +224,7 @@ record GaloisGroupCorrectness (F E : FieldDeclaration) : Set₁ where
     proveFundamentalTheorem : M.Identifier
     
     -- Overall correctness
-    isCorrect : Boolean
+    isCorrect : Bool
 
 -- Build correctness proof from constructive witness
 galoisGroupCorrectness :
@@ -258,7 +258,7 @@ galoisGroupCorrectness F E cgg = record
   ; proveInverses = AutomorphismComposition.leftInvProof (ConstructiveGaloisGroup.groupOperation cgg)
   ; proveOrderEquality = ConstructiveGaloisGroup.orderEqualsExtensionDegree cgg
   ; proveFundamentalTheorem = ConstructiveGaloisGroup.latticeCorrespondence cgg
-  ; isCorrect = tt
+  ; isCorrect = true
   }
 
 -- ============================================================================
@@ -293,7 +293,7 @@ record ExtensionDegreeCorrectness (F E : FieldDeclaration) : Set₁ where
     proveTowerLaw : M.Identifier
     
     -- Overall correctness
-    isCorrect : Boolean
+    isCorrect : Bool
 
 -- Build correctness proof from constructive witness
 extensionDegreeCorrectness :
@@ -315,7 +315,7 @@ extensionDegreeCorrectness F E ced = record
   ; proveSpanning = ConstructiveExtensionDegree.spanningProof ced
   ; proveDegreeFormula = ConstructiveExtensionDegree.dimensionFormula ced
   ; proveTowerLaw = M.mkId "tower-proof"
-  ; isCorrect = tt
+  ; isCorrect = true
   }
 
 -- ============================================================================
@@ -348,7 +348,7 @@ record BundleCorrectness (F E : FieldDeclaration) : Set₁ where
     normalClosureIsMinimal : M.Identifier      -- Normal closure has minimal degree
     
     -- Overall bundle correctness
-    allCorrect : Boolean
+    allCorrect : Bool
     consistencyProof : M.Identifier
 
 -- Build bundle correctness from constructive bundle
@@ -468,7 +468,7 @@ record ComplexityCorrectness (Algorithm : Set₁) : Set₁ where
     proveSpaceUsage : M.Identifier
     
     -- Tightness
-    boundsAreTight : Boolean
+    boundsAreTight : Bool
 
 -- ============================================================================
 -- Error Handling Correctness
@@ -478,7 +478,7 @@ record ComplexityCorrectness (Algorithm : Set₁) : Set₁ where
 record ErrorHandlingCorrectness (Input Output Error : Set₁) : Set₁ where
   field
     algorithm : Input → Output
-    errorConditions : Input → Boolean
+    errorConditions : Input → Bool
     errorProduction : Input → Error
     
     -- Correctness properties
@@ -503,7 +503,7 @@ record AlgorithmTotality (Input Output : Set₁) : Set₁ where
 record AlgorithmTermination (Input Output : Set₁) : Set₁ where
   field
     algorithm : Input → Output
-    terminates : Boolean
+    terminates : Bool
     terminationProof : M.Identifier
     maxSteps : M.Identifier  -- Upper bound on iteration count
 

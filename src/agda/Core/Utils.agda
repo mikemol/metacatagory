@@ -1,6 +1,6 @@
 module Core.Utils where
 
-open import Agda.Builtin.Bool public using (Bool; true; false)
+open import Core.Phase public using (Bool; true; false)
 open import Agda.Builtin.Nat public using (Nat; zero; suc; _+_; _*_; _-_)
 open import Agda.Builtin.List public using (List; []; _∷_)
 open import Agda.Builtin.String public using (String; primStringAppend)

@@ -161,7 +161,7 @@ module Phase2-4-IndexedCompositionChecks where
   inj₁ = CoproductProperty.ι₁ indexed-coproduct
 
   -- Bool-based ordering checks (Phase 2.4.1)
-  open import Agda.Builtin.Bool using (Bool)
+  open import Core.Phase using (Bool)
 
   idE<idK : Bool
   idE<idK = M._<ⁱ_ idE idK
@@ -577,7 +577,7 @@ module Phase11-AdjunctionCoherence where
   -- Part 6: Coherence Verification (Bool-based scaffolding)
   -- ========================================================================
   
-  open import Agda.Builtin.Bool using (Bool; true)
+  open import Core.Phase using (Bool; true)
   
   -- Test: Adjunction satisfies coherence conditions
   test-adjunction-coherent : Bool

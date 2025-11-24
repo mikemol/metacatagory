@@ -8,7 +8,7 @@ open import Metamodel as M
 open import Algebra.Foundation
 open import Algebra.Rings.Basic using (FieldDeclaration)
 open import Algebra.Fields.Basic
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 
 -- ============================================================================
 -- Yoneda Embedding
