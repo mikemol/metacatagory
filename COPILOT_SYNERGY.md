@@ -129,7 +129,7 @@ Add new task snippet:
 When generating responses (comments, PR descriptions, summaries):
 
 1.  Start with a one-line outcome statement.
-2.  Use concise bullet sections (≤6 bullets) with bold nouns.
+2.  Use concise bullet sections (≤6 bullets) with **bold nouns**.
 3.  Wrap file paths and commands in backticks.
 4.  Do not paste entire large Agda modules; reference paths.
 5.  For math, use inline `$` or block `$$` with KaTeX-compatible syntax (when needed).
@@ -225,3 +225,17 @@ No change in postulate count.
 ## TL;DR
 
 Consult roadmap → pick task → minimal diff → tests green → update tasks.json → sync issues → document deltas. Preserve ordering, reduce postulates intentionally, defer safely.
+
+***
+
+## Reproducibility & Automation
+
+- Use Makefile targets for setup and automation:
+  - `make venv` — Set up Python environment
+  - `make node-deps` — Install Node dependencies
+  - `make badges` — Generate technical debt badges and metrics
+  - `make docs-all` — Build all documentation
+  - `make deferred-items` — Track deferred items
+  - `make test_report` — Run the full constraint solver and generate test reports
+- See `.github/scripts/README.md` for details on automation scripts and manual invocation.
+- For troubleshooting and process, see `CONTRIBUTING.md` and `src/agda/Tests/README.md`.
