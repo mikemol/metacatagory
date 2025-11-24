@@ -25,14 +25,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y agda pandoc
 
-      - name: Typecheck
-        run: make check
-
-      - name: Build HTML docs
-        run: make docs
-
-      - name: Build Markdown docs
-        run: make docs-md
+      - name: Full CI
+        run: make all docs-all
 
       - name: Publish Markdown docs into docs/ (push only)
         if: github.event_name == 'push'
@@ -67,10 +61,8 @@ jobs:
       - name: Make scripts executable
         run: chmod +x .github/scripts/*.sh
 
-      - name: Scan for deferred items
-        id: scan
-        run: |
-          .github/scripts/detect-deferred-items.sh deferred-items.md
+      - name: Track Deferred Items
+        run: make deferred-items
 
       - name: Upload deferred items report
         uses: actions/upload-artifact@v4
