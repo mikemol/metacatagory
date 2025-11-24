@@ -20,14 +20,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install formatting deps
-        run: |
-          npm install --no-audit --no-fund prettier remark-cli remark-preset-lint-consistent
-      - name: Run prettier
-        run: npx prettier --write '**/*.md'
-      - name: Run markdownlint (non-blocking)
-        continue-on-error: true
-        run: npx markdownlint-cli2 '**/*.md' '!build/**'
+      - name: Markdown auto-fix
+        run: make md-fix
       - name: Commit changes
         run: |
           if ! git diff --quiet; then
