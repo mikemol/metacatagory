@@ -2,6 +2,7 @@
 #
 
 # --- Configuration ---
+.PHONY: all check check-tests check-coverage docs docs-md docs1 docs2 docs3 docs-algebra clean help venv report diagram search test-tools automation badges roadmap-sync deferred-items md-fix md-lint node-deps docs-all
 AGDA ?= agda
 AGDA_FLAGS ?= --no-main
 AGDA_INCLUDE = -i src/agda
@@ -105,7 +106,7 @@ test-tools: venv
 	@$(PYTHON) scripts/search_algo.py --q "test"
 	@echo "All tools tested successfully."
 
-automation: report diagram $(HTML_DIR)/combined.agda.txt
+automation: venv report diagram $(HTML_DIR)/combined.agda.txt
 	@echo "All automation scripts and reports generated."
 
 $(REPORTS_DIR):
@@ -114,23 +115,66 @@ $(REPORTS_DIR):
 $(DIAGRAMS_DIR):
 	@mkdir -p $(DIAGRAMS_DIR)
 
+badges: venv | $(MD_DIR)
+	@echo "Generating technical debt badges and top-offenders.md..."
+	@$(PYTHON) scripts/generate-badges.py --out-dir $(MD_DIR)
+	@echo "Badges and top-offenders.md available in $(MD_DIR)/"
+
+roadmap-sync:
+	@echo "Syncing roadmap issues..."
+	bash .github/scripts/sync-roadmap-issues.sh
+
+deferred-items:
+	@echo "Reviewing deferred items..."
+	bash .github/scripts/detect-deferred-items.sh build/md/deferred-items.md
+
+md-fix:
+	@echo "Auto-formatting markdown files with Prettier and remark..."
+	npm install --no-audit --no-fund prettier remark-cli remark-preset-lint-consistent
+	npx prettier --write '**/*.md'
+	npx remark . --output
+
+node-deps:
+	@echo "Installing Node dependencies for markdown tooling..."
+	npm install --no-audit --no-fund prettier remark-cli remark-preset-lint-consistent markdownlint-cli2@0.13.0
+
+md-fix: node-deps
+	@echo "Auto-formatting markdown files with Prettier and remark..."
+	npx prettier --write '**/*.md'
+	npx remark . --output
+
+md-lint: node-deps
+	@echo "Linting markdown files with markdownlint-cli2..."
+	npx markdownlint-cli2 '**/*.md' '!build/**'
+md-lint:
+	@echo "Linting markdown files with markdownlint-cli2..."
+	npm install --no-audit --no-fund markdownlint-cli2@0.13.0
+	npx markdownlint-cli2 '**/*.md' '!build/**'
+
 help:
 	@echo "Available targets:"
 	@echo ""
 	@echo "  Agda Development:"
-	@echo "    all / check  - Typecheck all Agda chapter indexes and algebra"
-	@echo "    docs         - Generate HTML docs for all chapters and algebra"
-	@echo "    docs1|docs2|docs3 - Generate HTML docs per chapter"
-	@echo "    docs-algebra - Generate HTML docs for algebra modules"
-	@echo "    docs-md      - Generate Markdown docs (requires pandoc)"
-	@echo "    clean        - Remove build artifacts under $(BUILD_DIR)"
+	@echo "    all / check         - Typecheck all Agda chapter indexes and algebra"
+	@echo "    docs                - Generate HTML docs for all chapters and algebra"
+	@echo "    docs1|docs2|docs3   - Generate HTML docs per chapter"
+	@echo "    docs-algebra        - Generate HTML docs for algebra modules"
+	@echo "    docs-md             - Generate Markdown docs (requires pandoc)"
+	@echo "    clean               - Remove build artifacts under $(BUILD_DIR)"
+	@echo "    docs-all            - Generate all docs (HTML + Markdown)"
 	@echo ""
 	@echo "  Tooling & Automation:"
-	@echo "    venv         - Set up Python virtual environment"
-	@echo "    report       - Generate test coverage report (JSON + Markdown)"
-	@echo "    diagram      - Generate phase boundary diagram (DOT format)"
-	@echo "    search       - Search for algorithms by keyword (use QUERY=\"...\")"
-	@echo "    test-tools   - Test all automation scripts"
-	@echo "    automation   - Run all automation scripts and generate reports"
+	@echo "    venv                - Set up Python virtual environment"
+	@echo "    report              - Generate test coverage report (JSON + Markdown)"
+	@echo "    diagram             - Generate phase boundary diagram (DOT format)"
+	@echo "    search              - Search for algorithms by keyword (use QUERY=\"...\")"
+	@echo "    test-tools          - Test all automation scripts"
+	@echo "    automation          - Run all automation scripts and generate reports"
+	@echo "    badges              - Generate technical debt badges and top-offenders.md"
+	@echo "    roadmap-sync        - Sync roadmap issues"
+	@echo "    deferred-items      - Review deferred items"
+	@echo "    md-fix              - Auto-format markdown files"
+	@echo "    md-lint             - Lint markdown files"
+	@echo "    node-deps           - Install Node dependencies for markdown tooling"
 	@echo ""
 	@echo "Variables: AGDA, AGDA_FLAGS, QUERY"
