@@ -10,14 +10,14 @@ For full contextual detail see `ROADMAP-DRAFT.md`. This file focuses on actionab
 
 ## Phase Status Summary (2025-11-19)
 
-- Phase 0: COMPLETE
-- Phase I: COMPLETE
-- Phase II: COMPLETE (focused index closure)
-- Phase III.1–III.4: COMPLETE
-- Phase III.5: DEFERRED (Topos checklist constructor alignment)
-- Phase IV (Adjunctions, Yoneda, Fibrations): PLANNED
-- Phase IV.0 (Algorithmic foundations arithmetic): DEFERRED
-- Phase V (Gödel boundary, growth metrics, HoTT closure): PLANNED
+*   Phase 0: COMPLETE
+*   Phase I: COMPLETE
+*   Phase II: COMPLETE (focused index closure)
+*   Phase III.1–III.4: COMPLETE
+*   Phase III.5: DEFERRED (Topos checklist constructor alignment)
+*   Phase IV (Adjunctions, Yoneda, Fibrations): PLANNED
+*   Phase IV.0 (Algorithmic foundations arithmetic): DEFERRED
+*   Phase V (Gödel boundary, growth metrics, HoTT closure): PLANNED
 
 ## Integration with Issue Workflow
 
@@ -29,9 +29,9 @@ All roadmap issues receive the `roadmap` label. Status changes should be made by
 
 ### Adding / Updating Tasks
 
-1. Edit `.github/roadmap/tasks.json` (add new JSON object).
-2. Commit and push.
-3. Run sync script locally or rely on the scheduled workflow (if enabled).
+1.  Edit `.github/roadmap/tasks.json` (add new JSON object).
+2.  Commit and push.
+3.  Run sync script locally or rely on the scheduled workflow (if enabled).
 
 ### Manual Local Sync
 
@@ -74,21 +74,21 @@ Deferred items (postulates, TODO, etc.) remain separately tracked via the existi
 
 ## Task Categories
 
-- Phase: Milestone-driven structural/semantic evolutions.
-- Ingestion: Textbook-derived coverage expansion.
-- Research: Longer-term theoretical or performance objectives.
+*   Phase: Milestone-driven structural/semantic evolutions.
+*   Ingestion: Textbook-derived coverage expansion.
+*   Research: Longer-term theoretical or performance objectives.
 
 ## Editing Principles
 
-- Keep `tasks.json` small and meaningful; avoid flooding with micro-tasks.
-- Use consistent `id` prefixes: `PHASE-`, `INGEST-`, `RESEARCH-`.
-- Prefer `status` values: `planned`, `in-progress`, `completed`, `deferred`.
+*   Keep `tasks.json` small and meaningful; avoid flooding with micro-tasks.
+*   Use consistent `id` prefixes: `PHASE-`, `INGEST-`, `RESEARCH-`.
+*   Prefer `status` values: `planned`, `in-progress`, `completed`, `deferred`.
 
 ## Next Automation Enhancements (Optional)
 
-- Add status labels automatically (e.g. `status:planned`).
-- Post delta comment on PRs showing changed task counts.
-- Generate progress badge in README via workflow.
+*   Add status labels automatically (e.g. `status:planned`).
+*   Post delta comment on PRs showing changed task counts.
+*   Generate progress badge in README via workflow.
 
 ## Source of Truth Note
 
