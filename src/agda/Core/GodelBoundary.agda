@@ -7,7 +7,7 @@ module Core.GodelBoundary where
 
 open import Core
 open import Metamodel as M
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤)
 open import Agda.Builtin.String using (String)
 

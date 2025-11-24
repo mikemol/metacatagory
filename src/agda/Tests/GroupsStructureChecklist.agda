@@ -2,7 +2,7 @@
 
 module Tests.GroupsStructureChecklist where
 
-import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Metamodel as M
@@ -95,7 +95,7 @@ invFactDecl = record
 invFactAdapt : A.InvariantFactorDecompositionAdapter
 invFactAdapt = A.mkInvariantFactorDecompositionAdapter fgAbelianGroupDecl invFactDecl (M.mkId "freeRank") refl
 
-invFactStatus : A.isFilledInvariantFactorDecomposition invFactAdapt ≡ B.true
+invFactStatus : A.isFilledInvariantFactorDecomposition invFactAdapt ≡ true
 invFactStatus = refl
 
 -- Categorical assertions
@@ -121,7 +121,7 @@ torsionDecl = record
 torsionAdapt : A.TorsionSubgroupAdapter
 torsionAdapt = A.mkTorsionSubgroupAdapter abelianGroupDecl torsionDecl abelianGroupDecl refl
 
-torsionStatus : A.isFilledTorsionSubgroup torsionAdapt ≡ B.true
+torsionStatus : A.isFilledTorsionSubgroup torsionAdapt ≡ true
 torsionStatus = refl
 
 -- Categorical assertions
@@ -134,7 +134,7 @@ _ = refl
 groupActionAdapt : A.GroupActionAdapter
 groupActionAdapt = A.mkGroupActionAdapter G X groupActionDecl G refl
 
-groupActionStatus : A.isFilledGroupAction groupActionAdapt ≡ B.true
+groupActionStatus : A.isFilledGroupAction groupActionAdapt ≡ true
 groupActionStatus = refl
 
 -- Categorical assertions
@@ -154,7 +154,7 @@ orbitDecl = record
 orbitAdapt : A.OrbitAdapter
 orbitAdapt = A.mkOrbitAdapter G X groupActionDecl x orbitDecl groupActionDecl refl
 
-orbitStatus : A.isFilledOrbit orbitAdapt ≡ B.true
+orbitStatus : A.isFilledOrbit orbitAdapt ≡ true
 orbitStatus = refl
 
 -- Categorical assertions
@@ -180,7 +180,7 @@ stabilizerDecl = record
 stabilizerAdapt : A.StabilizerAdapter
 stabilizerAdapt = A.mkStabilizerAdapter G X groupActionDecl x stabilizerDecl groupActionDecl refl
 
-stabilizerStatus : A.isFilledStabilizer stabilizerAdapt ≡ B.true
+stabilizerStatus : A.isFilledStabilizer stabilizerAdapt ≡ true
 stabilizerStatus = refl
 
 -- Categorical assertions
@@ -200,7 +200,7 @@ pGroupDecl = record
 pGroupAdapt : A.PGroupAdapter
 pGroupAdapt = A.mkPGroupAdapter p G pGroupDecl p refl
 
-pGroupStatus : A.isFilledPGroup pGroupAdapt ≡ B.true
+pGroupStatus : A.isFilledPGroup pGroupAdapt ≡ true
 pGroupStatus = refl
 
 -- Categorical assertions
@@ -229,7 +229,7 @@ sylowDecl = record
 sylowAdapt : A.SylowPSubgroupAdapter
 sylowAdapt = A.mkSylowPSubgroupAdapter p G sylowDecl p refl
 
-sylowStatus : A.isFilledSylowPSubgroup sylowAdapt ≡ B.true
+sylowStatus : A.isFilledSylowPSubgroup sylowAdapt ≡ true
 sylowStatus = refl
 
 -- Categorical assertions
@@ -248,7 +248,7 @@ simpleGroupDecl = record
 simpleGroupAdapt : A.SimpleGroupAdapter
 simpleGroupAdapt = A.mkSimpleGroupAdapter G simpleGroupDecl G refl
 
-simpleGroupStatus : A.isFilledSimpleGroup simpleGroupAdapt ≡ B.true
+simpleGroupStatus : A.isFilledSimpleGroup simpleGroupAdapt ≡ true
 simpleGroupStatus = refl
 
 -- Categorical assertions
@@ -268,7 +268,7 @@ compositionSeriesDecl = record
 compositionSeriesAdapt : A.CompositionSeriesAdapter
 compositionSeriesAdapt = A.mkCompositionSeriesAdapter G compositionSeriesDecl G refl
 
-compositionSeriesStatus : A.isFilledCompositionSeries compositionSeriesAdapt ≡ B.true
+compositionSeriesStatus : A.isFilledCompositionSeries compositionSeriesAdapt ≡ true
 compositionSeriesStatus = refl
 
 -- Categorical assertions
@@ -291,7 +291,7 @@ solvableGroupDecl = record
 solvableGroupAdapt : A.SolvableGroupAdapter
 solvableGroupAdapt = A.mkSolvableGroupAdapter G solvableGroupDecl G refl
 
-solvableGroupStatus : A.isFilledSolvableGroup solvableGroupAdapt ≡ B.true
+solvableGroupStatus : A.isFilledSolvableGroup solvableGroupAdapt ≡ true
 solvableGroupStatus = refl
 
 -- Categorical assertions
@@ -314,7 +314,7 @@ nilpotentGroupDecl = record
 nilpotentGroupAdapt : A.NilpotentGroupAdapter
 nilpotentGroupAdapt = A.mkNilpotentGroupAdapter G nilpotentGroupDecl G refl
 
-nilpotentGroupStatus : A.isFilledNilpotentGroup nilpotentGroupAdapt ≡ B.true
+nilpotentGroupStatus : A.isFilledNilpotentGroup nilpotentGroupAdapt ≡ true
 nilpotentGroupStatus = refl
 
 -- Categorical assertions

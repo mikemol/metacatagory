@@ -14,7 +14,7 @@ open import Core.Phase
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
 open import Agda.Builtin.List using (List; []; _∷_)
-open import Agda.Builtin.Bool using (true; false) renaming (Bool to Bool')
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.String using (String)
 open import Agda.Primitive using (Level; lzero; lsuc; _⊔_)
 open import Core.GrowthMetrics as GM  -- Link growth metrics
@@ -79,10 +79,10 @@ record PathCollection (A : Set) : Set where
     pathCount : Nat
 
 -- Check if all paths in a collection are valid
-allPathsValid : {A : Set} → PathCollection A → Bool'
+allPathsValid : {A : Set} → PathCollection A → Bool
 allPathsValid {A} collection = checkPaths (PathCollection.paths collection)
   where
-    checkPaths : List (PathEvidence A) → Bool'
+    checkPaths : List (PathEvidence A) → Bool
     checkPaths [] = true
     checkPaths (p ∷ ps) = checkPaths ps  -- Always valid by construction
 
@@ -103,8 +103,8 @@ record OrderingPreservation : Set where
   constructor mkOrderingPreservation
   field
     id₁ id₂ : M.Identifier
-    originalOrdering : Bool'  -- id₁ <ⁱ id₂
-    transformedOrdering : Bool'  -- id₁' <ⁱ id₂'
+    originalOrdering : Bool  -- id₁ <ⁱ id₂
+    transformedOrdering : Bool  -- id₁' <ⁱ id₂'
     orderingPreserved : originalOrdering ≡ transformedOrdering
 
 -- Collection of ordering preservation evidences
@@ -115,10 +115,10 @@ record OrderingPreservationCollection : Set where
     evidenceCount : Nat
 
 -- Verify all ordering evidences are valid
-allOrderingsPreserved : OrderingPreservationCollection → Bool'
+allOrderingsPreserved : OrderingPreservationCollection → Bool
 allOrderingsPreserved collection = checkOrderings (OrderingPreservationCollection.evidences collection)
   where
-    checkOrderings : List OrderingPreservation → Bool'
+    checkOrderings : List OrderingPreservation → Bool
     checkOrderings [] = true
     checkOrderings (e ∷ es) = checkOrderings es  -- Valid by construction
 
@@ -142,8 +142,8 @@ record GlobalClosureWitness : Set₁ where
     phasesUsed : List Nat
     
     -- Global validity check
-    pathsValidFlag : Bool'
-    orderingsValidFlag : Bool'
+    pathsValidFlag : Bool
+    orderingsValidFlag : Bool
     
     -- Composite closure proof
     closureProof : pathsValidFlag ≡ true
@@ -166,16 +166,16 @@ record PathSnapshot : Set₁ where
     totalOrderings : Nat
     
     -- Validation
-    snapshotValid : Bool'
+    snapshotValid : Bool
 
 -- Verify path snapshot is well-formed
-verifyPathSnapshot : PathSnapshot → Bool'
+verifyPathSnapshot : PathSnapshot → Bool
 verifyPathSnapshot snapshot =
   andBool
     (GlobalClosureWitness.pathsValidFlag (PathSnapshot.globalWitness snapshot))
     (GlobalClosureWitness.orderingsValidFlag (PathSnapshot.globalWitness snapshot))
   where
-    andBool : Bool' → Bool' → Bool'
+    andBool : Bool → Bool → Bool
     andBool true b = b
     andBool false _ = false
 
@@ -183,15 +183,15 @@ verifyPathSnapshot snapshot =
 -- Helper: Boolean operations (local versions renamed to avoid clashes)
 -- ============================================================================
 
-_andPath_ : Bool' → Bool' → Bool'
+_andPath_ : Bool → Bool → Bool
 true andPath b = b
 false andPath _ = false
 
-_orPath_ : Bool' → Bool' → Bool'
+_orPath_ : Bool → Bool → Bool
 true orPath _ = true
 false orPath b = b
 
-notPath : Bool' → Bool'
+notPath : Bool → Bool
 notPath true = false
 notPath false = true
 
@@ -299,7 +299,7 @@ record PathGrowthEvolution : Set₁ where
     pathSnapshot : PathSnapshot
     growthSnapshot : GM.GrowthSnapshot
     phaseAligned : PathSnapshot.snapshotPhase pathSnapshot ≡ GM.GrowthSnapshot.snapshotTimestamp growthSnapshot
-    evolutionValid : Bool'
+    evolutionValid : Bool
 
 -- Timeline of evolution states across phases
 record EvolutionTimeline : Set₁ where
@@ -307,12 +307,12 @@ record EvolutionTimeline : Set₁ where
   field
     evolutions : List PathGrowthEvolution
     timelineLength : Nat
-    allValid : Bool'
+    allValid : Bool
 
-validateTimeline : EvolutionTimeline → Bool'
+validateTimeline : EvolutionTimeline → Bool
 validateTimeline tl = check (EvolutionTimeline.evolutions tl)
   where
-    check : List PathGrowthEvolution → Bool'
+    check : List PathGrowthEvolution → Bool
     check [] = true
     check (e ∷ es) = (PathGrowthEvolution.evolutionValid e) andPath (check es)
 

@@ -17,8 +17,8 @@ open import Algebra.Fields.Advanced
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
-import Agda.Builtin.Bool as B
-open B using () renaming (Bool to Boolean; true to tt; false to ff)
+open import Core.Phase using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Core.Phase using (Maybe; just; nothing)
 
 -- ============================================================================
@@ -55,7 +55,7 @@ module MinimalPolynomialCorrectnessExample where
   minimalityProof = MinimalPolynomialCorrectness.proveMinimality correctness
   
   -- Check overall correctness
-  isCorrect : Boolean
+  isCorrect : Bool
   isCorrect = MinimalPolynomialCorrectness.isCorrect correctness
 
 -- ============================================================================
@@ -95,7 +95,7 @@ module SplittingFieldCorrectnessExample where
   minimalityProof = SplittingFieldCorrectness.proveMinimalField correctness
   
   -- Check overall correctness
-  isCorrect : Boolean
+  isCorrect : Bool
   isCorrect = SplittingFieldCorrectness.isCorrect correctness
 
 -- ============================================================================
@@ -145,7 +145,7 @@ module GaloisGroupCorrectnessExample where
   fundamentalThmProof = GaloisGroupCorrectness.proveFundamentalTheorem correctness
   
   -- Check overall correctness
-  isCorrect : Boolean
+  isCorrect : Bool
   isCorrect = GaloisGroupCorrectness.isCorrect correctness
 
 -- ============================================================================
@@ -186,7 +186,7 @@ module ExtensionDegreeCorrectnessExample where
   towerLawProof = ExtensionDegreeCorrectness.proveTowerLaw correctness
   
   -- Check overall correctness
-  isCorrect : Boolean
+  isCorrect : Bool
   isCorrect = ExtensionDegreeCorrectness.isCorrect correctness
 
 -- ============================================================================
@@ -234,7 +234,7 @@ module BundleCorrectnessExample where
   normalMinimal = BundleCorrectness.normalClosureIsMinimal correctness
   
   -- Check overall bundle correctness
-  allCorrect : Boolean
+  allCorrect : Bool
   allCorrect = BundleCorrectness.allCorrect correctness
 
 -- ============================================================================
@@ -347,7 +347,7 @@ module ComplexityCorrectnessExample where
     ; proveWorstCase = M.mkId "worst-case-proof"
     ; proveAverageCase = M.mkId "avg-case-proof"
     ; proveSpaceUsage = M.mkId "space-proof"
-    ; boundsAreTight = tt
+    ; boundsAreTight = true
     }
 
 -- ============================================================================
@@ -369,7 +369,7 @@ module ErrorHandlingCorrectnessExample where
   errorCorrectness : ErrorHandlingCorrectness FieldDeclaration (AlgebraicElement F E α) MinPolyError
   errorCorrectness = record
     { algorithm = λ _ → mkAlgebraicElement F E α
-    ; errorConditions = λ _ → ff  -- No errors for valid inputs
+    ; errorConditions = λ _ → false  -- No errors for valid inputs
     ; errorProduction = λ _ → notAlgebraic
     ; validInputsSucceed = M.mkId "valid-succeed"
     ; invalidInputsFail = M.mkId "invalid-fail"
@@ -400,7 +400,7 @@ module TotalityExample where
   minpolyTerminates : AlgorithmTermination FieldDeclaration (AlgebraicElement F E α)
   minpolyTerminates = record
     { algorithm = λ _ → mkAlgebraicElement F E α
-    ; terminates = tt
+    ; terminates = true
     ; terminationProof = M.mkId "terminates"
     ; maxSteps = M.mkId "max-iterations"
     }

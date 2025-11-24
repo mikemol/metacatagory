@@ -4,7 +4,7 @@
 module Tests.PolynomialExtensionsChecklist where
 
 open import Agda.Builtin.Equality
-open import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤)
 
 import Metamodel as M
@@ -189,22 +189,22 @@ primeSpectrumAdapt : A.PrimeSpectrumAdapter
 primeSpectrumAdapt = A.mkPrimeSpectrumAdapter commRingDecl primeSpectrumDecl (M.mkId "zariski-top") refl
 
 -- Status assertions
-_ : A.isFilledMultivariatePolynomialRing multivariatePolyAdapt ≡ B.true
+_ : A.isFilledMultivariatePolynomialRing multivariatePolyAdapt ≡ true
 _ = refl
 
 -- Categorical assertions for MultivariatePolynomialRing (omitted; smoke-tested via adapter wiring)
 
-_ : A.isFilledContentOfPolynomial contentAdapt ≡ B.true
+_ : A.isFilledContentOfPolynomial contentAdapt ≡ true
 _ = refl
 
 -- Categorical assertions for ContentOfPolynomial (omitted)
 
-_ : A.isFilledPrimitivePolynomial primPolyAdapt ≡ B.true
+_ : A.isFilledPrimitivePolynomial primPolyAdapt ≡ true
 _ = refl
 
 -- Categorical assertions for PrimitivePolynomial (omitted)
 
-_ : A.isFilledPrimeSpectrum primeSpectrumAdapt ≡ B.true
+_ : A.isFilledPrimeSpectrum primeSpectrumAdapt ≡ true
 _ = refl
 
 -- Categorical assertions for PrimeSpectrum (omitted)

@@ -22,7 +22,7 @@ open import Core.UniversalProperties
 open import Metamodel as M
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Equality using (_≡_; refl)
-open import Agda.Builtin.Bool as B using () renaming (Bool to BoolB; true to trueB; false to falseB)
+-- Removed obsolete Agda.Builtin.Bool renaming import; all usages now use Core.Phase.Bool, true, false
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Int using (Int)
 
@@ -361,25 +361,25 @@ module Phase10-DAGCompositionalValidation where
   -- ========================================================================
   
   -- Validate: input < step1 < step2 < step3
-  ordering-check-1 : BoolB
+  ordering-check-1 : Bool
   ordering-check-1 = α-example M.<ⁱ step1-minPoly
-  
-  ordering-check-2 : BoolB
+
+  ordering-check-2 : Bool
   ordering-check-2 = step1-minPoly M.<ⁱ step2-splittingId
-  
-  ordering-check-3 : BoolB
+
+  ordering-check-3 : Bool
   ordering-check-3 = step2-splittingId M.<ⁱ step3-galoisId
-  
-  ordering-check-transitive : BoolB
+
+  ordering-check-transitive : Bool
   ordering-check-transitive = α-example M.<ⁱ step3-galoisId
-  
-  all-ordering-checks : BoolB
+
+  all-ordering-checks : Bool
   all-ordering-checks = and4 ordering-check-1 ordering-check-2 
                              ordering-check-3 ordering-check-transitive
     where
-      and4 : BoolB → BoolB → BoolB → BoolB → BoolB
-      and4 trueB trueB trueB trueB = trueB
-      and4 _ _ _ _ = falseB
+      and4 : Bool → Bool → Bool → Bool → Bool
+      and4 true true true true = true
+      and4 _ _ _ _ = false
   
   -- ========================================================================
   -- Alternative Pipeline & Diamond DAG
@@ -388,7 +388,7 @@ module Phase10-DAGCompositionalValidation where
   postulate
     alternativeMinPoly : M.Identifier
   
-  alt-ordering-1 : BoolB
+  alt-ordering-1 : Bool
   alt-ordering-1 = alternativeMinPoly M.<ⁱ step2-splittingId
   
   -- Diamond structure validation
@@ -398,10 +398,10 @@ module Phase10-DAGCompositionalValidation where
   branch2-splitId : M.Identifier
   branch2-splitId = deriveAfter alternativeMinPoly "SF(alt)"
 
-  diamond-ordering-1 : BoolB
+  diamond-ordering-1 : Bool
   diamond-ordering-1 = branch1-splitId M.<ⁱ step3-galoisId
 
-  diamond-ordering-2 : BoolB
+  diamond-ordering-2 : Bool
   diamond-ordering-2 = branch2-splitId M.<ⁱ step3-galoisId
 
   -- ========================================================================
@@ -420,13 +420,13 @@ module Phase10-DAGCompositionalValidation where
   concrete-galois : M.Identifier
   concrete-galois = M.mkIdAt "gal0" 4 1
 
-  concrete-ord-1 : concrete-α M.<ⁱ concrete-minPoly ≡ trueB
+  concrete-ord-1 : concrete-α M.<ⁱ concrete-minPoly ≡ true
   concrete-ord-1 = refl
 
-  concrete-ord-2 : concrete-minPoly M.<ⁱ concrete-splitting ≡ trueB
+  concrete-ord-2 : concrete-minPoly M.<ⁱ concrete-splitting ≡ true
   concrete-ord-2 = refl
 
-  concrete-ord-3 : concrete-splitting M.<ⁱ concrete-galois ≡ trueB
+  concrete-ord-3 : concrete-splitting M.<ⁱ concrete-galois ≡ true
   concrete-ord-3 = refl
 
 -- ============================================================================

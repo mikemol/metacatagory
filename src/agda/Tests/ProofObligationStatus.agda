@@ -4,7 +4,8 @@
 module Tests.ProofObligationStatus where
 
 open import Agda.Builtin.Equality using (_≡_; refl)
-import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
+open import Core.Phase using (true)
 open import Metamodel as M
 
 open import Core.AlgorithmCorrectness
@@ -20,7 +21,7 @@ import Examples.AlgorithmCorrectnessExamples as Ex
 open module MinPoly = Ex.MinimalPolynomialCorrectnessExample
 
 -- Asserts that the correctness proof was constructed and marked correct
-minpoly-is-filled : MinimalPolynomialCorrectness.isCorrect MinPoly.correctness ≡ B.true
+minpoly-is-filled : MinimalPolynomialCorrectness.isCorrect MinPoly.correctness ≡ true
 minpoly-is-filled = refl
 
 -- Asserts a nontrivial linkage: root proof comes from the constructive witness
@@ -35,7 +36,7 @@ minpoly-root-linked = refl
 
 open module Split = Ex.SplittingFieldCorrectnessExample
 
-split-is-filled : SplittingFieldCorrectness.isCorrect Split.correctness ≡ B.true
+split-is-filled : SplittingFieldCorrectness.isCorrect Split.correctness ≡ true
 split-is-filled = refl
 
 split-minimality-linked :
@@ -49,7 +50,7 @@ split-minimality-linked = refl
 
 open module Galois = Ex.GaloisGroupCorrectnessExample
 
-galois-is-filled : GaloisGroupCorrectness.isCorrect Galois.correctness ≡ B.true
+galois-is-filled : GaloisGroupCorrectness.isCorrect Galois.correctness ≡ true
 galois-is-filled = refl
 
 galois-order-linked :
@@ -63,7 +64,7 @@ galois-order-linked = refl
 
 open module ExtDeg = Ex.ExtensionDegreeCorrectnessExample
 
-extdeg-is-filled : ExtensionDegreeCorrectness.isCorrect ExtDeg.correctness ≡ B.true
+extdeg-is-filled : ExtensionDegreeCorrectness.isCorrect ExtDeg.correctness ≡ true
 extdeg-is-filled = refl
 
 extdeg-dimension-linked :

@@ -5,7 +5,7 @@ module Tests.RealWorldAlgorithmsTests where
 open import Agda.Primitive using (Level)
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Equality using (_≡_; refl)
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 
 open import Core.Phase using
   ( Phase
