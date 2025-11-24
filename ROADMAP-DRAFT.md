@@ -4,7 +4,7 @@ Status Date: 2025-11-19
 Sources Integrated: `testing.md`, `docs/ARCHITECTURE.md`, `README.md`, `DEFERRED-TRACKING.md`, `ingest.md`
 Scope: Full depth / full breadth – phases, architectural follow‑ups, ingestion curriculum, deferred items, future research vectors.
 
----
+***
 
 ## 1. High-Level Phase Status Snapshot
 
@@ -28,7 +28,7 @@ Scope: Full depth / full breadth – phases, architectural follow‑ups, ingesti
 
 Legend: COMPLETE / IN PROGRESS / PLANNED / DEFERRED.
 
----
+***
 
 ## 2. Detailed Phase Action Inventory
 
@@ -86,7 +86,7 @@ Adjunction proofs, Yoneda lemma, Grothendieck fibrations bridging latent space i
 
 Gödelian limit reification, growth rate instrumentation, composite HoTT path.
 
----
+***
 
 ## 3. Deferrals & Technical Debt Classes
 
@@ -104,13 +104,13 @@ Current Global Counts (2025-11-19): Postulates 366, TODO 68, PLANNED 0, FIXME 0,
 
 ### Future Debt Visibility Enhancements
 
-- Category breakdown in PR comments
-- Historical trending graph
-- Auto sub-issue generation for DeviationLog
-- README badge
-- Kanban integration
+*   Category breakdown in PR comments
+*   Historical trending graph
+*   Auto sub-issue generation for DeviationLog
+*   README badge
+*   Kanban integration
 
----
+***
 
 ## 4. Ingestion Curriculum Mapping (From `ingest.md`)
 
@@ -185,27 +185,27 @@ Each textbook section represented as an ingestion target for later formalization
 
 Back Matter (Symbols, Bibliography, Index) deferred until broad coverage maturity.
 
----
+***
 
 ## 5. Future Enhancements & Research Vectors
 
 (From README, Architecture, Testing notes)
 
-- Replace splitting-field id postulate with deterministic propagation.
-- Branching/diamond DAG examples expansion.
-- Adjunction correctness (free structures) constructive witnesses.
-- Yoneda lemma minimal constructive instance.
-- Grothendieck fibration Beck-Chevalley proof.
-- Replace field arithmetic stubs with real algorithms (Finite/Number/Function fields).
-- Polynomial division refinement (remove placeholder arithmetic).
-- Effective equivalence relations constructive witnesses (regular → exact).
-- Barr embedding constructive scaffolding.
-- Functor preservation/creation theorems (regular epis, finite limits).
-- Kernel pair → equivalence relation effectiveness upgrade.
-- Solution space growth rate instrumentation.
-- Composite HoTT Path aggregator for final closure.
+*   Replace splitting-field id postulate with deterministic propagation.
+*   Branching/diamond DAG examples expansion.
+*   Adjunction correctness (free structures) constructive witnesses.
+*   Yoneda lemma minimal constructive instance.
+*   Grothendieck fibration Beck-Chevalley proof.
+*   Replace field arithmetic stubs with real algorithms (Finite/Number/Function fields).
+*   Polynomial division refinement (remove placeholder arithmetic).
+*   Effective equivalence relations constructive witnesses (regular → exact).
+*   Barr embedding constructive scaffolding.
+*   Functor preservation/creation theorems (regular epis, finite limits).
+*   Kernel pair → equivalence relation effectiveness upgrade.
+*   Solution space growth rate instrumentation.
+*   Composite HoTT Path aggregator for final closure.
 
----
+***
 
 ## 6. Normalized Task Schema (For Automation / Issue Generation)
 
@@ -228,27 +228,27 @@ Each task entry may be modeled as:
 
 Deferred ingestion tasks can use `category = "Ingestion"` and research items `category = "Research"`.
 
----
+***
 
 ## 7. Immediate Next Actions (To Progress Toward Final ROADMAP.md)
 
-1. Classify ingestion tasks into near-term (Phase IV prerequisites) vs long-term (Phase V / research).
-2. Generate JSON index of tasks for potential script-driven GitHub issue updates.
-3. Fold deferral metrics into a lightweight badge (optional).
-4. Promote this draft to `ROADMAP.md` after user review & prioritization annotations.
+1.  Classify ingestion tasks into near-term (Phase IV prerequisites) vs long-term (Phase V / research).
+2.  Generate JSON index of tasks for potential script-driven GitHub issue updates.
+3.  Fold deferral metrics into a lightweight badge (optional).
+4.  Promote this draft to `ROADMAP.md` after user review & prioritization annotations.
 
----
+***
 
 ## 8. Review Checklist
 
-- [x] Phases 0–III detailed actions captured
-- [x] Deferral tiers summarized
-- [x] Full ingestion outline mapped to tasks
-- [x] Future enhancements enumerated
-- [x] Normalization schema defined
-- [ ] JSON export artifact (pending)
-- [ ] Prioritization labels (pending)
+*   \[x] Phases 0–III detailed actions captured
+*   \[x] Deferral tiers summarized
+*   \[x] Full ingestion outline mapped to tasks
+*   \[x] Future enhancements enumerated
+*   \[x] Normalization schema defined
+*   \[ ] JSON export artifact (pending)
+*   \[ ] Prioritization labels (pending)
 
----
+***
 
 Generated automatically by consolidation pass (LLM agent). Edit freely for refinement.

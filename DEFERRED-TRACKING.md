@@ -39,39 +39,52 @@ Features or work explicitly planned in documentation (currently tracked in `test
 
 ### 5. **FIXME Items** (0 found)
 
-Known issues requiring immediate fixes.
+---
+
+## How to Address Deferred Items & Technical Debt
+
+- Review the generated reports, especially [top-offenders.md](.github/badges/top-offenders.md), to identify files with the highest technical debt.
+- Use Makefile targets to track and address deferred items:
+  - `make deferred-items` — Generate and review deferred items report
+  - `make badges` — Update technical debt badges and metrics
+- For guidance on automation and metrics, see [.github/scripts/README.md](.github/scripts/README.md).
+- Prioritize refactoring and documentation efforts based on report findings.
+- When resolving a deferred item, update the relevant checklist, documentation, and remove or resolve the marker (DeviationLog, postulate, TODO, etc.).
+- For process and troubleshooting, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+---
 
 ## How It Works
 
 ### On Every Push to Main
 
-1. **Typecheck & Build** (existing workflow continues)
-2. **Scan for Deferred Items** (new step)
-3. **Create/Update Tracking Issue** (new step)
-   - A single GitHub issue acts as the central tracking point
-   - Issue updates with current counts and details
-   - Issue remains open as long as items exist
+1.  **Typecheck & Build** (existing workflow continues)
+2.  **Scan for Deferred Items** (new step)
+3.  **Create/Update Tracking Issue** (new step)
+    *   A single GitHub issue acts as the central tracking point
+    *   Issue updates with current counts and details
+    *   Issue remains open as long as items exist
 
 ### On Every Pull Request
 
-1. **Compare Before/After**
-   - Scans both base and PR branches
-   - Calculates the delta (increase/decrease/unchanged)
-2. **Post Informational Comment**
-   - Shows impact on deferred items
-   - ✅ Celebrates reductions
-   - ⚠️ Highlights increases (without blocking)
-   - ➡️ Notes no change
-3. **Does NOT Block Merge**
-   - This is informational only
-   - Increases are allowed if justified
+1.  **Compare Before/After**
+    *   Scans both base and PR branches
+    *   Calculates the delta (increase/decrease/unchanged)
+2.  **Post Informational Comment**
+    *   Shows impact on deferred items
+    *   ✅ Celebrates reductions
+    *   ⚠️ Highlights increases (without blocking)
+    *   ➡️ Notes no change
+3.  **Does NOT Block Merge**
+    *   This is informational only
+    *   Increases are allowed if justified
 
 ### Weekly Review (Scheduled)
 
-- Runs every Monday at 9 AM UTC
-- Generates fresh report
-- Updates tracking issue
-- Provides weekly health check
+*   Runs every Monday at 9 AM UTC
+*   Generates fresh report
+*   Updates tracking issue
+*   Provides weekly health check
 
 ## Running Locally
 
@@ -94,19 +107,19 @@ This system embodies a **trust-based, informational approach**:
 
 ### ✅ What It Does
 
-- **Provides visibility** into technical debt trends
-- **Tracks progress** toward constructive proofs
-- **Celebrates wins** when items are resolved
-- **Informs decisions** about prioritization
-- **Creates accountability** through transparency
+*   **Provides visibility** into technical debt trends
+*   **Tracks progress** toward constructive proofs
+*   **Celebrates wins** when items are resolved
+*   **Informs decisions** about prioritization
+*   **Creates accountability** through transparency
 
 ### ❌ What It Does NOT Do
 
-- **Block PRs** based on deferred item counts
-- **Enforce arbitrary thresholds** ("must have < X postulates")
-- **Create false urgency** for all items equally
-- **Ignore context** (many postulates are appropriate placeholders)
-- **Punish incremental progress** (sometimes items must increase temporarily)
+*   **Block PRs** based on deferred item counts
+*   **Enforce arbitrary thresholds** ("must have < X postulates")
+*   **Create false urgency** for all items equally
+*   **Ignore context** (many postulates are appropriate placeholders)
+*   **Punish incremental progress** (sometimes items must increase temporarily)
 
 ## Understanding the Numbers
 
@@ -125,46 +138,46 @@ This system embodies a **trust-based, informational approach**:
 
 Not all postulates are equal:
 
-1. **Scaffolding Postulates** - Intentional placeholders for fields/algorithms
-   - Example: `postulate F E : FieldDeclaration`
-   - Status: ✅ Appropriate for current phase
+1.  **Scaffolding Postulates** - Intentional placeholders for fields/algorithms
+    *   Example: `postulate F E : FieldDeclaration`
+    *   Status: ✅ Appropriate for current phase
 
-2. **Bridge Postulates** - Connectors awaiting full implementation
-   - Example: Integration between UMP and constructive witnesses
-   - Status: ⏳ In progress (Phase II)
+2.  **Bridge Postulates** - Connectors awaiting full implementation
+    *   Example: Integration between UMP and constructive witnesses
+    *   Status: ⏳ In progress (Phase II)
 
-3. **Proof Postulates** - Theorems to be proven constructively
-   - Example: Universal property uniqueness
-   - Status: 📋 Planned (Phase III-IV)
+3.  **Proof Postulates** - Theorems to be proven constructively
+    *   Example: Universal property uniqueness
+    *   Status: 📋 Planned (Phase III-IV)
 
 ## Next Steps
 
-1. **Review Tracking Issue** - Check the auto-generated issue for current state
-2. **Prioritize by Phase** - Use `testing.md` to guide resolution order
-3. **Address Systematically** - Work through phases rather than cherry-picking
-4. **Monitor Trends** - Watch for unexpected increases
-5. **Celebrate Progress** - Note when counts decrease!
+1.  **Review Tracking Issue** - Check the auto-generated issue for current state
+2.  **Prioritize by Phase** - Use `testing.md` to guide resolution order
+3.  **Address Systematically** - Work through phases rather than cherry-picking
+4.  **Monitor Trends** - Watch for unexpected increases
+5.  **Celebrate Progress** - Note when counts decrease!
 
 ## Future Enhancements
 
 Potential additions to this system:
 
-- [ ] Category breakdown in PR comments (show which types changed)
-- [ ] Historical trending graph (track over time)
-- [ ] Automatic sub-issue creation for DeviationLog items
-- [ ] Integration with GitHub Projects for Kanban tracking
-- [ ] Configurable thresholds for custom warnings
-- [ ] Badge in README showing current count
+*   \[ ] Category breakdown in PR comments (show which types changed)
+*   \[ ] Historical trending graph (track over time)
+*   \[ ] Automatic sub-issue creation for DeviationLog items
+*   \[ ] Integration with GitHub Projects for Kanban tracking
+*   \[ ] Configurable thresholds for custom warnings
+*   \[ ] Badge in README showing current count
 
 ## Questions?
 
-- **Why not fail builds on postulates?** Because many are intentional and appropriate for current development phase.
-- **Won't this create noise?** No - notifications are consolidated into a single tracking issue and PR comments.
-- **Can I disable this?** Yes - remove or disable the `deferred-items.yml` workflow.
-- **How do I exclude false positives?** Refine the grep patterns in `detect-deferred-items.sh`.
+*   **Why not fail builds on postulates?** Because many are intentional and appropriate for current development phase.
+*   **Won't this create noise?** No - notifications are consolidated into a single tracking issue and PR comments.
+*   **Can I disable this?** Yes - remove or disable the `deferred-items.yml` workflow.
+*   **How do I exclude false positives?** Refine the grep patterns in `detect-deferred-items.sh`.
 
----
+***
 
-**Status:** ✅ Active and tracking  
-**Last Updated:** 2025-11-19  
+**Status:** ✅ Active and tracking\
+**Last Updated:** 2025-11-19\
 **Tracking Issue:** Will be created on next push to main
