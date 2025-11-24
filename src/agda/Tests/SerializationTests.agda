@@ -22,7 +22,7 @@ open import Metamodel as M
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Equality using (_≡_)
 open import Agda.Builtin.List using (List; []; _∷_)
-open import Agda.Builtin.Maybe using (Maybe; just; nothing)
+open import Core.Phase using (Maybe; just; nothing)
 open import Agda.Builtin.Nat using (Nat)
 open import Agda.Builtin.Bool as B using (Bool; true; false)
 

@@ -11,7 +11,7 @@ open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Nat using (Nat; zero; suc; _+_; _*_; _-_; _<_)
 open import Agda.Builtin.String using (String)
-open import Agda.Builtin.Maybe using (Maybe; just; nothing)
+open import Core.Phase using (Maybe; just; nothing)
 open import Agda.Builtin.Bool using (Bool; true; false)
 
 -- Helper for string concatenation

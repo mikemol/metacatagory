@@ -19,7 +19,7 @@ data Dec (A : Set₁) : Set₁ where
 
 -- Lists from builtins (avoid stdlib dependency)
 open import Agda.Builtin.List using (List; []; _∷_)
-open import Agda.Builtin.Maybe using (Maybe; just; nothing)
+open import Core.Phase using (Maybe; just; nothing)
 
 -- ==========================================================================
 -- Packed Nodes: Reusable dummy algebraic structures for smoke tests (Phase I.1.5)

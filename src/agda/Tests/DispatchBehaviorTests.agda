@@ -19,7 +19,7 @@ open import Core.Algorithms.NumberFields
 open import Core.Algorithms.FunctionFields
 open import Metamodel as M
 open import Agda.Builtin.List using (List)
-open import Agda.Builtin.Sigma using (Σ; fst; snd) hiding (_,_)
+open import Core.Phase using (Σ; fst; snd; _,ₛ_)
 open import Agda.Builtin.Equality using (_≡_; refl)
 
 -- ============================================================================

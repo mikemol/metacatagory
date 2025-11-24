@@ -17,7 +17,7 @@ open import Algebra.Fields.Basic
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.List   using (List; []; _∷_)
 open import Agda.Builtin.Bool   using (Bool; true; false)
-open import Agda.Builtin.Maybe  using (Maybe; just; nothing)
+open import Core.Phase using (Maybe; just; nothing)
 open import Agda.Builtin.Equality using (_≡_; refl)
 
 -- ============================================================================

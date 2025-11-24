@@ -5,7 +5,7 @@ open import Agda.Builtin.Nat public using (Nat; zero; suc; _+_; _*_; _-_)
 open import Agda.Builtin.List public using (List; []; _∷_)
 open import Agda.Builtin.String public using (String; primStringAppend)
 open import Agda.Builtin.Equality public using (_≡_; refl)
-open import Agda.Builtin.Maybe public using (Maybe; just; nothing)
+open import Core.Phase public using (Maybe; just; nothing)
 open import Core using (_×_; _,_)
 
 -- ==========================================================
@@ -84,9 +84,9 @@ concat : {A : Set} → List (List A) → List A
 concat [] = []
 concat (x ∷ xs) = x ++ concat xs
   where
-    _++_ : List A → List A → List A
-    [] ++ ys = ys
-    (z ∷ zs) ++ ys = z ∷ (zs ++ ys)
+    _++_ : {A : Set} → List A → List A → List A
+    _++_ {A} [] ys = ys
+    _++_ {A} (z ∷ zs) ys = z ∷ (_++_ {A} zs ys)
 
 member : Nat → List Nat → Bool
 member _ [] = false
