@@ -1,96 +1,69 @@
-# GitHub Actions Scripts
+# The Meta-Process Engine: Automated Observability
 
-This directory contains automation scripts used by the CI/CD workflows.
+> **Coordinate System:** Meta-Layer (Process as Object)
+> **Parent Index:** $(8, 2)$
+> **Context:** The Metric Functor & Coherence Witnesses.
 
-## Scripts
+This directory contains the **Autonomous Agents** (Scripts) responsible for observing the "Solution Space" and reifying its properties into the "Process Space" (Badges, Reports).
 
-### `detect-deferred-items.sh`
+-----
 
-Scans the codebase for deferred items including:
+## 1. The Metric Functor (`generate-badges.py`)
 
-- **DeviationLog** entries: Documented deviations from ideal implementation
-- **Postulates**: Axioms or assumptions not yet proven constructively
-- **TODO** items: General tasks marked for future work
-- **PLANNED** items: Features or work explicitly planned in documentation
-- **FIXME** items: Known issues requiring fixes
+* **Role:** Calculates the **Emergent Metric** (Cost/Debt) of the lattice.
+* **Input:** The state of `src/agda/`.
+* **Output:** JSON State vectors in `.github/badges/`.
+* **Theory:** This script acts as the measure $\mu$ on the topological space of the code, assigning a "Weight" to every hole (elision) found.
 
-**Usage:**
+## 2. The Topology Visualizer (`phase_diagram.py`)
 
+* **Role:** Generates the Phase Diagram of the system's evolution.
+* **Function:** Maps the trajectory of the repository through the Phase Space defined in `Core/Phase.agda`.
+
+## 3. The Debt Surveyor (`flag_unannotated_debt.py`)
+
+* **Role:** The **Godelian Boundary Scanner**.
+* **Function:** Scans the lattice for `{! !}` (Holes) or `TODO` markers that have not been formally registered in `src/agda/Core/TechnicalDebt.agda`.
+* **Constraint:** Unregistered debt is a violation of the **Indexing Axiom**.
+
+## 4. Usage (Manual Invocation)
+
+While these agents typically run via CI (GitHub Actions), they can be invoked locally to verify the metric state:
+
+### Direct Script Invocation
 ```bash
-./detect-deferred-items.sh [output-file]
+# Calculate current metrics
+python3 scripts/generate-badges.py
+
+# Generate visualization
+python3 scripts/phase_diagram.py
+
+# Flag unannotated technical debt
+python3 scripts/flag_unannotated_debt.py
 ```
 
-**Outputs:**
+### Recommended: Makefile Targets
 
-- Markdown report with all findings
-- JSON summary for programmatic access
-- GitHub Actions outputs (when running in CI)
-
-### `create-or-update-tracking-issue.sh`
-
-Creates or updates a GitHub issue to track deferred items. The issue serves as a central tracking point for all deferred work.
-
-**Usage:**
+All automation scripts and reporting tools are now available via Makefile targets for consistency and ease of use:
 
 ```bash
-GH_TOKEN=<token> ./create-or-update-tracking-issue.sh <report-file> <summary-file>
+# Generate badges and top-offenders.md
+make badges
+
+# Generate all documentation (HTML + Markdown)
+make docs-all
+
+# Auto-format markdown files
+make md-fix
+
+# Lint markdown files
+make md-lint
+
+# Track deferred items
+make deferred-items
+
+# Sync roadmap issues
+make roadmap-sync
 ```
 
-**Behavior:**
-
-- Creates a new tracking issue if none exists
-- Updates existing tracking issue with latest report
-- Issue stays open as long as deferred items remain
-
-## Workflows
-
-### `ci.yml`
-
-Main CI workflow that:
-
-1. Type-checks Agda code
-2. Builds documentation
-3. Tracks deferred items (on main branch pushes)
-4. Creates/updates tracking issue
-
-### `deferred-items.yml`
-
-Dedicated deferred items review workflow that:
-
-1. Runs weekly on schedule
-2. Runs on every PR
-3. Compares deferred items between PR and base branch
-4. Posts informational comment on PRs (does not block merge)
-5. Provides visibility into technical debt trends
-
-## Labels
-
-- `deferred-tracking`: Applied to the main tracking issue
-- `enhancement`: Indicates improvement opportunity
-
-## Local Testing
-
-You can run the detection script locally:
-
-```bash
-# From repository root
-.github/scripts/detect-deferred-items.sh
-
-# View the report
-cat deferred-items.md
-
-# Check the JSON summary
-jq . deferred-summary.json
-```
-
-## Philosophy
-
-This automation treats deferred items as **informational** rather than **blocking**:
-
-- ✅ Provides visibility into technical debt
-- ✅ Tracks trends over time
-- ✅ Encourages addressing items when appropriate
-- ❌ Does NOT block PRs or fail builds
-- ❌ Does NOT enforce arbitrary coverage thresholds
-
-The goal is awareness and continuous improvement, not gatekeeping.
+These targets are used by CI workflows and can be run locally for development, reporting, and code hygiene.
