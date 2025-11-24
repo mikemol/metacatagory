@@ -163,8 +163,8 @@ This process performs the following:
 
 The repository generates several reports and metrics to help track technical debt, deferred items, and overall code health:
 
-- **[top-offenders.md](.github/badges/top-offenders.md):** Lists files with the highest weighted technical debt. Use this to prioritize refactoring and documentation efforts.
-- **Deferred Items & Technical Debt:** See [DEFERRED-TRACKING.md](DEFERRED-TRACKING.md) for a summary and guidance on addressing deferred work.
-- **Automation & Metrics:** For details on how reports are generated and how to run them locally, see [.github/scripts/README.md](.github/scripts/README.md) and Makefile targets (`make badges`, `make deferred-items`, etc.).
+*   **[top-offenders.md](.github/badges/top-offenders.md):** Lists files with the highest weighted technical debt. Use this to prioritize refactoring and documentation efforts.
+*   **Deferred Items & Technical Debt:** See [DEFERRED-TRACKING.md](DEFERRED-TRACKING.md) for a summary and guidance on addressing deferred work.
+*   **Automation & Metrics:** For details on how reports are generated and how to run them locally, see [.github/scripts/README.md](.github/scripts/README.md) and Makefile targets (`make badges`, `make deferred-items`, etc.).
 
 Regularly review these reports to guide maintenance, refactoring, and documentation priorities.

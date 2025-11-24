@@ -230,12 +230,12 @@ Consult roadmap → pick task → minimal diff → tests green → update tasks.
 
 ## Reproducibility & Automation
 
-- Use Makefile targets for setup and automation:
-  - `make venv` — Set up Python environment
-  - `make node-deps` — Install Node dependencies
-  - `make badges` — Generate technical debt badges and metrics
-  - `make docs-all` — Build all documentation
-  - `make deferred-items` — Track deferred items
-  - `make test_report` — Run the full constraint solver and generate test reports
-- See `.github/scripts/README.md` for details on automation scripts and manual invocation.
-- For troubleshooting and process, see `CONTRIBUTING.md` and `src/agda/Tests/README.md`.
+*   Use Makefile targets for setup and automation:
+    *   `make venv` — Set up Python environment
+    *   `make node-deps` — Install Node dependencies
+    *   `make badges` — Generate technical debt badges and metrics
+    *   `make docs-all` — Build all documentation
+    *   `make deferred-items` — Track deferred items
+    *   `make test_report` — Run the full constraint solver and generate test reports
+*   See `.github/scripts/README.md` for details on automation scripts and manual invocation.
+*   For troubleshooting and process, see `CONTRIBUTING.md` and `src/agda/Tests/README.md`.
