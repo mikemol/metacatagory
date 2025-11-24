@@ -357,7 +357,7 @@ module Phase10-AlgorithmComplexityAnnotations where
     ; limitation = nothing
     }
     where open import Core.AlgebraicAlgorithms using (Dec; no)
-          open import Agda.Builtin.Maybe using (nothing)
+          open import Core.Phase using (nothing)
   
   annotatedMinPoly : AnnotatedAlgorithm (MinimalPolynomialAlgorithm F E)
   annotatedMinPoly = annotateAlgorithm minPolyExample minPolyComplexity
@@ -367,7 +367,8 @@ module Phase10-AlgorithmComplexityAnnotations where
 -- ============================================================================
 
 module Phase14-GrowthInstrumentation where
-  open import Core.GrowthMetrics as GM
+  open import Core.GrowthMetrics as GM using (CoordinateAllocation; GrowthSnapshot; PhaseDensity; YCoordinateDistribution; GrowthRate; ExpansionPattern; metacatagoryGrowthHistory; metacatagoryGrowthSnapshot; phase13Density; phase13YDistribution; metacatagoryGrowthRate; metacatagoryExpansionPattern; verifyGrowthRate; verifyPhaseDensity; verifyGrowthSnapshot)
+  open import Core.Utils using (ltNat)
   
   -- Test: Allocation history tracking
   test-allocation-history : List GM.CoordinateAllocation
@@ -418,7 +419,7 @@ module Phase14-GrowthInstrumentation where
   test-phase13-has-objects : Bool'
   test-phase13-has-objects =
     let count = GM.PhaseDensity.objectCount test-phase-density
-    in GM.ltNat zero count
+    in ltNat zero count
   
   _ : test-phase13-has-objects ≡ true
   _ = refl
@@ -427,7 +428,7 @@ module Phase14-GrowthInstrumentation where
   test-multiple-phases : Bool'
   test-multiple-phases =
     let phaseCount = GM.GrowthRate.phasesUsed test-growth-rate
-    in GM.ltNat (suc zero) phaseCount
+    in ltNat (suc zero) phaseCount
   
   _ : test-multiple-phases ≡ true
   _ = refl

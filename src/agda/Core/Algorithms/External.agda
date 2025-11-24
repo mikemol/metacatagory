@@ -15,7 +15,7 @@ open import Core.Algorithms.Bundle
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String using (String)
-open import Agda.Builtin.Maybe using (Maybe; nothing; just)
+open import Core.Phase using (Maybe; nothing; just)
 open import Agda.Primitive using (Level; lzero; lsuc; _⊔_)
 
 private

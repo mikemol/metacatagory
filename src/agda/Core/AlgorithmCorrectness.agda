@@ -18,7 +18,7 @@ open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
 open import Agda.Builtin.Equality using (_≡_; refl)
-open import Agda.Builtin.Maybe using (Maybe; nothing; just)
+open import Core.Phase using (Maybe; nothing; just)
 import Agda.Builtin.Bool as B
 open B using () renaming (Bool to Boolean; true to tt; false to ff)
 

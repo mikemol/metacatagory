@@ -19,7 +19,7 @@ open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
 import Agda.Builtin.Bool as B
 open B using () renaming (Bool to Boolean; true to tt; false to ff)
-open import Agda.Builtin.Maybe using (Maybe; just; nothing)
+open import Core.Phase using (Maybe; just; nothing)
 
 -- ============================================================================
 -- Example 1: Minimal Polynomial Correctness

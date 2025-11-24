@@ -1,13 +1,15 @@
 module Core.TechnicalDebt where
 
 open import Metamodel as M
-open import Core using (_×_; _,_; fst; snd)
+open import Core using (_×_; _,_)
+open _×_ public
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Int using (Int; pos; negsuc)
 open import Core.Utils
 
 -- Priority as a free abelian group, with dependencies
 record Priority : Set where
+  inductive
   constructor mkPriority
   field
     terms     : List (String × Int)
