@@ -4,7 +4,7 @@ Test report generator for MetaCategory Agda tests.
 
 Scans src/agda/Tests/*.agda files and extracts:
 - Declared adapter instances (type names like A.SomeAdapter)
-- Status assertions of the form `… ≡ B.true` (or `… ≡ true` in some modules)
+- Status assertions of the form `… ≡ true`
 - Count per file and per adapter type
 
 Outputs:
@@ -13,6 +13,7 @@ Outputs:
 
 Heuristic/static analysis only; does not attempt to parse Agda fully.
 """
+
 from __future__ import annotations
 import argparse
 import json
@@ -25,7 +26,9 @@ TESTS_DIR = ROOT / "src" / "agda" / "Tests"
 OUT_DIR = ROOT / "build" / "reports"
 
 ADAPTER_TYPE_RE = re.compile(r"^\s*([a-zA-Z0-9_\-']+)\s*:\s*A\.([A-Za-z0-9_]+)\b")
-STATUS_ASSERT_RE = re.compile(r"^\s*([a-zA-Z0-9_\-']+)\s*:\s*A\.[A-Za-z0-9_]+\s+[a-zA-Z0-9_\-']+\s*≡\s*(?:B\.)?true\s*$")
+STATUS_ASSERT_RE = re.compile(
+    r"^\s*([a-zA-Z0-9_\-']+)\s*:\s*A\.[A-Za-z0-9_]+\s+[a-zA-Z0-9_\-']+\s*≡\s*(?:B\.)?true\s*$"
+)
 MODULE_RE = re.compile(r"^\s*module\s+([A-Za-z0-9_.]+)\s+where\s*$")
 
 # Allow True/False variants some files use
@@ -68,7 +71,9 @@ def summarize(file_reports):
 
 def write_outputs(summary, out_dir: Path):
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "test-report.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    (out_dir / "test-report.json").write_text(
+        json.dumps(summary, indent=2), encoding="utf-8"
+    )
     # Markdown
     lines = []
     lines.append("# MetaCategory Test Report\n")
@@ -92,8 +97,12 @@ def write_outputs(summary, out_dir: Path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--tests-dir", default=str(TESTS_DIR), help="Directory with Agda Tests/*.agda")
-    parser.add_argument("--out-dir", default=str(OUT_DIR), help="Output directory for reports")
+    parser.add_argument(
+        "--tests-dir", default=str(TESTS_DIR), help="Directory with Agda Tests/*.agda"
+    )
+    parser.add_argument(
+        "--out-dir", default=str(OUT_DIR), help="Output directory for reports"
+    )
     args = parser.parse_args()
 
     tests_dir = Path(args.tests_dir)
