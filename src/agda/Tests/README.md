@@ -44,26 +44,26 @@ These verify the computational properties of the lattice implementation.
 
 ## 5. How to Add a New Test or Checklist
 
-1. Create a new `.agda` file in this directory, following the naming convention `<Feature>Checklist.agda` or `<Feature>Tests.agda`.
-2. At the top of the file, document its purpose, expected outcomes, and any relevant references.
-3. Import the relevant modules and define your assertions or witnesses.
-4. Add your new file to the appropriate section above and update this README.
-5. Run `make check-tests` to verify your additions.
-6. If your test is a checklist, ensure it covers all relevant cases and edge conditions.
+1.  Create a new `.agda` file in this directory, following the naming convention `<Feature>Checklist.agda` or `<Feature>Tests.agda`.
+2.  At the top of the file, document its purpose, expected outcomes, and any relevant references.
+3.  Import the relevant modules and define your assertions or witnesses.
+4.  Add your new file to the appropriate section above and update this README.
+5.  Run `make check-tests` to verify your additions.
+6.  If your test is a checklist, ensure it covers all relevant cases and edge conditions.
 
 ## 6. Interpreting Failures and Troubleshooting
 
-- **Type Errors:** Usually indicate a mismatch in expected structure or a missing witness. Check imports and type signatures.
-- **Unsolved Metavariables (`{! !}`):** Indicates incomplete proofs or missing constructive evidence. Fill in the holes or defer with a TODO.
-- **Checklist Failures:** Review the assertion and ensure all dependencies are satisfied. Use smaller, isolated tests to debug.
-- **Performance Issues:** If a test is slow, consider refactoring for efficiency or splitting into smaller units.
+*   **Type Errors:** Usually indicate a mismatch in expected structure or a missing witness. Check imports and type signatures.
+*   **Unsolved Metavariables (`{! !}`):** Indicates incomplete proofs or missing constructive evidence. Fill in the holes or defer with a TODO.
+*   **Checklist Failures:** Review the assertion and ensure all dependencies are satisfied. Use smaller, isolated tests to debug.
+*   **Performance Issues:** If a test is slow, consider refactoring for efficiency or splitting into smaller units.
 
 ## 7. Best Practices
 
-- Keep checklists focused and modular.
-- Document the rationale for each test and checklist.
-- Use descriptive names for assertions and witnesses.
-- Regularly run `make check-tests` and review generated reports.
+*   Keep checklists focused and modular.
+*   Document the rationale for each test and checklist.
+*   Use descriptive names for assertions and witnesses.
+*   Regularly run `make check-tests` and review generated reports.
 
 ## 8. How to Verify
 

@@ -39,20 +39,20 @@ Features or work explicitly planned in documentation (currently tracked in `test
 
 ### 5. **FIXME Items** (0 found)
 
----
+***
 
 ## How to Address Deferred Items & Technical Debt
 
-- Review the generated reports, especially [top-offenders.md](.github/badges/top-offenders.md), to identify files with the highest technical debt.
-- Use Makefile targets to track and address deferred items:
-  - `make deferred-items` — Generate and review deferred items report
-  - `make badges` — Update technical debt badges and metrics
-- For guidance on automation and metrics, see [.github/scripts/README.md](.github/scripts/README.md).
-- Prioritize refactoring and documentation efforts based on report findings.
-- When resolving a deferred item, update the relevant checklist, documentation, and remove or resolve the marker (DeviationLog, postulate, TODO, etc.).
-- For process and troubleshooting, see [CONTRIBUTING.md](CONTRIBUTING.md).
+*   Review the generated reports, especially [top-offenders.md](.github/badges/top-offenders.md), to identify files with the highest technical debt.
+*   Use Makefile targets to track and address deferred items:
+    *   `make deferred-items` — Generate and review deferred items report
+    *   `make badges` — Update technical debt badges and metrics
+*   For guidance on automation and metrics, see [.github/scripts/README.md](.github/scripts/README.md).
+*   Prioritize refactoring and documentation efforts based on report findings.
+*   When resolving a deferred item, update the relevant checklist, documentation, and remove or resolve the marker (DeviationLog, postulate, TODO, etc.).
+*   For process and troubleshooting, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
----
+***
 
 ## How It Works
 
