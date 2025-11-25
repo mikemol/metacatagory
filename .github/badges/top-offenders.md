@@ -1,6 +1,6 @@
 # Top Technical Debt Offenders (Weighted)
 
-Generated: 2025-11-24T00:26:28.019298Z
+Generated: 2025-11-25T00:23:37.510093Z
 
 | Rank | File | P | TODO | FIXME | DEV | Raw | Wtd |
 |------|------|---|------|-------|-----|-----|-----|
