@@ -2,6 +2,7 @@
 -- Non-reflection-based approach using type classes and manual registration
 
 module Core.AdapterAutomation where
+open import Agda.Builtin.Nat using (Nat; zero; suc)
 
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Core.Phase using (Bool; true; false)
@@ -257,4 +258,3 @@ record EnhancedChecklistModule : Set where
 -- Validate that all adapters in a checklist have categorical adapters
 validateChecklist : EnhancedChecklistModule → Bool
 validateChecklist m = EnhancedChecklistModule.allHaveCategorical m
-
