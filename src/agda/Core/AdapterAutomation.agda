@@ -4,6 +4,7 @@
 -- Non-reflection-based approach using type classes and manual registration
 
 module Core.AdapterAutomation where
+open import Agda.Builtin.Nat using (Nat; zero; suc)
 
 -- Infrastructure imports for universe polymorphism and equality
 open import Infrastructure.Universe using (Setℓ)
