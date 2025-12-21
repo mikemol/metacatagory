@@ -1,5 +1,19 @@
 #!/usr/bin/env python3
+
 """
+SPPF-Composable Onboarding Header
+
+Roadmap: src/agda/Plan/CIM/Utility.agda
+Architecture: ARCHITECTURE.md
+Onboarding: COPILOT_SYNERGY.md
+
+Constructive Proof Semantics:
+- This script participates in the composable SPPF model, mirroring Agda record patterns for protocol,
+    witness, and universal property semantics.
+- All logic should be traceable to roadmap nodes and architectural principles.
+- For onboarding, review the architecture and roadmap, and recursively revisit related nodes for
+    context and composability.
+
 Test report generator for MetaCategory Agda tests.
 
 Scans src/agda/Tests/*.agda files and extracts:
@@ -20,6 +34,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 TESTS_DIR = ROOT / "src" / "agda" / "Tests"
@@ -35,7 +50,7 @@ MODULE_RE = re.compile(r"^\s*module\s+([A-Za-z0-9_.]+)\s+where\s*$")
 ALT_TRUE_RE = re.compile(r"\b(?:B\.)?true\b|\bTrue\b")
 
 
-def scan_file(path: Path):
+def scan_file(path: Path) -> dict[str, Any]:
     adapters = []  # list of (name, type)
     statuses = 0
     module_name = None
@@ -53,10 +68,10 @@ def scan_file(path: Path):
         "module": module_name,
         "adapters": adapters,
         "status_assertions": statuses,
-    }
+    }  # type: dict[str, Any]
 
 
-def summarize(file_reports):
+def summarize(file_reports: list[dict[str, Any]]) -> dict[str, Any]:
     total_status = sum(fr["status_assertions"] for fr in file_reports)
     adapter_counts = {}
     for fr in file_reports:
@@ -66,10 +81,10 @@ def summarize(file_reports):
         "files": file_reports,
         "total_status_assertions": total_status,
         "adapter_type_counts": adapter_counts,
-    }
+    }  # type: dict[str, Any]
 
 
-def write_outputs(summary, out_dir: Path):
+def write_outputs(summary: dict[str, Any], out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "test-report.json").write_text(
         json.dumps(summary, indent=2), encoding="utf-8"
@@ -95,7 +110,7 @@ def write_outputs(summary, out_dir: Path):
     (out_dir / "test-report.md").write_text("\n".join(lines), encoding="utf-8")
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--tests-dir", default=str(TESTS_DIR), help="Directory with Agda Tests/*.agda"

@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module Plan.CIM.PandocToMarkdown where
 
@@ -10,7 +10,6 @@ open import Agda.Builtin.Equality using (_≡_; refl)
 
 open import Plan.CIM.Utility using (map; _++_; TransformationSystem; CoherenceWitness; Path; refl-path; EmergentMetric)
 open import Plan.CIM.PandocAST
-open import Plan.CIM.PandocProtocols
 
 ------------------------------------------------------------------------
 -- BraidStep: represents a single transformation step from Block to MdBlock
@@ -104,36 +103,3 @@ makeBraidTrace blocks mblocks = record
     zipWith' _ _ [] _ = []
     zipWith' f (a ∷ as) (b ∷ bs) desc = f a b desc ∷ zipWith' f as bs desc
 
-------------------------------------------------------------------------
--- Proof Witness: Transformation Correctness
--- The transformation respects CHIP protocol coherence
-------------------------------------------------------------------------
-
--- Witness that pandoc-to-markdown transformation satisfies CHIP coherence
-transformationCoherence : (doc : PandocDoc) → CoherenceWitness (blockAmb) (blockTransSys)
-transformationCoherence doc = record
-  { proofPath = refl-path  -- Proof identity: transformation is idempotent
-  ; metric = record { magnitude = 0 }  -- Zero cost for normalization
-  }
-
--- Full transformation witness
-pandocDocTransformationWitness : (doc : PandocDoc) → 
-  let mddoc = pandocDocToMarkdown doc
-  in CoherenceWitness blockAmb blockTransSys
-pandocDocTransformationWitness doc = transformationCoherence doc
-
-------------------------------------------------------------------------
--- Helper: Verification lemmas
-------------------------------------------------------------------------
-
--- Witness that transformation structure is coherent
-blockStructureCoherent : (b : Block) → String
-blockStructureCoherent b = "Block → MdBlock transformation is structurally coherent"
-
--- Metadata preservation check (trivial by construction)
-metadataPreserved : (doc : PandocDoc) → Bool
-metadataPreserved doc = true
-
-------------------------------------------------------------------------
--- End of PandocToMarkdown
-------------------------------------------------------------------------

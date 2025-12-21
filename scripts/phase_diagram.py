@@ -17,6 +17,7 @@ import shutil
 import subprocess
 import re
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 TESTS_DIR = ROOT / "src" / "agda" / "Tests"
@@ -29,14 +30,14 @@ RECORD_DECL_RE = re.compile(r"^\s*([A-Za-z0-9_']+)\s*:\s*([A-Za-z0-9_.]+)\.([A-Z
 ADAPTER_DECL_RE = re.compile(r"^\s*([A-Za-z0-9_']+)\s*:\s*A\.([A-Za-z0-9_]+)\s*$")
 
 
-def parse_tests():
-    graph = {
+def parse_tests() -> dict[str, Any]:
+    graph: dict[str, Any] = {
         "modules": {},  # mod -> {records:set(), adapters:set()}
     }
     for path in sorted(TESTS_DIR.glob("*.agda")):
-        mod = None
-        records = set()
-        adapters = set()
+        mod: str | None = None
+        records: set[str] = set()
+        adapters: set[str] = set()
         for line in path.read_text(encoding="utf-8").splitlines():
             m = MODULE_RE.match(line)
             if m:
@@ -47,12 +48,15 @@ def parse_tests():
             m = ADAPTER_DECL_RE.match(line)
             if m:
                 adapters.add(m.group(2))
-        key = mod or path.stem
-        graph["modules"][key] = {"records": sorted(records), "adapters": sorted(adapters)}
+        key: str = mod or path.stem
+        graph["modules"][key] = {
+            "records": sorted(records),
+            "adapters": sorted(adapters),
+        }
     return graph
 
 
-def to_dot(graph: dict) -> str:
+def to_dot(graph: dict[str, Any]) -> str:
     lines = ["digraph phases {", "  rankdir=LR;", "  node [shape=box, style=rounded];"]
     # Define clusters by module
     for mod, data in graph["modules"].items():
@@ -78,10 +82,12 @@ def to_dot(graph: dict) -> str:
     return "\n".join(lines)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out-dir", default=str(OUT_DIR))
-    parser.add_argument("--render", action="store_true", help="Render SVG using dot if available")
+    parser.add_argument(
+        "--render", action="store_true", help="Render SVG using dot if available"
+    )
     args = parser.parse_args()
 
     out_dir = Path(args.out_dir)
@@ -96,7 +102,9 @@ def main():
     if args.render:
         if shutil.which("dot"):
             svg_path = out_dir / "phases.svg"
-            subprocess.run(["dot", "-Tsvg", str(dot_path), "-o", str(svg_path)], check=False)
+            subprocess.run(
+                ["dot", "-Tsvg", str(dot_path), "-o", str(svg_path)], check=False
+            )
             print(f"Rendered {svg_path}")
         else:
             print("dot not found; skipping render.")

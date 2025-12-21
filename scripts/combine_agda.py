@@ -1,3 +1,17 @@
+"""
+SPPF-Composable Onboarding Header
+
+Roadmap: src/agda/Plan/CIM/Utility.agda
+Architecture: ARCHITECTURE.md
+Onboarding: COPILOT_SYNERGY.md
+
+Constructive Proof Semantics:
+- This script participates in the composable SPPF model, mirroring Agda record patterns for protocol,
+    witness, and universal property semantics.
+- All logic should be traceable to roadmap nodes and architectural principles.
+- For onboarding, review the architecture and roadmap, and recursively revisit related nodes for
+    context and composability.
+"""
 import os
 
 output_file = "combined.agda.txt"

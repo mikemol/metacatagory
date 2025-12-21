@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
 """
+SPPF-Composable Onboarding Header
+
+Roadmap: src/agda/Plan/CIM/Utility.agda
+Architecture: ARCHITECTURE.md
+Onboarding: COPILOT_SYNERGY.md
+
+Constructive Proof Semantics:
+- This script participates in the composable SPPF model, mirroring Agda record patterns for protocol,
+  witness, and universal property semantics.
+- All logic should be traceable to roadmap nodes and architectural principles.
+- For onboarding, review the architecture and roadmap, and recursively revisit related nodes for context
+  and composability.
+
 generate-badges.py
 Generates JSON endpoints for Shields.io dynamic badges based on roadmap tasks and deferred items.
 Outputs badge data files that can be served via GitHub Pages or committed to the repo.
@@ -9,34 +22,34 @@ import json
 import sys
 from pathlib import Path
 from datetime import datetime, timezone
-from typing import Dict, Any, Iterable, List, Tuple
+from typing import Any, Iterable
 
 # Constants controlling repository scan behavior
 FILE_SCAN_EXTENSIONS = {".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"}
 EXCLUDED_DIRS = {".git", "venv", ".github"}
 
 # Thresholds: list of (limit, color) evaluated in order for value < limit
-ROADMAP_PROGRESS_THRESHOLDS: List[Tuple[int, str]] = [
+ROADMAP_PROGRESS_THRESHOLDS: list[tuple[int, str]] = [
     (30, "red"),
     (70, "yellow"),
     (101, "brightgreen"),
 ]
-DEFERRED_TOTAL_THRESHOLDS: List[Tuple[int, str]] = [
+DEFERRED_TOTAL_THRESHOLDS: list[tuple[int, str]] = [
     (1, "brightgreen"),
     (100, "yellow"),
     (300, "orange"),
     (10_000_000, "red"),
 ]
-POSTULATES_THRESHOLDS: List[Tuple[int, str]] = [
+POSTULATES_THRESHOLDS: list[tuple[int, str]] = [
     (21, "brightgreen"),
     (51, "yellow"),
     (10_000_000, "orange"),
 ]
-TODO_THRESHOLDS: List[Tuple[int, str]] = [
+TODO_THRESHOLDS: list[tuple[int, str]] = [
     (1, "lightgrey"),
     (10_000_000, "blue"),
 ]
-FIXME_THRESHOLDS: List[Tuple[int, str]] = [
+FIXME_THRESHOLDS: list[tuple[int, str]] = [
     (1, "lightgrey"),
     (11, "orange"),
     (10_000_000, "red"),
@@ -50,7 +63,7 @@ DEFAULT_WEIGHTS = {
     "deviation": 3.0,
 }
 
-WEIGHTED_TOTAL_THRESHOLDS: List[Tuple[int, str]] = [
+WEIGHTED_TOTAL_THRESHOLDS: list[tuple[int, str]] = [
     (50, "brightgreen"),
     (150, "yellow"),
     (400, "orange"),
@@ -61,24 +74,26 @@ WEIGHTED_TOTAL_THRESHOLDS: List[Tuple[int, str]] = [
 MAX_HISTORY_ENTRIES = 60
 
 
-def color_for(value: int, thresholds: List[Tuple[int, str]], default: str = "lightgrey") -> str:
+def color_for(
+    value: int, thresholds: list[tuple[int, str]], default: str = "lightgrey"
+) -> str:
     for limit, color in thresholds:
         if value < limit:
             return color
     return default
 
 
-def load_json_file(filepath: Path) -> Dict[str, Any]:
+def load_json_file(filepath: Path) -> dict[str, Any]:
     """Load and parse a JSON file."""
     if not filepath.exists():
         print(f"Warning: {filepath} not found", file=sys.stderr)
         return {}
-    
-    with open(filepath, 'r') as f:
+
+    with open(filepath, "r") as f:
         return json.load(f)
 
 
-def load_weights(output_dir: Path) -> Dict[str, float]:
+def load_weights(output_dir: Path) -> dict[str, float]:
     """Load severity weights from external JSON or use defaults."""
     weights_file = output_dir / "weights.json"
     if weights_file.exists():
@@ -96,10 +111,10 @@ def load_weights(output_dir: Path) -> Dict[str, float]:
     return DEFAULT_WEIGHTS.copy()
 
 
-def generate_roadmap_badges(tasks: list) -> Dict[str, Dict[str, Any]]:
+def generate_roadmap_badges(tasks: list) -> dict[str, dict[str, Any]]:
     """Generate badge data for roadmap tasks."""
     badges = {}
-    
+
     # Count tasks by status
     status_counts = {
         "not-started": 0,
@@ -108,46 +123,48 @@ def generate_roadmap_badges(tasks: list) -> Dict[str, Dict[str, Any]]:
         "deferred": 0,
         "planned": 0,
     }
-    
+
     for task in tasks:
-        status = task.get('status', 'not-started')
+        status = task.get("status", "not-started")
         status_counts[status] = status_counts.get(status, 0) + 1
-    
+
     total = len(tasks)
-    completed = status_counts['completed']
-    in_progress = status_counts['in-progress']
-    not_started = status_counts['not-started']
+    completed = status_counts["completed"]
+    in_progress = status_counts["in-progress"]
+    not_started = status_counts["not-started"]
     deferred_count = status_counts["deferred"]
-    
+
     # Overall progress badge
     if total > 0:
         progress_pct = int((completed / total) * 100)
-        color = color_for(progress_pct, ROADMAP_PROGRESS_THRESHOLDS, default="lightgrey")
+        color = color_for(
+            progress_pct, ROADMAP_PROGRESS_THRESHOLDS, default="lightgrey"
+        )
     else:
         progress_pct = 0
         color = "lightgrey"
-    
-    badges['roadmap-progress'] = {
+
+    badges["roadmap-progress"] = {
         "schemaVersion": 1,
         "label": "roadmap",
         "message": f"{progress_pct}% ({completed}/{total})",
-        "color": color
+        "color": color,
     }
-    
+
     # In-progress badge
-    badges['roadmap-active'] = {
+    badges["roadmap-active"] = {
         "schemaVersion": 1,
         "label": "in progress",
         "message": str(in_progress),
-        "color": "blue" if in_progress > 0 else "lightgrey"
+        "color": "blue" if in_progress > 0 else "lightgrey",
     }
-    
+
     # Not started badge
-    badges['roadmap-todo'] = {
+    badges["roadmap-todo"] = {
         "schemaVersion": 1,
         "label": "todo",
         "message": str(not_started),
-        "color": "orange" if not_started > 0 else "lightgrey"
+        "color": "orange" if not_started > 0 else "lightgrey",
     }
 
     # Deferred tasks badge
@@ -169,16 +186,16 @@ def generate_roadmap_badges(tasks: list) -> Dict[str, Dict[str, Any]]:
     return badges
 
 
-def generate_deferred_badges(summary: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+def generate_deferred_badges(summary: dict[str, Any]) -> dict[str, dict[str, Any]]:
     """Generate badge data for deferred items (raw counts + weighted + trend if provided)."""
     badges = {}
-    
-    total = summary.get('total', 0)
-    deviation_log = summary.get('deviation_log', 0)
-    postulates = summary.get('postulates', 0)
-    todo = summary.get('todo', 0)
-    planned = summary.get('planned', 0)
-    fixme = summary.get('fixme', 0)
+
+    total = summary.get("total", 0)
+    deviation_log = summary.get("deviation_log", 0)
+    postulates = summary.get("postulates", 0)
+    todo = summary.get("todo", 0)
+    planned = summary.get("planned", 0)
+    fixme = summary.get("fixme", 0)
     weighted_total = summary.get("weighted_total", 0)
     trend_delta = summary.get("trend_delta")  # may be None
 
@@ -240,35 +257,35 @@ def generate_deferred_badges(summary: Dict[str, Any]) -> Dict[str, Dict[str, Any
         }
 
     # DeviationLog badge (critical items)
-    badges['deferred-deviations'] = {
+    badges["deferred-deviations"] = {
         "schemaVersion": 1,
         "label": "deviations",
         "message": str(deviation_log),
-        "color": "red" if deviation_log > 0 else "brightgreen"
+        "color": "red" if deviation_log > 0 else "brightgreen",
     }
-    
+
     # Postulates badge
-    badges['deferred-postulates'] = {
+    badges["deferred-postulates"] = {
         "schemaVersion": 1,
         "label": "postulates",
         "message": str(postulates),
-        "color": color_for(postulates, POSTULATES_THRESHOLDS, default='orange')
+        "color": color_for(postulates, POSTULATES_THRESHOLDS, default="orange"),
     }
-    
+
     # TODO items badge
-    badges['deferred-todo'] = {
+    badges["deferred-todo"] = {
         "schemaVersion": 1,
         "label": "TODO",
         "message": str(todo),
-        "color": color_for(todo, TODO_THRESHOLDS, default='lightgrey')
+        "color": color_for(todo, TODO_THRESHOLDS, default="lightgrey"),
     }
-    
+
     # FIXME items badge
-    badges['deferred-fixme'] = {
+    badges["deferred-fixme"] = {
         "schemaVersion": 1,
         "label": "FIXME",
         "message": str(fixme),
-        "color": color_for(fixme, FIXME_THRESHOLDS, default='red')
+        "color": color_for(fixme, FIXME_THRESHOLDS, default="red"),
     }
     # Planned items badge
     badges["deferred-planned"] = {
@@ -277,13 +294,13 @@ def generate_deferred_badges(summary: Dict[str, Any]) -> Dict[str, Dict[str, Any
         "message": str(planned),
         "color": "blue" if planned > 0 else "lightgrey",
     }
-    
+
     return badges
 
 
 def scan_repository_for_deferred(
-    repo_root: Path, weights: Dict[str, float]
-) -> Dict[str, Any]:
+    repo_root: Path, weights: dict[str, float]
+) -> dict[str, Any]:
     """Scan source tree for postulates, TODO, FIXME, and deviation markers.
     Skips excluded directories and only processes files with allowed extensions.
     Returns a summary dict compatible with generate_deferred_badges including weighted totals.
@@ -292,7 +309,7 @@ def scan_repository_for_deferred(
     todo = 0
     fixme = 0
     deviation_log = 0
-    file_counts: Dict[str, Dict[str, float]] = {}
+    file_counts: dict[str, dict[str, float]] = {}
 
     for path in repo_root.rglob("*"):
         if not path.is_file():
@@ -401,7 +418,7 @@ def scan_repository_for_deferred(
     }
 
 
-def generate_build_badge() -> Dict[str, Any]:
+def generate_build_badge() -> dict[str, Any]:
     """Generate a build status badge placeholder (actual status from CI)."""
     # This is a static badge; actual build status comes from GitHub Actions badge
     # We can generate a timestamp badge instead
@@ -437,7 +454,7 @@ def main():
 
     # History tracking for trend badge
     history_file = output_dir / "deferred-history.json"
-    history: List[Dict[str, Any]] = []
+    history: list[dict[str, Any]] = []
     if history_file.exists():
         try:
             with open(history_file, "r") as hf:
@@ -495,9 +512,9 @@ def main():
     # Deferred items badges (now includes weighted + trend)
     deferred_badges = generate_deferred_badges(deferred)
     all_badges.update(deferred_badges)
-    
+
     # Last updated badge
-    all_badges['last-updated'] = generate_build_badge()
+    all_badges["last-updated"] = generate_build_badge()
 
     # Persist history
     with open(history_file, "w") as hf:
@@ -506,21 +523,21 @@ def main():
 
     # Write individual badge JSON files
     for badge_name, badge_data in all_badges.items():
-        output_file = output_dir / f'{badge_name}.json'
-        with open(output_file, 'w') as f:
+        output_file = output_dir / f"{badge_name}.json"
+        with open(output_file, "w") as f:
             json.dump(badge_data, f, indent=2)
         print(f"Generated: {output_file}")
-    
+
     # Write manifest file listing all badges
     manifest = {
         "generated": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        "badges": list(all_badges.keys())
+        "badges": list(all_badges.keys()),
     }
-    manifest_file = output_dir / 'manifest.json'
-    with open(manifest_file, 'w') as f:
+    manifest_file = output_dir / "manifest.json"
+    with open(manifest_file, "w") as f:
         json.dump(manifest, f, indent=2)
     print(f"Generated: {manifest_file}")
-    
+
     print(f"\n✅ Generated {len(all_badges)} badge JSON files in {output_dir}")
     # Optionally write back a refreshed deferred summary for future runs
     refreshed_summary = repo_root / "deferred-summary.json"
@@ -573,5 +590,5 @@ def main():
     print(f"Generated: {top_md_file} (markdown table)")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

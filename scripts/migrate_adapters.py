@@ -17,7 +17,7 @@ import re
 import sys
 from pathlib import Path
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Optional
 
 
 @dataclass
@@ -28,13 +28,13 @@ class AdapterRecord:
     decl_field: str
     decl_type: str
     has_status: bool
-    fields: List[str]
+    fields: list[str]
     constructor_name: str
     start_line: int
     end_line: int
 
 
-def parse_adapter_record(lines: List[str], start_idx: int) -> Optional[AdapterRecord]:
+def parse_adapter_record(lines: list[str], start_idx: int) -> Optional[AdapterRecord]:
     """Parse an adapter record definition from Agda source."""
     # Look for: record XxxAdapter : Set₁ where
     record_match = re.match(r"record\s+(\w+Adapter)\s*:", lines[start_idx])
@@ -89,8 +89,8 @@ def generate_categorical_field(adapter: AdapterRecord) -> str:
 
 
 def generate_enhanced_constructor(
-    adapter: AdapterRecord, original_lines: List[str]
-) -> List[str]:
+    adapter: AdapterRecord, original_lines: list[str]
+) -> list[str]:
     """Generate an updated constructor with categorical initialization."""
     # Find the original constructor
     constructor_start = None
@@ -136,7 +136,7 @@ def generate_enhanced_constructor(
     return new_lines
 
 
-def add_categorical_to_record(lines: List[str], adapter: AdapterRecord) -> List[str]:
+def add_categorical_to_record(lines: list[str], adapter: AdapterRecord) -> list[str]:
     """Add categorical field to an adapter record definition."""
     new_lines = []
 
@@ -197,7 +197,7 @@ def migrate_adapter_file(filepath: Path) -> None:
     with open(filepath, "w") as f:
         f.writelines(modified_lines)
 
-    print(f"  Migration complete!")
+    print("  Migration complete!")
 
 
 def generate_migration_report(adapter_dir: Path) -> None:

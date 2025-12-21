@@ -1,10 +1,21 @@
 #!/usr/bin/env python3
 """
+SPPF-Composable Onboarding Header
+
+Roadmap: src/agda/Plan/CIM/Utility.agda
+Architecture: ARCHITECTURE.md
+Onboarding: COPILOT_SYNERGY.md
+
+Constructive Proof Semantics:
+- This script participates in the composable SPPF model, mirroring Agda record patterns for protocol,
+    witness, and universal property semantics.
+- All logic should be traceable to roadmap nodes and architectural principles.
+- For onboarding, review the architecture and roadmap, and recursively revisit related nodes for
+    context and composability.
+
 Search/query tool for algorithms and properties in the Agda codebase.
 
 Heuristics:
-- Index declarations like `record Name : Set where`, `constructor THEOREM_*`, and `postulate` entries.
-- Allow substring queries across names and lines.
 
 Usage:
   scripts/search_algo.py --q regular epi --path src/agda
@@ -13,45 +24,50 @@ from __future__ import annotations
 import argparse
 import re
 from pathlib import Path
+from typing import Any
 
 DECL_RE = re.compile(r'^\s*(?:record|data|postulate|module)\b.*$|^\s*constructor\s+[A-Za-z0-9_]+\b.*$', re.MULTILINE)
 NAME_CAPTURE_RE = re.compile(r'^\s*record\s+([A-Za-z0-9_]+)\b|^\s*constructor\s+([A-Za-z0-9_]+)\b')
 
 
-def index_paths(root: Path):
+def index_paths(root: Path) -> list[dict[str, Any]]:
     files = sorted(root.rglob("*.agda"))
-    entries = []
+    entries: list[dict[str, Any]] = []
     for p in files:
         text = p.read_text(encoding="utf-8", errors="ignore")
         for i, line in enumerate(text.splitlines(), start=1):
             if DECL_RE.match(line):
-                name = None
+                name: str | None = None
                 m = NAME_CAPTURE_RE.match(line)
                 if m:
                     name = m.group(1) or m.group(2)
-                entries.append({
-                    "file": str(p),
-                    "line": i,
-                    "text": line.strip(),
-                    "name": name,
-                })
+                entries.append(
+                    {
+                        "file": str(p),
+                        "line": i,
+                        "text": line.strip(),
+                        "name": name,
+                    }
+                )
     return entries
 
 
-def query(entries, q: str):
+def query(entries: list[dict[str, Any]], q: str) -> list[dict[str, Any]]:
     ql = q.lower()
     return [e for e in entries if ql in e["text"].lower() or (e["name"] and ql in e["name"].lower())]
 
 
-def main():
+def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--path", default="src/agda", help="Path to search (default src/agda)")
+    ap.add_argument(
+        "--path", default="src/agda", help="Path to search (default src/agda)"
+    )
     ap.add_argument("--q", required=True, help="Query string (substring match)")
     args = ap.parse_args()
 
     root = Path(args.path)
-    entries = index_paths(root)
-    matches = query(entries, args.q)
+    entries: list[dict[str, Any]] = index_paths(root)
+    matches: list[dict[str, Any]] = query(entries, args.q)
     for m in matches:
         print(f"{m['file']}:{m['line']}: {m['text']}")
 

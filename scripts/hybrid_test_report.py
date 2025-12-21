@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
 """
+SPPF-Composable Onboarding Header
+
+Roadmap: src/agda/Plan/CIM/Utility.agda
+Architecture: ARCHITECTURE.md
+Onboarding: COPILOT_SYNERGY.md
+
+Constructive Proof Semantics:
+- This script participates in the composable SPPF model, mirroring Agda record patterns for protocol,
+    witness, and universal property semantics.
+- All logic should be traceable to roadmap nodes and architectural principles.
+- For onboarding, review the architecture and roadmap, and recursively revisit related nodes for
+    context and composability.
+
 Hybrid test coverage reporter: Agda-validated metadata + Python generation
 
 Approach:
@@ -13,6 +26,7 @@ This is more robust than pure regex while being immediately implementable.
 
 from pathlib import Path
 import re
+from typing import Any, Optional, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
 TESTS_DIR = ROOT / "src" / "agda" / "Tests"
@@ -20,7 +34,7 @@ COVERAGE_REPORT_FILE = TESTS_DIR / "CoverageReport.agda"
 OUT_DIR = ROOT / "build" / "reports"
 
 
-def parse_coverage_metadata():
+def parse_coverage_metadata() -> Optional[dict[str, Any]]:
     """
     Parse the structured metadata from Tests/CoverageReport.agda
 
@@ -45,7 +59,9 @@ def parse_coverage_metadata():
     return None
 
 
-def scan_checklists_with_validation(expected_metadata):
+def scan_checklists_with_validation(
+    expected_metadata: Optional[dict[str, Any]],
+) -> Tuple[list[dict[str, Any]], int]:
     """
     Scan actual checklist files and validate against Agda metadata
     """
@@ -54,36 +70,43 @@ def scan_checklists_with_validation(expected_metadata):
     checklist_files = sorted(TESTS_DIR.glob("*Checklist.agda"))
     file_reports = [scan_file(f) for f in checklist_files]
 
-    actual_total = sum(fr["status_assertions"] for fr in file_reports)
+    status_assertion_values = []
+    for fr in file_reports:
+        val = fr.get("status_assertions")
+        if isinstance(val, int):
+            status_assertion_values.append(val)
+    actual_total = sum(status_assertion_values)
 
     if expected_metadata and "expected_total" in expected_metadata:
         expected = expected_metadata["expected_total"]
         if actual_total != expected:
-            print(f"\n⚠️  WARNING: Metadata mismatch!")
+            print("\n⚠️  WARNING: Metadata mismatch!")
             print(f"   Expected (from Agda): {expected}")
             print(f"   Actual (from scan):   {actual_total}")
-            print(f"   Someone forgot to update Tests/CoverageReport.agda!")
+            print("   Someone forgot to update Tests/CoverageReport.agda!")
         else:
             print(f"✓ Validation passed: {actual_total} assertions match Agda metadata")
 
     return file_reports, actual_total
 
 
-def main():
+def main() -> None:
     """Generate coverage report with Agda validation"""
     print("Hybrid Coverage Reporter")
     print("=" * 60)
 
     # Step 1: Load type-checked metadata from Agda
-    metadata = parse_coverage_metadata()
+    metadata: Optional[dict[str, Any]] = parse_coverage_metadata()
 
     # Step 2: Scan actual files (using existing logic)
+    file_reports: list[dict[str, Any]]
+    actual_total: int
     file_reports, actual_total = scan_checklists_with_validation(metadata)
 
     # Step 3: Generate output (reuse existing formatting)
     from scripts.test_report import summarize, write_outputs
 
-    summary = summarize(file_reports)
+    summary: Any = summarize(file_reports)
     write_outputs(summary, OUT_DIR)
 
     print(f"\nReport written to {OUT_DIR}/test-report.md")
