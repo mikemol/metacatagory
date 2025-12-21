@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Tests.HierarchyValidation where
 
 -- Phase I.1.3: Hierarchy Composition Validation (P5 DAG)

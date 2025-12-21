@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.UniversalProperties: Categorical characterization of algebraic constructions
 -- This module formalizes the universal properties underlying algorithmic interfaces
 

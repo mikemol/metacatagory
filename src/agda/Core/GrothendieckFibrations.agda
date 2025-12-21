@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.GrothendieckFibrations: Grothendieck fibrations with Beck-Chevalley condition
 -- This module formalizes fibrations, cartesian lifts, and proves Beck-Chevalley coherence
 

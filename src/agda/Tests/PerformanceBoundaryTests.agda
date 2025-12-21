@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.PerformanceBoundaryTests: Track computational complexity phase boundaries
 --
 -- This suite tests where complexity changes occur in algorithm pipelines:
@@ -452,4 +454,3 @@ module Phase14-GrowthInstrumentation where
 -- 11. Growth rate instrumentation (Phase 14 / PHASE-V.2): Track solution space expansion patterns
 --
 -- Coverage: 11 phases tracking computational complexity boundaries and growth metrics
-

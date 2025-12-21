@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Examples.FiniteField.GF8: Worked example of GF(8)/GF(2)
 -- Demonstrates algorithm registry usage and witness construction for a concrete finite field.
 

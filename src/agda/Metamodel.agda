@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Metamodel where
 
 -- Minimal builtins to avoid external stdlib dependencies

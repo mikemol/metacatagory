@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter3.Level3Index where
 
 -- Aggregator for chapter 3 Chapter 3 modules

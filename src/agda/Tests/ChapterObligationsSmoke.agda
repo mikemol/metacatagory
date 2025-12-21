@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/ChapterObligationsSmoke.agda
 -- Leverage proof-obligation records from the chapters as smoke tests by
 -- constructing trivial inhabitants with dummy witnesses.

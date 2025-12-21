@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/Index_PhaseII.agda
 -- Focused aggregate for Phase II closure while isolating unrelated metas.
 

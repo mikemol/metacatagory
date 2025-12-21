@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Algebra.Groups.Abelian: Abelian groups and their categorical properties
 -- This module develops the theory of abelian groups, showing how Ab is enriched over itself
 -- and serves as the foundation for homological algebra (Grothendieck, Eilenberg-Mac Lane).

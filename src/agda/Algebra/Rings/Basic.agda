@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Algebra.Rings.Basic: Ring theory (Hungerford Ch III)
 -- This module covers rings, ideals, and factorization, grounded in category theory.
 

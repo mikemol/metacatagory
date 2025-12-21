@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.CoverageReport: Type-safe test coverage metadata
 -- Provides structured data for external tooling without regex parsing
 --

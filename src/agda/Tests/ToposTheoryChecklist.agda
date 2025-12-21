@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.ToposTheoryChecklist: Test instances for topos theory concepts
 
 module Tests.ToposTheoryChecklist where

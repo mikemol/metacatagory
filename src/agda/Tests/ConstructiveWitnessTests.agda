@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.ConstructiveWitnessTests: Test suite for constructive witness framework
 -- Validates that constructive witnesses provide computational content with
 -- correctness proofs, contrasting with placeholder-based approaches.

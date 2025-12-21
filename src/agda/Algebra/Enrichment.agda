@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Algebra.Enrichment: Bridging algebraic structures with enriched category theory
 -- This module shows how categories can be enriched over algebraic structures,
 -- demonstrating the constructive connection between abstract algebra and enriched categories.

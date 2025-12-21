@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Tests.AbelianCategoriesChecklist where
 
 open import Tests.ObligationAdapters as A

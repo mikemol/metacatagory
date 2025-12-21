@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.Algorithms.External: Bridge to external computer algebra systems
 -- This module provides oracle/IO hooks for verified computation using Sage, Pari, SymPy, etc.
 -- Computational content is delegated to external tools with typed evidence stubs returned to Agda.

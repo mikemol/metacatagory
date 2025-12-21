@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.AlgebraicAlgorithms: Generic interfaces for computational algebraic algorithms
 -- These records provide extensible, type-safe infrastructure for algebraic computation in Agda.
 
@@ -301,7 +303,6 @@ record PerfectFieldDecisionAlgorithm (F : FieldDeclaration) : Set₁ where
 -- ============================================================================
 -- Extensibility: External/Verified Computation
 -- ============================================================================
-
 
 -- ==========================================================================
 -- Generic scaffolds for all algorithm interfaces

@@ -1,8 +1,11 @@
+{-# OPTIONS --without-K #-}
+
 module Examples.TechnicalDebtExample where
 
 open import Metamodel as M
 open import PropertyRegistry as PR
-open import Agda.Builtin.List
+open import Agda.Builtin.List using (List; []; _∷_)
+open import Core.Utils using (map)
 open import Agda.Builtin.String
 
 -- Example: Annotate a postulate with technical debt
@@ -33,7 +36,7 @@ technicalDebtRegistry = fooDebt ∷ barDebt ∷ []
 
 -- Example: Export rationale/status for reporting
 rationales : List String
-rationales = List.map DebtAnnotation.rationale technicalDebtRegistry
+rationales = map DebtAnnotation.rationale technicalDebtRegistry
 
 statuses : List String
-statuses = List.map DebtAnnotation.status technicalDebtRegistry
+statuses = map DebtAnnotation.status technicalDebtRegistry

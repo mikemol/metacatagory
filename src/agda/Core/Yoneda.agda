@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.Yoneda: Yoneda lemma and embedding with constructive proofs
 -- This module formalizes the Yoneda embedding and proves the Yoneda lemma constructively
 

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Algebra.Groups.Basic: Fundamental group theory (Hungerford Ch I, sections 1-6)
 -- This module covers semigroups through symmetric groups, grounded in category theory.
 

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.VectorSpaceChecklist
 -- Minimal instances for vector space structure adapters
 

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter1.Level1sub8 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

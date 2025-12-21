@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/Chapters.agda
 -- Connects the test harness to the Chapter 1–3 content by importing their indices.
 

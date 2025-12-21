@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/AdvancedFieldsChecklist.agda
 -- Coverage for Algebra.Fields.Advanced with concrete instances
 

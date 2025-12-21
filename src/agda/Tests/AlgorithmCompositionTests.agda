@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.AlgorithmCompositionTests: Validate algorithm composition and multi-step pipelines
 --
 -- This suite tests that algorithms compose correctly through phase boundaries:

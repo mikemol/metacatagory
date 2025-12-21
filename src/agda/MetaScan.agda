@@ -1,27 +1,26 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --allow-unsolved-metas --without-K #-}
 
 module MetaScan where
 
+open import Agda.Primitive
 open import Agda.Builtin.Reflection
 open import Agda.Builtin.List
 open import Agda.Builtin.String
-open import Agda.Builtin.Reflection using (Declaration; Postulate; Name)
+open import Agda.Builtin.Unit
 
--- List all postulates in the current module
-scanPostulates : TC (List String)
-scanPostulates = do
-  decls ← getDeclarations
-  pure (List.map declToString (List.filter isPostulate decls))
+-- TC monad is already built-in, just use it directly
+
+-- Scan for axioms (postulates) using Agda 2.8.0 reflection API
+scanAxioms : Name → TC ⊤
+scanAxioms n =
+  bindTC (getDefinition n) λ def →
+  case def of λ where
+    axiom → debugPrint "scan" 10 (strErr "Found axiom: " ∷ nameErr n ∷ [])
+    _ → returnTC tt
   where
-    isPostulate : Declaration → Bool
-    isPostulate (Postulate _ _ _) = true
-    isPostulate _ = false
-    declToString : Declaration → String
-    declToString (Postulate x _ _) = nameToString x
-    declToString _ = ""
-    nameToString : Name → String
-    nameToString x = show x
+    case_of_ : {A B : Set} → A → (A → B) → B
+    case x of f = f x
 
--- Expose the value for further processing
-postulateNames : List String
-postulateNames = runTC scanPostulates
+-- Note: This is a stub implementation. Full postulate scanning
+-- would require iterating over module names, which needs more
+-- infrastructure in the reflection API.

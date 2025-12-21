@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Examples.PhaseCategoryExamples: Demonstrations for the category of phases
 
 module Examples.PhaseCategoryExamples where

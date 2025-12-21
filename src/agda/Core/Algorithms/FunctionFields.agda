@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.Algorithms.FunctionFields: Specialization of algorithms for function fields K(t)/F
 
 module Core.Algorithms.FunctionFields where

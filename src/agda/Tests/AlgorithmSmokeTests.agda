@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.AlgorithmSmokeTests: Smoke tests for algorithm interfaces
 -- This module instantiates all algorithm interfaces with minimal dummy structures
 -- to verify that the interfaces are well-formed and can be instantiated generically.

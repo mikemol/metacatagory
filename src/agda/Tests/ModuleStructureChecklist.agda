@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.ModuleStructureChecklist
 -- Minimal instances for module structure theorem and classification adapters
 

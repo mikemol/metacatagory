@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core/Algorithms/NumberFields.agda
 module Core.Algorithms.NumberFields where
 

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Example: Using the Lazy Hybrid Instance Approach
 -- Demonstrates how explicit instance construction breaks cycles while maintaining ergonomics
 

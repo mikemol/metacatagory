@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Examples.AgdaFileScanFFI where
 
 open import Agda.Builtin.List using (List; [])

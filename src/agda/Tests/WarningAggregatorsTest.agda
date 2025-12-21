@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.WarningAggregatorsTest: Ensure warning provenance collection works
 
 module Tests.WarningAggregatorsTest where

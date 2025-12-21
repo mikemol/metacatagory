@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.FieldsBasicChecklist: Coverage for Algebra.Fields.Basic (Core Galois Theory)
 
 module Tests.FieldsBasicChecklist where

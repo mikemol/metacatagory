@@ -1,4 +1,4 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --allow-unsolved-metas --without-K #-}
 
 -- Tests.YonedaChecklist: Test instances for Yoneda lemma
 -- PHASE-IV.2: Constructive instance of Yoneda lemma
@@ -223,4 +223,3 @@ yonedaTestsPass = true
 -- Boundary marker: Yoneda lemma validated (PHASE-IV.2 complete)
 yonedaComplete : M.Identifier
 yonedaComplete = M.mkId "✓ Yoneda lemma constructive instance complete (PHASE-IV.2)"
-

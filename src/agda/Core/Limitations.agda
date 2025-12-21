@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Core.Limitations where
 
 open import Metamodel as M

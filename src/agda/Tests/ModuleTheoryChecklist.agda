@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.ModuleTheoryChecklist
 -- Minimal instances for additional module-theory adapters
 -- (Hom functors, duality, tensor products, free modules)

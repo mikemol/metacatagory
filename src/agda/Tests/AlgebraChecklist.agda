@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/AlgebraChecklist.agda
 -- Comprehensive coverage for Algebra subtree with concrete instances
 

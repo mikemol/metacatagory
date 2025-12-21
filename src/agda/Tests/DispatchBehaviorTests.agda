@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.DispatchBehaviorTests: Test non-trivial dispatch behaviors
 -- This module tests the registry dispatch system across behavioral phase boundaries:
 -- 1. Evidence type transitions (generic → specialized)

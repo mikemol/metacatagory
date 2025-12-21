@@ -1,4 +1,4 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --allow-unsolved-metas --without-K #-}
 
 module Tests.PolynomialFieldExtensionsChecklist where
 
@@ -258,4 +258,3 @@ _ : A.isFilledTranscendenceBasis transcendenceBasisAdapt ≡ true
 _ = refl
 
 -- Categorical assertions (omitted; adapter wiring smoke-tested via isFilledX)
-

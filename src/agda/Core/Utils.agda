@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Core.Utils where
 
 open import Core.Phase public using (Bool; true; false)

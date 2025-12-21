@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.ErrorAsSpecificationTests: Error-as-Specification (Phase III.3 - 3.2)
 -- Status: COMPLETE [2025-11-19]
 --

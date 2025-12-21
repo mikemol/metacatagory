@@ -1,4 +1,4 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --allow-unsolved-metas --without-K #-}
 
 -- Tests.KanExtensionsChecklist: Test instances for Kan extensions
 
@@ -10,7 +10,6 @@ open import Agda.Builtin.Unit using (⊤)
 open import Tests.ObligationAdapters as A
 open import Core.CategoricalAdapter
 
-
 -- Kan extensions (8 assertions: 7 Kan + 1 adjoint functor theorem)
 
 kanExtensionContextAdapt : A.KanExtensionContextAdapter
@@ -18,7 +17,6 @@ kanExtensionContextAdapt = A.mkKanExtensionContextAdapter _ _ _ refl refl
 
 _ : A.isFilledKanExtensionContext kanExtensionContextAdapt ≡ true
 _ = refl
-
 
 _ = refl
 
@@ -28,7 +26,6 @@ leftKanCandidateAdapt = A.mkLeftKanCandidateAdapter _ _ refl
 _ : A.isFilledLeftKanCandidate leftKanCandidateAdapt ≡ true
 _ = refl
 
-
 _ = refl
 
 rightKanCandidateAdapt : A.RightKanCandidateAdapter
@@ -36,7 +33,6 @@ rightKanCandidateAdapt = A.mkRightKanCandidateAdapter _ _ refl
 
 _ : A.isFilledRightKanCandidate rightKanCandidateAdapt ≡ true
 _ = refl
-
 
 _ = refl
 
@@ -46,7 +42,6 @@ leftKanExtensionIsInitialObjectAdapt = A.mkLeftKanExtensionIsInitialObjectAdapte
 _ : A.isFilledLeftKanExtensionIsInitialObject leftKanExtensionIsInitialObjectAdapt ≡ true
 _ = refl
 
-
 _ = refl
 
 rightKanExtensionIsTerminalObjectAdapt : A.RightKanExtensionIsTerminalObjectAdapter
@@ -54,7 +49,6 @@ rightKanExtensionIsTerminalObjectAdapt = A.mkRightKanExtensionIsTerminalObjectAd
 
 _ : A.isFilledRightKanExtensionIsTerminalObject rightKanExtensionIsTerminalObjectAdapt ≡ true
 _ = refl
-
 
 _ = refl
 
@@ -64,7 +58,6 @@ pointwiseKanFormulaTheoremAdapt = A.mkPointwiseKanFormulaTheoremAdapter _ _ _ re
 _ : A.isFilledPointwiseKanFormulaTheorem pointwiseKanFormulaTheoremAdapt ≡ true
 _ = refl
 
-
 _ = refl
 
 adjointsAsKanExtensionsAdapt : A.AdjointsAsKanExtensionsAdapter
@@ -73,7 +66,6 @@ adjointsAsKanExtensionsAdapt = A.mkAdjointsAsKanExtensionsAdapter _ _ _ refl ref
 _ : A.isFilledAdjointsAsKanExtensions adjointsAsKanExtensionsAdapt ≡ true
 _ = refl
 
-
 _ = refl
 
 adjointFunctorTheoremRightAdapt : A.AdjointFunctorTheoremRightAdapter
@@ -81,6 +73,5 @@ adjointFunctorTheoremRightAdapt = A.mkAdjointFunctorTheoremRightAdapter _
 
 _ : A.isFilledAdjointFunctorTheoremRight adjointFunctorTheoremRightAdapt ≡ true
 _ = refl
-
 
 _ = refl

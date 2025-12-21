@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/Index.agda
 -- Comprehensive test suite validating behavioral phase boundaries
 --
@@ -101,7 +103,6 @@ import Tests.GodelBoundaryTests
 -- Validates: Composite path witnesses, coordinate preservation, system-wide closure
 import Core.PathAggregator
 import Tests.PathAggregatorTests
-
 
 -- Proof obligation status checks (ensures selected obligations are filled
 -- and linked to constructive witnesses in examples)

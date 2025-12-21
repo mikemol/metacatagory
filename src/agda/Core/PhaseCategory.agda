@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.PhaseCategory: Formalization of the Category of Phases (minimal)
 
 module Core.PhaseCategory where
@@ -200,4 +202,3 @@ data Unit {ℓ : Level} : Set ℓ where
 
 ρᵤ⁻¹ : ∀ {ℓ : Level} {A : Set ℓ} → Phase A (A ⊗₀ Unit)
 ρᵤ⁻¹ = mkPhase (λ a → (a , unit))
-

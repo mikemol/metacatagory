@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.PathAggregator: Composite HoTT path aggregation for global closure
 --
 -- This module provides a global witness that aggregates all individual

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.Algorithms.Registry: Centralized algorithm discovery and dispatch
 -- This module provides a unified interface for finding and invoking algebraic algorithms
 -- based on field types and problem categories, enabling systematic extension and reuse.
@@ -502,4 +504,3 @@ lookupGaloisClosureAuto F E = AlgorithmBundle.galoisClosureAlg (lookupAlgorithmB
 -- lookupGaloisGroupWithClassification Q GF8 
 --   (classifyAsNumberField Q nfEvidence) 
 --   (classifyAsFiniteField GF8 ffEvidence)
-

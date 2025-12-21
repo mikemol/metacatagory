@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Algebra.Foundation: Foundational algebraic structures grounded in category theory
 -- This module defines the basic algebraic hierarchy (Magma → Semigroup → Monoid → Group)
 -- as enrichments of the categorical framework in Core, reusing existing axiom infrastructure.
@@ -224,4 +226,3 @@ postulate
   
   -- Ab is an abelian category
   Ab-IsAbelian : M.Identifier
-

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Algebra.Groups.Structure where
 
 open import Core

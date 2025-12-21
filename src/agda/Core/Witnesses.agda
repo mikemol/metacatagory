@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.Witnesses: Generic witness construction utilities
 -- This module provides reusable builders for common algebraic witness types,
 -- reducing boilerplate and ensuring consistency across specializations.

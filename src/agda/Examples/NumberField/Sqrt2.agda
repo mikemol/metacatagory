@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Examples.NumberField.Sqrt2: Demonstration of number field bundle usage
 -- This example shows how to use the registry with IsNumberField evidence
 -- to get specialized algorithms for Q(√2).
