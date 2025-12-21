@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter1.Level1 where
 
 open import Agda.Builtin.List using (List; []; _∷_)

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.AdvancedPhaseExamples: Demonstrating advanced Phase features
 --
 -- This module shows the extended capabilities of the Phase abstraction:
@@ -233,4 +235,3 @@ module RobustPipelineExample where
 --
 -- These enable building sophisticated, type-safe transformation pipelines
 -- with error handling, property preservation, and performance tracking.
-

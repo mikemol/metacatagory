@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Examples.TechnicalDebtRegistry where
 
 open import Agda.Builtin.List using (List; []; _∷_)

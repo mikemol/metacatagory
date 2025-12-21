@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Examples.RealWorldAlgorithms: Small real-world algorithms expressed as Phases
 
 module Examples.RealWorldAlgorithms where
@@ -99,7 +101,6 @@ eqℕ zero zero = true
 eqℕ zero (suc _) = false
 eqℕ (suc _) zero = false
 eqℕ (suc m) (suc n) = eqℕ m n
-
 
 -- =====================================================================================
 -- Euclidean GCD (subtractive variant) and Phase
@@ -264,7 +265,6 @@ sortCertificate xs = record
   ; certificationAuthority = M.mkId "Examples.RealWorldAlgorithms"
   }
 
-
 dividesB : ℕ → ℕ → Bool
 remFuel : ℕ → ℕ → ℕ → ℕ
 remFuel zero d n = n
@@ -277,7 +277,6 @@ rem : ℕ → ℕ → ℕ
 rem d n = remFuel n d n
 
 dividesB d n = eqℕ (rem d n) zero
-
 
 -- Basic gcd divisibility via remainder (postulated for now)
 postulate

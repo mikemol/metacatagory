@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.AlgorithmComplexity: Complexity classification for algorithmic operations
 --
 -- Phase III.1 (3.3): Complexity Classification and Measurement

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.GroupsFreeChecklist: Coverage for Algebra.Groups.Free (Free Groups and Categorical Constructions)
 
 module Tests.GroupsFreeChecklist where

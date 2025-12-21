@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.TensorProductChecklist
 -- Minimal instances for tensor product adapters
 

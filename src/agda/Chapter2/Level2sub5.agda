@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Level2_5: Accessible Categories (Chapter 2, Section 5)
 -- This module encodes the structural content of Section 5 (Accessible Categories).
 -- It covers locally presentable categories, accessible categories, raising degrees,

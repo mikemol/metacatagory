@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.ConstructiveWitnesses: Constructive witness builders with computational content
 -- Unlike Core.Witnesses (which uses M.mkId placeholders), this module provides
 -- witnesses with explicit algorithms, data structures, and correctness proofs.

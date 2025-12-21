@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.FunctorPropertiesChecklist: Test instances for functor limit/colimit properties
 
 module Tests.FunctorPropertiesChecklist where
@@ -7,7 +9,6 @@ open import Agda.Builtin.Equality using (_≡_; refl)
 open import Tests.ObligationAdapters as A
 open import Metamodel as M
 open import Chapter1.Level1sub2 as C1S2
-
 
 -- Functor properties: preserve/reflect/create limits (6 assertions)
 

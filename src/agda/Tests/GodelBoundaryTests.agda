@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.GodelBoundaryTests: Validation of incompleteness witnesses and limit objects
 -- PHASE-V.1: Reification of limit object (Gödel boundary)
 

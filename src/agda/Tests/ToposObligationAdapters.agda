@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.ToposObligationAdapters: Adapters specific to topos theory to decouple from global adapters
 
 module Tests.ToposObligationAdapters where

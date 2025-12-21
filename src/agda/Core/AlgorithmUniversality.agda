@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.AlgorithmUniversality: Linking algorithms to universal properties
 -- Shows how each algorithm interface implements or computes a universal construction
 

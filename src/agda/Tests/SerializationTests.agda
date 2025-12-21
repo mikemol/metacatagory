@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.SerializationTests: Validate witness serialization and deserialization
 --
 -- This suite tests conversion between internal witnesses and external representations:

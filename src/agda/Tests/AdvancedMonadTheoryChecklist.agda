@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.AdvancedMonadTheoryChecklist: Test instances for advanced monad theory
 
 module Tests.AdvancedMonadTheoryChecklist where
@@ -27,7 +29,6 @@ postulate
   testRankThm1 : C2S4.RankTheoremForMonadicCategoriesTheorem.baseCategory testRankTheorem ≡ testRankThmBaseCategory
   testRankThm2 : C2S4.RankTheoremForMonadicCategoriesTheorem.monadWithRank testRankTheorem ≡ testRankThmMonadWithRank
   testRankThm3 : C2S4.RankTheoremForMonadicCategoriesTheorem.algebraCategory testRankTheorem ≡ testRankThmAlgCat
-
 
 -- Advanced monad theory (3 assertions)
 

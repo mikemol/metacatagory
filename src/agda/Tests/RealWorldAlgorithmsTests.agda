@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.RealWorldAlgorithmsTests: Basic test harness for real-world algorithms
 
 module Tests.RealWorldAlgorithmsTests where

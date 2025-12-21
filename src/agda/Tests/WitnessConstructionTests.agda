@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.WitnessConstructionTests: Test witness builder behavioral boundaries
 -- This module tests the phase transitions in witness construction:
 -- fields → algebraic elements → simple extensions → splitting fields → Galois groups

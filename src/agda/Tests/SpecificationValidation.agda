@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Tests.SpecificationValidation where
 
 -- Phase I.1.4: Specification Validation (P1)

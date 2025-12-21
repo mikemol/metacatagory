@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter1.Level1Index where
 
 -- Aggregates chapter 1 Agda modules for convenient downstream imports

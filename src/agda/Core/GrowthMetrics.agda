@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.GrowthMetrics: Solution space growth rate instrumentation
 -- PHASE-V.2: Track coordinate allocation patterns and solution space expansion
 

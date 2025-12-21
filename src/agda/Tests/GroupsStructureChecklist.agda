@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.GroupsStructureChecklist: Coverage for Algebra.Groups.Structure (Group Structure Theory)
 
 module Tests.GroupsStructureChecklist where

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries
 -- This module tests the bridge between computational algorithms and universal properties,
 -- verifying that phase transitions preserve categorical semantics
@@ -590,4 +592,3 @@ module Phase11-AdjunctionCoherence where
   -- Boundary marker: Adjunction infrastructure is constructive and coherent
   adjunctionTestsPass : M.Identifier
   adjunctionTestsPass = M.mkId "✓ Adjunction coherence validated (PHASE-IV.1 complete)"
-

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.ProofObligationStatus.agda
 -- Verify that selected proof obligations are filled via constructive pipelines
 

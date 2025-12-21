@@ -1,4 +1,4 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --allow-unsolved-metas --without-K #-}
 
 -- Tests.LimitsColimitsChecklist: Test instances for limits/colimits in algebra categories
 
@@ -9,7 +9,6 @@ open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤)
 open import Tests.ObligationAdapters as A
 open import Core.CategoricalAdapter
-
 
 -- Limits and colimits in algebra categories (6 assertions)
 
@@ -48,4 +47,3 @@ uSplitPairAdapt = A.mkUSplitPairAdapter _ _ refl
 
 _ : A.isFilledUSplitPair uSplitPairAdapt ≡ true
 _ = refl
-

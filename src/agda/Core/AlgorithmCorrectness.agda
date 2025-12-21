@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.AlgorithmCorrectness: Formal correctness specifications for algebraic algorithms
 -- This module defines what it means for an algorithm to be "correct" by specifying
 -- proof obligations that connect algorithm outputs to their mathematical properties.

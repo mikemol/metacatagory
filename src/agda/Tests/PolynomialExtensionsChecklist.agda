@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.PolynomialExtensionsChecklist
 -- Minimal instances for polynomial-related adapters
 

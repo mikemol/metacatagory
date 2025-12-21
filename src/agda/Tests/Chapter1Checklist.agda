@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/Chapter1Checklist.agda
 -- 1–2 trivial inhabitants per Level1subN module to broaden smoke coverage.
 

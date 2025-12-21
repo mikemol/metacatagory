@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Examples.AlgorithmCorrectnessExamples: Demonstrations of algorithm correctness proofs
 -- This module shows how to specify and verify that algebraic algorithms satisfy
 -- their mathematical correctness properties.

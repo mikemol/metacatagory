@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.RingsBasicChecklist: Coverage for Algebra.Rings.Basic (Ring Theory & Ideal Theory)
 
 module Tests.RingsBasicChecklist where

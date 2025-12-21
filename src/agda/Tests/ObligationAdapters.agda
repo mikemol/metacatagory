@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.ObligationAdapters: Tiny adapters and a common status predicate
 
 module Tests.ObligationAdapters where
@@ -4252,7 +4254,6 @@ tensorProductAbCategorical adapt =
   mkCategoricalAdapter (AGA.TensorProductAb (TensorProductAbAdapter.A adapt) (TensorProductAbAdapter.B adapt))
     (λ _ → TensorProductAbAdapter.decl adapt)
 
-
 -- Basis of vector space
 record BasisOfVectorSpaceAdapter : Set₁ where
   field
@@ -4349,7 +4350,6 @@ multivariatePolynomialRingCategorical adapt =
   mkCategoricalAdapter (AR.MultivariatePolynomialRing (MultivariatePolynomialRingAdapter.R adapt) (MultivariatePolynomialRingAdapter.n adapt))
     (λ _ → MultivariatePolynomialRingAdapter.decl adapt)
 
-
 -- Content of polynomial
 record ContentOfPolynomialAdapter : Set₁ where
   field
@@ -4379,7 +4379,6 @@ contentOfPolynomialCategorical : (adapt : ContentOfPolynomialAdapter) →
 contentOfPolynomialCategorical adapt =
   mkCategoricalAdapter (AR.ContentOfPolynomial (ContentOfPolynomialAdapter.R adapt) (ContentOfPolynomialAdapter.f adapt))
     (λ _ → ContentOfPolynomialAdapter.decl adapt)
-
 
 -- Primitive polynomial
 record PrimitivePolynomialAdapter : Set₁ where
@@ -4411,7 +4410,6 @@ primitivePolynomialCategorical adapt =
   mkCategoricalAdapter (AR.PrimitivePolynomial (PrimitivePolynomialAdapter.R adapt) (PrimitivePolynomialAdapter.f adapt))
     (λ _ → PrimitivePolynomialAdapter.decl adapt)
 
-
 -- Prime spectrum
 record PrimeSpectrumAdapter : Set₁ where
   field
@@ -4439,7 +4437,6 @@ primeSpectrumCategorical : (adapt : PrimeSpectrumAdapter) →
 primeSpectrumCategorical adapt =
   mkCategoricalAdapter (AR.PrimeSpectrum (PrimeSpectrumAdapter.R adapt))
     (λ _ → PrimeSpectrumAdapter.decl adapt)
-
 
 -- Projective module
 record ProjectiveModuleAdapter : Set₁ where
@@ -4841,7 +4838,6 @@ rightModuleCategorical adapt =
   mkCategoricalAdapter (AM.RightModule (RightModuleAdapter.R adapt))
     (λ _ → RightModuleAdapter.decl adapt)
 
-
 -- ============================================================================
 -- Extension Degree and Polynomial-Related Adapters
 -- ============================================================================
@@ -4871,7 +4867,6 @@ mkExtensionDegreeAdapter F E d ef ee pf pe =
 isFilledExtensionDegree : ExtensionDegreeAdapter → Core.Phase.Bool
 isFilledExtensionDegree a = ExtensionDegreeAdapter.status a
 
-
 -- Inseparable degree [E : F]ᵢ
 record InseparableDegreeAdapter : Set₁ where
   field
@@ -4897,7 +4892,6 @@ mkInseparableDegreeAdapter F E d ef ee pf pe =
 isFilledInseparableDegree : InseparableDegreeAdapter → Core.Phase.Bool
 isFilledInseparableDegree a = InseparableDegreeAdapter.status a
 
-
 -- Separable degree [E : F]ₛ
 record SeparableDegreeAdapter : Set₁ where
   field
@@ -4922,7 +4916,6 @@ mkSeparableDegreeAdapter F E d ef ee pf pe =
 
 isFilledSeparableDegree : SeparableDegreeAdapter → Core.Phase.Bool
 isFilledSeparableDegree a = SeparableDegreeAdapter.status a
-
 
 -- Simple extension F(α)
 record SimpleExtensionAdapter : Set₁ where
@@ -4951,7 +4944,6 @@ mkSimpleExtensionAdapter F E α d ef ee pf pe =
 isFilledSimpleExtension : SimpleExtensionAdapter → Core.Phase.Bool
 isFilledSimpleExtension a = SimpleExtensionAdapter.status a
 
-
 -- Transcendental element
 record TranscendentalElementAdapter : Set₁ where
   field
@@ -4978,7 +4970,6 @@ mkTranscendentalElementAdapter F E α d ef ee pf pe =
 
 isFilledTranscendentalElement : TranscendentalElementAdapter → Core.Phase.Bool
 isFilledTranscendentalElement a = TranscendentalElementAdapter.status a
-
 
 -- Transcendence basis
 record TranscendenceBasisAdapter : Set₁ where
@@ -5041,7 +5032,6 @@ transcendenceBasisCategorical adapt =
   mkCategoricalAdapter (AFB.TranscendenceBasis (TranscendenceBasisAdapter.F adapt) (TranscendenceBasisAdapter.E adapt))
     (λ _ → TranscendenceBasisAdapter.decl adapt)
 
-
 -- ============================================================================
 -- Enrichment-Specific Adapters
 -- ============================================================================
@@ -5065,7 +5055,6 @@ mkMonoidAsMonoidalCategoryAdapter d em p =
 isFilledMonoidAsMonoidalCategory : MonoidAsMonoidalCategoryAdapter → Core.Phase.Bool
 isFilledMonoidAsMonoidalCategory a = MonoidAsMonoidalCategoryAdapter.status a
 
-
 -- Abelian group as symmetric monoidal category
 record AbelianGroupAsSymmetricMonoidalAdapter : Set₁ where
   field
@@ -5084,7 +5073,6 @@ mkAbelianGroupAsSymmetricMonoidalAdapter d eab p =
 
 isFilledAbelianGroupAsSymmetricMonoidal : AbelianGroupAsSymmetricMonoidalAdapter → Core.Phase.Bool
 isFilledAbelianGroupAsSymmetricMonoidal a = AbelianGroupAsSymmetricMonoidalAdapter.status a
-
 
 -- Monoid-enriched category
 record MonoidEnrichedCategoryAdapter : Set₁ where
@@ -5105,7 +5093,6 @@ mkMonoidEnrichedCategoryAdapter d em p =
 isFilledMonoidEnrichedCategory : MonoidEnrichedCategoryAdapter → Core.Phase.Bool
 isFilledMonoidEnrichedCategory a = MonoidEnrichedCategoryAdapter.status a
 
-
 -- Distance category (enriched over ℕ)
 record DistanceCategoryAdapter : Set₁ where
   field
@@ -5125,7 +5112,6 @@ mkDistanceCategoryAdapter d em p =
 isFilledDistanceCategory : DistanceCategoryAdapter → Core.Phase.Bool
 isFilledDistanceCategory a = DistanceCategoryAdapter.status a
 
-
 -- Ab-enriched category (additive category)
 record AbEnrichedCategoryAdapter : Set₁ where
   field
@@ -5144,7 +5130,6 @@ mkAbEnrichedCategoryAdapter d ec p =
 
 isFilledAbEnrichedCategory : AbEnrichedCategoryAdapter → Core.Phase.Bool
 isFilledAbEnrichedCategory a = AbEnrichedCategoryAdapter.status a
-
 
 -- Generic enrichment over monoidal category V
 record GenericEnrichmentAdapter : Set₁ where
@@ -5167,7 +5152,6 @@ mkGenericEnrichmentAdapter V d ec p =
 isFilledGenericEnrichment : GenericEnrichmentAdapter → Core.Phase.Bool
 isFilledGenericEnrichment a = GenericEnrichmentAdapter.status a
 
-
 -- Group action enriched category
 record GroupActionEnrichedCategoryAdapter : Set₁ where
   field
@@ -5187,7 +5171,6 @@ mkGroupActionEnrichedCategoryAdapter d eg p =
 isFilledGroupActionEnrichedCategory : GroupActionEnrichedCategoryAdapter → Core.Phase.Bool
 isFilledGroupActionEnrichedCategory a = GroupActionEnrichedCategoryAdapter.status a
 
-
 -- Module-enriched category (over a ring)
 record ModuleEnrichedCategoryAdapter : Set₁ where
   field
@@ -5203,7 +5186,6 @@ mkModuleEnrichedCategoryAdapter d =
 isFilledModuleEnrichedCategory : ModuleEnrichedCategoryAdapter → Core.Phase.Bool
 isFilledModuleEnrichedCategory a = ModuleEnrichedCategoryAdapter.status a
 
-
 -- Lawvere theory enriched category
 record LawvereTheoryEnrichedCategoryAdapter : Set₁ where
   field
@@ -5218,7 +5200,6 @@ mkLawvereTheoryEnrichedCategoryAdapter d =
 
 isFilledLawvereTheoryEnrichedCategory : LawvereTheoryEnrichedCategoryAdapter → Core.Phase.Bool
 isFilledLawvereTheoryEnrichedCategory a = LawvereTheoryEnrichedCategoryAdapter.status a
-
 
 -- Ab self-enriched
 record AbSelfEnrichedAdapter : Set₁ where
@@ -5238,7 +5219,6 @@ mkAbSelfEnrichedAdapter d ec p =
 
 isFilledAbSelfEnriched : AbSelfEnrichedAdapter → Core.Phase.Bool
 isFilledAbSelfEnriched a = AbSelfEnrichedAdapter.status a
-
 
 -- Ab self-enrichment via internal hom
 record AbSelfEnrichmentViaInternalHomAdapter : Set₁ where
@@ -5315,7 +5295,6 @@ abSelfEnrichmentViaInternalHomCategorical : (adapt : AbSelfEnrichmentViaInternal
 abSelfEnrichmentViaInternalHomCategorical adapt = 
   mkCategoricalAdapter AGA.AbSelfEnrichmentViaInternalHom (λ _ → AbSelfEnrichmentViaInternalHomAdapter.decl adapt)
 
-
 -- ============================================================================
 -- Module Category Theory and R-Algebras
 -- ============================================================================
@@ -5341,7 +5320,6 @@ mkExactSequenceAdapter R d er p =
 isFilledExactSequence : ExactSequenceAdapter → Core.Phase.Bool
 isFilledExactSequence a = ExactSequenceAdapter.status a
 
-
 -- Category of modules R-Mod
 record CategoryOfModulesAdapter : Set₁ where
   field
@@ -5362,7 +5340,6 @@ mkCategoryOfModulesAdapter R d er p =
 
 isFilledCategoryOfModules : CategoryOfModulesAdapter → Core.Phase.Bool
 isFilledCategoryOfModules a = CategoryOfModulesAdapter.status a
-
 
 -- Vector space over a field
 record VectorSpaceAdapter : Set₁ where
@@ -5385,7 +5362,6 @@ mkVectorSpaceAdapter F d ef p =
 isFilledVectorSpace : VectorSpaceAdapter → Core.Phase.Bool
 isFilledVectorSpace a = VectorSpaceAdapter.status a
 
-
 -- R-algebra (ring with compatible R-module structure)
 record RAlgebraAdapter : Set₁ where
   field
@@ -5406,7 +5382,6 @@ mkRAlgebraAdapter R d er p =
 
 isFilledRAlgebra : RAlgebraAdapter → Core.Phase.Bool
 isFilledRAlgebra a = RAlgebraAdapter.status a
-
 
 -- Algebra homomorphism
 record AlgebraHomomorphismAdapter : Set₁ where
@@ -5461,7 +5436,6 @@ algebraHomomorphismCategorical adapt =
   mkCategoricalAdapter (AM.AlgebraHomomorphism (AlgebraHomomorphismAdapter.R adapt) (AlgebraHomomorphismAdapter.A adapt) (AlgebraHomomorphismAdapter.B adapt))
     (λ _ → AlgebraHomomorphismAdapter.decl adapt)
 
-
 ------------------------------------------------------------------------
 -- Monad-Adjunction Theory (Chapter2.Level2sub4)
 ------------------------------------------------------------------------
@@ -5491,7 +5465,6 @@ categoryOfAlgebrasCategorical : CategoryOfAlgebrasAdapter →
 categoryOfAlgebrasCategorical adapt =
   mkCategoricalAdapter C2S4.CategoryOfAlgebras (λ _ → CategoryOfAlgebrasAdapter.decl adapt)
 
-
 -- Theorem: Adjunction induces monad
 record AdjunctionInducesMonadTheoremAdapter : Set₁ where
   field
@@ -5516,7 +5489,6 @@ adjunctionInducesMonadTheoremCategorical : AdjunctionInducesMonadTheoremAdapter 
   CategoricalAdapter {lzero} C2S4.AdjunctionInducesMonadTheorem
 adjunctionInducesMonadTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.AdjunctionInducesMonadTheorem (λ _ → AdjunctionInducesMonadTheoremAdapter.decl adapt)
-
 
 -- Eilenberg-Moore adjunction from monad
 record EilenbergMooreAdjunctionAdapter : Set₁ where
@@ -5547,7 +5519,6 @@ eilenbergMooreAdjunctionCategorical : EilenbergMooreAdjunctionAdapter →
 eilenbergMooreAdjunctionCategorical adapt =
   mkCategoricalAdapter C2S4.EilenbergMooreAdjunction (λ _ → EilenbergMooreAdjunctionAdapter.decl adapt)
 
-
 -- Monad-adjunction correspondence theorem
 record MonadAdjunctionCorrespondenceTheoremAdapter : Set₁ where
   field
@@ -5577,7 +5548,6 @@ monadAdjunctionCorrespondenceTheoremCategorical : MonadAdjunctionCorrespondenceT
 monadAdjunctionCorrespondenceTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.MonadAdjunctionCorrespondenceTheorem (λ _ → MonadAdjunctionCorrespondenceTheoremAdapter.decl adapt)
 
-
 -- Beck monadicity theorem
 record BeckMonadicityTheoremAdapter : Set₁ where
   field
@@ -5602,7 +5572,6 @@ beckMonadicityTheoremCategorical : BeckMonadicityTheoremAdapter →
   CategoricalAdapter {lzero} C2S4.BeckMonadicityTheorem
 beckMonadicityTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.BeckMonadicityTheorem (λ _ → BeckMonadicityTheoremAdapter.decl adapt)
-
 
 -- Functor property: is monadic
 record MonadicFunctorPropertyAdapter : Set₁ where
@@ -5629,7 +5598,6 @@ monadicFunctorPropertyCategorical : MonadicFunctorPropertyAdapter →
 monadicFunctorPropertyCategorical adapt =
   mkCategoricalAdapter C2S4.MonadicFunctorProperty (λ _ → MonadicFunctorPropertyAdapter.decl adapt)
 
-
 -- Comonad from adjunction (for descent theory)
 record ComonadFromAdjunctionAdapter : Set₁ where
   field
@@ -5654,7 +5622,6 @@ comonadFromAdjunctionCategorical : ComonadFromAdjunctionAdapter →
   CategoricalAdapter {lzero} C2S4.ComonadFromAdjunction
 comonadFromAdjunctionCategorical adapt =
   mkCategoricalAdapter C2S4.ComonadFromAdjunction (λ _ → ComonadFromAdjunctionAdapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Limits and Colimits in Algebra Categories (Chapter2.Level2sub4)
@@ -5689,7 +5656,6 @@ forgetfulFunctorFromAlgebrasCreatesLimitsTheoremCategorical : ForgetfulFunctorFr
 forgetfulFunctorFromAlgebrasCreatesLimitsTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem (λ _ → ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter.decl adapt)
 
-
 -- Corollary: Completeness of algebra categories
 record CompletenessOfAlgebraCategoriesCorollaryAdapter : Set₁ where
   field
@@ -5719,7 +5685,6 @@ completenessOfAlgebraCategoriesCorollaryCategorical : CompletenessOfAlgebraCateg
 completenessOfAlgebraCategoriesCorollaryCategorical adapt =
   mkCategoricalAdapter C2S4.CompletenessOfAlgebraCategoriesCorollary (λ _ → CompletenessOfAlgebraCategoriesCorollaryAdapter.decl adapt)
 
-
 -- Reflexive pair
 record ReflexivePairAdapter : Set₁ where
   field
@@ -5748,7 +5713,6 @@ reflexivePairCategorical : ReflexivePairAdapter →
   CategoricalAdapter {lzero} C2S4.ReflexivePair
 reflexivePairCategorical adapt =
   mkCategoricalAdapter C2S4.ReflexivePair (λ _ → ReflexivePairAdapter.decl adapt)
-
 
 -- Theorem: Forgetful functor preserves coequalizers of reflexive pairs
 record ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter : Set₁ where
@@ -5783,7 +5747,6 @@ forgetfulFunctorPreservesCertainCoequalizersTheoremCategorical : ForgetfulFuncto
 forgetfulFunctorPreservesCertainCoequalizersTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem (λ _ → ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter.decl adapt)
 
-
 -- Functor property: reflects isomorphisms
 record ReflectsIsomorphismsPropertyAdapter : Set₁ where
   field
@@ -5809,7 +5772,6 @@ reflectsIsomorphismsPropertyCategorical : ReflectsIsomorphismsPropertyAdapter �
 reflectsIsomorphismsPropertyCategorical adapt =
   mkCategoricalAdapter C2S4.ReflectsIsomorphismsProperty (λ _ → ReflectsIsomorphismsPropertyAdapter.decl adapt)
 
-
 -- U-split pair
 record USplitPairAdapter : Set₁ where
   field
@@ -5834,7 +5796,6 @@ uSplitPairCategorical : USplitPairAdapter →
   CategoricalAdapter {lzero} C2S4.USplitPair
 uSplitPairCategorical adapt =
   mkCategoricalAdapter C2S4.USplitPair (λ _ → USplitPairAdapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Regular Category Theory (Chapter2.Level2sub2)
@@ -5869,7 +5830,6 @@ regularCategoryDeclarationCategorical : RegularCategoryDeclarationAdapter →
 regularCategoryDeclarationCategorical adapt =
   mkCategoricalAdapter C2S2.RegularCategoryDeclaration (λ _ → RegularCategoryDeclarationAdapter.decl adapt)
 
-
 -- Kernel pair of a morphism
 record KernelPairDeclarationAdapter : Set₁ where
   field
@@ -5894,7 +5854,6 @@ kernelPairDeclarationCategorical : KernelPairDeclarationAdapter →
   CategoricalAdapter {lzero} C2S2.KernelPairDeclaration
 kernelPairDeclarationCategorical adapt =
   mkCategoricalAdapter C2S2.KernelPairDeclaration (λ _ → KernelPairDeclarationAdapter.decl adapt)
-
 
 -- Internal equivalence relation
 record InternalEquivalenceRelationDeclarationAdapter : Set₁ where
@@ -5921,7 +5880,6 @@ internalEquivalenceRelationDeclarationCategorical : InternalEquivalenceRelationD
 internalEquivalenceRelationDeclarationCategorical adapt =
   mkCategoricalAdapter C2S2.InternalEquivalenceRelationDeclaration (λ _ → InternalEquivalenceRelationDeclarationAdapter.decl adapt)
 
-
 -- Exact category (regular + effective relations)
 record ExactCategoryDeclarationAdapter : Set₁ where
   field
@@ -5946,7 +5904,6 @@ exactCategoryDeclarationCategorical : ExactCategoryDeclarationAdapter →
   CategoricalAdapter {lzero} C2S2.ExactCategoryDeclaration
 exactCategoryDeclarationCategorical adapt =
   mkCategoricalAdapter C2S2.ExactCategoryDeclaration (λ _ → ExactCategoryDeclarationAdapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Advanced Monad Theory (Chapter2.Level2sub4)
@@ -5982,7 +5939,6 @@ monadWithRankCategorical : MonadWithRankAdapter →
 monadWithRankCategorical adapt =
   mkCategoricalAdapter C2S4.MonadWithRank (λ _ → MonadWithRankAdapter.decl adapt)
 
-
 -- Locally α-presentable category
 record LocallyPresentableCategoryAdapter : Set₁ where
   field
@@ -6007,7 +5963,6 @@ locallyPresentableCategoryCategorical : LocallyPresentableCategoryAdapter →
   CategoricalAdapter {lzero} C2S4.LocallyPresentableCategory
 locallyPresentableCategoryCategorical adapt =
   mkCategoricalAdapter C2S4.LocallyPresentableCategory (λ _ → LocallyPresentableCategoryAdapter.decl adapt)
-
 
 -- Rank theorem for monadic categories
 record RankTheoremForMonadicCategoriesTheoremAdapter : Set₁ where
@@ -6042,7 +5997,6 @@ rankTheoremForMonadicCategoriesTheoremCategorical : RankTheoremForMonadicCategor
 rankTheoremForMonadicCategoriesTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.RankTheoremForMonadicCategoriesTheorem (λ _ → RankTheoremForMonadicCategoriesTheoremAdapter.decl adapt)
 
-
 ------------------------------------------------------------------------
 -- Functor Properties: Preserve/Reflect/Create Limits (Chapter1.Level1sub2)
 ------------------------------------------------------------------------
@@ -6072,7 +6026,6 @@ functorPreservesLimitsCategorical : FunctorPreservesLimitsAdapter →
 functorPreservesLimitsCategorical adapt =
   mkCategoricalAdapter C1S2.FunctorPreservesLimits (λ _ → FunctorPreservesLimitsAdapter.decl adapt)
 
-
 -- Functor reflects limits
 record FunctorReflectsLimitsAdapter : Set₁ where
   field
@@ -6097,7 +6050,6 @@ functorReflectsLimitsCategorical : FunctorReflectsLimitsAdapter →
   CategoricalAdapter {lzero} C1S2.FunctorReflectsLimits
 functorReflectsLimitsCategorical adapt =
   mkCategoricalAdapter C1S2.FunctorReflectsLimits (λ _ → FunctorReflectsLimitsAdapter.decl adapt)
-
 
 -- Functor creates limits
 record FunctorCreatesLimitsAdapter : Set₁ where
@@ -6124,7 +6076,6 @@ functorCreatesLimitsCategorical : FunctorCreatesLimitsAdapter →
 functorCreatesLimitsCategorical adapt =
   mkCategoricalAdapter C1S2.FunctorCreatesLimits (λ _ → FunctorCreatesLimitsAdapter.decl adapt)
 
-
 -- Theorem: Creation implies reflection
 record CreationImpliesReflectionAdapter : Set₁ where
   field
@@ -6149,7 +6100,6 @@ creationImpliesReflectionCategorical : CreationImpliesReflectionAdapter →
   CategoricalAdapter {lzero} C1S2.CreationImpliesReflection
 creationImpliesReflectionCategorical adapt =
   mkCategoricalAdapter C1S2.CreationImpliesReflection (λ _ → CreationImpliesReflectionAdapter.decl adapt)
-
 
 -- Theorem: Isomorphisms of categories reflect limits
 record IsomorphismsOfCategoriesReflectLimitsAdapter : Set₁ where
@@ -6176,7 +6126,6 @@ isomorphismsOfCategoriesReflectLimitsCategorical : IsomorphismsOfCategoriesRefle
 isomorphismsOfCategoriesReflectLimitsCategorical adapt =
   mkCategoricalAdapter C1S2.IsomorphismsOfCategoriesReflectLimits (λ _ → IsomorphismsOfCategoriesReflectLimitsAdapter.decl adapt)
 
-
 -- Theorem: Right adjoints preserve limits
 record RightAdjointsPreserveLimits_L2Adapter : Set₁ where
   field
@@ -6201,7 +6150,6 @@ rightAdjointsPreserveLimits_L2Categorical : RightAdjointsPreserveLimits_L2Adapte
   CategoricalAdapter {lzero} C1S2.RightAdjointsPreserveLimits_L2
 rightAdjointsPreserveLimits_L2Categorical adapt =
   mkCategoricalAdapter C1S2.RightAdjointsPreserveLimits_L2 (λ _ → RightAdjointsPreserveLimits_L2Adapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Yoneda Lemma (Chapter1.Level1sub8)
@@ -6232,7 +6180,6 @@ internalYonedaEmbeddingCategorical : InternalYonedaEmbeddingAdapter →
 internalYonedaEmbeddingCategorical adapt =
   mkCategoricalAdapter C1S8.InternalYonedaEmbedding (λ _ → InternalYonedaEmbeddingAdapter.decl adapt)
 
-
 -- Internal Yoneda lemma theorem
 record InternalYonedaLemmaAdapter : Set₁ where
   field
@@ -6261,7 +6208,6 @@ internalYonedaLemmaCategorical : InternalYonedaLemmaAdapter →
   CategoricalAdapter {lzero} C1S8.InternalYonedaLemma
 internalYonedaLemmaCategorical adapt =
   mkCategoricalAdapter C1S8.InternalYonedaLemma (λ _ → InternalYonedaLemmaAdapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Kan Extensions (Chapter1.Level1sub3)
@@ -6296,7 +6242,6 @@ kanExtensionContextCategorical : KanExtensionContextAdapter →
 kanExtensionContextCategorical adapt =
   mkCategoricalAdapter C1S3.KanExtensionContext (λ _ → KanExtensionContextAdapter.decl adapt)
 
-
 -- Left Kan candidate
 record LeftKanCandidateAdapter : Set₁ where
   field
@@ -6322,7 +6267,6 @@ leftKanCandidateCategorical : LeftKanCandidateAdapter →
 leftKanCandidateCategorical adapt =
   mkCategoricalAdapter C1S3.LeftKanCandidate (λ _ → LeftKanCandidateAdapter.decl adapt)
 
-
 -- Right Kan candidate
 record RightKanCandidateAdapter : Set₁ where
   field
@@ -6347,7 +6291,6 @@ rightKanCandidateCategorical : RightKanCandidateAdapter →
   CategoricalAdapter {lzero} C1S3.RightKanCandidate
 rightKanCandidateCategorical adapt =
   mkCategoricalAdapter C1S3.RightKanCandidate (λ _ → RightKanCandidateAdapter.decl adapt)
-
 
 -- Theorem: Left Kan extension is initial object
 record LeftKanExtensionIsInitialObjectAdapter : Set₁ where
@@ -6378,7 +6321,6 @@ leftKanExtensionIsInitialObjectCategorical : LeftKanExtensionIsInitialObjectAdap
 leftKanExtensionIsInitialObjectCategorical adapt =
   mkCategoricalAdapter C1S3.LeftKanExtensionIsInitialObject (λ _ → LeftKanExtensionIsInitialObjectAdapter.decl adapt)
 
-
 -- Theorem: Right Kan extension is terminal object
 record RightKanExtensionIsTerminalObjectAdapter : Set₁ where
   field
@@ -6407,7 +6349,6 @@ rightKanExtensionIsTerminalObjectCategorical : RightKanExtensionIsTerminalObject
   CategoricalAdapter {lzero} C1S3.RightKanExtensionIsTerminalObject
 rightKanExtensionIsTerminalObjectCategorical adapt =
   mkCategoricalAdapter C1S3.RightKanExtensionIsTerminalObject (λ _ → RightKanExtensionIsTerminalObjectAdapter.decl adapt)
-
 
 -- Theorem: Pointwise Kan formula
 record PointwiseKanFormulaTheoremAdapter : Set₁ where
@@ -6438,7 +6379,6 @@ pointwiseKanFormulaTheoremCategorical : PointwiseKanFormulaTheoremAdapter →
 pointwiseKanFormulaTheoremCategorical adapt =
   mkCategoricalAdapter C1S3.PointwiseKanFormulaTheorem (λ _ → PointwiseKanFormulaTheoremAdapter.decl adapt)
 
-
 -- Theorem: Adjoints as Kan extensions
 record AdjointsAsKanExtensionsAdapter : Set₁ where
   field
@@ -6468,7 +6408,6 @@ adjointsAsKanExtensionsCategorical : AdjointsAsKanExtensionsAdapter →
 adjointsAsKanExtensionsCategorical adapt =
   mkCategoricalAdapter C1S3.AdjointsAsKanExtensions (λ _ → AdjointsAsKanExtensionsAdapter.decl adapt)
 
-
 ------------------------------------------------------------------------
 -- Adjoint Functor Theorems (Chapter1.Level1sub3)
 ------------------------------------------------------------------------
@@ -6493,7 +6432,6 @@ adjointFunctorTheoremRightCategorical : AdjointFunctorTheoremRightAdapter →
   CategoricalAdapter {lzero} C1S3.AdjointFunctorTheoremRight
 adjointFunctorTheoremRightCategorical adapt =
   mkCategoricalAdapter C1S3.AdjointFunctorTheoremRight (λ _ → AdjointFunctorTheoremRightAdapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Grothendieck Fibrations (Chapter2.Level2sub8)
@@ -6828,7 +6766,6 @@ familiesFibrationCategorical adapt = mkCategoricalAdapter C2S8.FamiliesFibration
 isFilledFamiliesFibration : FamiliesFibrationAdapter → Core.Phase.Bool
 isFilledFamiliesFibration a = FamiliesFibrationAdapter.status a
 
-
 ------------------------------------------------------------------------
 -- Abelian Categories (Chapter2.Level2sub1)
 ------------------------------------------------------------------------
@@ -7057,7 +6994,6 @@ mkAdditivityViaBiproductCoincidenceTheoremAdapter d ec p =
 
 isFilledAdditivityViaBiproductCoincidenceTheorem : AdditivityViaBiproductCoincidenceTheoremAdapter → Core.Phase.Bool
 isFilledAdditivityViaBiproductCoincidenceTheorem a = AdditivityViaBiproductCoincidenceTheoremAdapter.status a
-
 
 ------------------------------------------------------------------------
 -- Subobject Theory (Chapter1.Level1sub4)

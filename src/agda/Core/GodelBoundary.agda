@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.GodelBoundary: Formalization of incompleteness and theoretical limits
 -- This module reifies the Gödelian constraint by making the system's inability
 -- to achieve total self-reflection an explicit, indexed object within the

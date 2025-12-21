@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.GroupsAbelianChecklist: Coverage for Algebra.Groups.Abelian (Free Abelian Groups & Grothendieck)
 
 module Tests.GroupsAbelianChecklist where

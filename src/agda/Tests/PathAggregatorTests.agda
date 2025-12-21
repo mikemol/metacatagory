@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.PathAggregatorTests: Validate integrated path + growth evolution
 
 module Tests.PathAggregatorTests where

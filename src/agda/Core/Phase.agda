@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.Phase: Formal abstraction for behavioral phase boundaries
 --
 -- A Phase represents a transformation between system states with:

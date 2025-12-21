@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.PolynomialsF2: Minimal stdlib-free F2 polynomials and division
 
 module Core.PolynomialsF2 where

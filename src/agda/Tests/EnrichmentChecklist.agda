@@ -1,4 +1,4 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --allow-unsolved-metas --without-K #-}
 
 module Tests.EnrichmentChecklist where
 
@@ -280,4 +280,3 @@ _ : A.isFilledAbSelfEnrichmentViaInternalHom abSelfEnrichmentViaIntHomAdapt ≡ 
 _ = refl
 -- Intentionally omit brittle categorical equalities; type-checking the
 -- categorical views is covered by constructing them during isFilled checks.
-

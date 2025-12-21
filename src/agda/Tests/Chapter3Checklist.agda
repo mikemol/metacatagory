@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/Chapter3Checklist.agda
 -- 1–2 trivial inhabitants per Level3subN module to broaden smoke coverage.
 
@@ -393,4 +395,3 @@ _ : (CategoricalAdapter.morphism (A.omegaSetCategorical omega-adapter) tt) ≡ A
 _ = refl
 _ : CategoricalAdapter.isomorphism (A.omegaSetCategorical omega-adapter) ≡ refl
 _ = refl
-

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Core.Algorithms.FiniteFields where
 
 open import Core

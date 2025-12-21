@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/ModulesChecklist.agda
 -- Coverage for Algebra.Modules.Basic with concrete instances
 

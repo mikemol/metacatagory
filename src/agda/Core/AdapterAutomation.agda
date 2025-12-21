@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.AdapterAutomation: Practical automation for adapter categorical wrapping
 -- Non-reflection-based approach using type classes and manual registration
 
