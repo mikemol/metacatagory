@@ -1,183 +1,189 @@
-# Deferred Items Tracking System
+# Deferred Items Tracking
 
 ## Overview
+This document tracks deferred work items identified during the Agda 2.8.0 migration and refactoring efforts. As of 2025-12-20, there are **567 total deferred items** across the codebase.
 
-The repository now has automated tracking of deferred items (technical debt) through GitHub Actions. This system provides **visibility without obstruction** - it informs but doesn't block.
+**Source**: deferred-summary.json (auto-generated)
+**Categories**:
+- 351 postulates (placeholders for unproven theorems)
+- 155 TODOs (inline code comments)
+- 61 other markers (FIXME, HACK, etc.)
 
-## What Gets Tracked
+## Tracking Strategy
 
-### 1. **DeviationLog Entries** (16 found)
+### High-Priority Deferred Items
+Items blocking core functionality or Plan.CIM completion.
 
-Documented deviations from ideal implementation with rationale and future plans.
+#### Plan.CIM Layer
+- [ ] **CHIPCoreRecompose.agda** (8 lines stub)
+  - Blocked by: Core module re-enabling
+  - Effort: 100-150 lines
+  - Timeline: 1-2 weeks after Core layer restored
+  - Reference: [ROADMAP.md Phase 2.1](#phase-2-plan-cim-completion)
 
-**Example:**
+- [ ] **PandocProtocols.agda stubs** (39 lines)
+  - blockAmb, blockTransSys, blockCoherence - return defaults
+  - docAmb, docTransSys, docCoherence - return defaults
+  - Effort: 50-100 lines for semantic implementations
+  - Reference: ROADMAP.md Phase 2.3
 
-```agda
--- DeviationLog [2025-11-18]: Removed inline validation proof that Group index
--- is greater than Monoid index. Validation now covered in Tests.HierarchyValidation
--- as Bool-based checks to avoid brittle proofs that break builds during refactors.
+- [ ] **CHIPConformance.agda stubs**
+  - makeSPPFNode (line 42) - requires BraidedSPPF type
+  - composeBraids semantic refinement (optional)
+  - Effort: 50-80 lines
+  - Reference: ROADMAP.md Phase 2.3
+
+#### Core Module Re-enabling
+- [ ] **Core.disabled/ modules** (23 modules)
+  - Phase theory restoration
+  - Categorical foundations
+  - Adjunction and limit structures
+  - Effort: 1-2 weeks full-time
+  - Reference: ROADMAP.md Phase 3.2
+
+- [ ] **Algebra.disabled/ modules** (subset for Core dependencies)
+  - Groups, rings, modules structures
+  - Field theory
+  - Effort: 3-5 days
+  - Reference: ROADMAP.md Phase 3.2
+
+### Medium-Priority Deferred Items
+Items improving functionality but not blocking major features.
+
+#### Examples Re-enabling
+- [ ] **Examples.disabled/ modules** (13 modules)
+  - TechnicalDebtRegistry.agda
+  - Workflow demonstrations
+  - Categorical examples
+  - Effort: 1-3 days per module
+  - Reference: ROADMAP.md Phase 3.1
+
+#### Documentation & Testing
+- [ ] **Plan.CIM integration tests**
+  - End-to-end transformation pipeline validation
+  - Grammar conformance testing
+  - Proof export verification
+  - Effort: 100-150 lines
+  - Reference: ROADMAP.md Phase 2.2
+
+- [ ] **Plan.CIM documentation**
+  - Architecture overview
+  - API reference
+  - Tutorials and examples
+  - Effort: 1-2 days
+  - Reference: ROADMAP.md Phase 4.1
+
+### Low-Priority Deferred Items
+Nice-to-have improvements, optimizations, or exploratory work.
+
+#### Refactoring & Cleanup
+- [ ] **Utility-broken.agda recovery**
+  - Extract 77 roadmap examples (93KB)
+  - Fix list syntax errors
+  - Append to Plan.CIM.Utility.agda
+  - Effort: 4-6 hours manual cleanup
+  - Reference: intake/refactoring-roadmap-migration.md section 1
+
+- [ ] **Script modernization**
+  - Update Python scripts to Python 3.10+ features
+  - Add type hints
+  - Improve error handling
+  - Effort: 2-3 days
+  - Reference: scripts/ directory
+
+#### Exploratory Work
+- [ ] **CHIP protocol semantic enrichment**
+  - Richer ambiguity detection
+  - Advanced transformation metrics
+  - Compositional coherence validation
+  - Effort: Research phase, 1-2 weeks
+  - Deferred to ROADMAP-DRAFT.md
+
+## Deferred Item Sources
+
+### By Module Category
+```
+Core.disabled/          : ~80 postulates, ~30 TODOs
+Algebra.disabled/       : ~45 postulates, ~20 TODOs
+Examples.disabled/      : ~25 postulates, ~15 TODOs
+Plan.CIM/               : ~15 TODOs (stubs)
+Scripts/                : ~40 TODOs (improvements)
+Documentation/          : ~50 TODOs (missing sections)
+Other                   : ~106 postulates, ~35 TODOs
 ```
 
-### 2. **Postulates** (366 found)
+### By Type
+```
+Postulates (351):
+  - Unproven theorems awaiting formal proofs
+  - Placeholder functions for disabled modules
+  - Abstract interface requirements
 
-Axioms or assumptions not yet proven constructively. Many are intentional placeholders for future work.
+TODOs (155):
+  - Code improvements and refactoring
+  - Missing implementations
+  - Documentation gaps
 
-**Example:**
-
-```agda
-postulate
-  F E : FieldDeclaration
+Other markers (61):
+  - FIXME: Known bugs or issues
+  - HACK: Temporary workarounds
+  - NOTE: Important context or warnings
 ```
 
-### 3. **TODO Items** (68 found)
+## Tracking Process
 
-General tasks marked for future work.
+### Adding New Deferred Items
+When creating a new deferred item:
+1. Add inline marker: `-- TODO: [category] description` or `postulate name : Type`
+2. Update deferred-summary.json via `make deferred-items` task
+3. Add to appropriate section above if high/medium priority
+4. Reference in ROADMAP.md if blocks a phase
 
-### 4. **PLANNED Items** (0 found)
+### Resolving Deferred Items
+When completing a deferred item:
+1. Remove inline marker or replace postulate with implementation
+2. Update deferred-summary.json via `make deferred-items`
+3. Check off item in this document
+4. Update ROADMAP.md if phase milestone reached
 
-Features or work explicitly planned in documentation (currently tracked in `testing.md` phases).
+### Periodic Review
+- **Weekly**: Review high-priority items, update blockers
+- **Monthly**: Re-prioritize medium/low items based on project goals
+- **Per milestone**: Regenerate deferred-summary.json, verify counts
 
-### 5. **FIXME Items** (0 found)
+## Tools
 
-***
-
-## How to Address Deferred Items & Technical Debt
-
-*   Review the generated reports, especially [top-offenders.md](.github/badges/top-offenders.md), to identify files with the highest technical debt.
-*   Use Makefile targets to track and address deferred items:
-    *   `make deferred-items` — Generate and review deferred items report
-    *   `make badges` — Update technical debt badges and metrics
-*   For guidance on automation and metrics, see [.github/scripts/README.md](.github/scripts/README.md).
-*   Prioritize refactoring and documentation efforts based on report findings.
-*   When resolving a deferred item, update the relevant checklist, documentation, and remove or resolve the marker (DeviationLog, postulate, TODO, etc.).
-*   For process and troubleshooting, see [CONTRIBUTING.md](CONTRIBUTING.md).
-
-***
-
-## How It Works
-
-### On Every Push to Main
-
-1.  **Typecheck & Build** (existing workflow continues)
-2.  **Scan for Deferred Items** (new step)
-3.  **Create/Update Tracking Issue** (new step)
-    *   A single GitHub issue acts as the central tracking point
-    *   Issue updates with current counts and details
-    *   Issue remains open as long as items exist
-
-### On Every Pull Request
-
-1.  **Compare Before/After**
-    *   Scans both base and PR branches
-    *   Calculates the delta (increase/decrease/unchanged)
-2.  **Post Informational Comment**
-    *   Shows impact on deferred items
-    *   ✅ Celebrates reductions
-    *   ⚠️ Highlights increases (without blocking)
-    *   ➡️ Notes no change
-3.  **Does NOT Block Merge**
-    *   This is informational only
-    *   Increases are allowed if justified
-
-### Weekly Review (Scheduled)
-
-*   Runs every Monday at 9 AM UTC
-*   Generates fresh report
-*   Updates tracking issue
-*   Provides weekly health check
-
-## Running Locally
-
-You can generate the report on your local machine:
-
+### Generate Deferred Summary
 ```bash
-# Generate report
-.github/scripts/detect-deferred-items.sh
-
-# View markdown report
-cat deferred-items.md
-
-# View JSON summary
-jq . deferred-summary.json
+make deferred-items
+# Outputs to: deferred-summary.json
 ```
 
-## Philosophy
+### Search for Deferred Items
+```bash
+# TODOs
+grep -r "TODO" src/agda/
 
-This system embodies a **trust-based, informational approach**:
+# Postulates
+grep -r "postulate" src/agda/
 
-### ✅ What It Does
+# All markers
+grep -rE "TODO|FIXME|HACK|XXX|NOTE" src/agda/
+```
 
-*   **Provides visibility** into technical debt trends
-*   **Tracks progress** toward constructive proofs
-*   **Celebrates wins** when items are resolved
-*   **Informs decisions** about prioritization
-*   **Creates accountability** through transparency
+### Flag Unannotated Technical Debt
+```bash
+make Flag Unannotated Technical Debt
+# Or: python3 scripts/flag_unannotated_debt.py
+```
 
-### ❌ What It Does NOT Do
+## Cross-References
+- Primary roadmap: [ROADMAP.md](ROADMAP.md)
+- WAL: [intake/refactoring-roadmap-migration.md](intake/refactoring-roadmap-migration.md)
+- Generated data: deferred-summary.json (in .gitignore, auto-generated)
+- Build tasks: .vscode/tasks.json
 
-*   **Block PRs** based on deferred item counts
-*   **Enforce arbitrary thresholds** ("must have < X postulates")
-*   **Create false urgency** for all items equally
-*   **Ignore context** (many postulates are appropriate placeholders)
-*   **Punish incremental progress** (sometimes items must increase temporarily)
-
-## Understanding the Numbers
-
-### Current State (as of 2025-11-19)
-
-| Category         | Count | Context                                       |
-| ---------------- | ----- | --------------------------------------------- |
-| **DeviationLog** | 16    | Documented architectural decisions            |
-| **Postulates**   | 366   | Mix of placeholders and to-be-proven theorems |
-| **TODO**         | 68    | Future work items                             |
-| **PLANNED**      | 0     | Tracked in `testing.md` phases instead        |
-| **FIXME**        | 0     | No urgent issues                              |
-| **Total**        | 450   | Healthy for a research codebase               |
-
-### Interpreting Postulates
-
-Not all postulates are equal:
-
-1.  **Scaffolding Postulates** - Intentional placeholders for fields/algorithms
-    *   Example: `postulate F E : FieldDeclaration`
-    *   Status: ✅ Appropriate for current phase
-
-2.  **Bridge Postulates** - Connectors awaiting full implementation
-    *   Example: Integration between UMP and constructive witnesses
-    *   Status: ⏳ In progress (Phase II)
-
-3.  **Proof Postulates** - Theorems to be proven constructively
-    *   Example: Universal property uniqueness
-    *   Status: 📋 Planned (Phase III-IV)
-
-## Next Steps
-
-1.  **Review Tracking Issue** - Check the auto-generated issue for current state
-2.  **Prioritize by Phase** - Use `testing.md` to guide resolution order
-3.  **Address Systematically** - Work through phases rather than cherry-picking
-4.  **Monitor Trends** - Watch for unexpected increases
-5.  **Celebrate Progress** - Note when counts decrease!
-
-## Future Enhancements
-
-Potential additions to this system:
-
-*   \[ ] Category breakdown in PR comments (show which types changed)
-*   \[ ] Historical trending graph (track over time)
-*   \[ ] Automatic sub-issue creation for DeviationLog items
-*   \[ ] Integration with GitHub Projects for Kanban tracking
-*   \[ ] Configurable thresholds for custom warnings
-*   \[ ] Badge in README showing current count
-
-## Questions?
-
-*   **Why not fail builds on postulates?** Because many are intentional and appropriate for current development phase.
-*   **Won't this create noise?** No - notifications are consolidated into a single tracking issue and PR comments.
-*   **Can I disable this?** Yes - remove or disable the `deferred-items.yml` workflow.
-*   **How do I exclude false positives?** Refine the grep patterns in `detect-deferred-items.sh`.
-
-***
-
-**Status:** ✅ Active and tracking\
-**Last Updated:** 2025-11-19\
-**Tracking Issue:** Will be created on next push to main
+---
+*Last updated: 2025-12-20*
+*Next review: After Phase 1 cleanup (ROADMAP.md)*
+*Total items: 567 (351 postulates, 155 TODOs, 61 other)*
