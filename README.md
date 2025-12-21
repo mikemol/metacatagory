@@ -1,170 +1,116 @@
 # The Metacategory: A Homotopical Algebra System
 
-### *Formalizing the Axiom of Well-Founded Indexed Composition*
+## Formalizing the Axiom of Well-Founded Indexed Composition
 
 ## 1. Overview
 
-This repository contains a formal verification and computational framework implemented in **Agda**. It unifies Abstract Algebra, Category Theory, and Constructive Algorithmics into a single, self-referential Directed Acyclic Graph (DAG).
+This repository contains a formal verification and computational framework implemented in Agda. It unifies Abstract Algebra, Category Theory, and Constructive Algorithmics into a single, self-referential Directed Acyclic Graph (DAG).
 
-The system is not merely a library of mathematical proofs; it is a **mathematical operating system**. It operates under the **Curry-Howard-Lambek (CHL) correspondence**, unifying lexical scope (syntax), semantic composition (logic), and categorical morphisms (structure).
+The system is not merely a library of mathematical proofs; it is a mathematical operating system. It operates under the Curry-Howard-Lambek (CHL) correspondence, unifying lexical scope (syntax), semantic composition (logic), and categorical morphisms (structure).
 
 ### The Core Axioms
 
 The architecture is strictly bound by the following formally internalized principles:
 
-1.  **The Axiom of Well-Founded Indexed Composition**: Every node $N$ is assigned a static coordinate $(x, y)$. A composite node $N\_n$ may only depend on constituents $N\_i$ where $(x\_i, y\_i) < (x\_n, y\_n)$. This enforces a global DAG structure, preventing circular definitions.
-2.  **The Axiom of Universal Reification**: Every concept—whether a data structure, a proof, or an ambiguity—is reified as an indexed `Identifier`.
-3.  **The Axiom of Gödelian Boundedness**: The system explicitly models its own incompleteness. Limit objects (e.g., unprovable statements, infinite regress) are reified as nodes within the solution space.
+1. The Axiom of Well-Founded Indexed Composition: Every node N is assigned a static coordinate (x, y). A composite node N_n may only depend on constituents N_i where (x_i, y_i) < (x_n, y_n). This enforces a global DAG structure, preventing circular definitions.
 
-***
+2. The Axiom of Universal Reification: Every concept—whether a data structure, a proof, or an ambiguity—is reified as an indexed Identifier.
+
+3. The Axiom of Gödelian Boundedness: The system explicitly models its own incompleteness. Limit objects (e.g., unprovable statements, infinite regress) are reified as nodes within the solution space.
 
 ## 2. The Ontological Stack
 
 The system is stratified into phases, representing the evolution from static definitions to dynamic execution.
 
-### Layer I: The Substrate (`Core`)
+### Layer I: The Substrate (Core)
 
 This layer defines the physics of the system.
 
-*   **`Metamodel.agda`**: Defines `Identifier`, `Coordinate`, and the ordering relation `<ᶜ`. This is the syntactic bedrock.
-*   **`Core.Phase`**: Reifies "transformation" as a first-class citizen. A `Phase A B` is a morphism in the **Category of Phases**, allowing for sequential (`_⟫_`) and parallel (`_⊗_`) composition of algorithmic steps.
-*   **`Core.GodelBoundary`**: A formal acknowledgment of the system's limits. It constructs witnesses for self-referential paradoxes and reifies the gap between the system and its self-model.
-*   **`Core.PathAggregator`**: Implements **Homotopy Type Theory (HoTT)** principles. It aggregates individual serialization roundtrips into a `GlobalClosureWitness`, proving that the system's coordinate geometry is invariant under transformation (an isomorphism of paths).
+* Metamodel.agda: Defines Identifier, Coordinate, and the ordering relation <ᶜ. This is the syntactic bedrock.
 
-### Layer II: The Algebraic Pillars (`Algebra`)
+* Core.Phase: Reifies transformation as a first-class citizen. A Phase A B is a morphism in the Category of Phases, allowing for sequential and parallel composition of algorithmic steps.
 
-This hierarchy builds the "objects" of the universe.
+* Core.GodelBoundary: A formal acknowledgment of the system's limits. It constructs witnesses for self-referential paradoxes and reifies the gap between the system and its self-model.
 
-*   **Hierarchy**: `Magma` $\to$ `Semigroup` $\to$ `Monoid` $\to$ `Group` $\to$ `Ring` $\to$ `Field`.
-*   **Modules & Algebras**: Extends rings to `LeftModule`, `VectorSpace`, and `RAlgebra`.
-*   **Feature**: These are not just typeclasses; they are deeply nested records containing **Constructive Witnesses**. A `FieldExtension` carries proofs of its degree, basis, and separability.
+* Core.PathAggregator: Implements Homotopy Type Theory (HoTT) principles. It aggregates individual serialization roundtrips into a GlobalClosureWitness, proving that the system's coordinate geometry is invariant under transformation.
 
-### Layer III: The Categorical Pillars (`Chapter1`, `Chapter2`, `Chapter3`)
+### Layer II: The Algebraic Pillars (Algebra)
 
-This hierarchy builds the "laws" of the universe.
+This hierarchy builds the objects of the universe.
 
-*   **`Chapter1` (Fundamentals)**: Limits, Colimits, Adjunctions, Kan Extensions.
-*   **`Chapter2` (Structure)**: Abelian Categories, Regular Categories, Monads, Fibrations.
-*   **`Chapter3` (Topos Theory)**: Locales, Sheaves, $\Omega$-sets.
-*   **Deep Integration**: These modules define **Universal Properties**. For example, `KernelAsEqualizer` defines the algebraic kernel strictly as a categorical limit.
+* Hierarchy: Magma → Semigroup → Monoid → Group → Ring → Field.
 
-***
+* Modules & Algebras: Extends rings to LeftModule, VectorSpace, and RAlgebra.
+
+* Feature: These are not just typeclasses; they are deeply nested records containing Constructive Witnesses. A FieldExtension carries proofs of its degree, basis, and separability.
+
+### Layer III: The Categorical Pillars (Chapter1, Chapter2, Chapter3)
+
+This hierarchy builds the laws of the universe.
+
+* Chapter1 (Fundamentals): Limits, Colimits, Adjunctions, Kan Extensions.
+
+* Chapter2 (Structure): Abelian Categories, Regular Categories, Monads, Fibrations.
+
+* Chapter3 (Topos Theory): Locales, Sheaves, Ω-sets.
+
+* Deep Integration: These modules define Universal Properties. For example, KernelAsEqualizer defines the algebraic kernel strictly as a categorical limit.
 
 ## 3. The Unified Bridge: Taking the Product
 
-The system's power lies in the intersection of the Algebraic and Categorical pillars. This is achieved via the **Adapter Pattern**.
+The system's power lies in the intersection of the Algebraic and Categorical pillars. This is achieved via the Adapter Pattern.
 
-### `Core.CategoricalAdapter`
+### Core.CategoricalAdapter
 
-This module provides a universal interface `CategoricalAdapter T` that wraps any algebraic structure $T$. It creates a morphism from the Unit type to $T$, effectively treating specific algebraic instances as objects in a generalized category.
+This module provides a universal interface CategoricalAdapter T that wraps any algebraic structure T. It creates a morphism from the Unit type to T, effectively treating specific algebraic instances as objects in a generalized category.
 
-### `Tests.ObligationAdapters`
+### Tests.ObligationAdapters
 
 This is the proving ground. It systematically maps algebraic constructs to categorical requirements.
 
-*   *Example*: It proves that an `Algebra.Modules.Basic.KernelOfModuleHomomorphism` satisfies the `Chapter2.Level2sub1.KernelAsEqualizerDefinition`.
-*   *Mechanism*: It uses **Indexed Adapters** to carry the proof that `status ≡ true`, ensuring that every algebraic feature is categorically sound.
+* Example: It proves that an Algebra.Modules.Basic.KernelOfModuleHomomorphism satisfies the Chapter2.KernelAsEqualizerDefinition.
 
-***
+* Mechanism: It uses Indexed Adapters to carry the proof that status ≡ true, ensuring that every algebraic feature is categorically sound.
 
-## 4. The Algorithmic Core
+## 4. Development Roadmaps
 
-The system is constructive. It does not just assert existence; it computes.
+## Development Roadmaps
 
-### The Registry (`Core.Algorithms.Registry`)
+* **Provide algebraic structures for representing and manipulating ambiguity in parse spaces.** — Enables formal treatment of ambiguity as algebraic object. [status: not-started]
 
-A centralized dispatch mechanism that selects the most specific algorithm for a given problem based on field classification.
+Target: `src/agda/Plan/CIM/Ambiguity.agda`
 
-*   **The Problem**: Algorithms for Finite Fields, Number Fields, and Function Fields differ drastically.
-*   **The Solution**: A **Lazy Hybrid Dispatch**.
-    *   **Evidence**: `IsFiniteField F`, `IsNumberField F`.
-    *   **Classification**: `FieldClassification F` (a dependent pair of Tag + Evidence).
-    *   **Bundle**: `AlgorithmBundle F E` containing all relevant algorithms (MinPoly, GaloisGroup, etc.).
-*   **Cycle Breaking**: Explicit instance construction prevents the infinite loops common in type-class resolution for mutually recursive algebraic structures.
+* **Establish metric structures on semantic spaces for distance/similarity calculations.** — Enables quantitative semantic reasoning and optimization. [status: not-started]
 
-### Constructive Witnesses (`Core.ConstructiveWitnesses`)
+Target: `src/agda/Plan/CIM/Metricization.agda`
 
-Algorithms return rich data structures called **Witnesses**.
+* **Define compositional transformation operations on semantic objects.** — Enables systematic rewriting and protocol evolution. [status: not-started]
 
-*   **Non-Constructive**: "There exists a minimal polynomial."
-*   **Constructive**: "Here is the polynomial $P$, a proof that $P(\alpha)=0$, a proof that $P$ is monic, and a proof that $P$ divides any other polynomial vanishing at $\alpha$."
-*   **`Core.AlgorithmCorrectness`**: Defines the `CorrectnessCertificate`, creating a verified link between the computational output and the `Core.UniversalProperties` specification.
+Target: `src/agda/Plan/CIM/TransformationSystem.agda`
 
-***
+* **Implement functorial mappings between semantic and computational spaces.** — Enables formal structure-preserving transformations. [status: not-started]
 
-## 5. Directory Structure & Exegesis
+Target: `src/agda/Plan/CIM/FunctorialConstructs.agda`
+
+* **Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs.** — Enables composable phase space modeling, creative/insightful parse acceptance, and pruning of non-sequitur/hallucination nodes. Supports recursive revisiting for grammar induction, protocol refinement, and functorial traceability. [status: not-started]
+
+Target: `src/agda/Plan/CIM/Elasticity.agda, parser.py, dashboard.py, src/agda/Plan/CIM/Ambiguity.agda, src/agda/Plan/CIM/Metricization.agda, src/agda/Plan/CIM/TransformationSystem.agda, src/agda/Plan/CIM/FunctorialConstructs.agda`   Depends on: `Provide algebraic structures for representing and manipulating ambiguity in parse spaces. — src/agda/Plan/CIM/Ambiguity.agda, Establish metric structures on semantic spaces for distance/similarity calculations. — src/agda/Plan/CIM/Metricization.agda, Define compositional transformation operations on semantic objects. — src/agda/Plan/CIM/TransformationSystem.agda, Implement functorial mappings between semantic and computational spaces. — src/agda/Plan/CIM/FunctorialConstructs.agda`
+
+* **Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension.** — Enables composable category expansion, tension relief, and dynamic geometry for semantic protocols. Supports recursive revisiting and concept differentiation. [status: not-started]
+
+Target: `src/agda/Plan/CIM/PolytopeExpansion.agda, nedge_topology/mitosis.py`
+
+* **Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed.** — Enables dynamic, composable category geometry, tension monitoring, and concept differentiation. Supports recursive revisiting and protocol evolution. [status: not-started]
+
+Target: `nedge_topology/mitosis.py, nedge_topology/parser.py, dashboard.py, src/agda/Plan/CIM/PolytopeExpansion.agda`
+
+* **Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition.** — Enables composable geometric and topological integration, active topological pruning, and algebraic superposition for ambiguity. Supports recursive revisiting, fiber bundle architecture, and advanced induction/training features. [status: not-started]
+
+Target: `nedge_topology/parser.py, nedge_topology/train.py, nedge_topology/mitosis.py, nedge_topology/search.py, dashboard.py, src/agda/Plan/CIM/RotationalTransport.agda, src/agda/Plan/CIM/TopologicalGating.agda, src/agda/Plan/CIM/TopologicalSuperposition.agda`   Depends on: `Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension. — src/agda/Plan/CIM/PolytopeExpansion.agda, nedge_topology/mitosis.py, Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed. — nedge_topology/mitosis.py, nedge_topology/parser.py, dashboard.py, src/agda/Plan/CIM/PolytopeExpansion.agda, Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs. — src/agda/Plan/CIM/Elasticity.agda, parser.py, dashboard.py, src/agda/Plan/CIM/Ambiguity.agda, src/agda/Plan/CIM/Metricization.agda, src/agda/Plan/CIM/TransformationSystem.agda, src/agda/Plan/CIM/FunctorialConstructs.agda`
+
+## Building
 
 ```text
-.
-├── Algebra/                # The Object Hierarchy
-│   ├── Foundation.agda     # Magma -> Group
-│   ├── Rings/              # Ring Theory
-│   ├── Fields/             # Galois Theory
-│   ├── Groups/             # Structure & Free Groups
-│   └── Modules/            # Linear Algebra & Homology
-├── Chapter1/               # Category Theory: Foundations
-│   └── ... (Limits, Adjunctions, Yoneda)
-├── Chapter2/               # Category Theory: Structure
-│   └── ... (Abelian, Monoidal, Fibrations, Monads)
-├── Chapter3/               # Category Theory: Topos
-│   └── ... (Locales, Sheaves)
-├── Core/                   # The System Kernel
-│   ├── Phase.agda          # Transformation Vector
-│   ├── Metamodel.agda      # Coordinate System
-│   ├── UniversalProperties # Categorical Interfaces
-│   ├── ConstructiveWitness # Proofs-as-Data
-│   ├── GodelBoundary.agda  # Metatheoretic Limits
-│   ├── PathAggregator.agda # HoTT Closure
-│   ├── GrowthMetrics.agda  # Telemetry
-│   └── Algorithms/         # Dispatch & Registry
-├── Examples/               # Concrete Instantiations
-│   ├── FiniteField/        # GF(8) example
-│   └── NumberField/        # Q(√2) example
-└── Tests/                  # Validation & Verification
-    ├── *Checklist.agda     # Phase Compliance Tests
-    └── ObligationAdapters  # The Bridge Logic
+make agda-all  # Compile all Agda modules
+make docs            # Generate documentation
 ```
-
-***
-
-## 6. Theoretical Metrics
-
-### The Coherence Hierarchy Induction Principle
-
-The system adheres to **Axiom III.3**. When ambiguity arises (e.g., multiple valid algorithms for `GaloisGroup`), the system reifies this ambiguity as a `(n+1)-cell`—a higher-order object (the `AlgorithmRegistry`) that mediates the choice based on specific evidence (`IsFiniteField`), encoding the structural preference as a geometric distance in the solution space.
-
-### Error-as-Specification
-
-Errors are not failures; they are **Boundaries**.
-
-*   `Core.Limitations` defines `LimitationEvidence`.
-*   An algorithm that cannot process a specific input does not crash; it returns a `limitedResult` containing a formal description of the boundary it encountered. This allows the system to map the "edges" of the computable solution space.
-
-***
-
-## 7. Building and Verifying
-
-To verify the entire specificational tower, including the integrity of the phase boundaries and the categorical-algebraic bridge:
-
-```bash
-agda --no-main -i . Tests/Index.agda
-```
-
-This process performs the following:
-
-1.  **Reification**: Instantiates all algebraic structures.
-2.  **Adaptation**: Wraps them in categorical adapters.
-3.  **Dispatch**: Verifies the algorithm registry resolves correctly.
-4.  **Closure**: Aggregates all HoTT paths to prove global system consistency.
-
-***
-
-## 8. Interpreting Reports & Metrics
-
-The repository generates several reports and metrics to help track technical debt, deferred items, and overall code health:
-
-*   **[top-offenders.md](.github/badges/top-offenders.md):** Lists files with the highest weighted technical debt. Use this to prioritize refactoring and documentation efforts.
-*   **Deferred Items & Technical Debt:** See [DEFERRED-TRACKING.md](DEFERRED-TRACKING.md) for a summary and guidance on addressing deferred work.
-*   **Automation & Metrics:** For details on how reports are generated and how to run them locally, see [.github/scripts/README.md](.github/scripts/README.md) and Makefile targets (`make badges`, `make deferred-items`, etc.).
-
-Regularly review these reports to guide maintenance, refactoring, and documentation priorities.
