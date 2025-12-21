@@ -10,6 +10,10 @@ __pycache__/
 *.agdai
 *.agda.bak
 
+# Local Agda installation
+.local/
+*.tar.xz
+
 # Generated Makefile staging (source is src/agda/Examples/ExporterMakefile.agda)
 # Keep Makefile committed for bootstrap; staging file is not needed
 Makefile.generated
@@ -44,6 +48,12 @@ reports/
 # Node / JS tooling (added by markdown fix script and workflows)
 node_modules/
 package-lock.json
+
+# Generated/temporary files (not for version control)
+combined.agda.txt
+tmp_patch.txt
+deferred-summary.json
+Utility-broken.agda
 pnpm-lock.yaml
 yarn.lock
 
