@@ -20,9 +20,20 @@ docs: src/agda/RoadmapExporter
 src/agda/RoadmapExporter: src/agda/Plan/CIM/RoadmapExporter.agda src/agda/Plan/CIM/Utility.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type --compile src/agda/Plan/CIM/RoadmapExporter.agda
 
+src/agda/MarkdownNormalize: src/agda/Plan/CIM/MarkdownNormalize.agda src/agda/Plan/CIM/MarkdownParse.agda src/agda/Plan/CIM/PandocAST.agda
+	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type --compile src/agda/Plan/CIM/MarkdownNormalize.agda
+
 .PHONY: all check md-fix md-lint badges node-deps regen-makefile agda-all docs-all docs
-md-lint: 
+md-lint: src/agda/MarkdownNormalize
+	@mkdir -p build/reports
+	find . -name "*.md" -not -path "./node_modules/*" -print0 | xargs -0 ./src/agda/MarkdownNormalize
 	"$(NPX)" remark . --quiet --frail > build/reports/md-lint.txt
+	"$(NPX)" markdownlint-cli2 "**/*.md" "#node_modules" > build/reports/markdownlint.txt
+
+.PHONY: md-normalize-review
+md-normalize-review: src/agda/MarkdownNormalize scripts/md_normalize_review.sh
+	chmod +x scripts/md_normalize_review.sh
+	./scripts/md_normalize_review.sh
 badges: build/reports/test-results.json
 	python3 scripts/generate-badges.py
 node-deps: 

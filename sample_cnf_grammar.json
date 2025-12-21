@@ -1,0 +1,9 @@
+{
+  "rules": [
+    { "type": "Binary", "lhs": "Para", "rhs1": "Para", "rhs2": "MdPara", "cost": 1 },
+    { "type": "Binary", "lhs": "Header 1", "rhs1": "Header 1", "rhs2": "MdHeader 1", "cost": 1 },
+    { "type": "Binary", "lhs": "CodeBlock: print('Agda')", "rhs1": "CodeBlock: print('Agda')", "rhs2": "MdCodeBlock: print('Agda')", "cost": 1 }
+  ],
+  "start": "Para",
+  "summary": "Transformation trace from Pandoc to Markdown blocks."
+}

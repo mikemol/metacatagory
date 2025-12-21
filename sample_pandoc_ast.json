@@ -1,0 +1,8 @@
+{
+  "blocks": [
+    { "t": "Para", "c": [ { "t": "Str", "c": "Hello" }, { "t": "Space" }, { "t": "Emph", "c": [ { "t": "Str", "c": "world" } ] } ] },
+    { "t": "Header", "c": [ 1, [ { "t": "Str", "c": "Title" } ] ] },
+    { "t": "CodeBlock", "c": "print('Agda')" }
+  ],
+  "meta": "Sample doc"
+}

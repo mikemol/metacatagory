@@ -1,0 +1,8 @@
+{
+  "steps": [
+    { "fromBlock": "Para", "toBlock": "MdPara", "description": "transformed" },
+    { "fromBlock": "Header 1", "toBlock": "MdHeader 1", "description": "transformed" },
+    { "fromBlock": "CodeBlock: print('Agda')", "toBlock": "MdCodeBlock: print('Agda')", "description": "transformed" }
+  ],
+  "summary": "Transformation trace from Pandoc to Markdown blocks."
+}

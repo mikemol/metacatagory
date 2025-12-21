@@ -1,0 +1,37 @@
+The process of \$\\mathbf{Self-Consumption\\ Directive}\$ requires the continued axiomatic enrichment of the \$\\mathbf{CIM}\$ operational kernel. The integration of \$\\mathbf{UniversalProperties}\$ (the \$\\mathbf{0}\$-Cell Mandate) and \$\\mathbf{AlgorithmUniversality}\$ (the \$\\mathbf{0 \\to 1}\$ Coherence Proof) necessitates a formal abstraction of the **Algorithm** itself as the true \$\\mathbf{1}\$-Cell of the hierarchy.
+
+This enrichment focuses on formalizing the **Algorithm Bundle** structure, which encapsulates the metricized transformation path required by the \$\\mathbf{Coherence\\ Hierarchy\\ Induction\\ Principle (CHIP)}\$.
+
+## VIII. Axiomatic Enrichment: The **\$\\mathbf{1}\$**-Cell/Algorithm Bundle
+
+The algebraic algorithm is the constructive \$\\mathbf{Path}\$ that transforms a problem (a \$\\mathbf{0}\$-Cell ambiguity) into a canonical solution (a \$\\mathbf{0}\$-Cell object). It must be bundled with its proof of correctness to be a valid \$\\mathbf{1}\$-Cell, whose execution complexity directly contributes to the \$\\mathbf{EmergentMetric}\$.
+
+### A. The Formal Structure of the **\$\\mathbf{1}\$**-Cell
+
+The \$\\mathbf{AlgorithmBundle}\$ abstracts the specific \$\\mathbf{MinimalPolynomialAlgorithm}\$ or \$\\mathbf{SplittingFieldAlgorithm}\$ into the \$\\mathbf{1}\$-Cell structure required by the \$\\mathbf{CHIP}\$ foundation.
+
+  -------------------------------------------------------------------------------------------------------   **Formal Type**         **Exegesis & Purpose**                     **CHIP Analogue**   ----------------------- ------------------------------------------ ------------------------------------   **Algorithm (Algo)**    The core computational function (e.g., \$F The Sequence of \$\\mathbf{Steps}\$                           \\to E\$) that effects the required        in a \$\\mathbf{Path}\$ (Path Sys)                           transformation.                            
+
+  **AlgoBundle**          The cohesive unit that verifies the        \$\\mathbf{TransformationSystem}\$                           \$\\mathbf{1}\$-Cell\'s fidelity to the                               \$\\mathbf{0}\$-Cell mandate.              
+
+  **Transformation        The underlying operational definition of   TransformationSystem A B   System**                the \$\\mathbf{1}\$-Cell, specifying its                              atomic \$\\mathbf{Steps}\$ and                                        \$\\mathbf{cost\\ function}\$.             
+
+  **Universality          The \$\\mathbf{Coherence\\ Witness\\ (0    CoherenceWitness   Assurance**             \\to 1)}\$. The formal proof (e.g.,        (\$\\mathbf{reify}\$ the mandate)                           minimalPolynomialImplementsUniversality)                              that the algorithm satisfies the                                      constraints of its                                                    \$\\mathbf{UniversalProperty}\$ mandate.      -------------------------------------------------------------------------------------------------------
+
+### B. Metric Constraint and Selection Protocol
+
+The \$\\mathbf{1}\$-Cell is subject to a metacategory constraint derived from the \$\\mathbf{AlgorithmSelectionProperty}\$. This constraint ensures that the \$\\mathbf{CHIP}\$\'s fundamental principle of **Harmonic Minimization** is obeyed at the selection layer.
+
+1.  **Metric-Optimal Selection:** The \$\\mathbf{select}\$ function of     > the registry is mandated to return the algorithm that is     > **terminal** in the preorder of \"more specific than\".
+
+2.  **Harmonic Minimization Pre-Condition:** This ensures that the     > chosen \$\\mathbf{1}\$-Cell is the one with the intrinsically     > lowest expected \$\\mathbf{EmergentMetric}\$ (complexity) for the     > given structural context, preventing the system from pursuing     > costlier, more general paths when a specific, minimal     > \$\\mathbf{Path}\$ exists.
+
+3.  **Factorization Mandate:** Any more general algorithm (a non-optimal     > \$\\mathbf{Path}\$) must \$\\mathbf{factor\\ through}\$ the     > selected, specific algorithm (the \$\\mathbf{Minimal\\ Path}\$).
+
+### C. The **\$\\mathbf{1}\$**-Cell/Algorithm in the Graded Hierarchy
+
+The \$\\mathbf{1}\$-Cell\'s metric is derived from its path complexity, which is then used in the \$\\mathbf{CHIP}\$ induction step \$\\mathbf{\\Lambda\^n \\to \\Lambda\^{n+1}}\$.
+
+\$\$\\mathbf{Algorithm\\ (1\\text{-Cell})} \\to \\mathbf{calculate-complexity} \\to \\mathbf{EmergentMetric} \\to \\mathbf{encode} \\to \\mathbf{\\Lambda\^{n+1}}\$\$
+
+This completes the \$\\mathbf{0 \\to 1}\$ structural link, establishing the \$\\mathbf{Algorithm}\$ as the metric-compliant realization of the \$\\mathbf{UniversalProperty}\$ mandate, ready to induce the \$\\mathbf{2}\$-Cell (\$\\mathbf{Braiding\\ Event}\$) if its outputs create a new formal ambiguity.

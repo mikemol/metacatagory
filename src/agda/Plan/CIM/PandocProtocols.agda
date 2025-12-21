@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical --safe --guardedness #-}
+{-# OPTIONS --without-K --safe --guardedness #-}
 
 module Plan.CIM.PandocProtocols where
 

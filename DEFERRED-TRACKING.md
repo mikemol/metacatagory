@@ -18,23 +18,14 @@ Source: deferred-summary.json (auto-generated)
 Items blocking core functionality or Plan.CIM completion.
 
 * [ ] CHIPCoreRecompose.agda (8-line stub); blocked by Core re-enable
-
   Effort: 100-150 lines; Timeline: after Core restored; Ref: ROADMAP.md Phase 2.1
-
 * [ ] PandocProtocols.agda stubs (blockAmb, blockTransSys, blockCoherence, docAmb, docTransSys, docCoherence)
-
   Effort: 50-100 lines semantic impls; Ref: ROADMAP.md Phase 2.3
-
 * [ ] CHIPConformance.agda stubs (makeSPPFNode, composeBraids refinement)
-
   Effort: 50-80 lines; Ref: ROADMAP.md Phase 2.3
-
 * [ ] Core.disabled/ modules (23 modules)
-
   Phase theory, categorical foundations, adjunction/limits; Effort: 1-2 weeks; Ref: ROADMAP.md Phase 3.2
-
 * [ ] Algebra.disabled/ subset (for Core deps)
-
   Groups/rings/modules/fields; Effort: 3-5 days; Ref: ROADMAP.md Phase 3.2
 
 ### Medium-Priority Deferred Items
@@ -42,15 +33,10 @@ Items blocking core functionality or Plan.CIM completion.
 Improves functionality but not blocking major milestones.
 
 * [ ] Examples.disabled/ modules (13 modules)
-
   TechnicalDebtRegistry and demonstration examples; Effort: 1-3 days/module; Ref: ROADMAP.md Phase 3.1
-
 * [ ] Plan.CIM integration tests
-
   E2E transformation pipeline, grammar conformance, proof export; Effort: 100-150 lines; Ref: ROADMAP.md Phase 2.2
-
 * [ ] Plan.CIM documentation
-
   Architecture/API/tutorials; Effort: 1-2 days; Ref: ROADMAP.md Phase 4.1
 
 ### Low-Priority Deferred Items
@@ -58,15 +44,10 @@ Improves functionality but not blocking major milestones.
 Nice-to-have improvements, cleanup, or exploratory work.
 
 * [ ] Utility-broken.agda recovery
-
   Extract 77 roadmap examples; fix syntax; merge into Plan.CIM.Utility.agda; Effort: 4-6 hours; Ref: intake/refactoring-roadmap-migration.md
-
 * [ ] Script modernization
-
   Python 3.10+ features, type hints, error handling; Effort: 2-3 days; Ref: scripts/
-
 * [ ] CHIP protocol semantic enrichment
-
   Ambiguity detection, transformation metrics, coherence validation; Research 1-2 weeks; Deferred to ROADMAP-DRAFT.md
 
 ## Deferred Item Sources
