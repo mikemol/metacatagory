@@ -79,3 +79,9 @@ mapWithPrefix prefix (x ∷ xs) = (prefix ++ x) ∷ mapWithPrefix prefix xs
 indent : Nat → List String → List String
 indent zero lines = lines
 indent (suc n) lines = mapWithPrefix " " (indent n lines)
+-- ==========================================================
+-- String Comparison & Operations (FFI Parameters)
+-- ==========================================================
+
+-- Note: String equality, splitting, and list conversion are FFI primitives
+-- that must be provided as module parameters by consumers
