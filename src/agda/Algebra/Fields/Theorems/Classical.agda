@@ -10,7 +10,7 @@ module Algebra.Fields.Theorems.Classical where
 
 open import Core
 open import Algebra.Foundation
-open import Algebra.Fields.Basic
+open import Algebra.Fields.Types
 open import Metamodel as M
 
 -- ============================================================================
