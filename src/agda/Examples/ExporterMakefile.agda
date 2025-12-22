@@ -76,7 +76,7 @@ open import Examples.AgdaMakefileDeps using (_++_; ModuleName; primStringEqualit
 open import Examples.MakefileTargets using (MakefileTarget; TargetCategory; allCategories; 
   validatorToTarget; generatorToTarget; nodeSetupCategory; badgeCategory; mdLintCategory;
   discoverAgdaFiles; generateAgdaTargets; generateDocsTargets; allAgdaiTarget; allDocsTarget;
-  environmentSetupToTarget; mkTarget)
+  environmentSetupToTarget; synchronizerToTarget; mkTarget)
 
 postulate
   writeFile : String → String → IO ⊤
@@ -148,6 +148,10 @@ discoveredTargets =
     ("python3 scripts/generate-badges.py" ∷ [])
   ∷ environmentSetupToTarget "node-deps"
     ("npm install" ∷ [])
+  ∷ generatorToTarget "deferred-items" ([])
+    (".github/scripts/detect-deferred-items.sh" ∷ [])
+  ∷ synchronizerToTarget "roadmap-sync" (".github/roadmap/tasks.json" ∷ [])
+    (".github/scripts/sync-roadmap-issues.sh" ∷ [])
   ∷ []
 
 -- Helper to concatenate lists
@@ -187,6 +191,7 @@ buildArtifact agdaFiles graphEdges =
       allTargets = discoveredTargets +++ agdaiTargets +++ docsTargets +++ aggregateTargets
       phonyNames = "all" ∷ "check" ∷ "md-fix" ∷ "md-lint" ∷ "badges" ∷ "node-deps" 
                  ∷ "regen-makefile" ∷ "agda-all" ∷ "docs-all" 
+                 ∷ "deferred-items" ∷ "roadmap-sync"
                  ∷ []
       phonySection = record { id = "phony" 
                             ; content = (".PHONY: " ++ intercalate " " phonyNames) ∷ [] }

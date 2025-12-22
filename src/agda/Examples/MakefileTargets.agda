@@ -128,6 +128,11 @@ environmentSetupToTarget : String → List String → MakefileTarget
 environmentSetupToTarget name recipe =
   mkTarget name [] recipe true
 
+-- Convert Synchronizer to target
+synchronizerToTarget : String → List String → List String → MakefileTarget
+synchronizerToTarget name deps recipe =
+  mkTarget name deps recipe true
+
 -- ==========================================================
 -- Discovery and Generation
 -- ==========================================================
@@ -241,6 +246,20 @@ nodeSetupCategory = EnvironmentSetup
   nodeModules
   ("npm install" ∷ [])
 
+-- Deferred items tracking
+deferredItemsCategory : TargetCategory
+deferredItemsCategory = Generator
+  (fileMetadata "src/")
+  "deferred-summary.json"
+  (".github/scripts/detect-deferred-items.sh" ∷ [])
+
+-- Roadmap sync with GitHub issues  
+roadmapSyncCategory : TargetCategory
+roadmapSyncCategory = Synchronizer
+  ".github/roadmap/tasks.json"
+  (githubIssues "owner" "repo")
+  (".github/scripts/sync-roadmap-issues.sh" ∷ [])
+
 -- Export all categories for discovery
 allCategories : List TargetCategory
 allCategories = 
@@ -248,4 +267,6 @@ allCategories =
   mdLintCategory ∷
   badgeCategory ∷
   nodeSetupCategory ∷
+  deferredItemsCategory ∷
+  roadmapSyncCategory ∷
   []
