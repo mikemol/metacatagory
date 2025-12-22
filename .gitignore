@@ -50,6 +50,8 @@ reports/
 # Node / JS tooling (added by markdown fix script and workflows)
 node_modules/
 package-lock.json
+pnpm-lock.yaml
+yarn.lock
 
 # Generated/temporary files (not for version control)
 combined.agda.txt
