@@ -2,16 +2,9 @@
 
 module Examples.DeferredItemsScanner where
 
--- Use our new shared modules
 open import Agda.Builtin.IO using (IO)
-open import Core.Strings using (_++_; intercalate; natToString; quoteJSON)
-open import Core.IO using (_>>=_; _>>_; return; writeFile; putStrLn; mapM_)
-open import Core.Rendering using (MarkdownSection; MarkdownDocument; JSONField; JSONObject;
-                                   renderMarkdownDocument; renderJSONObject;
-                                   jsonStringField; jsonNumberField)
-
 open import Agda.Builtin.List using (List; []; _∷_)
-open import Agda.Builtin.String using (String)
+open import Agda.Builtin.String using (String; primStringAppend)
 open import Agda.Builtin.Nat using (Nat; _+_; zero; suc)
 open import Agda.Builtin.Bool using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤; tt)
@@ -25,7 +18,39 @@ import qualified Data.Time.Clock as Clock
 import qualified Data.Time.Format as TimeF
 import qualified System.Environment
 
--- File search using grep
+-- FFI Primitives for Core.IO
+primBind :: IO a -> (a -> IO b) -> IO b
+primBind = (>>=)
+
+primThen :: IO a -> IO b -> IO b
+primThen = (>>)
+
+primReturn :: a -> IO a
+primReturn = pure
+
+primWriteFile :: T.Text -> T.Text -> IO ()
+primWriteFile path content = TIO.writeFile (T.unpack path) content
+
+primReadFile :: T.Text -> IO T.Text
+primReadFile path = TIO.readFile (T.unpack path)
+
+primAppendFile :: T.Text -> T.Text -> IO ()
+primAppendFile path content = TIO.appendFile (T.unpack path) content
+
+primPutStr :: T.Text -> IO ()
+primPutStr = putStr . T.unpack
+
+primPutStrLn :: T.Text -> IO ()
+primPutStrLn = putStrLn . T.unpack
+
+primGetLine :: IO T.Text
+primGetLine = T.pack <$> getLine
+
+-- FFI Primitive for Core.Strings
+primNatToString :: Integer -> T.Text
+primNatToString n = T.pack (show n)
+
+-- Application-specific FFI
 grepPatternAdapter :: T.Text -> T.Text -> IO [T.Text]
 grepPatternAdapter pat label = do
   let cmd = "grep"
@@ -34,27 +59,52 @@ grepPatternAdapter pat label = do
   case exitCode of
     _ -> pure $ T.lines (T.pack stdout)
 
--- Count items
 countItemsAdapter :: [T.Text] -> Integer
 countItemsAdapter items = toInteger (length items)
 
--- Get timestamp
 getCurrentTimestampAdapter :: IO T.Text
 getCurrentTimestampAdapter = do
   now <- Clock.getCurrentTime
   pure $ T.pack $ TimeF.formatTime TimeF.defaultTimeLocale "%Y-%m-%dT%H:%M:%SZ" now
 
--- Get GitHub output env var
 getGitHubOutputAdapter :: IO (Maybe T.Text)
 getGitHubOutputAdapter = fmap T.pack <$> System.Environment.lookupEnv "GITHUB_OUTPUT"
 
--- Append to GitHub output file
 appendGitHubOutputAdapter :: T.Text -> T.Text -> IO ()
 appendGitHubOutputAdapter path content = 
   TIO.appendFile (T.unpack path) (T.append content (T.pack "\n"))
 #-}
 
--- FFI postulates
+-- FFI postulates for shared module primitives
+postulate
+  _>>=_ : {A B : Set} → IO A → (A → IO B) → IO B
+  _>>_ : {A B : Set} → IO A → IO B → IO B
+  return : {A : Set} → A → IO A
+  primWriteFile : String → String → IO ⊤
+  primReadFile : String → IO String
+  primAppendFile : String → String → IO ⊤
+  primPutStr : String → IO ⊤
+  primPutStrLn : String → IO ⊤
+  primGetLine : IO String
+  primNatToStringFFI : Nat → String
+
+{-# COMPILE GHC _>>=_ = \_ _ -> primBind #-}
+{-# COMPILE GHC _>>_ = \_ _ -> primThen #-}
+{-# COMPILE GHC return = \_ -> primReturn #-}
+{-# COMPILE GHC primWriteFile = primWriteFile #-}
+{-# COMPILE GHC primReadFile = primReadFile #-}
+{-# COMPILE GHC primAppendFile = primAppendFile #-}
+{-# COMPILE GHC primPutStr = primPutStr #-}
+{-# COMPILE GHC primPutStrLn = primPutStrLn #-}
+{-# COMPILE GHC primGetLine = primGetLine #-}
+{-# COMPILE GHC primNatToStringFFI = primNatToString #-}
+
+-- Open shared modules with FFI primitives
+open import Core.Strings primNatToStringFFI
+open import Core.IO _>>=_ _>>_ return primWriteFile primReadFile primAppendFile primPutStr primPutStrLn primGetLine
+open import Core.Rendering _++_ intercalate natToString quoteJSON mapWithPrefix
+
+-- Application-specific FFI postulates
 postulate
   grepPattern : String → String → IO (List String)
   countItems : List String → Nat

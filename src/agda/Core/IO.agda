@@ -1,69 +1,52 @@
 {-# OPTIONS --without-K #-}
 
--- | Common IO operations and monadic combinators
--- Consolidates IO patterns used across executable Agda modules
-module Core.IO where
-
 open import Agda.Builtin.IO using (IO)
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Bool using (Bool; true; false)
 
-{-# FOREIGN GHC
-import qualified Data.Text as T
-import qualified Data.Text.IO as TIO
-#-}
+-- | Common IO operations and monadic combinators
+-- Consolidates IO patterns used across executable Agda modules
+-- FFI primitives provided as module parameters - no postulates required
+module Core.IO
+  -- FFI Primitives as module parameters
+  (_>>=_ : {A B : Set} → IO A → (A → IO B) → IO B)
+  (_>>_ : {A B : Set} → IO A → IO B → IO B)
+  (return : {A : Set} → A → IO A)
+  (primWriteFile : String → String → IO ⊤)
+  (primReadFile : String → IO String)
+  (primAppendFile : String → String → IO ⊤)
+  (primPutStr : String → IO ⊤)
+  (primPutStrLn : String → IO ⊤)
+  (primGetLine : IO String)
+  where
 
 -- ==========================================================
--- IO Monad Combinators
+-- File IO Operations (using provided primitives)
 -- ==========================================================
 
-postulate
-  _>>=_ : {A B : Set} → IO A → (A → IO B) → IO B
-  _>>_ : {A B : Set} → IO A → IO B → IO B
-  return : {A : Set} → A → IO A
+writeFile : String → String → IO ⊤
+writeFile = primWriteFile
 
-{-# COMPILE GHC _>>=_ = \_ _ -> (>>=) #-}
-{-# COMPILE GHC _>>_ = \_ _ -> (>>) #-}
-{-# COMPILE GHC return = \_ -> pure #-}
+readFile : String → IO String
+readFile = primReadFile
 
--- ==========================================================
--- File IO Operations
--- ==========================================================
-
-postulate
-  writeFile : String → String → IO ⊤
-  readFile : String → IO String
-  appendFile : String → String → IO ⊤
-
-{-# FOREIGN GHC
-writeFileAdapter :: T.Text -> T.Text -> IO ()
-writeFileAdapter path content = TIO.writeFile (T.unpack path) content
-
-readFileAdapter :: T.Text -> IO T.Text
-readFileAdapter path = TIO.readFile (T.unpack path)
-
-appendFileAdapter :: T.Text -> T.Text -> IO ()
-appendFileAdapter path content = TIO.appendFile (T.unpack path) content
-#-}
-
-{-# COMPILE GHC writeFile = writeFileAdapter #-}
-{-# COMPILE GHC readFile = readFileAdapter #-}
-{-# COMPILE GHC appendFile = appendFileAdapter #-}
+appendFile : String → String → IO ⊤
+appendFile = primAppendFile
 
 -- ==========================================================
--- Console IO Operations
+-- Console IO Operations (using provided primitives)
 -- ==========================================================
 
-postulate
-  putStr : String → IO ⊤
-  putStrLn : String → IO ⊤
-  getLine : IO String
+putStr : String → IO ⊤
+putStr = primPutStr
 
-{-# COMPILE GHC putStr = putStr . T.unpack #-}
-{-# COMPILE GHC putStrLn = putStrLn . T.unpack #-}
-{-# COMPILE GHC getLine = fmap T.pack getLine #-}
+putStrLn : String → IO ⊤
+putStrLn = primPutStrLn
+
+getLine : IO String
+getLine = primGetLine
 
 -- ==========================================================
 -- List Operations with IO
@@ -93,6 +76,3 @@ when false action = return tt
 unless : Bool → IO ⊤ → IO ⊤
 unless true action = return tt
 unless false action = action
-
--- Import Bool from Core.Phase or Agda.Builtin.Bool
-open import Agda.Builtin.Bool using (Bool; true; false)
