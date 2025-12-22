@@ -1,14 +1,15 @@
 {-# OPTIONS --without-K #-}
 
--- | Common string manipulation utilities
--- Consolidates string operations used across the codebase
-module Core.Strings where
-
+open import Agda.Builtin.Nat using (Nat; zero; suc)
 open import Agda.Builtin.String using (String; primStringAppend)
 open import Agda.Builtin.List using (List; []; _∷_)
-open import Agda.Builtin.Nat using (Nat; zero; suc)
 
-{-# FOREIGN GHC import qualified Data.Text as T #-}
+-- | Common string manipulation utilities
+-- Consolidates string operations used across the codebase
+-- FFI primitives provided as module parameters - no postulates required
+module Core.Strings
+  (primNatToString : Nat → String)
+  where
 
 -- ==========================================================
 -- String Concatenation
@@ -44,10 +45,7 @@ unwords = intercalate " "
 -- Nat to String Conversion
 -- ==========================================================
 
-postulate primNatToString : Nat → String
-{-# COMPILE GHC primNatToString = \n -> T.pack (show n) #-}
-
--- Convert natural number to string
+-- Convert natural number to string (using provided primitive)
 natToString : Nat → String
 natToString zero = "0"
 natToString n = primNatToString n

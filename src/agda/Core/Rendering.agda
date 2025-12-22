@@ -1,14 +1,19 @@
 {-# OPTIONS --without-K #-}
 
--- | Common rendering utilities for structured data
--- Provides type-safe rendering of structured data to various formats
-module Core.Rendering where
-
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
 open import Agda.Builtin.Bool using (Bool; true; false)
-open import Core.Strings using (_++_; intercalate; natToString; quoteJSON; mapWithPrefix)
+
+-- | Common rendering utilities for structured data
+-- Provides type-safe rendering of structured data to various formats
+module Core.Rendering
+  (_++_ : String → String → String)
+  (intercalate : String → List String → String)
+  (natToString : Nat → String)
+  (quoteJSON : String → String)
+  (mapWithPrefix : String → List String → List String)
+  where
 
 -- ==========================================================
 -- Markdown Rendering
