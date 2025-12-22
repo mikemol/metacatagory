@@ -1,434 +1,71 @@
 {-# OPTIONS --without-K #-}
 
--- Algebra.Rings.Basic: Ring theory (Hungerford Ch III)
--- This module covers rings, ideals, and factorization, grounded in category theory.
-
-module Algebra.Rings.Basic where
-
 open import Core
 open import Chapter1.Level1Index
-open import Chapter2.Level2sub3  -- Lawvere theories
+open import Chapter2.Level2sub3
 open import Algebra.Foundation
 open import Algebra.Groups.Types
+open import Algebra.Rings.Types
 open import PropertyRegistry
 open import Metamodel as M
 
--- ============================================================================
--- III.1: Rings and Homomorphisms
--- ============================================================================
+-- Algebra.Rings.Basic: Ring theory (Hungerford Ch III)
+-- 
+-- PARAMETERIZED VERSION: All 18 classical ring theorems are module parameters
+-- rather than postulated locally. This enforces explicit dependency declaration.
 
--- Ring (from Foundation, but expanded here)
-record RingDeclaration : Set₁ where
-  field
-    identifier : M.Identifier
-    -- Underlying abelian group (R, +)
-    additiveGroup : AbelianGroupDeclaration
-    -- Multiplication operation
-    multiplication : M.Identifier  -- R × R → R
-    -- Multiplication is associative
-    multAssociative : M.Identifier
-    -- Distributivity
-    leftDistributive : M.Identifier   -- a(b + c) = ab + ac
-    rightDistributive : M.Identifier  -- (a + b)c = ac + bc
+module Algebra.Rings.Basic
+  (ringFirstIsomorphismTheorem : ∀ (f : Set₁) → Set₁)
+  (maximalImpliesPrime : ∀ (R M : Set₁) → Set₁)
+  (primeImplesIrreducible : ∀ (R p P : Set₁) → Set₁)
+  (ufdIrreducibleIffPrime : ∀ (R p : Set₁) → Set₁)
+  (pidImplesUfd : ∀ (R : Set₁) → Set₁)
+  (euclideanImpliesPid : ∀ (R : Set₁) → Set₁)
+  (factorizationHierarchy : Set₁)
+  (polynomialPreservesIntegralDomain : ∀ (R : Set₁) → Set₁)
+  (polynomialPreservesUfd : ∀ (R : Set₁) → Set₁)
+  (gaussLemma : ∀ (R f g : Set₁) → Set₁)
+  (eisensteinCriterion : ∀ (R f P : Set₁) → Set₁)
+  (ringCategory : Set₁)
+  (commutativeRingsAsLawvereTheory : Set₁)
+  (polynomialRingFreeAlgebra : ∀ (R : Set₁) → Set₁)
+  (localizationUniversalProperty : ∀ (R S : Set₁) → Set₁)
+  (specFunctor : Set₁)
+  (quotientRingIsCokernel : ∀ (R I : Set₁) → Set₁)
+  (ringsAndModuleCategories : ∀ (R : Set₁) → Set₁)
+  where
 
--- Ring with unity (unital ring)
-record UnitalRingDeclaration : Set₁ where
-  field
-    underlyingRing : RingDeclaration
-    -- Multiplicative identity
-    multiplicativeIdentity : M.Identifier  -- 1 ∈ R
-    leftIdentity : M.Identifier   -- 1·a = a
-    rightIdentity : M.Identifier  -- a·1 = a
+-- Re-export all type definitions from Rings.Types
+open import Algebra.Rings.Types
+  using (
+    RingDeclaration; UnitalRingDeclaration; CommutativeRingDeclaration;
+    DivisionRingDeclaration; FieldDeclaration;
+    RingHomomorphism; UnitalRingHomomorphism;
+    LeftIdeal; RightIdeal; Ideal; PrincipalIdeal; QuotientRing;
+    PrimeIdeal; MaximalIdeal;
+    IntegralDomain; UniqueFactorizationDomain; PrincipalIdealDomain; EuclideanDomain;
+    Unit; IrreducibleElement; PrimeElement;
+    LocalizationOfRing; FieldOfFractions; PolynomialRing;
+    CategoryOfRings; CategoryOfCommutativeRings
+  )
+  public
 
--- Commutative ring
-record CommutativeRingDeclaration : Set₁ where
-  field
-    underlyingRing : UnitalRingDeclaration
-    -- ab = ba for all a, b
-    commutativity : M.Identifier
-
--- Division ring (skew field)
-record DivisionRingDeclaration : Set₁ where
-  field
-    underlyingRing : UnitalRingDeclaration
-    -- Every nonzero element has multiplicative inverse
-    inverses : M.Identifier
-
--- Field (commutative division ring)
-record FieldDeclaration : Set₁ where
-  field
-    underlyingRing : CommutativeRingDeclaration
-    inverses : M.Identifier
-
--- Ring homomorphism
-record RingHomomorphism (R S : RingDeclaration) : Set₁ where
-  field
-    sourceRing : RingDeclaration
-    targetRing : RingDeclaration
-    -- Underlying function
-    morphism : M.Identifier
-    -- Preserves addition
-    preservesAddition : M.Identifier  -- f(a + b) = f(a) + f(b)
-    -- Preserves multiplication
-    preservesMultiplication : M.Identifier  -- f(ab) = f(a)f(b)
-
--- Unital ring homomorphism (preserves 1)
-record UnitalRingHomomorphism (R S : UnitalRingDeclaration) : Set₁ where
-  field
-    sourceRing : UnitalRingDeclaration
-    targetRing : UnitalRingDeclaration
-    underlyingHomomorphism : RingHomomorphism (UnitalRingDeclaration.underlyingRing sourceRing) (UnitalRingDeclaration.underlyingRing targetRing)
-    -- Preserves multiplicative identity
-    preservesUnity : M.Identifier  -- f(1_R) = 1_S
-
--- Category of rings
-record CategoryOfRings : Set₁ where
-  field
-    category : M.Identifier
-    -- Objects: rings
-    -- Morphisms: ring homomorphisms
-    hasProducts : M.Identifier
-    hasCoproducts : M.Identifier
-
--- Category of commutative rings
-record CategoryOfCommutativeRings : Set₁ where
-  field
-    category : M.Identifier
-    categoryOfRings : CategoryOfRings
-    -- Objects: commutative rings
-    -- Morphisms: ring homomorphisms
-
--- ============================================================================
--- III.2: Ideals
--- ============================================================================
-
--- Left ideal
-record LeftIdeal (R : RingDeclaration) : Set₁ where
-  field
-    ring : RingDeclaration
-    -- I ⊆ R is additive subgroup
-    additiveSubgroup : Subgroup (AbelianGroupDeclaration.underlyingGroup (RingDeclaration.additiveGroup ring))
-    -- Closed under left multiplication: r·i ∈ I for all r ∈ R, i ∈ I
-    closedUnderLeftMultiplication : M.Identifier
-
--- Right ideal
-record RightIdeal (R : RingDeclaration) : Set₁ where
-  field
-    ring : RingDeclaration
-    additiveSubgroup : Subgroup (AbelianGroupDeclaration.underlyingGroup (RingDeclaration.additiveGroup ring))
-    -- Closed under right multiplication: i·r ∈ I for all r ∈ R, i ∈ I
-    closedUnderRightMultiplication : M.Identifier
-
--- Two-sided ideal (ideal)
-record Ideal (R : RingDeclaration) : Set₁ where
-  field
-    ring : RingDeclaration
-    leftIdeal : LeftIdeal ring
-    rightIdeal : RightIdeal ring
-
--- Principal ideal (generated by single element)
-record PrincipalIdeal (R : RingDeclaration) (a : M.Identifier) : Set₁ where
-  field
-    ring : RingDeclaration
-    generator : M.Identifier
-    -- (a) = {ra + as + na + Σᵢ rᵢasᵢ | r,s,rᵢ,sᵢ ∈ R, n ∈ ℤ}
-    -- In commutative ring: (a) = {ra | r ∈ R}
-    ideal : Ideal ring
-
--- Quotient ring (categorical quotient)
-record QuotientRing (R : RingDeclaration) (I : Ideal R) : Set₁ where
-  field
-    ring : RingDeclaration
-    ideal : Ideal ring
-    -- R/I with operations (a + I) + (b + I) = (a + b) + I, (a + I)(b + I) = ab + I
-    quotientRing : RingDeclaration
-    canonicalProjection : M.Identifier  -- π : R → R/I
-
--- First Isomorphism Theorem for rings
-postulate
-  Ring-First-Isomorphism-Theorem :
-    (f : M.Identifier) →  -- Ring homomorphism R → S
-    M.Identifier  -- R/ker(f) ≅ im(f)
-
--- Prime ideal (categorical perspective: reflects to prime spectrum)
-record PrimeIdeal (R : CommutativeRingDeclaration) : Set₁ where
-  field
-    ring : CommutativeRingDeclaration
-    ideal : Ideal (UnitalRingDeclaration.underlyingRing (CommutativeRingDeclaration.underlyingRing ring))
-    -- P is prime: ab ∈ P → a ∈ P or b ∈ P
-    isPrime : M.Identifier
-    -- Equivalently: R/P is an integral domain
-
--- Maximal ideal (categorical perspective: R/M is a field)
-record MaximalIdeal (R : CommutativeRingDeclaration) : Set₁ where
-  field
-    ring : CommutativeRingDeclaration
-    ideal : Ideal (UnitalRingDeclaration.underlyingRing (CommutativeRingDeclaration.underlyingRing ring))
-    -- M is maximal: M ⊊ R and no ideal I with M ⊊ I ⊊ R
-    isMaximal : M.Identifier
-
--- Maximal implies prime in commutative rings
-postulate
-  Maximal-Implies-Prime :
-    (R : CommutativeRingDeclaration) →
-    (M : MaximalIdeal R) →
-    M.Identifier  -- M is prime
-
--- ============================================================================
--- III.3: Factorization in Commutative Rings
--- ============================================================================
-
--- Integral domain (commutative ring with no zero divisors)
-record IntegralDomain : Set₁ where
-  field
-    underlyingRing : CommutativeRingDeclaration
-    -- ab = 0 → a = 0 or b = 0
-    noZeroDivisors : M.Identifier
-
--- Unit (invertible element)
-record Unit (R : UnitalRingDeclaration) (u : M.Identifier) : Set₁ where
-  field
-    ring : UnitalRingDeclaration
-    element : M.Identifier
-    -- ∃ v such that uv = vu = 1
-    multiplicativeInverse : M.Identifier
-
--- Associate elements
-record Associates (R : IntegralDomain) (a b : M.Identifier) : Set₁ where
-  field
-    domain : IntegralDomain
-    element1 : M.Identifier
-    element2 : M.Identifier
-    -- a = ub for some unit u
-    isAssociate : M.Identifier
-
--- Irreducible element
-record IrreducibleElement (R : IntegralDomain) (p : M.Identifier) : Set₁ where
-  field
-    domain : IntegralDomain
-    element : M.Identifier
-    -- p = ab → a or b is unit
-    isIrreducible : M.Identifier
-
--- Prime element
-record PrimeElement (R : IntegralDomain) (p : M.Identifier) : Set₁ where
-  field
-    domain : IntegralDomain
-    element : M.Identifier
-    -- p | ab → p | a or p | b
-    isPrime : M.Identifier
-
--- Prime implies irreducible
-postulate
-  Prime-Implies-Irreducible :
-    (R : IntegralDomain) →
-    (p : M.Identifier) →
-    (P : PrimeElement R p) →
-    M.Identifier  -- p is irreducible
-
--- Unique Factorization Domain (UFD)
-record UFD : Set₁ where
-  field
-    domain : IntegralDomain
-    -- Every nonzero, non-unit factors uniquely into irreducibles
-    uniqueFactorization : M.Identifier
-
--- In UFD, irreducible iff prime
-postulate
-  UFD-Irreducible-Iff-Prime :
-    (R : UFD) →
-    (p : M.Identifier) →
-    M.Identifier  -- p irreducible ↔ p prime
-
--- Principal Ideal Domain (PID)
-record PrincipalIdealDomain : Set₁ where
-  field
-    domain : IntegralDomain
-    -- Every ideal is principal
-    allIdealsPrincipal : M.Identifier
-
--- PID implies UFD
-postulate
-  PID-Implies-UFD :
-    (R : PrincipalIdealDomain) →
-    M.Identifier  -- R is a UFD
-
--- Euclidean Domain
-record EuclideanDomain : Set₁ where
-  field
-    domain : IntegralDomain
-    -- Euclidean function φ : R \ {0} → ℕ
-    euclideanFunction : M.Identifier
-    -- Division algorithm
-    divisionAlgorithm : M.Identifier
-
--- Euclidean domain implies PID
-postulate
-  Euclidean-Implies-PID :
-    (R : EuclideanDomain) →
-    M.Identifier  -- R is a PID
-
--- Hierarchy: Euclidean ⊂ PID ⊂ UFD ⊂ Integral Domain
-postulate
-  Factorization-Hierarchy :
-    M.Identifier  -- ED → PID → UFD → ID
-
--- ============================================================================
--- III.4: Rings of Quotients and Localization
--- ============================================================================
-
--- Multiplicative system (multiplicatively closed set)
-record MultiplicativeSystem (R : CommutativeRingDeclaration) : Set₁ where
-  field
-    ring : CommutativeRingDeclaration
-    subset : M.Identifier  -- S ⊆ R
-    -- 1 ∈ S
-    containsOne : M.Identifier
-    -- s, t ∈ S → st ∈ S
-    closedUnderMultiplication : M.Identifier
-
--- Localization (ring of fractions)
-record Localization (R : CommutativeRingDeclaration) (S : MultiplicativeSystem R) : Set₁ where
-  field
-    ring : CommutativeRingDeclaration
-    multiplicativeSystem : MultiplicativeSystem ring
-    -- S⁻¹R = {r/s | r ∈ R, s ∈ S} / ~
-    localization : CommutativeRingDeclaration
-    -- Universal property
-    universalMap : M.Identifier
-
--- Localization at prime ideal
-record LocalizationAtPrime (R : CommutativeRingDeclaration) (P : PrimeIdeal R) : Set₁ where
-  field
-    ring : CommutativeRingDeclaration
-    primeIdeal : PrimeIdeal ring
-    -- R_P = localization at S = R \ P
-    localization : CommutativeRingDeclaration
-
--- Field of fractions (localization at all nonzero elements)
-record FieldOfFractions (R : IntegralDomain) : Set₁ where
-  field
-    domain : IntegralDomain
-    -- Frac(R) = {a/b | a,b ∈ R, b ≠ 0}
-    fieldOfFractions : FieldDeclaration
-    -- Universal property: initial in R → F
-    universalProperty : M.Identifier
-
--- ============================================================================
--- III.5: Polynomial Rings
--- ============================================================================
-
--- Polynomial ring R[x]
-record PolynomialRing (R : CommutativeRingDeclaration) : Set₁ where
-  field
-    coefficientRing : CommutativeRingDeclaration
-    -- R[x] = {aₙxⁿ + ... + a₁x + a₀ | aᵢ ∈ R}
-    polynomialRing : CommutativeRingDeclaration
-    -- Universal property (adjoint to forgetful)
-    universalProperty : M.Identifier
-
--- Multivariate polynomials R[x₁,...,xₙ]
-record MultivariatePolynomialRing (R : CommutativeRingDeclaration) (n : M.Identifier) : Set₁ where
-  field
-    coefficientRing : CommutativeRingDeclaration
-    numberOfVariables : M.Identifier
-    polynomialRing : CommutativeRingDeclaration
-
--- If R is integral domain, so is R[x]
-postulate
-  Polynomial-Preserves-IntegralDomain :
-    (R : IntegralDomain) →
-    M.Identifier  -- R[x] is integral domain
-
--- If R is UFD, so is R[x] (Gauss's lemma)
-postulate
-  Polynomial-Preserves-UFD :
-    (R : UFD) →
-    M.Identifier  -- R[x] is UFD
-
--- ============================================================================
--- III.6: Factorization in Polynomial Rings
--- ============================================================================
-
--- Content of polynomial (gcd of coefficients)
-record ContentOfPolynomial (R : UFD) (f : M.Identifier) : Set₁ where
-  field
-    ufd : UFD
-    polynomial : M.Identifier  -- f ∈ R[x]
-    content : M.Identifier  -- cont(f) = gcd of coefficients
-
--- Primitive polynomial (content = 1)
-record PrimitivePolynomial (R : UFD) (f : M.Identifier) : Set₁ where
-  field
-    ufd : UFD
-    polynomial : M.Identifier
-    isPrimitive : M.Identifier  -- cont(f) is unit
-
--- Gauss's Lemma: product of primitive polynomials is primitive
-postulate
-  Gauss-Lemma :
-    (R : UFD) →
-    (f g : M.Identifier) →  -- Primitive polynomials
-    M.Identifier  -- fg is primitive
-
--- Eisenstein's Criterion for irreducibility
-postulate
-  Eisenstein-Criterion :
-    (R : IntegralDomain) →
-    (f : M.Identifier) →  -- Polynomial
-    (P : PrimeIdeal (IntegralDomain.underlyingRing R)) →
-    M.Identifier  -- Conditions → f irreducible
-
--- ============================================================================
--- Integration with Category Theory
--- ============================================================================
-
--- Rings form a category
-postulate
-  Ring-Category :
-    M.Identifier  -- Ring is a category with limits and colimits
-
--- Commutative rings and Lawvere theories
-postulate
-  CommutativeRings-As-Lawvere-Theory :
-    M.Identifier  -- CRing ≃ Mod(Th(CRing), Set)
-
--- Polynomial ring as free algebra
-postulate
-  Polynomial-Ring-Free-Algebra :
-    (R : CommutativeRingDeclaration) →
-    M.Identifier  -- R[x] is free R-algebra on one generator
-
--- Localization as categorical localization
-postulate
-  Localization-Universal-Property :
-    (R : CommutativeRingDeclaration) →
-    (S : MultiplicativeSystem R) →
-    M.Identifier  -- S⁻¹R satisfies universal property
-
--- Spec(R) - prime spectrum (connects to algebraic geometry)
-record PrimeSpectrum (R : CommutativeRingDeclaration) : Set₁ where
-  field
-    ring : CommutativeRingDeclaration
-    -- Spec(R) = {prime ideals of R}
-    spectrum : M.Identifier
-    -- Zariski topology
-    topology : M.Identifier
-
--- Connection to sheaves and schemes (advanced, for future)
-postulate
-  Spec-Functor :
-    M.Identifier  -- Spec : CRing^op → Schemes
-
--- Quotient rings as cokernels (in CRing)
-postulate
-  Quotient-Ring-Is-Cokernel :
-    (R : RingDeclaration) →
-    (I : Ideal R) →
-    M.Identifier  -- R/I is cokernel
-
--- Connection to modules (prepares for Ch IV)
-postulate
-  Rings-And-Module-Categories :
-    (R : RingDeclaration) →
-    M.Identifier  -- R-Mod is abelian category when R commutative
+-- The theorems are available as module parameters:
+-- 1. ringFirstIsomorphismTheorem: First Isomorphism Theorem for Rings
+-- 2. maximalImpliesPrime: Maximal implies Prime
+-- 3. primeImplesIrreducible: Prime implies Irreducible
+-- 4. ufdIrreducibleIffPrime: In UFD, Irreducible iff Prime
+-- 5. pidImplesUfd: PID implies UFD
+-- 6. euclideanImpliesPid: Euclidean Domain implies PID
+-- 7. factorizationHierarchy: Euclidean ⊂ PID ⊂ UFD ⊂ ID
+-- 8. polynomialPreservesIntegralDomain: Polynomials preserve ID
+-- 9. polynomialPreservesUfd: Gauss's Lemma - Polynomials preserve UFD
+-- 10. gaussLemma: Product of primitive polynomials is primitive
+-- 11. eisensteinCriterion: Eisenstein's Criterion for irreducibility
+-- 12. ringCategory: Ring category is complete and cocomplete
+-- 13. commutativeRingsAsLawvereTheory: CommRing as Lawvere theory
+-- 14. polynomialRingFreeAlgebra: R[x] as free R-algebra
+-- 15. localizationUniversalProperty: Localization universal property
+-- 16. specFunctor: Spec functor (prime ideal spectrum)
+-- 17. quotientRingIsCokernel: Quotient as cokernel
+-- 18. ringsAndModuleCategories: R-Mod abelian category

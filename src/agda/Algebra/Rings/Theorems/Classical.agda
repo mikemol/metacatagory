@@ -11,7 +11,7 @@ module Algebra.Rings.Theorems.Classical where
 
 open import Core
 open import Algebra.Foundation
-open import Algebra.Rings.Basic
+open import Algebra.Rings.Types
 open import Metamodel as M
 
 -- ============================================================================
