@@ -18,7 +18,7 @@ module Algebra.Groups.Theorems.Classical where
 
 open import Core
 open import Algebra.Foundation
-open import Algebra.Groups.Basic
+open import Algebra.Groups.Types
 open import Metamodel as M
 
 -- ============================================================================
@@ -119,18 +119,8 @@ postulate
 --     groupsAsLawvereModels
 --     freeForgetfulAdjunctionGrp
 
--- Import Core definitions needed by Basic when instantiated
-open import Algebra.Groups.Basic
-  cyclicGroupClassification
-  lagrangeTheorem
-  firstIsomorphismTheorem
-  secondIsomorphismTheorem
-  thirdIsomorphismTheorem
-  alternatingIsSimple
-  normalSubgroupIsKernel
-  quotientGroupIsCokernelInAb
-  groupsAsLawvereModels
-  freeForgetfulAdjunctionGrp
+-- Import type definitions from Groups.Types
+open import Algebra.Groups.Types
   using (
     Subgroup; ImageOfHomomorphism; KernelOfHomomorphism;
     CyclicGroup; ElementOrder;
@@ -139,3 +129,4 @@ open import Algebra.Groups.Basic
     SymmetricGroup; Cycle; SignOfPermutation;
     AlternatingGroup; DihedralGroup
   )
+  public

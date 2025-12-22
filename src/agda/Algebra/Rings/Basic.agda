@@ -9,7 +9,7 @@ open import Core
 open import Chapter1.Level1Index
 open import Chapter2.Level2sub3  -- Lawvere theories
 open import Algebra.Foundation
-open import Algebra.Groups.Basic
+open import Algebra.Groups.Types
 open import PropertyRegistry
 open import Metamodel as M
 
