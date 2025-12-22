@@ -10,7 +10,7 @@ module Algebra.Modules.Theorems.Classical where
 
 open import Core
 open import Algebra.Foundation
-open import Algebra.Modules.Basic
+open import Algebra.Modules.Types
 open import Metamodel as M
 
 -- ============================================================================
