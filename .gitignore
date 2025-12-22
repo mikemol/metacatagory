@@ -9,6 +9,8 @@ __pycache__/
 # Agda compiled files
 *.agdai
 *.agda.bak
+*.agda.backup
+*.agda.old
 
 # Local Agda installation
 .local/
@@ -21,6 +23,13 @@ Makefile.generated
 # Agda FFI build artifacts
 MAlonzo/
 src/agda/Examples/ExporterMakefile
+
+# Compiled Agda executables (no extension)
+src/agda/DeferredItemsScanner
+src/agda/RoadmapIssueSync
+src/agda/ExporterMakefile
+src/agda/MarkdownNormalize
+src/agda/RoadmapExporter
 
 # Build outputs
 build/
