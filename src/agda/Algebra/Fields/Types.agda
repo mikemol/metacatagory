@@ -11,20 +11,46 @@ open import Metamodel as M
 -- Field-Specific Type Definitions (Hungerford Ch V)
 -- ============================================================================
 
--- Field extension
-record FieldExtension (F : FieldDeclaration) : Set₁ where
+-- Subfield of a given field E
+record Subfield (E : FieldDeclaration) : Set₁ where
   field
-    baseField : FieldDeclaration
-    extensionField : FieldDeclaration
-    embedding : M.Identifier
+    subfield   : FieldDeclaration
+    subset     : M.Identifier
+    inclusion  : M.Identifier
+    isSubfield : M.Identifier
 
--- Algebraic element
+-- Field extension E/F
+record FieldExtension (F E : FieldDeclaration) : Set₁ where
+  field
+    baseField           : FieldDeclaration
+    extensionField      : FieldDeclaration
+    inclusion           : M.Identifier
+    vectorSpaceStructure : M.Identifier
+
+-- Extension degree [E : F]
+record ExtensionDegree (F E : FieldDeclaration) : Set₁ where
+  field
+    baseField      : FieldDeclaration
+    extensionField : FieldDeclaration
+    degree         : M.Identifier
+
+-- Simple extension (E = F(α))
+record SimpleExtension (F E : FieldDeclaration) (α : M.Identifier) : Set₁ where
+  field
+    baseField         : FieldDeclaration
+    extensionField    : FieldDeclaration
+    adjoinedElement   : M.Identifier
+    minimalPolynomial : M.Identifier
+    isSimpleExtension : M.Identifier
+
+-- Algebraic element (with minimal polynomial)
 record AlgebraicElement (F E : FieldDeclaration) (α : M.Identifier) : Set₁ where
   field
-    baseField : FieldDeclaration
-    extensionField : FieldDeclaration
-    element : M.Identifier
-    isAlgebraic : M.Identifier
+    baseField         : FieldDeclaration
+    extensionField    : FieldDeclaration
+    element           : M.Identifier
+    minimalPolynomial : M.Identifier
+    isAlgebraic       : M.Identifier
 
 -- Degree of extension
 record DegreeOfExtension (F E : FieldDeclaration) : Set₁ where
@@ -33,6 +59,36 @@ record DegreeOfExtension (F E : FieldDeclaration) : Set₁ where
     extensionField : FieldDeclaration
     degree : M.Identifier
 
+-- Algebraic extension
+record AlgebraicExtension (F E : FieldDeclaration) : Set₁ where
+  field
+    baseField : FieldDeclaration
+    extensionField : FieldDeclaration
+    isAlgebraic : M.Identifier
+
+-- Transcendental element
+record TranscendentalElement (F E : FieldDeclaration) (α : M.Identifier) : Set₁ where
+  field
+    baseField : FieldDeclaration
+    extensionField : FieldDeclaration
+    element : M.Identifier
+    isTranscendental : M.Identifier
+
+-- Transcendence basis
+record TranscendenceBasis (F E : FieldDeclaration) : Set₁ where
+  field
+    baseField : FieldDeclaration
+    extensionField : FieldDeclaration
+    basis : M.Identifier
+
+-- Field automorphism (σ : E → E with σ|_F = id)
+record FieldAutomorphism (F E : FieldDeclaration) : Set₁ where
+  field
+    baseField : FieldDeclaration
+    extensionField : FieldDeclaration
+    automorphism : M.Identifier
+    isAutomorphism : M.Identifier
+
 -- Normal extension
 record NormalExtension (F E : FieldDeclaration) : Set₁ where
   field
@@ -40,28 +96,29 @@ record NormalExtension (F E : FieldDeclaration) : Set₁ where
     extensionField : FieldDeclaration
     isNormal : M.Identifier
 
--- Separable extension
 record SeparableExtension (F E : FieldDeclaration) : Set₁ where
   field
     baseField : FieldDeclaration
     extensionField : FieldDeclaration
     isSeparable : M.Identifier
 
+-- Galois group Gal(E/F)
+record GaloisGroup (F E : FieldDeclaration) : Set₁ where
+  field
+    baseField      : FieldDeclaration
+    extensionField : FieldDeclaration
+    group          : GroupDeclaration
+    automorphisms  : M.Identifier
+
 -- Galois extension
 record GaloisExtension (F E : FieldDeclaration) : Set₁ where
   field
-    baseField : FieldDeclaration
+    baseField      : FieldDeclaration
     extensionField : FieldDeclaration
-    isGalois : M.Identifier
+    galoisGroup    : GaloisGroup F E
+    isGalois       : M.Identifier
 
--- Galois group
-record GaloisGroup (F E : FieldDeclaration) : Set₁ where
-  field
-    baseField : FieldDeclaration
-    extensionField : FieldDeclaration
-    group : M.Identifier
-
--- Fixed field
+-- Fixed field of a subgroup H ≤ Gal(E/F)
 record FixedField (F E : FieldDeclaration) (H : M.Identifier) : Set₁ where
   field
     baseField : FieldDeclaration
@@ -69,13 +126,13 @@ record FixedField (F E : FieldDeclaration) (H : M.Identifier) : Set₁ where
     subgroup : M.Identifier
     fixedField : FieldDeclaration
 
--- Splitting field
+-- Splitting field of polynomial f over F
 record SplittingField (F : FieldDeclaration) (f : M.Identifier) : Set₁ where
   field
-    baseField : FieldDeclaration
-    polynomial : M.Identifier
+    baseField      : FieldDeclaration
+    polynomial     : M.Identifier
     splittingField : FieldDeclaration
-    splitsCompletely : M.Identifier
+    definition     : M.Identifier
 
 -- ============================================================================
 -- Algebraic Closure and Related

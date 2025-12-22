@@ -26,7 +26,9 @@ module Algebra.Fields.Basic
 -- Re-export all type definitions from Fields.Types
 open import Algebra.Fields.Types
   using (
-    FieldExtension; AlgebraicElement; DegreeOfExtension;
+    Subfield; FieldExtension; ExtensionDegree; SimpleExtension;
+    AlgebraicElement; AlgebraicExtension; TranscendentalElement;
+    TranscendenceBasis; FieldAutomorphism;
     NormalExtension; SeparableExtension; GaloisExtension;
     GaloisGroup; FixedField; SplittingField;
     AlgebraicClosure; VectorSpace; BasisOfVectorSpace
