@@ -251,14 +251,14 @@ deferredItemsCategory : TargetCategory
 deferredItemsCategory = Generator
   (fileMetadata "src/")
   "deferred-summary.json"
-  (".github/scripts/detect-deferred-items.sh" ∷ [])
+  ("./src/agda/DeferredItemsScanner" ∷ [])
 
 -- Roadmap sync with GitHub issues  
 roadmapSyncCategory : TargetCategory
 roadmapSyncCategory = Synchronizer
   ".github/roadmap/tasks.json"
   (githubIssues "owner" "repo")
-  (".github/scripts/sync-roadmap-issues.sh" ∷ [])
+  ("./src/agda/RoadmapIssueSync" ∷ [])
 
 -- Export all categories for discovery
 allCategories : List TargetCategory

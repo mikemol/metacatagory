@@ -149,9 +149,9 @@ discoveredTargets =
   ∷ environmentSetupToTarget "node-deps"
     ("npm install" ∷ [])
   ∷ generatorToTarget "deferred-items" ([])
-    (".github/scripts/detect-deferred-items.sh" ∷ [])
+      ("./src/agda/DeferredItemsScanner" ∷ [])
   ∷ synchronizerToTarget "roadmap-sync" (".github/roadmap/tasks.json" ∷ [])
-    (".github/scripts/sync-roadmap-issues.sh" ∷ [])
+      ("./src/agda/RoadmapIssueSync" ∷ [])
   ∷ []
 
 -- Helper to concatenate lists
