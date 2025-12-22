@@ -12,7 +12,7 @@ open import Chapter2.Level2sub1  -- Abelian categories!
 open import Algebra.Foundation
 open import Algebra.Groups.Types
 open import Algebra.Groups.Abelian
-open import Algebra.Rings.Basic
+open import Algebra.Rings.Types
 open import PropertyRegistry
 open import Metamodel as M
 
