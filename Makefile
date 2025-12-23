@@ -4,12 +4,11 @@ AGDA := .local/agda
 regen-makefile:
 	$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile
 	cp Makefile.generated Makefile
-
-all: agda-all
-
 .PHONY: all check md-fix md-lint badges node-deps regen-makefile agda-all docs-all deferred-items roadmap-index roadmap-sync roadmap-sppf roadmap-merge roadmap-deps-graph roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched
 md-lint: 
 	npx remark . --quiet --frail > build/reports/md-lint.txt
+md-fix: 
+	npx remark . --quiet --output .
 badges: build/reports/test-results.json
 	python3 scripts/generate-badges.py
 node-deps: 
