@@ -8,6 +8,7 @@ import qualified Data.Text.IO as TIO
 import qualified Data.Map.Strict as M
 import qualified Data.List as L
 import           Data.Maybe (fromMaybe)
+import qualified System.Directory as Dir
 
 writeFileAdapter :: T.Text -> T.Text -> IO ()
 writeFileAdapter path content = TIO.writeFile (T.unpack path) content
@@ -15,21 +16,23 @@ writeFileAdapter path content = TIO.writeFile (T.unpack path) content
 -- Parse DOT file edges into lines "src=>dst" using module labels
 readGraphEdgesAdapter :: T.Text -> IO [T.Text]
 readGraphEdgesAdapter path = do
-  src <- TIO.readFile (T.unpack path)
-  let ls = T.lines src
-      lbls = M.fromList $
-        [ (T.strip k, T.strip v)
-        | l <- ls
-        , Just (k,v) <- [parseLabel l]
-        ]
-      edges =
-        [ T.concat [lookupLabel a lbls, 
-                     T.pack "=>", 
-                     lookupLabel b lbls]
-        | l <- ls
-        , Just (a,b) <- [parseEdge l]
-        ]
-  pure edges
+  exists <- Dir.doesFileExist (T.unpack path)
+  if not exists then return [] else 
+    TIO.readFile (T.unpack path) >>= \src -> 
+      let ls = T.lines src
+          lbls = M.fromList 
+            [ (T.strip k, T.strip v)
+            | l <- ls
+            , Just (k,v) <- [parseLabel l]
+            ]
+          edges =
+            [ T.concat [lookupLabel a lbls, 
+                         T.pack "=>", 
+                         lookupLabel b lbls]
+            | l <- ls
+            , Just (a,b) <- [parseEdge l]
+            ]
+      in return edges
   where
     parseLabel l =
       case T.breakOn "[label=\"" l of
@@ -149,9 +152,35 @@ discoveredTargets =
   ∷ environmentSetupToTarget "node-deps"
     ("npm install" ∷ [])
   ∷ generatorToTarget "deferred-items" ([])
-      ("./src/agda/DeferredItemsScanner" ∷ [])
-  ∷ synchronizerToTarget "roadmap-sync" (".github/roadmap/tasks.json" ∷ [])
-      ("./src/agda/RoadmapIssueSync" ∷ [])
+    (".github/scripts/detect-deferred-items.sh" ∷ [])
+  ∷ generatorToTarget "roadmap-index" ("src/agda/Plan/CIM/RoadmapIndex.agdai" ∷ [])
+    ("$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapIndex.agda" ∷ [])
+  ∷ generatorToTarget "roadmap-sync" ("roadmap-export-json" ∷ "src/agda/Plan/CIM/RoadmapSync.agdai" ∷ [])
+    ("$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapSync.agda" ∷ [])
+  ∷ generatorToTarget "roadmap-sppf" ("src/agda/Plan/CIM/RoadmapSPPF.agdai" ∷ [])
+    ("$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapSPPF.agda" ∷ [])
+  ∷ generatorToTarget "roadmap-merge" ([])
+    ("python3 scripts/merge_roadmaps.py" ∷ [])
+  ∷ generatorToTarget "roadmap-deps-graph" ([])
+    ("mkdir -p build/diagrams" ∷ "$(AGDA) --dependency-graph=build/diagrams/agda-deps-full.dot -i src/agda src/agda/Tests/Index.agda 2>&1 | grep -E \"(Checking|Error)\" | head -20" ∷ [])
+  ∷ generatorToTarget "roadmap-enrich" ("build/canonical_roadmap.json" ∷ "build/diagrams/agda-deps-full.dot" ∷ [])
+    ("python3 scripts/enrich_canonical.py" ∷ [])
+  ∷ generatorToTarget "roadmap-export-json" ("build/canonical_roadmap.json" ∷ [])
+    ("python3 scripts/export_canonical_json.py" ∷ [])
+  ∷ generatorToTarget "roadmap-export-md" ("build/canonical_roadmap.json" ∷ [])
+    ("python3 scripts/export_canonical_md.py" ∷ [])
+  ∷ generatorToTarget "roadmap-export-enriched" ("build/canonical_enriched.json" ∷ [])
+    ("python3 scripts/export_enriched_md.py" ∷ [])
+  ∷ generatorToTarget "roadmap-export-deps" ("build/canonical_enriched.json" ∷ [])
+    ("python3 scripts/export_dependency_graph.py" ∷ [])
+  ∷ generatorToTarget "roadmap-validate-json" ("build/canonical_roadmap.json" ∷ ".github/roadmap/tasks.json" ∷ [])
+    ("python3 scripts/validate_json.py" ∷ [])
+  ∷ generatorToTarget "roadmap-validate-md" ("build/canonical_roadmap.json" ∷ "ROADMAP.md" ∷ [])
+    ("python3 scripts/validate_md.py" ∷ [])
+  ∷ generatorToTarget "roadmap-validate-triangle" ("roadmap-validate-json" ∷ "roadmap-validate-md" ∷ [])
+    ("@echo \"✓ Triangle validation complete\"" ∷ [])
+  ∷ generatorToTarget "roadmap-sppf-export" ("build/canonical_roadmap.json" ∷ [])
+    ("python3 scripts/export_roadmap_sppf.py" ∷ [])
   ∷ []
 
 -- Helper to concatenate lists
@@ -191,7 +220,11 @@ buildArtifact agdaFiles graphEdges =
       allTargets = discoveredTargets +++ agdaiTargets +++ docsTargets +++ aggregateTargets
       phonyNames = "all" ∷ "check" ∷ "md-fix" ∷ "md-lint" ∷ "badges" ∷ "node-deps" 
                  ∷ "regen-makefile" ∷ "agda-all" ∷ "docs-all" 
-                 ∷ "deferred-items" ∷ "roadmap-sync"
+           ∷ "deferred-items" ∷ "roadmap-index" ∷ "roadmap-sync" ∷ "roadmap-sppf"
+           ∷ "roadmap-merge" ∷ "roadmap-deps-graph" ∷ "roadmap-enrich"
+           ∷ "roadmap-export-json" ∷ "roadmap-export-md" ∷ "roadmap-export-enriched"
+           ∷ "roadmap-export-deps" ∷ "roadmap-validate-json" ∷ "roadmap-validate-md"
+           ∷ "roadmap-validate-triangle" ∷ "roadmap-sppf-export" ∷ "roadmap-all-enriched"
                  ∷ []
       phonySection = record { id = "phony" 
                             ; content = (".PHONY: " ++ intercalate " " phonyNames) ∷ [] }
@@ -229,7 +262,7 @@ postulate
 main : IO ⊤
 main = 
   discoverAgdaFiles >>= λ agdaFiles →
-  readGraphEdges "build/diagrams/agda-deps.dot" >>= λ edges →
+  readGraphEdges "build/diagrams/agda-deps-full.dot" >>= λ edges →
   let artifact = buildArtifact agdaFiles edges
       content = exportMakefile defaultRenderer artifact
   in writeFile "Makefile.generated" content
