@@ -7,11 +7,21 @@ open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Nat using (Nat; _+_)
 open import Agda.Builtin.Bool using (Bool; true)
 
-open import Plan.CIM.Utility using (Ambiguity; TransformationSystem; CoherenceWitness; EmergentMetric; BraidedInheritanceFunctor; map)
+open import Plan.CIM.Utility using (Ambiguity; TransformationSystem; CoherenceWitness; EmergentMetric; BraidedInheritanceFunctor; map; Path; refl-path)
 open import Plan.CIM.PandocAST
 open import Plan.CIM.PandocProtocols
 open import Plan.CIM.PandocToMarkdown
 open import Plan.CIM.PandocToMarkdown
+
+------------------------------------------------------------------------
+-- Helper: Create a coherence witness for a document transformation
+------------------------------------------------------------------------
+
+pandocDocTransformationWitness : (doc : PandocDoc) → CoherenceWitness blockAmb blockTransSys
+pandocDocTransformationWitness doc = record
+  { proofPath = refl-path
+  ; metric = record { magnitude = 0 }
+  }
 
 ------------------------------------------------------------------------
 -- TransformationStructure: Records the full context of a transformation

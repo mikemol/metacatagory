@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --without-K --cubical --guardedness #-}
 
 module Plan.CIM.MarkdownParse where
 
