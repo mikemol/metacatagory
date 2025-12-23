@@ -40,7 +40,10 @@ open import Algebra.Modules.Types
     CategoryOfModules;
     FreeModule; ProjectiveModule; InjectiveModule;
     HomFunctor; TensorProduct;
-    TorsionElement
+    VectorSpace; BasisOfVectorSpace; Dimension;
+    TorsionElement; TorsionSubmodule; TorsionFreeModule; StructureTheoremPID;
+    DualModule; ReflexiveModule; FreeModuleFunctor; ForgetfulModuleFunctor;
+    RAlgebra; AlgebraHomomorphism
   )
   public
 

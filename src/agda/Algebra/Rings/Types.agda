@@ -138,6 +138,12 @@ record UniqueFactorizationDomain : Set₁ where
     underlyingDomain : IntegralDomain
     uniqueFactorization : M.Identifier
 
+-- Alias: UFD (for compatibility with tests and legacy code)
+record UFD : Set₁ where
+  field
+    domain : IntegralDomain
+    uniqueFactorization : M.Identifier
+
 -- Principal ideal domain
 record PrincipalIdealDomain : Set₁ where
   field
@@ -147,9 +153,9 @@ record PrincipalIdealDomain : Set₁ where
 -- Euclidean domain
 record EuclideanDomain : Set₁ where
   field
-    underlyingDomain : IntegralDomain
+    domain : IntegralDomain
     euclideanFunction : M.Identifier
-    quotientRemainder : M.Identifier
+    divisionAlgorithm : M.Identifier
 
 -- ============================================================================
 -- Special Elements and Properties
@@ -190,12 +196,27 @@ record LocalizationOfRing (R : CommutativeRingDeclaration) (S : M.Identifier) : 
     localizedRing : UnitalRingDeclaration
     universalProperty : M.Identifier
 
+-- Multiplicative system (multiplicatively closed set)
+record MultiplicativeSystem (R : CommutativeRingDeclaration) : Set₁ where
+  field
+    ring : CommutativeRingDeclaration
+    subset : M.Identifier
+    containsOne : M.Identifier
+    closedUnderMultiplication : M.Identifier
+
+-- Localization (ring of fractions)
+record Localization (R : CommutativeRingDeclaration) (S : MultiplicativeSystem R) : Set₁ where
+  field
+    ring : CommutativeRingDeclaration
+    multiplicativeSystem : MultiplicativeSystem ring
+    localization : CommutativeRingDeclaration
+    universalMap : M.Identifier
+
 -- Field of fractions
 record FieldOfFractions (R : IntegralDomain) : Set₁ where
   field
     domain : IntegralDomain
-    fractionField : FieldDeclaration
-    embedding : M.Identifier
+    fieldOfFractions : FieldDeclaration
     universalProperty : M.Identifier
 
 -- Polynomial ring
@@ -204,6 +225,33 @@ record PolynomialRing (R : CommutativeRingDeclaration) : Set₁ where
     coefficientRing : CommutativeRingDeclaration
     polynomialRing : CommutativeRingDeclaration
     universalProperty : M.Identifier
+-- Multivariate polynomials R[x₁,...,xₙ]
+record MultivariatePolynomialRing (R : CommutativeRingDeclaration) (n : M.Identifier) : Set₁ where
+  field
+    coefficientRing : CommutativeRingDeclaration
+    numberOfVariables : M.Identifier
+    polynomialRing : CommutativeRingDeclaration
+
+-- Content of polynomial (gcd of coefficients)
+record ContentOfPolynomial (R : UFD) (f : M.Identifier) : Set₁ where
+  field
+    ufd : UFD
+    polynomial : M.Identifier
+    content : M.Identifier
+
+-- Primitive polynomial (content = 1)
+record PrimitivePolynomial (R : UFD) (f : M.Identifier) : Set₁ where
+  field
+    ufd : UFD
+    polynomial : M.Identifier
+    isPrimitive : M.Identifier
+
+-- Spec(R) - prime spectrum
+record PrimeSpectrum (R : CommutativeRingDeclaration) : Set₁ where
+  field
+    ring : CommutativeRingDeclaration
+    spectrum : M.Identifier
+    topology : M.Identifier
 
 -- ============================================================================
 -- Categories of Rings

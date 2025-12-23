@@ -43,9 +43,10 @@ open import Algebra.Rings.Types
     RingHomomorphism; UnitalRingHomomorphism;
     LeftIdeal; RightIdeal; Ideal; PrincipalIdeal; QuotientRing;
     PrimeIdeal; MaximalIdeal;
-    IntegralDomain; UniqueFactorizationDomain; PrincipalIdealDomain; EuclideanDomain;
+    IntegralDomain; UniqueFactorizationDomain; UFD; PrincipalIdealDomain; EuclideanDomain;
     Unit; IrreducibleElement; PrimeElement;
-    LocalizationOfRing; FieldOfFractions; PolynomialRing;
+    LocalizationOfRing; MultiplicativeSystem; Localization; FieldOfFractions; PolynomialRing; MultivariatePolynomialRing;
+    ContentOfPolynomial; PrimitivePolynomial; PrimeSpectrum;
     CategoryOfRings; CategoryOfCommutativeRings
   )
   public
