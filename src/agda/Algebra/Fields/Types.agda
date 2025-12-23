@@ -64,7 +64,7 @@ record AlgebraicExtension (F E : FieldDeclaration) : Set₁ where
   field
     baseField : FieldDeclaration
     extensionField : FieldDeclaration
-    isAlgebraic : M.Identifier
+    isAlgebraicExtension : M.Identifier
 
 -- Transcendental element
 record TranscendentalElement (F E : FieldDeclaration) (α : M.Identifier) : Set₁ where
@@ -80,6 +80,7 @@ record TranscendenceBasis (F E : FieldDeclaration) : Set₁ where
     baseField : FieldDeclaration
     extensionField : FieldDeclaration
     basis : M.Identifier
+    isTranscendenceBasis : M.Identifier
 
 -- Field automorphism (σ : E → E with σ|_F = id)
 record FieldAutomorphism (F E : FieldDeclaration) : Set₁ where
@@ -142,18 +143,5 @@ record SplittingField (F : FieldDeclaration) (f : M.Identifier) : Set₁ where
 record AlgebraicClosure (F : FieldDeclaration) : Set₁ where
   field
     baseField : FieldDeclaration
-    closure : FieldDeclaration
+    closureField : FieldDeclaration
     isAlgebraicClosure : M.Identifier
-
--- Vector space over field
-record VectorSpace (F : FieldDeclaration) : Set₁ where
-  field
-    baseField : FieldDeclaration
-    underlyingModule : M.Identifier
-
--- Basis of vector space
-record BasisOfVectorSpace (F : FieldDeclaration) (V : VectorSpace F) : Set₁ where
-  field
-    field' : FieldDeclaration
-    vectorSpace : VectorSpace field'
-    basis : M.Identifier

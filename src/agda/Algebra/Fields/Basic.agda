@@ -31,8 +31,13 @@ open import Algebra.Fields.Types
     TranscendenceBasis; FieldAutomorphism;
     NormalExtension; SeparableExtension; GaloisExtension;
     GaloisGroup; FixedField; SplittingField;
-    AlgebraicClosure; VectorSpace; BasisOfVectorSpace
+    AlgebraicClosure
   )
+  public
+
+-- Re-export VectorSpace from Modules.Basic (where it's now defined to avoid cycles)
+open import Algebra.Modules.Basic
+  using (VectorSpace; BasisOfVectorSpace)
   public
 
 -- The theorems are available as module parameters:
