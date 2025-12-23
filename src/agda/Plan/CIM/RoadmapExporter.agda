@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --cubical #-}
 
 module Plan.CIM.RoadmapExporter where
 

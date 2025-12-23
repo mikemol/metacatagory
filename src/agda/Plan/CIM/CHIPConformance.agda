@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --safe --guardedness #-}
+{-# OPTIONS --without-K --cubical --safe --guardedness #-}
 
 -- Roadmap Cross-References:
 -- See: exampleUnifiedTopologicalParserRoadmap, exampleDimensionalReliefRoadmap, examplePolytopeManifestRoadmap, exampleElasticityOfMeaningRoadmap in Utility.agda
