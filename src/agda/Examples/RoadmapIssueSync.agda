@@ -5,6 +5,11 @@ module Examples.RoadmapIssueSync where
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String using (String; primStringAppend)
 open import Agda.Builtin.Bool using (Bool; true; false)
+-- Boolean if-then-else syntax support
+if_then_else_ : Bool → {A : Set} → A → A → A
+if true then x else y = x
+if false then x else y = y
+
 open import Agda.Builtin.Nat using (Nat)
 open import Agda.Builtin.IO using (IO)
 open import Agda.Builtin.Unit using (⊤; tt)
@@ -163,7 +168,40 @@ ensureRoadmapLabelAdapter token repo apiRoot = do
   putStrLn "Ensured roadmap label exists"
 #-}
 
--- Postulated FFI functions
+-- Core data types (declare before FFI usage)
+postulate
+  IssueNumber : Set
+  issueNumberToNat : IssueNumber → Nat
+
+{-# COMPILE GHC IssueNumber = type Int #-}
+{-# COMPILE GHC issueNumberToNat = toInteger #-}
+
+record GitHubIssue : Set where
+  field
+    number : IssueNumber
+    title : String
+
+{-# COMPILE GHC GitHubIssue = data Issue (Issue) #-}
+
+record RoadmapTask : Set where
+  field
+    id : String
+    title : String
+    status : String
+    source : String
+    files : List String
+    tags : List String
+
+{-# COMPILE GHC RoadmapTask = data Task (Task) #-}
+
+-- Maybe type (needed before FFI signatures using Maybe)
+data Maybe (A : Set) : Set where
+  nothing : Maybe A
+  just : A → Maybe A
+
+{-# COMPILE GHC Maybe = data Maybe (Nothing | Just) #-}
+
+-- Postulated FFI functions (after types are in scope)
 postulate
   readTasks : String → IO (List RoadmapTask)
   getEnv : String → IO (Maybe String)
@@ -176,38 +214,6 @@ postulate
 {-# COMPILE GHC ensureRoadmapLabel = ensureRoadmapLabelAdapter #-}
 {-# COMPILE GHC fetchExistingIssues = fetchExistingIssuesAdapter #-}
 {-# COMPILE GHC createOrUpdateIssue = createOrUpdateIssueAdapter #-}
-
--- Data types
-record RoadmapTask : Set where
-  field
-    id : String
-    title : String
-    status : String
-    source : String
-    files : List String
-    tags : List String
-
-{-# COMPILE GHC RoadmapTask = data Task (Task) #-}
-
-record GitHubIssue : Set where
-  field
-    number : IssueNumber
-    title : String
-
-{-# COMPILE GHC GitHubIssue = data Issue (Issue) #-}
-
-postulate
-  IssueNumber : Set
-  issueNumberToNat : IssueNumber → Nat
-  
-{-# COMPILE GHC IssueNumber = type Int #-}
-{-# COMPILE GHC issueNumberToNat = toInteger #-}
-
-data Maybe (A : Set) : Set where
-  nothing : Maybe A
-  just : A → Maybe A
-
-{-# COMPILE GHC Maybe = data Maybe (Nothing | Just) #-}
 
 -- String helpers
 _++_ : String → String → String
@@ -229,10 +235,12 @@ postulate
   _>>=_ : {A B : Set} → IO A → (A → IO B) → IO B
   return : {A : Set} → A → IO A
   putStrLn : String → IO ⊤
+  _>>_ : {A B : Set} → IO A → IO B → IO B
 
 {-# COMPILE GHC _>>=_ = \_ _ -> (>>=) #-}
 {-# COMPILE GHC return = \_ -> pure #-}
 {-# COMPILE GHC putStrLn = putStrLn . T.unpack #-}
+{-# COMPILE GHC _>>_ = \_ _ -> (>>) #-}
 
 -- Find existing issue by title
 findIssueByTitle : String → List GitHubIssue → Maybe IssueNumber
@@ -244,7 +252,7 @@ findIssueByTitle targetTitle (issue ∷ rest) =
 
 -- Build issue title from task
 buildIssueTitle : RoadmapTask → String
-buildIssueTitle task = "[Roadmap] " ++ RoadmapTask.id task ++ " - " ++ RoadmapTask.title task
+buildIssueTitle task = ("[Roadmap] " ++ RoadmapTask.id task) ++ (" - " ++ RoadmapTask.title task)
 
 -- Process single task
 processTask : String → String → String → List GitHubIssue → RoadmapTask → IO ⊤
@@ -271,35 +279,29 @@ validateEnvironment (just _) (just _) = true
 runRoadmapIssueSync : String → IO ⊤
 runRoadmapIssueSync tasksFile = do
   putStrLn "Starting roadmap issue synchronization"
-  
   mToken ← getEnv "GITHUB_TOKEN"
   mRepo ← getEnv "GITHUB_REPOSITORY"
-  
-  case mToken of λ where
-    nothing → do
+  handleEnv mToken mRepo
+  where
+    handleEnv : Maybe String → Maybe String → IO ⊤
+    handleEnv nothing _ = do
       putStrLn "ERROR: GITHUB_TOKEN not set"
       return tt
-    (just token) → case mRepo of λ where
-      nothing → do
-        putStrLn "ERROR: GITHUB_REPOSITORY not set (expected owner/repo)"
-        return tt
-      (just repo) → do
-        let apiRoot = "https://api.github.com"
-        
-        putStrLn "Reading tasks file"
-        tasks ← readTasks tasksFile
-        
-        putStrLn "Ensuring roadmap label exists"
-        ensureRoadmapLabel token repo apiRoot
-        
-        putStrLn "Fetching existing roadmap issues"
-        existingIssues ← fetchExistingIssues token repo apiRoot
-        
-        putStrLn "Processing tasks"
-        processTasks token repo apiRoot existingIssues tasks
-        
-        putStrLn "Roadmap sync complete"
-        return tt
+    handleEnv (just _) nothing = do
+      putStrLn "ERROR: GITHUB_REPOSITORY not set (expected owner/repo)"
+      return tt
+    handleEnv (just token) (just repo) = do
+      let apiRoot = "https://api.github.com"
+      putStrLn "Reading tasks file"
+      tasks ← readTasks tasksFile
+      putStrLn "Ensuring roadmap label exists"
+      ensureRoadmapLabel token repo apiRoot
+      putStrLn "Fetching existing roadmap issues"
+      existingIssues ← fetchExistingIssues token repo apiRoot
+      putStrLn "Processing tasks"
+      processTasks token repo apiRoot existingIssues tasks
+      putStrLn "Roadmap sync complete"
+      return tt
 
 -- Default entry point
 main : IO ⊤
