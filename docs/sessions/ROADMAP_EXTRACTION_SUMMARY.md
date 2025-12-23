@@ -28,17 +28,17 @@ Instead of trying to fix the complex syntax issues through regex manipulation, w
 
 1. **Analyzed the actual record structure** - Understanding that these are documentation/example records, not executable logic 2. **Extracted key semantic information**:    - Record names (provenance, step description, implication)    - Relationships (relatedNodes as reference lists)    - Target modules (suggested implementation locations)    - Status (not-started)
 
-3. **Simplified the structure**:    - Converted all nested `next = [ record ... ]` patterns to simple `next = []`    - Preserved all semantic content in string fields    - Maintained list references in `relatedNodes` using valid `∷` cons operator
+2. **Simplified the structure**:    - Converted all nested `next = [ record ... ]` patterns to simple `next = []`    - Preserved all semantic content in string fields    - Maintained list references in `relatedNodes` using valid `∷` cons operator
 
-4. **Selected key roadmaps** - Focused on the 4 roadmaps referenced in COPILOT_SYNERGY.md plus their dependencies:    - `exampleUnifiedTopologicalParserRoadmap` (GP699)    - `exampleDimensionalReliefRoadmap` (GP500)    - `examplePolytopeManifestRoadmap` (GP501)    - `exampleElasticityOfMeaningRoadmap` (GP400)    - Plus 4 dependency records
+3. **Selected key roadmaps** - Focused on the 4 roadmaps referenced in COPILOT\_SYNERGY.md plus their dependencies:    - `exampleUnifiedTopologicalParserRoadmap` (GP699)    - `exampleDimensionalReliefRoadmap` (GP500)    - `examplePolytopeManifestRoadmap` (GP501)    - `exampleElasticityOfMeaningRoadmap` (GP400)    - Plus 4 dependency records
 
 ## Results
 
-- **Successfully merged 8 roadmap examples** into `src/agda/Plan/CIM/Utility.agda` - **File grew from 149 → 242 lines** (added 93 lines) - **Clean compilation** - Agda 2.6.4.3 successfully parses the merged file - **Full build passes** - `make agda-all` completes without errors - **Preserved semantic content** - All provenance, step descriptions, implications, and module references intact
+* **Successfully merged 8 roadmap examples** into `src/agda/Plan/CIM/Utility.agda` - **File grew from 149 → 242 lines** (added 93 lines) - **Clean compilation** - Agda 2.6.4.3 successfully parses the merged file - **Full build passes** - `make agda-all` completes without errors - **Preserved semantic content** - All provenance, step descriptions, implications, and module references intact
 
 ## Files Modified
 
-- `src/agda/Plan/CIM/Utility.agda` - Appended 8 cleaned roadmap examples - `roadmap-extracted.agda` - Extracted and reconstructed examples (for reference)
+* `src/agda/Plan/CIM/Utility.agda` - Appended 8 cleaned roadmap examples - `roadmap-extracted.agda` - Extracted and reconstructed examples (for reference)
 
 ## Lessons Learned
 
@@ -46,4 +46,4 @@ Instead of trying to fix the complex syntax issues through regex manipulation, w
 
 ## Next Steps (Optional)
 
-- Extract remaining 69 roadmaps from Utility-broken.agda following the same pattern - Integrate into a dedicated module (e.g., `src/agda/Plan/CIM/RoadmapExamples.agda`) - Create cross-references in ARCHITECTURE.md and ROADMAP.md to the example records
+* Extract remaining 69 roadmaps from Utility-broken.agda following the same pattern - Integrate into a dedicated module (e.g., `src/agda/Plan/CIM/RoadmapExamples.agda`) - Create cross-references in ARCHITECTURE.md and ROADMAP.md to the example records

@@ -12,7 +12,7 @@ The system is not merely a library of mathematical proofs; it is a mathematical 
 
 The architecture is strictly bound by the following formally internalized principles:
 
-1. The Axiom of Well-Founded Indexed Composition: Every node N is assigned a static coordinate (x, y). A composite node N_n may only depend on constituents N_i where (x_i, y_i) < (x_n, y_n). This enforces a global DAG structure, preventing circular definitions.
+1. The Axiom of Well-Founded Indexed Composition: Every node N is assigned a static coordinate (x, y). A composite node N\_n may only depend on constituents N\_i where (x\_i, y\_i) < (x\_n, y\_n). This enforces a global DAG structure, preventing circular definitions.
 
 2. The Axiom of Universal Reification: Every concept—whether a data structure, a proof, or an ambiguity—is reified as an indexed Identifier.
 
@@ -76,24 +76,24 @@ This is the proving ground. It systematically maps algebraic constructs to categ
 
 ## Development Roadmaps
 
-* **Provide algebraic structures for representing and manipulating ambiguity in parse spaces.** — Enables formal treatment of ambiguity as algebraic object. [status: not-started]
-Target: `src/agda/Plan/CIM/Ambiguity.agda`
-* **Establish metric structures on semantic spaces for distance/similarity calculations.** — Enables quantitative semantic reasoning and optimization. [status: not-started]
-Target: `src/agda/Plan/CIM/Metricization.agda`
-* **Define compositional transformation operations on semantic objects.** — Enables systematic rewriting and protocol evolution. [status: not-started]
-Target: `src/agda/Plan/CIM/TransformationSystem.agda`
-* **Implement functorial mappings between semantic and computational spaces.** — Enables formal structure-preserving transformations. [status: not-started]
-Target: `src/agda/Plan/CIM/FunctorialConstructs.agda`
-* **Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs.** — Enables composable phase space modeling, creative/insightful parse acceptance, and pruning of non-sequitur/hallucination nodes. Supports recursive revisiting for grammar induction, protocol refinement, and functorial traceability. [status: not-started]
-Target: `src/agda/Plan/CIM/Elasticity.agda, parser.py, dashboard.py, src/agda/Plan/CIM/Ambiguity.agda, src/agda/Plan/CIM/Metricization.agda, src/agda/Plan/CIM/TransformationSystem.agda, src/agda/Plan/CIM/FunctorialConstructs.agda`
-  Depends on: `Provide algebraic structures for representing and manipulating ambiguity in parse spaces. — src/agda/Plan/CIM/Ambiguity.agda, Establish metric structures on semantic spaces for distance/similarity calculations. — src/agda/Plan/CIM/Metricization.agda, Define compositional transformation operations on semantic objects. — src/agda/Plan/CIM/TransformationSystem.agda, Implement functorial mappings between semantic and computational spaces. — src/agda/Plan/CIM/FunctorialConstructs.agda`
-* **Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension.** — Enables composable category expansion, tension relief, and dynamic geometry for semantic protocols. Supports recursive revisiting and concept differentiation. [status: not-started]
-Target: `src/agda/Plan/CIM/PolytopeExpansion.agda, nedge_topology/mitosis.py`
-* **Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed.** — Enables dynamic, composable category geometry, tension monitoring, and concept differentiation. Supports recursive revisiting and protocol evolution. [status: not-started]
-Target: `nedge_topology/mitosis.py, nedge_topology/parser.py, dashboard.py, src/agda/Plan/CIM/PolytopeExpansion.agda`
-* **Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition.** — Enables composable geometric and topological integration, active topological pruning, and algebraic superposition for ambiguity. Supports recursive revisiting, fiber bundle architecture, and advanced induction/training features. [status: not-started]
-Target: `nedge_topology/parser.py, nedge_topology/train.py, nedge_topology/mitosis.py, nedge_topology/search.py, dashboard.py, src/agda/Plan/CIM/RotationalTransport.agda, src/agda/Plan/CIM/TopologicalGating.agda, src/agda/Plan/CIM/TopologicalSuperposition.agda`
-  Depends on: `Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension. — src/agda/Plan/CIM/PolytopeExpansion.agda, nedge_topology/mitosis.py, Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed. — nedge_topology/mitosis.py, nedge_topology/parser.py, dashboard.py, src/agda/Plan/CIM/PolytopeExpansion.agda, Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs. — src/agda/Plan/CIM/Elasticity.agda, parser.py, dashboard.py, src/agda/Plan/CIM/Ambiguity.agda, src/agda/Plan/CIM/Metricization.agda, src/agda/Plan/CIM/TransformationSystem.agda, src/agda/Plan/CIM/FunctorialConstructs.agda`
+* **Provide algebraic structures for representing and manipulating ambiguity in parse spaces.** — Enables formal treatment of ambiguity as algebraic object. \[status: not-started]
+    Target: `src/agda/Plan/CIM/Ambiguity.agda`
+* **Establish metric structures on semantic spaces for distance/similarity calculations.** — Enables quantitative semantic reasoning and optimization. \[status: not-started]
+    Target: `src/agda/Plan/CIM/Metricization.agda`
+* **Define compositional transformation operations on semantic objects.** — Enables systematic rewriting and protocol evolution. \[status: not-started]
+    Target: `src/agda/Plan/CIM/TransformationSystem.agda`
+* **Implement functorial mappings between semantic and computational spaces.** — Enables formal structure-preserving transformations. \[status: not-started]
+    Target: `src/agda/Plan/CIM/FunctorialConstructs.agda`
+* **Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs.** — Enables composable phase space modeling, creative/insightful parse acceptance, and pruning of non-sequitur/hallucination nodes. Supports recursive revisiting for grammar induction, protocol refinement, and functorial traceability. \[status: not-started]
+    Target: `src/agda/Plan/CIM/Elasticity.agda, parser.py, dashboard.py, src/agda/Plan/CIM/Ambiguity.agda, src/agda/Plan/CIM/Metricization.agda, src/agda/Plan/CIM/TransformationSystem.agda, src/agda/Plan/CIM/FunctorialConstructs.agda`
+    Depends on: `Provide algebraic structures for representing and manipulating ambiguity in parse spaces. — src/agda/Plan/CIM/Ambiguity.agda, Establish metric structures on semantic spaces for distance/similarity calculations. — src/agda/Plan/CIM/Metricization.agda, Define compositional transformation operations on semantic objects. — src/agda/Plan/CIM/TransformationSystem.agda, Implement functorial mappings between semantic and computational spaces. — src/agda/Plan/CIM/FunctorialConstructs.agda`
+* **Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension.** — Enables composable category expansion, tension relief, and dynamic geometry for semantic protocols. Supports recursive revisiting and concept differentiation. \[status: not-started]
+    Target: `src/agda/Plan/CIM/PolytopeExpansion.agda, nedge_topology/mitosis.py`
+* **Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed.** — Enables dynamic, composable category geometry, tension monitoring, and concept differentiation. Supports recursive revisiting and protocol evolution. \[status: not-started]
+    Target: `nedge_topology/mitosis.py, nedge_topology/parser.py, dashboard.py, src/agda/Plan/CIM/PolytopeExpansion.agda`
+* **Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition.** — Enables composable geometric and topological integration, active topological pruning, and algebraic superposition for ambiguity. Supports recursive revisiting, fiber bundle architecture, and advanced induction/training features. \[status: not-started]
+    Target: `nedge_topology/parser.py, nedge_topology/train.py, nedge_topology/mitosis.py, nedge_topology/search.py, dashboard.py, src/agda/Plan/CIM/RotationalTransport.agda, src/agda/Plan/CIM/TopologicalGating.agda, src/agda/Plan/CIM/TopologicalSuperposition.agda`
+    Depends on: `Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension. — src/agda/Plan/CIM/PolytopeExpansion.agda, nedge_topology/mitosis.py, Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed. — nedge_topology/mitosis.py, nedge_topology/parser.py, dashboard.py, src/agda/Plan/CIM/PolytopeExpansion.agda, Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs. — src/agda/Plan/CIM/Elasticity.agda, parser.py, dashboard.py, src/agda/Plan/CIM/Ambiguity.agda, src/agda/Plan/CIM/Metricization.agda, src/agda/Plan/CIM/TransformationSystem.agda, src/agda/Plan/CIM/FunctorialConstructs.agda`
 
 ## Building
 
@@ -101,3 +101,14 @@ Target: `nedge_topology/parser.py, nedge_topology/train.py, nedge_topology/mitos
 make agda-all  # Compile all Agda modules
 make docs            # Generate documentation
 ```
+
+## Documentation
+
+📚 **[Full Documentation Index](DOCUMENTATION.md)**
+
+* **[Architecture](docs/architecture/)** - System design and implementation
+* **[Planning](docs/planning/)** - Roadmap and project plans  
+* **[Process](docs/process/)** - Quality and development guidelines
+* **[Status](docs/status/)** - Project status and tracking
+* **[Workflows](docs/workflows/)** - How-to guides
+* **[Theory](docs/theory/)** - Theoretical foundations
