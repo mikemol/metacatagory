@@ -1,0 +1,14 @@
+{
+  "concept_patterns": [
+    "RoPE|SPPF|Stasheff|Associahedron|Polytope|Loday|Yoneda|Sheaf|Cohomology",
+    "Braid|Homotopy|Functor|Adjunction|Manifold|Topology|Geometry",
+    "Lie Group|Group Action|Category Theory|HoTT|Abelian",
+    "Quaternion|Octonion|Complex|Vector Space|Tensor",
+    "Monad|Comonad|Kleisli|Natural Transformation|Presheaf",
+    "Limit|Colimit|Pullback|Pushout|Fibration",
+    "Grothendieck|Topos|Subobject|Classifier"
+  ],
+  "default_target_module": "src/agda/Plan/CIM/Implementation.agda",
+  "max_concepts": 15,
+  "concept_title_case": true
+}

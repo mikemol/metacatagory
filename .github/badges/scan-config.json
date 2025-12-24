@@ -1,0 +1,6 @@
+{
+  "file_extensions": [".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"],
+  "excluded_dirs": [".git", "venv", ".github"],
+  "top_offenders_limit": 15,
+  "max_history_entries": 60
+}

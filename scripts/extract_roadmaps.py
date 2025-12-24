@@ -12,6 +12,28 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass, asdict
 
+# Load configuration for mathematical concept extraction
+def load_concept_config():
+    """Load concept patterns and settings from config file."""
+    config_file = Path(__file__).parent / "extract-concepts-config.json"
+    if config_file.exists():
+        with open(config_file) as f:
+            return json.load(f)
+    # Fallback defaults
+    return {
+        "concept_patterns": [
+            "RoPE|SPPF|Stasheff|Associahedron|Polytope|Loday|Yoneda|Sheaf|Cohomology",
+            "Braid|Homotopy|Functor|Adjunction|Manifold|Topology|Geometry",
+            "Lie Group|Group Action|Category Theory|HoTT|Abelian",
+            "Quaternion|Octonion|Complex|Vector Space|Tensor"
+        ],
+        "default_target_module": "src/agda/Plan/CIM/Implementation.agda",
+        "max_concepts": 15,
+        "concept_title_case": True
+    }
+
+CONCEPT_CONFIG = load_concept_config()
+
 @dataclass
 class RoadmapEntry:
     """Represents a single GP roadmap entry with full context."""
@@ -72,19 +94,19 @@ def extract_concepts(content: str) -> List[str]:
     """Extract key mathematical concepts from the content."""
     concepts = set()
     
-    # Look for capitalized mathematical terms
-    concept_patterns = [
-        r'\b(RoPE|SPPF|Stasheff|Associahedron|Polytope|Loday|Yoneda|Sheaf|Cohomology)',
-        r'\b(Braid|Homotopy|Functor|Adjunction|Manifold|Topology|Geometry)',
-        r'\b(Lie Group|Group Action|Category Theory|HoTT|Abelian)',
-        r'\b(Quaternion|Octonion|Complex|Vector Space|Tensor)',
-    ]
+    # Load concept patterns from configuration
+    concept_patterns = [r'\b(' + p + ')' for p in CONCEPT_CONFIG['concept_patterns']]
+    max_concepts = CONCEPT_CONFIG.get('max_concepts', 15)
+    use_title_case = CONCEPT_CONFIG.get('concept_title_case', True)
     
     for pattern in concept_patterns:
         matches = re.findall(pattern, content, re.IGNORECASE)
-        concepts.update(m.title() for m in matches)
+        if use_title_case:
+            concepts.update(m.title() for m in matches)
+        else:
+            concepts.update(matches)
     
-    return sorted(list(concepts))[:15]  # Limit to top 15
+    return sorted(list(concepts))[:max_concepts]
 
 def extract_related_gps(content: str) -> List[str]:
     """Find references to other GP files."""

@@ -24,54 +24,66 @@ from pathlib import Path
 from datetime import datetime, timezone
 from typing import Any, Iterable
 
-# Constants controlling repository scan behavior
-FILE_SCAN_EXTENSIONS = {".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"}
-EXCLUDED_DIRS = {".git", "venv", ".github"}
+# Load configuration from external files for modularity
+def load_config():
+    """Load thresholds, weights, and scan configuration from JSON files."""
+    repo_root = Path(__file__).parent.parent
+    config_dir = repo_root / ".github" / "badges"
+    
+    # Load thresholds
+    thresholds_file = config_dir / "thresholds.json"
+    if thresholds_file.exists():
+        with open(thresholds_file) as f:
+            threshold_data = json.load(f)
+    else:
+        # Fallback defaults if config missing
+        threshold_data = {
+            "roadmap_progress": [{"limit": 30, "color": "red"}, {"limit": 70, "color": "yellow"}, {"limit": 101, "color": "brightgreen"}],
+            "deferred_total": [{"limit": 1, "color": "brightgreen"}, {"limit": 100, "color": "yellow"}, {"limit": 300, "color": "orange"}, {"limit": 10000000, "color": "red"}],
+            "postulates": [{"limit": 21, "color": "brightgreen"}, {"limit": 51, "color": "yellow"}, {"limit": 10000000, "color": "orange"}],
+            "todo": [{"limit": 1, "color": "lightgrey"}, {"limit": 10000000, "color": "blue"}],
+            "fixme": [{"limit": 1, "color": "lightgrey"}, {"limit": 11, "color": "orange"}, {"limit": 10000000, "color": "red"}],
+            "weighted_total": [{"limit": 50, "color": "brightgreen"}, {"limit": 150, "color": "yellow"}, {"limit": 400, "color": "orange"}, {"limit": 10000000, "color": "red"}]
+        }
+    
+    # Load scan configuration
+    scan_config_file = config_dir / "scan-config.json"
+    if scan_config_file.exists():
+        with open(scan_config_file) as f:
+            scan_config = json.load(f)
+    else:
+        scan_config = {
+            "file_extensions": [".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"],
+            "excluded_dirs": [".git", "venv", ".github"],
+            "top_offenders_limit": 15,
+            "max_history_entries": 60
+        }
+    
+    # Load weights
+    weights_file = config_dir / "weights.json"
+    if weights_file.exists():
+        with open(weights_file) as f:
+            weights = json.load(f)
+    else:
+        weights = {"postulate": 2.0, "todo": 1.0, "fixme": 1.5, "deviation": 3.0}
+    
+    return threshold_data, scan_config, weights
 
-# Thresholds: list of (limit, color) evaluated in order for value < limit
-ROADMAP_PROGRESS_THRESHOLDS: list[tuple[int, str]] = [
-    (30, "red"),
-    (70, "yellow"),
-    (101, "brightgreen"),
-]
-DEFERRED_TOTAL_THRESHOLDS: list[tuple[int, str]] = [
-    (1, "brightgreen"),
-    (100, "yellow"),
-    (300, "orange"),
-    (10_000_000, "red"),
-]
-POSTULATES_THRESHOLDS: list[tuple[int, str]] = [
-    (21, "brightgreen"),
-    (51, "yellow"),
-    (10_000_000, "orange"),
-]
-TODO_THRESHOLDS: list[tuple[int, str]] = [
-    (1, "lightgrey"),
-    (10_000_000, "blue"),
-]
-FIXME_THRESHOLDS: list[tuple[int, str]] = [
-    (1, "lightgrey"),
-    (11, "orange"),
-    (10_000_000, "red"),
-]
+# Global configuration loaded at module level
+THRESHOLD_DATA, SCAN_CONFIG, DEFAULT_WEIGHTS = load_config()
 
-# Default severity weights for weighted technical debt computation
-DEFAULT_WEIGHTS = {
-    "postulate": 2.0,
-    "todo": 1.0,
-    "fixme": 1.5,
-    "deviation": 3.0,
-}
+# Convert threshold dicts to tuples for backwards compatibility
+ROADMAP_PROGRESS_THRESHOLDS = [(t["limit"], t["color"]) for t in THRESHOLD_DATA["roadmap_progress"]]
+DEFERRED_TOTAL_THRESHOLDS = [(t["limit"], t["color"]) for t in THRESHOLD_DATA["deferred_total"]]
+POSTULATES_THRESHOLDS = [(t["limit"], t["color"]) for t in THRESHOLD_DATA["postulates"]]
+TODO_THRESHOLDS = [(t["limit"], t["color"]) for t in THRESHOLD_DATA["todo"]]
+FIXME_THRESHOLDS = [(t["limit"], t["color"]) for t in THRESHOLD_DATA["fixme"]]
+WEIGHTED_TOTAL_THRESHOLDS = [(t["limit"], t["color"]) for t in THRESHOLD_DATA["weighted_total"]]
 
-WEIGHTED_TOTAL_THRESHOLDS: list[tuple[int, str]] = [
-    (50, "brightgreen"),
-    (150, "yellow"),
-    (400, "orange"),
-    (10_000_000, "red"),
-]
-
-# Maximum history entries to retain
-MAX_HISTORY_ENTRIES = 60
+FILE_SCAN_EXTENSIONS = set(SCAN_CONFIG["file_extensions"])
+EXCLUDED_DIRS = set(SCAN_CONFIG["excluded_dirs"])
+MAX_HISTORY_ENTRIES = SCAN_CONFIG["max_history_entries"]
+TOP_OFFENDERS_LIMIT = SCAN_CONFIG.get("top_offenders_limit", 15)
 
 
 def color_for(
@@ -561,9 +573,9 @@ def main():
         json.dump({fn: data for fn, data in files_sorted}, f, indent=2)
     print(f"Generated: {detailed_file} (per-file counts)")
 
-    # Top offenders markdown (top 15)
+    # Top offenders markdown (top N from config)
     top_md_file = output_dir / "top-offenders.md"
-    top_n = files_sorted[:15]
+    top_n = files_sorted[:TOP_OFFENDERS_LIMIT]
     lines = [
         "# Top Technical Debt Offenders (Weighted)",
         "",

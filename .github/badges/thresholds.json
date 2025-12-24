@@ -1,0 +1,33 @@
+{
+  "roadmap_progress": [
+    {"limit": 30, "color": "red"},
+    {"limit": 70, "color": "yellow"},
+    {"limit": 101, "color": "brightgreen"}
+  ],
+  "deferred_total": [
+    {"limit": 1, "color": "brightgreen"},
+    {"limit": 100, "color": "yellow"},
+    {"limit": 300, "color": "orange"},
+    {"limit": 10000000, "color": "red"}
+  ],
+  "postulates": [
+    {"limit": 21, "color": "brightgreen"},
+    {"limit": 51, "color": "yellow"},
+    {"limit": 10000000, "color": "orange"}
+  ],
+  "todo": [
+    {"limit": 1, "color": "lightgrey"},
+    {"limit": 10000000, "color": "blue"}
+  ],
+  "fixme": [
+    {"limit": 1, "color": "lightgrey"},
+    {"limit": 11, "color": "orange"},
+    {"limit": 10000000, "color": "red"}
+  ],
+  "weighted_total": [
+    {"limit": 50, "color": "brightgreen"},
+    {"limit": 150, "color": "yellow"},
+    {"limit": 400, "color": "orange"},
+    {"limit": 10000000, "color": "red"}
+  ]
+}
