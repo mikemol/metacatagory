@@ -1,5 +1,5 @@
-# Use local Agda 2.8.0
-AGDA := .local/agda
+# Use local Agda 2.8.0 if available, otherwise system agda
+AGDA := $(if $(wildcard .local/agda),.local/agda,agda)
 
 regen-makefile:
 	$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile

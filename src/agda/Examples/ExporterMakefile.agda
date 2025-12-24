@@ -139,7 +139,13 @@ targetToSection target = record
 regenMakefileSection : MakefileSection
 regenMakefileSection = record
   { id = "regen-makefile"
-  ; content = "# Use local Agda 2.8.0" ∷ "AGDA := .local/agda" ∷ "" ∷ "regen-makefile:" ∷ "\t$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile" ∷ "\tcp Makefile.generated Makefile" ∷ []
+  ; content = "# Use local Agda 2.8.0 if available, otherwise system agda"
+            ∷ "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)"
+            ∷ ""
+            ∷ "regen-makefile:"
+            ∷ "\t$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile"
+            ∷ "\tcp Makefile.generated Makefile"
+            ∷ []
   }
 
 -- Discovered targets from category system
