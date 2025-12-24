@@ -7,6 +7,7 @@ with detailed semantic information for each task.
 """
 
 import json
+import yaml
 from pathlib import Path
 from typing import List, Dict, Any
 
@@ -49,7 +50,7 @@ def format_scope(scope: Dict, indent: int = 0) -> str:
     scope_out = scope.get("out", [])
     
     if not scope_in and not scope_out:
-        return f"{'  ' * indent}*Not specified*\n"
+        return f"{'  ' * indent}Not specified.\n"
     
     result = []
     if scope_in:
@@ -73,9 +74,50 @@ def format_task_section(item: Dict, idx: int) -> str:
     category = item.get("category", "")
     complexity = item.get("complexity", "unknown")
     
-    # Header
+    # Build frontmatter with all structured metadata
+    frontmatter = {
+        'id': task_id,
+        'title': title,
+        'status': status,
+        'category': category,
+        'complexity': complexity
+    }
+    
+    # Add optional fields
+    if item.get('dependsOn'):
+        frontmatter['dependencies'] = item['dependsOn']
+    
+    if item.get('derivedTags'):
+        frontmatter['tags'] = item['derivedTags']
+    
+    if item.get('intent'):
+        frontmatter['intent'] = item['intent']
+    
+    if item.get('deliverable'):
+        frontmatter['deliverable'] = item['deliverable']
+    
+    if item.get('moduleAnchors'):
+        frontmatter['module_anchors'] = item['moduleAnchors']
+    
+    if item.get('acceptance'):
+        frontmatter['acceptance_criteria'] = item['acceptance']
+    
+    if item.get('inputs'):
+        frontmatter['inputs'] = item['inputs']
+    
+    if item.get('outputs'):
+        frontmatter['outputs'] = item['outputs']
+    
+    # Generate YAML frontmatter
+    yaml_str = yaml.dump(frontmatter, default_flow_style=False, sort_keys=False, allow_unicode=True)
+    
+    # Header with frontmatter (unique heading to satisfy MD024)
     lines = [
-        f"## {idx}. {task_id}: {title}",
+        f"### Task {idx}: {task_id} — {title}",
+        "",
+        "```yaml",
+        yaml_str.rstrip(),
+        "```",
         "",
         f"**Status:** `{status}` | **Category:** {category} | **Complexity:** {complexity}",
         ""
@@ -85,7 +127,7 @@ def format_task_section(item: Dict, idx: int) -> str:
     intent = item.get("intent", "")
     if intent:
         lines.extend([
-            "### Intent",
+            f"#### Intent — {task_id}",
             "",
             intent,
             ""
@@ -95,7 +137,7 @@ def format_task_section(item: Dict, idx: int) -> str:
     deliverable = item.get("deliverable", "")
     if deliverable:
         lines.extend([
-            "### Deliverable",
+            f"#### Deliverable — {task_id}",
             "",
             deliverable,
             ""
@@ -105,9 +147,10 @@ def format_task_section(item: Dict, idx: int) -> str:
     scope = item.get("scope", {})
     if scope:
         lines.extend([
-            "### Scope",
+            f"#### Scope — {task_id}",
             "",
             format_scope(scope),
+            ""
         ])
     
     # Inputs/Outputs
@@ -115,33 +158,39 @@ def format_task_section(item: Dict, idx: int) -> str:
     outputs = item.get("outputs", [])
     
     if inputs or outputs:
-        lines.append("### Inputs & Outputs")
+        lines.append(f"#### Inputs & Outputs — {task_id}")
         lines.append("")
         
         if inputs:
             lines.append("**Inputs:**")
+            lines.append("")
             lines.append(format_list(inputs))
+            lines.append("")
         
         if outputs:
             lines.append("**Outputs:**")
+            lines.append("")
             lines.append(format_list(outputs))
+            lines.append("")
     
     # Acceptance Criteria
     acceptance = item.get("acceptance", [])
     if acceptance:
         lines.extend([
-            "### Acceptance Criteria",
+            f"#### Acceptance Criteria — {task_id}",
             "",
             format_list(acceptance),
+            ""
         ])
     
     # Module Anchors
     module_anchors = item.get("moduleAnchors", [])
     if module_anchors:
         lines.extend([
-            "### Agda Modules",
+            f"#### Agda Modules — {task_id}",
             "",
             format_list(module_anchors),
+            ""
         ])
     
     # Extracted Definitions
@@ -151,7 +200,7 @@ def format_task_section(item: Dict, idx: int) -> str:
         if len(definitions) > 8:
             def_str += f" (+ {len(definitions) - 8} more)"
         lines.extend([
-            "### Key Definitions",
+            f"#### Key Definitions — {task_id}",
             "",
             def_str,
             ""
@@ -162,7 +211,7 @@ def format_task_section(item: Dict, idx: int) -> str:
     if tags:
         tag_str = ", ".join(f"`{t}`" for t in tags[:10])
         lines.extend([
-            "### Tags",
+            f"#### Tags — {task_id}",
             "",
             tag_str,
             ""
@@ -174,7 +223,7 @@ def format_task_section(item: Dict, idx: int) -> str:
     suggested_deps = item.get("suggestedDependencies", [])
     
     if depends_on or related or suggested_deps:
-        lines.append("### Dependencies & Relations")
+        lines.append(f"#### Dependencies & Relations — {task_id}")
         lines.append("")
         
         if depends_on:
@@ -196,9 +245,10 @@ def format_task_section(item: Dict, idx: int) -> str:
     evidence = item.get("evidence", [])
     if evidence:
         lines.extend([
-            "### Evidence",
+            f"#### Evidence — {task_id}",
             "",
             format_evidence(evidence),
+            ""
         ])
     
     # Provenance
@@ -209,7 +259,7 @@ def format_task_section(item: Dict, idx: int) -> str:
             prov_str += f" (+ {len(provenance) - 3} more)"
         
         lines.extend([
-            "### Provenance",
+            f"#### Provenance — {task_id}",
             "",
             prov_str,
             ""
@@ -259,7 +309,7 @@ def export_enriched_markdown() -> None:
     task_idx = 1
     for category in sorted(by_category.keys()):
         lines.extend([
-            f"# Category: {category}",
+            f"## Category: {category}",
             "",
             f"**Tasks in this category:** {len(by_category[category])}",
             "",
@@ -273,7 +323,7 @@ def export_enriched_markdown() -> None:
     
     # Statistics
     lines.extend([
-        "# Statistics",
+        "## Statistics",
         "",
         f"- **Total tasks:** {len(items)}",
         f"- **Categories:** {len(by_category)}",

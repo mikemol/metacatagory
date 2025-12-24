@@ -14,6 +14,7 @@ This enforces the triangle identity:
 """
 
 import json
+import yaml
 import re
 import sys
 from pathlib import Path
@@ -22,8 +23,27 @@ from typing import Dict, List, Set, Tuple
 REPO_ROOT = Path(__file__).parent.parent
 
 
+def backfill_descriptions(items: List[Dict]) -> Tuple[List[Dict], int, List[str]]:
+    """Ensure every item has a description; backfill with title/source when missing.
+
+    Returns mutated items, count of backfilled descriptions, and list of IDs that were missing.
+    """
+    missing = 0
+    missing_ids: List[str] = []
+    for item in items:
+        desc = item.get("description")
+        if not desc:
+            missing += 1
+            item_id = item.get("id", "<unknown>")
+            missing_ids.append(item_id)
+            # Prefer source as a hint; otherwise fall back to title
+            fallback = item.get("source") or item.get("title") or "TODO: description"
+            item["description"] = fallback
+    return items, missing, missing_ids
+
+
 def load_canonical_json() -> List[Dict]:
-    """Load canonical roadmap from JSON."""
+    """Load canonical roadmap from JSON (supports list or {items:[...]})."""
     json_path = REPO_ROOT / "build" / "canonical_roadmap.json"
     if not json_path.exists():
         print(f"✗ {json_path} not found")
@@ -33,34 +53,51 @@ def load_canonical_json() -> List[Dict]:
     with open(json_path) as f:
         data = json.load(f)
     
-    return data.get("items", [])
+    if isinstance(data, list):
+        return data
+    if isinstance(data, dict):
+        return data.get("items", [])
+    
+    print("✗ Unexpected JSON shape in canonical_roadmap.json")
+    return []
 
 
-def load_roadmap_markdown() -> List[str]:
-    """Extract roadmap item IDs from ROADMAP.md."""
-    md_path = REPO_ROOT / "docs" / "planning" / "ROADMAP.md"
+def load_roadmap_markdown() -> Tuple[List[str], List[Dict]]:
+    """Extract roadmap item IDs and frontmatter from ROADMAP.md."""
+    # The export script writes to repo root (ROADMAP.md)
+    md_path = REPO_ROOT / "ROADMAP.md"
     if not md_path.exists():
         print(f"✗ {md_path} not found")
-        return []
+        return [], []
     
     content = md_path.read_text()
     
-    # Extract roadmap IDs (patterns like GP-001, TASK-123, etc.)
-    # Look for patterns in headings or list items
-    ids = set()
+    # Extract YAML frontmatter blocks
+    frontmatter_items = []
+    yaml_blocks = re.findall(r'```yaml\n(.*?)\n```', content, re.DOTALL)
     
-    # Pattern 1: "### [ID] Title" or "- **[ID]** Title"
+    for yaml_block in yaml_blocks:
+        try:
+            data = yaml.safe_load(yaml_block)
+            if data and isinstance(data, dict):
+                frontmatter_items.append(data)
+        except yaml.YAMLError as e:
+            print(f"Warning: Failed to parse YAML block: {e}")
+    
+    # Extract IDs from frontmatter
+    ids = set()
+    for item in frontmatter_items:
+        if 'id' in item:
+            ids.add(item['id'])
+    
+    # Fallback: extract IDs from text (for backwards compatibility)
     for match in re.finditer(r'\[([A-Z]+-\d+)\]', content):
         ids.add(match.group(1))
     
-    # Pattern 2: "id: TASK-123" in metadata blocks
-    for match in re.finditer(r'id:\s*([A-Z]+-\d+)', content):
-        ids.add(match.group(1))
-    
-    return sorted(ids)
+    return sorted(ids), frontmatter_items
 
 
-def validate_json_to_markdown(json_items: List[Dict], md_ids: List[str]) -> Tuple[bool, str]:
+def validate_json_to_markdown(json_items: List[Dict], md_ids: List[str], md_frontmatter: List[Dict]) -> Tuple[bool, str]:
     """Validate JSON items match markdown IDs."""
     json_ids = {item.get("id") for item in json_items if item.get("id")}
     md_id_set = set(md_ids)
@@ -90,6 +127,51 @@ def validate_json_to_markdown(json_items: List[Dict], md_ids: List[str]) -> Tupl
     if valid:
         messages.append(f"✓ Triangle identity: JSON ↔ Markdown ({len(json_ids)} items match)")
     
+        # Validate frontmatter content matches JSON
+        if md_frontmatter:
+            frontmatter_errors = []
+            json_by_id = {item.get('id'): item for item in json_items if item.get('id')}
+        
+            for fm in md_frontmatter:
+                fm_id = fm.get('id')
+                if not fm_id:
+                    continue
+            
+                json_item = json_by_id.get(fm_id)
+                if not json_item:
+                    continue
+            
+                # Validate key fields match
+                for field in ['title', 'status', 'category']:
+                    fm_value = fm.get(field)
+                    json_value = json_item.get(field)
+                
+                    if fm_value != json_value:
+                        frontmatter_errors.append(
+                            f"  {fm_id}: {field} mismatch (FM: {fm_value!r}, JSON: {json_value!r})"
+                        )
+            
+                # Validate dependencies (if present)
+                fm_deps = set(fm.get('dependencies', []))
+                json_deps = set(json_item.get('dependsOn', []))
+            
+                if fm_deps != json_deps:
+                    missing = json_deps - fm_deps
+                    extra = fm_deps - json_deps
+                    if missing or extra:
+                        frontmatter_errors.append(
+                            f"  {fm_id}: dependency mismatch (missing: {missing}, extra: {extra})"
+                        )
+        
+            if frontmatter_errors:
+                valid = False
+                messages.append(f"✗ Frontmatter validation issues:")
+                messages.extend(frontmatter_errors[:10])
+                if len(frontmatter_errors) > 10:
+                    messages.append(f"  ... and {len(frontmatter_errors) - 10} more issues")
+            else:
+                messages.append(f"✓ Frontmatter matches JSON ({len(md_frontmatter)} items validated)")
+    
     return valid, "\n".join(messages)
 
 
@@ -98,8 +180,8 @@ def validate_item_content(json_items: List[Dict]) -> Tuple[bool, str]:
     messages = []
     valid = True
     
-    required_fields = ["id", "title"]
-    recommended_fields = ["status", "description"]
+    required_fields = ["id", "title", "description"]
+    recommended_fields = ["status"]
     
     issues = []
     for item in json_items:
@@ -136,8 +218,12 @@ def main():
     
     # Load data
     print("Loading data sources...")
-    json_items = load_canonical_json()
-    md_ids = load_roadmap_markdown()
+    json_items_raw = load_canonical_json()
+    json_items, backfilled, backfilled_ids = backfill_descriptions(json_items_raw)
+    if backfilled:
+        print(f"  Backfilled descriptions: {backfilled}")
+    
+    md_ids, md_frontmatter = load_roadmap_markdown()
     
     if not json_items:
         print("✗ No JSON data found")
@@ -145,6 +231,7 @@ def main():
     
     print(f"  JSON items: {len(json_items)}")
     print(f"  Markdown IDs: {len(md_ids)}")
+    print(f"  Frontmatter blocks: {len(md_frontmatter)}")
     print()
     
     # Validate content
@@ -155,13 +242,22 @@ def main():
     
     # Validate triangle identity
     print("Validating triangle identity (JSON ↔ Markdown)...")
-    triangle_valid, triangle_msg = validate_json_to_markdown(json_items, md_ids)
+    triangle_valid, triangle_msg = validate_json_to_markdown(json_items, md_ids, md_frontmatter)
     print(triangle_msg)
     print()
     
     # Summary
     print("=" * 60)
-    if content_valid and triangle_valid:
+    overall_valid = content_valid and triangle_valid and (backfilled == 0)
+    if backfilled:
+        # Report the first few IDs that need real descriptions
+        print(f"✗ {backfilled} item(s) are missing real descriptions (backfilled). Examples:")
+        for item_id in backfilled_ids[:10]:
+            print(f"  - {item_id}")
+        if len(backfilled_ids) > 10:
+            print(f"  ... and {len(backfilled_ids) - 10} more")
+    
+    if overall_valid:
         print("✓ All validations passed")
         sys.exit(0)
     else:
