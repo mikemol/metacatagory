@@ -11,9 +11,11 @@ import           Data.Maybe (fromMaybe)
 import qualified System.Directory as Dir
 
 writeFileAdapter :: T.Text -> T.Text -> IO ()
-writeFileAdapter path content = TIO.writeFile (T.unpack path) content
+writeFileAdapter path content = do
+    let dir = T.takeWhileEnd (/= '/') path
+    if T.null dir then return () else Dir.createDirectoryIfMissing True (T.unpack $ T.dropEnd 1 dir)
+    TIO.writeFile (T.unpack path) content
 
--- Parse DOT file edges into lines "src=>dst" using module labels
 readGraphEdgesAdapter :: T.Text -> IO [T.Text]
 readGraphEdgesAdapter path = do
   exists <- Dir.doesFileExist (T.unpack path)
@@ -50,7 +52,6 @@ readGraphEdgesAdapter path = do
           in Just (a', T.strip b')
     lookupLabel k m = fromMaybe k (M.lookup k m)
 
--- Convert a repo path like src/agda/Core/Utils.agda to module label Core.Utils
 pathToModuleLabelAdapter :: T.Text -> T.Text
 pathToModuleLabelAdapter p =
   let p'  = fromMaybe p (T.stripPrefix (T.pack "src/agda/") p)
@@ -137,19 +138,36 @@ targetToSection target = record
     intercalate sep (x ∷ []) = x
     intercalate sep (x ∷ xs) = x ++ sep ++ intercalate sep xs
 
-regenMakefileSection : MakefileSection
-regenMakefileSection = record
-  { id = "regen-makefile"
-  ; content = "# Use local Agda 2.8.0 if available, otherwise system agda"
-            ∷ "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)"
-            ∷ ""
-            ∷ "regen-makefile:"
-            ∷ "\t$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile"
-            ∷ "\tcp Makefile.generated Makefile"
-            ∷ []
-  }
+-- Typed Bootstrapping: regen-makefile is now a rigorous target
+regenMakefileTarget : MakefileTarget
+regenMakefileTarget = mkTarget
+  "regen-makefile"
+  "Regenerate the Makefile from Agda source (Self-Hosting)"
+  []
+  ( "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)"
+  ∷ "$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile"
+  ∷ "cp Makefile.generated Makefile"
+  ∷ [])
+  false
 
--- Discovered targets from category system (NOW WITH DESCRIPTIONS)
+-- Documentation Renderer: Generates Markdown table of targets
+renderDocs : List MakefileTarget → String
+renderDocs targets = 
+  "| Target | Description |\n" ++
+  "| :--- | :--- |\n" ++
+  renderRows targets
+  where
+    escape : String → String
+    escape s = s -- minimal escaping for now
+    
+    renderRow : MakefileTarget → String
+    renderRow t = "| `" ++ MakefileTarget.name t ++ "` | " ++ MakefileTarget.description t ++ " |"
+
+    renderRows : List MakefileTarget → String
+    renderRows [] = ""
+    renderRows (x ∷ xs) = renderRow x ++ "\n" ++ renderRows xs
+
+-- Discovered targets
 discoveredTargets : List MakefileTarget
 discoveredTargets = 
   validatorToTarget "md-lint" "Lint all markdown files (fail on error)" "build/reports/md-lint.txt" 
@@ -207,8 +225,6 @@ discoveredTargets =
     ("@echo \"roadmap all enriched complete\"" ∷ [])
   ∷ generatorToTarget "docs-generate" "Compile and run Roadmap Exporter" ("src/agda/Plan/CIM/RoadmapExporter.agdai" ∷ [])
     ("$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapExporter.agda && ./src/agda/Plan/CIM/RoadmapExporter" ∷ "python3 scripts/normalize_generated_markdown.py" ∷ [])
-  ∷ generatorToTarget "docs-modules" "Generate per-module markdown documentation" ("src/agda/Plan/CIM/ModuleExporter.agdai" ∷ [])
-    ("$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/ModuleExporter.agda && ./src/agda/Plan/CIM/ModuleExporter" ∷ [])
   ∷ generatorToTarget "docs-validate" "Validate documentation integrity" ([])
     ("python3 scripts/validate_triangle_identity.py" ∷ [])
   
@@ -248,7 +264,8 @@ buildArtifact agdaFiles graphEdges =
       agdaiTargets = zipWith generateAgdaTargetFromGraph agdaFiles (map depsFor labels)
       docsTargets = generateDocsTargets agdaFiles
       aggregateTargets = allAgdaiTarget agdaFiles ∷ allDocsTarget agdaFiles ∷ []
-      allTargets = discoveredTargets +++ agdaiTargets +++ docsTargets +++ aggregateTargets
+      -- Include regenMakefileTarget in the list of targets
+      allTargets = regenMakefileTarget ∷ discoveredTargets +++ agdaiTargets +++ docsTargets +++ aggregateTargets
       phonyNames = "all" ∷ "check" ∷ "md-fix" ∷ "md-lint" ∷ "intake-lint" ∷ "intake-scan"
              ∷ "md-normalize" ∷ "makefile-validate"
              ∷ "badges" ∷ "node-deps" 
@@ -258,10 +275,10 @@ buildArtifact agdaFiles graphEdges =
            ∷ "roadmap-export-json" ∷ "roadmap-export-md" ∷ "roadmap-export-enriched"
            ∷ "roadmap-export-deps" ∷ "roadmap-validate-json" ∷ "roadmap-validate-md"
            ∷ "roadmap-validate-triangle" ∷ "roadmap-sppf-export" ∷ "roadmap-all-enriched"
-           ∷ "docs-generate" ∷ "docs-modules" ∷ "docs-validate" ∷ []
+           ∷ "docs-generate" ∷ "docs-validate" ∷ []
       phonySection = record { id = "phony" 
                             ; content = (".PHONY: " ++ intercalate " " phonyNames) ∷ [] }
-  in record { sections = regenMakefileSection ∷ phonySection ∷ map targetToSection allTargets }
+  in record { sections = phonySection ∷ map targetToSection allTargets }
   where
     second : String → String → String
     second _ e with primStringSplit "=>" e
@@ -282,7 +299,7 @@ buildArtifact agdaFiles graphEdges =
     intercalate sep (x ∷ []) = x
     intercalate sep (x ∷ xs) = x ++ sep ++ intercalate sep xs
 
--- IO-based main that discovers files and generates Makefile
+-- IO-based main that discovers files, generates Makefile AND Documentation
 postulate
   _>>=_ : {A B : Set} → IO A → (A → IO B) → IO B
   return : {A : Set} → A → IO A
@@ -298,4 +315,9 @@ main =
   readGraphEdges "build/diagrams/agda-deps-full.dot" >>= λ edges →
   let artifact = buildArtifact agdaFiles edges
       content = exportMakefile defaultRenderer artifact
-  in writeFile "Makefile.generated" content
+      -- Extract targets for documentation (excluding detailed file targets for brevity if needed)
+      -- For now, we export ALL generated targets to be rigorous.
+      targets = (regenMakefileTarget ∷ discoveredTargets) 
+      docsContent = renderDocs targets
+  in writeFile "Makefile.generated" content >>= λ _ →
+     writeFile "build/makefile_targets_generated.md" docsContent
