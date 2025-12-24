@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """
 Validate the Makefile "triangle identity" among:
-1) The checked-in Makefile (user-facing targets live here).
+1) The Agda exporter (src/agda/Examples/ExporterMakefile.agda) - source of truth.
 2) The generated Makefile (Makefile.generated) produced by the Agda exporter.
-3) The witness document docs/automation/MAKEFILE-TARGETS.md.
+3) The checked-in Makefile (user-facing targets, copied from generated).
+4) The witness document docs/automation/MAKEFILE-TARGETS.md.
 
 The script checks that:
 - All phony targets in Makefile are documented.
-- Documented targets map back to Makefile phony targets.
-- Phony targets have concrete definitions in Makefile.
-- Makefile and Makefile.generated agree on phony targets (if generated exists).
+- All documented targets appear in Makefile phony.
+- All documented targets appear in Makefile.generated phony (generator produces what's documented).
+- All Makefile phony targets have concrete definitions in Makefile.
+- Makefile and Makefile.generated phony targets agree (generated is copied to Makefile).
 
 Exit code is non-zero if any discrepancies are found.
 """
@@ -38,9 +40,11 @@ class ValidationResult:
     phony_without_rule: Set[str]
     phony_mismatch_generated: Set[str]
     generated_missing: Set[str]
+    documented_not_in_generated: Set[str]
 
     def ok(self) -> bool:
-        return not (self.missing_in_docs or self.extra_in_docs or self.phony_without_rule or self.phony_mismatch_generated or self.generated_missing)
+        return not (self.missing_in_docs or self.extra_in_docs or self.phony_without_rule or 
+                   self.phony_mismatch_generated or self.generated_missing or self.documented_not_in_generated)
 
 
 def parse_phony_targets(text: str) -> Set[str]:
@@ -81,11 +85,15 @@ def validate(makefile: Path, generated: Path, doc: Path) -> ValidationResult:
 
     generated_missing: Set[str] = set()
     phony_mismatch_generated: Set[str] = set()
+    documented_not_in_generated: Set[str] = set()
+    
     if generated.exists():
         gen_text = generated.read_text()
         gen_phony = parse_phony_targets(gen_text)
         generated_missing = gen_phony - phony
         phony_mismatch_generated = phony - gen_phony
+        # Check that all documented targets are in the generated Makefile (generator produces what's documented)
+        documented_not_in_generated = documented - gen_phony
 
     return ValidationResult(
         missing_in_docs=missing_in_docs,
@@ -93,32 +101,47 @@ def validate(makefile: Path, generated: Path, doc: Path) -> ValidationResult:
         phony_without_rule=phony_without_rule,
         phony_mismatch_generated=phony_mismatch_generated,
         generated_missing=generated_missing,
+        documented_not_in_generated=documented_not_in_generated,
     )
 
 
 def render(result: ValidationResult) -> str:
     lines: List[str] = []
     lines.append("Makefile triangle identity validation")
+    lines.append("=" * 50)
     lines.append("")
+    lines.append("Triangle vertices:")
+    lines.append("  1) Agda exporter → Makefile.generated (source of truth)")
+    lines.append("  2) Makefile.generated → Makefile (copied)")
+    lines.append("  3) Makefile ↔ docs/automation/MAKEFILE-TARGETS.md (witness)")
+    lines.append("")
+    
     if result.ok():
-        lines.append("Status: OK")
+        lines.append("Status: ✓ OK - All three vertices agree")
     else:
-        lines.append("Status: FAIL")
+        lines.append("Status: ✗ FAIL - Triangle identity broken")
 
     def dump(title: str, items: Set[str]) -> None:
         lines.append("")
         lines.append(f"{title} ({len(items)})")
         if items:
             for item in sorted(items):
-                lines.append(f"- {item}")
+                lines.append(f"  - {item}")
         else:
-            lines.append("- (none)")
+            lines.append("  (none)")
 
-    dump("Phony targets missing in docs", result.missing_in_docs)
-    dump("Documented targets not in Makefile phony", result.extra_in_docs)
-    dump("Phony targets without Makefile rule", result.phony_without_rule)
-    dump("Phony targets missing from Makefile.generated", result.phony_mismatch_generated)
-    dump("Makefile.generated phony not in Makefile", result.generated_missing)
+    # Agda → Generated consistency
+    dump("Vertex 1: Agda generator produces all documented targets", result.documented_not_in_generated)
+    # Generated → Makefile consistency  
+    dump("Vertex 2: Makefile.generated targets match Makefile phony", result.phony_mismatch_generated)
+    # Makefile.generated → Makefile consistency (reverse direction)
+    dump("Vertex 3: Extra targets in Makefile.generated not in Makefile", result.generated_missing)
+    # Makefile → Documentation consistency
+    dump("Vertex 4: Makefile targets documented", result.missing_in_docs)
+    dump("Vertex 5: Documentation targets in Makefile", result.extra_in_docs)
+    # Rules consistency
+    dump("Vertex 6: Phony targets have Makefile rules", result.phony_without_rule)
+    
     return "\n".join(lines)
 
 
