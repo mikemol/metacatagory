@@ -40,10 +40,10 @@ A comprehensive pipeline that extracts semantic details from roadmap sources and
 
 **Why:**
 
-*   **Authoritative**: Agda's compiler has ground truth on imports
-*   **Consistent**: Same graph used by Makefile generation and build system
-*   **Correct**: Handles re-exports, open imports, parameterized modules
-*   **Efficient**: Already computed; we reuse it
+* **Authoritative**: Agda's compiler has ground truth on imports
+* **Consistent**: Same graph used by Makefile generation and build system
+* **Correct**: Handles re-exports, open imports, parameterized modules
+* **Efficient**: Already computed; we reuse it
 
 **Result**: 116 modules tracked with 221 edges from Agda's analysis
 
@@ -53,8 +53,8 @@ A comprehensive pipeline that extracts semantic details from roadmap sources and
 
 **Solution**: Build mapping from module names to task IDs:
 
-*   `Core.Yoneda` → `PHASE-IV.2`
-*   `Algebra.Rings.Basic` → `INGEST-Ch3-Ideals-Lattice`
+* `Core.Yoneda` → `PHASE-IV.2`
+* `Algebra.Rings.Basic` → `INGEST-Ch3-Ideals-Lattice`
 
 Translate module deps → task deps using this map.
 
@@ -64,17 +64,17 @@ Translate module deps → task deps using this map.
 
 Each task now carries:
 
-*   **intent**: Why (from evidence + heuristics)
-*   **deliverable**: What artifact/behavior
-*   **scope**: In/out boundaries
-*   **acceptance**: Checklist for completion
-*   **evidence**: Source snippets with attribution
-*   **definitions**: Top-level names from Agda files
-*   **moduleAnchors**: Agda modules involved
-*   **inputs/outputs**: Consumed/produced artifacts
-*   **suggestedDependencies**: From import graph
-*   **derivedTags**: Normalized tag vocabulary
-*   **complexity**: Estimated effort (low/medium/high)
+* **intent**: Why (from evidence + heuristics)
+* **deliverable**: What artifact/behavior
+* **scope**: In/out boundaries
+* **acceptance**: Checklist for completion
+* **evidence**: Source snippets with attribution
+* **definitions**: Top-level names from Agda files
+* **moduleAnchors**: Agda modules involved
+* **inputs/outputs**: Consumed/produced artifacts
+* **suggestedDependencies**: From import graph
+* **derivedTags**: Normalized tag vocabulary
+* **complexity**: Estimated effort (low/medium/high)
 
 ### 4. Promote Suggested Dependencies to Canonical
 
@@ -98,11 +98,11 @@ make roadmap-all-enriched
 
 ### Single-purpose targets
 
-*   `make roadmap-deps-graph`: Generate Agda dependency graph
-*   `make roadmap-merge`: Merge sources into canonical
-*   `make roadmap-enrich`: Add semantic fields (needs deps-graph + canonical)
-*   `make roadmap-export-enriched`: Human-readable markdown digest
-*   `make roadmap-export-deps`: Dependency graph visualizations
+* `make roadmap-deps-graph`: Generate Agda dependency graph
+* `make roadmap-merge`: Merge sources into canonical
+* `make roadmap-enrich`: Add semantic fields (needs deps-graph + canonical)
+* `make roadmap-export-enriched`: Human-readable markdown digest
+* `make roadmap-export-deps`: Dependency graph visualizations
 
 ### All-in-one target
 
@@ -116,55 +116,55 @@ Runs: deps-graph → merge → enrich → export-enriched → export-deps
 
 **Before enrichment (canonical)**:
 
-*   102 items
-*   0 explicit dependencies
+* 102 items
+* 0 explicit dependencies
 
 **After enrichment**:
 
-*   102 items with full semantic detail
-*   6 tasks with suggested dependencies
-*   29 total suggested dependencies from import graph
+* 102 items with full semantic detail
+* 6 tasks with suggested dependencies
+* 29 total suggested dependencies from import graph
 
 **After promotion**:
 
-*   6 tasks now have explicit `dependsOn` entries
-*   Triangle validation passes (JSON/MD/canonical stay in sync)
+* 6 tasks now have explicit `dependsOn` entries
+* Triangle validation passes (JSON/MD/canonical stay in sync)
 
 **Agda dependency analysis**:
 
-*   116 modules tracked
-*   221 import edges
-*   Most depended-on: PHASE-0.1, PHASE-0.2, PHASE-III.4, PHASE-III.5, PHASE-IV.1 (3 incoming each)
+* 116 modules tracked
+* 221 import edges
+* Most depended-on: PHASE-0.1, PHASE-0.2, PHASE-III.4, PHASE-III.5, PHASE-IV.1 (3 incoming each)
 
 ## Files Created/Modified
 
 ### Scripts
 
-*   **enrich\_canonical.py** (492 lines): Main enrichment engine
-    *   Parses Agda dependency graph from DOT
-    *   Extracts evidence, definitions, intent
-    *   Builds module→task map
-    *   Generates semantic fields
-*   **export\_enriched\_md.py** (318 lines): Human-readable export
-*   **export\_dependency\_graph.py** (254 lines): Mermaid + GraphViz visualizations
-*   **analyze\_dependencies.py** (179 lines): Dependency analysis & promotion tool
+* **enrich\_canonical.py** (492 lines): Main enrichment engine
+  * Parses Agda dependency graph from DOT
+  * Extracts evidence, definitions, intent
+  * Builds module→task map
+  * Generates semantic fields
+* **export\_enriched\_md.py** (318 lines): Human-readable export
+* **export\_dependency\_graph.py** (254 lines): Mermaid + GraphViz visualizations
+* **analyze\_dependencies.py** (179 lines): Dependency analysis & promotion tool
 
 ### Makefile
 
-*   Added `roadmap-deps-graph`: Generate Agda --dependency-graph
-*   Added `roadmap-all-enriched`: Complete pipeline
-*   Updated `roadmap-enrich`: Now depends on deps graph
+* Added `roadmap-deps-graph`: Generate Agda --dependency-graph
+* Added `roadmap-all-enriched`: Complete pipeline
+* Updated `roadmap-enrich`: Now depends on deps graph
 
 ### Documentation
 
-*   **ROADMAP-ENRICHMENT.md**: Architecture & design decisions
+* **ROADMAP-ENRICHMENT.md**: Architecture & design decisions
 
 ### Build outputs
 
-*   **build/canonical\_enriched.json**: 4.6KB enriched roadmap
-*   **build/reports/tasks\_enriched.md**: 4369 lines human-readable
-*   **build/reports/dependency\_graph.mmd**: Mermaid flowchart
-*   **build/reports/dependency\_graph.dot**: GraphViz format
+* **build/canonical\_enriched.json**: 4.6KB enriched roadmap
+* **build/reports/tasks\_enriched.md**: 4369 lines human-readable
+* **build/reports/dependency\_graph.mmd**: Mermaid flowchart
+* **build/reports/dependency\_graph.dot**: GraphViz format
 
 ## Example: PHASE-IV.2 (Yoneda Lemma)
 
@@ -208,13 +208,13 @@ After enrichment & promotion:
 
 ## Future Enhancements
 
-1.  **Definition-level dependencies**: Parse `.agdai` interface files to extract which theorems use which lemmas
-2.  **Proof obligation tracking**: Link tasks to specific admitted/postulated holes
-3.  **Cross-reference network**: Build citation graph from docstrings and comments
-4.  **Complexity metrics**: Analyze proof sizes, term depths, module counts
-5.  **Task timeline**: Extract deadlines/phases from context
-6.  **Interactive visualization**: Web-based task explorer with filtering/search
-7.  **Changelog tracking**: Detect when tasks drift and why
+1. **Definition-level dependencies**: Parse `.agdai` interface files to extract which theorems use which lemmas
+2. **Proof obligation tracking**: Link tasks to specific admitted/postulated holes
+3. **Cross-reference network**: Build citation graph from docstrings and comments
+4. **Complexity metrics**: Analyze proof sizes, term depths, module counts
+5. **Task timeline**: Extract deadlines/phases from context
+6. **Interactive visualization**: Web-based task explorer with filtering/search
+7. **Changelog tracking**: Detect when tasks drift and why
 
 ## Quick Start
 
@@ -239,9 +239,9 @@ make roadmap-validate-triangle
 
 The "triangle" is the consistency check between three sources:
 
-1.  **JSON**: `.github/roadmap/tasks.json` (exported)
-2.  **Markdown**: `ROADMAP.md` (exported)
-3.  **Canonical**: `build/canonical_roadmap.json` (source of truth)
+1. **JSON**: `.github/roadmap/tasks.json` (exported)
+2. **Markdown**: `ROADMAP.md` (exported)
+3. **Canonical**: `build/canonical_roadmap.json` (source of truth)
 
 All three stay in sync:
 
@@ -274,9 +274,9 @@ make roadmap-validate-triangle  # ✓ Pass
 
 ## Integration Points
 
-*   **Makefile**: New targets `roadmap-deps-graph`, `roadmap-all-enriched`
-*   **Build system**: Uses same Agda dependency graph as ExporterMakefile
-*   **Validation**: Triangle checks still pass with promoted dependencies
-*   **Exports**: Updated `.github/roadmap/tasks.json` with new `dependsOn` entries
+* **Makefile**: New targets `roadmap-deps-graph`, `roadmap-all-enriched`
+* **Build system**: Uses same Agda dependency graph as ExporterMakefile
+* **Validation**: Triangle checks still pass with promoted dependencies
+* **Exports**: Updated `.github/roadmap/tasks.json` with new `dependsOn` entries
 
 The enrichment pipeline is now part of the standard build workflow and can be run end-to-end with a single command.

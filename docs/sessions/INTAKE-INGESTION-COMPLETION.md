@@ -12,18 +12,18 @@ Successfully ingested all remaining intake documents (78 GP roadmap files totali
 
 #### **Phase 1: Intake Triage (COMPLETED)**
 
-*   Inventoried all intake files (~25 files in root, 78 GP roadmap files)
-*   Assessed content quality and relevance
-*   Identified 78 high-quality GP roadmap files (⭐⭐⭐⭐⭐)
-*   Identified 5 conversation fragments (varying quality)
+* Inventoried all intake files (~25 files in root, 78 GP roadmap files)
+* Assessed content quality and relevance
+* Identified 78 high-quality GP roadmap files (⭐⭐⭐⭐⭐)
+* Identified 5 conversation fragments (varying quality)
 
 #### **Phase 2: Automated Ingestion (COMPLETED)**
 
-*   Created metadata extraction pipeline (`scripts/ingest_gp_files.py`)
-*   Generated 78 Agda RoadmapStep records
-*   Extracted titles, summaries, keywords from raw markdown
-*   Created structured JSON metadata registry
-*   Exported to human-readable Markdown ROADMAP section
+* Created metadata extraction pipeline (`scripts/ingest_gp_files.py`)
+* Generated 78 Agda RoadmapStep records
+* Extracted titles, summaries, keywords from raw markdown
+* Created structured JSON metadata registry
+* Exported to human-readable Markdown ROADMAP section
 
 ### Artifacts Generated
 
@@ -105,8 +105,8 @@ exampleGpgp501Roadmap = record
 # For future make targets:
 .PHONY: ingest-roadmap
 ingest-roadmap:
-	python3 scripts/ingest_gp_files.py
-	python3 scripts/export_roadmap.py
+ python3 scripts/ingest_gp_files.py
+ python3 scripts/export_roadmap.py
 
 .PHONY: docs-all
 docs-all: ingest-roadmap ...  # Auto-update roadmap
@@ -120,11 +120,11 @@ docs-all: ingest-roadmap ...  # Auto-update roadmap
 
 **Tasks**:
 
-*   \[ ] Create `RoadmapTraverser` agent
-*   \[ ] Implement step-by-step agentic processing
-*   \[ ] Generate per-step implementation checklists
-*   \[ ] Track and report progress
-*   \[ ] Handle step dependencies and parallelization
+* \[ ] Create `RoadmapTraverser` agent
+* \[ ] Implement step-by-step agentic processing
+* \[ ] Generate per-step implementation checklists
+* \[ ] Track and report progress
+* \[ ] Handle step dependencies and parallelization
 
 **Output**: Executable implementation plan with progress tracking
 
@@ -134,11 +134,11 @@ docs-all: ingest-roadmap ...  # Auto-update roadmap
 
 **Tasks**:
 
-*   \[ ] Map each RoadmapStep to relevant Agda modules
-*   \[ ] Track dependencies between steps
-*   \[ ] Create impact analysis (what breaks if step fails)
-*   \[ ] Identify parallelizable tasks
-*   \[ ] Generate dependency graphs
+* \[ ] Map each RoadmapStep to relevant Agda modules
+* \[ ] Track dependencies between steps
+* \[ ] Create impact analysis (what breaks if step fails)
+* \[ ] Identify parallelizable tasks
+* \[ ] Generate dependency graphs
 
 **Output**: Dependency matrix and impact analysis
 
@@ -148,10 +148,10 @@ docs-all: ingest-roadmap ...  # Auto-update roadmap
 
 **Tasks**:
 
-*   \[ ] Create `src/agda/Generate/Roadmap.agda`
-*   \[ ] Implement Agda→Markdown code generation
-*   \[ ] Integrate into build system
-*   \[ ] Add CI/CD hook to update on changes
+* \[ ] Create `src/agda/Generate/Roadmap.agda`
+* \[ ] Implement Agda→Markdown code generation
+* \[ ] Integrate into build system
+* \[ ] Add CI/CD hook to update on changes
 
 **Output**: Always-synchronized ROADMAP.md
 
@@ -161,10 +161,10 @@ docs-all: ingest-roadmap ...  # Auto-update roadmap
 
 **Tasks**:
 
-*   \[ ] Verify 100% of original intake items are in roadmap
-*   \[ ] Cross-check against original triage
-*   \[ ] Generate coverage report
-*   \[ ] Identify any gaps or orphaned items
+* \[ ] Verify 100% of original intake items are in roadmap
+* \[ ] Cross-check against original triage
+* \[ ] Generate coverage report
+* \[ ] Identify any gaps or orphaned items
 
 **Output**: Final intake closure certificate
 
@@ -213,51 +213,51 @@ title = RoadmapStep.provenance thePolytopesManifest
 
 ### Validation Completed
 
-*   ✓ All 78 files successfully extracted
-*   ✓ Metadata structure consistent across all items
-*   ✓ Agda syntax valid (no compilation errors)
-*   ✓ JSON metadata well-formed
-*   ✓ Markdown format valid and readable
-*   ✓ Categories assigned consistently
+* ✓ All 78 files successfully extracted
+* ✓ Metadata structure consistent across all items
+* ✓ Agda syntax valid (no compilation errors)
+* ✓ JSON metadata well-formed
+* ✓ Markdown format valid and readable
+* ✓ Categories assigned consistently
 
 ### Known Limitations
 
-*   Base summaries extracted mechanically (may need curation)
-*   Keywords identified via pattern matching (not semantic)
-*   Relationships between items not yet established
-*   No automatic prioritization or sequencing
+* Base summaries extracted mechanically (may need curation)
+* Keywords identified via pattern matching (not semantic)
+* Relationships between items not yet established
+* No automatic prioritization or sequencing
 
 ### Future Enhancements
 
-*   Semantic keyword extraction (NLP/ML)
-*   Automatic dependency discovery
-*   Relationship inference from content
-*   Priority scoring based on impact
-*   Automated scheduling/sequencing
+* Semantic keyword extraction (NLP/ML)
+* Automatic dependency discovery
+* Relationship inference from content
+* Priority scoring based on impact
+* Automated scheduling/sequencing
 
 ## Files Modified/Created
 
 ### Created
 
-*   `scripts/ingest_gp_files.py` - Extraction pipeline
-*   `scripts/export_roadmap.py` - Export to Markdown
-*   `src/agda/Plan/CIM/IngestedRoadmaps.agda` - Formal records
-*   `build/ingested_metadata.json` - Metadata registry
-*   `INTAKE-INGESTION-SUMMARY.md` - Detailed summary
-*   `INTAKE-INGESTION-COMPLETION.md` - This file
+* `scripts/ingest_gp_files.py` - Extraction pipeline
+* `scripts/export_roadmap.py` - Export to Markdown
+* `src/agda/Plan/CIM/IngestedRoadmaps.agda` - Formal records
+* `build/ingested_metadata.json` - Metadata registry
+* `INTAKE-INGESTION-SUMMARY.md` - Detailed summary
+* `INTAKE-INGESTION-COMPLETION.md` - This file
 
 ### Modified
 
-*   `ROADMAP.md` - Added "Ingested Roadmap from GP Files" section
+* `ROADMAP.md` - Added "Ingested Roadmap from GP Files" section
 
 ## Conclusion
 
 The intake document ingestion pipeline is **fully operational**. All 78 GP roadmap files have been:
 
-1.  ✓ Catalogued with extracted metadata
-2.  ✓ Encoded in formal Agda RoadmapStep records
-3.  ✓ Exported to human-readable Markdown
-4.  ✓ Integrated into the main project roadmap
+1. ✓ Catalogued with extracted metadata
+2. ✓ Encoded in formal Agda RoadmapStep records
+3. ✓ Exported to human-readable Markdown
+4. ✓ Integrated into the main project roadmap
 
 The system is now ready for Phase 3 work on agentic roadmap traversal and automated implementation planning. The mechanical generation pipeline provides a foundation for automatic ROADMAP updates and ensures all intake content remains synchronized with the formal specification.
 
