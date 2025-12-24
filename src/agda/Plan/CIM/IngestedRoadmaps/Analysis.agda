@@ -146,7 +146,7 @@ roadmapGp811 = record
 
 roadmapGp812 : RoadmapStep
 roadmapGp812 = record
-    { provenance   = "GP812: Unknown Title"
+    { provenance   = "GP812: The Unified Manifest (v17.0)"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Braid, Complex, Geometry, Loday, Manifold"
@@ -168,7 +168,7 @@ roadmapGp813 = record
 
 roadmapGp814 : RoadmapStep
 roadmapGp814 = record
-    { provenance   = "GP814: Unknown Title"
+    { provenance   = "GP814: The Cohomological Manifest (v18.0)"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Braid, Cohomology, Geometry, Loday, Sppf"
@@ -256,7 +256,7 @@ roadmapGp821 = record
 
 roadmapGp822 : RoadmapStep
 roadmapGp822 = record
-    { provenance   = "GP822: Unknown Title"
+    { provenance   = "GP822: The Fractal Manifest (v22.0)"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Cohomology, Functor, Geometry, Polytope, Sheaf"
@@ -322,7 +322,7 @@ roadmapGp827 = record
 
 roadmapGp828 : RoadmapStep
 roadmapGp828 = record
-    { provenance   = "GP828: Unknown Title"
+    { provenance   = "GP828: The Recursive Clifford Lift"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Polytope, Quaternion, Stasheff"
@@ -333,7 +333,7 @@ roadmapGp828 = record
 
 roadmapGp829 : RoadmapStep
 roadmapGp829 = record
-    { provenance   = "GP829: Unknown Title"
+    { provenance   = "GP829: The Fuzzy Boundary"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Functor, Manifold, Polytope, Quaternion"
@@ -344,7 +344,7 @@ roadmapGp829 = record
 
 roadmapGp830 : RoadmapStep
 roadmapGp830 = record
-    { provenance   = "GP830: Unknown Title"
+    { provenance   = "GP830: The Latent Dynamic SPPF"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Cohomology, Manifold, Sppf"
@@ -355,7 +355,7 @@ roadmapGp830 = record
 
 roadmapGp831 : RoadmapStep
 roadmapGp831 = record
-    { provenance   = "GP831: Unknown Title"
+    { provenance   = "GP831: The Causal Dimension"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Functor, Sppf, Topology"
@@ -366,7 +366,7 @@ roadmapGp831 = record
 
 roadmapGp832 : RoadmapStep
 roadmapGp832 = record
-    { provenance   = "GP832: Unknown Title"
+    { provenance   = "GP832: The Self-Defining Manifest (v26.0)"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Braid, Complex, Geometry, Loday, Octonion"

@@ -25,7 +25,7 @@ roadmapGp01 = record
 
 roadmapGp010 : RoadmapStep
 roadmapGp010 = record
-    { provenance   = "GP010: Unknown Title"
+    { provenance   = "GP010: The Deployment Substrate"
     ; relatedNodes = []
     ; step         = "Would you like me to guide you through the Agda Compilation Step, ensuring that the RotationalTransport.agda proof compiles successfully and verifying that your Python geometry.py implementation is mathematically consistent with the verified type signatures?"
     ; implication  = "Concepts: Complex, Functor, Geometry, Group Action, Rope"
@@ -36,7 +36,7 @@ roadmapGp010 = record
 
 roadmapGp02 : RoadmapStep
 roadmapGp02 = record
-    { provenance   = "GP02: Unknown Title"
+    { provenance   = "GP02: The Geometric Alignment"
     ; relatedNodes = []
     ; step         = "Would you like me to construct the Python __matmul__ (matrix multiplication) override for your SPPFNode class, which automatically applies this relative-attention logic when two nodes are compared, strictly enforcing the logic defined in the Agda postulate?"
     ; implication  = "Concepts: Geometry, Group Action, Hott, Manifold, Rope"
@@ -47,7 +47,7 @@ roadmapGp02 = record
 
 roadmapGp03 : RoadmapStep
 roadmapGp03 = record
-    { provenance   = "GP03: Unknown Title"
+    { provenance   = "GP03: The PackedNode Aggregation Logic"
     ; relatedNodes = []
     ; step         = "Would you like me to extend this into the PackedNode aggregation logic, creating a method that sums multiple \"path vectors\" into a single superposition state, and then normalizes them to ensure the resulting probability mass remains coherent?"
     ; implication  = "Concepts: Complex, Group Action, Rope, Sppf, Tensor"
@@ -58,7 +58,7 @@ roadmapGp03 = record
 
 roadmapGp04 : RoadmapStep
 roadmapGp04 = record
-    { provenance   = "GP04: Unknown Title"
+    { provenance   = "GP04: The Topological Diagram (I)"
     ; relatedNodes = []  -- GP8
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Manifold, Rope, Sppf, Tensor, Vector Space"
@@ -69,7 +69,7 @@ roadmapGp04 = record
 
 roadmapGp05 : RoadmapStep
 roadmapGp05 = record
-    { provenance   = "GP05: Unknown Title"
+    { provenance   = "GP05: The Vectorized Earley Item"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Rope, Sppf, Tensor"
@@ -80,7 +80,7 @@ roadmapGp05 = record
 
 roadmapGp06 : RoadmapStep
 roadmapGp06 = record
-    { provenance   = "GP06: Unknown Title"
+    { provenance   = "GP06: The Visualization Module"
     ; relatedNodes = []
     ; step         = "Would you like me to create the Visualization Module that exports this graph to Graphviz/Dot format, explicitly coloring nodes based on their Phase (Rotation Angle) to visually debug the topological structure?"
     ; implication  = "Concepts: Complex, Functor, Group Action, Rope, Sppf"
@@ -91,7 +91,7 @@ roadmapGp06 = record
 
 roadmapGp07 : RoadmapStep
 roadmapGp07 = record
-    { provenance   = "GP07: Unknown Title"
+    { provenance   = "GP07: The Visual Semantics"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Category Theory, Functor, Geometry, Rope, Sppf"
@@ -102,7 +102,7 @@ roadmapGp07 = record
 
 roadmapGp09 : RoadmapStep
 roadmapGp09 = record
-    { provenance   = "GP09: Unknown Title"
+    { provenance   = "GP09: The Active Observer"
     ; relatedNodes = []
     ; step         = "Would you like me to package this entire suite (Parser, Visualizer, Search, and Agda Proofs) into a Single Python Package Structure (e.g., setuptools layout with __init__.py) so you can install it as a library named nedge-topology?"
     ; implication  = "Concepts: Functor, Geometry, Rope, Sppf, Tensor"
@@ -113,7 +113,7 @@ roadmapGp09 = record
 
 roadmapGp100 : RoadmapStep
 roadmapGp100 = record
-    { provenance   = "GP100: Unknown Title"
+    { provenance   = "GP100: The Semantic Gating (I)"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Functor, Geometry, Rope, Sppf, Topology"
@@ -124,7 +124,7 @@ roadmapGp100 = record
 
 roadmapGp101 : RoadmapStep
 roadmapGp101 = record
-    { provenance   = "GP101: Unknown Title"
+    { provenance   = "GP101: The Semantic Gating (II)"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Functor, Geometry, Rope, Sppf, Topology"
@@ -135,7 +135,7 @@ roadmapGp101 = record
 
 roadmapGp102 : RoadmapStep
 roadmapGp102 = record
-    { provenance   = "GP102: Unknown Title"
+    { provenance   = "GP102: The Operational Integration"
     ; relatedNodes = []
     ; step         = "Would you like to move on to the Agda side to formally prove the resonance threshold logic, or would you like to run a Pruning Simulation (Python) to visualize exactly which edges get cut by this new logic?"
     ; implication  = "Concepts: Geometry, Rope, Sppf, Tensor"
@@ -190,7 +190,7 @@ roadmapGp106 = record
 
 roadmapGp107 : RoadmapStep
 roadmapGp107 = record
-    { provenance   = "GP107: Unknown Title"
+    { provenance   = "GP107: The Gödelian Manifest"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Functor, Geometry, Group Action, Manifold, Rope"
@@ -234,7 +234,7 @@ roadmapGp110 = record
 
 roadmapGp111 : RoadmapStep
 roadmapGp111 = record
-    { provenance   = "GP111: Unknown Title"
+    { provenance   = "GP111: The Unified Manifest (v2.0)"
     ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Functor, Geometry, Group Action, Manifold, Rope"

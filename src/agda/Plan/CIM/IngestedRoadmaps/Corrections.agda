@@ -36,7 +36,7 @@ roadmapGp500 = record
 
 roadmapGp501 : RoadmapStep
 roadmapGp501 = record
-    { provenance   = "GP501: Unknown Title"
+    { provenance   = "GP501: The Topological Diagram (II)"
     ; relatedNodes = []  -- GP0, GP3
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Geometry, Manifold, Polytope, Rope, Sppf"
@@ -44,4 +44,3 @@ roadmapGp501 = record
     ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
     ; next         = []
     }
-
