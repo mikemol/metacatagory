@@ -10,7 +10,7 @@ open import Agda.Builtin.Equality using (_≡_)
 open import Agda.Primitive using (Level; lzero; lsuc)
 open import Agda.Builtin.Sigma using (Σ; _,_)
 
--- [UPDATED] Importing PhaseAmbiguity instead of Ambiguity
+-- [UPDATED] Imported PhaseAmbiguity and BraidedSPPF
 open import Plan.CIM.Utility using (PhaseAmbiguity; TransformationSystem; EmergentMetric; Path; CoherenceWitness; BraidedInheritanceFunctor; BraidedSPPF; map; _×_; packed-node)
 
 record GradedVectorSpace (n : Nat) : Set₁ where
@@ -35,7 +35,7 @@ composeBraids bif1 bif2 = record
   ; description = "Composed braid"
   }
 
--- [IMPLEMENTED] SPPF node construction enabled by BraidedSPPF in Utility
+-- [IMPLEMENTED] SPPF node construction
 makeSPPFNode : ∀ {ℓ} {N : Set ℓ} {Sys : TransformationSystem N N}
              → Path Sys 
              → BraidedInheritanceFunctor N N 

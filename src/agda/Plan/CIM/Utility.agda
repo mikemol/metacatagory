@@ -27,7 +27,7 @@ map f [] = []
 map f (x ∷ xs) = f x ∷ map f xs
 
 ------------------------------------------------------------------------
--- Recursive RoadmapStep Record: Encodes implication-driven roadmap
+-- Recursive RoadmapStep Record
 ------------------------------------------------------------------------
 record RoadmapStep : Set₁ where
     inductive
@@ -44,13 +44,12 @@ record RoadmapStep : Set₁ where
 -- Core CIM Framework Types
 ------------------------------------------------------------------------
 
--- [REFACTORED] Renamed from Ambiguity to PhaseAmbiguity to avoid collision
--- with Plan.CIM.Ambiguity (Algebraic Ambiguity Monad).
+-- [REFACTORED] Renamed to PhaseAmbiguity to avoid collision with Algebraic Ambiguity
 record PhaseAmbiguity {ℓ} (A B : Set ℓ) : Set ℓ where
     field
         valA : A
         valB : B
-        phase : ℕ -- Phase/rotation for RoPE/group action
+        phase : ℕ 
 
 record TransformationSystem {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
     field
@@ -65,7 +64,6 @@ data Path {ℓ} {A B : Set ℓ} (Sys : TransformationSystem {ℓ} A B) : Set ℓ
     refl-path : Path Sys
     trans-step : (s : TransformationSystem.Step Sys) → (rest : Path Sys) → Path Sys
 
--- Updated to use PhaseAmbiguity
 record CoherenceWitness {ℓ} {A B : Set ℓ} (amb : PhaseAmbiguity {ℓ} A B) (Sys : TransformationSystem {ℓ} A B) : Set (lsuc ℓ) where
     field
         proofPath : Path Sys
@@ -79,8 +77,7 @@ record BraidedInheritanceFunctor {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
         toValue   : B
         description : String
 
--- [NEW] Integrated BraidedSPPF from Intake/GP fragments
--- Required for CHIPConformance.agda
+-- [NEW] BraidedSPPF integrated from Intake
 record BraidedSPPF {ℓ} (A B : Set ℓ) (Sys : TransformationSystem A B) : Set (lsuc ℓ) where
     constructor packed-node
     field
@@ -99,7 +96,6 @@ record Witness {ℓ} (A B : Set ℓ) : Set ℓ where
         target : B
         evidence : String
 
--- Updated to use PhaseAmbiguity
 record CNFProtocol (A B : Set) : Set₁ where
     field
         ambiguity : PhaseAmbiguity A B
@@ -118,7 +114,6 @@ module ASTDependent (Block MdBlock BraidStep : Set) where
         steps : List BraidStep
         summary : String
 
-  -- Updated to use PhaseAmbiguity
   record BlockProtocol : Set₁ where
     field
         ambiguity : PhaseAmbiguity Block MdBlock
@@ -126,7 +121,6 @@ module ASTDependent (Block MdBlock BraidStep : Set) where
         coherence : CoherenceWitness ambiguity transSys
         metric    : EmergentMetric
 
-  -- Updated to use PhaseAmbiguity
   record DocProtocol : Set₁ where
     field
         ambiguity : PhaseAmbiguity String String
@@ -158,48 +152,48 @@ concatWithSep sep [] = ""
 concatWithSep sep (x ∷ []) = x
 concatWithSep sep (x ∷ xs) = x ++ sep ++ concatWithSep sep xs
 
--- Examples preserved for Roadmap index...
+-- Examples (Preserved for Roadmap Index)
 exampleUnifiedTopologicalParserRoadmap : RoadmapStep
 exampleUnifiedTopologicalParserRoadmap = record
-    { provenance  = "GP699, Unified Topological Parser, Nedge-Topology, SPPF + RoPE + SymNum"
-    ; relatedNodes = "exampleDimensionalReliefRoadmap" ∷ "examplePolytopeManifestRoadmap" ∷ "exampleElasticityOfMeaningRoadmap" ∷ []
-    ; step        = "Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition."
-    ; implication = "Enables composable geometric and topological integration, active topological pruning, and algebraic superposition for ambiguity. Supports recursive revisiting, fiber bundle architecture, and advanced induction/training features."
+    { provenance  = "GP699, Unified Topological Parser"
+    ; relatedNodes = []
+    ; step        = "Integrate Earley parsing, RoPE, and symmetry group concepts."
+    ; implication = "Enables composable geometric and topological integration."
     ; status      = "not-started"
-    ; targetModule = "nedge_topology/parser.py, nedge_topology/train.py, nedge_topology/mitosis.py, nedge_topology/search.py, dashboard.py, src/agda/Plan/CIM/RotationalTransport.agda, src/agda/Plan/CIM/TopologicalGating.agda, src/agda/Plan/CIM/TopologicalSuperposition.agda"
+    ; targetModule = "nedge_topology/parser.py"
     ; next = []
     }
 
 exampleDimensionalReliefRoadmap : RoadmapStep
 exampleDimensionalReliefRoadmap = record
-    { provenance  = "GP500, Dimensional Relief, Topological Inflation, Stasheff Expansion"
+    { provenance  = "GP500, Dimensional Relief"
     ; relatedNodes = []
-    ; step        = "Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension."
-    ; implication = "Enables composable category expansion, tension relief, and dynamic geometry for semantic protocols. Supports recursive revisiting and concept differentiation."
+    ; step        = "Implement topological inflation."
+    ; implication = "Enables composable category expansion."
     ; status      = "not-started"
-    ; targetModule = "src/agda/Plan/CIM/PolytopeExpansion.agda, nedge_topology/mitosis.py"
+    ; targetModule = "src/agda/Plan/CIM/PolytopeExpansion.agda"
     ; next = []
     }
 
 examplePolytopeManifestRoadmap : RoadmapStep
 examplePolytopeManifestRoadmap = record
-    { provenance  = "GP501, Polytope Manifest, Mitosis Engine, Dynamic Polytopes"
+    { provenance  = "GP501, Polytope Manifest"
     ; relatedNodes = []
-    ; step        = "Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed."
-    ; implication = "Enables dynamic, composable category geometry, tension monitoring, and concept differentiation. Supports recursive revisiting and protocol evolution."
+    ; step        = "Implement Mitosis Engine."
+    ; implication = "Enables dynamic, composable category geometry."
     ; status      = "not-started"
-    ; targetModule = "nedge_topology/mitosis.py, nedge_topology/parser.py, dashboard.py, src/agda/Plan/CIM/PolytopeExpansion.agda"
+    ; targetModule = "nedge_topology/mitosis.py"
     ; next = []
     }
 
 exampleElasticityOfMeaningRoadmap : RoadmapStep
 exampleElasticityOfMeaningRoadmap = record
-    { provenance  = "GP400, Elasticity of Meaning, Tension/Resonance phase space"
-    ; relatedNodes = "exampleAlgebraicAmbiguityRoadmap" ∷ "exampleMetricizationRoadmap" ∷ "exampleTransformationSystemRoadmap" ∷ "exampleFunctorialConstructsRoadmap" ∷ []
-    ; step        = "Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs."
-    ; implication = "Enables composable phase space modeling, creative/insightful parse acceptance, and pruning of non-sequitur/hallucination nodes. Supports recursive revisiting for grammar induction, protocol refinement, and functorial traceability."
+    { provenance  = "GP400, Elasticity of Meaning"
+    ; relatedNodes = []
+    ; step        = "Integrate 2D gating logic (Tension/Resonance)."
+    ; implication = "Enables composable phase space modeling."
     ; status      = "not-started"
-    ; targetModule = "src/agda/Plan/CIM/Elasticity.agda, parser.py, dashboard.py, src/agda/Plan/CIM/Ambiguity.agda, src/agda/Plan/CIM/Metricization.agda, src/agda/Plan/CIM/TransformationSystem.agda, src/agda/Plan/CIM/FunctorialConstructs.agda"
+    ; targetModule = "src/agda/Plan/CIM/Elasticity.agda"
     ; next = []
     }
 
@@ -207,8 +201,8 @@ exampleAlgebraicAmbiguityRoadmap : RoadmapStep
 exampleAlgebraicAmbiguityRoadmap = record
     { provenance  = "Algebraic Ambiguity Infrastructure"
     ; relatedNodes = []
-    ; step        = "Provide algebraic structures for representing and manipulating ambiguity in parse spaces."
-    ; implication = "Enables formal treatment of ambiguity as algebraic object."
+    ; step        = "Provide algebraic structures for ambiguity."
+    ; implication = "Enables formal treatment of ambiguity."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Ambiguity.agda"
     ; next = []
@@ -218,8 +212,8 @@ exampleMetricizationRoadmap : RoadmapStep
 exampleMetricizationRoadmap = record
     { provenance  = "Metrication of Semantic Space"
     ; relatedNodes = []
-    ; step        = "Establish metric structures on semantic spaces for distance/similarity calculations."
-    ; implication = "Enables quantitative semantic reasoning and optimization."
+    ; step        = "Establish metric structures on semantic spaces."
+    ; implication = "Enables quantitative semantic reasoning."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Metricization.agda"
     ; next = []
@@ -229,8 +223,8 @@ exampleTransformationSystemRoadmap : RoadmapStep
 exampleTransformationSystemRoadmap = record
     { provenance  = "Transformation System Architecture"
     ; relatedNodes = []
-    ; step        = "Define compositional transformation operations on semantic objects."
-    ; implication = "Enables systematic rewriting and protocol evolution."
+    ; step        = "Define compositional transformation operations."
+    ; implication = "Enables systematic rewriting."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/TransformationSystem.agda"
     ; next = []
@@ -240,7 +234,7 @@ exampleFunctorialConstructsRoadmap : RoadmapStep
 exampleFunctorialConstructsRoadmap = record
     { provenance  = "Functorial Framework"
     ; relatedNodes = []
-    ; step        = "Implement functorial mappings between semantic and computational spaces."
+    ; step        = "Implement functorial mappings."
     ; implication = "Enables formal structure-preserving transformations."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/FunctorialConstructs.agda"
