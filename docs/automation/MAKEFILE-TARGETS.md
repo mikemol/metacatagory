@@ -2,37 +2,34 @@
 
 This table is the human-readable witness for the Makefile triangle identity: the generated Makefile, its regeneration source, and this documentation must agree on the public targets.
 
-| Target | Purpose | Notes |
-| --- | --- | --- |
-| `all` | Aggregate default build | Depends on project defaults (intended to cover Agda + docs); placeholder until wired. |
-| `check` | Aggregate validation | Intended to run core validators (triangle, docs); placeholder until wired. |
-| `regen-makefile` | Regenerate Makefile from Agda exporter | Runs `src/agda/Examples/ExporterMakefile.agda` to refresh Makefile.generated then copies over. |
-| `md-fix` | Auto-format Markdown | Uses remark to rewrite Markdown in-place. |
-| `md-lint` | Lint Markdown | remark lint across repo; writes `build/reports/md-lint.txt`. |
-| `intake-lint` | Lint intake/ Markdown | remark lint scoped to intake/; writes `build/reports/intake-md-lint.txt`. |
-| `intake-scan` | Report intake coverage | Runs `scripts/intake_scan.py` to emit coverage reports. |
-| `md-normalize` | Normalize generated Markdown | Runs `scripts/normalize_generated_markdown.py`. |
-| `makefile-validate` | Check Makefile ↔ docs ↔ generator | Runs `scripts/validate_makefile_docs.py`. |
-| `badges` | Generate status badges | Uses `scripts/generate-badges.py`. |
-| `node-deps` | Install Node dependencies | Runs `npm install`. |
-| `deferred-items` | Detect deferred items | Runs `.github/scripts/detect-deferred-items.sh`. |
-| `roadmap-index` | Build roadmap index | Compiles Agda index. |
-| `roadmap-sync` | Sync roadmap to GitHub | Runs Agda sync helper. |
-| `roadmap-sppf` | Build roadmap SPPF | Compiles SPPF artifact. |
-| `roadmap-merge` | Merge roadmap sources | Creates canonical JSON. |
-| `roadmap-deps-graph` | Emit Agda dependency graph | Writes graph DOT. |
-| `roadmap-enrich` | Enrich canonical roadmap | Adds metadata to canonical JSON. |
-| `roadmap-export-json` | Export canonical to JSON | Writes `build/canonical_roadmap.json`. |
-| `roadmap-export-md` | Export canonical to Markdown | Writes `ROADMAP.md`. |
-| `roadmap-export-enriched` | Export enriched Markdown | Writes enriched docs. |
-| `roadmap-export-deps` | Export dependency graph report | Writes dependency graph JSON/MD. |
-| `roadmap-validate-json` | Validate JSON projection | Checks tasks.json against canonical. |
-| `roadmap-validate-md` | Validate Markdown projection | Checks ROADMAP.md against canonical. |
-| `roadmap-validate-triangle` | Validate projections | Ensures JSON/MD agree with canonical. |
-| `roadmap-sppf-export` | Export SPPF projection | Writes SPPF JSON. |
-| `roadmap-all-enriched` | Aggregate enriched exports | Placeholder until wired. |
-| `agda-all` | Build all Agda interfaces | Compiles all .agdai artifacts. |
-| `docs-all` | Build all HTML docs | Generates HTML for Agda sources. |
-| `docs-generate` | Generate documentation bundles | Runs roadmap exporter and normalization. |
-| `docs-modules` | Generate per-module markdown docs | Generates YAML-fronted module reference docs. |
-| `docs-validate` | Validate documentation triangle | Runs triangle validation script. |
+| Target | Description |
+| :--- | :--- |
+| `regen-makefile` | Regenerate the Makefile from Agda source (Self-Hosting) |
+| `md-lint` | Lint all markdown files (fail on error) |
+| `md-fix` | Auto-fix markdown lint errors |
+| `intake-lint` | Lint intake files specifically |
+| `intake-scan` | Scan intake directory for new files |
+| `md-normalize` | Normalize markdown formatting |
+| `makefile-validate` | Validate Makefile consistency |
+| `all` | Build all code and documentation |
+| `check` | Run all validation checks |
+| `badges` | Generate status badges |
+| `node-deps` | Install Node.js dependencies |
+| `deferred-items` | Scan for TODOs and FIXMEs |
+| `roadmap-index` | Compile Roadmap Index |
+| `roadmap-sync` | Sync roadmap with external tracker |
+| `roadmap-sppf` | Compile Roadmap SPPF |
+| `roadmap-merge` | Merge ingestion streams |
+| `roadmap-deps-graph` | Generate dependency graph |
+| `roadmap-enrich` | Enrich roadmap with graph data |
+| `roadmap-export-json` | Export canonical roadmap to JSON |
+| `roadmap-export-md` | Export canonical roadmap to Markdown |
+| `roadmap-export-enriched` | Export enriched roadmap |
+| `roadmap-export-deps` | Export roadmap dependency graph |
+| `roadmap-validate-json` | Validate canonical JSON |
+| `roadmap-validate-md` | Validate canonical Markdown |
+| `roadmap-validate-triangle` | Verify Triangle Identity (Agda <-> JSON <-> MD) |
+| `roadmap-sppf-export` | Export SPPF structure |
+| `roadmap-all-enriched` | Build all enriched artifacts |
+| `docs-generate` | Compile and run Roadmap Exporter |
+| `docs-validate` | Validate documentation integrity |
