@@ -81,6 +81,16 @@ record BraidedInheritanceFunctor {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
         toValue   : B
         description : String
 
+-- NEW: BraidedSPPF definition integrated from Intake/GP fragments
+-- Represents a packed node in the Shared Packed Parse Forest that explicitly
+-- encodes the braiding event (ambiguity resolution) between two paths.
+record BraidedSPPF {ℓ} (A B : Set ℓ) (Sys : TransformationSystem A B) : Set (lsuc ℓ) where
+    constructor packed-node
+    field
+        leftPath   : Path Sys
+        rightPath  : Path Sys
+        resolution : BraidedInheritanceFunctor A B
+
 record CostFunction : Set where
     field
         cost : ℕ → ℕ
@@ -147,6 +157,7 @@ concatWithSep : String → List String → String
 concatWithSep sep [] = ""
 concatWithSep sep (x ∷ []) = x
 concatWithSep sep (x ∷ xs) = x ++ sep ++ concatWithSep sep xs
+
 -- 4 key Roadmap examples extracted and cleaned from Utility-broken.agda
 -- All nested `next` structures simplified to [] for syntactic clarity
 -- This represents the 4 referenced in COPILOT_SYNERGY.md plus their dependencies
@@ -239,4 +250,3 @@ exampleFunctorialConstructsRoadmap = record
     ; targetModule = "src/agda/Plan/CIM/FunctorialConstructs.agda"
     ; next = []
     }
-
