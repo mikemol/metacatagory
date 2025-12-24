@@ -6,9 +6,9 @@ regen-makefile:
 	cp Makefile.generated Makefile
 .PHONY: all check md-fix md-lint intake-lint intake-scan md-normalize makefile-validate badges node-deps regen-makefile agda-all docs-all deferred-items roadmap-index roadmap-sync roadmap-sppf roadmap-merge roadmap-deps-graph roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched docs-generate docs-validate
 md-lint: 
-	npx markdownlint-cli2 "**/*.md" "#node_modules" > build/reports/md-lint.txt 2>&1 || true
+	npx markdownlint-cli2 "**/*.md" "!node_modules" "!build" > build/reports/md-lint.txt 2>&1 || true
 md-fix: 
-	npx markdownlint-cli2 --fix "**/*.md" "#node_modules"
+	npx markdownlint-cli2 --fix "**/*.md" "!node_modules" "!build"
 intake-lint: 
 	npx markdownlint-cli2 "intake/**/*.md" > build/reports/intake-md-lint.txt 2>&1 || true
 intake-scan: build/canonical_roadmap.json
