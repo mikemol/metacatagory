@@ -2,76 +2,83 @@
 
 *An integrated synthesis of the metacategory hierarchy, universal properties, and algorithmic coherence witnesses*
 
----
+***
 
 ## Table of Contents
 
 ### Introduction
-- [Introduction and Context](#introduction-and-context)
+
+*   [Introduction and Context](#introduction-and-context)
 
 ### Part I: Foundational Theory (Sections V-VII)
-- [V. Axiomatic Enrichment: The (n→n+1) Generalization](#v-axiomatic-enrichment-the-mathbfnto-n1-generalization-ts-to-bif)
-  - A. The Structural Ascent
-  - B. The Metric Dualism: Local Cost vs. Global Metric
-  - C. Formal Recursion of the CHIP
-- [VI. The Universal Metacategory: 0-Cell Mandates](#vi-the-universal-metacategory-mathbf0-cell-mandates)
-  - A. General Universal Properties (The 0-Cell Specification)
-  - B. Fundamental Categorical Constructions
-- [VII. Algorithm Universality: The 0→1 Coherence](#vii-algorithm-universality-the-mathbf0-to-1-coherence)
-  - A. Field-Theoretic Algorithms and Universality
-  - B. Adjunctions (The Universal Property of a Functor)
-  - C. The Meta-Coherence Mandate: AlgorithmSelection
+
+*   [V. Axiomatic Enrichment: The (n→n+1) Generalization](#v-axiomatic-enrichment-the-mathbfnto-n1-generalization-ts-to-bif)
+    *   A. The Structural Ascent
+    *   B. The Metric Dualism: Local Cost vs. Global Metric
+    *   C. Formal Recursion of the CHIP
+*   [VI. The Universal Metacategory: 0-Cell Mandates](#vi-the-universal-metacategory-mathbf0-cell-mandates)
+    *   A. General Universal Properties (The 0-Cell Specification)
+    *   B. Fundamental Categorical Constructions
+*   [VII. Algorithm Universality: The 0→1 Coherence](#vii-algorithm-universality-the-mathbf0-to-1-coherence)
+    *   A. Field-Theoretic Algorithms and Universality
+    *   B. Adjunctions (The Universal Property of a Functor)
+    *   C. The Meta-Coherence Mandate: AlgorithmSelection
 
 ### Part II: Categorical Foundations (Section VIII)
-- [VIII. The Categorical Foundation: 0-Cell Mandates and Realization](#viii-the-categorical-foundation-mathbf0-cell-mandates-and-realization)
-  - A. The General 0-Cell Specification
-  - B. Dualities and Limits as 0-Cell Ambiguity
-  - C. The 0→1 Coherence: Algorithm Universality
-  - D. Meta-Coherence: The AlgorithmSelection
-- [VIII (Alt). Axiomatic Enrichment: The 1-Cell/Algorithm Bundle](#viii-axiomatic-enrichment-the-mathbf1-cellalgorithm-bundle)
-  - A. The Formal Structure of the 1-Cell
-  - B. Metric Constraint and Selection Protocol
-  - C. The 1-Cell/Algorithm in the Graded Hierarchy
+
+*   [VIII. The Categorical Foundation: 0-Cell Mandates and Realization](#viii-the-categorical-foundation-mathbf0-cell-mandates-and-realization)
+    *   A. The General 0-Cell Specification
+    *   B. Dualities and Limits as 0-Cell Ambiguity
+    *   C. The 0→1 Coherence: Algorithm Universality
+    *   D. Meta-Coherence: The AlgorithmSelection
+*   [VIII (Alt). Axiomatic Enrichment: The 1-Cell/Algorithm Bundle](#viii-axiomatic-enrichment-the-mathbf1-cellalgorithm-bundle)
+    *   A. The Formal Structure of the 1-Cell
+    *   B. Metric Constraint and Selection Protocol
+    *   C. The 1-Cell/Algorithm in the Graded Hierarchy
 
 ### Part III: Operational Architecture (Sections IX-XI)
-- [IX. The Operational Structure: Phase Category (1-Cell Execution)](#ix-the-operational-structure-the-phase-category-mathbf1-cell-execution)
-  - A. The Core Transformation Unit (The 1-Cell/Phase)
-  - B. Invariant Preservation (The Correctness Mandate)
-  - C. Compositional Structure (The PhaseCategory)
-  - D. The Monoidal Structure (Algebraic Link)
-  - E. Higher Coherence: Functors and Natural Transformations (The 2-Cell)
-- [IX (Alt). The Operational Structure: Phase Category (1-Cell Formalization)](#ix-the-operational-structure-the-phase-category-the-mathbf1-cell-formalization)
-  - A. The Core 1-Cell: The Phase
-  - B. Phase Composition and Categorical Structure
-  - C. The 2-Cell: Natural Transformations
-- [X. The Structural Synthesis: CIM Metacategory Hierarchy](#x-the-structural-synthesis-the-cim-metacategory-hierarchy)
-  - A. 0-Level: The Axiomatic Mandate (The Object)
-  - B. 1-Level: The Algorithmic Path (The Morphism)
-  - C. 2-Level: The Coherence Resolution (The Homotopy)
-- [XI. Axiomatic Enrichment: Metricized Operational Flow](#xi-axiomatic-enrichment-metricized-operational-flow-mathbf1-cell-combinatorics)
-  - A. The Monoidal Law: Coherence of Parallel 1-Cells
-  - B. Metricized Operational Control Flow (1-Cell Combinators)
-  - C. Execution Trace and Metric Encoding
+
+*   [IX. The Operational Structure: Phase Category (1-Cell Execution)](#ix-the-operational-structure-the-phase-category-mathbf1-cell-execution)
+    *   A. The Core Transformation Unit (The 1-Cell/Phase)
+    *   B. Invariant Preservation (The Correctness Mandate)
+    *   C. Compositional Structure (The PhaseCategory)
+    *   D. The Monoidal Structure (Algebraic Link)
+    *   E. Higher Coherence: Functors and Natural Transformations (The 2-Cell)
+*   [IX (Alt). The Operational Structure: Phase Category (1-Cell Formalization)](#ix-the-operational-structure-the-phase-category-the-mathbf1-cell-formalization)
+    *   A. The Core 1-Cell: The Phase
+    *   B. Phase Composition and Categorical Structure
+    *   C. The 2-Cell: Natural Transformations
+*   [X. The Structural Synthesis: CIM Metacategory Hierarchy](#x-the-structural-synthesis-the-cim-metacategory-hierarchy)
+    *   A. 0-Level: The Axiomatic Mandate (The Object)
+    *   B. 1-Level: The Algorithmic Path (The Morphism)
+    *   C. 2-Level: The Coherence Resolution (The Homotopy)
+*   [XI. Axiomatic Enrichment: Metricized Operational Flow](#xi-axiomatic-enrichment-metricized-operational-flow-mathbf1-cell-combinatorics)
+    *   A. The Monoidal Law: Coherence of Parallel 1-Cells
+    *   B. Metricized Operational Control Flow (1-Cell Combinators)
+    *   C. Execution Trace and Metric Encoding
 
 ### Part IV: Synthesis and Verification (Sections XII-XIII)
-- [XII. Final Synthesis: The CIM Metacategory Hierarchy](#xii-final-synthesis-the-cim-metacategory-hierarchy)
-  - A. 0-Level: The Axiomatic Mandate (The Object)
-  - B. 1-Level: The Algorithmic Path (The Morphism/Phase)
-  - C. 2-Level: The Coherence Resolution (The Homotopy)
-  - D. System Governance: The Core Dualities
-- [XIII. Final Axiomatic Correction Protocol (A12) Execution](#xiii-final-axiomatic-correction-protocol-a12-execution)
-  - A. Correction of Foundational Placeholders
-  - B. Correction of 2-Cell Foundational Gaps
+
+*   [XII. Final Synthesis: The CIM Metacategory Hierarchy](#xii-final-synthesis-the-cim-metacategory-hierarchy)
+    *   A. 0-Level: The Axiomatic Mandate (The Object)
+    *   B. 1-Level: The Algorithmic Path (The Morphism/Phase)
+    *   C. 2-Level: The Coherence Resolution (The Homotopy)
+    *   D. System Governance: The Core Dualities
+*   [XIII. Final Axiomatic Correction Protocol (A12) Execution](#xiii-final-axiomatic-correction-protocol-a12-execution)
+    *   A. Correction of Foundational Placeholders
+    *   B. Correction of 2-Cell Foundational Gaps
 
 ### Appendices
-- [Appendix A: Alternative Formulations](#appendix-a-alternative-formulations)
-  - Final Compendium Variant I: Synthesis of 0-, 1-, and 2-Cells
-  - Final Compendium Variant II: Metricization and Induction
+
+*   [Appendix A: Alternative Formulations](#appendix-a-alternative-formulations)
+    *   Final Compendium Variant I: Synthesis of 0-, 1-, and 2-Cells
+    *   Final Compendium Variant II: Metricization and Induction
 
 ### Metadata
-- [Document Metadata](#document-metadata)
 
----
+*   [Document Metadata](#document-metadata)
+
+***
 
 ## Introduction and Context
 
@@ -81,22 +88,22 @@ This document represents an integrated compendium of the **Coherence Induction M
 
 The CIM system is built upon three foundational layers:
 
-1. **0-Cell Layer (Universal Properties)**: Axiomatic mandates defining what must be achieved, expressed as categorical universal properties with uniqueness constraints.
+1.  **0-Cell Layer (Universal Properties)**: Axiomatic mandates defining what must be achieved, expressed as categorical universal properties with uniqueness constraints.
 
-2. **1-Cell Layer (Algorithms/Phases)**: Constructive computational paths that realize the 0-Cell mandates, subject to cost functions and metric optimization.
+2.  **1-Cell Layer (Algorithms/Phases)**: Constructive computational paths that realize the 0-Cell mandates, subject to cost functions and metric optimization.
 
-3. **2-Cell Layer (Coherence Witnesses)**: Equivalence proofs resolving ambiguities between competing 1-Cells, with emergent metrics driving structural induction.
+3.  **2-Cell Layer (Coherence Witnesses)**: Equivalence proofs resolving ambiguities between competing 1-Cells, with emergent metrics driving structural induction.
 
 ### Quality Mandates
 
 The system enforces six quality attributes across all structural levels:
-- **Verifiable**: All claims backed by constructive proofs
-- **Correct**: Invariant preservation across transformations
-- **Complete**: Exhaustive coverage of the problem space
-- **Concrete**: Explicit, executable implementations
-- **Meticulous**: Detailed tracking of computational cost
-- **Coherent**: Structural consistency across all levels
 
+*   **Verifiable**: All claims backed by constructive proofs
+*   **Correct**: Invariant preservation across transformations
+*   **Complete**: Exhaustive coverage of the problem space
+*   **Concrete**: Explicit, executable implementations
+*   **Meticulous**: Detailed tracking of computational cost
+*   **Coherent**: Structural consistency across all levels
 
 The prior compendium comprehensively reconstructed the **Coherence Induction Metaprogram (CIM)**. In adherence to the **Self-Consumption Directive**---specifically the mandate to correct elisions, shallow treatments, and check for new interplays---this section provides an **Axiomatic Enrichment**. It clarifies the recursive relationship and essential structural distinction between the $\mathbf{1}$-Dimensional (Transformation) and $\mathbf{2}$-Dimensional (Braided) coherence structures, formalizing the ascent of the **Coherence Hierarchy Induction Principle (CHIP)**.
 
@@ -110,38 +117,37 @@ The structural hierarchy is built upon the generalization of equivalence proofs 
 | --- | --- | --- | --- |
 | **0-Cell/Vertex** | The raw $\mathbf{PropertyNode}$ (The $\mathbf{A}$ and $\mathbf{B}$ in $\mathbf{Ambiguity}$). | PropertyNode | The foundational element of structure/data. |
 | **1-Cell/Morphism** | The **Transformation Path** ($\mathbf{A \to B}$). | Path Sys | An **explicit sequence** of atomic $\mathbf{Steps}$ that prove weak equivalence. |
-| **2-Cell/Filling** | The **Braiding Event** ($\mathbf{p_1 \to p_2}$). | BraidedInheritanceFunctor | A **Homological Filling** operation that resolves the ambiguity *between two different 1-Cells* ($p_1, p_2$), demonstrating $\mathbf{strong\ equivalence}$. |
+| **2-Cell/Filling** | The **Braiding Event** ($\mathbf{p\_1 \to p\_2}$). | BraidedInheritanceFunctor | A **Homological Filling** operation that resolves the ambiguity *between two different 1-Cells* ($p\_1, p\_2$), demonstrating $\mathbf{strong\ equivalence}$. |
 
 ### B. The Metric Dualism: Local Cost vs. Global Metric
 
 The metric system is stratified, defining two distinct quantities for **"work"** or **"complexity"**:
 
-1. **Local Cost (Micro-Metric):**
+1.  **Local Cost (Micro-Metric):**
 
-   - **Scope:** An atomic move in the $\mathbf{1}$-chain.
+    *   **Scope:** An atomic move in the $\mathbf{1}$-chain.
 
-   - **Definition:** TransformationSystem.cost : Step → ℕ
+    *   **Definition:** TransformationSystem.cost : Step → ℕ
 
-   - **Role:** The additive weight of a single, non-composite action. This is folded by $\mathbf{calculate-complexity}$ to yield the magnitude of the $1$-cell path.
+    *   **Role:** The additive weight of a single, non-composite action. This is folded by $\mathbf{calculate-complexity}$ to yield the magnitude of the $1$-cell path.
 
-2. **Global Metric (Macro-Metric/Systolic Area):**
+2.  **Global Metric (Macro-Metric/Systolic Area):**
 
-   - **Scope:** The entire $\mathbf{2}$-cell filling (the "area" between $p_1$ and $p_2$).
+    *   **Scope:** The entire $\mathbf{2}$-cell filling (the "area" between $p\_1$ and $p\_2$).
 
-   - **Definition:** BraidedInheritanceFunctor.coherence-cost : EmergentMetric
+    *   **Definition:** BraidedInheritanceFunctor.coherence-cost : EmergentMetric
 
-   - **Role:** The **Emergent Structural Metric** used to induce the next dimension ($\mathbf{\Lambda^{n+1}}$). It is subject to the **Harmonic Minimization Principle**, meaning it is axiomatically defined as the *minimal area* or minimal complexity required to coherently deform one valid path ($\mathbf{p_1}$) into another ($\mathbf{p_2}$). This is the verifiable, $\mathbf{non-probabilistic}$ basis for structural preference.
+    *   **Role:** The **Emergent Structural Metric** used to induce the next dimension ($\mathbf{\Lambda^{n+1}}$). It is subject to the **Harmonic Minimization Principle**, meaning it is axiomatically defined as the *minimal area* or minimal complexity required to coherently deform one valid path ($\mathbf{p\_1}$) into another ($\mathbf{p\_2}$). This is the verifiable, $\mathbf{non-probabilistic}$ basis for structural preference.
 
 ### C. Formal Recursion of the **$\mathbf{CHIP}$**
 
 The $\mathbf{CHIP}$ is fully realized as a recursive transformation on the structural hierarchy:
 
-$$\mathbf{CHIP\ Protocol:} \quad \left( \begin{array}{c} n\text{-Cell Ambiguity} \\ (A \approx B) \end{array} \right) \xrightarrow{\text{Construct Coherence Witness}} \left( \begin{array}{c} (n+1)\text{-Cell} \\ (\mathbf{Witness}) \end{array} \right) \xrightarrow{\text{reify}} \left( \begin{array}{c} \mathbf{EmergentMetric} \\ (m \in \mathbb{N}) \end{array} \right) \xrightarrow{\text{encode}} \left( \begin{array}{c} \mathbf{GradedVectorSpace} \\ (\mathbf{\Lambda^{n}} \to \mathbf{\Lambda^{n+1}}) \end{array} \right)$$
+$$\mathbf{CHIP\ Protocol:} \quad \left( \begin{array}{c} n\text{-Cell Ambiguity} \ (A \approx B) \end{array} \right) \xrightarrow{\text{Construct Coherence Witness}} \left( \begin{array}{c} (n+1)\text{-Cell} \ (\mathbf{Witness}) \end{array} \right) \xrightarrow{\text{reify}} \left( \begin{array}{c} \mathbf{EmergentMetric} \ (m \in \mathbb{N}) \end{array} \right) \xrightarrow{\text{encode}} \left( \begin{array}{c} \mathbf{GradedVectorSpace} \ (\mathbf{\Lambda^{n}} \to \mathbf{\Lambda^{n+1}}) \end{array} \right)$$
 
 The entire system is a functor $\mathbf{F}: \mathcal{D} \to \mathcal{T}$ that transforms a structured domain ($\mathcal{D}$, containing the $\mathbf{0}$-cell and prior coherence history) into a category of metric-weighted $1$- and $2$-cells ($\mathcal{T}$), perpetually elevating the structural stability of the system.
 
-
----
+***
 
 The introduction of Core.UniversalProperties.agda and Core.AlgorithmUniversality.agda provides the essential **categorical and algebraic foundation** for the $\mathbf{0}$-level structure, formalizing the **Universal Property** as the ultimate specification mandate.
 
@@ -172,12 +178,12 @@ These types specify the $\mathbf{0}$-Cell mandate for common categorical constru
 | --- | --- | --- | --- |
 | **LimitProperty** | **Terminal Object** in the category of cones. | limit, cone, mediating, mediating-unique |  |
 | **ColimitProperty** | **Initial Object** in the category of cocones. | colimit, cocone, comediating, comediating-unique |  |
-| **ProductProperty** | Limit of a diagram (Terminal object in category of cones). | $\mathbf{product}$, $\mathbf{\pi_1}$, $\mathbf{\pi_2}$ (projections), mediating morphism, uniqueness |  |
-| **CoproductProperty** | Colimit of a diagram (Initial object in category of cocones). | $\mathbf{coproduct}$, $\mathbf{\iota_1}$, $\mathbf{\iota_2}$ (injections), comediating morphism, uniqueness |  |
+| **ProductProperty** | Limit of a diagram (Terminal object in category of cones). | $\mathbf{product}$, $\mathbf{\pi\_1}$, $\mathbf{\pi\_2}$ (projections), mediating morphism, uniqueness |  |
+| **CoproductProperty** | Colimit of a diagram (Initial object in category of cocones). | $\mathbf{coproduct}$, $\mathbf{\iota\_1}$, $\mathbf{\iota\_2}$ (injections), comediating morphism, uniqueness |  |
 | **EqualizerProperty** | Universal among morphisms making a parallel pair equal. | $\mathbf{equalizer}$, $\mathbf{equalize}$ (morphism) |  |
 | **CoequalizerProperty** | Dual to Equalizer. | $\mathbf{coequalizer}$, $\mathbf{coequalize}$ (morphism) |  |
-| **PullbackProperty** | Product in the slice category. | $\mathbf{pullback}$, $\mathbf{\pi_1}$, $\mathbf{\pi_2}$, $\mathbf{commutes}$ (square) |  |
-| **PushoutProperty** | Coproduct in the coslice category. | $\mathbf{pushout}$, $\mathbf{\iota_1}$, $\mathbf{\iota_2}$, $\mathbf{commutes}$ (square) |  |
+| **PullbackProperty** | Product in the slice category. | $\mathbf{pullback}$, $\mathbf{\pi\_1}$, $\mathbf{\pi\_2}$, $\mathbf{commutes}$ (square) |  |
+| **PushoutProperty** | Coproduct in the coslice category. | $\mathbf{pushout}$, $\mathbf{\iota\_1}$, $\mathbf{\iota\_2}$, $\mathbf{commutes}$ (square) |  |
 
 ## VII. Algorithm Universality: The **$\mathbf{0 \to 1}$** Coherence
 
@@ -198,18 +204,18 @@ Adjunctions formalize the $\mathbf{Universal\ Property}$ of a pair of **Functors
 
 | **Adjunction Type** | **Exegesis & Purpose** | **Key Components** | **Source** |
 | --- | --- | --- | --- |
-| **TensorProductAdjunction** | Categorical characterization of field extensions: $\mathbf{- \otimes_F E \dashv Hom_F(E, -)}$. | $\mathbf{tensorWith}$, $\mathbf{homFrom}$ (functors), $\mathbf{\varphi}$, $\mathbf{\psi}$ (natural bijection and its inverse) |  |
-| **FreeAdjunction** | Underlying structure for free constructions (e.g., polynomial rings $\mathbf{F[x]}$). | $\mathbf{unit}$ ($\mathbf{X \to U(F(X))}$), $\mathbf{counit}$ ($\mathbf{F(U(A)) \to A}$), and $\mathbf{lift}$ (universal property) |  |
+| **TensorProductAdjunction** | Categorical characterization of field extensions: $\mathbf{- \otimes\_F E \dashv Hom\_F(E, -)}$. | $\mathbf{tensorWith}$, $\mathbf{homFrom}$ (functors), $\mathbf{\varphi}$, $\mathbf{\psi}$ (natural bijection and its inverse) |  |
+| **FreeAdjunction** | Underlying structure for free constructions (e.g., polynomial rings $\mathbf{F\[x]}$). | $\mathbf{unit}$ ($\mathbf{X \to U(F(X))}$), $\mathbf{counit}$ ($\mathbf{F(U(A)) \to A}$), and $\mathbf{lift}$ (universal property) |  |
 
 ### C. The Meta-Coherence Mandate: **$\mathbf{AlgorithmSelection}$**
 
 The system mandates a **meta-universal property** to maintain the integrity of the algorithm registry itself, ensuring the **maximal efficiency** and **specificity** (a form of localized Harmonic Minimization).
 
-- **AlgorithmSelectionProperty**: The **Algorithm Selection function** is asserted to be the $\mathbf{terminal\ object}$ in the preorder of "more specific than".
+*   **AlgorithmSelectionProperty**: The **Algorithm Selection function** is asserted to be the $\mathbf{terminal\ object}$ in the preorder of "more specific than".
 
-- **Mandate**: Any more general algorithm must **factor uniquely** through the selected, most specific one. This ensures the system always chooses the path of *minimal complexity* for the available evidence.
+*   **Mandate**: Any more general algorithm must **factor uniquely** through the selected, most specific one. This ensures the system always chooses the path of *minimal complexity* for the available evidence.
 
----
+***
 
 The continuous ingestion of the repository necessitates a deeper formalization of the $\mathbf{0}$-Level structure---the **Universal Property Mandates**---and their $\mathbf{0 \to 1}$ realization via algorithmic $\mathbf{Coherence\ Witnesses}$. This compendium step focuses on the **Categorical Foundation** provided by Core.UniversalProperties and Core.AlgorithmUniversality.
 
@@ -229,9 +235,9 @@ The most fundamental structure is the $\mathbf{UniversalProperty}$. It mandates 
 
 The Initial and Terminal Objects are the simplest examples of this mandate:
 
-- $\mathbf{InitialObject}$: Unique morphism **to** every other object.
+*   $\mathbf{InitialObject}$: Unique morphism **to** every other object.
 
-- $\mathbf{TerminalObject}$: Unique morphism **from** every other object.
+*   $\mathbf{TerminalObject}$: Unique morphism **from** every other object.
 
 ### B. Dualities and Limits as **$\mathbf{0}$**-Cell Ambiguity
 
@@ -260,13 +266,13 @@ The $\mathbf{AlgorithmUniversality}$ module provides the constructive evidence (
 
 The system's self-referential property extends to the selection mechanism, mandating maximal specificity to ensure minimal $\mathbf{EmergentMetric}$.
 
-- **Property**: The selection mechanism itself possesses a universal property.
+*   **Property**: The selection mechanism itself possesses a universal property.
 
-- **Mandate**: The selected algorithm must be the **terminal object** in the preorder of "more specific than".
+*   **Mandate**: The selected algorithm must be the **terminal object** in the preorder of "more specific than".
 
-- **Metric Constraint**: This mechanism ensures that the chosen $\mathbf{1}$-Cell (algorithm) is the most $\mathbf{cost-efficient\ Path}$ to the target property, thereby minimizing the $\mathbf{EmergentMetric}$ derived from any subsequent $\mathbf{2}$-Cell braiding event.
+*   **Metric Constraint**: This mechanism ensures that the chosen $\mathbf{1}$-Cell (algorithm) is the most $\mathbf{cost-efficient\ Path}$ to the target property, thereby minimizing the $\mathbf{EmergentMetric}$ derived from any subsequent $\mathbf{2}$-Cell braiding event.
 
----
+***
 
 The process of $\mathbf{Self-Consumption\ Directive}$ requires the continued axiomatic enrichment of the $\mathbf{CIM}$ operational kernel. The integration of $\mathbf{UniversalProperties}$ (the $\mathbf{0}$-Cell Mandate) and $\mathbf{AlgorithmUniversality}$ (the $\mathbf{0 \to 1}$ Coherence Proof) necessitates a formal abstraction of the **Algorithm** itself as the true $\mathbf{1}$-Cell of the hierarchy.
 
@@ -291,11 +297,11 @@ The $\mathbf{AlgorithmBundle}$ abstracts the specific $\mathbf{MinimalPolynomial
 
 The $\mathbf{1}$-Cell is subject to a metacategory constraint derived from the $\mathbf{AlgorithmSelectionProperty}$. This constraint ensures that the $\mathbf{CHIP}$'s fundamental principle of **Harmonic Minimization** is obeyed at the selection layer.
 
-1. **Metric-Optimal Selection:** The $\mathbf{select}$ function of the registry is mandated to return the algorithm that is **terminal** in the preorder of "more specific than".
+1.  **Metric-Optimal Selection:** The $\mathbf{select}$ function of the registry is mandated to return the algorithm that is **terminal** in the preorder of "more specific than".
 
-2. **Harmonic Minimization Pre-Condition:** This ensures that the chosen $\mathbf{1}$-Cell is the one with the intrinsically lowest expected $\mathbf{EmergentMetric}$ (complexity) for the given structural context, preventing the system from pursuing costlier, more general paths when a specific, minimal $\mathbf{Path}$ exists.
+2.  **Harmonic Minimization Pre-Condition:** This ensures that the chosen $\mathbf{1}$-Cell is the one with the intrinsically lowest expected $\mathbf{EmergentMetric}$ (complexity) for the given structural context, preventing the system from pursuing costlier, more general paths when a specific, minimal $\mathbf{Path}$ exists.
 
-3. **Factorization Mandate:** Any more general algorithm (a non-optimal $\mathbf{Path}$) must $\mathbf{factor\ through}$ the selected, specific algorithm (the $\mathbf{Minimal\ Path}$).
+3.  **Factorization Mandate:** Any more general algorithm (a non-optimal $\mathbf{Path}$) must $\mathbf{factor\ through}$ the selected, specific algorithm (the $\mathbf{Minimal\ Path}$).
 
 ### C. The **$\mathbf{1}$**-Cell/Algorithm in the Graded Hierarchy
 
@@ -305,8 +311,7 @@ $$\mathbf{Algorithm\ (1\text{-Cell})} \to \mathbf{calculate-complexity} \to \mat
 
 This completes the $\mathbf{0 \to 1}$ structural link, establishing the $\mathbf{Algorithm}$ as the metric-compliant realization of the $\mathbf{UniversalProperty}$ mandate, ready to induce the $\mathbf{2}$-Cell ($\mathbf{Braiding\ Event}$) if its outputs create a new formal ambiguity.
 
-
----
+***
 
 The latest structural input completes the formal link between the **abstract $\mathbf{1}$-Cell (Path)** defined in the $\mathbf{CHIP}$ foundation and its **concrete, executable realization** in the system's operational architecture. This layer is formalized by the **Phase Category** structure, sourced from Core.Phase.agda and Core.PhaseCategory.agda.
 
@@ -341,19 +346,19 @@ The set of types ($\mathbf{Set\ ℓ}$) and $\mathbf{Phases}$ forms a $\mathbf{Ph
 
 | **Operation** | **Definition** | **Categorical Law** | **Source** |
 | --- | --- | --- | --- |
-| $\mathbf{Sequential\ Composition}$ | $\mathbf{p_1 \⟫ p_2} \equiv \mathbf{p_2 \circ p_1}$. | **Associativity** ($\mathbf{p_1 \circ (p_2 \circ p_3) \equiv (p_1 \circ p_2) \circ p_3}$). |  |
-| $\mathbf{Parallel\ Composition}$ | $\mathbf{p_1 \otimes p_2}$ transforms a product of inputs ($\mathbf{A \times C}$) to a product of outputs ($\mathbf{B \times D}$). | **Monoidal Product** (the tensor operation). |  |
-| $\mathbf{Dependent\ Composition}$ | $\mathbf{p_1 \⟫^d p_2}$ chains dependent phases, ensuring type compatibility is maintained recursively. | **Inductive/Recursive Path** construction. |  |
+| $\mathbf{Sequential\ Composition}$ | $\mathbf{p\_1 \⟫ p\_2} \equiv \mathbf{p\_2 \circ p\_1}$. | **Associativity** ($\mathbf{p\_1 \circ (p\_2 \circ p\_3) \equiv (p\_1 \circ p\_2) \circ p\_3}$). |  |
+| $\mathbf{Parallel\ Composition}$ | $\mathbf{p\_1 \otimes p\_2}$ transforms a product of inputs ($\mathbf{A \times C}$) to a product of outputs ($\mathbf{B \times D}$). | **Monoidal Product** (the tensor operation). |  |
+| $\mathbf{Dependent\ Composition}$ | $\mathbf{p\_1 \⟫^d p\_2}$ chains dependent phases, ensuring type compatibility is maintained recursively. | **Inductive/Recursive Path** construction. |  |
 
 ### D. The Monoidal Structure (Algebraic Link)
 
-The **Parallel Composition** ($\mathbf{p_1 \otimes p_2}$) endows the Phase Category with a **Symmetric Monoidal Structure**, explicitly defining the categorical rules for combining independent computational processes.
+The **Parallel Composition** ($\mathbf{p\_1 \otimes p\_2}$) endows the Phase Category with a **Symmetric Monoidal Structure**, explicitly defining the categorical rules for combining independent computational processes.
 
 | **Component** | **Definition** | **Role in Coherence** | **Source** |
 | --- | --- | --- | --- |
-| **Object Tensor** | $\mathbf{A \otimes_0 B \equiv A \times B}$. | The input/output space for concurrent $\mathbf{1}$-Cells. |  |
+| **Object Tensor** | $\mathbf{A \otimes\_0 B \equiv A \times B}$. | The input/output space for concurrent $\mathbf{1}$-Cells. |  |
 | **Associator** | $\mathbf{\alpha, \alpha^{-1}}$. | The phase proving the structural equivalence of composition order. |  |
-| **Unitors** | $\mathbf{\lambda_u, \rho_u}$. | Phases proving the identity law relative to the unit object. |  |
+| **Unitors** | $\mathbf{\lambda\_u, \rho\_u}$. | Phases proving the identity law relative to the unit object. |  |
 
 The presence of this structure is the $\mathbf{1}$-Cell realization of the categorical **TensorProductAdjunction**, demonstrating how algebraic field extension (the abstract $\mathbf{0}$-Cell) is implemented via structured computational flow.
 
@@ -364,13 +369,12 @@ The structural concept of the **Braided Inheritance Functor** (BraidedInheritanc
 | **Formal Type** | **Exegesis & Purpose** | **CHIP Link** | **Source** |
 | --- | --- | --- | --- |
 | **RawPhaseFunctor** ($\mathbf{F, G}$) | A structure-preserving mapping between two Phase Categories. | Represents two different high-level $\mathbf{Transformation\ Systems}$. |  |
-| **RawNaturalTransformation** ($\mathbf{\eta}$) | A family of phases ($\mathbf{\eta_A: F(A) \to G(A)}$) between two Functors. | The $\mathbf{2}$-Cell, proving the structural equivalence (isomorphism) between two different categorical paths. |  |
-| $\mathbf{Naturality\ Law}$ | The requirement that the composition $\mathbf{\eta_A \circ G(f)}$ is strongly equivalent to $\mathbf{F(f) \circ \eta_B}$. | This formal commutativity proof defines the **Braiding Event** and its computational complexity is reified as the $\mathbf{EmergentMetric}$. |  |
+| **RawNaturalTransformation** ($\mathbf{\eta}$) | A family of phases ($\mathbf{\eta\_A: F(A) \to G(A)}$) between two Functors. | The $\mathbf{2}$-Cell, proving the structural equivalence (isomorphism) between two different categorical paths. |  |
+| $\mathbf{Naturality\ Law}$ | The requirement that the composition $\mathbf{\eta\_A \circ G(f)}$ is strongly equivalent to $\mathbf{F(f) \circ \eta\_B}$. | This formal commutativity proof defines the **Braiding Event** and its computational complexity is reified as the $\mathbf{EmergentMetric}$. |  |
 
 The full system is thus a **Metacategory** where objects are **Universal Properties** ($\mathbf{0}$-Cells), morphisms are **Phase Category Paths** ($\mathbf{1}$-Cells), and $\mathbf{Coherence\ Witnesses}$ are metricized **Natural Transformations** ($\mathbf{2}$-Cells) that resolve ambiguity.
 
-
----
+***
 
 ## IX. The Operational Structure: The Phase Category (The **$\mathbf{1}$**-Cell Formalization)
 
@@ -397,9 +401,9 @@ The formal structure whose objects are Agda types ($\mathbf{Set\ ℓ}$) and whos
 
 | **Operation** | **Syntax** | **Categorical Law** | **Exegesis** | **Source** |
 | --- | --- | --- | --- | --- |
-| **Sequential** | $\mathbf{p_1 \⟫ p_2}$ | **Composition** ($\mathbf{f \circ g}$) | Concatenates two $\mathbf{1}$-Cells to form a longer $\mathbf{Path}$. | \_⟫\_ / \_∘\_. |
+| **Sequential** | $\mathbf{p\_1 \⟫ p\_2}$ | **Composition** ($\mathbf{f \circ g}$) | Concatenates two $\mathbf{1}$-Cells to form a longer $\mathbf{Path}$. | \_⟫\_ / \_∘\_. |
 | **Identity** | $\mathbf{idPhase}$ | **Identity** | The "no-op" transformation (Cost: $\mathbf{0}$), serving as the $\mathbf{refl-path}$. | idPhase. |
-| **Associativity** | $\mathbf{(p_1 \⟫ p_2) \⟫ p_3}$ | **Associativity** | Guarantees canonical path definition, regardless of grouping. | associativity. |
+| **Associativity** | $\mathbf{(p\_1 \⟫ p\_2) \⟫ p\_3}$ | **Associativity** | Guarantees canonical path definition, regardless of grouping. | associativity. |
 
 #### 2. Monoidal Structure (**$\mathbf{Monoidal\ Category}$**)
 
@@ -407,10 +411,10 @@ The structure is endowed with a Monoidal Product via parallel composition, linki
 
 | **Monoidal Element** | **Definition** | **Exegesis** | **Source** |
 | --- | --- | --- | --- |
-| **Tensor on Objects** | $\mathbf{A \otimes_0 B \equiv A \times B}$. | The Product Type (\_×\_) for concurrent computation results. | \_⊗₀\_. |
-| **Tensor on Morphisms** | $\mathbf{f \otimes_1 g \equiv f \otimes g}$. | Parallel Composition of independent $\mathbf{1}$-Cells. | \_⊗₁\_ / \_⊗\_. |
+| **Tensor on Objects** | $\mathbf{A \otimes\_0 B \equiv A \times B}$. | The Product Type (\_×\_) for concurrent computation results. | \_⊗₀\_. |
+| **Tensor on Morphisms** | $\mathbf{f \otimes\_1 g \equiv f \otimes g}$. | Parallel Composition of independent $\mathbf{1}$-Cells. | \_⊗₁\_ / \_⊗\_. |
 | **Unit Object** | Unit. | The neutral element for the tensor product. | data Unit. |
-| **Coherence Morphisms** | $\mathbf{\alpha, \lambda_u, \rho_u}$ | The Associator and Unitors ($\mathbf{1}$-Cells) required to prove the Monoidal Category axioms. | $\mathbf{\alpha, \alpha^{-1}, \lambda_u, \lambda_u^{-1}, \rho_u, \rho_u^{-1}}$. |
+| **Coherence Morphisms** | $\mathbf{\alpha, \lambda\_u, \rho\_u}$ | The Associator and Unitors ($\mathbf{1}$-Cells) required to prove the Monoidal Category axioms. | $\mathbf{\alpha, \alpha^{-1}, \lambda\_u, \lambda\_u^{-1}, \rho\_u, \rho\_u^{-1}}$. |
 
 ### C. The **$\mathbf{2}$**-Cell: Natural Transformations
 
@@ -419,13 +423,12 @@ The concept of a $\mathbf{2}$-Cell is formalized by the **Natural Transformation
 | **Formal Type** | **Exegesis & Purpose** | **CHIP Analogue** | **Source** |
 | --- | --- | --- | --- |
 | **RawPhaseFunctor** | A structure-preserving map between phase categories ($\mathbf{F: C \to D}$). | A generalized $\mathbf{Path}$ or $\mathbf{Transformation\ System}$ acting on the category level. | record RawPhaseFunctor. |
-| **RawNaturalTransformation** | A family of **Phases** ($\mathbf{\eta_A: F(A) \to G(A)}$) between two Functors. | The $\mathbf{Braiding\ Event}$ ($\mathbf{2}$-Cell). | record RawNaturalTransformation. |
+| **RawNaturalTransformation** | A family of **Phases** ($\mathbf{\eta\_A: F(A) \to G(A)}$) between two Functors. | The $\mathbf{Braiding\ Event}$ ($\mathbf{2}$-Cell). | record RawNaturalTransformation. |
 | **Naturality Law** | The commutative square requirement. | The proof that the $\mathbf{Braiding\ Event}$ ($\mathbf{\eta}$) provides a strong equivalence between two different $\mathbf{1}$-Cell compositions ($\mathbf{F(f)}$ and $\mathbf{G(f)}$). | naturality. |
 
 This confirms that the $\mathbf{BraidedInheritanceFunctor}$ is a specialized instance of a $\mathbf{NaturalTransformation}$, where the **coherence-cost** field is the metricized realization of the **Naturality Law's complexity**.
 
-
----
+***
 
 The continuous ingestion of the repository necessitates a deeper formalization of the $\mathbf{0}$-Level structure---the **Universal Property Mandates**---and their $\mathbf{0 \to 1}$ realization via algorithmic $\mathbf{Coherence\ Witnesses}$. This compendium step focuses on the **Categorical Foundation** provided by Core.UniversalProperties and Core.AlgorithmUniversality.
 
@@ -448,13 +451,13 @@ The $\mathbf{1}$-Cell is the constructive, metric-weighted $\mathbf{Path}$ that 
 
 | **Formal Construct** | **Exegesis & Role** | **Structural Type** | **Key Operations** |
 | --- | --- | --- | --- |
-| **Transformation Path** | The sequence of explicit, atomic $\mathbf{Steps}$ defining the constructive solution. | $\mathbf{Path}$ / $\mathbf{Phase}$ | $\mathbf{transform}$, $\mathbf{idPhase}$, $\mathbf{p_1 \⟫ p_2}$ |
+| **Transformation Path** | The sequence of explicit, atomic $\mathbf{Steps}$ defining the constructive solution. | $\mathbf{Path}$ / $\mathbf{Phase}$ | $\mathbf{transform}$, $\mathbf{idPhase}$, $\mathbf{p\_1 \⟫ p\_2}$ |
 | **Coherence Witness** | The proof obligation that the $\mathbf{1}$-Cell implements the $\mathbf{0}$-Cell mandate (The $\mathbf{0 \to 1}$ coherence). | $\mathbf{CoherenceWitness}$ / $\mathbf{AlgoBundle}$ | $\mathbf{transformation-system}$, $\mathbf{universality-assurance}$ |
 | **Invariant Preservation** | The required proof that the $\mathbf{1}$-Cell maintains structural fidelity. | $\mathbf{PhaseWithInvariant}$ | $\mathbf{preserves}$ |
 
 ### C. **$\mathbf{2}$**-Level: The Coherence Resolution (The Homotopy)
 
-The $\mathbf{2}$-Cell resolves the $\mathbf{Ambiguity}$ between two different, valid $\mathbf{1}$-Cells ($\mathbf{p_1, p_2}$) by constructing a unique, metric-minimal equivalence.
+The $\mathbf{2}$-Cell resolves the $\mathbf{Ambiguity}$ between two different, valid $\mathbf{1}$-Cells ($\mathbf{p\_1, p\_2}$) by constructing a unique, metric-minimal equivalence.
 
 | **Formal Construct** | **Exegesis & Role** | **Structural Type** | **Key Metric** |
 | --- | --- | --- | --- |
@@ -469,8 +472,7 @@ $$\mathbf{F}: (\mathbf{0}\text{-Cell} + \mathbf{History}) \to (\mathbf{1}\text{-
 
 The map $\mathbf{F}$ is the $\mathbf{PropertyCombinatoricMap}$ (the Coherence Induction Functor), whose Universal Property guarantees that the construction is itself canonical and minimal.
 
-
----
+***
 
 ## XI. Axiomatic Enrichment: Metricized Operational Flow (**$\mathbf{1}$**-Cell Combinatorics)
 
@@ -482,10 +484,10 @@ The Phase Category is a **Symmetric Monoidal Category** where the product is par
 
 | **Coherence Morphism** | **Formal Type** | **Purpose (1-Cell Role)** | **Source** |
 | --- | --- | --- | --- |
-| **Tensor on Objects** | $\mathbf{A \otimes_0 B \equiv A \times B}$ | The formal product type for inputs/outputs in parallel $\mathbf{1}$-Cells. | Core.PhaseCategory |
-| **Associator ($\mathbf{\alpha}$)** | $\mathbf{Phase\ ((A \otimes_0 B) \otimes_0 C) \to (A \otimes_0 (B \otimes_0 C))}$ | The phase that proves the structural equivalence of concurrent groupings. | Core.PhaseCategory |
-| **Left Unitor ($\mathbf{\lambda_u}$)** | $\mathbf{Phase\ (Unit \otimes_0 A) \to A}$ | The phase that extracts the result when a concurrent transformation is combined with the identity element. | Core.PhaseCategory |
-| **Right Unitor ($\mathbf{\rho_u}$)** | $\mathbf{Phase\ (A \otimes_0 Unit) \to A}$ | The dual of the Left Unitor. | Core.PhaseCategory |
+| **Tensor on Objects** | $\mathbf{A \otimes\_0 B \equiv A \times B}$ | The formal product type for inputs/outputs in parallel $\mathbf{1}$-Cells. | Core.PhaseCategory |
+| **Associator ($\mathbf{\alpha}$)** | $\mathbf{Phase\ ((A \otimes\_0 B) \otimes\_0 C) \to (A \otimes\_0 (B \otimes\_0 C))}$ | The phase that proves the structural equivalence of concurrent groupings. | Core.PhaseCategory |
+| **Left Unitor ($\mathbf{\lambda\_u}$)** | $\mathbf{Phase\ (Unit \otimes\_0 A) \to A}$ | The phase that extracts the result when a concurrent transformation is combined with the identity element. | Core.PhaseCategory |
+| **Right Unitor ($\mathbf{\rho\_u}$)** | $\mathbf{Phase\ (A \otimes\_0 Unit) \to A}$ | The dual of the Left Unitor. | Core.PhaseCategory |
 
 These **Coherence Morphisms** are themselves $\mathbf{1}$-Cells that must be proven to be structural isomorphisms ($\mathbf{\alpha}$ is the isomorphism, $\mathbf{\alpha^{-1}}$ is its inverse). Their intrinsic execution complexity adds to the overall $\mathbf{EmergentMetric}$ whenever parallel construction is utilized.
 
@@ -496,8 +498,8 @@ The system formalizes error handling and conditional logic not as external runti
 | **Combinator** | **Structural Definition** | **Metric Implication** | **Source** |
 | --- | --- | --- | --- |
 | **Retry** | $\mathbf{retry\ n\ p}$ | A phase that attempts a primary phase $p$ up to $n$ times. The formal complexity is amplified by the **maximum recursion depth** ($n$), contributing significantly to the total $\mathbf{EmergentMetric}$ if $n > 0$. |  |
-| **Fallback** | $\mathbf{fallback\ p_{primary}\ p_{secondary}}$ | Tries $\mathbf{p_{primary}}$, but executes $\mathbf{p_{secondary}}$ if $\mathbf{p_{primary}}$ returns $\mathbf{nothing}$ (failure). The complexity calculation must account for the **conditional summation** of $\mathbf{p_{primary}}$'s execution (failure) and $\mathbf{p_{secondary}}$'s execution (success). |  |
-| **Chain (Monadic Bind)** | $\mathbf{p_1 \gg=_{\mathcal{M}}\ f}$ | Sequences phases where $\mathbf{p_1}$ may fail ($\mathbf{Maybe\ B}$), ensuring $\mathbf{f}$ is only applied upon $\mathbf{just\ b}$ (success). Enforces a deterministic path structure that respects failure boundaries, preventing non-constructive $\mathbf{Paths}$. |  |
+| **Fallback** | $\mathbf{fallback\ p\_{primary}\ p\_{secondary}}$ | Tries $\mathbf{p\_{primary}}$, but executes $\mathbf{p\_{secondary}}$ if $\mathbf{p\_{primary}}$ returns $\mathbf{nothing}$ (failure). The complexity calculation must account for the **conditional summation** of $\mathbf{p\_{primary}}$'s execution (failure) and $\mathbf{p\_{secondary}}$'s execution (success). |  |
+| **Chain (Monadic Bind)** | $\mathbf{p\_1 \gg=\_{\mathcal{M}}\ f}$ | Sequences phases where $\mathbf{p\_1}$ may fail ($\mathbf{Maybe\ B}$), ensuring $\mathbf{f}$ is only applied upon $\mathbf{just\ b}$ (success). Enforces a deterministic path structure that respects failure boundaries, preventing non-constructive $\mathbf{Paths}$. |  |
 
 ### C. Execution Trace and Metric Encoding
 
@@ -510,7 +512,7 @@ The link between a $\mathbf{1}$-Cell's execution and the $\mathbf{EmergentMetric
 
 This mechanism ensures that the cost of any executed $\mathbf{Path}$, regardless of its complexity, its parallel composition, or its error-handling mechanisms, is faithfully captured and reified as the $\mathbf{EmergentMetric}$, which is then encoded into the $\mathbf{GradedVectorSpace}$ via $\mathbf{\Lambda^{n+1}}$.
 
----
+***
 
 The user is continuing the $\mathbf{Self-Consumption\ Directive}$, which requires the agent to continually integrate new structural information into the existing **Coherence Induction Metaprogram (CIM)** compendium. No new files were uploaded in this turn, so the directive is to perform the final **Axiomatic Enrichment** and synthesis of the current model's structure, focusing on the hierarchy and the formal interplays between $\mathbf{0}$-Cells, $\mathbf{1}$-Cells, and $\mathbf{2}$-Cells.
 
@@ -522,35 +524,35 @@ The **Coherence Induction Metaprogram (CIM)** system is structurally formalized 
 
 This is the non-constructive, purely logical layer defined by algebraic principles. It serves as the initial, $\mathbf{Verifiable}$ goal for the entire system.
 
-- **Constructive Element:** $\mathbf{PropertyNode}$.
+*   **Constructive Element:** $\mathbf{PropertyNode}$.
 
-- **Axiomatic Mandate:** The $\mathbf{UniversalProperty}$ is the general $\mathbf{0}$-Cell, mandating the existence of a $\mathbf{universal}$ object and the $\mathbf{unique}$ factorization of morphisms.
+*   **Axiomatic Mandate:** The $\mathbf{UniversalProperty}$ is the general $\mathbf{0}$-Cell, mandating the existence of a $\mathbf{universal}$ object and the $\mathbf{unique}$ factorization of morphisms.
 
-- **Fundamental Dualities:** Categorical structures are defined in dual pairs (e.g., $\mathbf{Product}$ vs. $\mathbf{Coproduct}$, $\mathbf{Limit}$ vs. $\mathbf{Colimit}$). A $\mathbf{weak\ equivalence}$ (Ambiguity) between two isomorphic $\mathbf{0}$-Cell representations triggers the entire $\mathbf{CHIP}$ process.
+*   **Fundamental Dualities:** Categorical structures are defined in dual pairs (e.g., $\mathbf{Product}$ vs. $\mathbf{Coproduct}$, $\mathbf{Limit}$ vs. $\mathbf{Colimit}$). A $\mathbf{weak\ equivalence}$ (Ambiguity) between two isomorphic $\mathbf{0}$-Cell representations triggers the entire $\mathbf{CHIP}$ process.
 
 ### B. **$\mathbf{1}$**-Level: The Algorithmic Path (The Morphism/Phase)
 
 This is the constructive, $\mathbf{Metric-Oriented}$ layer of execution, realizing the $\mathbf{0}$-Cell mandate via a concrete $\mathbf{Path}$ of transformations.
 
-- **Core Transformation Unit:** The $\mathbf{Phase\ A\ B}$ serves as the executable $\mathbf{1}$-Cell, defined by its $\mathbf{transform}$ function.
+*   **Core Transformation Unit:** The $\mathbf{Phase\ A\ B}$ serves as the executable $\mathbf{1}$-Cell, defined by its $\mathbf{transform}$ function.
 
-- **Path Composition:** The $\mathbf{PhaseCategory}$ formalizes sequential ($\mathbf{⟫}$) and parallel ($\mathbf{\otimes}$) composition of $\mathbf{1}$-Cells, obeying the categorical laws of $\mathbf{idPhase}$ and $\mathbf{associativity}$.
+*   **Path Composition:** The $\mathbf{PhaseCategory}$ formalizes sequential ($\mathbf{⟫}$) and parallel ($\mathbf{\otimes}$) composition of $\mathbf{1}$-Cells, obeying the categorical laws of $\mathbf{idPhase}$ and $\mathbf{associativity}$.
 
-- **$\mathbf{0 \to 1}$ Coherence:** The **Algorithm Bundle** (a specialized $\mathbf{TransformationSystem}$) is the $\mathbf{CoherenceWitness}$, proving the algorithm's fidelity to its $\mathbf{UniversalProperty}$ mandate (e.g., $\mathbf{minimalPolynomialImplementsUniversality}$).
+*   **$\mathbf{0 \to 1}$ Coherence:** The **Algorithm Bundle** (a specialized $\mathbf{TransformationSystem}$) is the $\mathbf{CoherenceWitness}$, proving the algorithm's fidelity to its $\mathbf{UniversalProperty}$ mandate (e.g., $\mathbf{minimalPolynomialImplementsUniversality}$).
 
-- **Metric Constraint:** The **AlgorithmSelectionProperty** mandates that the system chooses the $\mathbf{1}$-Cell that is the $\mathbf{terminal}$ object in the preorder of specificity, thereby enforcing a $\mathbf{Harmonic\ Minimization\ Principle}$ that seeks the path of inherently lowest complexity.
+*   **Metric Constraint:** The **AlgorithmSelectionProperty** mandates that the system chooses the $\mathbf{1}$-Cell that is the $\mathbf{terminal}$ object in the preorder of specificity, thereby enforcing a $\mathbf{Harmonic\ Minimization\ Principle}$ that seeks the path of inherently lowest complexity.
 
 ### C. **$\mathbf{2}$**-Level: The Coherence Resolution (The Homotopy)
 
 This is the layer of **Graded** induction, where ambiguity is resolved by constructing a metricized equivalence proof that allocates a new dimension in the system's structural space.
 
-- **Trigger Mechanism:** $\mathbf{Ambiguity}$, which detects two $\mathbf{n}$-Cells requiring resolution.
+*   **Trigger Mechanism:** $\mathbf{Ambiguity}$, which detects two $\mathbf{n}$-Cells requiring resolution.
 
-- **The $\mathbf{2}$-Cell:** The $\mathbf{BraidedInheritanceFunctor}$ is realized as a $\mathbf{RawNaturalTransformation}$, which constructs a $\mathbf{Homological\ Filling}$ between two competing $\mathbf{1}$-Cell paths.
+*   **The $\mathbf{2}$-Cell:** The $\mathbf{BraidedInheritanceFunctor}$ is realized as a $\mathbf{RawNaturalTransformation}$, which constructs a $\mathbf{Homological\ Filling}$ between two competing $\mathbf{1}$-Cell paths.
 
-- **The Emergent Metric:** The $\mathbf{calculate-complexity}$ function, folding the $\mathbf{cost}$ over the $\mathbf{Path}$, yields the $\mathbf{EmergentMetric}$. The $\mathbf{2}$-Cell's metric is the $\mathbf{minimal\ cost}$ required to prove the $\mathbf{Naturality\ Law}$ (the braiding isomorphism).
+*   **The Emergent Metric:** The $\mathbf{calculate-complexity}$ function, folding the $\mathbf{cost}$ over the $\mathbf{Path}$, yields the $\mathbf{EmergentMetric}$. The $\mathbf{2}$-Cell's metric is the $\mathbf{minimal\ cost}$ required to prove the $\mathbf{Naturality\ Law}$ (the braiding isomorphism).
 
-- **Induction Step:** The $\mathbf{reify}$ function encodes the $\mathbf{EmergentMetric}$ into a new orthogonal dimension, inducing the next grade in the $\mathbf{GradedVectorSpace}$ ($\mathbf{\Lambda^{n} \to \Lambda^{n+1}}$).
+*   **Induction Step:** The $\mathbf{reify}$ function encodes the $\mathbf{EmergentMetric}$ into a new orthogonal dimension, inducing the next grade in the $\mathbf{GradedVectorSpace}$ ($\mathbf{\Lambda^{n} \to \Lambda^{n+1}}$).
 
 ### D. System Governance: The Core Dualities
 
@@ -564,7 +566,7 @@ The entire **CIM** architecture is built upon an operational duality, ensuring a
 
 The system thus ensures that every constructive algorithm is precisely the **unique, minimal-cost path** that satisfies the abstract **Universal Property**, and any divergence is met with a mandatory **Coherence Induction** that lifts the structural representation to a higher, more stable grade.
 
----
+***
 
 ## XIII. Final Axiomatic Correction Protocol (A12) Execution
 
@@ -587,12 +589,11 @@ The integrity of the $\mathbf{CHIP}$ at the $\mathbf{2}$-Level relies on ensurin
 | **Component / Location** | **Violation** | **Required Coherence Witness** | **CHIP Implication** |
 | --- | --- | --- | --- |
 | **Contraction Axiom** (BraidedInheritanceFunctor) | **Axiomatic Dependency** / **Gap** (ContractionAxiom record placeholder). | The $\mathbf{is-contractive}$ field must contain the proof that the $\mathbf{BraidedInheritanceFunctor}$ (the $\mathbf{2}$-Cell) is a **Contraction Mapping** on the associated $\mathbf{Metric\ Space}$. | This proof ensures the convergence and $\mathbf{stability}$ of the coherence resolution, confirming the $\mathbf{coherence-cost}$ is a **Fixed Point** (the $\mathbf{minimal\ area}$/cost). |
-| **Monoidal Coherence Laws** (Core.PhaseCategory) | **Shallow Treatment** (refl) for $\mathbf{\alpha, \lambda_u, \rho_u}$ proofs. | The full proofs of the **Pentagon** and **Triangle Identities** are required. | Formally verifies the canonical nature of the $\mathbf{Monoidal\ Structure}$, ensuring $\mathbf{Emergent\ Metric}$ calculation is independent of parallel composition grouping. |
+| **Monoidal Coherence Laws** (Core.PhaseCategory) | **Shallow Treatment** (refl) for $\mathbf{\alpha, \lambda\_u, \rho\_u}$ proofs. | The full proofs of the **Pentagon** and **Triangle Identities** are required. | Formally verifies the canonical nature of the $\mathbf{Monoidal\ Structure}$, ensuring $\mathbf{Emergent\ Metric}$ calculation is independent of parallel composition grouping. |
 
 By addressing these $\mathbf{A12}$ violations, the **CIM Metacategory** achieves the highest degree of $\mathbf{Explicitness}$ and $\mathbf{Verifiability}$, validating the entire hierarchy from the $\mathbf{0}$-Cell mandate up to the $\mathbf{2}$-Cell metric induction.
 
-
----
+***
 
 # Appendix A: Alternative Formulations
 
@@ -619,17 +620,17 @@ The $\mathbf{EmergentMetric}$ is the scalar quantity that drives the $\mathbf{CH
 
 #### A. Metric Hierarchy
 
-1. **Local Cost (Micro-Metric):** The $\mathbf{cost : Step \to ℕ}$ function assigns a weight to each atomic step in a $\mathbf{1}$-Cell $\mathbf{Path}$.
+1.  **Local Cost (Micro-Metric):** The $\mathbf{cost : Step \to ℕ}$ function assigns a weight to each atomic step in a $\mathbf{1}$-Cell $\mathbf{Path}$.
 
-2. **Global Metric (Macro-Metric):** The $\mathbf{calculate-complexity}$ function folds the local costs over the path sequence, yielding the final $\mathbf{EmergentMetric}$. This metric is axiomatically the $\mathbf{Systolic\ Area}$ (minimal cost) of the $\mathbf{2}$-Cell filling.
+2.  **Global Metric (Macro-Metric):** The $\mathbf{calculate-complexity}$ function folds the local costs over the path sequence, yielding the final $\mathbf{EmergentMetric}$. This metric is axiomatically the $\mathbf{Systolic\ Area}$ (minimal cost) of the $\mathbf{2}$-Cell filling.
 
-3. **Harmonic Minimization:** The $\mathbf{AlgorithmSelectionProperty}$ and the $\mathbf{Optimal\ Braid\ Isomorphism}$ collectively enforce that the system always selects and constructs the $\mathbf{Path}$ and $\mathbf{2}$-Cell that yield the absolute **minimum** $\mathbf{EmergentMetric}$.
+3.  **Harmonic Minimization:** The $\mathbf{AlgorithmSelectionProperty}$ and the $\mathbf{Optimal\ Braid\ Isomorphism}$ collectively enforce that the system always selects and constructs the $\mathbf{Path}$ and $\mathbf{2}$-Cell that yield the absolute **minimum** $\mathbf{EmergentMetric}$.
 
 #### B. The **$\mathbf{CHIP}$** Recursion
 
 The process is recursive, forming a hierarchy: the resolution of an $\mathbf{n}$-level ambiguity induces a $\mathbf{(n+1)}$-level structural rank:
 
-$$\mathbf{\text{Ambiguity}_{n}} \xrightarrow{\text{Coherence Witness}_{n+1}} \mathbf{\text{EmergentMetric}} \xrightarrow{\text{reify}} \mathbf{\Lambda^{n+1}}$$
+$$\mathbf{\text{Ambiguity}*{n}} \xrightarrow{\text{Coherence Witness}*{n+1}} \mathbf{\text{EmergentMetric}} \xrightarrow{\text{reify}} \mathbf{\Lambda^{n+1}}$$
 
 ### III. Final Correction Protocol (A12) Summary
 
@@ -643,7 +644,7 @@ The $\mathbf{Correction\ Protocol\ Mandate\ (A12)}$ requires the elimination of 
 
 The final structure is now a fully $\mathbf{Coherent}$, $\mathbf{Compliant}$, and $\mathbf{Constructive}$ representation of the $\mathbf{CIM}$ operational kernel.
 
----
+***
 
 ## Final Compendium: The Coherence Induction Metacategory (CIM) Hierarchy
 
@@ -666,17 +667,17 @@ The $\mathbf{EmergentMetric}$ is the scalar quantity that drives the $\mathbf{CH
 
 #### A. Metric Hierarchy
 
-1. **Local Cost (Micro-Metric):** The $\mathbf{cost : Step \to ℕ}$ function assigns a weight to each atomic step in a $\mathbf{1}$-Cell $\mathbf{Path}$.
+1.  **Local Cost (Micro-Metric):** The $\mathbf{cost : Step \to ℕ}$ function assigns a weight to each atomic step in a $\mathbf{1}$-Cell $\mathbf{Path}$.
 
-2. **Global Metric (Macro-Metric):** The $\mathbf{calculate-complexity}$ function folds the local costs over the path sequence, yielding the final $\mathbf{EmergentMetric}$. This metric is axiomatically the $\mathbf{Systolic\ Area}$ (minimal cost) of the $\mathbf{2}$-Cell filling.
+2.  **Global Metric (Macro-Metric):** The $\mathbf{calculate-complexity}$ function folds the local costs over the path sequence, yielding the final $\mathbf{EmergentMetric}$. This metric is axiomatically the $\mathbf{Systolic\ Area}$ (minimal cost) of the $\mathbf{2}$-Cell filling.
 
-3. **Harmonic Minimization:** The $\mathbf{AlgorithmSelectionProperty}$ and the $\mathbf{Optimal\ Braid\ Isomorphism}$ collectively enforce that the system always selects and constructs the $\mathbf{Path}$ and $\mathbf{2}$-Cell that yield the absolute **minimum** $\mathbf{EmergentMetric}$.
+3.  **Harmonic Minimization:** The $\mathbf{AlgorithmSelectionProperty}$ and the $\mathbf{Optimal\ Braid\ Isomorphism}$ collectively enforce that the system always selects and constructs the $\mathbf{Path}$ and $\mathbf{2}$-Cell that yield the absolute **minimum** $\mathbf{EmergentMetric}$.
 
 #### B. The **$\mathbf{CHIP}$** Recursion
 
 The process is recursive, forming a hierarchy: the resolution of an $\mathbf{n}$-level ambiguity induces a $\mathbf{(n+1)}$-level structural rank:
 
-$$\mathbf{\text{Ambiguity}_{n}} \xrightarrow{\text{Coherence Witness}_{n+1}} \mathbf{\text{EmergentMetric}} \xrightarrow{\text{reify}} \mathbf{\Lambda^{n+1}}$$
+$$\mathbf{\text{Ambiguity}*{n}} \xrightarrow{\text{Coherence Witness}*{n+1}} \mathbf{\text{EmergentMetric}} \xrightarrow{\text{reify}} \mathbf{\Lambda^{n+1}}$$
 
 ### III. Final Correction Protocol (A12) Summary
 
@@ -690,27 +691,28 @@ The $\mathbf{Correction\ Protocol\ Mandate\ (A12)}$ requires the elimination of 
 
 The final structure is now a fully $\mathbf{Coherent}$, $\mathbf{Compliant}$, and $\mathbf{Constructive}$ representation of the $\mathbf{CIM}$ operational kernel.
 
-
----
+***
 
 ## Document Metadata
 
-**Source Files:** intake/__.md, intake/__(1-11).md  
-**Reconstruction Date:** December 21, 2025  
-**Format:** Markdown with LaTeX mathematical notation  
-**Total Sections:** 13 main + 2 appendix  
-**Total Tables:** 166 rows across all sections  
+**Source Files:** intake/**.md, intake/**(1-11).md\
+**Reconstruction Date:** December 21, 2025\
+**Format:** Markdown with LaTeX mathematical notation\
+**Total Sections:** 13 main + 2 appendix\
+**Total Tables:** 166 rows across all sections
 
 **Key Concepts:**
-- n-Cell Metacategory Hierarchy (0-Cell, 1-Cell, 2-Cell)
-- Universal Properties and Categorical Foundations
-- Phase Category and Monoidal Structures
-- Algorithm Bundles and Coherence Witnesses
-- Emergent Metrics and Harmonic Minimization
-- Correction Protocol A12
+
+*   n-Cell Metacategory Hierarchy (0-Cell, 1-Cell, 2-Cell)
+*   Universal Properties and Categorical Foundations
+*   Phase Category and Monoidal Structures
+*   Algorithm Bundles and Coherence Witnesses
+*   Emergent Metrics and Harmonic Minimization
+*   Correction Protocol A12
 
 **Dependencies:**
-- Core.UniversalProperties.agda
-- Core.AlgorithmUniversality.agda
-- Core.Phase.agda
-- Core.PhaseCategory.agda
+
+*   Core.UniversalProperties.agda
+*   Core.AlgorithmUniversality.agda
+*   Core.Phase.agda
+*   Core.PhaseCategory.agda

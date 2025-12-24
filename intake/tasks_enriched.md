@@ -4438,3 +4438,2495 @@ Compiled Agda modules: RotationalTransport.agda, TopologicalGating.agda
 *   **low**: 93 (91.2%)
 *   **medium**: 7 (6.9%)
 *   **high**: 2 (2.0%)
+IngestedGP | **Complexity:** low
+
+#### Intent — GP-Gp107
+
+Implement GP107: Unknown Title as specified.
+
+#### Deliverable — GP-Gp107
+
+Compiled Agda modules: Implementation.agda
+
+#### Scope — GP-Gp107
+
+Not specified.
+
+#### Inputs & Outputs — GP-Gp107
+
+**Outputs:**
+
+*   Agda modules: Implementation.agda
+
+#### Acceptance Criteria — GP-Gp107
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — GP-Gp107
+
+*   Plan.CIM.Implementation
+
+#### Tags — GP-Gp107
+
+`GP`
+
+#### Provenance — GP-Gp107
+
+`GP-Gp107|Plan/CIM/IngestedRoadmaps/Foundation.agda` → `ROADMAP-MD-69|ROADMAP.md` → `ROADMAP-MD-163|ROADMAP.md`
+
+***
+
+### Task 70: GP-Gp108 — GP108: The \\
+
+```yaml
+id: GP-Gp108
+title: 'GP108: The \'
+status: not-started
+category: IngestedGP
+complexity: low
+tags:
+- GP
+intent: 'Implement GP108: The \ as specified.'
+deliverable: 'Compiled Agda modules: Implementation.agda'
+module_anchors:
+- Plan.CIM.Implementation
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Implementation.agda'
+```
+
+**Status:** `not-started` | **Category:** IngestedGP | **Complexity:** low
+
+#### Intent — GP-Gp108
+
+Implement GP108: The \ as specified.
+
+#### Deliverable — GP-Gp108
+
+Compiled Agda modules: Implementation.agda
+
+#### Scope — GP-Gp108
+
+Not specified.
+
+#### Inputs & Outputs — GP-Gp108
+
+**Outputs:**
+
+*   Agda modules: Implementation.agda
+
+#### Acceptance Criteria — GP-Gp108
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — GP-Gp108
+
+*   Plan.CIM.Implementation
+
+#### Tags — GP-Gp108
+
+`GP`
+
+#### Provenance — GP-Gp108
+
+`GP-Gp108|Plan/CIM/IngestedRoadmaps/Foundation.agda` → `ROADMAP-MD-70|ROADMAP.md` → `ROADMAP-MD-164|ROADMAP.md`
+
+***
+
+### Task 71: GP-Gp109 — GP109: The Hebbian Drift
+
+```yaml
+id: GP-Gp109
+title: 'GP109: The Hebbian Drift'
+status: not-started
+category: IngestedGP
+complexity: low
+tags:
+- GP
+intent: 'Implement GP109: The Hebbian Drift as specified.'
+deliverable: 'Compiled Agda modules: Implementation.agda'
+module_anchors:
+- Plan.CIM.Implementation
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Implementation.agda'
+```
+
+**Status:** `not-started` | **Category:** IngestedGP | **Complexity:** low
+
+#### Intent — GP-Gp109
+
+Implement GP109: The Hebbian Drift as specified.
+
+#### Deliverable — GP-Gp109
+
+Compiled Agda modules: Implementation.agda
+
+#### Scope — GP-Gp109
+
+Not specified.
+
+#### Inputs & Outputs — GP-Gp109
+
+**Outputs:**
+
+*   Agda modules: Implementation.agda
+
+#### Acceptance Criteria — GP-Gp109
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — GP-Gp109
+
+*   Plan.CIM.Implementation
+
+#### Tags — GP-Gp109
+
+`GP`
+
+#### Provenance — GP-Gp109
+
+`GP-Gp109|Plan/CIM/IngestedRoadmaps/Foundation.agda` → `ROADMAP-MD-71|ROADMAP.md` → `ROADMAP-MD-165|ROADMAP.md`
+
+***
+
+### Task 72: GP-Gp110 — GP110: The Control Plane
+
+```yaml
+id: GP-Gp110
+title: 'GP110: The Control Plane'
+status: not-started
+category: IngestedGP
+complexity: low
+tags:
+- GP
+intent: 'Implement GP110: The Control Plane as specified.'
+deliverable: 'Compiled Agda modules: Implementation.agda'
+module_anchors:
+- Plan.CIM.Implementation
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Implementation.agda'
+```
+
+**Status:** `not-started` | **Category:** IngestedGP | **Complexity:** low
+
+#### Intent — GP-Gp110
+
+Implement GP110: The Control Plane as specified.
+
+#### Deliverable — GP-Gp110
+
+Compiled Agda modules: Implementation.agda
+
+#### Scope — GP-Gp110
+
+Not specified.
+
+#### Inputs & Outputs — GP-Gp110
+
+**Outputs:**
+
+*   Agda modules: Implementation.agda
+
+#### Acceptance Criteria — GP-Gp110
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — GP-Gp110
+
+*   Plan.CIM.Implementation
+
+#### Tags — GP-Gp110
+
+`GP`
+
+#### Provenance — GP-Gp110
+
+`GP-Gp110|Plan/CIM/IngestedRoadmaps/Foundation.agda` → `ROADMAP-MD-72|ROADMAP.md` → `ROADMAP-MD-166|ROADMAP.md`
+
+***
+
+### Task 73: GP-Gp111 — GP111: Unknown Title
+
+```yaml
+id: GP-Gp111
+title: 'GP111: Unknown Title'
+status: not-started
+category: IngestedGP
+complexity: low
+tags:
+- GP
+intent: 'Implement GP111: Unknown Title as specified.'
+deliverable: 'Compiled Agda modules: Implementation.agda'
+module_anchors:
+- Plan.CIM.Implementation
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Implementation.agda'
+```
+
+**Status:** `not-started` | **Category:** IngestedGP | **Complexity:** low
+
+#### Intent — GP-Gp111
+
+Implement GP111: Unknown Title as specified.
+
+#### Deliverable — GP-Gp111
+
+Compiled Agda modules: Implementation.agda
+
+#### Scope — GP-Gp111
+
+Not specified.
+
+#### Inputs & Outputs — GP-Gp111
+
+**Outputs:**
+
+*   Agda modules: Implementation.agda
+
+#### Acceptance Criteria — GP-Gp111
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — GP-Gp111
+
+*   Plan.CIM.Implementation
+
+#### Tags — GP-Gp111
+
+`GP`
+
+#### Provenance — GP-Gp111
+
+`GP-Gp111|Plan/CIM/IngestedRoadmaps/Foundation.agda` → `ROADMAP-MD-73|ROADMAP.md` → `ROADMAP-MD-167|ROADMAP.md`
+
+***
+
+### Task 74: GP-Gp200 — GP200: The Geometry of Associativity
+
+```yaml
+id: GP-Gp200
+title: 'GP200: The Geometry of Associativity'
+status: not-started
+category: IngestedGP
+complexity: low
+tags:
+- GP
+intent: 'Implement GP200: The Geometry of Associativity as specified.'
+deliverable: 'Compiled Agda modules: Implementation.agda'
+module_anchors:
+- Plan.CIM.Implementation
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Implementation.agda'
+```
+
+**Status:** `not-started` | **Category:** IngestedGP | **Complexity:** low
+
+#### Intent — GP-Gp200
+
+Implement GP200: The Geometry of Associativity as specified.
+
+#### Deliverable — GP-Gp200
+
+Compiled Agda modules: Implementation.agda
+
+#### Scope — GP-Gp200
+
+Not specified.
+
+#### Inputs & Outputs — GP-Gp200
+
+**Outputs:**
+
+*   Agda modules: Implementation.agda
+
+#### Acceptance Criteria — GP-Gp200
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — GP-Gp200
+
+*   Plan.CIM.Implementation
+
+#### Tags — GP-Gp200
+
+`GP`
+
+#### Provenance — GP-Gp200
+
+`GP-Gp200|Plan/CIM/IngestedRoadmaps/Geometry.agda` → `ROADMAP-MD-74|ROADMAP.md` → `ROADMAP-MD-168|ROADMAP.md`
+
+***
+
+### Task 75: GP-Gp201 — GP201: The Non-Abelian Manifold
+
+```yaml
+id: GP-Gp201
+title: 'GP201: The Non-Abelian Manifold'
+status: not-started
+category: IngestedGP
+complexity: low
+tags:
+- GP
+intent: 'Implement GP201: The Non-Abelian Manifold as specified.'
+deliverable: 'Compiled Agda modules: Implementation.agda'
+module_anchors:
+- Plan.CIM.Implementation
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Implementation.agda'
+```
+
+**Status:** `not-started` | **Category:** IngestedGP | **Complexity:** low
+
+#### Intent — GP-Gp201
+
+Implement GP201: The Non-Abelian Manifold as specified.
+
+#### Deliverable — GP-Gp201
+
+Compiled Agda modules: Implementation.agda
+
+#### Scope — GP-Gp201
+
+Not specified.
+
+#### Inputs & Outputs — GP-Gp201
+
+**Outputs:**
+
+*   Agda modules: Implementation.agda
+
+#### Acceptance Criteria — GP-Gp201
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — GP-Gp201
+
+*   Plan.CIM.Implementation
+
+#### Tags — GP-Gp201
+
+`GP`
+
+#### Provenance — GP-Gp201
+
+`GP-Gp201|Plan/CIM/IngestedRoadmaps/Geometry.agda` → `ROADMAP-MD-75|ROADMAP.md` → `ROADMAP-MD-169|ROADMAP.md`
+
+***
+
+### Task 76: GP-Gp300 — GP300: The Fiber Bundle Architecture
+
+```yaml
+id: GP-Gp300
+title: 'GP300: The Fiber Bundle Architecture'
+status: not-started
+category: IngestedGP
+complexity: low
+tags:
+- GP
+intent: 'Implement GP300: The Fiber Bundle Architecture as specified.'
+deliverable: 'Compiled Agda modules: Implementation.agda'
+module_anchors:
+- Plan.CIM.Implementation
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Implementation.agda'
+```
+
+**Status:** `not-started` | **Category:** IngestedGP | **Complexity:** low
+
+#### Intent — GP-Gp300
+
+Implement GP300: The Fiber Bundle Architecture as specified.
+
+#### Deliverable — GP-Gp300
+
+Compiled Agda modules: Implementation.agda
+
+#### Scope — GP-Gp300
+
+Not specified.
+
+#### Inputs & Outputs — GP-Gp300
+
+**Outputs:**
+
+*   Agda modules: Implementation.agda
+
+#### Acceptance Criteria — GP-Gp300
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — GP-Gp300
+
+*   Plan.CIM.Implementation
+
+#### Tags — GP-Gp300
+
+`GP`
+
+#### Provenance — GP-Gp300
+
+`GP-Gp300|Plan/CIM/IngestedRoadmaps/Geometry.agda` → `ROADMAP-MD-76|ROADMAP.md` → `ROADMAP-MD-170|ROADMAP.md`
+
+***
+
+### Task 77: GP-Gp302 — GP302: The Operationalized Adjunction
+
+```yaml
+id: GP-Gp302
+title: 'GP302: The Operationalized Adjunction'
+status: not-started
+category: IngestedGP
+complexity: low
+tags:
+- GP
+intent: Establish adjunction coherence properties, proving the free/forgetful functor
+  relationships with unit and counit natural transformations.
+deliverable: 'Compiled Agda modules: Implementation.agda'
+module_anchors:
+- Plan.CIM.Implementation
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Implementation.agda'
+```
+
+**Status:** `not-started` | **Category:** IngestedGP | **Complexity:** low
+
+#### Intent — GP-Gp302
+
+Establish adjunction coherence properties, proving the free/forgetful functor relationships with unit and counit natural transformations.
+
+#### Deliverable — GP-Gp302
+
+Compiled Agda modules: Implementation.agda
+
+#### Scope — GP-Gp302
+
+Not specified.
+
+#### Inputs & Outputs — GP-Gp302
+
+**Outputs:**
+
+*   Agda modules: Implementation.agda
+
+#### Acceptance Criteria — GP-Gp302
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — GP-Gp302
+
+*   Plan.CIM.Implementation
+
+#### Tags — GP-Gp302
+
+`GP`
+
+#### Provenance — GP-Gp302
+
+`GP-Gp302|Plan/CIM/IngestedRoadmaps/Geometry.agda` → `ROADMAP-MD-77|ROADMAP.md` → `ROADMAP-MD-171|ROADMAP.md`
+
+***
+
+### Task 78: GP-Gp303 — GP303: Unknown Title
+
+```yaml
+id: GP-Gp303
+title: 'GP303: Unknown Title'
+status: not-started
+category: IngestedGP
+complexity: low
+tags:
+- GP
+intent: 'Implement GP303: Unknown Title as specified.'
+deliverable: 'Compiled Agda modules: Implementation.agda'
+module_anchors:
+- Plan.CIM.Implementation
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Implementation.agda'
+```
+
+**Status:** `not-started` | **Category:** IngestedGP | **Complexity:** low
+
+#### Intent — GP-Gp303
+
+Implement GP303: Unknown Title as specified.
+
+#### Deliverable — GP-Gp303
+
+Compiled Agda modules: Implementation.agda
+
+#### Scope — GP-Gp303
+
+Not specified.
+
+#### Inputs & Outputs — GP-Gp303
+
+**Outputs:**
+
+*   Agda modules: Implementation.agda
+
+#### Acceptance Criteria — GP-Gp303
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — GP-Gp303
+
+*   Plan.CIM.Implementation
+
+#### Tags — GP-Gp303
+
+`GP`
+
+#### Provenance — GP-Gp303
+
+`GP-Gp303|Plan/CIM/IngestedRoadmaps/Geometry.agda` → `ROADMAP-MD-78|ROADMAP.md` → `ROADMAP-MD-172|ROADMAP.md`
+
+***
+
+## Category: Ingestion
+
+**Tasks in this category:** 2
+
+***
+
+### Task 79: INGEST-Ch1-Groups-Cyclic — Ingest Cyclic Groups (generator witness abstraction)
+
+```yaml
+id: INGEST-Ch1-Groups-Cyclic
+title: Ingest Cyclic Groups (generator witness abstraction)
+status: planned
+category: Ingestion
+complexity: low
+tags:
+- Cyclic
+- Fields
+- Groups
+- Ideals
+- Import
+- Ingestion
+- Rings
+intent: 'Algebra.Groups.Basic: Fundamental group theory (Hungerford Ch I, sections
+  1-6) This module covers semigroups through symmetric groups, grounded in category
+  theory. PARAMETERIZED VERSION: All 10 classi...'
+deliverable: 'Compiled Agda modules: Basic.agda'
+module_anchors:
+- Algebra.Groups.Basic
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Basic.agda'
+```
+
+**Status:** `planned` | **Category:** Ingestion | **Complexity:** low
+
+#### Intent — INGEST-Ch1-Groups-Cyclic
+
+Algebra.Groups.Basic: Fundamental group theory (Hungerford Ch I, sections 1-6) This module covers semigroups through symmetric groups, grounded in category theory. PARAMETERIZED VERSION: All 10 classi...
+
+#### Deliverable — INGEST-Ch1-Groups-Cyclic
+
+Compiled Agda modules: Basic.agda
+
+#### Scope — INGEST-Ch1-Groups-Cyclic
+
+Not specified.
+
+#### Inputs & Outputs — INGEST-Ch1-Groups-Cyclic
+
+**Outputs:**
+
+*   Agda modules: Basic.agda
+
+#### Acceptance Criteria — INGEST-Ch1-Groups-Cyclic
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — INGEST-Ch1-Groups-Cyclic
+
+*   Algebra.Groups.Basic
+
+#### Tags — INGEST-Ch1-Groups-Cyclic
+
+`Cyclic`, `Fields`, `Groups`, `Ideals`, `Import`, `Ingestion`, `Rings`
+
+#### Evidence — INGEST-Ch1-Groups-Cyclic
+
+*   **src/agda/Algebra/Groups/Basic.agda** (module header)
+    > Algebra.Groups.Basic: Fundamental group theory (Hungerford Ch I, sections 1-6) This module covers semigroups through symmetric groups, grounded in category theory. PARAMETERIZED VERSION: All 10 classi...
+
+#### Provenance — INGEST-Ch1-Groups-Cyclic
+
+`INGEST-Ch1-Groups-Cyclic|ingest.md` → `ROADMAP-MD-79|ROADMAP.md` → `ROADMAP-MD-173|ROADMAP.md`
+
+***
+
+### Task 80: INGEST-Ch3-Ideals-Lattice — Ideal lattice ingestion (prime/primary metadata)
+
+```yaml
+id: INGEST-Ch3-Ideals-Lattice
+title: Ideal lattice ingestion (prime/primary metadata)
+status: planned
+category: Ingestion
+complexity: low
+tags:
+- Cyclic
+- Fields
+- Groups
+- Ideals
+- Lattice
+- Rings
+intent: 'Algebra.Rings.Basic: Ring theory (Hungerford Ch III) PARAMETERIZED VERSION:
+  All 18 classical ring theorems are module parameters rather than postulated locally.
+  This enforces explicit dependency decla...'
+deliverable: 'Compiled Agda modules: Basic.agda'
+module_anchors:
+- Algebra.Rings.Basic
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Basic.agda'
+```
+
+**Status:** `planned` | **Category:** Ingestion | **Complexity:** low
+
+#### Intent — INGEST-Ch3-Ideals-Lattice
+
+Algebra.Rings.Basic: Ring theory (Hungerford Ch III) PARAMETERIZED VERSION: All 18 classical ring theorems are module parameters rather than postulated locally. This enforces explicit dependency decla...
+
+#### Deliverable — INGEST-Ch3-Ideals-Lattice
+
+Compiled Agda modules: Basic.agda
+
+#### Scope — INGEST-Ch3-Ideals-Lattice
+
+Not specified.
+
+#### Inputs & Outputs — INGEST-Ch3-Ideals-Lattice
+
+**Outputs:**
+
+*   Agda modules: Basic.agda
+
+#### Acceptance Criteria — INGEST-Ch3-Ideals-Lattice
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — INGEST-Ch3-Ideals-Lattice
+
+*   Algebra.Rings.Basic
+
+#### Tags — INGEST-Ch3-Ideals-Lattice
+
+`Cyclic`, `Fields`, `Groups`, `Ideals`, `Lattice`, `Rings`
+
+#### Evidence — INGEST-Ch3-Ideals-Lattice
+
+*   **src/agda/Algebra/Rings/Basic.agda** (module header)
+    > Algebra.Rings.Basic: Ring theory (Hungerford Ch III) PARAMETERIZED VERSION: All 18 classical ring theorems are module parameters rather than postulated locally. This enforces explicit dependency decla...
+
+#### Provenance — INGEST-Ch3-Ideals-Lattice
+
+`INGEST-Ch3-Ideals-Lattice|ingest.md` → `ROADMAP-MD-80|ROADMAP.md` → `ROADMAP-MD-174|ROADMAP.md`
+
+***
+
+## Category: Phase
+
+**Tasks in this category:** 14
+
+***
+
+### Task 81: PHASE-0.1 — Replace product postulate with constructive mediating cone proof
+
+```yaml
+id: PHASE-0.1
+title: Replace product postulate with constructive mediating cone proof
+status: completed
+category: Phase
+complexity: low
+tags:
+- Initial
+- P3
+- Terminal
+- UniversalProperty
+intent: 'Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries
+  This module tests the bridge between computational algorithms and universal properties,
+  verifying that phase transitions prese...'
+deliverable: Passing tests in UniversalPropertyTests.agda
+module_anchors:
+- Tests.UniversalPropertyTests
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Test suite passes: UniversalPropertyTests.agda'
+- 'Key definitions implemented: umpTestsPass'
+- Implementation verified in canonical roadmap
+outputs:
+- 'Agda modules: UniversalPropertyTests.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** low
+
+#### Intent — PHASE-0.1
+
+Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries This module tests the bridge between computational algorithms and universal properties, verifying that phase transitions prese...
+
+#### Deliverable — PHASE-0.1
+
+Passing tests in UniversalPropertyTests.agda
+
+#### Scope — PHASE-0.1
+
+**In scope:**
+
+*   Constructive proofs
+    **Out of scope:**
+*   Postulated axioms
+
+#### Inputs & Outputs — PHASE-0.1
+
+**Outputs:**
+
+*   Agda modules: UniversalPropertyTests.agda
+
+#### Acceptance Criteria — PHASE-0.1
+
+*   All Agda modules compile without errors
+*   Test suite passes: UniversalPropertyTests.agda
+*   Key definitions implemented: umpTestsPass
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-0.1
+
+*   Tests.UniversalPropertyTests
+
+#### Key Definitions — PHASE-0.1
+
+`umpTestsPass`
+
+#### Tags — PHASE-0.1
+
+`Initial`, `P3`, `Terminal`, `UniversalProperty`
+
+#### Evidence — PHASE-0.1
+
+*   **src/agda/Tests/UniversalPropertyTests.agda** (module header)
+    > Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries This module tests the bridge between computational algorithms and universal properties, verifying that phase transitions prese...
+
+#### Provenance — PHASE-0.1
+
+`PHASE-0.1|testing.md` → `ROADMAP-MD-81|ROADMAP.md` → `ROADMAP-MD-175|ROADMAP.md`
+
+***
+
+### Task 82: PHASE-0.2 — Replace coproduct postulate with constructive mediating cocone proof
+
+```yaml
+id: PHASE-0.2
+title: Replace coproduct postulate with constructive mediating cocone proof
+status: completed
+category: Phase
+complexity: low
+tags:
+- Initial
+- P3
+- Terminal
+- UniversalProperty
+intent: 'Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries
+  This module tests the bridge between computational algorithms and universal properties,
+  verifying that phase transitions prese...'
+deliverable: Passing tests in UniversalPropertyTests.agda
+module_anchors:
+- Tests.UniversalPropertyTests
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Test suite passes: UniversalPropertyTests.agda'
+- 'Key definitions implemented: umpTestsPass'
+- Implementation verified in canonical roadmap
+outputs:
+- 'Agda modules: UniversalPropertyTests.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** low
+
+#### Intent — PHASE-0.2
+
+Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries This module tests the bridge between computational algorithms and universal properties, verifying that phase transitions prese...
+
+#### Deliverable — PHASE-0.2
+
+Passing tests in UniversalPropertyTests.agda
+
+#### Scope — PHASE-0.2
+
+**In scope:**
+
+*   Constructive proofs
+    **Out of scope:**
+*   Postulated axioms
+
+#### Inputs & Outputs — PHASE-0.2
+
+**Outputs:**
+
+*   Agda modules: UniversalPropertyTests.agda
+
+#### Acceptance Criteria — PHASE-0.2
+
+*   All Agda modules compile without errors
+*   Test suite passes: UniversalPropertyTests.agda
+*   Key definitions implemented: umpTestsPass
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-0.2
+
+*   Tests.UniversalPropertyTests
+
+#### Key Definitions — PHASE-0.2
+
+`umpTestsPass`
+
+#### Tags — PHASE-0.2
+
+`Initial`, `P3`, `Terminal`, `UniversalProperty`
+
+#### Evidence — PHASE-0.2
+
+*   **src/agda/Tests/UniversalPropertyTests.agda** (module header)
+    > Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries This module tests the bridge between computational algorithms and universal properties, verifying that phase transitions prese...
+
+#### Provenance — PHASE-0.2
+
+`PHASE-0.2|testing.md` → `ROADMAP-MD-82|ROADMAP.md` → `ROADMAP-MD-176|ROADMAP.md`
+
+***
+
+### Task 83: PHASE-I.1 — Static coordinate assignment for all declarations
+
+```yaml
+id: PHASE-I.1
+title: Static coordinate assignment for all declarations
+status: completed
+category: Phase
+complexity: low
+tags:
+- Coordinate
+- Indexing
+- WellFounded
+intent: 'Minimal builtins to avoid external stdlib dependencies I. Metamodel Structural
+  Definition Phase I.1.1: Static Coordinate Assignment'
+deliverable: 'Compiled Agda modules: Metamodel.agda'
+module_anchors:
+- Metamodel
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Key definitions implemented: mkId, mkIdAt, Proposition'
+- Implementation verified in canonical roadmap
+outputs:
+- 'Agda modules: Metamodel.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** low
+
+#### Intent — PHASE-I.1
+
+Minimal builtins to avoid external stdlib dependencies I. Metamodel Structural Definition Phase I.1.1: Static Coordinate Assignment
+
+#### Deliverable — PHASE-I.1
+
+Compiled Agda modules: Metamodel.agda
+
+#### Scope — PHASE-I.1
+
+Not specified.
+
+#### Inputs & Outputs — PHASE-I.1
+
+**Outputs:**
+
+*   Agda modules: Metamodel.agda
+
+#### Acceptance Criteria — PHASE-I.1
+
+*   All Agda modules compile without errors
+*   Key definitions implemented: mkId, mkIdAt, Proposition
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-I.1
+
+*   Metamodel
+
+#### Key Definitions — PHASE-I.1
+
+`mkId`, `mkIdAt`, `Proposition`
+
+#### Tags — PHASE-I.1
+
+`Coordinate`, `Indexing`, `WellFounded`
+
+#### Evidence — PHASE-I.1
+
+*   **src/agda/Metamodel.agda** (module header)
+    > Minimal builtins to avoid external stdlib dependencies I. Metamodel Structural Definition Phase I.1.1: Static Coordinate Assignment
+
+#### Provenance — PHASE-I.1
+
+`PHASE-I.1|testing.md` → `ROADMAP-MD-83|ROADMAP.md` → `ROADMAP-MD-177|ROADMAP.md`
+
+***
+
+### Task 84: PHASE-II.2.5 — Global logical closure (no metas)
+
+```yaml
+id: PHASE-II.2.5
+title: Global logical closure (no metas)
+status: completed
+category: Phase
+complexity: high
+dependencies:
+- PHASE-0.1
+- PHASE-0.2
+- PHASE-III.4
+- PHASE-III.5
+- PHASE-IV.1
+- PHASE-IV.2
+- PHASE-IV.3
+- PHASE-V.1
+- PHASE-V.2
+tags:
+- Index
+- Symmetry
+intent: 'Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries
+  Testing Philosophy:'
+deliverable: Passing tests in Index.agda
+module_anchors:
+- Tests.Index
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Test suite passes: Index.agda'
+- Implementation verified in canonical roadmap
+inputs:
+- 'Dependencies: PHASE-0.1, PHASE-0.2, PHASE-III.4'
+outputs:
+- 'Agda modules: Index.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** high
+
+#### Intent — PHASE-II.2.5
+
+Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries Testing Philosophy:
+
+#### Deliverable — PHASE-II.2.5
+
+Passing tests in Index.agda
+
+#### Scope — PHASE-II.2.5
+
+Not specified.
+
+#### Inputs & Outputs — PHASE-II.2.5
+
+**Inputs:**
+
+*   Dependencies: PHASE-0.1, PHASE-0.2, PHASE-III.4
+
+**Outputs:**
+
+*   Agda modules: Index.agda
+
+#### Acceptance Criteria — PHASE-II.2.5
+
+*   All Agda modules compile without errors
+*   Test suite passes: Index.agda
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-II.2.5
+
+*   Tests.Index
+
+#### Tags — PHASE-II.2.5
+
+`Index`, `Symmetry`
+
+#### Dependencies & Relations — PHASE-II.2.5
+
+**Depends on:** PHASE-0.1, PHASE-0.2, PHASE-III.4, PHASE-III.5, PHASE-IV.1, PHASE-IV.2, PHASE-IV.3, PHASE-V.1, PHASE-V.2
+
+**Suggested dependencies (from imports):** PHASE-0.1, PHASE-0.2, PHASE-III.4, PHASE-III.5, PHASE-IV.1 (+ 4 more)
+
+#### Evidence — PHASE-II.2.5
+
+*   **src/agda/Tests/Index.agda** (module header)
+    > Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries Testing Philosophy:
+
+#### Provenance — PHASE-II.2.5
+
+`PHASE-II.2.5|testing.md` → `ROADMAP-MD-84|ROADMAP.md` → `ROADMAP-MD-178|ROADMAP.md`
+
+***
+
+### Task 85: PHASE-III.2 — Error-as-Specification integration (AlgorithmResult, LimitationEvidence)
+
+```yaml
+id: PHASE-III.2
+title: Error-as-Specification integration (AlgorithmResult, LimitationEvidence)
+status: completed
+category: Phase
+complexity: medium
+dependencies:
+- PHASE-I.1
+tags:
+- ErrorHandling
+- Limitation
+- Phase
+- PhaseI
+- PhaseII
+- PhaseIII
+- PhaseIV
+- PhaseV
+- Specification
+intent: 'Error-as-Specification: capture constructive limitations tied to an algorithm
+  identifier Minimal outcome wrapper to model success vs limitation-as-specification
+  Helper to acknowledge a limitation (tre...'
+deliverable: Passing tests in ErrorAsSpecificationTests.agda
+module_anchors:
+- Core.Limitations
+- Tests.ErrorAsSpecificationTests
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Test suite passes: ErrorAsSpecificationTests.agda'
+- 'Key definitions implemented: acknowledge, mkLimitation, okResult (+ 7 more)'
+- Implementation verified in canonical roadmap
+inputs:
+- 'Dependencies: PHASE-I.1'
+outputs:
+- 'Agda modules: Limitations.agda, ErrorAsSpecificationTests.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** medium
+
+#### Intent — PHASE-III.2
+
+Error-as-Specification: capture constructive limitations tied to an algorithm identifier Minimal outcome wrapper to model success vs limitation-as-specification Helper to acknowledge a limitation (tre...
+
+#### Deliverable — PHASE-III.2
+
+Passing tests in ErrorAsSpecificationTests.agda
+
+#### Scope — PHASE-III.2
+
+Not specified.
+
+#### Inputs & Outputs — PHASE-III.2
+
+**Inputs:**
+
+*   Dependencies: PHASE-I.1
+
+**Outputs:**
+
+*   Agda modules: Limitations.agda, ErrorAsSpecificationTests.agda
+
+#### Acceptance Criteria — PHASE-III.2
+
+*   All Agda modules compile without errors
+*   Test suite passes: ErrorAsSpecificationTests.agda
+*   Key definitions implemented: acknowledge, mkLimitation, okResult (+ 7 more)
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-III.2
+
+*   Core.Limitations
+*   Tests.ErrorAsSpecificationTests
+
+#### Key Definitions — PHASE-III.2
+
+`acknowledge`, `mkLimitation`, `okResult`, `limitedResult`, `toOutcome`, `exLim`, `exLimAck`, `exOk` (+ 2 more)
+
+#### Tags — PHASE-III.2
+
+`ErrorHandling`, `Limitation`, `Phase`, `PhaseI`, `PhaseII`, `PhaseIII`, `PhaseIV`, `PhaseV`, `Specification`
+
+#### Dependencies & Relations — PHASE-III.2
+
+**Depends on:** PHASE-I.1
+
+**Suggested dependencies (from imports):** PHASE-I.1
+
+#### Evidence — PHASE-III.2
+
+*   **src/agda/Core/Limitations.agda** (module header)
+    > Error-as-Specification: capture constructive limitations tied to an algorithm identifier Minimal outcome wrapper to model success vs limitation-as-specification Helper to acknowledge a limitation (tre...
+*   **src/agda/Tests/ErrorAsSpecificationTests.agda** (module header)
+    > Tests.ErrorAsSpecificationTests: Error-as-Specification (Phase III.3 - 3.2) Status: COMPLETE \[2025-11-19] This module demonstrates the integration of LimitationEvidence into the algorithm
+
+#### Provenance — PHASE-III.2
+
+`PHASE-III.2|Core/Limitations.agda` → `ROADMAP-MD-85|ROADMAP.md` → `ROADMAP-MD-179|ROADMAP.md`
+
+***
+
+### Task 86: PHASE-III.4 — Serialization roundtrip HoTT Path isomorphism
+
+```yaml
+id: PHASE-III.4
+title: Serialization roundtrip HoTT Path isomorphism
+status: completed
+category: Phase
+complexity: medium
+tags:
+- Coordinates
+- HoTT
+- Path
+- Roundtrip
+- Serialization
+- Univalence
+intent: 'Tests.SerializationTests: Validate witness serialization and deserialization
+  This suite tests conversion between internal witnesses and external representations:
+  - Witness → External: Serialization pr...'
+deliverable: Passing tests in SerializationTests.agda
+module_anchors:
+- Tests.SerializationTests
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Test suite passes: SerializationTests.agda'
+- 'Key definitions implemented: TestFixturesPackageDebt, serializeFieldDebt, deserializeFieldDebt
+  (+ 1 more)'
+- Implementation verified in canonical roadmap
+outputs:
+- 'Agda modules: SerializationTests.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** medium
+
+#### Intent — PHASE-III.4
+
+Tests.SerializationTests: Validate witness serialization and deserialization This suite tests conversion between internal witnesses and external representations: - Witness → External: Serialization pr...
+
+#### Deliverable — PHASE-III.4
+
+Passing tests in SerializationTests.agda
+
+#### Scope — PHASE-III.4
+
+**In scope:**
+
+*   HoTT path equality
+    **Out of scope:**
+*   Propositional equality only
+
+#### Inputs & Outputs — PHASE-III.4
+
+**Outputs:**
+
+*   Agda modules: SerializationTests.agda
+
+#### Acceptance Criteria — PHASE-III.4
+
+*   All Agda modules compile without errors
+*   Test suite passes: SerializationTests.agda
+*   Key definitions implemented: TestFixturesPackageDebt, serializeFieldDebt, deserializeFieldDebt (+ 1 more)
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-III.4
+
+*   Tests.SerializationTests
+
+#### Key Definitions — PHASE-III.4
+
+`TestFixturesPackageDebt`, `serializeFieldDebt`, `deserializeFieldDebt`, `technicalDebtRegistry`
+
+#### Tags — PHASE-III.4
+
+`Coordinates`, `HoTT`, `Path`, `Roundtrip`, `Serialization`, `Univalence`
+
+#### Evidence — PHASE-III.4
+
+*   **src/agda/Tests/SerializationTests.agda** (module header)
+    > Tests.SerializationTests: Validate witness serialization and deserialization This suite tests conversion between internal witnesses and external representations: - Witness → External: Serialization pr...
+
+#### Provenance — PHASE-III.4
+
+`PHASE-III.4|Tests/SerializationTests.agda` → `ROADMAP-MD-86|ROADMAP.md` → `ROADMAP-MD-180|ROADMAP.md`
+
+***
+
+### Task 87: PHASE-III.5 — ToposTheoryChecklist alignment (constructor arities)
+
+```yaml
+id: PHASE-III.5
+title: ToposTheoryChecklist alignment (constructor arities)
+status: completed
+category: Phase
+complexity: low
+tags:
+- Checklist
+- Subobject
+- Testing
+- Topos
+- Validation
+intent: 'Tests.ToposTheoryChecklist: Test instances for topos theory concepts Test
+  setup: Common definitions Dummy category for tests'
+deliverable: Passing tests in ToposTheoryChecklist.agda
+module_anchors:
+- Tests.ToposTheoryChecklist
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Test suite passes: ToposTheoryChecklist.agda'
+- 'Key definitions implemented: catDecl, frameId, dummyLocale (+ 2 more)'
+- Implementation verified in canonical roadmap
+outputs:
+- 'Agda modules: ToposTheoryChecklist.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** low
+
+#### Intent — PHASE-III.5
+
+Tests.ToposTheoryChecklist: Test instances for topos theory concepts Test setup: Common definitions Dummy category for tests
+
+#### Deliverable — PHASE-III.5
+
+Passing tests in ToposTheoryChecklist.agda
+
+#### Scope — PHASE-III.5
+
+Not specified.
+
+#### Inputs & Outputs — PHASE-III.5
+
+**Outputs:**
+
+*   Agda modules: ToposTheoryChecklist.agda
+
+#### Acceptance Criteria — PHASE-III.5
+
+*   All Agda modules compile without errors
+*   Test suite passes: ToposTheoryChecklist.agda
+*   Key definitions implemented: catDecl, frameId, dummyLocale (+ 2 more)
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-III.5
+
+*   Tests.ToposTheoryChecklist
+
+#### Key Definitions — PHASE-III.5
+
+`catDecl`, `frameId`, `dummyLocale`, `presheafDecl`, `presheafAdapt`
+
+#### Tags — PHASE-III.5
+
+`Checklist`, `Subobject`, `Testing`, `Topos`, `Validation`
+
+#### Evidence — PHASE-III.5
+
+*   **src/agda/Tests/ToposTheoryChecklist.agda** (module header)
+    > Tests.ToposTheoryChecklist: Test instances for topos theory concepts Test setup: Common definitions Dummy category for tests
+
+#### Provenance — PHASE-III.5
+
+`PHASE-III.5|testing.md` → `ROADMAP-MD-87|ROADMAP.md` → `ROADMAP-MD-181|ROADMAP.md`
+
+***
+
+### Task 88: PHASE-IV.1 — Adjunction coherence (free/forgetful)
+
+```yaml
+id: PHASE-IV.1
+title: Adjunction coherence (free/forgetful)
+status: completed
+category: Phase
+complexity: high
+dependencies:
+- INGEST-Ch3-Ideals-Lattice
+tags:
+- Adjunction
+- Forgetful
+- Free
+- Phase
+- PhaseI
+- PhaseII
+- PhaseIII
+- PhaseIV
+- PhaseV
+intent: 'Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries
+  This module tests the bridge between computational algorithms and universal properties,
+  verifying that phase transitions prese...'
+deliverable: Passing tests in UniversalPropertyTests.agda
+module_anchors:
+- Tests.UniversalPropertyTests
+- Core.UniversalProperties
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Test suite passes: UniversalPropertyTests.agda'
+- 'Key definitions implemented: umpTestsPass'
+- Implementation verified in canonical roadmap
+inputs:
+- 'Dependencies: INGEST-Ch3-Ideals-Lattice'
+outputs:
+- 'Agda modules: UniversalPropertyTests.agda, UniversalProperties.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** high
+
+#### Intent — PHASE-IV.1
+
+Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries This module tests the bridge between computational algorithms and universal properties, verifying that phase transitions prese...
+
+#### Deliverable — PHASE-IV.1
+
+Passing tests in UniversalPropertyTests.agda
+
+#### Scope — PHASE-IV.1
+
+Not specified.
+
+#### Inputs & Outputs — PHASE-IV.1
+
+**Inputs:**
+
+*   Dependencies: INGEST-Ch3-Ideals-Lattice
+
+**Outputs:**
+
+*   Agda modules: UniversalPropertyTests.agda, UniversalProperties.agda
+
+#### Acceptance Criteria — PHASE-IV.1
+
+*   All Agda modules compile without errors
+*   Test suite passes: UniversalPropertyTests.agda
+*   Key definitions implemented: umpTestsPass
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-IV.1
+
+*   Tests.UniversalPropertyTests
+*   Core.UniversalProperties
+
+#### Key Definitions — PHASE-IV.1
+
+`umpTestsPass`
+
+#### Tags — PHASE-IV.1
+
+`Adjunction`, `Forgetful`, `Free`, `Phase`, `PhaseI`, `PhaseII`, `PhaseIII`, `PhaseIV`, `PhaseV`
+
+#### Dependencies & Relations — PHASE-IV.1
+
+**Depends on:** INGEST-Ch3-Ideals-Lattice
+
+**Suggested dependencies (from imports):** INGEST-Ch3-Ideals-Lattice
+
+#### Evidence — PHASE-IV.1
+
+*   **src/agda/Tests/UniversalPropertyTests.agda** (module header)
+    > Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries This module tests the bridge between computational algorithms and universal properties, verifying that phase transitions prese...
+*   **src/agda/Core/UniversalProperties.agda** (module header)
+    > Core.UniversalProperties: Categorical characterization of algebraic constructions This module formalizes the universal properties underlying algorithmic interfaces ====================================...
+
+#### Provenance — PHASE-IV.1
+
+`PHASE-IV.1|testing.md` → `ROADMAP-MD-88|ROADMAP.md` → `ROADMAP-MD-182|ROADMAP.md`
+
+***
+
+### Task 89: PHASE-IV.2 — Yoneda lemma constructive instance
+
+```yaml
+id: PHASE-IV.2
+title: Yoneda lemma constructive instance
+status: completed
+category: Phase
+complexity: high
+dependencies:
+- INGEST-Ch3-Ideals-Lattice
+tags:
+- Phase
+- PhaseI
+- PhaseII
+- PhaseIII
+- PhaseIV
+- PhaseV
+- Presheaf
+- Yoneda
+intent: 'Tests.YonedaChecklist: Test instances for Yoneda lemma PHASE-IV.2: Constructive
+  instance of Yoneda lemma ============================================================================'
+deliverable: Passing tests in YonedaChecklist.agda
+module_anchors:
+- Tests.YonedaChecklist
+- Core.Yoneda
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Test suite passes: YonedaChecklist.agda'
+- 'Key definitions implemented: internalYonedaEmbeddingAdapt, internalYonedaLemmaAdapt,
+  test-yoneda-embedding (+ 5 more)'
+- Implementation verified in canonical roadmap
+inputs:
+- 'Dependencies: INGEST-Ch3-Ideals-Lattice'
+outputs:
+- 'Agda modules: YonedaChecklist.agda, Yoneda.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** high
+
+#### Intent — PHASE-IV.2
+
+Tests.YonedaChecklist: Test instances for Yoneda lemma PHASE-IV.2: Constructive instance of Yoneda lemma ============================================================================
+
+#### Deliverable — PHASE-IV.2
+
+Passing tests in YonedaChecklist.agda
+
+#### Scope — PHASE-IV.2
+
+**In scope:**
+
+*   Constructive proofs
+    **Out of scope:**
+*   Postulated axioms
+
+#### Inputs & Outputs — PHASE-IV.2
+
+**Inputs:**
+
+*   Dependencies: INGEST-Ch3-Ideals-Lattice
+
+**Outputs:**
+
+*   Agda modules: YonedaChecklist.agda, Yoneda.agda
+
+#### Acceptance Criteria — PHASE-IV.2
+
+*   All Agda modules compile without errors
+*   Test suite passes: YonedaChecklist.agda
+*   Key definitions implemented: internalYonedaEmbeddingAdapt, internalYonedaLemmaAdapt, test-yoneda-embedding (+ 5 more)
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-IV.2
+
+*   Tests.YonedaChecklist
+*   Core.Yoneda
+
+#### Key Definitions — PHASE-IV.2
+
+`internalYonedaEmbeddingAdapt`, `internalYonedaLemmaAdapt`, `test-yoneda-embedding`, `test-embedding-object-map`, `test-embedding-morphism-map`, `fieldYonedaEmbedding`, `fieldYonedaLemma`, `fieldYonedaFullyFaithful`
+
+#### Tags — PHASE-IV.2
+
+`Phase`, `PhaseI`, `PhaseII`, `PhaseIII`, `PhaseIV`, `PhaseV`, `Presheaf`, `Yoneda`
+
+#### Dependencies & Relations — PHASE-IV.2
+
+**Depends on:** INGEST-Ch3-Ideals-Lattice
+
+**Suggested dependencies (from imports):** INGEST-Ch3-Ideals-Lattice
+
+#### Evidence — PHASE-IV.2
+
+*   **src/agda/Tests/YonedaChecklist.agda** (module header)
+    > Tests.YonedaChecklist: Test instances for Yoneda lemma PHASE-IV.2: Constructive instance of Yoneda lemma ============================================================================
+*   **src/agda/Core/Yoneda.agda** (module header)
+    > Core.Yoneda: Yoneda lemma and embedding with constructive proofs This module formalizes the Yoneda embedding and proves the Yoneda lemma constructively ================================================...
+
+#### Provenance — PHASE-IV.2
+
+`PHASE-IV.2|testing.md` → `ROADMAP-MD-89|ROADMAP.md` → `ROADMAP-MD-183|ROADMAP.md`
+
+***
+
+### Task 90: PHASE-IV.3 — Grothendieck fibration Beck-Chevalley proof
+
+```yaml
+id: PHASE-IV.3
+title: Grothendieck fibration Beck-Chevalley proof
+status: completed
+category: Phase
+complexity: medium
+tags:
+- BeckChevalley
+- Fibration
+- Grothendieck
+- Phase
+- PhaseI
+- PhaseII
+- PhaseIII
+- PhaseIV
+- PhaseV
+intent: '============================================================================
+  Part 1: Original Obligation Adapters (Preserved) ==========================================================================...'
+deliverable: Passing tests in GrothendieckFibrationsChecklist.agda
+module_anchors:
+- Tests.GrothendieckFibrationsChecklist
+- Core.GrothendieckFibrations
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Test suite passes: GrothendieckFibrationsChecklist.agda'
+- 'Key definitions implemented: emptyFibrationDecl, emptyFibrationDeclarationAdapter,
+  emptyCartesianArrowDecl (+ 7 more)'
+- Implementation verified in canonical roadmap
+outputs:
+- 'Agda modules: GrothendieckFibrationsChecklist.agda, GrothendieckFibrations.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** medium
+
+#### Intent — PHASE-IV.3
+
+\============================================================================ Part 1: Original Obligation Adapters (Preserved) ==========================================================================...
+
+#### Deliverable — PHASE-IV.3
+
+Passing tests in GrothendieckFibrationsChecklist.agda
+
+#### Scope — PHASE-IV.3
+
+Not specified.
+
+#### Inputs & Outputs — PHASE-IV.3
+
+**Outputs:**
+
+*   Agda modules: GrothendieckFibrationsChecklist.agda, GrothendieckFibrations.agda
+
+#### Acceptance Criteria — PHASE-IV.3
+
+*   All Agda modules compile without errors
+*   Test suite passes: GrothendieckFibrationsChecklist.agda
+*   Key definitions implemented: emptyFibrationDecl, emptyFibrationDeclarationAdapter, emptyCartesianArrowDecl (+ 7 more)
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-IV.3
+
+*   Tests.GrothendieckFibrationsChecklist
+*   Core.GrothendieckFibrations
+
+#### Key Definitions — PHASE-IV.3
+
+`emptyFibrationDecl`, `emptyFibrationDeclarationAdapter`, `emptyCartesianArrowDecl`, `emptyCartesianArrowAdapter`, `emptyCartesianFunctorDecl`, `fieldExtensionFibration`, `fieldPullbackSquare`, `buildFieldReindexing` (+ 2 more)
+
+#### Tags — PHASE-IV.3
+
+`BeckChevalley`, `Fibration`, `Grothendieck`, `Phase`, `PhaseI`, `PhaseII`, `PhaseIII`, `PhaseIV`, `PhaseV`
+
+#### Evidence — PHASE-IV.3
+
+*   **src/agda/Tests/GrothendieckFibrationsChecklist.agda** (module header)
+    > \============================================================================ Part 1: Original Obligation Adapters (Preserved) ==========================================================================...
+*   **src/agda/Core/GrothendieckFibrations.agda** (module header)
+    > Core.GrothendieckFibrations: Grothendieck fibrations with Beck-Chevalley condition This module formalizes fibrations, cartesian lifts, and proves Beck-Chevalley coherence =============================...
+
+#### Provenance — PHASE-IV.3
+
+`PHASE-IV.3|testing.md` → `ROADMAP-MD-90|ROADMAP.md` → `ROADMAP-MD-184|ROADMAP.md`
+
+***
+
+### Task 91: PHASE-IV.0 — Algorithmic foundations (replace field arithmetic stubs)
+
+```yaml
+id: PHASE-IV.0
+title: Algorithmic foundations (replace field arithmetic stubs)
+status: deferred
+category: Phase
+complexity: low
+tags:
+- Algorithms
+- Arithmetic
+intent: 'Helper for string concatenation Finite field predicate Helper: Construct
+  identifiers for Cyclic Group components based on order n'
+deliverable: 'Compiled Agda modules: FiniteFields.agda, NumberFields.agda'
+module_anchors:
+- Core.Algorithms.FiniteFields
+- Core.Algorithms.NumberFields
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Key definitions implemented: cyclicId, constructCyclicGroup, cyclicGaloisGroup
+  (+ 5 more)'
+- Code review and integration approval
+outputs:
+- 'Agda modules: FiniteFields.agda, NumberFields.agda'
+```
+
+**Status:** `deferred` | **Category:** Phase | **Complexity:** low
+
+#### Intent — PHASE-IV.0
+
+Helper for string concatenation Finite field predicate Helper: Construct identifiers for Cyclic Group components based on order n
+
+#### Deliverable — PHASE-IV.0
+
+Compiled Agda modules: FiniteFields.agda, NumberFields.agda
+
+#### Scope — PHASE-IV.0
+
+Not specified.
+
+#### Inputs & Outputs — PHASE-IV.0
+
+**Outputs:**
+
+*   Agda modules: FiniteFields.agda, NumberFields.agda
+
+#### Acceptance Criteria — PHASE-IV.0
+
+*   All Agda modules compile without errors
+*   Key definitions implemented: cyclicId, constructCyclicGroup, cyclicGaloisGroup (+ 5 more)
+*   Code review and integration approval
+
+#### Agda Modules — PHASE-IV.0
+
+*   Core.Algorithms.FiniteFields
+*   Core.Algorithms.NumberFields
+
+#### Key Definitions — PHASE-IV.0
+
+`cyclicId`, `constructCyclicGroup`, `cyclicGaloisGroup`, `divides`, `filter`, `numberFieldExternalConfig`, `numberFieldAlgorithms`, `numberFieldBundle`
+
+#### Tags — PHASE-IV.0
+
+`Algorithms`, `Arithmetic`
+
+#### Evidence — PHASE-IV.0
+
+*   **src/agda/Core/Algorithms/FiniteFields.agda** (module header)
+    > Helper for string concatenation Finite field predicate Helper: Construct identifiers for Cyclic Group components based on order n
+*   **src/agda/Core/Algorithms/NumberFields.agda** (module header)
+    > Core/Algorithms/NumberFields.agda Import External Oracle capability Evidence that a field is a number field
+
+#### Provenance — PHASE-IV.0
+
+`PHASE-IV.0|testing.md` → `ROADMAP-MD-91|ROADMAP.md` → `ROADMAP-MD-185|ROADMAP.md`
+
+***
+
+### Task 92: PHASE-V.1 — Reification of limit object (Gödel boundary)
+
+```yaml
+id: PHASE-V.1
+title: Reification of limit object (Gödel boundary)
+status: completed
+category: Phase
+complexity: high
+dependencies:
+- PHASE-0.1
+- PHASE-0.2
+- PHASE-III.4
+- PHASE-III.5
+- PHASE-IV.1
+- PHASE-IV.2
+- PHASE-IV.3
+- PHASE-V.2
+tags:
+- Cocone
+- Colimit
+- Cone
+- Godel
+- Limit
+intent: 'Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries
+  Testing Philosophy:'
+deliverable: Passing tests in Index.agda, GodelBoundaryTests.agda
+module_anchors:
+- Tests.Index
+- Tests.GodelBoundaryTests
+- Core.GodelBoundary
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Test suite passes: Index.agda, GodelBoundaryTests.agda'
+- 'Key definitions implemented: test-godel-sentence, test-godel-id, test-godel-boundary-class
+  (+ 7 more)'
+- Implementation verified in canonical roadmap
+inputs:
+- 'Dependencies: PHASE-0.1, PHASE-0.2, PHASE-III.4'
+outputs:
+- 'Agda modules: Index.agda, GodelBoundaryTests.agda, GodelBoundary.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** high
+
+#### Intent — PHASE-V.1
+
+Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries Testing Philosophy:
+
+#### Deliverable — PHASE-V.1
+
+Passing tests in Index.agda, GodelBoundaryTests.agda
+
+#### Scope — PHASE-V.1
+
+Not specified.
+
+#### Inputs & Outputs — PHASE-V.1
+
+**Inputs:**
+
+*   Dependencies: PHASE-0.1, PHASE-0.2, PHASE-III.4
+
+**Outputs:**
+
+*   Agda modules: Index.agda, GodelBoundaryTests.agda, GodelBoundary.agda
+
+#### Acceptance Criteria — PHASE-V.1
+
+*   All Agda modules compile without errors
+*   Test suite passes: Index.agda, GodelBoundaryTests.agda
+*   Key definitions implemented: test-godel-sentence, test-godel-id, test-godel-boundary-class (+ 7 more)
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-V.1
+
+*   Tests.Index
+*   Tests.GodelBoundaryTests
+*   Core.GodelBoundary
+
+#### Key Definitions — PHASE-V.1
+
+`test-godel-sentence`, `test-godel-id`, `test-godel-boundary-class`, `test-contradiction-witness`, `test-godel-coordinate`, `classicGodelStatement`, `metacatagorySelfreference`, `metacatagoryReflectionLimit` (+ 2 more)
+
+#### Tags — PHASE-V.1
+
+`Cocone`, `Colimit`, `Cone`, `Godel`, `Limit`
+
+#### Dependencies & Relations — PHASE-V.1
+
+**Depends on:** PHASE-0.1, PHASE-0.2, PHASE-III.4, PHASE-III.5, PHASE-IV.1, PHASE-IV.2, PHASE-IV.3, PHASE-V.2
+
+**Suggested dependencies (from imports):** PHASE-0.1, PHASE-0.2, PHASE-III.4, PHASE-III.5, PHASE-IV.1 (+ 3 more)
+
+#### Evidence — PHASE-V.1
+
+*   **src/agda/Tests/Index.agda** (module header)
+    > Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries Testing Philosophy:
+*   **src/agda/Tests/GodelBoundaryTests.agda** (module header)
+    > Tests.GodelBoundaryTests: Validation of incompleteness witnesses and limit objects PHASE-V.1: Reification of limit object (Gödel boundary) =============================================================...
+*   **src/agda/Core/GodelBoundary.agda** (module header)
+    > Core.GodelBoundary: Formalization of incompleteness and theoretical limits This module reifies the Gödelian constraint by making the system's inability to achieve total self-reflection an explicit, in...
+
+#### Provenance — PHASE-V.1
+
+`PHASE-V.1|testing.md` → `ROADMAP-MD-92|ROADMAP.md` → `ROADMAP-MD-186|ROADMAP.md`
+
+***
+
+### Task 93: PHASE-V.2 — Solution space growth rate instrumentation
+
+```yaml
+id: PHASE-V.2
+title: Solution space growth rate instrumentation
+status: completed
+category: Phase
+complexity: low
+tags:
+- Growth
+- Metrics
+- Performance
+- Phase
+- PhaseI
+- PhaseII
+- PhaseIII
+- PhaseIV
+- PhaseV
+intent: 'Core.GrowthMetrics: Solution space growth rate instrumentation PHASE-V.2:
+  Track coordinate allocation patterns and solution space expansion ============================================================...'
+deliverable: Passing tests in PerformanceBoundaryTests.agda
+module_anchors:
+- Core.GrowthMetrics
+- Tests.PerformanceBoundaryTests
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Test suite passes: PerformanceBoundaryTests.agda'
+- 'Key definitions implemented: calculatePhaseDensity, analyzeYDistribution, computeGrowthRate
+  (+ 2 more)'
+- Implementation verified in canonical roadmap
+outputs:
+- 'Agda modules: GrowthMetrics.agda, PerformanceBoundaryTests.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** low
+
+#### Intent — PHASE-V.2
+
+Core.GrowthMetrics: Solution space growth rate instrumentation PHASE-V.2: Track coordinate allocation patterns and solution space expansion ============================================================...
+
+#### Deliverable — PHASE-V.2
+
+Passing tests in PerformanceBoundaryTests.agda
+
+#### Scope — PHASE-V.2
+
+Not specified.
+
+#### Inputs & Outputs — PHASE-V.2
+
+**Outputs:**
+
+*   Agda modules: GrowthMetrics.agda, PerformanceBoundaryTests.agda
+
+#### Acceptance Criteria — PHASE-V.2
+
+*   All Agda modules compile without errors
+*   Test suite passes: PerformanceBoundaryTests.agda
+*   Key definitions implemented: calculatePhaseDensity, analyzeYDistribution, computeGrowthRate (+ 2 more)
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-V.2
+
+*   Core.GrowthMetrics
+*   Tests.PerformanceBoundaryTests
+
+#### Key Definitions — PHASE-V.2
+
+`calculatePhaseDensity`, `analyzeYDistribution`, `computeGrowthRate`, `classifyExpansionPattern`, `checkPhaseSaturation`
+
+#### Tags — PHASE-V.2
+
+`Growth`, `Metrics`, `Performance`, `Phase`, `PhaseI`, `PhaseII`, `PhaseIII`, `PhaseIV`, `PhaseV`
+
+#### Evidence — PHASE-V.2
+
+*   **src/agda/Core/GrowthMetrics.agda** (module header)
+    > Core.GrowthMetrics: Solution space growth rate instrumentation PHASE-V.2: Track coordinate allocation patterns and solution space expansion ============================================================...
+*   **src/agda/Tests/PerformanceBoundaryTests.agda** (module header)
+    > Tests.PerformanceBoundaryTests: Track computational complexity phase boundaries This suite tests where complexity changes occur in algorithm pipelines: - Complexity classification (constant, poly, exp...
+
+#### Provenance — PHASE-V.2
+
+`PHASE-V.2|testing.md` → `ROADMAP-MD-93|ROADMAP.md` → `ROADMAP-MD-187|ROADMAP.md`
+
+***
+
+### Task 94: PHASE-V.3 — Composite HoTT path aggregator (global closure)
+
+```yaml
+id: PHASE-V.3
+title: Composite HoTT path aggregator (global closure)
+status: completed
+category: Phase
+complexity: high
+dependencies:
+- PHASE-0.1
+- PHASE-0.2
+- PHASE-III.4
+- PHASE-III.5
+- PHASE-IV.1
+- PHASE-IV.2
+- PHASE-IV.3
+- PHASE-V.1
+- PHASE-V.2
+tags:
+- Closure
+- HoTT
+- Path
+- Phase
+- PhaseI
+- PhaseII
+- PhaseIII
+- PhaseIV
+- PhaseV
+- Univalence
+intent: 'Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries
+  Testing Philosophy:'
+deliverable: Passing tests in Index.agda
+module_anchors:
+- Tests.Index
+- Core.PathAggregator
+acceptance_criteria:
+- All Agda modules compile without errors
+- 'Test suite passes: Index.agda'
+- 'Key definitions implemented: PathEvidenceIdentifier, composePaths, identityPath
+  (+ 2 more)'
+- Implementation verified in canonical roadmap
+inputs:
+- 'Dependencies: PHASE-0.1, PHASE-0.2, PHASE-III.4'
+outputs:
+- 'Agda modules: Index.agda, PathAggregator.agda'
+```
+
+**Status:** `completed` | **Category:** Phase | **Complexity:** high
+
+#### Intent — PHASE-V.3
+
+Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries Testing Philosophy:
+
+#### Deliverable — PHASE-V.3
+
+Passing tests in Index.agda
+
+#### Scope — PHASE-V.3
+
+**In scope:**
+
+*   HoTT path equality
+    **Out of scope:**
+*   Propositional equality only
+
+#### Inputs & Outputs — PHASE-V.3
+
+**Inputs:**
+
+*   Dependencies: PHASE-0.1, PHASE-0.2, PHASE-III.4
+
+**Outputs:**
+
+*   Agda modules: Index.agda, PathAggregator.agda
+
+#### Acceptance Criteria — PHASE-V.3
+
+*   All Agda modules compile without errors
+*   Test suite passes: Index.agda
+*   Key definitions implemented: PathEvidenceIdentifier, composePaths, identityPath (+ 2 more)
+*   Implementation verified in canonical roadmap
+
+#### Agda Modules — PHASE-V.3
+
+*   Tests.Index
+*   Core.PathAggregator
+
+#### Key Definitions — PHASE-V.3
+
+`PathEvidenceIdentifier`, `composePaths`, `identityPath`, `allPathsValid`, `aggregatePaths`
+
+#### Tags — PHASE-V.3
+
+`Closure`, `HoTT`, `Path`, `Phase`, `PhaseI`, `PhaseII`, `PhaseIII`, `PhaseIV`, `PhaseV`, `Univalence`
+
+#### Dependencies & Relations — PHASE-V.3
+
+**Depends on:** PHASE-0.1, PHASE-0.2, PHASE-III.4, PHASE-III.5, PHASE-IV.1, PHASE-IV.2, PHASE-IV.3, PHASE-V.1, PHASE-V.2
+
+**Suggested dependencies (from imports):** PHASE-0.1, PHASE-0.2, PHASE-III.4, PHASE-III.5, PHASE-IV.1 (+ 4 more)
+
+#### Evidence — PHASE-V.3
+
+*   **src/agda/Tests/Index.agda** (module header)
+    > Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries Testing Philosophy:
+*   **src/agda/Core/PathAggregator.agda** (module header)
+    > Core.PathAggregator: Composite HoTT path aggregation for global closure This module provides a global witness that aggregates all individual serialization roundtrip paths into a single composite proof...
+
+#### Provenance — PHASE-V.3
+
+`PHASE-V.3|testing.md` → `ROADMAP-MD-94|ROADMAP.md` → `ROADMAP-MD-188|ROADMAP.md`
+
+***
+
+## Category: Roadmap
+
+**Tasks in this category:** 8
+
+***
+
+### Task 95: ROADMAP-MD-1 — Provide algebraic structures for representing and manipulating ambiguity in parse spaces
+
+```yaml
+id: ROADMAP-MD-1
+title: Provide algebraic structures for representing and manipulating ambiguity in
+  parse spaces.
+status: not-started
+category: Roadmap
+complexity: low
+intent: Implement Provide algebraic structures for representing and manipulating ambiguity
+  in parse spaces. as specified.
+deliverable: 'Compiled Agda modules: Ambiguity.agda'
+module_anchors:
+- Plan.CIM.Ambiguity
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Ambiguity.agda'
+```
+
+**Status:** `not-started` | **Category:** Roadmap | **Complexity:** low
+
+#### Intent — ROADMAP-MD-1
+
+Implement Provide algebraic structures for representing and manipulating ambiguity in parse spaces. as specified.
+
+#### Deliverable — ROADMAP-MD-1
+
+Compiled Agda modules: Ambiguity.agda
+
+#### Scope — ROADMAP-MD-1
+
+Not specified.
+
+#### Inputs & Outputs — ROADMAP-MD-1
+
+**Outputs:**
+
+*   Agda modules: Ambiguity.agda
+
+#### Acceptance Criteria — ROADMAP-MD-1
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — ROADMAP-MD-1
+
+*   Plan.CIM.Ambiguity
+
+#### Provenance — ROADMAP-MD-1
+
+`ROADMAP-MD-1|ROADMAP.md` → `ROADMAP-MD-95|ROADMAP.md` → `ROADMAP-MD-189|ROADMAP.md`
+
+***
+
+### Task 96: ROADMAP-MD-2 — Establish metric structures on semantic spaces for distance/similarity calculations
+
+```yaml
+id: ROADMAP-MD-2
+title: Establish metric structures on semantic spaces for distance/similarity calculations.
+status: not-started
+category: Roadmap
+complexity: low
+intent: Implement Establish metric structures on semantic spaces for distance/similarity
+  calculations. as specified.
+deliverable: 'Compiled Agda modules: Metricization.agda'
+module_anchors:
+- Plan.CIM.Metricization
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Metricization.agda'
+```
+
+**Status:** `not-started` | **Category:** Roadmap | **Complexity:** low
+
+#### Intent — ROADMAP-MD-2
+
+Implement Establish metric structures on semantic spaces for distance/similarity calculations. as specified.
+
+#### Deliverable — ROADMAP-MD-2
+
+Compiled Agda modules: Metricization.agda
+
+#### Scope — ROADMAP-MD-2
+
+Not specified.
+
+#### Inputs & Outputs — ROADMAP-MD-2
+
+**Outputs:**
+
+*   Agda modules: Metricization.agda
+
+#### Acceptance Criteria — ROADMAP-MD-2
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — ROADMAP-MD-2
+
+*   Plan.CIM.Metricization
+
+#### Provenance — ROADMAP-MD-2
+
+`ROADMAP-MD-2|ROADMAP.md` → `ROADMAP-MD-96|ROADMAP.md` → `ROADMAP-MD-190|ROADMAP.md`
+
+***
+
+### Task 97: ROADMAP-MD-3 — Define compositional transformation operations on semantic objects
+
+```yaml
+id: ROADMAP-MD-3
+title: Define compositional transformation operations on semantic objects.
+status: not-started
+category: Roadmap
+complexity: low
+intent: Implement Define compositional transformation operations on semantic objects.
+  as specified.
+deliverable: 'Compiled Agda modules: TransformationSystem.agda'
+module_anchors:
+- Plan.CIM.TransformationSystem
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: TransformationSystem.agda'
+```
+
+**Status:** `not-started` | **Category:** Roadmap | **Complexity:** low
+
+#### Intent — ROADMAP-MD-3
+
+Implement Define compositional transformation operations on semantic objects. as specified.
+
+#### Deliverable — ROADMAP-MD-3
+
+Compiled Agda modules: TransformationSystem.agda
+
+#### Scope — ROADMAP-MD-3
+
+Not specified.
+
+#### Inputs & Outputs — ROADMAP-MD-3
+
+**Outputs:**
+
+*   Agda modules: TransformationSystem.agda
+
+#### Acceptance Criteria — ROADMAP-MD-3
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — ROADMAP-MD-3
+
+*   Plan.CIM.TransformationSystem
+
+#### Provenance — ROADMAP-MD-3
+
+`ROADMAP-MD-3|ROADMAP.md` → `ROADMAP-MD-97|ROADMAP.md` → `ROADMAP-MD-191|ROADMAP.md`
+
+***
+
+### Task 98: ROADMAP-MD-4 — Implement functorial mappings between semantic and computational spaces
+
+```yaml
+id: ROADMAP-MD-4
+title: Implement functorial mappings between semantic and computational spaces.
+status: not-started
+category: Roadmap
+complexity: low
+intent: Implement Implement functorial mappings between semantic and computational
+  spaces. as specified.
+deliverable: 'Compiled Agda modules: FunctorialConstructs.agda'
+module_anchors:
+- Plan.CIM.FunctorialConstructs
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: FunctorialConstructs.agda'
+```
+
+**Status:** `not-started` | **Category:** Roadmap | **Complexity:** low
+
+#### Intent — ROADMAP-MD-4
+
+Implement Implement functorial mappings between semantic and computational spaces. as specified.
+
+#### Deliverable — ROADMAP-MD-4
+
+Compiled Agda modules: FunctorialConstructs.agda
+
+#### Scope — ROADMAP-MD-4
+
+Not specified.
+
+#### Inputs & Outputs — ROADMAP-MD-4
+
+**Outputs:**
+
+*   Agda modules: FunctorialConstructs.agda
+
+#### Acceptance Criteria — ROADMAP-MD-4
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — ROADMAP-MD-4
+
+*   Plan.CIM.FunctorialConstructs
+
+#### Provenance — ROADMAP-MD-4
+
+`ROADMAP-MD-4|ROADMAP.md` → `ROADMAP-MD-98|ROADMAP.md` → `ROADMAP-MD-192|ROADMAP.md`
+
+***
+
+### Task 99: ROADMAP-MD-5 — Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs
+
+```yaml
+id: ROADMAP-MD-5
+title: Integrate 2D gating logic (Tension/Resonance) into parser and protocol records,
+  explicitly cross-referencing ambiguity, metricization, transformation system, and
+  functorial constructs.
+status: not-started
+category: Roadmap
+complexity: high
+intent: Implement Integrate 2D gating logic (Tension/Resonance) into parser and protocol
+  records, explicitly cross-referencing ambiguity, metricization, transformation system,
+  and functorial constructs. as specified.
+deliverable: 'Compiled Agda modules: Elasticity.agda, Ambiguity.agda'
+module_anchors:
+- Plan.CIM.Elasticity
+- Plan.CIM.Ambiguity
+- Plan.CIM.Metricization
+- Plan.CIM.TransformationSystem
+- Plan.CIM.FunctorialConstructs
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: Elasticity.agda, Ambiguity.agda, Metricization.agda'
+```
+
+**Status:** `not-started` | **Category:** Roadmap | **Complexity:** high
+
+#### Intent — ROADMAP-MD-5
+
+Implement Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs. as specified.
+
+#### Deliverable — ROADMAP-MD-5
+
+Compiled Agda modules: Elasticity.agda, Ambiguity.agda
+
+#### Scope — ROADMAP-MD-5
+
+Not specified.
+
+#### Inputs & Outputs — ROADMAP-MD-5
+
+**Outputs:**
+
+*   Agda modules: Elasticity.agda, Ambiguity.agda, Metricization.agda
+
+#### Acceptance Criteria — ROADMAP-MD-5
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — ROADMAP-MD-5
+
+*   Plan.CIM.Elasticity
+*   Plan.CIM.Ambiguity
+*   Plan.CIM.Metricization
+*   Plan.CIM.TransformationSystem
+*   Plan.CIM.FunctorialConstructs
+
+#### Provenance — ROADMAP-MD-5
+
+`ROADMAP-MD-5|ROADMAP.md` → `ROADMAP-MD-99|ROADMAP.md` → `ROADMAP-MD-193|ROADMAP.md`
+
+***
+
+### Task 100: ROADMAP-MD-6 — Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension
+
+```yaml
+id: ROADMAP-MD-6
+title: 'Implement topological inflation: upgrade crowded semantic categories to higher-dimensional
+  polytopes to relieve tension.'
+status: not-started
+category: Roadmap
+complexity: low
+intent: 'Implement Implement topological inflation: upgrade crowded semantic categories
+  to higher-dimensional polytopes to relieve tension. as specified.'
+deliverable: 'Compiled Agda modules: PolytopeExpansion.agda'
+module_anchors:
+- Plan.CIM.PolytopeExpansion
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: PolytopeExpansion.agda'
+```
+
+**Status:** `not-started` | **Category:** Roadmap | **Complexity:** low
+
+#### Intent — ROADMAP-MD-6
+
+Implement Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension. as specified.
+
+#### Deliverable — ROADMAP-MD-6
+
+Compiled Agda modules: PolytopeExpansion.agda
+
+#### Scope — ROADMAP-MD-6
+
+Not specified.
+
+#### Inputs & Outputs — ROADMAP-MD-6
+
+**Outputs:**
+
+*   Agda modules: PolytopeExpansion.agda
+
+#### Acceptance Criteria — ROADMAP-MD-6
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — ROADMAP-MD-6
+
+*   Plan.CIM.PolytopeExpansion
+
+#### Provenance — ROADMAP-MD-6
+
+`ROADMAP-MD-6|ROADMAP.md` → `ROADMAP-MD-100|ROADMAP.md` → `ROADMAP-MD-194|ROADMAP.md`
+
+***
+
+### Task 101: ROADMAP-MD-7 — Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed
+
+```yaml
+id: ROADMAP-MD-7
+title: Implement Mitosis Engine to monitor topological tension and inflate categories
+  to dynamic polytopes as needed.
+status: not-started
+category: Roadmap
+complexity: medium
+intent: Implement Implement Mitosis Engine to monitor topological tension and inflate
+  categories to dynamic polytopes as needed. as specified.
+deliverable: 'Compiled Agda modules: PolytopeExpansion.agda'
+module_anchors:
+- Plan.CIM.PolytopeExpansion
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: PolytopeExpansion.agda'
+```
+
+**Status:** `not-started` | **Category:** Roadmap | **Complexity:** medium
+
+#### Intent — ROADMAP-MD-7
+
+Implement Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed. as specified.
+
+#### Deliverable — ROADMAP-MD-7
+
+Compiled Agda modules: PolytopeExpansion.agda
+
+#### Scope — ROADMAP-MD-7
+
+Not specified.
+
+#### Inputs & Outputs — ROADMAP-MD-7
+
+**Outputs:**
+
+*   Agda modules: PolytopeExpansion.agda
+
+#### Acceptance Criteria — ROADMAP-MD-7
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — ROADMAP-MD-7
+
+*   Plan.CIM.PolytopeExpansion
+
+#### Provenance — ROADMAP-MD-7
+
+`ROADMAP-MD-7|ROADMAP.md` → `ROADMAP-MD-101|ROADMAP.md` → `ROADMAP-MD-195|ROADMAP.md`
+
+***
+
+### Task 102: ROADMAP-MD-8 — Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition
+
+```yaml
+id: ROADMAP-MD-8
+title: Integrate Earley parsing, RoPE, and symmetry group concepts into a unified
+  topological parser. Treat syntax as a manifold and ambiguity as vector superposition.
+status: not-started
+category: Roadmap
+complexity: high
+intent: Implement Integrate Earley parsing, RoPE, and symmetry group concepts into
+  a unified topological parser. Treat syntax as a manifold and ambiguity as vector
+  superposition. as specified.
+deliverable: 'Compiled Agda modules: RotationalTransport.agda, TopologicalGating.agda'
+module_anchors:
+- Plan.CIM.RotationalTransport
+- Plan.CIM.TopologicalGating
+- Plan.CIM.TopologicalSuperposition
+acceptance_criteria:
+- All Agda modules compile without errors
+- Code review and integration approval
+outputs:
+- 'Agda modules: RotationalTransport.agda, TopologicalGating.agda, TopologicalSuperposition.agda'
+```
+
+**Status:** `not-started` | **Category:** Roadmap | **Complexity:** high
+
+#### Intent — ROADMAP-MD-8
+
+Implement Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition. as specified.
+
+#### Deliverable — ROADMAP-MD-8
+
+Compiled Agda modules: RotationalTransport.agda, TopologicalGating.agda
+
+#### Scope — ROADMAP-MD-8
+
+Not specified.
+
+#### Inputs & Outputs — ROADMAP-MD-8
+
+**Outputs:**
+
+*   Agda modules: RotationalTransport.agda, TopologicalGating.agda, TopologicalSuperposition.agda
+
+#### Acceptance Criteria — ROADMAP-MD-8
+
+*   All Agda modules compile without errors
+*   Code review and integration approval
+
+#### Agda Modules — ROADMAP-MD-8
+
+*   Plan.CIM.RotationalTransport
+*   Plan.CIM.TopologicalGating
+*   Plan.CIM.TopologicalSuperposition
+
+#### Provenance — ROADMAP-MD-8
+
+`ROADMAP-MD-8|ROADMAP.md` → `ROADMAP-MD-102|ROADMAP.md` → `ROADMAP-MD-196|ROADMAP.md`
+
+***
+
+## Statistics
+
+*   **Total tasks:** 102
+*   **Categories:** 4
+
+## Status Breakdown
+
+*   **completed**: 13 (12.7%)
+*   **deferred**: 1 (1.0%)
+*   **not-started**: 86 (84.3%)
+*   **planned**: 2 (2.0%)
+
+## Complexity Breakdown
+
+*   **low**: 91 (89.2%)
+*   **medium**: 4 (3.9%)
+*   **high**: 7 (6.9%)
