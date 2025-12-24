@@ -25,6 +25,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y agda pandoc
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Makefile triangle identity check
+        run: make makefile-validate
+
       - name: Full CI
         run: make all docs-all
 
