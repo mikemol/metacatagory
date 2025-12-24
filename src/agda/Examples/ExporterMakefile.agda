@@ -163,7 +163,7 @@ discoveredTargets =
     ("python3 scripts/normalize_generated_markdown.py" ∷ [])
   ∷ validatorToTarget "makefile-validate" "build/reports/makefile-validate.txt"
     ("mkdir -p build/reports" ∷ "python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt" ∷ [])
-  ∷ generatorToTarget "all" ("agda-all" ∷ "docs-all" ∷ [])
+  ∷ generatorToTarget "all" ("agda-all" ∷ "docs-generate" ∷ [])
     ("@echo \"all complete\"" ∷ [])
   ∷ generatorToTarget "check" ("roadmap-validate-triangle" ∷ "docs-validate" ∷ "makefile-validate" ∷ [])
     ("@echo \"check complete\"" ∷ [])
@@ -241,14 +241,12 @@ buildArtifact : List String → List String → MakefileArtifact
 buildArtifact agdaFiles graphEdges =
   let labels = map pathToModuleLabel agdaFiles
       agdaiTargets = zipWith generateAgdaTargetFromGraph agdaFiles (map depsFor labels)
-      docsTargets = generateDocsTargets agdaFiles
-      aggregateTargets = allAgdaiTarget agdaFiles ∷ allDocsTarget agdaFiles ∷ []
-      allTargets = discoveredTargets +++ agdaiTargets +++ docsTargets +++ aggregateTargets
+      aggregateTargets = allAgdaiTarget agdaFiles ∷ []
+      allTargets = discoveredTargets +++ agdaiTargets +++ aggregateTargets
       phonyNames = "all" ∷ "check" ∷ "md-fix" ∷ "md-lint" ∷ "intake-lint" ∷ "intake-scan"
              ∷ "md-normalize" ∷ "makefile-validate"
              ∷ "badges" ∷ "node-deps" 
-             ∷ "regen-makefile" ∷ "agda-all" ∷ "docs-all" 
-           ∷ "deferred-items" ∷ "roadmap-index" ∷ "roadmap-sync" ∷ "roadmap-sppf"
+             ∷ "regen-makefile" ∷ "agda-all" ∷ "deferred-items" ∷ "roadmap-index" ∷ "roadmap-sync" ∷ "roadmap-sppf"
            ∷ "roadmap-merge" ∷ "roadmap-deps-graph" ∷ "roadmap-enrich"
            ∷ "roadmap-export-json" ∷ "roadmap-export-md" ∷ "roadmap-export-enriched"
            ∷ "roadmap-export-deps" ∷ "roadmap-validate-json" ∷ "roadmap-validate-md"
