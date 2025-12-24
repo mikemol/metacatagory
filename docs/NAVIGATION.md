@@ -12,7 +12,7 @@ This document provides a high-level map of the repository's documentation and co
 
 * DEFERRED-TRACKING.md: Technical debt and deferred items tracking.
 
-* COPILOT\_SYNERGY.md: AI and Copilot integration notes.
+* COPILOT_SYNERGY.md: AI and Copilot integration notes.
 
 * CREDITS.md: Contributors and acknowledgments.
 

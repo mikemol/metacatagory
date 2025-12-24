@@ -21,6 +21,11 @@ ID_PATTERN = re.compile(r"\b(?:PHASE-[A-Za-z0-9.\-]+|ROADMAP-MD-\d+|GP-[A-Za-z0-
 
 
 def load_canonical_ids() -> Set[str]:
+    if not CANONICAL_PATH.exists():
+        CANONICAL_PATH.parent.mkdir(parents=True, exist_ok=True)
+        CANONICAL_PATH.write_text("[]")
+        return set()
+
     data = json.loads(CANONICAL_PATH.read_text())
     ids: Set[str] = set()
     for entry in data:

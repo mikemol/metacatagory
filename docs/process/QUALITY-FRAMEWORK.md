@@ -62,7 +62,7 @@ Examples:
 * Category laws verified for PhaseCategory
 * Emergent metrics consistent across induction layers
 
-***
+---
 
 ## A12 Correction Protocol
 
@@ -108,7 +108,7 @@ Detection: `#-# TERMINATING pragmas without justification`
 
 Correction: Prove termination via well-founded induction
 
-#### Witness Non-Constructivity
+### Witness Non-Constructivity
 
 Proofs assume classical logic or unproven lemmas
 
@@ -116,7 +116,7 @@ Detection: `Classical axioms (LEM, choice) without constructive interpretation`
 
 Correction: Provide constructive witnesses or dependent type encodings
 
-#### Homological Obstruction
+### Homological Obstruction
 
 Cycle detection failures in dependency graphs
 
@@ -124,7 +124,7 @@ Detection: `Circular imports or mutual without clear stratification`
 
 Correction: Enforce DAG structure via Axiom of Well-Founded Indexed Composition
 
-#### Braid Diagram Malformation
+### Braid Diagram Malformation
 
 Invalid inheritance paths in BraidedInheritanceFunctor
 

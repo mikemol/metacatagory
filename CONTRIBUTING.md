@@ -6,7 +6,7 @@ Welcome! This guide will help you get started as a contributor to the MetaCatego
 
 * Clone the repository and set up your environment using the provided Makefile targets.
 
-* Review the documentation in README.md, ROADMAP.md, and the relevant subdirectory manuals (see src/agda/\*/README.md).
+* Review the documentation in README.md, ROADMAP.md, and the relevant subdirectory manuals (see src/agda/*/README.md).
 
 * Install dependencies:
 

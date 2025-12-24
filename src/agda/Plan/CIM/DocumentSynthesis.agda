@@ -48,9 +48,9 @@ _++ℓ_ : List Block → List Block → List Block
 [] ++ℓ ys = ys
 (x ∷ xs) ++ℓ ys = x ∷ (xs ++ℓ ys)
 
-interfaceToBlocks : InterfaceBoundary → List Block
-interfaceToBlocks ib =
-  Header 4 (Str (InterfaceBoundary.name ib) ∷ []) ∷
+interfaceToBlocks : Nat → InterfaceBoundary → List Block
+interfaceToBlocks level ib =
+  Header level (Str (InterfaceBoundary.name ib) ∷ []) ∷
   Plain (Str (InterfaceBoundary.description ib) ∷ []) ∷
   Plain (Str "From: " ∷ Code (InterfaceBoundary.mechanismStart ib) ∷ []) ∷
   Plain (Str "To: " ∷ Code (InterfaceBoundary.mechanismEnd ib) ∷ []) ∷
@@ -58,7 +58,7 @@ interfaceToBlocks ib =
 
 flexibilityToBlocks : FlexibilityPoint → List Block
 flexibilityToBlocks fp =
-  Header 4 (Str (FlexibilityPoint.name fp) ∷ []) ∷
+  Header 3 (Str (FlexibilityPoint.name fp) ∷ []) ∷
   Plain (Str (FlexibilityPoint.description fp) ∷ []) ∷
   Plain (Str "- " ∷ Strong (Str (FlexibilityPoint.alternativeOne fp) ∷ []) ∷ []) ∷
   Plain (Str "- " ∷ Strong (Str (FlexibilityPoint.alternativeTwo fp) ∷ []) ∷ []) ∷
@@ -67,7 +67,7 @@ flexibilityToBlocks fp =
 
 qualityToBlocks : QualityMandate → List Block
 qualityToBlocks qm =
-  Header 4 (Str (QualityMandate.name qm ++ " (" ++ QualityMandate.abbreviation qm ++ ")") ∷ []) ∷
+  Header 3 (Str (QualityMandate.name qm ++ " (" ++ QualityMandate.abbreviation qm ++ ")") ∷ []) ∷
   Plain (Str (QualityMandate.description qm) ∷ []) ∷
   Plain (Str "Examples:" ∷ []) ∷
   BulletList (map (λ ex → Plain (Str ex ∷ []) ∷ []) (QualityMandate.examples qm)) ∷
@@ -75,7 +75,7 @@ qualityToBlocks qm =
 
 violationToBlocks : A12ProtocolViolation → List Block
 violationToBlocks v =
-  Header 4 (Str (A12ProtocolViolation.violationType v) ∷ []) ∷
+  Header 3 (Str (A12ProtocolViolation.violationType v) ∷ []) ∷
   Plain (Str (A12ProtocolViolation.description v) ∷ []) ∷
   Plain (Str "Detection: " ∷ Code (A12ProtocolViolation.detection v) ∷ []) ∷
   Plain (Str "Correction: " ∷ Str (A12ProtocolViolation.correction v) ∷ []) ∷
@@ -88,11 +88,11 @@ violationToBlocks v =
 frameworkInteroperabilityDoc : PandocDoc
 frameworkInteroperabilityDoc = record
   { blocks =
-      Header 1 (Str "Framework Interoperability Map" ∷ []) ∷
+      Header topLevel (Str "Framework Interoperability Map" ∷ []) ∷
       Plain (Str "**Generated:** December 21, 2025" ∷ []) ∷
       Plain (Str "**Purpose:** Document how multiple theoretical frameworks compose within the metacatagory repository" ∷ []) ∷
       HorizontalRule ∷
-      Header 2 (Str "Executive Summary" ∷ []) ∷
+      Header sectionLevel (Str "Executive Summary" ∷ []) ∷
       Para (Str "The metacatagory repository is **not a monolithic system** but a **composable substrate** where multiple theoretical frameworks interoperate through well-defined interfaces." ∷ []) ∷
       BulletList (
         (Plain (Str "✅ **Parallel development** of categorical and geometric theories without blocking each other" ∷ []) ∷ []) ∷
@@ -102,19 +102,28 @@ frameworkInteroperabilityDoc = record
         []
       ) ∷
       HorizontalRule ∷
-      Header 2 (Str "Part I: Framework Inventory" ∷ []) ∷
+      Header sectionLevel (Str "Part I: Framework Inventory" ∷ []) ∷
       concatBlocks (map frameToBlocks allFrameworks) ++ℓ
       (HorizontalRule ∷
-      Header 2 (Str "Part II: Interface Boundaries" ∷ []) ∷
+      Header sectionLevel (Str "Part II: Interface Boundaries" ∷ []) ∷
       Plain (Str "The following interface boundaries define how frameworks interact and compose:" ∷ []) ∷
-      concatBlocks (map interfaceToBlocks interfaceBoundaries) ++ℓ
+      concatBlocks (map (interfaceToBlocks subSectionLevel) interfaceBoundaries) ++ℓ
       (HorizontalRule ∷
-      Header 2 (Str "Part III: Intentional Flexibility Points" ∷ []) ∷
+      Header sectionLevel (Str "Part III: Intentional Flexibility Points" ∷ []) ∷
       Plain (Str "The system contains explicit flexibility points where alternative implementations are supported:" ∷ []) ∷
       concatBlocks (map flexibilityToBlocks flexibilityPoints) ++ℓ
       []))
   ; meta = ""
   }
+  where
+    topLevel : Nat
+    topLevel = 1
+
+    sectionLevel : Nat
+    sectionLevel = suc topLevel
+
+    subSectionLevel : Nat
+    subSectionLevel = suc sectionLevel
 
 ------------------------------------------------------------------------
 -- Quality Framework Document

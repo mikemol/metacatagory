@@ -11,11 +11,11 @@ open import Agda.Builtin.List
 open import Agda.Primitive using (Level; lzero; lsuc)
 
 ------------------------------------------------------------------------
--- CHIP Enforcement: All block and document definitions use Ambiguity, TransformationSystem, CoherenceWitness
+-- CHIP Enforcement: All block and document definitions use PhaseAmbiguity, TransformationSystem, CoherenceWitness
 ------------------------------------------------------------------------
 
 -- CHIP-enforced block ambiguity and transformation system
-blockAmb : Ambiguity Block MdBlock
+blockAmb : PhaseAmbiguity Block MdBlock
 blockAmb = record { valA = Para [] ; valB = MdPara [] ; phase = 0 }
 
 blockTransSys : TransformationSystem Block MdBlock
@@ -25,7 +25,7 @@ blockCoherence : CoherenceWitness blockAmb blockTransSys
 blockCoherence = record { proofPath = refl-path ; metric = record { magnitude = 1 } }
 
 -- CHIP-enforced document ambiguity and transformation system
-docAmb : Ambiguity PandocDoc MarkdownDoc
+docAmb : PhaseAmbiguity PandocDoc MarkdownDoc
 docAmb = record { valA = record { blocks = [] ; meta = "" } ; valB = record { blocks = [] ; meta = "" } ; phase = 0 }
 
 docTransSys : TransformationSystem PandocDoc MarkdownDoc

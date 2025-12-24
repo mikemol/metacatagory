@@ -27,6 +27,36 @@ map f [] = []
 map f (x ∷ xs) = f x ∷ map f xs
 
 ------------------------------------------------------------------------
+-- Shared Data Types (Lifted for Module Parameterization)
+------------------------------------------------------------------------
+
+-- [MOVED] From Plan.CIM.Ambiguity
+record WeightedOption {ℓ} (A : Set ℓ) : Set ℓ where
+  field
+    value : A
+    weight : Nat
+    provenance : String
+
+-- [MOVED] From Plan.CIM.YonedaProfiler
+record Morphism : Set where
+  field
+    source : String
+    target : String
+    kind   : String
+
+-- [MOVED] From Plan.CIM.PolytopeExpansion
+record SemanticPoint : Set where
+  field
+    id : String
+    coordinates : List Nat
+
+record Polytope : Set where
+  field
+    vertices : List SemanticPoint
+    center : SemanticPoint
+    radius : Nat
+
+------------------------------------------------------------------------
 -- Recursive RoadmapStep Record
 ------------------------------------------------------------------------
 record RoadmapStep : Set₁ where
@@ -44,7 +74,6 @@ record RoadmapStep : Set₁ where
 -- Core CIM Framework Types
 ------------------------------------------------------------------------
 
--- [REFACTORED] Renamed to PhaseAmbiguity to avoid collision with Algebraic Ambiguity
 record PhaseAmbiguity {ℓ} (A B : Set ℓ) : Set ℓ where
     field
         valA : A
@@ -77,7 +106,6 @@ record BraidedInheritanceFunctor {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
         toValue   : B
         description : String
 
--- [NEW] BraidedSPPF integrated from Intake
 record BraidedSPPF {ℓ} (A B : Set ℓ) (Sys : TransformationSystem A B) : Set (lsuc ℓ) where
     constructor packed-node
     field
@@ -108,7 +136,6 @@ record CNFProtocol (A B : Set) : Set₁ where
 ------------------------------------------------------------------------
 
 module ASTDependent (Block MdBlock BraidStep : Set) where
-
   record BraidTrace : Set where
     field
         steps : List BraidStep
@@ -152,13 +179,13 @@ concatWithSep sep [] = ""
 concatWithSep sep (x ∷ []) = x
 concatWithSep sep (x ∷ xs) = x ++ sep ++ concatWithSep sep xs
 
--- Examples (Preserved for Roadmap Index)
+-- Examples preserved...
 exampleUnifiedTopologicalParserRoadmap : RoadmapStep
 exampleUnifiedTopologicalParserRoadmap = record
-    { provenance  = "GP699, Unified Topological Parser"
+    { provenance  = "GP699"
     ; relatedNodes = []
-    ; step        = "Integrate Earley parsing, RoPE, and symmetry group concepts."
-    ; implication = "Enables composable geometric and topological integration."
+    ; step        = "Integrate Earley parsing..."
+    ; implication = "Enables composable geometric..."
     ; status      = "not-started"
     ; targetModule = "nedge_topology/parser.py"
     ; next = []
@@ -166,10 +193,10 @@ exampleUnifiedTopologicalParserRoadmap = record
 
 exampleDimensionalReliefRoadmap : RoadmapStep
 exampleDimensionalReliefRoadmap = record
-    { provenance  = "GP500, Dimensional Relief"
+    { provenance  = "GP500"
     ; relatedNodes = []
-    ; step        = "Implement topological inflation."
-    ; implication = "Enables composable category expansion."
+    ; step        = "Implement topological inflation..."
+    ; implication = "Enables composable category expansion..."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/PolytopeExpansion.agda"
     ; next = []
@@ -177,10 +204,10 @@ exampleDimensionalReliefRoadmap = record
 
 examplePolytopeManifestRoadmap : RoadmapStep
 examplePolytopeManifestRoadmap = record
-    { provenance  = "GP501, Polytope Manifest"
+    { provenance  = "GP501"
     ; relatedNodes = []
-    ; step        = "Implement Mitosis Engine."
-    ; implication = "Enables dynamic, composable category geometry."
+    ; step        = "Implement Mitosis Engine..."
+    ; implication = "Enables dynamic..."
     ; status      = "not-started"
     ; targetModule = "nedge_topology/mitosis.py"
     ; next = []
@@ -188,10 +215,10 @@ examplePolytopeManifestRoadmap = record
 
 exampleElasticityOfMeaningRoadmap : RoadmapStep
 exampleElasticityOfMeaningRoadmap = record
-    { provenance  = "GP400, Elasticity of Meaning"
+    { provenance  = "GP400"
     ; relatedNodes = []
-    ; step        = "Integrate 2D gating logic (Tension/Resonance)."
-    ; implication = "Enables composable phase space modeling."
+    ; step        = "Integrate 2D gating logic..."
+    ; implication = "Enables composable phase space..."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Elasticity.agda"
     ; next = []
@@ -199,10 +226,10 @@ exampleElasticityOfMeaningRoadmap = record
 
 exampleAlgebraicAmbiguityRoadmap : RoadmapStep
 exampleAlgebraicAmbiguityRoadmap = record
-    { provenance  = "Algebraic Ambiguity Infrastructure"
+    { provenance  = "Algebraic Ambiguity"
     ; relatedNodes = []
-    ; step        = "Provide algebraic structures for ambiguity."
-    ; implication = "Enables formal treatment of ambiguity."
+    ; step        = "Provide algebraic structures..."
+    ; implication = "Enables formal treatment..."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Ambiguity.agda"
     ; next = []
@@ -210,10 +237,10 @@ exampleAlgebraicAmbiguityRoadmap = record
 
 exampleMetricizationRoadmap : RoadmapStep
 exampleMetricizationRoadmap = record
-    { provenance  = "Metrication of Semantic Space"
+    { provenance  = "Metrication"
     ; relatedNodes = []
-    ; step        = "Establish metric structures on semantic spaces."
-    ; implication = "Enables quantitative semantic reasoning."
+    ; step        = "Establish metric structures..."
+    ; implication = "Enables quantitative..."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Metricization.agda"
     ; next = []
@@ -221,10 +248,10 @@ exampleMetricizationRoadmap = record
 
 exampleTransformationSystemRoadmap : RoadmapStep
 exampleTransformationSystemRoadmap = record
-    { provenance  = "Transformation System Architecture"
+    { provenance  = "Transformation System"
     ; relatedNodes = []
-    ; step        = "Define compositional transformation operations."
-    ; implication = "Enables systematic rewriting."
+    ; step        = "Define compositional..."
+    ; implication = "Enables systematic..."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/TransformationSystem.agda"
     ; next = []
@@ -234,8 +261,8 @@ exampleFunctorialConstructsRoadmap : RoadmapStep
 exampleFunctorialConstructsRoadmap = record
     { provenance  = "Functorial Framework"
     ; relatedNodes = []
-    ; step        = "Implement functorial mappings."
-    ; implication = "Enables formal structure-preserving transformations."
+    ; step        = "Implement functorial mappings..."
+    ; implication = "Enables formal..."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/FunctorialConstructs.agda"
     ; next = []
