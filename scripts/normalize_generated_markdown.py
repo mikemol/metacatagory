@@ -8,6 +8,8 @@ the project's markdown style guide.
 
 import subprocess
 import sys
+import re
+import yaml
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -27,11 +29,33 @@ GENERATED_FILES = [
 ]
 
 
+def extract_frontmatter(content: str):
+    """Parse all YAML code blocks and return list of dicts."""
+    blocks = re.findall(r'```yaml\n(.*?)\n```', content, re.DOTALL)
+    parsed = []
+    for block in blocks:
+        try:
+            data = yaml.safe_load(block)
+            if isinstance(data, dict):
+                parsed.append(data)
+            else:
+                parsed.append({"__parse_error__": "non-dict yaml block"})
+        except yaml.YAMLError as e:
+            parsed.append({"__parse_error__": str(e)})
+    return parsed
+
+
 def normalize_markdown(filepath: Path) -> bool:
     """Run markdownlint --fix on a file."""
     if not filepath.exists():
         print(f"⚠️  Skipping {filepath} (does not exist)")
         return True
+
+    before_content = filepath.read_text(encoding="utf-8")
+    fm_before = extract_frontmatter(before_content)
+    if any('__parse_error__' in fm for fm in fm_before):
+        print(f"✗ Frontmatter parse error before lint in {filepath}")
+        return False
     
     try:
         result = subprocess.run(
@@ -42,6 +66,13 @@ def normalize_markdown(filepath: Path) -> bool:
         )
         
         if result.returncode == 0:
+            after_content = filepath.read_text(encoding="utf-8")
+            fm_after = extract_frontmatter(after_content)
+
+            if fm_before != fm_after:
+                print(f"✗ Frontmatter changed by normalization in {filepath}")
+                return False
+
             print(f"✓ Normalized {filepath}")
             return True
         else:

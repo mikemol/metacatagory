@@ -8,7 +8,7 @@
 
 Every component in the metacatagory system must satisfy all six mandates:
 
-#### Verifiable (V)
+### Verifiable (V)
 
 Every claim has a constructive witness; nothing is postulated without justification
 
@@ -17,7 +17,7 @@ Examples:
 * Agda proof obligations must be satisfied
 * Algorithms carry complexity witnesses
 
-#### Correct (C)
+### Correct (C)
 
 Specifications match implementations; invariants are preserved
 
@@ -26,7 +26,7 @@ Examples:
 * UniversalProperties match AlgebraicStructures via adapters
 * Phase composition respects associativity
 
-#### Complete (C)
+### Complete (C)
 
 All covered concepts are fully developed; no truncated fragments
 
@@ -35,7 +35,7 @@ Examples:
 * Framework definitions include all 6 frameworks (not partial)
 * Gap analysis identifies all symmetric differences
 
-#### Concrete (C)
+### Concrete (C)
 
 Abstractions are grounded in concrete algorithms and data structures
 
@@ -44,7 +44,7 @@ Examples:
 * Universal properties realized as field algorithms
 * Phases execute as actual transformations
 
-#### Meticulous (M)
+### Meticulous (M)
 
 Care taken with edge cases, termination, and resource bounds
 
@@ -53,7 +53,7 @@ Examples:
 * Complexity analysis includes worst-case bounds
 * Termination proofs for recursive structures
 
-#### Coherent (C)
+### Coherent (C)
 
 All components integrate coherently; no contradictions or gaps
 
@@ -68,7 +68,7 @@ Examples:
 
 The A12 protocol identifies and corrects violations of the quality mandates:
 
-#### Structural Incoherence
+### Structural Incoherence
 
 Inconsistent n-Cell types; 0-cells don't match 1-cell specifications
 
@@ -76,7 +76,7 @@ Detection: `Type mismatch in Core modules`
 
 Correction: Verify CategoricalAdapter witnesses satisfy UniversalProperty mandates
 
-#### EmergentMetric Contamination
+### EmergentMetric Contamination
 
 Conflated metrics from different transformation contexts
 
@@ -84,7 +84,7 @@ Detection: `Multiple cost functions applied to same context`
 
 Correction: Isolate metrics to their originating transformation systems
 
-#### Categorical Mandate Elision
+### Categorical Mandate Elision
 
 Missing universal properties; incomplete categorical structure
 
@@ -92,7 +92,7 @@ Detection: `Open postulates in Core modules`
 
 Correction: Add universal property proofs in Core.UniversalProperties
 
-#### Coherence Debt Accumulation
+### Coherence Debt Accumulation
 
 Unproven equivalences between categorical and computational perspectives
 
@@ -100,7 +100,7 @@ Detection: `Postulates in Chapter2 or Chapter3`
 
 Correction: Provide constructive coherence witnesses
 
-#### Algorithmic Non-Termination
+### Algorithmic Non-Termination
 
 Unbounded computations; lack of termination proofs
 

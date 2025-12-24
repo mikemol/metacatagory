@@ -2,6 +2,7 @@
 """Export canonical roadmap to ROADMAP.md format."""
 
 import json
+import yaml
 from pathlib import Path
 from collections import defaultdict
 
@@ -53,6 +54,30 @@ def export_markdown(canonical_path: Path, output_path: Path):
         lines.append("")
         
         for item in items:
+            # Build frontmatter metadata
+            frontmatter = {
+                'id': item['id'],
+                'title': item['title'],
+                'status': item['status'],
+                'category': item['category']
+            }
+            
+            if item['dependsOn']:
+                frontmatter['dependencies'] = item['dependsOn']
+            
+            if item['tags']:
+                frontmatter['tags'] = item['tags']
+            
+            if item['files']:
+                frontmatter['files'] = item['files']
+            
+            # Generate YAML frontmatter block
+            yaml_str = yaml.dump(frontmatter, default_flow_style=False, sort_keys=False)
+            lines.append("```yaml")
+            lines.append(yaml_str.rstrip())
+            lines.append("```")
+            lines.append("")
+            
             # Format: * **Title** — Description [status: X]
             lines.append(f"* **{item['title']}** — {item['source']} [status: {item['status']}]")
             
