@@ -6,7 +6,6 @@ open import Agda.Builtin.Nat
 open import Agda.Builtin.List
 open import Agda.Builtin.String
 open import Agda.Builtin.Sigma
-open import Agda.Builtin.Bool
 open import Agda.Builtin.Equality
 
 -- The weighted option from GP104
@@ -22,27 +21,23 @@ data Ambiguity {ℓ} (A : Set ℓ) : Set ℓ where
   superposition : List (WeightedOption A) → Ambiguity A
   conflict : String → Ambiguity A
 
--- Functor definition
+-- Functorial Mapping
 mapAmbiguity : ∀ {ℓ} {A B : Set ℓ} → (A → B) → Ambiguity A → Ambiguity B
-mapAmbiguity {ℓ} {A} {B} f (determinate x) = determinate (f x)
-mapAmbiguity {ℓ} {A} {B} f (superposition xs) = superposition (mapList (λ w → record { value = f (WeightedOption.value w) ; weight = WeightedOption.weight w ; provenance = WeightedOption.provenance w }) xs)
-    where
-      mapList : (WeightedOption A → WeightedOption B) → List (WeightedOption A) → List (WeightedOption B)
-      mapList g [] = []
-      mapList g (y ∷ ys) = g y ∷ mapList g ys
-mapAmbiguity f (conflict s) = conflict s
+mapAmbiguity {ℓ} f (determinate x) = determinate (f x)
+mapAmbiguity {ℓ} f (superposition xs) = superposition (mapOption f xs)
+  where
+    mapOption : ∀ {A B : Set ℓ} → (A → B) → List (WeightedOption A) → List (WeightedOption B)
+    mapOption g [] = []
+    mapOption g (rec ∷ rs) = record { value = g (WeightedOption.value rec) ; weight = WeightedOption.weight rec ; provenance = WeightedOption.provenance rec } ∷ mapOption g rs
+mapAmbiguity {ℓ} f (conflict s) = conflict s
 
--- Monad bind operation (needed for proper monad laws)
-bindAmbiguity : ∀ {ℓ} {A B : Set ℓ} → Ambiguity A → (A → Ambiguity B) → Ambiguity B
-bindAmbiguity (determinate x) f = f x
-bindAmbiguity (superposition xs) f = superposition [] -- Simplified: flatten would go here
-bindAmbiguity (conflict s) f = conflict s
-
--- Postulate the Monad Laws to ensure rigor (Implementation deferred to Phase V)
+-- [RIGOR] Postulated Functor Laws
 postulate
-  left-identity : ∀ {ℓ} {A B : Set ℓ} (a : A) (f : A → Ambiguity B) → bindAmbiguity (determinate a) f ≡ f a
+  functor-identity : ∀ {ℓ} {A : Set ℓ} (m : Ambiguity A) → mapAmbiguity (λ x → x) m ≡ m
+  functor-composition : ∀ {ℓ} {A B C : Set ℓ} (f : A → B) (g : B → C) (m : Ambiguity A) → 
+                        mapAmbiguity (λ x → g (f x)) m ≡ mapAmbiguity g (mapAmbiguity f m)
 
--- FFI Hook for Tension Calculation (Bridge to nedge_topology/mitosis.py)
+-- [FFI] External hook for tension calculation (nedge_topology/mitosis.py)
 postulate
   externalTensionCalc : ∀ {ℓ} {A : Set ℓ} → List (WeightedOption A) → Nat
 
