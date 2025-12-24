@@ -23,22 +23,25 @@ from typing import Dict, List, Set, Tuple
 REPO_ROOT = Path(__file__).parent.parent
 
 
-def backfill_descriptions(items: List[Dict]) -> Tuple[List[Dict], int, List[str]]:
-    """Ensure every item has a description; backfill with title/source when missing.
+def validate_descriptions(items: List[Dict]) -> Tuple[List[Dict], int, List[str]]:
+    """Verify every item has a description.
+    
+    Unlike the previous 'backfill' logic, this enforces strict completeness.
+    Missing descriptions are treated as validation errors.
 
-    Returns mutated items, count of backfilled descriptions, and list of IDs that were missing.
+    Returns: items (unmodified), count of missing, list of IDs missing descriptions.
     """
     missing = 0
     missing_ids: List[str] = []
+    
     for item in items:
         desc = item.get("description")
-        if not desc:
+        # Strict check: Description must exist and not be the placeholder artifact
+        if not desc or desc == "TODO: description":
             missing += 1
             item_id = item.get("id", "<unknown>")
             missing_ids.append(item_id)
-            # Prefer source as a hint; otherwise fall back to title
-            fallback = item.get("source") or item.get("title") or "TODO: description"
-            item["description"] = fallback
+            
     return items, missing, missing_ids
 
 
@@ -212,16 +215,16 @@ def validate_item_content(json_items: List[Dict]) -> Tuple[bool, str]:
 def main():
     """Run triangle identity validation."""
     print("=" * 60)
-    print("Triangle Identity Validation")
+    print("Triangle Identity Validation (Strict Mode)")
     print("=" * 60)
     print()
     
     # Load data
     print("Loading data sources...")
-    json_items_raw = load_canonical_json()
-    json_items, backfilled, backfilled_ids = backfill_descriptions(json_items_raw)
-    if backfilled:
-        print(f"  Backfilled descriptions: {backfilled}")
+    json_items = load_canonical_json()
+    
+    # Perform strict description validation
+    _, missing_desc_count, missing_desc_ids = validate_descriptions(json_items)
     
     md_ids, md_frontmatter = load_roadmap_markdown()
     
@@ -248,14 +251,20 @@ def main():
     
     # Summary
     print("=" * 60)
-    overall_valid = content_valid and triangle_valid and (backfilled == 0)
-    if backfilled:
-        # Report the first few IDs that need real descriptions
-        print(f"✗ {backfilled} item(s) are missing real descriptions (backfilled). Examples:")
-        for item_id in backfilled_ids[:10]:
+    
+    # Strictness Check
+    if missing_desc_count > 0:
+        print(f"✗ {missing_desc_count} item(s) are missing descriptions (STRICT ENFORCEMENT). Examples:")
+        for item_id in missing_desc_ids[:10]:
             print(f"  - {item_id}")
-        if len(backfilled_ids) > 10:
-            print(f"  ... and {len(backfilled_ids) - 10} more")
+        if len(missing_desc_ids) > 10:
+            print(f"  ... and {len(missing_desc_ids) - 10} more")
+        descriptions_valid = False
+    else:
+        print("✓ All items have valid descriptions")
+        descriptions_valid = True
+
+    overall_valid = content_valid and triangle_valid and descriptions_valid
     
     if overall_valid:
         print("✓ All validations passed")
