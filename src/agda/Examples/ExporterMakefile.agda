@@ -147,6 +147,20 @@ discoveredTargets : List MakefileTarget
 discoveredTargets = 
   validatorToTarget "md-lint" "build/reports/md-lint.txt" 
     ("npx remark . --quiet --frail > build/reports/md-lint.txt" ∷ [])
+  ∷ generatorToTarget "md-fix" ([])
+    ("npx remark . --quiet --output ." ∷ [])
+  ∷ validatorToTarget "intake-lint" "build/reports/intake-md-lint.txt"
+    ("npx remark intake --quiet --frail > build/reports/intake-md-lint.txt" ∷ [])
+  ∷ generatorToTarget "intake-scan" ("build/canonical_roadmap.json" ∷ [])
+    ("python3 scripts/intake_scan.py" ∷ [])
+  ∷ generatorToTarget "md-normalize" ([])
+    ("python3 scripts/normalize_generated_markdown.py" ∷ [])
+  ∷ validatorToTarget "makefile-validate" "build/reports/makefile-validate.txt"
+    ("python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt" ∷ [])
+  ∷ generatorToTarget "all" ("agda-all" ∷ "docs-all" ∷ [])
+    ("@echo \"all complete\"" ∷ [])
+  ∷ generatorToTarget "check" ("roadmap-validate-triangle" ∷ "docs-validate" ∷ "makefile-validate" ∷ [])
+    ("@echo \"check complete\"" ∷ [])
   ∷ generatorToTarget "badges" ("build/reports/test-results.json" ∷ [])
     ("python3 scripts/generate-badges.py" ∷ [])
   ∷ environmentSetupToTarget "node-deps"
@@ -181,6 +195,12 @@ discoveredTargets =
     ("@echo \"✓ Triangle validation complete\"" ∷ [])
   ∷ generatorToTarget "roadmap-sppf-export" ("build/canonical_roadmap.json" ∷ [])
     ("python3 scripts/export_roadmap_sppf.py" ∷ [])
+  ∷ generatorToTarget "roadmap-all-enriched" ("roadmap-export-enriched" ∷ "roadmap-export-deps" ∷ [])
+    ("@echo \"roadmap all enriched complete\"" ∷ [])
+  ∷ generatorToTarget "docs-generate" ("src/agda/Plan/CIM/RoadmapExporter.agdai" ∷ [])
+    ("$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapExporter.agda && ./src/agda/Plan/CIM/RoadmapExporter" ∷ "python3 scripts/normalize_generated_markdown.py" ∷ [])
+  ∷ generatorToTarget "docs-validate" ([])
+    ("python3 scripts/validate_triangle_identity.py" ∷ [])
   ∷ []
 
 -- Helper to concatenate lists
@@ -218,14 +238,16 @@ buildArtifact agdaFiles graphEdges =
       docsTargets = generateDocsTargets agdaFiles
       aggregateTargets = allAgdaiTarget agdaFiles ∷ allDocsTarget agdaFiles ∷ []
       allTargets = discoveredTargets +++ agdaiTargets +++ docsTargets +++ aggregateTargets
-      phonyNames = "all" ∷ "check" ∷ "md-fix" ∷ "md-lint" ∷ "badges" ∷ "node-deps" 
-                 ∷ "regen-makefile" ∷ "agda-all" ∷ "docs-all" 
+      phonyNames = "all" ∷ "check" ∷ "md-fix" ∷ "md-lint" ∷ "intake-lint" ∷ "intake-scan"
+             ∷ "md-normalize" ∷ "makefile-validate"
+             ∷ "badges" ∷ "node-deps" 
+             ∷ "regen-makefile" ∷ "agda-all" ∷ "docs-all" 
            ∷ "deferred-items" ∷ "roadmap-index" ∷ "roadmap-sync" ∷ "roadmap-sppf"
            ∷ "roadmap-merge" ∷ "roadmap-deps-graph" ∷ "roadmap-enrich"
            ∷ "roadmap-export-json" ∷ "roadmap-export-md" ∷ "roadmap-export-enriched"
            ∷ "roadmap-export-deps" ∷ "roadmap-validate-json" ∷ "roadmap-validate-md"
            ∷ "roadmap-validate-triangle" ∷ "roadmap-sppf-export" ∷ "roadmap-all-enriched"
-                 ∷ []
+            ∷ "docs-generate" ∷ "docs-validate" ∷ []
       phonySection = record { id = "phony" 
                             ; content = (".PHONY: " ++ intercalate " " phonyNames) ∷ [] }
   in record { sections = regenMakefileSection ∷ phonySection ∷ map targetToSection allTargets }
