@@ -10,4 +10,5 @@ MD026: { punctuation: ".,;:!" }
 MD029: { style: one }
 MD040: true
 MD041: false
+MD046: false
 MD047: true

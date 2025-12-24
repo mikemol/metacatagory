@@ -1,0 +1,8 @@
+# Generated files and build artifacts
+build/
+
+# Specific generated files that may appear elsewhere  
+**/tasks_enriched.md
+
+# Node modules
+node_modules/
