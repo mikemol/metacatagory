@@ -27,7 +27,7 @@ map f [] = []
 map f (x ∷ xs) = f x ∷ map f xs
 
 ------------------------------------------------------------------------
--- Recursive RoadmapStep Record
+-- Recursive RoadmapStep Record: Encodes implication-driven roadmap
 ------------------------------------------------------------------------
 record RoadmapStep : Set₁ where
     inductive
@@ -44,14 +44,13 @@ record RoadmapStep : Set₁ where
 -- Core CIM Framework Types
 ------------------------------------------------------------------------
 
--- RENAMED: Ambiguity -> PhaseAmbiguity
--- This structure specifically handles the RoPE phase/rotation aspect.
--- The general algebraic ambiguity is now in Plan.CIM.Ambiguity.
+-- [REFACTORED] Renamed from Ambiguity to PhaseAmbiguity to avoid collision
+-- with Plan.CIM.Ambiguity (Algebraic Ambiguity Monad).
 record PhaseAmbiguity {ℓ} (A B : Set ℓ) : Set ℓ where
     field
         valA : A
         valB : B
-        phase : ℕ 
+        phase : ℕ -- Phase/rotation for RoPE/group action
 
 record TransformationSystem {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
     field
@@ -80,7 +79,8 @@ record BraidedInheritanceFunctor {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
         toValue   : B
         description : String
 
--- NEW: BraidedSPPF definition integrated from Intake
+-- [NEW] Integrated BraidedSPPF from Intake/GP fragments
+-- Required for CHIPConformance.agda
 record BraidedSPPF {ℓ} (A B : Set ℓ) (Sys : TransformationSystem A B) : Set (lsuc ℓ) where
     constructor packed-node
     field
@@ -135,7 +135,7 @@ module ASTDependent (Block MdBlock BraidStep : Set) where
         metric    : EmergentMetric
 
 ------------------------------------------------------------------------
--- Utility Functions (Preserved)
+-- Utility Functions
 ------------------------------------------------------------------------
 
 metricMinimality : CostFunction → ℕ → Bool
@@ -158,15 +158,15 @@ concatWithSep sep [] = ""
 concatWithSep sep (x ∷ []) = x
 concatWithSep sep (x ∷ xs) = x ++ sep ++ concatWithSep sep xs
 
--- Examples preserved from previous context...
+-- Examples preserved for Roadmap index...
 exampleUnifiedTopologicalParserRoadmap : RoadmapStep
 exampleUnifiedTopologicalParserRoadmap = record
-    { provenance  = "GP699"
-    ; relatedNodes = []
-    ; step        = "Integrate Earley parsing..."
-    ; implication = "Enables composable geometric..."
+    { provenance  = "GP699, Unified Topological Parser, Nedge-Topology, SPPF + RoPE + SymNum"
+    ; relatedNodes = "exampleDimensionalReliefRoadmap" ∷ "examplePolytopeManifestRoadmap" ∷ "exampleElasticityOfMeaningRoadmap" ∷ []
+    ; step        = "Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition."
+    ; implication = "Enables composable geometric and topological integration, active topological pruning, and algebraic superposition for ambiguity. Supports recursive revisiting, fiber bundle architecture, and advanced induction/training features."
     ; status      = "not-started"
-    ; targetModule = "nedge_topology/parser.py"
+    ; targetModule = "nedge_topology/parser.py, nedge_topology/train.py, nedge_topology/mitosis.py, nedge_topology/search.py, dashboard.py, src/agda/Plan/CIM/RotationalTransport.agda, src/agda/Plan/CIM/TopologicalGating.agda, src/agda/Plan/CIM/TopologicalSuperposition.agda"
     ; next = []
     }
 
@@ -203,7 +203,6 @@ exampleElasticityOfMeaningRoadmap = record
     ; next = []
     }
 
--- Reference records mentioned in the 4 key roadmaps
 exampleAlgebraicAmbiguityRoadmap : RoadmapStep
 exampleAlgebraicAmbiguityRoadmap = record
     { provenance  = "Algebraic Ambiguity Infrastructure"
