@@ -64,19 +64,19 @@ The original 12 corrupted intake files that we reconstructed from markdown corru
 
 **Sample Files:**
 
-*   GP01.md (6.2 KB) - Standard roadmap entry
-*   GP04.md (95 KB) - Large comprehensive entry
-*   GP104.md (110 KB) - Large comprehensive entry
-*   GP109.md (112 KB) - Large comprehensive entry
+* GP01.md (6.2 KB) - Standard roadmap entry
+* GP04.md (95 KB) - Large comprehensive entry
+* GP104.md (110 KB) - Large comprehensive entry
+* GP109.md (112 KB) - Large comprehensive entry
 
 **Observation:** Some GP files are **much larger** than others (100+ KB vs. 5-10 KB), suggesting they contain detailed implementation notes or specifications.
 
 **Action Required:**
 
-1.  Scan GP files for structure/patterns
-2.  Extract key roadmap items
-3.  Integrate into ROADMAP.md with proper categorization
-4.  Cross-reference with CIM-ROADMAP-SYMMETRIC-DIFFERENCE.md
+1. Scan GP files for structure/patterns
+2. Extract key roadmap items
+3. Integrate into ROADMAP.md with proper categorization
+4. Cross-reference with CIM-ROADMAP-SYMMETRIC-DIFFERENCE.md
 
 ***
 
@@ -95,17 +95,17 @@ These appear to be **snippets extracted from user conversations**, containing ra
 
 **Key File:** `{-# OPTIONS --without-K..._.md` (145 lines)
 
-*   Contains complete Agda module export of CIM system
-*   Includes all foundational types, records, and implementations
-*   **This is the raw Agda source extracted to markdown**
-*   Should probably be moved to `src/agda/` as proper `.agda` file
+* Contains complete Agda module export of CIM system
+* Includes all foundational types, records, and implementations
+* **This is the raw Agda source extracted to markdown**
+* Should probably be moved to `src/agda/` as proper `.agda` file
 
 **Action Required:**
 
-1.  Review each conversation fragment
-2.  Extract genuine content vs. metadata
-3.  Consider moving raw Agda code to proper module
-4.  Archive or integrate conversation transcripts
+1. Review each conversation fragment
+2. Extract genuine content vs. metadata
+3. Consider moving raw Agda code to proper module
+4. Archive or integrate conversation transcripts
 
 ***
 
@@ -117,10 +117,10 @@ These appear to be **snippets extracted from user conversations**, containing ra
 
 **Content Summary:**
 
-*   Documents tasks needed after Agda 2.8.0 upgrade
-*   References Utility-broken.agda recovery (77 roadmap examples)
-*   Lists CHIPConformance stubs needing implementation
-*   Tracks deferred items (567 in deferred-summary.json)
+* Documents tasks needed after Agda 2.8.0 upgrade
+* References Utility-broken.agda recovery (77 roadmap examples)
+* Lists CHIPConformance stubs needing implementation
+* Tracks deferred items (567 in deferred-summary.json)
 
 **Current Status:**
 
@@ -129,18 +129,18 @@ These appear to be **snippets extracted from user conversations**, containing ra
 
 **Action Required:**
 
-1.  **Utility-broken.agda Recovery:** Extract 77 RoadmapStep examples
-    *   File location: repo root (not in intake/)
-    *   Syntax needs cleanup (list notation issues)
-    *   Should be merged into `Plan.CIM.Utility.agda`
+1. **Utility-broken.agda Recovery:** Extract 77 RoadmapStep examples
+    * File location: repo root (not in intake/)
+    * Syntax needs cleanup (list notation issues)
+    * Should be merged into `Plan.CIM.Utility.agda`
 
-2.  **Populate ROADMAP.md:** Use recovered roadmap data
-    *   Currently empty file waiting for content
-    *   Should reference deferred-summary.json (567 items)
+2. **Populate ROADMAP.md:** Use recovered roadmap data
+    * Currently empty file waiting for content
+    * Should reference deferred-summary.json (567 items)
 
-3.  **CHIPConformance.agda Stubs:** Implement placeholders
-    *   `makeSPPFNode` function needs BraidedSPPF type
-    *   `composeBraids` refinement (currently minimal implementation)
+3. **CHIPConformance.agda Stubs:** Implement placeholders
+    * `makeSPPFNode` function needs BraidedSPPF type
+    * `composeBraids` refinement (currently minimal implementation)
 
 ***
 
@@ -150,20 +150,20 @@ These appear to be **snippets extracted from user conversations**, containing ra
 
 **Tasks:**
 
-1.  **Extract GP Roadmap Entries** (78 files, 3.3 MB)
-    *   Create structured roadmap index
-    *   Cross-reference with ROADMAP.md
-    *   Link to CIM-ROADMAP-SYMMETRIC-DIFFERENCE.md recommendations
+1. **Extract GP Roadmap Entries** (78 files, 3.3 MB)
+    * Create structured roadmap index
+    * Cross-reference with ROADMAP.md
+    * Link to CIM-ROADMAP-SYMMETRIC-DIFFERENCE.md recommendations
 
-2.  **Process Conversation Fragments** (5 files)
-    *   Review for novel content
-    *   Extract into proper documentation
-    *   Archive conversation metadata
+2. **Process Conversation Fragments** (5 files)
+    * Review for novel content
+    * Extract into proper documentation
+    * Archive conversation metadata
 
-3.  **Recover Utility-broken.agda Data** (77 RoadmapStep records)
-    *   Extract to intermediate format
-    *   Merge into Plan.CIM.Utility.agda
-    *   Verify syntax correctness
+3. **Recover Utility-broken.agda Data** (77 RoadmapStep records)
+    * Extract to intermediate format
+    * Merge into Plan.CIM.Utility.agda
+    * Verify syntax correctness
 
 **Estimated Effort:** 2-3 hours (can be parallelized)
 
@@ -173,20 +173,20 @@ These appear to be **snippets extracted from user conversations**, containing ra
 
 **Tasks:**
 
-1.  **Create Roadmap Index Document**
-    *   Catalog all 78 GP files
-    *   Summarize key themes
-    *   Map to CHIP/CIM concepts
+1. **Create Roadmap Index Document**
+    * Catalog all 78 GP files
+    * Summarize key themes
+    * Map to CHIP/CIM concepts
 
-2.  **Update ROADMAP.md**
-    *   Populate with recovered content
-    *   Cross-link to GP files
-    *   Reference deferred items
+2. **Update ROADMAP.md**
+    * Populate with recovered content
+    * Cross-link to GP files
+    * Reference deferred items
 
-3.  **Enhance NAVIGATION.md**
-    *   Add intake folder structure
-    *   Link to Category documents
-    *   Guide readers to relevant content
+3. **Enhance NAVIGATION.md**
+    * Add intake folder structure
+    * Link to Category documents
+    * Guide readers to relevant content
 
 **Estimated Effort:** 1-2 hours
 
@@ -196,20 +196,20 @@ These appear to be **snippets extracted from user conversations**, containing ra
 
 **Tasks:**
 
-1.  **Move Agda Code to Proper Module**
-    *   File: `{-# OPTIONS..._.md` → `src/agda/Core/CIMExport.agda`
-    *   Verify compilation
-    *   Update imports
+1. **Move Agda Code to Proper Module**
+    * File: `{-# OPTIONS..._.md` → `src/agda/Core/CIMExport.agda`
+    * Verify compilation
+    * Update imports
 
-2.  **Resolve CHIPConformance Stubs**
-    *   Implement `makeSPPFNode`
-    *   Refine `composeBraids`
-    *   Add corresponding tests
+2. **Resolve CHIPConformance Stubs**
+    * Implement `makeSPPFNode`
+    * Refine `composeBraids`
+    * Add corresponding tests
 
-3.  **Verify Compilation**
-    *   Run `make agda-all`
-    *   Track progress toward 100%
-    *   Document any remaining issues
+3. **Verify Compilation**
+    * Run `make agda-all`
+    * Track progress toward 100%
+    * Document any remaining issues
 
 **Estimated Effort:** 2-4 hours (depends on complexity)
 
@@ -248,27 +248,27 @@ grep -l "^```agda\|^{-#" intake/*.md | xargs -I {} bash -c \
 
 **Option B: Manual Review (Higher Quality)**
 
-1.  Open top 5 GP files (by size) and skim content
-2.  Identify common themes/patterns
-3.  Create categorization scheme
-4.  Apply to all files
+1. Open top 5 GP files (by size) and skim content
+2. Identify common themes/patterns
+3. Create categorization scheme
+4. Apply to all files
 
 ### **Phase 3: Integration** (1-2 hours)
 
-1.  **Create `intake/ROADMAP-INDEX.md`**
-    *   Summary table of all GP files
-    *   Content classification
-    *   Cross-references
+1. **Create `intake/ROADMAP-INDEX.md`**
+    * Summary table of all GP files
+    * Content classification
+    * Cross-references
 
-2.  **Merge into Main ROADMAP.md**
-    *   Add sections for each category
-    *   Link to GP files
-    *   Update status tracking
+2. **Merge into Main ROADMAP.md**
+    * Add sections for each category
+    * Link to GP files
+    * Update status tracking
 
-3.  **Recovery Tasks**
-    *   Extract `Utility-broken.agda` data
-    *   Create intermediate merge document
-    *   Test compilation
+3. **Recovery Tasks**
+    * Extract `Utility-broken.agda` data
+    * Create intermediate merge document
+    * Test compilation
 
 ### **Phase 4: Cleanup & Commit** (30 min)
 
@@ -381,27 +381,27 @@ After processing, the intake folder should contain:
 
 ✅ **Phase 1 Complete When:**
 
-*   All intake files reviewed and categorized
-*   Roadmap index created
-*   Conversation fragments assessed
+* All intake files reviewed and categorized
+* Roadmap index created
+* Conversation fragments assessed
 
 ✅ **Phase 2 Complete When:**
 
-*   ROADMAP-INDEX.md created (summary of 78 GP files)
-*   Conversation content extracted or archived
-*   Utility-broken.agda data prepared
+* ROADMAP-INDEX.md created (summary of 78 GP files)
+* Conversation content extracted or archived
+* Utility-broken.agda data prepared
 
 ✅ **Phase 3 Complete When:**
 
-*   ROADMAP.md populated with recovered content
-*   NAVIGATION.md updated
-*   All cross-references added
+* ROADMAP.md populated with recovered content
+* NAVIGATION.md updated
+* All cross-references added
 
 ✅ **Phase 4 Complete When:**
 
-*   Everything committed to git
-*   Pushed to remote
-*   CI/CD passes
+* Everything committed to git
+* Pushed to remote
+* CI/CD passes
 
 ***
 
@@ -409,10 +409,10 @@ After processing, the intake folder should contain:
 
 **Start with Priority 1, Phase 1 (Triage):**
 
-1.  Sample 5 largest GP files to understand content
-2.  Review conversation fragments (5 files, ~150 lines total)
-3.  Confirm backup files exist (22 total)
-4.  Report findings, then proceed to extraction
+1. Sample 5 largest GP files to understand content
+2. Review conversation fragments (5 files, ~150 lines total)
+3. Confirm backup files exist (22 total)
+4. Report findings, then proceed to extraction
 
 **Estimated Time:** 30-40 minutes\
 **Risk Level:** Low (read-only assessment)\

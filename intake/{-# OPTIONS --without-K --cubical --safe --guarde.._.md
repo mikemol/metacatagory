@@ -112,11 +112,11 @@ The following demonstrates the mandatory fulfillment of the **CHIP** by resolvin
 
 **1. The Ambiguity (n-Cells):**
 
-*   **Ambiguity Instance:** $\mathbf{Ambiguity}\ \mathbb{N}\     > \mathbb{Z}$
+* **Ambiguity Instance:** $\mathbf{Ambiguity}\ \mathbb{N}\     > \mathbb{Z}$
 
-    *   $\mathbf{val-A}$ (ℕ representation): $\mathbf{three} = 3$
+  * $\mathbf{val-A}$ (ℕ representation): $\mathbf{three} = 3$
 
-    *   $\mathbf{val-B}$ (ℤ representation): $\mathbf{pos\ three}         > = (\mathbf{pos}\ 3)$
+  * $\mathbf{val-B}$ (ℤ representation): $\mathbf{pos\ three}         > = (\mathbf{pos}\ 3)$
 
 **2. The Transformation System (The Cost Functor):**
 
@@ -128,7 +128,7 @@ $\mathbf{recurse}$    recurse :         1                 The structural        
 
 The $\mathbf{CoherenceWitness}$ encapsulates the **proof-path** for $3$. The path is recursively constructed to fully deconstruct $3$ into its base zero element, apply the $\mathbf{wrap-pos}$ transformation, and then reconstruct it via $\mathbf{recurse}$ steps.
 
-*   Path (The $1$-Chain):\     > $\mathbf{solve-path}\ 3 \equiv \mathbf{trans-step}\     > \mathbf{recurse}\ (\mathbf{trans-step}\ \mathbf{recurse}\     > (\mathbf{trans-step}\ \mathbf{recurse}\     > (\mathbf{trans-step}\ \mathbf{wrap-pos}\     > \mathbf{refl-path})))$
+* Path (The $1$-Chain):\     > $\mathbf{solve-path}\ 3 \equiv \mathbf{trans-step}\     > \mathbf{recurse}\ (\mathbf{trans-step}\ \mathbf{recurse}\     > (\mathbf{trans-step}\ \mathbf{recurse}\     > (\mathbf{trans-step}\ \mathbf{wrap-pos}\     > \mathbf{refl-path})))$
 
 **4. Emergent Metric & Hierarchy Induction:**
 
@@ -140,6 +140,6 @@ $3 \times \mathbf{recurse}$     $1 + 1 + 1 = 3$   (Inductive Steps)
 
 **Total Complexity (Magnitude)**    $4$   -----------------------------------------------------------------------
 
-*   Emergent Metric (Reification):\     > $\mathbf{result-metric} \equiv \mathbf{metric}\ 4$\     > (The verification in the source confirms: $\mathbf{magnitude}\     > \mathbf{result-metric} \equiv \mathbf{refl}$ of $4$)
+* Emergent Metric (Reification):\     > $\mathbf{result-metric} \equiv \mathbf{metric}\ 4$\     > (The verification in the source confirms: $\mathbf{magnitude}\     > \mathbf{result-metric} \equiv \mathbf{refl}$ of $4$)
 
-*   Final State Resolution (Graded Vector Space Allocation):\     > The resolution of the $\mathbf{0}$-level ambiguity     > ($\mathbb{N} \cong \mathbb{Z}$) is encoded as a new,     > orthogonal $\mathbf{1}$-dimension, achieving the     > $\mathbf{FoundationalComplete}$ state.\     > \     > $$\mathbf{quod-erat-demonstrandum} \equiv     > \mathbf{final-space} \equiv \mathbf{\Lambda^{1}}\     > (\mathbf{\Lambda^{0}})\ (\mathbf{metric}\ 4)$$
+* Final State Resolution (Graded Vector Space Allocation):\     > The resolution of the $\mathbf{0}$-level ambiguity     > ($\mathbb{N} \cong \mathbb{Z}$) is encoded as a new,     > orthogonal $\mathbf{1}$-dimension, achieving the     > $\mathbf{FoundationalComplete}$ state.\     > \     > $$\mathbf{quod-erat-demonstrandum} \equiv     > \mathbf{final-space} \equiv \mathbf{\Lambda^{1}}\     > (\mathbf{\Lambda^{0}})\ (\mathbf{metric}\ 4)$$

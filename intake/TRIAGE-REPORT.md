@@ -10,9 +10,9 @@
 
 The intake folder contains **high-value content** across three clear categories:
 
-1.  **✅ GP Roadmap Files (78):** Implementation specifications with concrete code examples
-2.  **⚠️ Conversation Fragments (5):** Theoretical elaboration on CHIP/CIM - moderate value
-3.  **📁 Archive Items (3):** Truncated prompt text - minimal value
+1. **✅ GP Roadmap Files (78):** Implementation specifications with concrete code examples
+2. **⚠️ Conversation Fragments (5):** Theoretical elaboration on CHIP/CIM - moderate value
+3. **📁 Archive Items (3):** Truncated prompt text - minimal value
 
 **Key Finding:** No showstoppers. Majority of files are clean text with minimal base64 bloat (14 of 78 GP files).
 
@@ -22,11 +22,11 @@ The intake folder contains **high-value content** across three clear categories:
 
 ### **Overall Statistics**
 
-*   **Total Files:** 78
-*   **Total Size:** 3.3 MB
-*   **Total Lines:** 5,569
-*   **Files with Base64 Images:** 14 (~18%)
-*   **Average File:** 71 lines, 43 KB
+* **Total Files:** 78
+* **Total Size:** 3.3 MB
+* **Total Lines:** 5,569
+* **Files with Base64 Images:** 14 (~18%)
+* **Average File:** 71 lines, 43 KB
 
 ### **File Size Tiers**
 
@@ -114,10 +114,10 @@ The intake folder contains **high-value content** across three clear categories:
 
 **Files with embedded base64 diagrams:** 14 files
 
-*   **Examples:** GP501, GP704, GP705, GP707, GP709, GP712, GP714, etc.
-*   **Typical size:** 200+ KB per file (all size comes from base64)
-*   **Content:** Mostly system diagrams, architecture visualizations
-*   **Action:** Safe to strip for processing (original content is recoverable)
+* **Examples:** GP501, GP704, GP705, GP707, GP709, GP712, GP714, etc.
+* **Typical size:** 200+ KB per file (all size comes from base64)
+* **Content:** Mostly system diagrams, architecture visualizations
+* **Action:** Safe to strip for processing (original content is recoverable)
 
 **Recommendation for handling:**
 
@@ -295,25 +295,25 @@ Then integrate summaries into main `ROADMAP.md` with links.
 
 ### **Immediate Actions (Do Now)**
 
-1.  ✅ **Triage complete** - Content assessment done
-2.  👉 **Create GP index** - Scan and categorize 78 files (~45 min)
-3.  👉 **Extract high-value fragments** - Move 3 good conversation snippets (~10 min)
-4.  👉 **Clean base64 files** - Remove images to reduce file size (~15 min)
+1. ✅ **Triage complete** - Content assessment done
+2. 👉 **Create GP index** - Scan and categorize 78 files (~45 min)
+3. 👉 **Extract high-value fragments** - Move 3 good conversation snippets (~10 min)
+4. 👉 **Clean base64 files** - Remove images to reduce file size (~15 min)
 
 ### **Follow-up (Phase 3)**
 
-1.  **Integrate roadmap index** into main ROADMAP.md
-2.  **Create category documents** summarizing each GP section
-3.  **Link in NAVIGATION.md** with intake folder guide
-4.  **Commit to git** with comprehensive message
+1. **Integrate roadmap index** into main ROADMAP.md
+2. **Create category documents** summarizing each GP section
+3. **Link in NAVIGATION.md** with intake folder guide
+4. **Commit to git** with comprehensive message
 
 ### **Total Time Estimate**
 
-*   Phase 2A (Roadmap Index): 45 minutes
-*   Phase 2B (Fragment Extraction): 30 minutes
-*   Phase 2C (Base64 Processing): 15 minutes
-*   Phase 3 (Integration): 60 minutes
-*   **Total: ~2.5 hours for full intake processing**
+* Phase 2A (Roadmap Index): 45 minutes
+* Phase 2B (Fragment Extraction): 30 minutes
+* Phase 2C (Base64 Processing): 15 minutes
+* Phase 3 (Integration): 60 minutes
+* **Total: ~2.5 hours for full intake processing**
 
 ***
 
@@ -323,10 +323,10 @@ Then integrate summaries into main `ROADMAP.md` with links.
 
 **Why it's good:**
 
-*   Clear mathematical exposition (ContinuousGeometry vs DiscreteGeometry)
-*   Working Python code
-*   Explains practical implementation choices
-*   Connects theory (U(1) groups, Dihedral symmetry) to code
+* Clear mathematical exposition (ContinuousGeometry vs DiscreteGeometry)
+* Working Python code
+* Explains practical implementation choices
+* Connects theory (U(1) groups, Dihedral symmetry) to code
 
 ```python
 # Sample from GP302
@@ -347,9 +347,9 @@ class ContinuousGeometry:
 
 **Why it's good:**
 
-*   Clearest explanation of dimensional ascent
-*   Table format with concrete examples
-*   Directly addresses the n→n+1 question
+* Clearest explanation of dimensional ascent
+* Table format with concrete examples
+* Directly addresses the n→n+1 question
 
 <!---->
 

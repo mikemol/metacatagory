@@ -6,10 +6,10 @@ Semantic details extracted from canonical roadmap sources.
 
 ## Table of Contents
 
-*   [IngestedGP](#category-ingestedgp) (78 tasks)
-*   [Ingestion](#category-ingestion) (2 tasks)
-*   [Phase](#category-phase) (14 tasks)
-*   [Roadmap](#category-roadmap) (8 tasks)
+* [IngestedGP](#category-ingestedgp) (78 tasks)
+* [Ingestion](#category-ingestion) (2 tasks)
+* [Phase](#category-phase) (14 tasks)
+* [Roadmap](#category-roadmap) (8 tasks)
 
 ***
 
@@ -39,16 +39,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -80,16 +80,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -121,16 +121,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -162,16 +162,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -203,16 +203,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -244,16 +244,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -285,16 +285,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -326,16 +326,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -367,16 +367,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -408,16 +408,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -449,16 +449,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -490,16 +490,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -531,16 +531,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -572,16 +572,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -613,16 +613,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -654,16 +654,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -695,16 +695,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -736,16 +736,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -777,16 +777,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -818,16 +818,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -859,16 +859,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -900,16 +900,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -941,16 +941,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -982,16 +982,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1023,16 +1023,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1064,16 +1064,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1105,16 +1105,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1146,16 +1146,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1187,16 +1187,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1228,16 +1228,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1269,16 +1269,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1310,16 +1310,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1351,16 +1351,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1392,16 +1392,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1433,16 +1433,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1474,16 +1474,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1515,16 +1515,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1556,16 +1556,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1597,16 +1597,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1638,16 +1638,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1679,16 +1679,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1720,16 +1720,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1761,16 +1761,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1802,16 +1802,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1843,16 +1843,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1884,16 +1884,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1925,16 +1925,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -1966,16 +1966,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2007,16 +2007,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2048,16 +2048,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2089,16 +2089,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2130,16 +2130,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2171,16 +2171,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2212,16 +2212,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2253,16 +2253,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2294,16 +2294,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2335,16 +2335,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2376,16 +2376,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2417,16 +2417,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2458,16 +2458,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2499,16 +2499,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2540,16 +2540,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2581,16 +2581,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2622,16 +2622,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2663,16 +2663,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2704,16 +2704,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2745,16 +2745,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2786,16 +2786,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2827,16 +2827,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2868,16 +2868,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2909,16 +2909,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2950,16 +2950,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -2991,16 +2991,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -3032,16 +3032,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -3073,16 +3073,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -3114,16 +3114,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -3155,16 +3155,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -3196,16 +3196,16 @@ Compiled Agda modules: Implementation.agda
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 ### Tags
 
@@ -3243,16 +3243,16 @@ Compiled Agda modules: Basic.agda
 
 **Outputs:**
 
-*   Agda modules: Basic.agda
+* Agda modules: Basic.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Algebra.Groups.Basic
+* Algebra.Groups.Basic
 
 ### Tags
 
@@ -3260,7 +3260,7 @@ Compiled Agda modules: Basic.agda
 
 ### Evidence
 
-*   **src/agda/Algebra/Groups/Basic.agda** (module header)
+* **src/agda/Algebra/Groups/Basic.agda** (module header)
     > Algebra.Groups.Basic: Fundamental group theory (Hungerford Ch I, sections 1-6) This module covers semigroups through symmetric groups, grounded in category theory. PARAMETERIZED VERSION: All 10 classi...
 
 ### Provenance
@@ -3289,16 +3289,16 @@ Compiled Agda modules: Basic.agda
 
 **Outputs:**
 
-*   Agda modules: Basic.agda
+* Agda modules: Basic.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Algebra.Rings.Basic
+* Algebra.Rings.Basic
 
 ### Tags
 
@@ -3306,7 +3306,7 @@ Compiled Agda modules: Basic.agda
 
 ### Evidence
 
-*   **src/agda/Algebra/Rings/Basic.agda** (module header)
+* **src/agda/Algebra/Rings/Basic.agda** (module header)
     > Algebra.Rings.Basic: Ring theory (Hungerford Ch III) PARAMETERIZED VERSION: All 18 classical ring theorems are module parameters rather than postulated locally. This enforces explicit dependency decla...
 
 ### Provenance
@@ -3337,26 +3337,26 @@ Passing tests in UniversalPropertyTests.agda
 
 **In scope:**
 
-*   Constructive proofs
+* Constructive proofs
     **Out of scope:**
-*   Postulated axioms
+* Postulated axioms
 
 ### Inputs & Outputs
 
 **Outputs:**
 
-*   Agda modules: UniversalPropertyTests.agda
+* Agda modules: UniversalPropertyTests.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Test suite passes: UniversalPropertyTests.agda
-*   Key definitions implemented: umpTestsPass
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: UniversalPropertyTests.agda
+* Key definitions implemented: umpTestsPass
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Tests.UniversalPropertyTests
+* Tests.UniversalPropertyTests
 
 ### Key Definitions
 
@@ -3368,7 +3368,7 @@ Passing tests in UniversalPropertyTests.agda
 
 ### Evidence
 
-*   **src/agda/Tests/UniversalPropertyTests.agda** (module header)
+* **src/agda/Tests/UniversalPropertyTests.agda** (module header)
     > Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries This module tests the bridge between computational algorithms and universal properties, verifying that phase transitions prese...
 
 ### Provenance
@@ -3393,26 +3393,26 @@ Passing tests in UniversalPropertyTests.agda
 
 **In scope:**
 
-*   Constructive proofs
+* Constructive proofs
     **Out of scope:**
-*   Postulated axioms
+* Postulated axioms
 
 ### Inputs & Outputs
 
 **Outputs:**
 
-*   Agda modules: UniversalPropertyTests.agda
+* Agda modules: UniversalPropertyTests.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Test suite passes: UniversalPropertyTests.agda
-*   Key definitions implemented: umpTestsPass
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: UniversalPropertyTests.agda
+* Key definitions implemented: umpTestsPass
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Tests.UniversalPropertyTests
+* Tests.UniversalPropertyTests
 
 ### Key Definitions
 
@@ -3424,7 +3424,7 @@ Passing tests in UniversalPropertyTests.agda
 
 ### Evidence
 
-*   **src/agda/Tests/UniversalPropertyTests.agda** (module header)
+* **src/agda/Tests/UniversalPropertyTests.agda** (module header)
     > Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries This module tests the bridge between computational algorithms and universal properties, verifying that phase transitions prese...
 
 ### Provenance
@@ -3453,17 +3453,17 @@ Compiled Agda modules: Metamodel.agda
 
 **Outputs:**
 
-*   Agda modules: Metamodel.agda
+* Agda modules: Metamodel.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Key definitions implemented: mkId, mkIdAt, Proposition
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Key definitions implemented: mkId, mkIdAt, Proposition
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Metamodel
+* Metamodel
 
 ### Key Definitions
 
@@ -3475,7 +3475,7 @@ Compiled Agda modules: Metamodel.agda
 
 ### Evidence
 
-*   **src/agda/Metamodel.agda** (module header)
+* **src/agda/Metamodel.agda** (module header)
     > Minimal builtins to avoid external stdlib dependencies I. Metamodel Structural Definition Phase I.1.1: Static Coordinate Assignment
 
 ### Provenance
@@ -3504,17 +3504,17 @@ Passing tests in Index.agda
 
 **Outputs:**
 
-*   Agda modules: Index.agda
+* Agda modules: Index.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Test suite passes: Index.agda
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: Index.agda
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Tests.Index
+* Tests.Index
 
 ### Tags
 
@@ -3526,7 +3526,7 @@ Passing tests in Index.agda
 
 ### Evidence
 
-*   **src/agda/Tests/Index.agda** (module header)
+* **src/agda/Tests/Index.agda** (module header)
     > Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries Testing Philosophy:
 
 ### Provenance
@@ -3555,19 +3555,19 @@ Passing tests in ErrorAsSpecificationTests.agda
 
 **Outputs:**
 
-*   Agda modules: Limitations.agda, ErrorAsSpecificationTests.agda
+* Agda modules: Limitations.agda, ErrorAsSpecificationTests.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Test suite passes: ErrorAsSpecificationTests.agda
-*   Key definitions implemented: acknowledge, mkLimitation, okResult (+ 7 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: ErrorAsSpecificationTests.agda
+* Key definitions implemented: acknowledge, mkLimitation, okResult (+ 7 more)
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Core.Limitations
-*   Tests.ErrorAsSpecificationTests
+* Core.Limitations
+* Tests.ErrorAsSpecificationTests
 
 ### Key Definitions
 
@@ -3583,9 +3583,9 @@ Passing tests in ErrorAsSpecificationTests.agda
 
 ### Evidence
 
-*   **src/agda/Core/Limitations.agda** (module header)
+* **src/agda/Core/Limitations.agda** (module header)
     > Error-as-Specification: capture constructive limitations tied to an algorithm identifier Minimal outcome wrapper to model success vs limitation-as-specification Helper to acknowledge a limitation (tre...
-*   **src/agda/Tests/ErrorAsSpecificationTests.agda** (module header)
+* **src/agda/Tests/ErrorAsSpecificationTests.agda** (module header)
     > Tests.ErrorAsSpecificationTests: Error-as-Specification (Phase III.3 - 3.2) Status: COMPLETE \[2025-11-19] This module demonstrates the integration of LimitationEvidence into the algorithm
 
 ### Provenance
@@ -3610,26 +3610,26 @@ Passing tests in SerializationTests.agda
 
 **In scope:**
 
-*   HoTT path equality
+* HoTT path equality
     **Out of scope:**
-*   Propositional equality only
+* Propositional equality only
 
 ### Inputs & Outputs
 
 **Outputs:**
 
-*   Agda modules: SerializationTests.agda
+* Agda modules: SerializationTests.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Test suite passes: SerializationTests.agda
-*   Key definitions implemented: TestFixturesPackageDebt, serializeFieldDebt, deserializeFieldDebt (+ 1 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: SerializationTests.agda
+* Key definitions implemented: TestFixturesPackageDebt, serializeFieldDebt, deserializeFieldDebt (+ 1 more)
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Tests.SerializationTests
+* Tests.SerializationTests
 
 ### Key Definitions
 
@@ -3641,7 +3641,7 @@ Passing tests in SerializationTests.agda
 
 ### Evidence
 
-*   **src/agda/Tests/SerializationTests.agda** (module header)
+* **src/agda/Tests/SerializationTests.agda** (module header)
     > Tests.SerializationTests: Validate witness serialization and deserialization This suite tests conversion between internal witnesses and external representations: - Witness → External: Serialization pr...
 
 ### Provenance
@@ -3670,18 +3670,18 @@ Passing tests in ToposTheoryChecklist.agda
 
 **Outputs:**
 
-*   Agda modules: ToposTheoryChecklist.agda
+* Agda modules: ToposTheoryChecklist.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Test suite passes: ToposTheoryChecklist.agda
-*   Key definitions implemented: catDecl, frameId, dummyLocale (+ 2 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: ToposTheoryChecklist.agda
+* Key definitions implemented: catDecl, frameId, dummyLocale (+ 2 more)
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Tests.ToposTheoryChecklist
+* Tests.ToposTheoryChecklist
 
 ### Key Definitions
 
@@ -3693,7 +3693,7 @@ Passing tests in ToposTheoryChecklist.agda
 
 ### Evidence
 
-*   **src/agda/Tests/ToposTheoryChecklist.agda** (module header)
+* **src/agda/Tests/ToposTheoryChecklist.agda** (module header)
     > Tests.ToposTheoryChecklist: Test instances for topos theory concepts Test setup: Common definitions Dummy category for tests
 
 ### Provenance
@@ -3722,19 +3722,19 @@ Passing tests in UniversalPropertyTests.agda
 
 **Outputs:**
 
-*   Agda modules: UniversalPropertyTests.agda, UniversalProperties.agda
+* Agda modules: UniversalPropertyTests.agda, UniversalProperties.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Test suite passes: UniversalPropertyTests.agda
-*   Key definitions implemented: umpTestsPass
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: UniversalPropertyTests.agda
+* Key definitions implemented: umpTestsPass
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Tests.UniversalPropertyTests
-*   Core.UniversalProperties
+* Tests.UniversalPropertyTests
+* Core.UniversalProperties
 
 ### Key Definitions
 
@@ -3750,9 +3750,9 @@ Passing tests in UniversalPropertyTests.agda
 
 ### Evidence
 
-*   **src/agda/Tests/UniversalPropertyTests.agda** (module header)
+* **src/agda/Tests/UniversalPropertyTests.agda** (module header)
     > Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries This module tests the bridge between computational algorithms and universal properties, verifying that phase transitions prese...
-*   **src/agda/Core/UniversalProperties.agda** (module header)
+* **src/agda/Core/UniversalProperties.agda** (module header)
     > Core.UniversalProperties: Categorical characterization of algebraic constructions This module formalizes the universal properties underlying algorithmic interfaces ====================================...
 
 ### Provenance
@@ -3777,27 +3777,27 @@ Passing tests in YonedaChecklist.agda
 
 **In scope:**
 
-*   Constructive proofs
+* Constructive proofs
     **Out of scope:**
-*   Postulated axioms
+* Postulated axioms
 
 ### Inputs & Outputs
 
 **Outputs:**
 
-*   Agda modules: YonedaChecklist.agda, Yoneda.agda
+* Agda modules: YonedaChecklist.agda, Yoneda.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Test suite passes: YonedaChecklist.agda
-*   Key definitions implemented: internalYonedaEmbeddingAdapt, internalYonedaLemmaAdapt, test-yoneda-embedding (+ 5 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: YonedaChecklist.agda
+* Key definitions implemented: internalYonedaEmbeddingAdapt, internalYonedaLemmaAdapt, test-yoneda-embedding (+ 5 more)
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Tests.YonedaChecklist
-*   Core.Yoneda
+* Tests.YonedaChecklist
+* Core.Yoneda
 
 ### Key Definitions
 
@@ -3813,9 +3813,9 @@ Passing tests in YonedaChecklist.agda
 
 ### Evidence
 
-*   **src/agda/Tests/YonedaChecklist.agda** (module header)
+* **src/agda/Tests/YonedaChecklist.agda** (module header)
     > Tests.YonedaChecklist: Test instances for Yoneda lemma PHASE-IV.2: Constructive instance of Yoneda lemma ============================================================================
-*   **src/agda/Core/Yoneda.agda** (module header)
+* **src/agda/Core/Yoneda.agda** (module header)
     > Core.Yoneda: Yoneda lemma and embedding with constructive proofs This module formalizes the Yoneda embedding and proves the Yoneda lemma constructively ================================================...
 
 ### Provenance
@@ -3844,19 +3844,19 @@ Passing tests in GrothendieckFibrationsChecklist.agda
 
 **Outputs:**
 
-*   Agda modules: GrothendieckFibrationsChecklist.agda, GrothendieckFibrations.agda
+* Agda modules: GrothendieckFibrationsChecklist.agda, GrothendieckFibrations.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Test suite passes: GrothendieckFibrationsChecklist.agda
-*   Key definitions implemented: emptyFibrationDecl, emptyFibrationDeclarationAdapter, emptyCartesianArrowDecl (+ 7 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: GrothendieckFibrationsChecklist.agda
+* Key definitions implemented: emptyFibrationDecl, emptyFibrationDeclarationAdapter, emptyCartesianArrowDecl (+ 7 more)
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Tests.GrothendieckFibrationsChecklist
-*   Core.GrothendieckFibrations
+* Tests.GrothendieckFibrationsChecklist
+* Core.GrothendieckFibrations
 
 ### Key Definitions
 
@@ -3868,9 +3868,9 @@ Passing tests in GrothendieckFibrationsChecklist.agda
 
 ### Evidence
 
-*   **src/agda/Tests/GrothendieckFibrationsChecklist.agda** (module header)
+* **src/agda/Tests/GrothendieckFibrationsChecklist.agda** (module header)
     > \============================================================================ Part 1: Original Obligation Adapters (Preserved) ==========================================================================...
-*   **src/agda/Core/GrothendieckFibrations.agda** (module header)
+* **src/agda/Core/GrothendieckFibrations.agda** (module header)
     > Core.GrothendieckFibrations: Grothendieck fibrations with Beck-Chevalley condition This module formalizes fibrations, cartesian lifts, and proves Beck-Chevalley coherence =============================...
 
 ### Provenance
@@ -3899,18 +3899,18 @@ Compiled Agda modules: FiniteFields.agda, NumberFields.agda
 
 **Outputs:**
 
-*   Agda modules: FiniteFields.agda, NumberFields.agda
+* Agda modules: FiniteFields.agda, NumberFields.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Key definitions implemented: cyclicId, constructCyclicGroup, cyclicGaloisGroup (+ 5 more)
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Key definitions implemented: cyclicId, constructCyclicGroup, cyclicGaloisGroup (+ 5 more)
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Core.Algorithms.FiniteFields
-*   Core.Algorithms.NumberFields
+* Core.Algorithms.FiniteFields
+* Core.Algorithms.NumberFields
 
 ### Key Definitions
 
@@ -3922,9 +3922,9 @@ Compiled Agda modules: FiniteFields.agda, NumberFields.agda
 
 ### Evidence
 
-*   **src/agda/Core/Algorithms/FiniteFields.agda** (module header)
+* **src/agda/Core/Algorithms/FiniteFields.agda** (module header)
     > Helper for string concatenation Finite field predicate Helper: Construct identifiers for Cyclic Group components based on order n
-*   **src/agda/Core/Algorithms/NumberFields.agda** (module header)
+* **src/agda/Core/Algorithms/NumberFields.agda** (module header)
     > Core/Algorithms/NumberFields.agda Import External Oracle capability Evidence that a field is a number field
 
 ### Provenance
@@ -3953,20 +3953,20 @@ Passing tests in Index.agda, GodelBoundaryTests.agda
 
 **Outputs:**
 
-*   Agda modules: Index.agda, GodelBoundaryTests.agda, GodelBoundary.agda
+* Agda modules: Index.agda, GodelBoundaryTests.agda, GodelBoundary.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Test suite passes: Index.agda, GodelBoundaryTests.agda
-*   Key definitions implemented: test-godel-sentence, test-godel-id, test-godel-boundary-class (+ 7 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: Index.agda, GodelBoundaryTests.agda
+* Key definitions implemented: test-godel-sentence, test-godel-id, test-godel-boundary-class (+ 7 more)
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Tests.Index
-*   Tests.GodelBoundaryTests
-*   Core.GodelBoundary
+* Tests.Index
+* Tests.GodelBoundaryTests
+* Core.GodelBoundary
 
 ### Key Definitions
 
@@ -3982,11 +3982,11 @@ Passing tests in Index.agda, GodelBoundaryTests.agda
 
 ### Evidence
 
-*   **src/agda/Tests/Index.agda** (module header)
+* **src/agda/Tests/Index.agda** (module header)
     > Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries Testing Philosophy:
-*   **src/agda/Tests/GodelBoundaryTests.agda** (module header)
+* **src/agda/Tests/GodelBoundaryTests.agda** (module header)
     > Tests.GodelBoundaryTests: Validation of incompleteness witnesses and limit objects PHASE-V.1: Reification of limit object (Gödel boundary) =============================================================...
-*   **src/agda/Core/GodelBoundary.agda** (module header)
+* **src/agda/Core/GodelBoundary.agda** (module header)
     > Core.GodelBoundary: Formalization of incompleteness and theoretical limits This module reifies the Gödelian constraint by making the system's inability to achieve total self-reflection an explicit, in...
 
 ### Provenance
@@ -4015,19 +4015,19 @@ Passing tests in PerformanceBoundaryTests.agda
 
 **Outputs:**
 
-*   Agda modules: GrowthMetrics.agda, PerformanceBoundaryTests.agda
+* Agda modules: GrowthMetrics.agda, PerformanceBoundaryTests.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Test suite passes: PerformanceBoundaryTests.agda
-*   Key definitions implemented: calculatePhaseDensity, analyzeYDistribution, computeGrowthRate (+ 2 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: PerformanceBoundaryTests.agda
+* Key definitions implemented: calculatePhaseDensity, analyzeYDistribution, computeGrowthRate (+ 2 more)
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Core.GrowthMetrics
-*   Tests.PerformanceBoundaryTests
+* Core.GrowthMetrics
+* Tests.PerformanceBoundaryTests
 
 ### Key Definitions
 
@@ -4039,9 +4039,9 @@ Passing tests in PerformanceBoundaryTests.agda
 
 ### Evidence
 
-*   **src/agda/Core/GrowthMetrics.agda** (module header)
+* **src/agda/Core/GrowthMetrics.agda** (module header)
     > Core.GrowthMetrics: Solution space growth rate instrumentation PHASE-V.2: Track coordinate allocation patterns and solution space expansion ============================================================...
-*   **src/agda/Tests/PerformanceBoundaryTests.agda** (module header)
+* **src/agda/Tests/PerformanceBoundaryTests.agda** (module header)
     > Tests.PerformanceBoundaryTests: Track computational complexity phase boundaries This suite tests where complexity changes occur in algorithm pipelines: - Complexity classification (constant, poly, exp...
 
 ### Provenance
@@ -4066,27 +4066,27 @@ Passing tests in Index.agda
 
 **In scope:**
 
-*   HoTT path equality
+* HoTT path equality
     **Out of scope:**
-*   Propositional equality only
+* Propositional equality only
 
 ### Inputs & Outputs
 
 **Outputs:**
 
-*   Agda modules: Index.agda, PathAggregator.agda
+* Agda modules: Index.agda, PathAggregator.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Test suite passes: Index.agda
-*   Key definitions implemented: PathEvidenceIdentifier, composePaths, identityPath (+ 2 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: Index.agda
+* Key definitions implemented: PathEvidenceIdentifier, composePaths, identityPath (+ 2 more)
+* Implementation verified in canonical roadmap
 
 ### Agda Modules
 
-*   Tests.Index
-*   Core.PathAggregator
+* Tests.Index
+* Core.PathAggregator
 
 ### Key Definitions
 
@@ -4102,9 +4102,9 @@ Passing tests in Index.agda
 
 ### Evidence
 
-*   **src/agda/Tests/Index.agda** (module header)
+* **src/agda/Tests/Index.agda** (module header)
     > Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries Testing Philosophy:
-*   **src/agda/Core/PathAggregator.agda** (module header)
+* **src/agda/Core/PathAggregator.agda** (module header)
     > Core.PathAggregator: Composite HoTT path aggregation for global closure This module provides a global witness that aggregates all individual serialization roundtrip paths into a single composite proof...
 
 ### Provenance
@@ -4119,7 +4119,7 @@ Passing tests in Index.agda
 
 ***
 
-## 95. ROADMAP-MD-1: Provide algebraic structures for representing and manipulating ambiguity in parse spaces.
+## 95. ROADMAP-MD-1: Provide algebraic structures for representing and manipulating ambiguity in parse spaces
 
 **Status:** `not-started` | **Category:** Roadmap | **Complexity:** low
 
@@ -4139,16 +4139,16 @@ Compiled Agda modules: Ambiguity.agda
 
 **Outputs:**
 
-*   Agda modules: Ambiguity.agda
+* Agda modules: Ambiguity.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Ambiguity
+* Plan.CIM.Ambiguity
 
 ### Provenance
 
@@ -4156,7 +4156,7 @@ Compiled Agda modules: Ambiguity.agda
 
 ***
 
-## 96. ROADMAP-MD-2: Establish metric structures on semantic spaces for distance/similarity calculations.
+## 96. ROADMAP-MD-2: Establish metric structures on semantic spaces for distance/similarity calculations
 
 **Status:** `not-started` | **Category:** Roadmap | **Complexity:** low
 
@@ -4176,16 +4176,16 @@ Compiled Agda modules: Metricization.agda
 
 **Outputs:**
 
-*   Agda modules: Metricization.agda
+* Agda modules: Metricization.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Metricization
+* Plan.CIM.Metricization
 
 ### Provenance
 
@@ -4193,7 +4193,7 @@ Compiled Agda modules: Metricization.agda
 
 ***
 
-## 97. ROADMAP-MD-3: Define compositional transformation operations on semantic objects.
+## 97. ROADMAP-MD-3: Define compositional transformation operations on semantic objects
 
 **Status:** `not-started` | **Category:** Roadmap | **Complexity:** low
 
@@ -4213,16 +4213,16 @@ Compiled Agda modules: TransformationSystem.agda
 
 **Outputs:**
 
-*   Agda modules: TransformationSystem.agda
+* Agda modules: TransformationSystem.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.TransformationSystem
+* Plan.CIM.TransformationSystem
 
 ### Provenance
 
@@ -4230,7 +4230,7 @@ Compiled Agda modules: TransformationSystem.agda
 
 ***
 
-## 98. ROADMAP-MD-4: Implement functorial mappings between semantic and computational spaces.
+## 98. ROADMAP-MD-4: Implement functorial mappings between semantic and computational spaces
 
 **Status:** `not-started` | **Category:** Roadmap | **Complexity:** low
 
@@ -4250,16 +4250,16 @@ Compiled Agda modules: FunctorialConstructs.agda
 
 **Outputs:**
 
-*   Agda modules: FunctorialConstructs.agda
+* Agda modules: FunctorialConstructs.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.FunctorialConstructs
+* Plan.CIM.FunctorialConstructs
 
 ### Provenance
 
@@ -4267,7 +4267,7 @@ Compiled Agda modules: FunctorialConstructs.agda
 
 ***
 
-## 99. ROADMAP-MD-5: Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs.
+## 99. ROADMAP-MD-5: Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs
 
 **Status:** `not-started` | **Category:** Roadmap | **Complexity:** high
 
@@ -4287,20 +4287,20 @@ Compiled Agda modules: Elasticity.agda, Ambiguity.agda
 
 **Outputs:**
 
-*   Agda modules: Elasticity.agda, Ambiguity.agda, Metricization.agda
+* Agda modules: Elasticity.agda, Ambiguity.agda, Metricization.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.Elasticity
-*   Plan.CIM.Ambiguity
-*   Plan.CIM.Metricization
-*   Plan.CIM.TransformationSystem
-*   Plan.CIM.FunctorialConstructs
+* Plan.CIM.Elasticity
+* Plan.CIM.Ambiguity
+* Plan.CIM.Metricization
+* Plan.CIM.TransformationSystem
+* Plan.CIM.FunctorialConstructs
 
 ### Provenance
 
@@ -4308,7 +4308,7 @@ Compiled Agda modules: Elasticity.agda, Ambiguity.agda
 
 ***
 
-## 100. ROADMAP-MD-6: Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension.
+## 100. ROADMAP-MD-6: Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension
 
 **Status:** `not-started` | **Category:** Roadmap | **Complexity:** low
 
@@ -4328,16 +4328,16 @@ Compiled Agda modules: PolytopeExpansion.agda
 
 **Outputs:**
 
-*   Agda modules: PolytopeExpansion.agda
+* Agda modules: PolytopeExpansion.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.PolytopeExpansion
+* Plan.CIM.PolytopeExpansion
 
 ### Provenance
 
@@ -4345,7 +4345,7 @@ Compiled Agda modules: PolytopeExpansion.agda
 
 ***
 
-## 101. ROADMAP-MD-7: Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed.
+## 101. ROADMAP-MD-7: Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed
 
 **Status:** `not-started` | **Category:** Roadmap | **Complexity:** medium
 
@@ -4365,16 +4365,16 @@ Compiled Agda modules: PolytopeExpansion.agda
 
 **Outputs:**
 
-*   Agda modules: PolytopeExpansion.agda
+* Agda modules: PolytopeExpansion.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.PolytopeExpansion
+* Plan.CIM.PolytopeExpansion
 
 ### Provenance
 
@@ -4382,7 +4382,7 @@ Compiled Agda modules: PolytopeExpansion.agda
 
 ***
 
-## 102. ROADMAP-MD-8: Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition.
+## 102. ROADMAP-MD-8: Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition
 
 **Status:** `not-started` | **Category:** Roadmap | **Complexity:** high
 
@@ -4402,18 +4402,18 @@ Compiled Agda modules: RotationalTransport.agda, TopologicalGating.agda
 
 **Outputs:**
 
-*   Agda modules: RotationalTransport.agda, TopologicalGating.agda, TopologicalSuperposition.agda
+* Agda modules: RotationalTransport.agda, TopologicalGating.agda, TopologicalSuperposition.agda
 
 ### Acceptance Criteria
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 ### Agda Modules
 
-*   Plan.CIM.RotationalTransport
-*   Plan.CIM.TopologicalGating
-*   Plan.CIM.TopologicalSuperposition
+* Plan.CIM.RotationalTransport
+* Plan.CIM.TopologicalGating
+* Plan.CIM.TopologicalSuperposition
 
 ### Provenance
 
@@ -4423,21 +4423,21 @@ Compiled Agda modules: RotationalTransport.agda, TopologicalGating.agda
 
 # Statistics
 
-*   **Total tasks:** 102
-*   **Categories:** 4
+* **Total tasks:** 102
+* **Categories:** 4
 
 ## Status Breakdown
 
-*   **completed**: 13 (12.7%)
-*   **deferred**: 1 (1.0%)
-*   **not-started**: 86 (84.3%)
-*   **planned**: 2 (2.0%)
+* **completed**: 13 (12.7%)
+* **deferred**: 1 (1.0%)
+* **not-started**: 86 (84.3%)
+* **planned**: 2 (2.0%)
 
 ## Complexity Breakdown
 
-*   **low**: 93 (91.2%)
-*   **medium**: 7 (6.9%)
-*   **high**: 2 (2.0%)
+* **low**: 93 (91.2%)
+* **medium**: 7 (6.9%)
+* **high**: 2 (2.0%)
 IngestedGP | **Complexity:** low
 
 #### Intent — GP-Gp107
@@ -4456,16 +4456,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 #### Acceptance Criteria — GP-Gp107
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — GP-Gp107
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 #### Tags — GP-Gp107
 
@@ -4516,16 +4516,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 #### Acceptance Criteria — GP-Gp108
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — GP-Gp108
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 #### Tags — GP-Gp108
 
@@ -4576,16 +4576,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 #### Acceptance Criteria — GP-Gp109
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — GP-Gp109
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 #### Tags — GP-Gp109
 
@@ -4636,16 +4636,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 #### Acceptance Criteria — GP-Gp110
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — GP-Gp110
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 #### Tags — GP-Gp110
 
@@ -4696,16 +4696,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 #### Acceptance Criteria — GP-Gp111
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — GP-Gp111
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 #### Tags — GP-Gp111
 
@@ -4756,16 +4756,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 #### Acceptance Criteria — GP-Gp200
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — GP-Gp200
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 #### Tags — GP-Gp200
 
@@ -4816,16 +4816,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 #### Acceptance Criteria — GP-Gp201
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — GP-Gp201
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 #### Tags — GP-Gp201
 
@@ -4876,16 +4876,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 #### Acceptance Criteria — GP-Gp300
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — GP-Gp300
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 #### Tags — GP-Gp300
 
@@ -4937,16 +4937,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 #### Acceptance Criteria — GP-Gp302
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — GP-Gp302
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 #### Tags — GP-Gp302
 
@@ -4997,16 +4997,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Implementation.agda
+* Agda modules: Implementation.agda
 
 #### Acceptance Criteria — GP-Gp303
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — GP-Gp303
 
-*   Plan.CIM.Implementation
+* Plan.CIM.Implementation
 
 #### Tags — GP-Gp303
 
@@ -5071,16 +5071,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Basic.agda
+* Agda modules: Basic.agda
 
 #### Acceptance Criteria — INGEST-Ch1-Groups-Cyclic
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — INGEST-Ch1-Groups-Cyclic
 
-*   Algebra.Groups.Basic
+* Algebra.Groups.Basic
 
 #### Tags — INGEST-Ch1-Groups-Cyclic
 
@@ -5088,7 +5088,7 @@ Not specified.
 
 #### Evidence — INGEST-Ch1-Groups-Cyclic
 
-*   **src/agda/Algebra/Groups/Basic.agda** (module header)
+* **src/agda/Algebra/Groups/Basic.agda** (module header)
     > Algebra.Groups.Basic: Fundamental group theory (Hungerford Ch I, sections 1-6) This module covers semigroups through symmetric groups, grounded in category theory. PARAMETERIZED VERSION: All 10 classi...
 
 #### Provenance — INGEST-Ch1-Groups-Cyclic
@@ -5143,16 +5143,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Basic.agda
+* Agda modules: Basic.agda
 
 #### Acceptance Criteria — INGEST-Ch3-Ideals-Lattice
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — INGEST-Ch3-Ideals-Lattice
 
-*   Algebra.Rings.Basic
+* Algebra.Rings.Basic
 
 #### Tags — INGEST-Ch3-Ideals-Lattice
 
@@ -5160,7 +5160,7 @@ Not specified.
 
 #### Evidence — INGEST-Ch3-Ideals-Lattice
 
-*   **src/agda/Algebra/Rings/Basic.agda** (module header)
+* **src/agda/Algebra/Rings/Basic.agda** (module header)
     > Algebra.Rings.Basic: Ring theory (Hungerford Ch III) PARAMETERIZED VERSION: All 18 classical ring theorems are module parameters rather than postulated locally. This enforces explicit dependency decla...
 
 #### Provenance — INGEST-Ch3-Ideals-Lattice
@@ -5217,26 +5217,26 @@ Passing tests in UniversalPropertyTests.agda
 
 **In scope:**
 
-*   Constructive proofs
+* Constructive proofs
     **Out of scope:**
-*   Postulated axioms
+* Postulated axioms
 
 #### Inputs & Outputs — PHASE-0.1
 
 **Outputs:**
 
-*   Agda modules: UniversalPropertyTests.agda
+* Agda modules: UniversalPropertyTests.agda
 
 #### Acceptance Criteria — PHASE-0.1
 
-*   All Agda modules compile without errors
-*   Test suite passes: UniversalPropertyTests.agda
-*   Key definitions implemented: umpTestsPass
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: UniversalPropertyTests.agda
+* Key definitions implemented: umpTestsPass
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-0.1
 
-*   Tests.UniversalPropertyTests
+* Tests.UniversalPropertyTests
 
 #### Key Definitions — PHASE-0.1
 
@@ -5248,7 +5248,7 @@ Passing tests in UniversalPropertyTests.agda
 
 #### Evidence — PHASE-0.1
 
-*   **src/agda/Tests/UniversalPropertyTests.agda** (module header)
+* **src/agda/Tests/UniversalPropertyTests.agda** (module header)
     > Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries This module tests the bridge between computational algorithms and universal properties, verifying that phase transitions prese...
 
 #### Provenance — PHASE-0.1
@@ -5299,26 +5299,26 @@ Passing tests in UniversalPropertyTests.agda
 
 **In scope:**
 
-*   Constructive proofs
+* Constructive proofs
     **Out of scope:**
-*   Postulated axioms
+* Postulated axioms
 
 #### Inputs & Outputs — PHASE-0.2
 
 **Outputs:**
 
-*   Agda modules: UniversalPropertyTests.agda
+* Agda modules: UniversalPropertyTests.agda
 
 #### Acceptance Criteria — PHASE-0.2
 
-*   All Agda modules compile without errors
-*   Test suite passes: UniversalPropertyTests.agda
-*   Key definitions implemented: umpTestsPass
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: UniversalPropertyTests.agda
+* Key definitions implemented: umpTestsPass
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-0.2
 
-*   Tests.UniversalPropertyTests
+* Tests.UniversalPropertyTests
 
 #### Key Definitions — PHASE-0.2
 
@@ -5330,7 +5330,7 @@ Passing tests in UniversalPropertyTests.agda
 
 #### Evidence — PHASE-0.2
 
-*   **src/agda/Tests/UniversalPropertyTests.agda** (module header)
+* **src/agda/Tests/UniversalPropertyTests.agda** (module header)
     > Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries This module tests the bridge between computational algorithms and universal properties, verifying that phase transitions prese...
 
 #### Provenance — PHASE-0.2
@@ -5382,17 +5382,17 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Metamodel.agda
+* Agda modules: Metamodel.agda
 
 #### Acceptance Criteria — PHASE-I.1
 
-*   All Agda modules compile without errors
-*   Key definitions implemented: mkId, mkIdAt, Proposition
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Key definitions implemented: mkId, mkIdAt, Proposition
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-I.1
 
-*   Metamodel
+* Metamodel
 
 #### Key Definitions — PHASE-I.1
 
@@ -5404,7 +5404,7 @@ Not specified.
 
 #### Evidence — PHASE-I.1
 
-*   **src/agda/Metamodel.agda** (module header)
+* **src/agda/Metamodel.agda** (module header)
     > Minimal builtins to avoid external stdlib dependencies I. Metamodel Structural Definition Phase I.1.1: Static Coordinate Assignment
 
 #### Provenance — PHASE-I.1
@@ -5467,21 +5467,21 @@ Not specified.
 
 **Inputs:**
 
-*   Dependencies: PHASE-0.1, PHASE-0.2, PHASE-III.4
+* Dependencies: PHASE-0.1, PHASE-0.2, PHASE-III.4
 
 **Outputs:**
 
-*   Agda modules: Index.agda
+* Agda modules: Index.agda
 
 #### Acceptance Criteria — PHASE-II.2.5
 
-*   All Agda modules compile without errors
-*   Test suite passes: Index.agda
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: Index.agda
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-II.2.5
 
-*   Tests.Index
+* Tests.Index
 
 #### Tags — PHASE-II.2.5
 
@@ -5495,7 +5495,7 @@ Not specified.
 
 #### Evidence — PHASE-II.2.5
 
-*   **src/agda/Tests/Index.agda** (module header)
+* **src/agda/Tests/Index.agda** (module header)
     > Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries Testing Philosophy:
 
 #### Provenance — PHASE-II.2.5
@@ -5560,23 +5560,23 @@ Not specified.
 
 **Inputs:**
 
-*   Dependencies: PHASE-I.1
+* Dependencies: PHASE-I.1
 
 **Outputs:**
 
-*   Agda modules: Limitations.agda, ErrorAsSpecificationTests.agda
+* Agda modules: Limitations.agda, ErrorAsSpecificationTests.agda
 
 #### Acceptance Criteria — PHASE-III.2
 
-*   All Agda modules compile without errors
-*   Test suite passes: ErrorAsSpecificationTests.agda
-*   Key definitions implemented: acknowledge, mkLimitation, okResult (+ 7 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: ErrorAsSpecificationTests.agda
+* Key definitions implemented: acknowledge, mkLimitation, okResult (+ 7 more)
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-III.2
 
-*   Core.Limitations
-*   Tests.ErrorAsSpecificationTests
+* Core.Limitations
+* Tests.ErrorAsSpecificationTests
 
 #### Key Definitions — PHASE-III.2
 
@@ -5594,9 +5594,9 @@ Not specified.
 
 #### Evidence — PHASE-III.2
 
-*   **src/agda/Core/Limitations.agda** (module header)
+* **src/agda/Core/Limitations.agda** (module header)
     > Error-as-Specification: capture constructive limitations tied to an algorithm identifier Minimal outcome wrapper to model success vs limitation-as-specification Helper to acknowledge a limitation (tre...
-*   **src/agda/Tests/ErrorAsSpecificationTests.agda** (module header)
+* **src/agda/Tests/ErrorAsSpecificationTests.agda** (module header)
     > Tests.ErrorAsSpecificationTests: Error-as-Specification (Phase III.3 - 3.2) Status: COMPLETE \[2025-11-19] This module demonstrates the integration of LimitationEvidence into the algorithm
 
 #### Provenance — PHASE-III.2
@@ -5650,26 +5650,26 @@ Passing tests in SerializationTests.agda
 
 **In scope:**
 
-*   HoTT path equality
+* HoTT path equality
     **Out of scope:**
-*   Propositional equality only
+* Propositional equality only
 
 #### Inputs & Outputs — PHASE-III.4
 
 **Outputs:**
 
-*   Agda modules: SerializationTests.agda
+* Agda modules: SerializationTests.agda
 
 #### Acceptance Criteria — PHASE-III.4
 
-*   All Agda modules compile without errors
-*   Test suite passes: SerializationTests.agda
-*   Key definitions implemented: TestFixturesPackageDebt, serializeFieldDebt, deserializeFieldDebt (+ 1 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: SerializationTests.agda
+* Key definitions implemented: TestFixturesPackageDebt, serializeFieldDebt, deserializeFieldDebt (+ 1 more)
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-III.4
 
-*   Tests.SerializationTests
+* Tests.SerializationTests
 
 #### Key Definitions — PHASE-III.4
 
@@ -5681,7 +5681,7 @@ Passing tests in SerializationTests.agda
 
 #### Evidence — PHASE-III.4
 
-*   **src/agda/Tests/SerializationTests.agda** (module header)
+* **src/agda/Tests/SerializationTests.agda** (module header)
     > Tests.SerializationTests: Validate witness serialization and deserialization This suite tests conversion between internal witnesses and external representations: - Witness → External: Serialization pr...
 
 #### Provenance — PHASE-III.4
@@ -5736,18 +5736,18 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: ToposTheoryChecklist.agda
+* Agda modules: ToposTheoryChecklist.agda
 
 #### Acceptance Criteria — PHASE-III.5
 
-*   All Agda modules compile without errors
-*   Test suite passes: ToposTheoryChecklist.agda
-*   Key definitions implemented: catDecl, frameId, dummyLocale (+ 2 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: ToposTheoryChecklist.agda
+* Key definitions implemented: catDecl, frameId, dummyLocale (+ 2 more)
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-III.5
 
-*   Tests.ToposTheoryChecklist
+* Tests.ToposTheoryChecklist
 
 #### Key Definitions — PHASE-III.5
 
@@ -5759,7 +5759,7 @@ Not specified.
 
 #### Evidence — PHASE-III.5
 
-*   **src/agda/Tests/ToposTheoryChecklist.agda** (module header)
+* **src/agda/Tests/ToposTheoryChecklist.agda** (module header)
     > Tests.ToposTheoryChecklist: Test instances for topos theory concepts Test setup: Common definitions Dummy category for tests
 
 #### Provenance — PHASE-III.5
@@ -5824,23 +5824,23 @@ Not specified.
 
 **Inputs:**
 
-*   Dependencies: INGEST-Ch3-Ideals-Lattice
+* Dependencies: INGEST-Ch3-Ideals-Lattice
 
 **Outputs:**
 
-*   Agda modules: UniversalPropertyTests.agda, UniversalProperties.agda
+* Agda modules: UniversalPropertyTests.agda, UniversalProperties.agda
 
 #### Acceptance Criteria — PHASE-IV.1
 
-*   All Agda modules compile without errors
-*   Test suite passes: UniversalPropertyTests.agda
-*   Key definitions implemented: umpTestsPass
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: UniversalPropertyTests.agda
+* Key definitions implemented: umpTestsPass
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-IV.1
 
-*   Tests.UniversalPropertyTests
-*   Core.UniversalProperties
+* Tests.UniversalPropertyTests
+* Core.UniversalProperties
 
 #### Key Definitions — PHASE-IV.1
 
@@ -5858,9 +5858,9 @@ Not specified.
 
 #### Evidence — PHASE-IV.1
 
-*   **src/agda/Tests/UniversalPropertyTests.agda** (module header)
+* **src/agda/Tests/UniversalPropertyTests.agda** (module header)
     > Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries This module tests the bridge between computational algorithms and universal properties, verifying that phase transitions prese...
-*   **src/agda/Core/UniversalProperties.agda** (module header)
+* **src/agda/Core/UniversalProperties.agda** (module header)
     > Core.UniversalProperties: Categorical characterization of algebraic constructions This module formalizes the universal properties underlying algorithmic interfaces ====================================...
 
 #### Provenance — PHASE-IV.1
@@ -5920,31 +5920,31 @@ Passing tests in YonedaChecklist.agda
 
 **In scope:**
 
-*   Constructive proofs
+* Constructive proofs
     **Out of scope:**
-*   Postulated axioms
+* Postulated axioms
 
 #### Inputs & Outputs — PHASE-IV.2
 
 **Inputs:**
 
-*   Dependencies: INGEST-Ch3-Ideals-Lattice
+* Dependencies: INGEST-Ch3-Ideals-Lattice
 
 **Outputs:**
 
-*   Agda modules: YonedaChecklist.agda, Yoneda.agda
+* Agda modules: YonedaChecklist.agda, Yoneda.agda
 
 #### Acceptance Criteria — PHASE-IV.2
 
-*   All Agda modules compile without errors
-*   Test suite passes: YonedaChecklist.agda
-*   Key definitions implemented: internalYonedaEmbeddingAdapt, internalYonedaLemmaAdapt, test-yoneda-embedding (+ 5 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: YonedaChecklist.agda
+* Key definitions implemented: internalYonedaEmbeddingAdapt, internalYonedaLemmaAdapt, test-yoneda-embedding (+ 5 more)
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-IV.2
 
-*   Tests.YonedaChecklist
-*   Core.Yoneda
+* Tests.YonedaChecklist
+* Core.Yoneda
 
 #### Key Definitions — PHASE-IV.2
 
@@ -5962,9 +5962,9 @@ Passing tests in YonedaChecklist.agda
 
 #### Evidence — PHASE-IV.2
 
-*   **src/agda/Tests/YonedaChecklist.agda** (module header)
+* **src/agda/Tests/YonedaChecklist.agda** (module header)
     > Tests.YonedaChecklist: Test instances for Yoneda lemma PHASE-IV.2: Constructive instance of Yoneda lemma ============================================================================
-*   **src/agda/Core/Yoneda.agda** (module header)
+* **src/agda/Core/Yoneda.agda** (module header)
     > Core.Yoneda: Yoneda lemma and embedding with constructive proofs This module formalizes the Yoneda embedding and proves the Yoneda lemma constructively ================================================...
 
 #### Provenance — PHASE-IV.2
@@ -6025,19 +6025,19 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: GrothendieckFibrationsChecklist.agda, GrothendieckFibrations.agda
+* Agda modules: GrothendieckFibrationsChecklist.agda, GrothendieckFibrations.agda
 
 #### Acceptance Criteria — PHASE-IV.3
 
-*   All Agda modules compile without errors
-*   Test suite passes: GrothendieckFibrationsChecklist.agda
-*   Key definitions implemented: emptyFibrationDecl, emptyFibrationDeclarationAdapter, emptyCartesianArrowDecl (+ 7 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: GrothendieckFibrationsChecklist.agda
+* Key definitions implemented: emptyFibrationDecl, emptyFibrationDeclarationAdapter, emptyCartesianArrowDecl (+ 7 more)
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-IV.3
 
-*   Tests.GrothendieckFibrationsChecklist
-*   Core.GrothendieckFibrations
+* Tests.GrothendieckFibrationsChecklist
+* Core.GrothendieckFibrations
 
 #### Key Definitions — PHASE-IV.3
 
@@ -6049,9 +6049,9 @@ Not specified.
 
 #### Evidence — PHASE-IV.3
 
-*   **src/agda/Tests/GrothendieckFibrationsChecklist.agda** (module header)
+* **src/agda/Tests/GrothendieckFibrationsChecklist.agda** (module header)
     > \============================================================================ Part 1: Original Obligation Adapters (Preserved) ==========================================================================...
-*   **src/agda/Core/GrothendieckFibrations.agda** (module header)
+* **src/agda/Core/GrothendieckFibrations.agda** (module header)
     > Core.GrothendieckFibrations: Grothendieck fibrations with Beck-Chevalley condition This module formalizes fibrations, cartesian lifts, and proves Beck-Chevalley coherence =============================...
 
 #### Provenance — PHASE-IV.3
@@ -6104,18 +6104,18 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: FiniteFields.agda, NumberFields.agda
+* Agda modules: FiniteFields.agda, NumberFields.agda
 
 #### Acceptance Criteria — PHASE-IV.0
 
-*   All Agda modules compile without errors
-*   Key definitions implemented: cyclicId, constructCyclicGroup, cyclicGaloisGroup (+ 5 more)
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Key definitions implemented: cyclicId, constructCyclicGroup, cyclicGaloisGroup (+ 5 more)
+* Code review and integration approval
 
 #### Agda Modules — PHASE-IV.0
 
-*   Core.Algorithms.FiniteFields
-*   Core.Algorithms.NumberFields
+* Core.Algorithms.FiniteFields
+* Core.Algorithms.NumberFields
 
 #### Key Definitions — PHASE-IV.0
 
@@ -6127,9 +6127,9 @@ Not specified.
 
 #### Evidence — PHASE-IV.0
 
-*   **src/agda/Core/Algorithms/FiniteFields.agda** (module header)
+* **src/agda/Core/Algorithms/FiniteFields.agda** (module header)
     > Helper for string concatenation Finite field predicate Helper: Construct identifiers for Cyclic Group components based on order n
-*   **src/agda/Core/Algorithms/NumberFields.agda** (module header)
+* **src/agda/Core/Algorithms/NumberFields.agda** (module header)
     > Core/Algorithms/NumberFields.agda Import External Oracle capability Evidence that a field is a number field
 
 #### Provenance — PHASE-IV.0
@@ -6198,24 +6198,24 @@ Not specified.
 
 **Inputs:**
 
-*   Dependencies: PHASE-0.1, PHASE-0.2, PHASE-III.4
+* Dependencies: PHASE-0.1, PHASE-0.2, PHASE-III.4
 
 **Outputs:**
 
-*   Agda modules: Index.agda, GodelBoundaryTests.agda, GodelBoundary.agda
+* Agda modules: Index.agda, GodelBoundaryTests.agda, GodelBoundary.agda
 
 #### Acceptance Criteria — PHASE-V.1
 
-*   All Agda modules compile without errors
-*   Test suite passes: Index.agda, GodelBoundaryTests.agda
-*   Key definitions implemented: test-godel-sentence, test-godel-id, test-godel-boundary-class (+ 7 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: Index.agda, GodelBoundaryTests.agda
+* Key definitions implemented: test-godel-sentence, test-godel-id, test-godel-boundary-class (+ 7 more)
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-V.1
 
-*   Tests.Index
-*   Tests.GodelBoundaryTests
-*   Core.GodelBoundary
+* Tests.Index
+* Tests.GodelBoundaryTests
+* Core.GodelBoundary
 
 #### Key Definitions — PHASE-V.1
 
@@ -6233,11 +6233,11 @@ Not specified.
 
 #### Evidence — PHASE-V.1
 
-*   **src/agda/Tests/Index.agda** (module header)
+* **src/agda/Tests/Index.agda** (module header)
     > Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries Testing Philosophy:
-*   **src/agda/Tests/GodelBoundaryTests.agda** (module header)
+* **src/agda/Tests/GodelBoundaryTests.agda** (module header)
     > Tests.GodelBoundaryTests: Validation of incompleteness witnesses and limit objects PHASE-V.1: Reification of limit object (Gödel boundary) =============================================================...
-*   **src/agda/Core/GodelBoundary.agda** (module header)
+* **src/agda/Core/GodelBoundary.agda** (module header)
     > Core.GodelBoundary: Formalization of incompleteness and theoretical limits This module reifies the Gödelian constraint by making the system's inability to achieve total self-reflection an explicit, in...
 
 #### Provenance — PHASE-V.1
@@ -6298,19 +6298,19 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: GrowthMetrics.agda, PerformanceBoundaryTests.agda
+* Agda modules: GrowthMetrics.agda, PerformanceBoundaryTests.agda
 
 #### Acceptance Criteria — PHASE-V.2
 
-*   All Agda modules compile without errors
-*   Test suite passes: PerformanceBoundaryTests.agda
-*   Key definitions implemented: calculatePhaseDensity, analyzeYDistribution, computeGrowthRate (+ 2 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: PerformanceBoundaryTests.agda
+* Key definitions implemented: calculatePhaseDensity, analyzeYDistribution, computeGrowthRate (+ 2 more)
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-V.2
 
-*   Core.GrowthMetrics
-*   Tests.PerformanceBoundaryTests
+* Core.GrowthMetrics
+* Tests.PerformanceBoundaryTests
 
 #### Key Definitions — PHASE-V.2
 
@@ -6322,9 +6322,9 @@ Not specified.
 
 #### Evidence — PHASE-V.2
 
-*   **src/agda/Core/GrowthMetrics.agda** (module header)
+* **src/agda/Core/GrowthMetrics.agda** (module header)
     > Core.GrowthMetrics: Solution space growth rate instrumentation PHASE-V.2: Track coordinate allocation patterns and solution space expansion ============================================================...
-*   **src/agda/Tests/PerformanceBoundaryTests.agda** (module header)
+* **src/agda/Tests/PerformanceBoundaryTests.agda** (module header)
     > Tests.PerformanceBoundaryTests: Track computational complexity phase boundaries This suite tests where complexity changes occur in algorithm pipelines: - Complexity classification (constant, poly, exp...
 
 #### Provenance — PHASE-V.2
@@ -6394,31 +6394,31 @@ Passing tests in Index.agda
 
 **In scope:**
 
-*   HoTT path equality
+* HoTT path equality
     **Out of scope:**
-*   Propositional equality only
+* Propositional equality only
 
 #### Inputs & Outputs — PHASE-V.3
 
 **Inputs:**
 
-*   Dependencies: PHASE-0.1, PHASE-0.2, PHASE-III.4
+* Dependencies: PHASE-0.1, PHASE-0.2, PHASE-III.4
 
 **Outputs:**
 
-*   Agda modules: Index.agda, PathAggregator.agda
+* Agda modules: Index.agda, PathAggregator.agda
 
 #### Acceptance Criteria — PHASE-V.3
 
-*   All Agda modules compile without errors
-*   Test suite passes: Index.agda
-*   Key definitions implemented: PathEvidenceIdentifier, composePaths, identityPath (+ 2 more)
-*   Implementation verified in canonical roadmap
+* All Agda modules compile without errors
+* Test suite passes: Index.agda
+* Key definitions implemented: PathEvidenceIdentifier, composePaths, identityPath (+ 2 more)
+* Implementation verified in canonical roadmap
 
 #### Agda Modules — PHASE-V.3
 
-*   Tests.Index
-*   Core.PathAggregator
+* Tests.Index
+* Core.PathAggregator
 
 #### Key Definitions — PHASE-V.3
 
@@ -6436,9 +6436,9 @@ Passing tests in Index.agda
 
 #### Evidence — PHASE-V.3
 
-*   **src/agda/Tests/Index.agda** (module header)
+* **src/agda/Tests/Index.agda** (module header)
     > Tests/Index.agda Comprehensive test suite validating behavioral phase boundaries Testing Philosophy:
-*   **src/agda/Core/PathAggregator.agda** (module header)
+* **src/agda/Core/PathAggregator.agda** (module header)
     > Core.PathAggregator: Composite HoTT path aggregation for global closure This module provides a global witness that aggregates all individual serialization roundtrip paths into a single composite proof...
 
 #### Provenance — PHASE-V.3
@@ -6492,16 +6492,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Ambiguity.agda
+* Agda modules: Ambiguity.agda
 
 #### Acceptance Criteria — ROADMAP-MD-1
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — ROADMAP-MD-1
 
-*   Plan.CIM.Ambiguity
+* Plan.CIM.Ambiguity
 
 #### Provenance — ROADMAP-MD-1
 
@@ -6547,16 +6547,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Metricization.agda
+* Agda modules: Metricization.agda
 
 #### Acceptance Criteria — ROADMAP-MD-2
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — ROADMAP-MD-2
 
-*   Plan.CIM.Metricization
+* Plan.CIM.Metricization
 
 #### Provenance — ROADMAP-MD-2
 
@@ -6602,16 +6602,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: TransformationSystem.agda
+* Agda modules: TransformationSystem.agda
 
 #### Acceptance Criteria — ROADMAP-MD-3
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — ROADMAP-MD-3
 
-*   Plan.CIM.TransformationSystem
+* Plan.CIM.TransformationSystem
 
 #### Provenance — ROADMAP-MD-3
 
@@ -6657,16 +6657,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: FunctorialConstructs.agda
+* Agda modules: FunctorialConstructs.agda
 
 #### Acceptance Criteria — ROADMAP-MD-4
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — ROADMAP-MD-4
 
-*   Plan.CIM.FunctorialConstructs
+* Plan.CIM.FunctorialConstructs
 
 #### Provenance — ROADMAP-MD-4
 
@@ -6719,20 +6719,20 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: Elasticity.agda, Ambiguity.agda, Metricization.agda
+* Agda modules: Elasticity.agda, Ambiguity.agda, Metricization.agda
 
 #### Acceptance Criteria — ROADMAP-MD-5
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — ROADMAP-MD-5
 
-*   Plan.CIM.Elasticity
-*   Plan.CIM.Ambiguity
-*   Plan.CIM.Metricization
-*   Plan.CIM.TransformationSystem
-*   Plan.CIM.FunctorialConstructs
+* Plan.CIM.Elasticity
+* Plan.CIM.Ambiguity
+* Plan.CIM.Metricization
+* Plan.CIM.TransformationSystem
+* Plan.CIM.FunctorialConstructs
 
 #### Provenance — ROADMAP-MD-5
 
@@ -6779,16 +6779,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: PolytopeExpansion.agda
+* Agda modules: PolytopeExpansion.agda
 
 #### Acceptance Criteria — ROADMAP-MD-6
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — ROADMAP-MD-6
 
-*   Plan.CIM.PolytopeExpansion
+* Plan.CIM.PolytopeExpansion
 
 #### Provenance — ROADMAP-MD-6
 
@@ -6835,16 +6835,16 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: PolytopeExpansion.agda
+* Agda modules: PolytopeExpansion.agda
 
 #### Acceptance Criteria — ROADMAP-MD-7
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — ROADMAP-MD-7
 
-*   Plan.CIM.PolytopeExpansion
+* Plan.CIM.PolytopeExpansion
 
 #### Provenance — ROADMAP-MD-7
 
@@ -6894,18 +6894,18 @@ Not specified.
 
 **Outputs:**
 
-*   Agda modules: RotationalTransport.agda, TopologicalGating.agda, TopologicalSuperposition.agda
+* Agda modules: RotationalTransport.agda, TopologicalGating.agda, TopologicalSuperposition.agda
 
 #### Acceptance Criteria — ROADMAP-MD-8
 
-*   All Agda modules compile without errors
-*   Code review and integration approval
+* All Agda modules compile without errors
+* Code review and integration approval
 
 #### Agda Modules — ROADMAP-MD-8
 
-*   Plan.CIM.RotationalTransport
-*   Plan.CIM.TopologicalGating
-*   Plan.CIM.TopologicalSuperposition
+* Plan.CIM.RotationalTransport
+* Plan.CIM.TopologicalGating
+* Plan.CIM.TopologicalSuperposition
 
 #### Provenance — ROADMAP-MD-8
 
@@ -6915,18 +6915,18 @@ Not specified.
 
 ## Statistics
 
-*   **Total tasks:** 102
-*   **Categories:** 4
+* **Total tasks:** 102
+* **Categories:** 4
 
 ## Status Breakdown
 
-*   **completed**: 13 (12.7%)
-*   **deferred**: 1 (1.0%)
-*   **not-started**: 86 (84.3%)
-*   **planned**: 2 (2.0%)
+* **completed**: 13 (12.7%)
+* **deferred**: 1 (1.0%)
+* **not-started**: 86 (84.3%)
+* **planned**: 2 (2.0%)
 
 ## Complexity Breakdown
 
-*   **low**: 91 (89.2%)
-*   **medium**: 4 (3.9%)
-*   **high**: 7 (6.9%)
+* **low**: 91 (89.2%)
+* **medium**: 4 (3.9%)
+* **high**: 7 (6.9%)

@@ -6,20 +6,20 @@ I have successfully ingested all 78 remaining GP roadmap files from your `/intak
 
 ### The Pipeline
 
-1.  **Extraction** (`scripts/ingest_gp_files.py`)
-    *   Parsed all 78 GP markdown files
-    *   Extracted: title, summary, key concepts, and keywords
-    *   Generated structured metadata in JSON format
+1. **Extraction** (`scripts/ingest_gp_files.py`)
+    * Parsed all 78 GP markdown files
+    * Extracted: title, summary, key concepts, and keywords
+    * Generated structured metadata in JSON format
 
-2.  **Formal Encoding** (Auto-generated)
-    *   Created `src/agda/Plan/CIM/IngestedRoadmaps.agda`
-    *   Generated 78 `RoadmapStep` records in Agda
-    *   Each record includes provenance, status, implication, and target module
+2. **Formal Encoding** (Auto-generated)
+    * Created `src/agda/Plan/CIM/IngestedRoadmaps.agda`
+    * Generated 78 `RoadmapStep` records in Agda
+    * Each record includes provenance, status, implication, and target module
 
-3.  **Human Export** (`scripts/export_roadmap.py`)
-    *   Converted Agda records to Markdown
-    *   Organized items by category (9 categories, 78 items)
-    *   Integrated into `ROADMAP.md`
+3. **Human Export** (`scripts/export_roadmap.py`)
+    * Converted Agda records to Markdown
+    * Organized items by category (9 categories, 78 items)
+    * Integrated into `ROADMAP.md`
 
 ### Files Created
 
@@ -45,24 +45,28 @@ I have successfully ingested all 78 remaining GP roadmap files from your `/intak
 
 ### Immediate Uses
 
-1.  **View the Full Roadmap**
+1. **View the Full Roadmap**
+
     ```bash
     cat ROADMAP.md | grep -A 100 "## Ingested Roadmap"
     ```
 
-2.  **Regenerate All Artifacts**
+2. **Regenerate All Artifacts**
+
     ```bash
     python3 scripts/ingest_gp_files.py
     python3 scripts/export_roadmap.py
     ```
 
-3.  **Access in Agda**
+3. **Access in Agda**
+
     ```agda
     open import Plan.CIM.IngestedRoadmaps
     -- Now you can use all 78 RoadmapStep records
     ```
 
-4.  **Query the Metadata**
+4. **Query the Metadata**
+
     ```bash
     python3 -c "import json; data = json.load(open('build/ingested_metadata.json')); 
     print(f'Total items: {data[\"total_files\"]}')"
@@ -72,50 +76,50 @@ I have successfully ingested all 78 remaining GP roadmap files from your `/intak
 
 The system is now prepared for:
 
-*   **Agentic Roadmap Traversal**: Automatically process steps to generate implementation plans
-*   **Dependency Analysis**: Identify relationships between items
-*   **Progress Tracking**: Monitor which items are completed
-*   **Mechanical Generation**: Auto-update ROADMAP.md on each build
+* **Agentic Roadmap Traversal**: Automatically process steps to generate implementation plans
+* **Dependency Analysis**: Identify relationships between items
+* **Progress Tracking**: Monitor which items are completed
+* **Mechanical Generation**: Auto-update ROADMAP.md on each build
 
 ## Category Breakdown
 
 The 78 items are organized into 9 categories:
 
-*   **Foundational (00-99)** \[9 items]: Core theoretical alignment
-*   **Structural (100-199)** \[12 items]: Integration approaches
-*   **Geometric (200-299)** \[2 items]: Associative geometry
-*   **Topological (300-399)** \[3 items]: Fiber bundles and adjoints
-*   **Semantic (400-499)** \[1 item]: Meaning and elasticity
-*   **Polytope (500-599)** \[2 items]: Polytope manifests
-*   **Other (600-699)** \[1 item]: Miscellaneous
-*   **Analysis (700-799)** \[15 items]: Formal analysis chain
-*   **Unified (800-899)** \[33 items]: Integration and manifestos
+* **Foundational (00-99)** \[9 items]: Core theoretical alignment
+* **Structural (100-199)** \[12 items]: Integration approaches
+* **Geometric (200-299)** \[2 items]: Associative geometry
+* **Topological (300-399)** \[3 items]: Fiber bundles and adjoints
+* **Semantic (400-499)** \[1 item]: Meaning and elasticity
+* **Polytope (500-599)** \[2 items]: Polytope manifests
+* **Other (600-699)** \[1 item]: Miscellaneous
+* **Analysis (700-799)** \[15 items]: Formal analysis chain
+* **Unified (800-899)** \[33 items]: Integration and manifestos
 
 ## Next Steps
 
 ### Recommended: Phase 3 Implementation
 
-1.  **Create RoadmapTraverser Agent**
-    *   Process each RoadmapStep automatically
-    *   Generate implementation checklists
-    *   Track progress and dependencies
+1. **Create RoadmapTraverser Agent**
+    * Process each RoadmapStep automatically
+    * Generate implementation checklists
+    * Track progress and dependencies
 
-2.  **Integrate with Build System**
-    *   Add `make ingest-roadmap` target
-    *   Auto-run during `make docs-all`
-    *   Keep ROADMAP.md synchronized
+2. **Integrate with Build System**
+    * Add `make ingest-roadmap` target
+    * Auto-run during `make docs-all`
+    * Keep ROADMAP.md synchronized
 
-3.  **Cross-Reference Resolution**
-    *   Link items to Agda modules
-    *   Build dependency graph
-    *   Identify parallelizable tasks
+3. **Cross-Reference Resolution**
+    * Link items to Agda modules
+    * Build dependency graph
+    * Identify parallelizable tasks
 
 ### For Reference
 
 See these documents for detailed information:
 
-*   `INTAKE-INGESTION-SUMMARY.md` - How the system works, usage examples
-*   `INTAKE-INGESTION-COMPLETION.md` - Full technical report with phase roadmap
+* `INTAKE-INGESTION-SUMMARY.md` - How the system works, usage examples
+* `INTAKE-INGESTION-COMPLETION.md` - Full technical report with phase roadmap
 
 ## Quality Metrics
 
@@ -133,10 +137,10 @@ The intake ingestion is **complete and operational**. All 78 GP roadmap files ha
 
 The system maintains:
 
-*   **Traceability**: Each item tracks to source GP file
-*   **Auditability**: All extraction decisions captured
-*   **Reproducibility**: Pipeline can be re-run anytime
-*   **Extensibility**: Easy to add new items or categories
+* **Traceability**: Each item tracks to source GP file
+* **Auditability**: All extraction decisions captured
+* **Reproducibility**: Pipeline can be re-run anytime
+* **Extensibility**: Easy to add new items or categories
 
 **Status**: ✓ **READY FOR PHASE 3 (Agentic Traversal)**
 

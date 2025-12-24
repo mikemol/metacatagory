@@ -44,10 +44,10 @@ make roadmap-merge
 
 Merges all roadmap sources into `build/canonical_roadmap.json`:
 
-*   `.github/roadmap/tasks.json` (GitHub issues)
-*   `ROADMAP.md` (structured markdown)
-*   `src/agda/Plan/CIM/IngestedRoadmaps/*.agda` (GP file extractions)
-*   Legacy `roadmap-*.agda` files
+* `.github/roadmap/tasks.json` (GitHub issues)
+* `ROADMAP.md` (structured markdown)
+* `src/agda/Plan/CIM/IngestedRoadmaps/*.agda` (GP file extractions)
+* Legacy `roadmap-*.agda` files
 
 ### 2. Exporting Projections
 
@@ -65,9 +65,9 @@ make roadmap-validate-triangle
 
 Ensures:
 
-*   `tasks.json` matches canonical (ID and content)
-*   `ROADMAP.md` contains all canonical items
-*   No drift between projections
+* `tasks.json` matches canonical (ID and content)
+* `ROADMAP.md` contains all canonical items
+* No drift between projections
 
 ### 4. Syncing to GitHub
 
@@ -118,34 +118,34 @@ Depends on `roadmap-export-json` to ensure tasks.json is current before sync.
 
 The following files are now **redundant** and can be removed after confirming canonical has all data:
 
-*   `roadmap-v4.agda` (1979 lines, legacy schema)
-*   `roadmap-typed.agda` (1979 lines, legacy schema)
-*   `roadmap-python.agda` (1973 lines, legacy schema)
-*   `roadmap-flat.agda` (1952 lines, legacy schema)
-*   `roadmap-correct-body.agda` (1981 lines, legacy schema)
-*   `roadmap-cons-body.agda` (1774 lines, legacy schema)
-*   `roadmap-test.agda` (350 lines, legacy schema)
-*   `roadmap-extracted.agda` (93 lines, legacy schema)
-*   `ROADMAP-DRAFT.md` (superseded by canonical)
-*   `ROADMAP-RESTRUCTURE-PROPOSAL.md` (superseded by canonical)
-*   `ROADMAP_EXTRACTION_SUMMARY.md` (superseded by canonical)
+* `roadmap-v4.agda` (1979 lines, legacy schema)
+* `roadmap-typed.agda` (1979 lines, legacy schema)
+* `roadmap-python.agda` (1973 lines, legacy schema)
+* `roadmap-flat.agda` (1952 lines, legacy schema)
+* `roadmap-correct-body.agda` (1981 lines, legacy schema)
+* `roadmap-cons-body.agda` (1774 lines, legacy schema)
+* `roadmap-test.agda` (350 lines, legacy schema)
+* `roadmap-extracted.agda` (93 lines, legacy schema)
+* `ROADMAP-DRAFT.md` (superseded by canonical)
+* `ROADMAP-RESTRUCTURE-PROPOSAL.md` (superseded by canonical)
+* `ROADMAP_EXTRACTION_SUMMARY.md` (superseded by canonical)
 
 ### Migration Checklist
 
-*   \[x] Merge all sources into canonical
-*   \[x] Export projections (JSON, Markdown, SPPF)
-*   \[x] Validate triangle identity
-*   \[ ] Review canonical for completeness
-*   \[ ] Archive legacy files to `archive/` directory
-*   \[ ] Update documentation references
-*   \[ ] Remove legacy Makefile targets
+* \[x] Merge all sources into canonical
+* \[x] Export projections (JSON, Markdown, SPPF)
+* \[x] Validate triangle identity
+* \[ ] Review canonical for completeness
+* \[ ] Archive legacy files to `archive/` directory
+* \[ ] Update documentation references
+* \[ ] Remove legacy Makefile targets
 
 ## Maintenance
 
 ### Adding New Items
 
-1.  Edit `src/agda/Plan/CIM/CanonicalRoadmap.agda` directly, OR
-2.  Edit `tasks.json`, then run `make roadmap-merge` to re-import
+1. Edit `src/agda/Plan/CIM/CanonicalRoadmap.agda` directly, OR
+2. Edit `tasks.json`, then run `make roadmap-merge` to re-import
 
 ### Updating Projections
 
@@ -164,9 +164,9 @@ make roadmap-validate-triangle
 
 If validation fails:
 
-*   Review diffs between canonical and projections
-*   Run `make roadmap-export-json roadmap-export-md` to sync
-*   Re-validate
+* Review diffs between canonical and projections
+* Run `make roadmap-export-json roadmap-export-md` to sync
+* Re-validate
 
 ## Benefits
 
@@ -180,11 +180,11 @@ If validation fails:
 
 ## Current Status
 
-*   **Canonical**: 196 items (merged from tasks.json, ROADMAP.md, IngestedRoadmaps, legacy)
-*   **tasks.json**: ✓ 196 items (validated)
-*   **ROADMAP.md**: ✓ 102 items shown (validated subset)
-*   **SPPF JSON**: ✓ 102 nodes (graph visualization)
-*   **Triangle**: ✓ Validated (no drift)
+* **Canonical**: 196 items (merged from tasks.json, ROADMAP.md, IngestedRoadmaps, legacy)
+* **tasks.json**: ✓ 196 items (validated)
+* **ROADMAP.md**: ✓ 102 items shown (validated subset)
+* **SPPF JSON**: ✓ 102 nodes (graph visualization)
+* **Triangle**: ✓ Validated (no drift)
 
 ***
 

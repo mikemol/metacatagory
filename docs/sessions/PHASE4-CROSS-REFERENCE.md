@@ -11,34 +11,34 @@ Phase 4 implements cross-reference resolution, linking all 78 roadmap items to t
 
 ### 1. Module Matching ✓
 
-*   **ModuleMatcher** (`scripts/module_matcher.py`)
-    *   Scanned 163 Agda modules
-    *   Extracted module metadata (imports, keywords, categories)
-    *   Mapped 78 roadmap steps to relevant modules
-    *   Generated confidence scores for each mapping
+* **ModuleMatcher** (`scripts/module_matcher.py`)
+  * Scanned 163 Agda modules
+  * Extracted module metadata (imports, keywords, categories)
+  * Mapped 78 roadmap steps to relevant modules
+  * Generated confidence scores for each mapping
 
 ### 2. Dependency Analysis ✓
 
-*   **DependencyGraphBuilder** (`scripts/dependency_graph_builder.py`)
-    *   Built complete dependency graph (909 edges)
-    *   Identified 20 dependency layers
-    *   Found critical path (length 20)
-    *   Detected 0 circular dependencies ✓ (clean architecture)
+* **DependencyGraphBuilder** (`scripts/dependency_graph_builder.py`)
+  * Built complete dependency graph (909 edges)
+  * Identified 20 dependency layers
+  * Found critical path (length 20)
+  * Detected 0 circular dependencies ✓ (clean architecture)
 
 ### 3. Impact Assessment ✓
 
-*   **ImpactAnalyzer** (`scripts/impact_analyzer.py`)
-    *   Assessed cascading impact for all 78 steps
-    *   Identified 31 high-impact steps
-    *   Found 42 foundational steps (low dependencies)
-    *   Generated priority rankings
+* **ImpactAnalyzer** (`scripts/impact_analyzer.py`)
+  * Assessed cascading impact for all 78 steps
+  * Identified 31 high-impact steps
+  * Found 42 foundational steps (low dependencies)
+  * Generated priority rankings
 
 ### 4. Integrated Planning ✓
 
-*   **CrossReferenceReporter** (`scripts/cross_reference_reporter.py`)
-    *   Combined all analyses into unified report
-    *   Generated 4-phase execution plan
-    *   Provided actionable recommendations
+* **CrossReferenceReporter** (`scripts/cross_reference_reporter.py`)
+  * Combined all analyses into unified report
+  * Generated 4-phase execution plan
+  * Provided actionable recommendations
 
 ## System Architecture
 
@@ -71,36 +71,36 @@ Phase 4 implements cross-reference resolution, linking all 78 roadmap items to t
 
 ### Module Mappings
 
-*   **Total Steps**: 78
-*   **Total Modules**: 163
-*   **High Confidence**: 0 (0.0%)
-*   **Medium Confidence**: 4 (5.1%)
-*   **Low Confidence**: 74 (94.9%)
+* **Total Steps**: 78
+* **Total Modules**: 163
+* **High Confidence**: 0 (0.0%)
+* **Medium Confidence**: 4 (5.1%)
+* **Low Confidence**: 74 (94.9%)
 
 *Note: Low confidence is expected for initial automated matching. Manual validation recommended.*
 
 ### Dependency Structure
 
-*   **Total Modules**: 163
-*   **Total Dependencies**: 909
-*   **Avg Dependencies/Module**: 5.5
-*   **Dependency Layers**: 20
-*   **Critical Path Length**: 20
-*   **Circular Dependencies**: 0 ✓
+* **Total Modules**: 163
+* **Total Dependencies**: 909
+* **Avg Dependencies/Module**: 5.5
+* **Dependency Layers**: 20
+* **Critical Path Length**: 20
+* **Circular Dependencies**: 0 ✓
 
 ### Impact Distribution
 
-*   **High Impact Steps**: 31 (affect many modules)
-*   **Foundational Steps**: 42 (few dependencies)
-*   **Critical Path Steps**: 1 (on module critical path)
+* **High Impact Steps**: 31 (affect many modules)
+* **Foundational Steps**: 42 (few dependencies)
+* **Critical Path Steps**: 1 (on module critical path)
 
 ### Most Depended-Upon Modules
 
-1.  `Metamodel`: 107 importers
-2.  `Core.Phase`: 82 importers
-3.  `Core`: 65 importers
-4.  `Algebra.Foundation`: 52 importers
-5.  `Algebra.Rings.Basic`: 51 importers
+1. `Metamodel`: 107 importers
+2. `Core.Phase`: 82 importers
+3. `Core`: 65 importers
+4. `Algebra.Foundation`: 52 importers
+5. `Algebra.Rings.Basic`: 51 importers
 
 ## Execution Plan
 
@@ -110,10 +110,10 @@ Phase 4 implements cross-reference resolution, linking all 78 roadmap items to t
 
 **Characteristics**:
 
-*   0-3 dependencies
-*   Can be parallelized
-*   No blocking constraints
-*   Recommended: 10 parallel workers
+* 0-3 dependencies
+* Can be parallelized
+* No blocking constraints
+* Recommended: 10 parallel workers
 
 **Example Items**: GP06, GP500, GP699, GP801-808
 
@@ -123,16 +123,16 @@ Phase 4 implements cross-reference resolution, linking all 78 roadmap items to t
 
 **Characteristics**:
 
-*   High module impact (affects 79-136 modules)
-*   Should be done early
-*   Cascading effects significant
-*   Minimize future rework
+* High module impact (affects 79-136 modules)
+* Should be done early
+* Cascading effects significant
+* Minimize future rework
 
 **Top Items**:
 
-*   GP06: 136 modules affected
-*   GP103, GP105, GP400: 85 modules each
-*   GP100-107: 79 modules each
+* GP06: 136 modules affected
+* GP103, GP105, GP400: 85 modules each
+* GP100-107: 79 modules each
 
 ### Phase 3: Critical Path Items (0 items)
 
@@ -146,9 +146,9 @@ Phase 4 implements cross-reference resolution, linking all 78 roadmap items to t
 
 **Characteristics**:
 
-*   Not high impact
-*   Not foundational
-*   Execute after Phases 1-2
+* Not high impact
+* Not foundational
+* Execute after Phases 1-2
 
 ## Reports Generated
 
@@ -289,111 +289,111 @@ for phase in data['execution_plan']['phases']:
 
 ### 🔴 HIGH Priority
 
-1.  **Begin with foundational items (42 total)**
-    *   Low dependencies
-    *   Can execute in parallel immediately
-    *   Use 10 parallel workers
+1. **Begin with foundational items (42 total)**
+    * Low dependencies
+    * Can execute in parallel immediately
+    * Use 10 parallel workers
 
-2.  **Execute high-impact items early (31 total)**
-    *   Affects many modules
-    *   Doing early minimizes cascading rework
-    *   Critical for project stability
+2. **Execute high-impact items early (31 total)**
+    * Affects many modules
+    * Doing early minimizes cascading rework
+    * Critical for project stability
 
-3.  **Execute 30 Phase 1 items in parallel**
-    *   No blocking dependencies
-    *   Maximum parallelization opportunity
+3. **Execute 30 Phase 1 items in parallel**
+    * No blocking dependencies
+    * Maximum parallelization opportunity
 
 ### 🟡 MEDIUM Priority
 
-4.  **Manually review 74 low-confidence module mappings**
-    *   Automated matching has low confidence
-    *   Human validation recommended
-    *   Improves accuracy
+4. **Manually review 74 low-confidence module mappings**
+    * Automated matching has low confidence
+    * Human validation recommended
+    * Improves accuracy
 
-5.  **Maintain zero circular dependencies**
-    *   Current codebase is clean
-    *   Keep it that way during implementation
+5. **Maintain zero circular dependencies**
+    * Current codebase is clean
+    * Keep it that way during implementation
 
 ### 🟢 LOW Priority
 
-6.  **Monitor dependency growth**
-    *   Current avg: 5.5 dependencies/module
-    *   Keep below 10 for maintainability
+6. **Monitor dependency growth**
+    * Current avg: 5.5 dependencies/module
+    * Keep below 10 for maintainability
 
 ## Technical Debt & Limitations
 
 ### Known Issues
 
-1.  **Low Mapping Confidence**
-    *   94.9% of mappings have low confidence
-    *   Cause: Limited keyword overlap in GP files
-    *   Mitigation: Manual review recommended
+1. **Low Mapping Confidence**
+    * 94.9% of mappings have low confidence
+    * Cause: Limited keyword overlap in GP files
+    * Mitigation: Manual review recommended
 
-2.  **Generic Module Targets**
-    *   Many steps map to same modules (Core.AlgorithmComplexity, Algebra.Enrichment)
-    *   Cause: Broad categorization
-    *   Mitigation: Refine keyword extraction
+2. **Generic Module Targets**
+    * Many steps map to same modules (Core.AlgorithmComplexity, Algebra.Enrichment)
+    * Cause: Broad categorization
+    * Mitigation: Refine keyword extraction
 
-3.  **Missing Context**
-    *   GP file summaries truncated
-    *   Full content not analyzed
-    *   Mitigation: Future enhancement to analyze full files
+3. **Missing Context**
+    * GP file summaries truncated
+    * Full content not analyzed
+    * Mitigation: Future enhancement to analyze full files
 
 ### Future Enhancements
 
-1.  **Improved Matching**
-    *   Analyze full GP file content (not just summaries)
-    *   Use semantic similarity (embeddings)
-    *   Incorporate file history/blame data
+1. **Improved Matching**
+    * Analyze full GP file content (not just summaries)
+    * Use semantic similarity (embeddings)
+    * Incorporate file history/blame data
 
-2.  **Dynamic Updates**
-    *   Re-run analysis as modules change
-    *   Track impact over time
-    *   Alert on critical path changes
+2. **Dynamic Updates**
+    * Re-run analysis as modules change
+    * Track impact over time
+    * Alert on critical path changes
 
-3.  **Visualization**
-    *   Generate dependency graphs (DOT/GraphViz)
-    *   Impact heat maps
-    *   Progress dashboards
+3. **Visualization**
+    * Generate dependency graphs (DOT/GraphViz)
+    * Impact heat maps
+    * Progress dashboards
 
 ## Integration with Previous Phases
 
 ### From Phase 2 (Ingestion)
 
-*   Uses `build/ingested_metadata.json`
-*   78 RoadmapStep items as input
+* Uses `build/ingested_metadata.json`
+* 78 RoadmapStep items as input
 
 ### From Phase 3 (Traversal)
 
-*   Uses `build/roadmap_traversal_report.json`
-*   Category-based dependency analysis
-*   Execution phases
+* Uses `build/roadmap_traversal_report.json`
+* Category-based dependency analysis
+* Execution phases
 
 ### To Phase 5 (Implementation)
 
-*   Provides detailed execution plan
-*   Module-to-step mappings
-*   Impact assessments
-*   Priority rankings
+* Provides detailed execution plan
+* Module-to-step mappings
+* Impact assessments
+* Priority rankings
 
 ## Success Criteria
 
 ✓ **All objectives met:**
 
-*   \[x] Module matching implemented
-*   \[x] Dependency graph constructed
-*   \[x] Impact analysis completed
-*   \[x] Integrated report generated
-*   \[x] Execution plan created
-*   \[x] Documentation complete
+* \[x] Module matching implemented
+* \[x] Dependency graph constructed
+* \[x] Impact analysis completed
+* \[x] Integrated report generated
+* \[x] Execution plan created
+* \[x] Documentation complete
 
 ✓ **Quality metrics:**
 
-*   \[x] Zero circular dependencies
-*   \[x] 20-layer dependency structure
-*   \[x] 909 dependency edges analyzed
-*   \[x] 78/78 steps mapped to modules
-*   \[x] 4-phase execution plan
+* \[x] Zero circular dependencies
+* \[x] 20-layer dependency structure
+* \[x] 909 dependency edges analyzed
+* \[x] 78/78 steps mapped to modules
+* \[x] 4-phase execution plan
 
 ## Files Created
 
@@ -418,11 +418,11 @@ With Phase 4 complete, the project is ready for **Phase 5: Implementation**.
 
 ### Phase 5 Objectives
 
-1.  Execute Phase 1 foundational items (30 items)
-2.  Execute Phase 2 high-impact items (19 items)
-3.  Track progress with ProgressTracker
-4.  Update ROADMAP.md mechanically
-5.  Validate against original intake
+1. Execute Phase 1 foundational items (30 items)
+2. Execute Phase 2 high-impact items (19 items)
+3. Track progress with ProgressTracker
+4. Update ROADMAP.md mechanically
+5. Validate against original intake
 
 ### How to Begin Phase 5
 

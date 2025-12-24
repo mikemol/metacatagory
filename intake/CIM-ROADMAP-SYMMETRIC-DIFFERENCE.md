@@ -11,9 +11,9 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 ### Key Findings
 
-*   **Compendium → Roadmap Gap**: Theoretical concepts without implementation plans
-*   **Roadmap → Compendium Gap**: Planned features without explicit theoretical foundation
-*   **Overlap**: Core CIM concepts with both theory and implementation
+* **Compendium → Roadmap Gap**: Theoretical concepts without implementation plans
+* **Roadmap → Compendium Gap**: Planned features without explicit theoretical foundation
+* **Overlap**: Core CIM concepts with both theory and implementation
 
 ***
 
@@ -39,14 +39,14 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 **Violations Catalog**:
 
-*   Structural Incoherence (inconsistent n-Cell types)
-*   EmergentMetric Contamination (conflated metrics)
-*   Categorical Mandate Elision (missing universal properties)
-*   Coherence Debt Accumulation (unproven equivalences)
-*   Algorithmic Non-Termination (unbounded computations)
-*   Witness Non-Constructivity (postulated proofs)
-*   Homological Obstruction (cycle detection failures)
-*   Braid Diagram Malformation (invalid inheritance paths)
+* Structural Incoherence (inconsistent n-Cell types)
+* EmergentMetric Contamination (conflated metrics)
+* Categorical Mandate Elision (missing universal properties)
+* Coherence Debt Accumulation (unproven equivalences)
+* Algorithmic Non-Termination (unbounded computations)
+* Witness Non-Constructivity (postulated proofs)
+* Homological Obstruction (cycle detection failures)
+* Braid Diagram Malformation (invalid inheritance paths)
 
 **Gap**: No roadmap task explicitly implements the A12 protocol as a **linting/verification tool** for the codebase.
 
@@ -74,9 +74,9 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 **Current Status**:
 
-*   **Compendium**: Defines BIF as primary n→n+1 generalization mechanism
-*   **Codebase**: `Plan/CIM/Utility.agda` has `BraidedInheritanceFunctor` record
-*   **Roadmap**: No explicit task for implementing braided composition laws or monoidal coherence
+* **Compendium**: Defines BIF as primary n→n+1 generalization mechanism
+* **Codebase**: `Plan/CIM/Utility.agda` has `BraidedInheritanceFunctor` record
+* **Roadmap**: No explicit task for implementing braided composition laws or monoidal coherence
 
 **Gap**: The **braided monoidal category laws** (hexagon coherence, unit coherence) aren't verified in the roadmap.
 
@@ -91,10 +91,10 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 **Theory**: CHIP formalizes how:
 
-1.  Universal Properties (0-Cells) mandate algorithmic construction
-2.  Algorithms (1-Cells) resolve specifications constructively
-3.  Coherence Witnesses (2-Cells) mediate between ambiguous paths
-4.  Each layer induces the next via graded ascent
+1. Universal Properties (0-Cells) mandate algorithmic construction
+2. Algorithms (1-Cells) resolve specifications constructively
+3. Coherence Witnesses (2-Cells) mediate between ambiguous paths
+4. Each layer induces the next via graded ascent
 
 **Gap**: ROADMAP has **no dedicated CHIP formalization module** or test suite verifying recursive closure properties.
 
@@ -109,8 +109,8 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 **Theory**: The cost of proving $p\_1 \cong p\_2$ defines the emergent metric via:
 
-*   Local costs: $\text{cost} : \text{Step} \to \mathbb{N}$
-*   Global metric: Systolic area of 2-Cell filling the ambiguity
+* Local costs: $\text{cost} : \text{Step} \to \mathbb{N}$
+* Global metric: Systolic area of 2-Cell filling the ambiguity
 
 **Gap**: ROADMAP's "metricization" task doesn't specify **systolic geometry** or **homological area computation**.
 
@@ -153,8 +153,8 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 **Current Status**:
 
-*   **Codebase**: `Core/Yoneda.agda` exists
-*   **Roadmap**: No task explicitly applies Yoneda to verify algorithm correctness
+* **Codebase**: `Core/Yoneda.agda` exists
+* **Roadmap**: No task explicitly applies Yoneda to verify algorithm correctness
 
 **Recommendation**: Add task: "Apply Yoneda Lemma to Algorithm Verification" in test suite
 
@@ -169,8 +169,8 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 **Current Status**:
 
-*   **Codebase**: `Core/GrothendieckFibrations.agda` exists
-*   **Roadmap**: No task integrates fibrations with Phase category
+* **Codebase**: `Core/GrothendieckFibrations.agda` exists
+* **Roadmap**: No task integrates fibrations with Phase category
 
 **Recommendation**: Add task: "Model Phase Category as Fibration over Problem Types"
 
@@ -187,17 +187,17 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 **Implementation Plans**:
 
-*   `src/agda/Plan/CIM/PolytopeExpansion.agda`
-*   `nedge_topology/mitosis.py`
-*   Mitosis Engine for dynamic geometry
+* `src/agda/Plan/CIM/PolytopeExpansion.agda`
+* `nedge_topology/mitosis.py`
+* Mitosis Engine for dynamic geometry
 
 **Gap**: The **compendium doesn't mention polytope expansion** as a mechanism. The closest analog is "graded vector space ascent" but there's no explicit **topological geometry** formalism.
 
 **Theoretical Question**: How do polytopes relate to the n-Cell hierarchy? Are they:
 
-*   Visualizations of coherence witnesses?
-*   Alternative encodings of ambiguity spaces?
-*   Geometric realizations of graded metrics?
+* Visualizations of coherence witnesses?
+* Alternative encodings of ambiguity spaces?
+* Geometric realizations of graded metrics?
 
 **Recommendation**: Extend compendium with Section XIV: "Geometric Realization of CIM via Polytopes"
 
@@ -210,16 +210,16 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 **Implementation Plans**:
 
-*   `src/agda/Plan/CIM/RotationalTransport.agda`
-*   `nedge_topology/parser.py` with RoPE manifold encoding
+* `src/agda/Plan/CIM/RotationalTransport.agda`
+* `nedge_topology/parser.py` with RoPE manifold encoding
 
 **Gap**: The compendium uses **phase rotation** (see `Ambiguity` record with `phase : ℕ` field) but doesn't develop **rotational encoding** or **SO(n) symmetry groups** as core theoretical constructs.
 
 **Theoretical Question**: Is RoPE:
 
-*   A concrete implementation of phase composition?
-*   A monoidal action on the Phase category?
-*   A Lie group representation of coherence transformations?
+* A concrete implementation of phase composition?
+* A monoidal action on the Phase category?
+* A Lie group representation of coherence transformations?
 
 **Recommendation**: Add compendium appendix explaining RoPE as **monoidal action** on Phase objects
 
@@ -232,16 +232,16 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 **Implementation Plans**:
 
-*   `src/agda/Plan/CIM/Elasticity.agda`
-*   Cross-references: Ambiguity, Metricization, TransformationSystem, FunctorialConstructs
+* `src/agda/Plan/CIM/Elasticity.agda`
+* Cross-references: Ambiguity, Metricization, TransformationSystem, FunctorialConstructs
 
 **Gap**: The compendium **doesn't define Tension/Resonance** as dual dimensions. The closest concept is **emergent metrics** but there's no explicit **2D phase space** (tension × resonance).
 
 **Theoretical Question**: How do Tension/Resonance relate to:
 
-*   EmergentMetric? (Is resonance negative tension?)
-*   2-Cell coherence? (Tension = cost, Resonance = optimality?)
-*   Harmonic minimization? (Resonance maxima = terminal objects?)
+* EmergentMetric? (Is resonance negative tension?)
+* 2-Cell coherence? (Tension = cost, Resonance = optimality?)
+* Harmonic minimization? (Resonance maxima = terminal objects?)
 
 **Recommendation**: Formalize Tension/Resonance as **dual coordinates on coherence witness space**
 
@@ -254,16 +254,16 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 **Implementation Plans**:
 
-*   `nedge_topology/mitosis.py`
-*   Runtime monitoring of semantic crowding
+* `nedge_topology/mitosis.py`
+* Runtime monitoring of semantic crowding
 
 **Gap**: The compendium's **static n-Cell hierarchy** doesn't model **dynamic category splitting** or **runtime geometry adaptation**.
 
 **Theoretical Question**: Under CHIP, when does a category "need" to split? Is mitosis:
 
-*   Triggered by coherence debt threshold?
-*   A 2-Cell → 3-Cell elevation?
-*   An emergent metric exceeding dimensional capacity?
+* Triggered by coherence debt threshold?
+* A 2-Cell → 3-Cell elevation?
+* An emergent metric exceeding dimensional capacity?
 
 **Recommendation**: Model mitosis as **colimit construction** in compendium: Category $C$ splits when $\text{Colim}(\text{Witnesses}) \neq \emptyset$
 
@@ -276,20 +276,20 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 **Implementation Plans**:
 
-*   `nedge_topology/parser.py`
-*   Fiber bundle architecture for parse states
+* `nedge_topology/parser.py`
+* Fiber bundle architecture for parse states
 
 **Gap**: While the compendium treats **ambiguity as algebraic** (via `Ambiguity` record), it doesn't develop:
 
-*   **Manifold geometry** for parse spaces
-*   **Vector superposition** semantics
-*   **Fiber bundles** over grammar states
+* **Manifold geometry** for parse spaces
+* **Vector superposition** semantics
+* **Fiber bundles** over grammar states
 
 **Theoretical Question**: In CIM terms, is the Earley parser:
 
-*   A 1-Cell (algorithm) for the 0-Cell (CNF universal property)?
-*   A phase functor over grammar state space?
-*   A colimit of partial parse derivations?
+* A 1-Cell (algorithm) for the 0-Cell (CNF universal property)?
+* A phase functor over grammar state space?
+* A colimit of partial parse derivations?
 
 **Recommendation**: Add compendium section linking Earley to **pushout/pullback constructions** in categorical parsing
 
@@ -302,7 +302,7 @@ The **CIM Compendium** (theoretical framework) and the **ROADMAP** (planned impl
 
 **Implementation Plans**:
 
-*   `src/agda/Plan/CIM/Ambiguity.agda`
+* `src/agda/Plan/CIM/Ambiguity.agda`
 
 **Gap**: The compendium **already has** `Ambiguity` record in `Utility.agda`:
 
@@ -318,9 +318,9 @@ But the roadmap task suggests **extended algebraic operations** (e.g., ambiguity
 
 **Theoretical Question**: Should `Ambiguity` be a:
 
-*   Monoid under composition?
-*   Lattice with meet/join operations?
-*   Category with morphisms between ambiguous states?
+* Monoid under composition?
+* Lattice with meet/join operations?
+* Category with morphisms between ambiguous states?
 
 **Recommendation**: Extend compendium defining **Ambiguity Algebra** with monoid/lattice laws
 
@@ -333,18 +333,18 @@ But the roadmap task suggests **extended algebraic operations** (e.g., ambiguity
 
 **Implementation Plans**:
 
-*   `src/agda/Plan/CIM/FunctorialConstructs.agda`
+* `src/agda/Plan/CIM/FunctorialConstructs.agda`
 
 **Gap**: While the compendium discusses **BraidedInheritanceFunctor** and implies functorial relationships, it doesn't systematically catalog:
 
-*   Functors between 0-Cell/1-Cell/2-Cell categories
-*   Natural transformations between algorithm bundles
-*   Monoidal functor laws for phase composition
+* Functors between 0-Cell/1-Cell/2-Cell categories
+* Natural transformations between algorithm bundles
+* Monoidal functor laws for phase composition
 
 **Current Status**:
 
-*   `Core/PhaseCategory.agda` defines Phase composition
-*   No explicit functor taxonomy
+* `Core/PhaseCategory.agda` defines Phase composition
+* No explicit functor taxonomy
 
 **Recommendation**: Compendium should add **catalog of CIM functors** (e.g., ForgetPhase, EmbedAlgorithm, WitnessLift)
 
@@ -357,7 +357,7 @@ But the roadmap task suggests **extended algebraic operations** (e.g., ambiguity
 
 **Implementation Plans**:
 
-*   `src/agda/Plan/CIM/TransformationSystem.agda`
+* `src/agda/Plan/CIM/TransformationSystem.agda`
 
 **Gap**: The compendium has `TransformationSystem` record:
 
@@ -372,9 +372,9 @@ But lacks **compositional operators** (sequential, parallel, dependent).
 
 **Theoretical Question**: Should transformations form a:
 
-*   Monoidal category with ⟫ and ⊗?
-*   Traced monoidal category for feedback?
-*   Symmetric monoidal category for commutativity?
+* Monoidal category with ⟫ and ⊗?
+* Traced monoidal category for feedback?
+* Symmetric monoidal category for commutativity?
 
 **Recommendation**: Formalize transformation composition laws in compendium Section XI-alt
 
@@ -387,19 +387,19 @@ But lacks **compositional operators** (sequential, parallel, dependent).
 
 **Implementation Plans**:
 
-*   `dashboard.py` (Python/React interface)
+* `dashboard.py` (Python/React interface)
 
 **Gap**: The compendium is **purely theoretical** with no discussion of:
 
-*   Visual representations
-*   Interactive exploration
-*   Runtime monitoring
+* Visual representations
+* Interactive exploration
+* Runtime monitoring
 
 **Theoretical Question**: Could visualization be modeled as:
 
-*   A functor from CIM → Visual category?
-*   An observational witness (non-invasive 2-Cell)?
-*   A Yoneda-based rendering (`Hom(Visual, -)`)?
+* A functor from CIM → Visual category?
+* An observational witness (non-invasive 2-Cell)?
+* A Yoneda-based rendering (`Hom(Visual, -)`)?
 
 **Recommendation**: Add compendium appendix: "Observational Functors for CIM Visualization"
 
@@ -412,20 +412,20 @@ But lacks **compositional operators** (sequential, parallel, dependent).
 
 **Gap**: The compendium is **Agda-centric** with no mention of:
 
-*   FFI (Foreign Function Interface) to Python
-*   Extraction/compilation to executable code
-*   Performance considerations
+* FFI (Foreign Function Interface) to Python
+* Extraction/compilation to executable code
+* Performance considerations
 
 **Current Status**:
 
-*   All theory in Agda
-*   Roadmap assumes Python executables
+* All theory in Agda
+* Roadmap assumes Python executables
 
 **Theoretical Question**: How are Agda proofs **extracted** to Python? Via:
 
-*   Code generation from Agda terms?
-*   Manual translation with correspondence proofs?
-*   Separate implementations with equivalence witnesses?
+* Code generation from Agda terms?
+* Manual translation with correspondence proofs?
+* Separate implementations with equivalence witnesses?
 
 **Recommendation**: Add compendium section on **extraction protocol**: Agda → Python with coherence guarantees
 
@@ -454,92 +454,92 @@ But lacks **compositional operators** (sequential, parallel, dependent).
 
 ### For Compendium Enhancement
 
-1.  **Add Section XIV: Geometric Realizations**
-    *   Polytope expansion as geometric model of coherence
-    *   RoPE as SO(n) action on Phase category
-    *   Tension/Resonance as dual coordinates
+1. **Add Section XIV: Geometric Realizations**
+    * Polytope expansion as geometric model of coherence
+    * RoPE as SO(n) action on Phase category
+    * Tension/Resonance as dual coordinates
 
-2.  **Add Section XV: Extraction & Implementation**
-    *   Agda → Python extraction protocol
-    *   Coherence preservation in executable code
-    *   Performance vs. proof trade-offs
+2. **Add Section XV: Extraction & Implementation**
+    * Agda → Python extraction protocol
+    * Coherence preservation in executable code
+    * Performance vs. proof trade-offs
 
-3.  **Add Appendix C: Visualization Functors**
-    *   Observational witnesses for monitoring
-    *   Dashboard as functor `CIM → Visual`
+3. **Add Appendix C: Visualization Functors**
+    * Observational witnesses for monitoring
+    * Dashboard as functor `CIM → Visual`
 
-4.  **Extend Section XI: Transformation Composition Laws**
-    *   Monoidal, traced, symmetric structures
-    *   Compositional transformation algebra
+4. **Extend Section XI: Transformation Composition Laws**
+    * Monoidal, traced, symmetric structures
+    * Compositional transformation algebra
 
 ### For Roadmap Completion
 
-1.  **Add Task: A12 Compliance Checker**
-    *   **Target**: `src/agda/Core/A12Compliance.agda`
-    *   **Description**: Automated verification of 8 violation categories
-    *   **Dependencies**: All Core modules
+1. **Add Task: A12 Compliance Checker**
+    * **Target**: `src/agda/Core/A12Compliance.agda`
+    * **Description**: Automated verification of 8 violation categories
+    * **Dependencies**: All Core modules
 
-2.  **Add Task: CHIP Formalization**
-    *   **Target**: `src/agda/Core/CHIP.agda`
-    *   **Description**: Recursive induction principle with constructive proofs
-    *   **Dependencies**: UniversalProperties, AlgorithmUniversality, PhaseCategory
+2. **Add Task: CHIP Formalization**
+    * **Target**: `src/agda/Core/CHIP.agda`
+    * **Description**: Recursive induction principle with constructive proofs
+    * **Dependencies**: UniversalProperties, AlgorithmUniversality, PhaseCategory
 
-3.  **Add Task: Graded Vector Space Structure**
-    *   **Target**: `src/agda/Plan/CIM/GradedVectorSpace.agda`
-    *   **Description**: Formalize $\Lambda^n \to \Lambda^{n+1}$ metric→dimension transformation
-    *   **Dependencies**: EmergentMetric, CoherenceWitness
+3. **Add Task: Graded Vector Space Structure**
+    * **Target**: `src/agda/Plan/CIM/GradedVectorSpace.agda`
+    * **Description**: Formalize $\Lambda^n \to \Lambda^{n+1}$ metric→dimension transformation
+    * **Dependencies**: EmergentMetric, CoherenceWitness
 
-4.  **Add Task: Systolic Metric Computation**
-    *   **Target**: Enhancement to `Plan/CIM/Metricization.agda`
-    *   **Description**: Compute 2-Cell systolic area as emergent metric
-    *   **Dependencies**: CoherenceWitness, homology libraries
+4. **Add Task: Systolic Metric Computation**
+    * **Target**: Enhancement to `Plan/CIM/Metricization.agda`
+    * **Description**: Compute 2-Cell systolic area as emergent metric
+    * **Dependencies**: CoherenceWitness, homology libraries
 
-5.  **Add Task: Braided Monoidal Coherence Verification**
-    *   **Target**: `Tests/BraidedInheritanceTests.agda`
-    *   **Description**: Verify hexagon and unit coherence for BIF
-    *   **Dependencies**: BraidedInheritanceFunctor
+5. **Add Task: Braided Monoidal Coherence Verification**
+    * **Target**: `Tests/BraidedInheritanceTests.agda`
+    * **Description**: Verify hexagon and unit coherence for BIF
+    * **Dependencies**: BraidedInheritanceFunctor
 
-6.  **Add Task: Terminal Object Path Selection**
-    *   **Target**: Enhancement to metricization task
-    *   **Description**: Implement harmonic minimization via terminal objects
-    *   **Dependencies**: UniversalProperties, EmergentMetric
+6. **Add Task: Terminal Object Path Selection**
+    * **Target**: Enhancement to metricization task
+    * **Description**: Implement harmonic minimization via terminal objects
+    * **Dependencies**: UniversalProperties, EmergentMetric
 
-7.  **Add Task: CNF Initiality Proof**
-    *   **Target**: `Tests/CNFProtocolTests.agda`
-    *   **Description**: Prove CNF satisfies initiality in parse category
-    *   **Dependencies**: CNFProtocol, UniversalProperties
+7. **Add Task: CNF Initiality Proof**
+    * **Target**: `Tests/CNFProtocolTests.agda`
+    * **Description**: Prove CNF satisfies initiality in parse category
+    * **Dependencies**: CNFProtocol, UniversalProperties
 
-8.  **Add Task: Yoneda-Based Algorithm Verification**
-    *   **Target**: `Tests/YonedaAlgorithmTests.agda`
-    *   **Description**: Apply Yoneda lemma to verify algorithm correctness
-    *   **Dependencies**: Core/Yoneda, AlgorithmUniversality
+8. **Add Task: Yoneda-Based Algorithm Verification**
+    * **Target**: `Tests/YonedaAlgorithmTests.agda`
+    * **Description**: Apply Yoneda lemma to verify algorithm correctness
+    * **Dependencies**: Core/Yoneda, AlgorithmUniversality
 
-9.  **Add Task: Phase Fibration Structure**
-    *   **Target**: `Core/PhaseFibration.agda`
-    *   **Description**: Model Phase category as Grothendieck fibration
-    *   **Dependencies**: GrothendieckFibrations, PhaseCategory
+9. **Add Task: Phase Fibration Structure**
+    * **Target**: `Core/PhaseFibration.agda`
+    * **Description**: Model Phase category as Grothendieck fibration
+    * **Dependencies**: GrothendieckFibrations, PhaseCategory
 
 10. **Add Task: Extraction Protocol Documentation**
-    *   **Target**: `docs/EXTRACTION.md`
-    *   **Description**: Document Agda → Python extraction with coherence guarantees
-    *   **Dependencies**: All implementation modules
+    * **Target**: `docs/EXTRACTION.md`
+    * **Description**: Document Agda → Python extraction with coherence guarantees
+    * **Dependencies**: All implementation modules
 
 ### For Integration Testing
 
-1.  **End-to-End CHIP Test**
-    *   Verify 0→1→2 ascent with concrete example
-    *   Track emergent metric propagation
-    *   Validate graded induction closure
+1. **End-to-End CHIP Test**
+    * Verify 0→1→2 ascent with concrete example
+    * Track emergent metric propagation
+    * Validate graded induction closure
 
-2.  **A12 Compliance Suite**
-    *   Test all 8 violation categories
-    *   Automated detection in CI/CD
-    *   Generate compliance reports
+2. **A12 Compliance Suite**
+    * Test all 8 violation categories
+    * Automated detection in CI/CD
+    * Generate compliance reports
 
-3.  **Geometric Consistency Test**
-    *   Verify polytope expansion preserves CIM structure
-    *   Check mitosis events don't violate categorical laws
-    *   Validate RoPE encoding coherence
+3. **Geometric Consistency Test**
+    * Verify polytope expansion preserves CIM structure
+    * Check mitosis events don't violate categorical laws
+    * Validate RoPE encoding coherence
 
 ***
 
@@ -562,18 +562,18 @@ But lacks **compositional operators** (sequential, parallel, dependent).
 
 **Suggested Approach**:
 
-*   **Core CIM modules**: Full Agda verification (no postulates)
-*   **Application layer** (parsers, dashboards): Correspondence proofs with Python, not full extraction
-*   **A12 protocol**: Runtime guard between layers
+* **Core CIM modules**: Full Agda verification (no postulates)
+* **Application layer** (parsers, dashboards): Correspondence proofs with Python, not full extraction
+* **A12 protocol**: Runtime guard between layers
 
 ### The Missing Pedagogical Bridge
 
 **Gap**: Neither compendium nor roadmap has a **"CIM for Beginners"** document showing:
 
-1.  Simplest possible example (e.g., List as free monoid)
-2.  Minimal 0→1→2 instance
-3.  Step-by-step CHIP recursion
-4.  Emergent metric calculation
+1. Simplest possible example (e.g., List as free monoid)
+2. Minimal 0→1→2 instance
+3. Step-by-step CHIP recursion
+4. Emergent metric calculation
 
 **Recommendation**: Create `docs/CIM-TUTORIAL.md` with worked examples
 
@@ -583,21 +583,21 @@ But lacks **compositional operators** (sequential, parallel, dependent).
 
 ### Compendium Coverage (Sections V-XIII)
 
-*   **Core Concepts**: 25 major ideas (0-Cell, 1-Cell, 2-Cell, CHIP, BIF, EmergentMetric, etc.)
-*   **Tables**: 166 rows of formal definitions
-*   **Mathematical Depth**: LaTeX-heavy, category theory + algebra + topology
+* **Core Concepts**: 25 major ideas (0-Cell, 1-Cell, 2-Cell, CHIP, BIF, EmergentMetric, etc.)
+* **Tables**: 166 rows of formal definitions
+* **Mathematical Depth**: LaTeX-heavy, category theory + algebra + topology
 
 ### Roadmap Coverage (ROADMAP.md)
 
-*   **Planned Tasks**: 8 major initiatives (Ambiguity, Metricization, Transformation, Functorial, Elasticity, Polytope, Mitosis, Unified Parser)
-*   **Target Modules**: ~15 Agda files + ~10 Python files
-*   **Status**: All tasks marked `not-started`
+* **Planned Tasks**: 8 major initiatives (Ambiguity, Metricization, Transformation, Functorial, Elasticity, Polytope, Mitosis, Unified Parser)
+* **Target Modules**: ~15 Agda files + ~10 Python files
+* **Status**: All tasks marked `not-started`
 
 ### Codebase Reality (src/agda/Core + Plan/CIM)
 
-*   **Core Modules**: 30+ Agda files (UniversalProperties, Phase, Witnesses, etc.)
-*   **Test Coverage**: AlgorithmSmokeTests, UniversalPropertyTests, PhaseExamples
-*   **Implementation Gap**: Many records defined, few operations/laws proven
+* **Core Modules**: 30+ Agda files (UniversalProperties, Phase, Witnesses, etc.)
+* **Test Coverage**: AlgorithmSmokeTests, UniversalPropertyTests, PhaseExamples
+* **Implementation Gap**: Many records defined, few operations/laws proven
 
 ### Symmetric Difference Score
 
@@ -616,16 +616,16 @@ But lacks **compositional operators** (sequential, parallel, dependent).
 
 The CIM system exhibits a **classic theory-practice gap**:
 
-1.  **Strong Theoretical Core**: Compendium provides rigorous categorical foundation
-2.  **Ambitious Implementation Vision**: Roadmap targets cutting-edge topological/geometric features
-3.  **Modest Current Reality**: Codebase has records/interfaces but limited proof coverage
+1. **Strong Theoretical Core**: Compendium provides rigorous categorical foundation
+2. **Ambitious Implementation Vision**: Roadmap targets cutting-edge topological/geometric features
+3. **Modest Current Reality**: Codebase has records/interfaces but limited proof coverage
 
 **Priority Actions**:
 
-1.  Formalize CHIP and A12 in both compendium and roadmap
-2.  Bridge geometric concepts (polytopes, RoPE, mitosis) with categorical theory
-3.  Create extraction protocol for Agda → Python coherence
-4.  Build pedagogical tutorial bridging theory and implementation
+1. Formalize CHIP and A12 in both compendium and roadmap
+2. Bridge geometric concepts (polytopes, RoPE, mitosis) with categorical theory
+3. Create extraction protocol for Agda → Python coherence
+4. Build pedagogical tutorial bridging theory and implementation
 
 **Ultimate Goal**: Achieve **symmetric unity** where every theoretical concept has an implementation task, and every roadmap feature has categorical justification.
 
