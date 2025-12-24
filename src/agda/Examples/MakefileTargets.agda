@@ -73,6 +73,7 @@ record MakefileTarget : Set where
   constructor mkTarget
   field
     name : String
+    description : String  -- enforced documentation
     dependencies : List String
     recipe : List String
     phony : Bool
@@ -109,29 +110,30 @@ fileTransformToTarget : String → String → SourcePattern → OutputPattern �
 fileTransformToTarget sourcePath targetPath sourcePattern outputPattern extraDeps =
   mkTarget 
     targetPath 
+    ("Compile " ++ sourcePath ++ " to " ++ targetPath)
     (sourcePath ∷ extraDeps)
     (generateRecipe sourcePattern outputPattern sourcePath)
     false
 
 -- Convert Validator to target
-validatorToTarget : String → String → List String → MakefileTarget
-validatorToTarget name outputFile recipe =
-  mkTarget name [] recipe true
+validatorToTarget : String → String → String → List String → MakefileTarget
+validatorToTarget name description outputFile recipe =
+  mkTarget name description [] recipe true
 
 -- Convert Generator to target
-generatorToTarget : String → List String → List String → MakefileTarget
-generatorToTarget name deps recipe =
-  mkTarget name deps recipe true
+generatorToTarget : String → String → List String → List String → MakefileTarget
+generatorToTarget name description deps recipe =
+  mkTarget name description deps recipe true
 
 -- Convert EnvironmentSetup to target
-environmentSetupToTarget : String → List String → MakefileTarget
-environmentSetupToTarget name recipe =
-  mkTarget name [] recipe true
+environmentSetupToTarget : String → String → List String → MakefileTarget
+environmentSetupToTarget name description recipe =
+  mkTarget name description [] recipe true
 
 -- Convert Synchronizer to target
-synchronizerToTarget : String → List String → List String → MakefileTarget
-synchronizerToTarget name deps recipe =
-  mkTarget name deps recipe true
+synchronizerToTarget : String → String → List String → List String → MakefileTarget
+synchronizerToTarget name description deps recipe =
+  mkTarget name description deps recipe true
 
 -- ==========================================================
 -- Discovery and Generation
@@ -147,7 +149,7 @@ generateAgdaTargets [] = []
 generateAgdaTargets (path ∷ paths) =
   let target = agdaToAgdai path
       recipe = ("$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type " ++ path) ∷ []
-  in mkTarget target (path ∷ []) recipe false ∷ generateAgdaTargets paths
+  in mkTarget target ("Compile " ++ path) (path ∷ []) recipe false ∷ generateAgdaTargets paths
 
 -- Generate HTML documentation targets
 generateDocsTargets : List String → List MakefileTarget  
@@ -156,13 +158,13 @@ generateDocsTargets (path ∷ paths) =
   let htmlTarget = "build/html/" ++ path ++ ".html"
       agdaiDep = agdaToAgdai path
       recipe = ("$(AGDA) --html --html-dir=build/html -i src/agda " ++ path) ∷ []
-  in mkTarget htmlTarget (agdaiDep ∷ []) recipe false ∷ generateDocsTargets paths
+  in mkTarget htmlTarget ("Generate HTML for " ++ path) (agdaiDep ∷ []) recipe false ∷ generateDocsTargets paths
 
 -- Aggregate target: build all .agdai files
 allAgdaiTarget : List String → MakefileTarget
 allAgdaiTarget agdaFiles =
   let agdaiFiles = map agdaToAgdai agdaFiles
-  in mkTarget "agda-all" agdaiFiles [] true
+  in mkTarget "agda-all" "Compile all Agda modules" agdaiFiles [] true
   where
     map : (String → String) → List String → List String
     map f [] = []
@@ -172,7 +174,7 @@ allAgdaiTarget agdaFiles =
 allDocsTarget : List String → MakefileTarget
 allDocsTarget agdaFiles =
   let htmlFiles = map (\path → "build/html/" ++ path ++ ".html") agdaFiles
-  in mkTarget "docs-all" htmlFiles [] true
+  in mkTarget "docs-all" "Generate all HTML documentation" htmlFiles [] true
   where
     map : (String → String) → List String → List String
     map f [] = []
@@ -231,13 +233,13 @@ docsCategory = FileTransform
 mdLintCategory : TargetCategory
 mdLintCategory = Validator
   (mkPattern ".md" "." true)
-  "build/reports/md-lint.txt"
+  "Lint markdown files using markdownlint"
 
 -- Badge generation
 badgeCategory : TargetCategory  
 badgeCategory = Generator
   testResults
-  "build/badges/coverage.svg"
+  "Generate coverage badges"
   ("python3 scripts/generate-badges.py" ∷ [])
 
 -- Node modules setup
@@ -250,13 +252,13 @@ nodeSetupCategory = EnvironmentSetup
 deferredItemsCategory : TargetCategory
 deferredItemsCategory = Generator
   (fileMetadata "src/")
-  "deferred-summary.json"
+  "Scan and report deferred items (TODO, FIXME)"
   ("./src/agda/DeferredItemsScanner" ∷ [])
 
 -- Roadmap sync with GitHub issues  
 roadmapSyncCategory : TargetCategory
 roadmapSyncCategory = Synchronizer
-  ".github/roadmap/tasks.json"
+  "Sync roadmap with GitHub issues"
   (githubIssues "owner" "repo")
   ("./src/agda/RoadmapIssueSync" ∷ [])
 
