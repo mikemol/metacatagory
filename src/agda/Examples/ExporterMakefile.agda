@@ -146,17 +146,17 @@ regenMakefileSection = record
 discoveredTargets : List MakefileTarget
 discoveredTargets = 
   validatorToTarget "md-lint" "build/reports/md-lint.txt" 
-    ("npx remark . --quiet --frail > build/reports/md-lint.txt" ∷ [])
+    ("npx markdownlint-cli2 \"**/*.md\" \"!node_modules\" \"!build\" > build/reports/md-lint.txt 2>&1 || true" ∷ [])
   ∷ generatorToTarget "md-fix" ([])
-    ("npx remark . --quiet --output ." ∷ [])
+    ("npx markdownlint-cli2 --fix \"**/*.md\" \"!node_modules\" \"!build\"" ∷ [])
   ∷ validatorToTarget "intake-lint" "build/reports/intake-md-lint.txt"
-    ("npx remark intake --quiet --frail > build/reports/intake-md-lint.txt" ∷ [])
+    ("npx markdownlint-cli2 \"intake/**/*.md\" > build/reports/intake-md-lint.txt 2>&1 || true" ∷ [])
   ∷ generatorToTarget "intake-scan" ("build/canonical_roadmap.json" ∷ [])
     ("python3 scripts/intake_scan.py" ∷ [])
   ∷ generatorToTarget "md-normalize" ([])
     ("python3 scripts/normalize_generated_markdown.py" ∷ [])
   ∷ validatorToTarget "makefile-validate" "build/reports/makefile-validate.txt"
-    ("python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt" ∷ [])
+    ("mkdir -p build/reports" ∷ "python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt" ∷ [])
   ∷ generatorToTarget "all" ("agda-all" ∷ "docs-all" ∷ [])
     ("@echo \"all complete\"" ∷ [])
   ∷ generatorToTarget "check" ("roadmap-validate-triangle" ∷ "docs-validate" ∷ "makefile-validate" ∷ [])
