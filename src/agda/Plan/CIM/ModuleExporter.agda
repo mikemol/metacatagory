@@ -14,40 +14,42 @@ import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
 import qualified System.Directory as Dir
 import qualified System.FilePath as FP
-import           Data.List (isPrefixOf, nub)
+import           Data.List (isPrefixOf, nub, sortBy, isSuffixOf)
+import           Data.Ord (comparing)
 import           Data.Char (isSpace)
+import           Control.Exception (catch, SomeException)
 
 -- Extract module name from file path: src/agda/Core/Utils.agda -> Core.Utils
 extractModuleName :: FilePath -> T.Text
 extractModuleName p =
   let p'  = if "src/agda/" `isPrefixOf` p then drop 9 p else p
       noE = if ".agda" `isSuffixOf` p' then take (length p' - 5) p' else p'
-      isSuffixOf s str = s `isPrefixOf` reverse str
   in T.pack $ map (\c -> if c == '/' then '.' else c) noE
 
 -- Find all .agda files recursively
-findAgdaFiles :: FilePath -> IO [FilePath]
-findAgdaFiles dir = do
+findAgdaFilesRec :: FilePath -> IO [FilePath]
+findAgdaFilesRec dir = do
   exists <- Dir.doesDirectoryExist dir
   if not exists then return []
   else do
-    contents <- Dir.listDirectory dir
-    files <- fmap concat $ mapM processEntry contents
-    return $ filter (".agda" `isSuffixOf`) files
+    (contents :: [String]) <- Dir.listDirectory dir `catch` \(_ :: SomeException) -> return []
+    results <- mapM processEntry contents
+    return $ concat results
   where
-    isSuffixOf s str = s `isPrefixOf` reverse str
     processEntry name = do
       let path = dir FP.</> name
-      isDir <- Dir.doesDirectoryExist path
-      if isDir && not ('.' `elem` name) && name /= "MAlonzo"
-        then findAgdaFiles path
-        else return $ if ".agda" `isSuffixOf` name then [path] else []
+      isDir <- Dir.doesDirectoryExist path `catch` \(_ :: SomeException) -> return False
+      if isDir && not ('.' `elem` name) && name /= "MAlonzo" && name /= ".git"
+        then findAgdaFilesRec path  -- recursive call for directories
+        else if ".agda" `isSuffixOf` path
+             then return [path]       -- return agda file
+             else return []           -- skip non-agda files
 
 -- Extract imports from agda file
 extractImports :: T.Text -> [T.Text]
 extractImports content =
   let ls = T.lines content
-      stripText t = T.dropWhile isSpace (T.dropWhileEnd isSpace t)
+      stripText t = T.dropWhile isSpace (dropWhileEnd isSpace t)
       dropWhileEnd p t = T.reverse (T.dropWhile p (T.reverse t))
       isImport l = T.isPrefixOf (T.pack "import ") (stripText l) ||
                    T.isPrefixOf (T.pack "open import ") (stripText l)
@@ -91,7 +93,7 @@ writeModuleMarkdown modName markdown = do
 processAllAgdaFiles :: [FilePath] -> IO ()
 processAllAgdaFiles [] = putStrLn "✓ Module documentation generated"
 processAllAgdaFiles (filepath:rest) = do
-  content <- TIO.readFile filepath
+  content <- TIO.readFile filepath `catch` \(_ :: SomeException) -> return (T.pack "")
   let modName = extractModuleName filepath
       imports = extractImports content
       markdown = generateModuleMarkdown modName imports
@@ -105,7 +107,7 @@ postulate
   processAllAgdaFilesFFI : List String → IO ⊤
   putStrLn : String → IO ⊤
 
-{-# COMPILE GHC findAgdaFilesFFI = \path -> fmap (map T.pack) (findAgdaFiles (T.unpack path)) #-}
+{-# COMPILE GHC findAgdaFilesFFI = \path -> fmap (map T.pack) (findAgdaFilesRec (T.unpack path)) #-}
 {-# COMPILE GHC processAllAgdaFilesFFI = processAllAgdaFiles . map T.unpack #-}
 {-# COMPILE GHC putStrLn = \s -> putStrLn (T.unpack s) #-}
 

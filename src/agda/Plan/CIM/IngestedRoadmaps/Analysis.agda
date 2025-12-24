@@ -15,7 +15,7 @@ open import Plan.CIM.Utility using (RoadmapStep)
 roadmapGp800 : RoadmapStep
 roadmapGp800 = record
     { provenance   = "GP800: The Missing Morphisms"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Braid, Complex, Functor, Geometry, Sppf"
     ; status       = "not-started"
@@ -26,7 +26,7 @@ roadmapGp800 = record
 roadmapGp801 : RoadmapStep
 roadmapGp801 = record
     { provenance   = "GP801: The Exterior Algebra of Meaning"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Braid, Geometry, Loday, Sppf, Stasheff"
     ; status       = "not-started"
@@ -37,7 +37,7 @@ roadmapGp801 = record
 roadmapGp802 : RoadmapStep
 roadmapGp802 = record
     { provenance   = "GP802: The Fundamental Group of the Grammar"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Associahedron, Braid, Geometry, Polytope, Stasheff"
     ; status       = "not-started"
@@ -47,8 +47,8 @@ roadmapGp802 = record
 
 roadmapGp803 : RoadmapStep
 roadmapGp803 = record
-    { provenance   = "GP803: Unknown Title"
-    ; relatedNodes = []  -- 
+    { provenance   = "GP803: The Holographic Manifest (v11.0)"
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Braid, Geometry, Loday, Polytope, Sppf"
     ; status       = "not-started"
@@ -59,7 +59,7 @@ roadmapGp803 = record
 roadmapGp804 : RoadmapStep
 roadmapGp804 = record
     { provenance   = "GP804: The Missing Algebraic Topology"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Adjunction, Braid, Complex, Geometry, Loday"
     ; status       = "not-started"
@@ -69,8 +69,8 @@ roadmapGp804 = record
 
 roadmapGp805 : RoadmapStep
 roadmapGp805 = record
-    { provenance   = "GP805: The Discovery of \\\"Dark Matter\\\""
-    ; relatedNodes = []  -- 
+    { provenance   = "GP805: The Discovery of \"Dark Matter\""
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Manifold, Polytope, Sppf, Topology"
     ; status       = "not-started"
@@ -81,7 +81,7 @@ roadmapGp805 = record
 roadmapGp806 : RoadmapStep
 roadmapGp806 = record
     { provenance   = "GP806: The Geometry of Inference"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Geometry, Group Action, Manifold, Polytope"
     ; status       = "not-started"
@@ -92,7 +92,7 @@ roadmapGp806 = record
 roadmapGp807 : RoadmapStep
 roadmapGp807 = record
     { provenance   = "GP807: The Logic of Exclusion"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Category Theory, Functor, Polytope, Stasheff, Tensor"
     ; status       = "not-started"
@@ -103,7 +103,7 @@ roadmapGp807 = record
 roadmapGp808 : RoadmapStep
 roadmapGp808 = record
     { provenance   = "GP808: The Arithmetic Foundation"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Adjunction, Braid, Geometry, Polytope, Rope"
     ; status       = "not-started"
@@ -114,7 +114,7 @@ roadmapGp808 = record
 roadmapGp809 : RoadmapStep
 roadmapGp809 = record
     { provenance   = "GP809: The Logarithmic Isomorphism"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Abelian, Complex, Geometry, Group Action, Manifold"
     ; status       = "not-started"
@@ -124,8 +124,8 @@ roadmapGp809 = record
 
 roadmapGp810 : RoadmapStep
 roadmapGp810 = record
-    { provenance   = "GP810: Unknown Title"
-    ; relatedNodes = []  -- 
+    { provenance   = "GP810: The Spectral Manifest (v16.0)"
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Abelian, Braid, Complex, Geometry, Loday"
     ; status       = "not-started"
@@ -136,7 +136,7 @@ roadmapGp810 = record
 roadmapGp811 : RoadmapStep
 roadmapGp811 = record
     { provenance   = "GP811: The Free Energy Principle"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Braid, Geometry, Manifold, Polytope, Stasheff"
     ; status       = "not-started"
@@ -147,7 +147,7 @@ roadmapGp811 = record
 roadmapGp812 : RoadmapStep
 roadmapGp812 = record
     { provenance   = "GP812: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Braid, Complex, Geometry, Loday, Manifold"
     ; status       = "not-started"
@@ -158,7 +158,7 @@ roadmapGp812 = record
 roadmapGp813 : RoadmapStep
 roadmapGp813 = record
     { provenance   = "GP813: The Missing Cohomology"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Cohomology, Topology"
     ; status       = "not-started"
@@ -169,7 +169,7 @@ roadmapGp813 = record
 roadmapGp814 : RoadmapStep
 roadmapGp814 = record
     { provenance   = "GP814: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Braid, Cohomology, Geometry, Loday, Sppf"
     ; status       = "not-started"
@@ -180,7 +180,7 @@ roadmapGp814 = record
 roadmapGp815 : RoadmapStep
 roadmapGp815 = record
     { provenance   = "GP815: The Isomorphism of Process"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Cohomology, Manifold, Tensor, Topology, Vector Space"
     ; status       = "not-started"
@@ -191,7 +191,7 @@ roadmapGp815 = record
 roadmapGp816 : RoadmapStep
 roadmapGp816 = record
     { provenance   = "GP816: The Homotopy of Morphology"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Geometry, Homotopy, Lie Group, Manifold, Polytope"
     ; status       = "not-started"
@@ -202,7 +202,7 @@ roadmapGp816 = record
 roadmapGp817 : RoadmapStep
 roadmapGp817 = record
     { provenance   = "GP817: The Local-to-Global Principle"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Braid, Cohomology, Geometry, Manifold, Rope"
     ; status       = "not-started"
@@ -213,7 +213,7 @@ roadmapGp817 = record
 roadmapGp818 : RoadmapStep
 roadmapGp818 = record
     { provenance   = "GP818: The Abelian Sheaf"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Abelian, Cohomology, Manifold, Sheaf, Tensor"
     ; status       = "not-started"
@@ -224,7 +224,7 @@ roadmapGp818 = record
 roadmapGp819 : RoadmapStep
 roadmapGp819 = record
     { provenance   = "GP819: The Plus Construction"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Geometry, Sheaf, Sppf, Tensor, Topology"
     ; status       = "not-started"
@@ -235,7 +235,7 @@ roadmapGp819 = record
 roadmapGp820 : RoadmapStep
 roadmapGp820 = record
     { provenance   = "GP820: The Fractal Sheaf"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Geometry, Manifold, Polytope, Sheaf, Sppf"
     ; status       = "not-started"
@@ -246,7 +246,7 @@ roadmapGp820 = record
 roadmapGp821 : RoadmapStep
 roadmapGp821 = record
     { provenance   = "GP821: Recursive Self-Substitution"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Functor, Polytope, Sheaf, Sppf"
     ; status       = "not-started"
@@ -257,7 +257,7 @@ roadmapGp821 = record
 roadmapGp822 : RoadmapStep
 roadmapGp822 = record
     { provenance   = "GP822: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Cohomology, Functor, Geometry, Polytope, Sheaf"
     ; status       = "not-started"
@@ -268,7 +268,7 @@ roadmapGp822 = record
 roadmapGp823 : RoadmapStep
 roadmapGp823 = record
     { provenance   = "GP823: The Descent to the Boolean Layer"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Geometry, Polytope, Sheaf, Sppf, Topology"
     ; status       = "not-started"
@@ -279,7 +279,7 @@ roadmapGp823 = record
 roadmapGp824 : RoadmapStep
 roadmapGp824 = record
     { provenance   = "GP824: The Quantum Manifold"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Geometry, Manifold, Rope, Tensor"
     ; status       = "not-started"
@@ -290,7 +290,7 @@ roadmapGp824 = record
 roadmapGp825 : RoadmapStep
 roadmapGp825 = record
     { provenance   = "GP825: Dynamic Gauge Symmetry"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Braid, Complex, Functor, Geometry, Manifold"
     ; status       = "not-started"
@@ -301,7 +301,7 @@ roadmapGp825 = record
 roadmapGp826 : RoadmapStep
 roadmapGp826 = record
     { provenance   = "GP826: The Self-Defining Manifold"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Geometry, Manifold, Octonion, Polytope"
     ; status       = "not-started"
@@ -312,7 +312,7 @@ roadmapGp826 = record
 roadmapGp827 : RoadmapStep
 roadmapGp827 = record
     { provenance   = "GP827: The Cost of Gauge Coherence"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Functor, Geometry, Polytope, Tensor"
     ; status       = "not-started"
@@ -323,7 +323,7 @@ roadmapGp827 = record
 roadmapGp828 : RoadmapStep
 roadmapGp828 = record
     { provenance   = "GP828: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Polytope, Quaternion, Stasheff"
     ; status       = "not-started"
@@ -334,7 +334,7 @@ roadmapGp828 = record
 roadmapGp829 : RoadmapStep
 roadmapGp829 = record
     { provenance   = "GP829: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Functor, Manifold, Polytope, Quaternion"
     ; status       = "not-started"
@@ -345,7 +345,7 @@ roadmapGp829 = record
 roadmapGp830 : RoadmapStep
 roadmapGp830 = record
     { provenance   = "GP830: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Cohomology, Manifold, Sppf"
     ; status       = "not-started"
@@ -356,7 +356,7 @@ roadmapGp830 = record
 roadmapGp831 : RoadmapStep
 roadmapGp831 = record
     { provenance   = "GP831: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Functor, Sppf, Topology"
     ; status       = "not-started"
@@ -367,11 +367,10 @@ roadmapGp831 = record
 roadmapGp832 : RoadmapStep
 roadmapGp832 = record
     { provenance   = "GP832: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Braid, Complex, Geometry, Loday, Octonion"
     ; status       = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
     ; next         = []
     }
-

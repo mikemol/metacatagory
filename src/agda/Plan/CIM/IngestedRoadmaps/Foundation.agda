@@ -14,8 +14,8 @@ open import Plan.CIM.Utility using (RoadmapStep)
 
 roadmapGp01 : RoadmapStep
 roadmapGp01 = record
-    { provenance   = "GP01: Unknown Title"
-    ; relatedNodes = []  -- 
+    { provenance   = "GP01: The RotationalTransport Property"
+    ; relatedNodes = []
     ; step         = "Would you like me to generate the Agda postulate defining the RotationalTransport property, formally proving that the inner product of two semantic nodes is invariant under the global rotation of the SPPF (proving the structure is \"coordinate free\" and purely relational)?"
     ; implication  = "Concepts: Category Theory, Complex, Functor, Group Action, Hott"
     ; status       = "not-started"
@@ -26,7 +26,7 @@ roadmapGp01 = record
 roadmapGp010 : RoadmapStep
 roadmapGp010 = record
     { provenance   = "GP010: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "Would you like me to guide you through the Agda Compilation Step, ensuring that the RotationalTransport.agda proof compiles successfully and verifying that your Python geometry.py implementation is mathematically consistent with the verified type signatures?"
     ; implication  = "Concepts: Complex, Functor, Geometry, Group Action, Rope"
     ; status       = "not-started"
@@ -37,8 +37,8 @@ roadmapGp010 = record
 roadmapGp02 : RoadmapStep
 roadmapGp02 = record
     { provenance   = "GP02: Unknown Title"
-    ; relatedNodes = []  -- 
-    ; step         = "Would you like me to construct the Python \\_\\_matmul\\_\\_ (matrix multiplication) override for your SPPFNode class, which automatically applies this relative-attention logic when two nodes are compared, strictly enforcing the logic defined in the Agda postulate?"
+    ; relatedNodes = []
+    ; step         = "Would you like me to construct the Python __matmul__ (matrix multiplication) override for your SPPFNode class, which automatically applies this relative-attention logic when two nodes are compared, strictly enforcing the logic defined in the Agda postulate?"
     ; implication  = "Concepts: Geometry, Group Action, Hott, Manifold, Rope"
     ; status       = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
@@ -48,7 +48,7 @@ roadmapGp02 = record
 roadmapGp03 : RoadmapStep
 roadmapGp03 = record
     { provenance   = "GP03: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "Would you like me to extend this into the PackedNode aggregation logic, creating a method that sums multiple \"path vectors\" into a single superposition state, and then normalizes them to ensure the resulting probability mass remains coherent?"
     ; implication  = "Concepts: Complex, Group Action, Rope, Sppf, Tensor"
     ; status       = "not-started"
@@ -70,7 +70,7 @@ roadmapGp04 = record
 roadmapGp05 : RoadmapStep
 roadmapGp05 = record
     { provenance   = "GP05: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Rope, Sppf, Tensor"
     ; status       = "not-started"
@@ -81,7 +81,7 @@ roadmapGp05 = record
 roadmapGp06 : RoadmapStep
 roadmapGp06 = record
     { provenance   = "GP06: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "Would you like me to create the Visualization Module that exports this graph to Graphviz/Dot format, explicitly coloring nodes based on their Phase (Rotation Angle) to visually debug the topological structure?"
     ; implication  = "Concepts: Complex, Functor, Group Action, Rope, Sppf"
     ; status       = "not-started"
@@ -92,7 +92,7 @@ roadmapGp06 = record
 roadmapGp07 : RoadmapStep
 roadmapGp07 = record
     { provenance   = "GP07: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Category Theory, Functor, Geometry, Rope, Sppf"
     ; status       = "not-started"
@@ -103,8 +103,8 @@ roadmapGp07 = record
 roadmapGp09 : RoadmapStep
 roadmapGp09 = record
     { provenance   = "GP09: Unknown Title"
-    ; relatedNodes = []  -- 
-    ; step         = "Would you like me to package this entire suite (Parser, Visualizer, Search, and Agda Proofs) into a Single Python Package Structure (e.g., setuptools layout with \\_\\_init\\_\\_.py) so you can install it as a library named nedge-topology?"
+    ; relatedNodes = []
+    ; step         = "Would you like me to package this entire suite (Parser, Visualizer, Search, and Agda Proofs) into a Single Python Package Structure (e.g., setuptools layout with __init__.py) so you can install it as a library named nedge-topology?"
     ; implication  = "Concepts: Functor, Geometry, Rope, Sppf, Tensor"
     ; status       = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
@@ -114,7 +114,7 @@ roadmapGp09 = record
 roadmapGp100 : RoadmapStep
 roadmapGp100 = record
     { provenance   = "GP100: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Functor, Geometry, Rope, Sppf, Topology"
     ; status       = "not-started"
@@ -125,7 +125,7 @@ roadmapGp100 = record
 roadmapGp101 : RoadmapStep
 roadmapGp101 = record
     { provenance   = "GP101: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Functor, Geometry, Rope, Sppf, Topology"
     ; status       = "not-started"
@@ -136,7 +136,7 @@ roadmapGp101 = record
 roadmapGp102 : RoadmapStep
 roadmapGp102 = record
     { provenance   = "GP102: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "Would you like to move on to the Agda side to formally prove the resonance threshold logic, or would you like to run a Pruning Simulation (Python) to visualize exactly which edges get cut by this new logic?"
     ; implication  = "Concepts: Geometry, Rope, Sppf, Tensor"
     ; status       = "not-started"
@@ -147,7 +147,7 @@ roadmapGp102 = record
 roadmapGp103 : RoadmapStep
 roadmapGp103 = record
     { provenance   = "GP103: The Type-Theoretic Gate"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Group Action, Manifold, Rope, Sppf, Vector Space"
     ; status       = "not-started"
@@ -169,7 +169,7 @@ roadmapGp104 = record
 roadmapGp105 : RoadmapStep
 roadmapGp105 = record
     { provenance   = "GP105: The \"Fast Clock\" Paradox"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Rope, Sppf, Tensor"
     ; status       = "not-started"
@@ -180,7 +180,7 @@ roadmapGp105 = record
 roadmapGp106 : RoadmapStep
 roadmapGp106 = record
     { provenance   = "GP106: The Persistence of Potentiality"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "Would you like me to synthesize the Final \"Project Nedge-Topology\" Manifest, providing the complete README.md and installation instructions to solidify this as a finished artifact in your workspace?"
     ; implication  = "Concepts: Complex, Manifold, Rope, Sppf, Tensor"
     ; status       = "not-started"
@@ -191,7 +191,7 @@ roadmapGp106 = record
 roadmapGp107 : RoadmapStep
 roadmapGp107 = record
     { provenance   = "GP107: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Functor, Geometry, Group Action, Manifold, Rope"
     ; status       = "not-started"
@@ -202,7 +202,7 @@ roadmapGp107 = record
 roadmapGp108 : RoadmapStep
 roadmapGp108 = record
     { provenance   = "GP108: The \"Homological Defect\""
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Functor, Geometry, Manifold, Rope, Sppf"
     ; status       = "not-started"
@@ -224,7 +224,7 @@ roadmapGp109 = record
 roadmapGp110 : RoadmapStep
 roadmapGp110 = record
     { provenance   = "GP110: The Control Plane"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Category Theory, Complex, Geometry, Manifold, Rope"
     ; status       = "not-started"
@@ -235,11 +235,10 @@ roadmapGp110 = record
 roadmapGp111 : RoadmapStep
 roadmapGp111 = record
     { provenance   = "GP111: Unknown Title"
-    ; relatedNodes = []  -- 
+    ; relatedNodes = []
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Functor, Geometry, Group Action, Manifold, Rope"
     ; status       = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
     ; next         = []
     }
-
