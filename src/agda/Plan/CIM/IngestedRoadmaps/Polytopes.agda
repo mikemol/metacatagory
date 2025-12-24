@@ -14,7 +14,7 @@ open import Plan.CIM.Utility using (RoadmapStep)
 
 roadmapGp699 : RoadmapStep
 roadmapGp699 = record
-    { provenance   = "GP699: Unknown Title"
+    { provenance   = "GP699: The Unified Topological Parser"
     ; relatedNodes = []  -- 
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Abelian, Adjunction, Functor, Geometry, Group Action"
@@ -36,7 +36,7 @@ roadmapGp700 = record
 
 roadmapGp701 : RoadmapStep
 roadmapGp701 = record
-    { provenance   = "GP701: Unknown Title"
+    { provenance   = "GP701: The Polytope Visualization"
     ; relatedNodes = []  -- GP0, GP3
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Associahedron, Geometry, Manifold, Polytope, Stasheff"
@@ -58,7 +58,7 @@ roadmapGp702 = record
 
 roadmapGp703 : RoadmapStep
 roadmapGp703 = record
-    { provenance   = "GP703: Unknown Title"
+    { provenance   = "GP703: The Loday-Stasheff Manifest (v6.0)"
     ; relatedNodes = []  -- 
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Associahedron, Complex, Geometry, Loday, Manifold"
@@ -80,7 +80,7 @@ roadmapGp704 = record
 
 roadmapGp705 : RoadmapStep
 roadmapGp705 = record
-    { provenance   = "GP705: Unknown Title"
+    { provenance   = "GP705: The Polytope Storage"
     ; relatedNodes = []  -- GP0, GP3
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Functor, Geometry, Loday, Stasheff"
@@ -113,7 +113,7 @@ roadmapGp707 = record
 
 roadmapGp708 : RoadmapStep
 roadmapGp708 = record
-    { provenance   = "GP708: Unknown Title"
+    { provenance   = "GP708: The Knight's Move Manifest (v8.0)"
     ; relatedNodes = []  -- 
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Geometry, Loday, Polytope, Sppf"
@@ -135,7 +135,7 @@ roadmapGp709 = record
 
 roadmapGp710 : RoadmapStep
 roadmapGp710 = record
-    { provenance   = "GP710: Unknown Title"
+    { provenance   = "GP710: The Operadic Manifest (v9.0)"
     ; relatedNodes = []  -- 
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Geometry, Manifold, Polytope, Stasheff"
@@ -179,7 +179,7 @@ roadmapGp713 = record
 
 roadmapGp714 : RoadmapStep
 roadmapGp714 = record
-    { provenance   = "GP714: Unknown Title"
+    { provenance   = "GP714: The Self-Defining Manifest (v26.0)"
     ; relatedNodes = []  -- GP0, GP1, GP4
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Complex, Geometry, Loday, Polytope, Rope"
@@ -187,4 +187,3 @@ roadmapGp714 = record
     ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
     ; next         = []
     }
-

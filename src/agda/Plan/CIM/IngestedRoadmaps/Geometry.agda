@@ -58,7 +58,7 @@ roadmapGp302 = record
 
 roadmapGp303 : RoadmapStep
 roadmapGp303 = record
-    { provenance   = "GP303: Unknown Title"
+    { provenance   = "GP303: The Adjoint Manifest (v3.0)"
     ; relatedNodes = []  -- 
     ; step         = "See full GP file for details"
     ; implication  = "Concepts: Abelian, Functor, Geometry, Manifold, Rope"
@@ -66,4 +66,3 @@ roadmapGp303 = record
     ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
     ; next         = []
     }
-
