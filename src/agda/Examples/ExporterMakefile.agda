@@ -144,8 +144,7 @@ regenMakefileTarget = mkTarget
   "regen-makefile"
   "Regenerate the Makefile from Agda source (Self-Hosting)"
   []
-  ( "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)"
-  ∷ "$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile"
+  ( "$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile"
   ∷ "cp Makefile.generated Makefile"
   ∷ [])
   false
@@ -176,8 +175,10 @@ discoveredTargets =
     ("npx markdownlint-cli2 --fix \"**/*.md\" \"!node_modules\" \"!build\"" ∷ [])
   ∷ validatorToTarget "intake-lint" "Lint intake files specifically" "build/reports/intake-md-lint.txt"
     ("npx markdownlint-cli2 \"intake/**/*.md\" > build/reports/intake-md-lint.txt 2>&1" ∷ [])
+    ∷ generatorToTarget "build/canonical_roadmap.json" "Generate canonical roadmap JSON from intake" ([])
+      ("python3 scripts/intake_scan.py" ∷ [])
   ∷ generatorToTarget "intake-scan" "Scan intake directory for new files" ("build/canonical_roadmap.json" ∷ [])
-    ("python3 scripts/intake_scan.py" ∷ [])
+    ("@echo \"intake scan complete\"" ∷ [])
   ∷ generatorToTarget "md-normalize" "Normalize markdown formatting" ([])
     ("python3 scripts/normalize_generated_markdown.py" ∷ [])
   ∷ validatorToTarget "makefile-validate" "Validate Makefile consistency" "build/reports/makefile-validate.txt"
@@ -186,8 +187,12 @@ discoveredTargets =
     ("@echo \"all complete\"" ∷ [])
   ∷ generatorToTarget "check" "Run all validation checks" ("roadmap-validate-triangle" ∷ "docs-validate" ∷ "makefile-validate" ∷ [])
     ("@echo \"check complete\"" ∷ [])
-  ∷ generatorToTarget "badges" "Generate status badges" ("build/reports/test-results.json" ∷ [])
+  ∷ generatorToTarget "badges" "Generate status badges" ([]) 
     ("python3 scripts/generate-badges.py" ∷ [])
+  ∷ generatorToTarget "docs-modules" "Generate per-module markdown documentation" ("src/agda/Plan/CIM/ModuleExporter.agdai" ∷ [])
+    ("$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/ModuleExporter.agda && ./src/agda/Plan/CIM/ModuleExporter" ∷ [])
+  ∷ generatorToTarget "docs-all" "Generate documentation (markdown only)" ("docs-generate" ∷ "docs-modules" ∷ [])
+    ("@echo \"docs (markdown) complete\"" ∷ [])
   ∷ environmentSetupToTarget "node-deps" "Install Node.js dependencies"
     ("npm install" ∷ [])
   ∷ generatorToTarget "deferred-items" "Scan for TODOs and FIXMEs" ([])
@@ -198,12 +203,22 @@ discoveredTargets =
     ("$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapSync.agda" ∷ [])
   ∷ generatorToTarget "roadmap-sppf" "Compile Roadmap SPPF" ("src/agda/Plan/CIM/RoadmapSPPF.agdai" ∷ [])
     ("$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapSPPF.agda" ∷ [])
+  ∷ generatorToTarget "validate-constructive" "Run all constructive build targets" (
+        "docs-all" ∷ "docs-generate" ∷ "docs-modules" ∷
+        "roadmap-export-json" ∷ "roadmap-export-md" ∷ "roadmap-export-enriched" ∷ "roadmap-export-deps" ∷
+        "roadmap-deps-graph" ∷ "roadmap-enrich" ∷ "roadmap-all-enriched" ∷
+        "intake-scan" ∷ "md-normalize" ∷ "badges" ∷ [])
+    ("@echo \"✓ Constructive validation complete\"" ∷ [])
   ∷ generatorToTarget "roadmap-merge" "Merge ingestion streams" ([])
     ("python3 scripts/merge_roadmaps.py" ∷ [])
-  ∷ generatorToTarget "roadmap-deps-graph" "Generate dependency graph" ([])
+  ∷ generatorToTarget "build/diagrams/agda-deps-full.dot" "Generate dependency graph" ([]) 
     ("mkdir -p build/diagrams" ∷ "$(AGDA) --dependency-graph=build/diagrams/agda-deps-full.dot -i src/agda src/agda/Tests/Index.agda 2>&1 | grep -E \"(Checking|Error)\" | head -20" ∷ [])
-  ∷ generatorToTarget "roadmap-enrich" "Enrich roadmap with graph data" ("build/canonical_roadmap.json" ∷ "build/diagrams/agda-deps-full.dot" ∷ [])
+  ∷ generatorToTarget "roadmap-deps-graph" "Generate dependency graph" ("build/diagrams/agda-deps-full.dot" ∷ [])
+    ("@echo \"agda dependency graph generated\"" ∷ [])
+  ∷ generatorToTarget "build/canonical_enriched.json" "Enrich canonical roadmap" ("build/canonical_roadmap.json" ∷ "build/diagrams/agda-deps-full.dot" ∷ [])
     ("python3 scripts/enrich_canonical.py" ∷ [])
+  ∷ generatorToTarget "roadmap-enrich" "Enrich roadmap with graph data" ("build/canonical_enriched.json" ∷ [])
+    ("@echo \"roadmap enrichment complete\"" ∷ [])
   ∷ generatorToTarget "roadmap-export-json" "Export canonical roadmap to JSON" ("build/canonical_roadmap.json" ∷ [])
     ("python3 scripts/export_canonical_json.py" ∷ [])
   ∷ generatorToTarget "roadmap-export-md" "Export canonical roadmap to Markdown" ("build/canonical_roadmap.json" ∷ [])
@@ -224,7 +239,7 @@ discoveredTargets =
   ∷ generatorToTarget "roadmap-all-enriched" "Build all enriched artifacts" ("roadmap-export-enriched" ∷ "roadmap-export-deps" ∷ [])
     ("@echo \"roadmap all enriched complete\"" ∷ [])
   ∷ generatorToTarget "docs-generate" "Compile and run Roadmap Exporter" ("src/agda/Plan/CIM/RoadmapExporter.agdai" ∷ [])
-    ("$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapExporter.agda && ./src/agda/Plan/CIM/RoadmapExporter" ∷ "python3 scripts/normalize_generated_markdown.py" ∷ [])
+    ("$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapExporter.agda && ./src/agda/RoadmapExporter" ∷ "python3 scripts/normalize_generated_markdown.py" ∷ [])
   ∷ generatorToTarget "docs-validate" "Validate documentation integrity" ([])
     ("python3 scripts/validate_triangle_identity.py" ∷ [])
   
@@ -262,10 +277,9 @@ buildArtifact : List String → List String → MakefileArtifact
 buildArtifact agdaFiles graphEdges =
   let labels = map pathToModuleLabel agdaFiles
       agdaiTargets = zipWith generateAgdaTargetFromGraph agdaFiles (map depsFor labels)
-      docsTargets = generateDocsTargets agdaFiles
-      aggregateTargets = allAgdaiTarget agdaFiles ∷ allDocsTarget agdaFiles ∷ []
+      aggregateTargets = allAgdaiTarget agdaFiles ∷ []
       -- Include regenMakefileTarget in the list of targets
-      allTargets = regenMakefileTarget ∷ discoveredTargets +++ agdaiTargets +++ docsTargets +++ aggregateTargets
+      allTargets = regenMakefileTarget ∷ discoveredTargets +++ agdaiTargets +++ aggregateTargets
       phonyNames = "all" ∷ "check" ∷ "md-fix" ∷ "md-lint" ∷ "intake-lint" ∷ "intake-scan"
              ∷ "md-normalize" ∷ "makefile-validate"
              ∷ "badges" ∷ "node-deps" 
@@ -275,10 +289,11 @@ buildArtifact agdaFiles graphEdges =
            ∷ "roadmap-export-json" ∷ "roadmap-export-md" ∷ "roadmap-export-enriched"
            ∷ "roadmap-export-deps" ∷ "roadmap-validate-json" ∷ "roadmap-validate-md"
            ∷ "roadmap-validate-triangle" ∷ "roadmap-sppf-export" ∷ "roadmap-all-enriched"
-           ∷ "docs-generate" ∷ "docs-validate" ∷ []
+           ∷ "docs-generate" ∷ "docs-validate" ∷ "docs-modules" ∷ "validate-constructive" ∷ []
+      headerSection = record { id = "header"; content = ("# Use local Agda 2.8.0 if available, otherwise system agda" ∷ "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)" ∷ []) }
       phonySection = record { id = "phony" 
                             ; content = (".PHONY: " ++ intercalate " " phonyNames) ∷ [] }
-  in record { sections = phonySection ∷ map targetToSection allTargets }
+  in record { sections = headerSection ∷ phonySection ∷ map targetToSection allTargets }
   where
     second : String → String → String
     second _ e with primStringSplit "=>" e

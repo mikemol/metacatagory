@@ -77,7 +77,7 @@ generateModuleMarkdown modName imports =
         ]
       importSection = if null imports
         then T.pack "*No imports*\n\n"
-        else T.unlines $ map (\imp -> T.pack "- " `T.append` imp) imports
+        else T.unlines $ map (\imp -> T.pack "* " `T.append` imp) imports
   in T.concat [frontmatter, content, importSection]
 
 -- Write module markdown to build/md/modules/

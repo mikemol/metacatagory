@@ -4,7 +4,7 @@
 
 **Purpose:** Document how multiple theoretical frameworks compose within the metacatagory repository
 
-***
+---
 
 ## Executive Summary
 
@@ -15,7 +15,7 @@ The metacatagory repository is **not a monolithic system** but a **composable su
 * ✅ **Pragmatic composition** - use what works without requiring full unification
 * ✅ **Framework isolation** - changes in one theory don't cascade to others
 
-***
+---
 
 ## Part I: Framework Inventory
 
@@ -134,7 +134,7 @@ Metaprogramming and reflection infrastructure
 
 * Core.AlgorithmComplexity
 * Core.GrowthMetrics
-* src/python/nedge\_topology
+* src/python/nedge_topology
 
 **Provides:**
 
@@ -147,7 +147,7 @@ Metaprogramming and reflection infrastructure
 
 Pragmatic computational considerations
 
-***
+---
 
 ## Part II: Interface Boundaries
 
@@ -169,7 +169,7 @@ From: `Core.Phase composition`
 
 To: `Plan.CIM.PolytopeExpansion`
 
-#### Metric Emergence
+### Metric Emergence
 
 Cost functions from transformation systems generate emergent metrics
 
@@ -177,7 +177,7 @@ From: `Plan.CIM.Utility.EmergentMetric`
 
 To: `Dimension ascent`
 
-#### Adapter Polymorphism
+### Adapter Polymorphism
 
 Adapters enable algebraic structures to conform to categorical interfaces
 
@@ -185,7 +185,7 @@ From: `Core.CategoricalAdapter`
 
 To: `Tests.ObligationAdapters`
 
-#### Complexity Witness
+### Complexity Witness
 
 Complexity bounds are witnessed as categorical morphisms
 
@@ -193,7 +193,7 @@ From: `Core.AlgorithmComplexity`
 
 To: `Core.ConstructiveWitnesses`
 
-***
+---
 
 ## Part III: Intentional Flexibility Points
 
@@ -219,7 +219,7 @@ Ambiguities can be resolved via topological geodesics or categorical coherence w
 
 **Rationale:** Loose coupling allows choosing strategy per use-case
 
-#### Metric Aggregation
+### Metric Aggregation
 
 Cost functions can aggregate via sum, max, or categorical product
 
@@ -229,7 +229,7 @@ Cost functions can aggregate via sum, max, or categorical product
 
 **Rationale:** System architecture is metric-agnostic; swappable cost functions
 
-#### Phase Composition
+### Phase Composition
 
 Phases compose sequentially (pipe) or in parallel (product)
 
@@ -239,7 +239,7 @@ Phases compose sequentially (pipe) or in parallel (product)
 
 **Rationale:** PhaseCategory supports both; semantics depend on use context
 
-#### Algorithm Selection
+### Algorithm Selection
 
 Algorithm selection can be static (compile-time) or dynamic (runtime)
 
