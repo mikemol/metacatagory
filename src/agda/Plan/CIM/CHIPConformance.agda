@@ -1,8 +1,5 @@
 {-# OPTIONS --without-K --cubical --safe --guardedness #-}
 
--- Roadmap Cross-References:
--- See: exampleUnifiedTopologicalParserRoadmap, exampleDimensionalReliefRoadmap, examplePolytopeManifestRoadmap, exampleElasticityOfMeaningRoadmap in Utility.agda
--- For onboarding, composability, and recursive revisiting, consult ARCHITECTURE.md and COPILOT_SYNERGY.md for context and actionable guidance.
 module Plan.CIM.CHIPConformance where
 
 open import Agda.Builtin.String
@@ -13,9 +10,9 @@ open import Agda.Builtin.Equality using (_≡_)
 open import Agda.Primitive using (Level; lzero; lsuc)
 open import Agda.Builtin.Sigma using (Σ; _,_)
 
-open import Plan.CIM.Utility using (Ambiguity; TransformationSystem; EmergentMetric; Path; CoherenceWitness; BraidedInheritanceFunctor; BraidedSPPF; map; _×_; packed-node)
+-- [UPDATED] Importing PhaseAmbiguity instead of Ambiguity
+open import Plan.CIM.Utility using (PhaseAmbiguity; TransformationSystem; EmergentMetric; Path; CoherenceWitness; BraidedInheritanceFunctor; BraidedSPPF; map; _×_; packed-node)
 
--- Stub for GradedVectorSpace (was in old Utility, now defined here for compatibility)
 record GradedVectorSpace (n : Nat) : Set₁ where
   field
     dimensions : List String
@@ -23,15 +20,12 @@ record GradedVectorSpace (n : Nat) : Set₁ where
 
 open import Agda.Builtin.Nat using (Nat)
 
--- Functorial mapping: map a function over a graded vector space
 mapGVS : ∀ {n} {A : Set} → (String → String) → GradedVectorSpace n → GradedVectorSpace n
 mapGVS f gvs = record
   { dimensions = map f (GradedVectorSpace.dimensions gvs)
   ; metric = GradedVectorSpace.metric gvs
   }
 
--- Compose two braided inheritance functors
--- Uses BraidedInheritanceFunctor from Utility.agda, which now wraps Chapter3 records
 composeBraids : ∀ {ℓ} {A B C : Set ℓ} → BraidedInheritanceFunctor A B → BraidedInheritanceFunctor B C → BraidedInheritanceFunctor A C
 composeBraids bif1 bif2 = record
   { inheritanceBraid = λ { (a , c) → c , a }
@@ -41,23 +35,13 @@ composeBraids bif1 bif2 = record
   ; description = "Composed braid"
   }
 
--- SPPF node construction with functorial and braided context
--- Integrated from Intake/GP fragments using the newly defined BraidedSPPF
+-- [IMPLEMENTED] SPPF node construction enabled by BraidedSPPF in Utility
 makeSPPFNode : ∀ {ℓ} {N : Set ℓ} {Sys : TransformationSystem N N}
              → Path Sys 
              → BraidedInheritanceFunctor N N 
              → BraidedSPPF N N Sys
 makeSPPFNode p bif = packed-node p p bif
 
-------------------------------------------------------------------------
--- V. Universal Property (Adjunction)
-------------------------------------------------------------------------
-
 record CoherenceMapUniversalProperty {ℓ} (F : Set ℓ → Set ℓ) (G : Set ℓ → Set ℓ) : Set (lsuc ℓ) where
   field
     adjunction : (A : Set ℓ) → (F (G A)) ≡ (G (F A))
-    -- TODO: If Chapter3 provides a universal property or adjunction record, wrap or alias here
-
-------------------------------------------------------------------------
--- End of CHIPConformance
-------------------------------------------------------------------------
