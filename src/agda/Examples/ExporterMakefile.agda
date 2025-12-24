@@ -205,6 +205,8 @@ discoveredTargets =
     ("@echo \"roadmap all enriched complete\"" ∷ [])
   ∷ generatorToTarget "docs-generate" ("src/agda/Plan/CIM/RoadmapExporter.agdai" ∷ [])
     ("$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapExporter.agda && ./src/agda/Plan/CIM/RoadmapExporter" ∷ "python3 scripts/normalize_generated_markdown.py" ∷ [])
+  ∷ generatorToTarget "docs-modules" ("src/agda/Plan/CIM/ModuleExporter.agdai" ∷ [])
+    ("$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/ModuleExporter.agda && mv src/agda/ModuleExporter src/agda/Plan/CIM/ModuleExporter && ./src/agda/Plan/CIM/ModuleExporter" ∷ [])
   ∷ generatorToTarget "docs-validate" ([])
     ("python3 scripts/validate_triangle_identity.py" ∷ [])
   ∷ []
@@ -251,7 +253,7 @@ buildArtifact agdaFiles graphEdges =
            ∷ "roadmap-export-json" ∷ "roadmap-export-md" ∷ "roadmap-export-enriched"
            ∷ "roadmap-export-deps" ∷ "roadmap-validate-json" ∷ "roadmap-validate-md"
            ∷ "roadmap-validate-triangle" ∷ "roadmap-sppf-export" ∷ "roadmap-all-enriched"
-            ∷ "docs-generate" ∷ "docs-validate" ∷ []
+            ∷ "docs-generate" ∷ "docs-modules" ∷ "docs-validate" ∷ []
       phonySection = record { id = "phony" 
                             ; content = (".PHONY: " ++ intercalate " " phonyNames) ∷ [] }
   in record { sections = regenMakefileSection ∷ phonySection ∷ map targetToSection allTargets }
