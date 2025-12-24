@@ -23,7 +23,7 @@ make md-lint
 This document is a projection from the canonical Agda index. To update:
 
 1. Edit canonical in src/agda/Plan/CIM/RoadmapIndex.agda
-2. Run `make roadmap-merge` to refresh build/canonical\_roadmap.json
+2. Run `make roadmap-merge` to refresh build/canonical_roadmap.json
 3. Run `make roadmap-export-md` to regenerate this file
 
 ## IngestedGP
@@ -39,9 +39,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* \**GP400: The \** — Plan/CIM/IngestedRoadmaps/Corrections.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP400: The \** — Plan/CIM/IngestedRoadmaps/Corrections.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp500
@@ -54,9 +54,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP500: Dimensional Relief** — Plan/CIM/IngestedRoadmaps/Corrections.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP500: Dimensional Relief** — Plan/CIM/IngestedRoadmaps/Corrections.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp501
@@ -69,9 +69,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP501: Unknown Title** — Plan/CIM/IngestedRoadmaps/Corrections.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP501: Unknown Title** — Plan/CIM/IngestedRoadmaps/Corrections.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp800
@@ -84,9 +84,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP800: The Missing Morphisms** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP800: The Missing Morphisms** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp801
@@ -99,9 +99,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP801: The Exterior Algebra of Meaning** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP801: The Exterior Algebra of Meaning** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp802
@@ -114,9 +114,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP802: The Fundamental Group of the Grammar** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP802: The Fundamental Group of the Grammar** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp803
@@ -129,9 +129,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP803: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP803: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp804
@@ -144,9 +144,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP804: The Missing Algebraic Topology** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP804: The Missing Algebraic Topology** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp805
@@ -159,9 +159,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* \**GP805: The Discovery of \\\** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP805: The Discovery of \\\** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp806
@@ -174,9 +174,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP806: The Geometry of Inference** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP806: The Geometry of Inference** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp807
@@ -189,9 +189,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP807: The Logic of Exclusion** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP807: The Logic of Exclusion** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp808
@@ -204,9 +204,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP808: The Arithmetic Foundation** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP808: The Arithmetic Foundation** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp809
@@ -219,9 +219,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP809: The Logarithmic Isomorphism** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP809: The Logarithmic Isomorphism** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp810
@@ -234,9 +234,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP810: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP810: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp811
@@ -249,9 +249,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP811: The Free Energy Principle** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP811: The Free Energy Principle** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp812
@@ -264,9 +264,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP812: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP812: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp813
@@ -279,9 +279,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP813: The Missing Cohomology** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP813: The Missing Cohomology** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp814
@@ -294,9 +294,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP814: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP814: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp815
@@ -309,9 +309,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP815: The Isomorphism of Process** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP815: The Isomorphism of Process** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp816
@@ -324,9 +324,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP816: The Homotopy of Morphology** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP816: The Homotopy of Morphology** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp817
@@ -339,9 +339,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP817: The Local-to-Global Principle** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP817: The Local-to-Global Principle** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp818
@@ -354,9 +354,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP818: The Abelian Sheaf** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP818: The Abelian Sheaf** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp819
@@ -369,9 +369,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP819: The Plus Construction** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP819: The Plus Construction** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp820
@@ -384,9 +384,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP820: The Fractal Sheaf** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP820: The Fractal Sheaf** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp821
@@ -399,9 +399,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP821: Recursive Self-Substitution** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP821: Recursive Self-Substitution** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp822
@@ -414,9 +414,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP822: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP822: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp823
@@ -429,9 +429,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP823: The Descent to the Boolean Layer** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP823: The Descent to the Boolean Layer** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp824
@@ -444,9 +444,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP824: The Quantum Manifold** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP824: The Quantum Manifold** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp825
@@ -459,9 +459,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP825: Dynamic Gauge Symmetry** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP825: Dynamic Gauge Symmetry** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp826
@@ -474,9 +474,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP826: The Self-Defining Manifold** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP826: The Self-Defining Manifold** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp827
@@ -489,9 +489,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP827: The Cost of Gauge Coherence** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP827: The Cost of Gauge Coherence** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp828
@@ -504,9 +504,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP828: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP828: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp829
@@ -519,9 +519,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP829: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP829: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp830
@@ -534,9 +534,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP830: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP830: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp831
@@ -549,9 +549,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP831: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP831: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp832
@@ -564,9 +564,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP832: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP832: Unknown Title** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp699
@@ -579,9 +579,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP699: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP699: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp700
@@ -594,9 +594,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP700: The Simplex vs. The Associahedron** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP700: The Simplex vs. The Associahedron** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp701
@@ -609,9 +609,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP701: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP701: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp702
@@ -624,9 +624,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP702: The Loday Realization** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP702: The Loday Realization** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp703
@@ -639,9 +639,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP703: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP703: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp704
@@ -654,9 +654,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP704: The Geometry of Choice** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP704: The Geometry of Choice** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp705
@@ -669,9 +669,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP705: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP705: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp706
@@ -684,9 +684,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP706: The Operational Velocity** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP706: The Operational Velocity** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp707
@@ -699,9 +699,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP707: The Knight's Move (Topological Surgery)** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP707: The Knight's Move (Topological Surgery)** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp708
@@ -714,9 +714,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP708: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP708: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp709
@@ -729,9 +729,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP709: The Operadic Tiling** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP709: The Operadic Tiling** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp710
@@ -744,9 +744,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP710: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP710: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp711
@@ -759,9 +759,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP711: The Stable Interface Principle** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP711: The Stable Interface Principle** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp712
@@ -774,9 +774,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP712: The Prediction of Topology** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP712: The Prediction of Topology** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp713
@@ -789,9 +789,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP713: The Vacuum State** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP713: The Vacuum State** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp714
@@ -804,9 +804,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP714: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP714: Unknown Title** — Plan/CIM/IngestedRoadmaps/Polytopes.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp01
@@ -819,9 +819,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP01: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP01: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp010
@@ -834,9 +834,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP010: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP010: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp02
@@ -849,9 +849,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP02: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP02: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp03
@@ -864,9 +864,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP03: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP03: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp04
@@ -879,9 +879,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP04: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP04: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp05
@@ -894,9 +894,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP05: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP05: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp06
@@ -909,9 +909,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP06: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP06: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp07
@@ -924,9 +924,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP07: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP07: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp09
@@ -939,9 +939,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP09: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP09: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp100
@@ -954,9 +954,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP100: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP100: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp101
@@ -969,9 +969,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP101: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP101: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp102
@@ -984,9 +984,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP102: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP102: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp103
@@ -999,9 +999,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP103: The Type-Theoretic Gate** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP103: The Type-Theoretic Gate** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp104
@@ -1014,9 +1014,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP104: The Algebraic Structure of Ambiguity** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP104: The Algebraic Structure of Ambiguity** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp105
@@ -1029,9 +1029,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* \**GP105: The \** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP105: The \** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp106
@@ -1044,9 +1044,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP106: The Persistence of Potentiality** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP106: The Persistence of Potentiality** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp107
@@ -1059,9 +1059,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP107: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP107: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp108
@@ -1074,9 +1074,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* \**GP108: The \** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP108: The \** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp109
@@ -1089,9 +1089,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP109: The Hebbian Drift** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP109: The Hebbian Drift** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp110
@@ -1104,9 +1104,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP110: The Control Plane** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP110: The Control Plane** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp111
@@ -1119,9 +1119,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP111: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP111: Unknown Title** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp200
@@ -1134,9 +1134,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP200: The Geometry of Associativity** — Plan/CIM/IngestedRoadmaps/Geometry.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP200: The Geometry of Associativity** — Plan/CIM/IngestedRoadmaps/Geometry.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp201
@@ -1149,9 +1149,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP201: The Non-Abelian Manifold** — Plan/CIM/IngestedRoadmaps/Geometry.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP201: The Non-Abelian Manifold** — Plan/CIM/IngestedRoadmaps/Geometry.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp300
@@ -1164,9 +1164,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP300: The Fiber Bundle Architecture** — Plan/CIM/IngestedRoadmaps/Geometry.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP300: The Fiber Bundle Architecture** — Plan/CIM/IngestedRoadmaps/Geometry.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp302
@@ -1179,9 +1179,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP302: The Operationalized Adjunction** — Plan/CIM/IngestedRoadmaps/Geometry.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP302: The Operationalized Adjunction** — Plan/CIM/IngestedRoadmaps/Geometry.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ```yaml
 id: GP-Gp303
@@ -1194,9 +1194,9 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP303: Unknown Title** — Plan/CIM/IngestedRoadmaps/Geometry.agda \[status: not-started]
-    Target: `src/agda/Plan/CIM/Implementation.agda`
-    Tags: GP
+* **GP303: Unknown Title** — Plan/CIM/IngestedRoadmaps/Geometry.agda [status: not-started]
+  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Tags: GP
 
 ## Ingestion
 
@@ -1213,9 +1213,9 @@ files:
 - src/agda/Algebra/Groups/Basic.agda
 ```
 
-* **Ingest Cyclic Groups (generator witness abstraction)** — ingest.md \[status: planned]
-    Target: `src/agda/Algebra/Groups/Basic.agda`
-    Tags: Groups, Cyclic, Ingestion
+* **Ingest Cyclic Groups (generator witness abstraction)** — ingest.md [status: planned]
+  Target: `src/agda/Algebra/Groups/Basic.agda`
+  Tags: Groups, Cyclic, Ingestion
 
 ```yaml
 id: INGEST-Ch3-Ideals-Lattice
@@ -1230,9 +1230,9 @@ files:
 - src/agda/Algebra/Rings/Basic.agda
 ```
 
-* **Ideal lattice ingestion (prime/primary metadata)** — ingest.md \[status: planned]
-    Target: `src/agda/Algebra/Rings/Basic.agda`
-    Tags: Rings, Ideals, Lattice
+* **Ideal lattice ingestion (prime/primary metadata)** — ingest.md [status: planned]
+  Target: `src/agda/Algebra/Rings/Basic.agda`
+  Tags: Rings, Ideals, Lattice
 
 ## Phase
 
@@ -1248,9 +1248,9 @@ files:
 - src/agda/Tests/UniversalPropertyTests.agda
 ```
 
-* **Replace product postulate with constructive mediating cone proof** — testing.md \[status: completed]
-    Target: `src/agda/Tests/UniversalPropertyTests.agda`
-    Tags: P3, UniversalProperty
+* **Replace product postulate with constructive mediating cone proof** — testing.md [status: completed]
+  Target: `src/agda/Tests/UniversalPropertyTests.agda`
+  Tags: P3, UniversalProperty
 
 ```yaml
 id: PHASE-0.2
@@ -1264,9 +1264,9 @@ files:
 - src/agda/Tests/UniversalPropertyTests.agda
 ```
 
-* **Replace coproduct postulate with constructive mediating cocone proof** — testing.md \[status: completed]
-    Target: `src/agda/Tests/UniversalPropertyTests.agda`
-    Tags: P3, UniversalProperty
+* **Replace coproduct postulate with constructive mediating cocone proof** — testing.md [status: completed]
+  Target: `src/agda/Tests/UniversalPropertyTests.agda`
+  Tags: P3, UniversalProperty
 
 ```yaml
 id: PHASE-I.1
@@ -1280,9 +1280,9 @@ files:
 - src/agda/Metamodel.agda
 ```
 
-* **Static coordinate assignment for all declarations** — testing.md \[status: completed]
-    Target: `src/agda/Metamodel.agda`
-    Tags: Indexing, WellFounded
+* **Static coordinate assignment for all declarations** — testing.md [status: completed]
+  Target: `src/agda/Metamodel.agda`
+  Tags: Indexing, WellFounded
 
 ```yaml
 id: PHASE-II.2.5
@@ -1306,10 +1306,10 @@ files:
 - src/agda/Tests/Index.agda
 ```
 
-* **Global logical closure (no metas)** — testing.md \[status: completed]
-    Target: `src/agda/Tests/Index.agda`
-    Tags: Symmetry, Index
-    Depends on: `PHASE-0.1`, `PHASE-0.2`, `PHASE-III.4`, `PHASE-III.5`, `PHASE-IV.1`, `PHASE-IV.2`, `PHASE-IV.3`, `PHASE-V.1`, `PHASE-V.2`
+* **Global logical closure (no metas)** — testing.md [status: completed]
+  Target: `src/agda/Tests/Index.agda`
+  Tags: Symmetry, Index
+  Depends on: `PHASE-0.1`, `PHASE-0.2`, `PHASE-III.4`, `PHASE-III.5`, `PHASE-IV.1`, `PHASE-IV.2`, `PHASE-IV.3`, `PHASE-V.1`, `PHASE-V.2`
 
 ```yaml
 id: PHASE-III.2
@@ -1327,10 +1327,10 @@ files:
 - src/agda/Tests/ErrorAsSpecificationTests.agda
 ```
 
-* **Error-as-Specification integration (AlgorithmResult, LimitationEvidence)** — Core/Limitations.agda \[status: completed]
-    Target: `src/agda/Core/Limitations.agda`, `src/agda/Tests/ErrorAsSpecificationTests.agda`
-    Tags: PhaseIII, ErrorHandling, Specification
-    Depends on: `PHASE-I.1`
+* **Error-as-Specification integration (AlgorithmResult, LimitationEvidence)** — Core/Limitations.agda [status: completed]
+  Target: `src/agda/Core/Limitations.agda`, `src/agda/Tests/ErrorAsSpecificationTests.agda`
+  Tags: PhaseIII, ErrorHandling, Specification
+  Depends on: `PHASE-I.1`
 
 ```yaml
 id: PHASE-III.4
@@ -1345,9 +1345,9 @@ files:
 - src/agda/Tests/SerializationTests.agda
 ```
 
-* **Serialization roundtrip HoTT Path isomorphism** — Tests/SerializationTests.agda \[status: completed]
-    Target: `src/agda/Tests/SerializationTests.agda`
-    Tags: Serialization, HoTT, Coordinates
+* **Serialization roundtrip HoTT Path isomorphism** — Tests/SerializationTests.agda [status: completed]
+  Target: `src/agda/Tests/SerializationTests.agda`
+  Tags: Serialization, HoTT, Coordinates
 
 ```yaml
 id: PHASE-III.5
@@ -1361,9 +1361,9 @@ files:
 - src/agda/Tests/ToposTheoryChecklist.agda
 ```
 
-* **ToposTheoryChecklist alignment (constructor arities)** — testing.md \[status: completed]
-    Target: `src/agda/Tests/ToposTheoryChecklist.agda`
-    Tags: Topos, Validation
+* **ToposTheoryChecklist alignment (constructor arities)** — testing.md [status: completed]
+  Target: `src/agda/Tests/ToposTheoryChecklist.agda`
+  Tags: Topos, Validation
 
 ```yaml
 id: PHASE-IV.1
@@ -1380,10 +1380,10 @@ files:
 - src/agda/Core/UniversalProperties.agda
 ```
 
-* **Adjunction coherence (free/forgetful)** — testing.md \[status: completed]
-    Target: `src/agda/Tests/UniversalPropertyTests.agda`, `src/agda/Core/UniversalProperties.agda`
-    Tags: Adjunction, PhaseIV
-    Depends on: `INGEST-Ch3-Ideals-Lattice`
+* **Adjunction coherence (free/forgetful)** — testing.md [status: completed]
+  Target: `src/agda/Tests/UniversalPropertyTests.agda`, `src/agda/Core/UniversalProperties.agda`
+  Tags: Adjunction, PhaseIV
+  Depends on: `INGEST-Ch3-Ideals-Lattice`
 
 ```yaml
 id: PHASE-IV.2
@@ -1400,10 +1400,10 @@ files:
 - src/agda/Core/Yoneda.agda
 ```
 
-* **Yoneda lemma constructive instance** — testing.md \[status: completed]
-    Target: `src/agda/Tests/YonedaChecklist.agda`, `src/agda/Core/Yoneda.agda`
-    Tags: Yoneda, PhaseIV
-    Depends on: `INGEST-Ch3-Ideals-Lattice`
+* **Yoneda lemma constructive instance** — testing.md [status: completed]
+  Target: `src/agda/Tests/YonedaChecklist.agda`, `src/agda/Core/Yoneda.agda`
+  Tags: Yoneda, PhaseIV
+  Depends on: `INGEST-Ch3-Ideals-Lattice`
 
 ```yaml
 id: PHASE-IV.3
@@ -1418,9 +1418,9 @@ files:
 - src/agda/Core/GrothendieckFibrations.agda
 ```
 
-* **Grothendieck fibration Beck-Chevalley proof** — testing.md \[status: completed]
-    Target: `src/agda/Tests/GrothendieckFibrationsChecklist.agda`, `src/agda/Core/GrothendieckFibrations.agda`
-    Tags: Fibration, PhaseIV
+* **Grothendieck fibration Beck-Chevalley proof** — testing.md [status: completed]
+  Target: `src/agda/Tests/GrothendieckFibrationsChecklist.agda`, `src/agda/Core/GrothendieckFibrations.agda`
+  Tags: Fibration, PhaseIV
 
 ```yaml
 id: PHASE-IV.0
@@ -1435,9 +1435,9 @@ files:
 - src/agda/Core/Algorithms/NumberFields.agda
 ```
 
-* **Algorithmic foundations (replace field arithmetic stubs)** — testing.md \[status: deferred]
-    Target: `src/agda/Core/Algorithms/FiniteFields.agda`, `src/agda/Core/Algorithms/NumberFields.agda`
-    Tags: Arithmetic, Algorithms
+* **Algorithmic foundations (replace field arithmetic stubs)** — testing.md [status: deferred]
+  Target: `src/agda/Core/Algorithms/FiniteFields.agda`, `src/agda/Core/Algorithms/NumberFields.agda`
+  Tags: Arithmetic, Algorithms
 
 ```yaml
 id: PHASE-V.1
@@ -1462,10 +1462,10 @@ files:
 - src/agda/Core/GodelBoundary.agda
 ```
 
-* **Reification of limit object (Gödel boundary)** — testing.md \[status: completed]
-    Target: `src/agda/Tests/Index.agda`, `src/agda/Tests/GodelBoundaryTests.agda`, `src/agda/Core/GodelBoundary.agda`
-    Tags: Godel, Limit
-    Depends on: `PHASE-0.1`, `PHASE-0.2`, `PHASE-III.4`, `PHASE-III.5`, `PHASE-IV.1`, `PHASE-IV.2`, `PHASE-IV.3`, `PHASE-V.2`
+* **Reification of limit object (Gödel boundary)** — testing.md [status: completed]
+  Target: `src/agda/Tests/Index.agda`, `src/agda/Tests/GodelBoundaryTests.agda`, `src/agda/Core/GodelBoundary.agda`
+  Tags: Godel, Limit
+  Depends on: `PHASE-0.1`, `PHASE-0.2`, `PHASE-III.4`, `PHASE-III.5`, `PHASE-IV.1`, `PHASE-IV.2`, `PHASE-IV.3`, `PHASE-V.2`
 
 ```yaml
 id: PHASE-V.2
@@ -1481,9 +1481,9 @@ files:
 - src/agda/Tests/PerformanceBoundaryTests.agda
 ```
 
-* **Solution space growth rate instrumentation** — testing.md \[status: completed]
-    Target: `src/agda/Core/GrowthMetrics.agda`, `src/agda/Tests/PerformanceBoundaryTests.agda`
-    Tags: Metrics, Growth, PhaseV
+* **Solution space growth rate instrumentation** — testing.md [status: completed]
+  Target: `src/agda/Core/GrowthMetrics.agda`, `src/agda/Tests/PerformanceBoundaryTests.agda`
+  Tags: Metrics, Growth, PhaseV
 
 ```yaml
 id: PHASE-V.3
@@ -1509,10 +1509,10 @@ files:
 - src/agda/Core/PathAggregator.agda
 ```
 
-* **Composite HoTT path aggregator (global closure)** — testing.md \[status: completed]
-    Target: `src/agda/Tests/Index.agda`, `src/agda/Core/PathAggregator.agda`
-    Tags: HoTT, Closure, PhaseV
-    Depends on: `PHASE-0.1`, `PHASE-0.2`, `PHASE-III.4`, `PHASE-III.5`, `PHASE-IV.1`, `PHASE-IV.2`, `PHASE-IV.3`, `PHASE-V.1`, `PHASE-V.2`
+* **Composite HoTT path aggregator (global closure)** — testing.md [status: completed]
+  Target: `src/agda/Tests/Index.agda`, `src/agda/Core/PathAggregator.agda`
+  Tags: HoTT, Closure, PhaseV
+  Depends on: `PHASE-0.1`, `PHASE-0.2`, `PHASE-III.4`, `PHASE-III.5`, `PHASE-IV.1`, `PHASE-IV.2`, `PHASE-IV.3`, `PHASE-V.1`, `PHASE-V.2`
 
 ## Roadmap
 
@@ -1526,8 +1526,8 @@ files:
 - src/agda/Plan/CIM/Ambiguity.agda
 ```
 
-* **Provide algebraic structures for representing and manipulating ambiguity in parse spaces.** — ROADMAP.md \[status: not-started]
-    Target: `src/agda/Plan/CIM/Ambiguity.agda`
+* **Provide algebraic structures for representing and manipulating ambiguity in parse spaces.** — ROADMAP.md [status: not-started]
+  Target: `src/agda/Plan/CIM/Ambiguity.agda`
 
 ```yaml
 id: ROADMAP-MD-2
@@ -1538,8 +1538,8 @@ files:
 - src/agda/Plan/CIM/Metricization.agda
 ```
 
-* **Establish metric structures on semantic spaces for distance/similarity calculations.** — ROADMAP.md \[status: not-started]
-    Target: `src/agda/Plan/CIM/Metricization.agda`
+* **Establish metric structures on semantic spaces for distance/similarity calculations.** — ROADMAP.md [status: not-started]
+  Target: `src/agda/Plan/CIM/Metricization.agda`
 
 ```yaml
 id: ROADMAP-MD-3
@@ -1550,8 +1550,8 @@ files:
 - src/agda/Plan/CIM/TransformationSystem.agda
 ```
 
-* **Define compositional transformation operations on semantic objects.** — ROADMAP.md \[status: not-started]
-    Target: `src/agda/Plan/CIM/TransformationSystem.agda`
+* **Define compositional transformation operations on semantic objects.** — ROADMAP.md [status: not-started]
+  Target: `src/agda/Plan/CIM/TransformationSystem.agda`
 
 ```yaml
 id: ROADMAP-MD-4
@@ -1562,8 +1562,8 @@ files:
 - src/agda/Plan/CIM/FunctorialConstructs.agda
 ```
 
-* **Implement functorial mappings between semantic and computational spaces.** — ROADMAP.md \[status: not-started]
-    Target: `src/agda/Plan/CIM/FunctorialConstructs.agda`
+* **Implement functorial mappings between semantic and computational spaces.** — ROADMAP.md [status: not-started]
+  Target: `src/agda/Plan/CIM/FunctorialConstructs.agda`
 
 ```yaml
 id: ROADMAP-MD-5
@@ -1582,8 +1582,8 @@ files:
 - src/agda/Plan/CIM/FunctorialConstructs.agda
 ```
 
-* **Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs.** — ROADMAP.md \[status: not-started]
-    Target: `src/agda/Plan/CIM/Elasticity.agda`, `parser.py`, `dashboard.py`, `src/agda/Plan/CIM/Ambiguity.agda`, `src/agda/Plan/CIM/Metricization.agda`, `src/agda/Plan/CIM/TransformationSystem.agda`, `src/agda/Plan/CIM/FunctorialConstructs.agda`
+* **Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs.** — ROADMAP.md [status: not-started]
+  Target: `src/agda/Plan/CIM/Elasticity.agda`, `parser.py`, `dashboard.py`, `src/agda/Plan/CIM/Ambiguity.agda`, `src/agda/Plan/CIM/Metricization.agda`, `src/agda/Plan/CIM/TransformationSystem.agda`, `src/agda/Plan/CIM/FunctorialConstructs.agda`
 
 ```yaml
 id: ROADMAP-MD-6
@@ -1596,8 +1596,8 @@ files:
 - nedge_topology/mitosis.py
 ```
 
-* **Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension.** — ROADMAP.md \[status: not-started]
-    Target: `src/agda/Plan/CIM/PolytopeExpansion.agda`, `nedge_topology/mitosis.py`
+* **Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension.** — ROADMAP.md [status: not-started]
+  Target: `src/agda/Plan/CIM/PolytopeExpansion.agda`, `nedge_topology/mitosis.py`
 
 ```yaml
 id: ROADMAP-MD-7
@@ -1612,8 +1612,8 @@ files:
 - src/agda/Plan/CIM/PolytopeExpansion.agda
 ```
 
-* **Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed.** — ROADMAP.md \[status: not-started]
-    Target: `nedge_topology/mitosis.py`, `nedge_topology/parser.py`, `dashboard.py`, `src/agda/Plan/CIM/PolytopeExpansion.agda`
+* **Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed.** — ROADMAP.md [status: not-started]
+  Target: `nedge_topology/mitosis.py`, `nedge_topology/parser.py`, `dashboard.py`, `src/agda/Plan/CIM/PolytopeExpansion.agda`
 
 ```yaml
 id: ROADMAP-MD-8
@@ -1632,5 +1632,5 @@ files:
 - src/agda/Plan/CIM/TopologicalSuperposition.agda
 ```
 
-* **Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition.** — ROADMAP.md \[status: not-started]
-    Target: `nedge_topology/parser.py`, `nedge_topology/train.py`, `nedge_topology/mitosis.py`, `nedge_topology/search.py`, `dashboard.py`, `src/agda/Plan/CIM/RotationalTransport.agda`, `src/agda/Plan/CIM/TopologicalGating.agda`, `src/agda/Plan/CIM/TopologicalSuperposition.agda`
+* **Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition.** — ROADMAP.md [status: not-started]
+  Target: `nedge_topology/parser.py`, `nedge_topology/train.py`, `nedge_topology/mitosis.py`, `nedge_topology/search.py`, `dashboard.py`, `src/agda/Plan/CIM/RotationalTransport.agda`, `src/agda/Plan/CIM/TopologicalGating.agda`, `src/agda/Plan/CIM/TopologicalSuperposition.agda`
