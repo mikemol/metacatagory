@@ -34,4 +34,5 @@ This table is the human-readable witness for the Makefile triangle identity: the
 | `agda-all` | Build all Agda interfaces | Compiles all .agdai artifacts. |
 | `docs-all` | Build all HTML docs | Generates HTML for Agda sources. |
 | `docs-generate` | Generate documentation bundles | Runs roadmap exporter and normalization. |
+| `docs-modules` | Generate per-module markdown docs | Generates YAML-fronted module reference docs. |
 | `docs-validate` | Validate documentation triangle | Runs triangle validation script. |

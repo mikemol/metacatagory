@@ -4,460 +4,1280 @@ AGDA := $(if $(wildcard .local/agda),.local/agda,agda)
 regen-makefile:
 	$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile
 	cp Makefile.generated Makefile
-.PHONY: all check md-fix md-lint intake-lint intake-scan md-normalize makefile-validate badges node-deps regen-makefile agda-all deferred-items roadmap-index roadmap-sync roadmap-sppf roadmap-merge roadmap-deps-graph roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched docs-generate docs-modules docs-validate
+.PHONY: all check md-fix md-lint intake-lint intake-scan md-normalize makefile-validate badges node-deps regen-makefile agda-all docs-all deferred-items roadmap-index roadmap-sync roadmap-sppf roadmap-merge roadmap-deps-graph roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched docs-generate docs-modules docs-validate
+# Lint all markdown files (fail on error)
 md-lint: 
-	npx markdownlint-cli2 "**/*.md" "!node_modules" "!build" > build/reports/md-lint.txt 2>&1 || true
+	npx markdownlint-cli2 "**/*.md" "!node_modules" "!build" > build/reports/md-lint.txt 2>&1
+# Auto-fix markdown lint errors
 md-fix: 
 	npx markdownlint-cli2 --fix "**/*.md" "!node_modules" "!build"
+# Lint intake files specifically
 intake-lint: 
-	npx markdownlint-cli2 "intake/**/*.md" > build/reports/intake-md-lint.txt 2>&1 || true
+	npx markdownlint-cli2 "intake/**/*.md" > build/reports/intake-md-lint.txt 2>&1
+# Scan intake directory for new files
 intake-scan: build/canonical_roadmap.json
 	python3 scripts/intake_scan.py
+# Normalize markdown formatting
 md-normalize: 
 	python3 scripts/normalize_generated_markdown.py
+# Validate Makefile consistency
 makefile-validate: 
 	mkdir -p build/reports
 	python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt
-all: agda-all docs-generate
+# Build all code and documentation
+all: agda-all docs-all
 	@echo "all complete"
+# Run all validation checks
 check: roadmap-validate-triangle docs-validate makefile-validate
 	@echo "check complete"
+# Generate status badges
 badges: build/reports/test-results.json
 	python3 scripts/generate-badges.py
+# Install Node.js dependencies
 node-deps: 
 	npm install
+# Scan for TODOs and FIXMEs
 deferred-items: 
 	.github/scripts/detect-deferred-items.sh
+# Compile Roadmap Index
 roadmap-index: src/agda/Plan/CIM/RoadmapIndex.agdai
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapIndex.agda
+# Sync roadmap with external tracker
 roadmap-sync: roadmap-export-json src/agda/Plan/CIM/RoadmapSync.agdai
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapSync.agda
+# Compile Roadmap SPPF
 roadmap-sppf: src/agda/Plan/CIM/RoadmapSPPF.agdai
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapSPPF.agda
+# Merge ingestion streams
 roadmap-merge: 
 	python3 scripts/merge_roadmaps.py
+# Generate dependency graph
 roadmap-deps-graph: 
 	mkdir -p build/diagrams
 	$(AGDA) --dependency-graph=build/diagrams/agda-deps-full.dot -i src/agda src/agda/Tests/Index.agda 2>&1 | grep -E "(Checking|Error)" | head -20
+# Enrich roadmap with graph data
 roadmap-enrich: build/canonical_roadmap.json build/diagrams/agda-deps-full.dot
 	python3 scripts/enrich_canonical.py
+# Export canonical roadmap to JSON
 roadmap-export-json: build/canonical_roadmap.json
 	python3 scripts/export_canonical_json.py
+# Export canonical roadmap to Markdown
 roadmap-export-md: build/canonical_roadmap.json
 	python3 scripts/export_canonical_md.py
+# Export enriched roadmap
 roadmap-export-enriched: build/canonical_enriched.json
 	python3 scripts/export_enriched_md.py
+# Export roadmap dependency graph
 roadmap-export-deps: build/canonical_enriched.json
 	python3 scripts/export_dependency_graph.py
+# Validate canonical JSON
 roadmap-validate-json: build/canonical_roadmap.json .github/roadmap/tasks.json
 	python3 scripts/validate_json.py
+# Validate canonical Markdown
 roadmap-validate-md: build/canonical_roadmap.json ROADMAP.md
 	python3 scripts/validate_md.py
+# Verify Triangle Identity (Agda <-> JSON <-> MD)
 roadmap-validate-triangle: roadmap-validate-json roadmap-validate-md
 	@echo "✓ Triangle validation complete"
+# Export SPPF structure
 roadmap-sppf-export: build/canonical_roadmap.json
 	python3 scripts/export_roadmap_sppf.py
+# Build all enriched artifacts
 roadmap-all-enriched: roadmap-export-enriched roadmap-export-deps
 	@echo "roadmap all enriched complete"
+# Compile and run Roadmap Exporter
 docs-generate: src/agda/Plan/CIM/RoadmapExporter.agdai
 	$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapExporter.agda && ./src/agda/Plan/CIM/RoadmapExporter
 	python3 scripts/normalize_generated_markdown.py
+# Generate per-module markdown documentation
 docs-modules: src/agda/Plan/CIM/ModuleExporter.agdai
-	$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/ModuleExporter.agda && mv src/agda/ModuleExporter src/agda/Plan/CIM/ModuleExporter && ./src/agda/Plan/CIM/ModuleExporter
+	$(AGDA) -i src/agda --compile --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/ModuleExporter.agda && ./src/agda/Plan/CIM/ModuleExporter
+# Validate documentation integrity
 docs-validate: 
 	python3 scripts/validate_triangle_identity.py
+# Compile src/agda/MetaScan.agda
 src/agda/MetaScan.agdai: src/agda/MetaScan.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/MetaScan.agda
+# Compile src/agda/Metamodel.agda
 src/agda/Metamodel.agdai: src/agda/Metamodel.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Metamodel.agda
+# Compile src/agda/Tests/PropertyRegistryTests.agda
 src/agda/Tests/PropertyRegistryTests.agdai: src/agda/Tests/PropertyRegistryTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/PropertyRegistryTests.agda
+# Compile src/agda/Tests/AbelianCategoriesChecklist.agda
 src/agda/Tests/AbelianCategoriesChecklist.agdai: src/agda/Tests/AbelianCategoriesChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/AbelianCategoriesChecklist.agda
+# Compile src/agda/Tests/DispatchBehaviorTests.agda
 src/agda/Tests/DispatchBehaviorTests.agdai: src/agda/Tests/DispatchBehaviorTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/DispatchBehaviorTests.agda
+# Compile src/agda/Tests/WitnessConstructionTests.agda
 src/agda/Tests/WitnessConstructionTests.agdai: src/agda/Tests/WitnessConstructionTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/WitnessConstructionTests.agda
+# Compile src/agda/Tests/VectorSpaceChecklist.agda
 src/agda/Tests/VectorSpaceChecklist.agdai: src/agda/Tests/VectorSpaceChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/VectorSpaceChecklist.agda
+# Compile src/agda/Tests/ProofObligationStatus.agda
 src/agda/Tests/ProofObligationStatus.agdai: src/agda/Tests/ProofObligationStatus.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/ProofObligationStatus.agda
+# Compile src/agda/Tests/SerializationTests.agda
 src/agda/Tests/SerializationTests.agdai: src/agda/Tests/SerializationTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/SerializationTests.agda
+# Compile src/agda/Tests/GodelBoundaryTests.agda
 src/agda/Tests/GodelBoundaryTests.agdai: src/agda/Tests/GodelBoundaryTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/GodelBoundaryTests.agda
+# Compile src/agda/Tests/ModuleStructureChecklist.agda
 src/agda/Tests/ModuleStructureChecklist.agdai: src/agda/Tests/ModuleStructureChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/ModuleStructureChecklist.agda
+# Compile src/agda/Tests/ToposTheoryChecklist.agda
 src/agda/Tests/ToposTheoryChecklist.agdai: src/agda/Tests/ToposTheoryChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/ToposTheoryChecklist.agda
+# Compile src/agda/Tests/GrothendieckFibrationsChecklist.agda
 src/agda/Tests/GrothendieckFibrationsChecklist.agdai: src/agda/Tests/GrothendieckFibrationsChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/GrothendieckFibrationsChecklist.agda
+# Compile src/agda/Tests/TensorProductChecklist.agda
 src/agda/Tests/TensorProductChecklist.agdai: src/agda/Tests/TensorProductChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/TensorProductChecklist.agda
+# Compile src/agda/Tests/Index_PhaseII.agda
 src/agda/Tests/Index_PhaseII.agdai: src/agda/Tests/Index_PhaseII.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/Index_PhaseII.agda
+# Compile src/agda/Tests/HierarchyValidation.agda
 src/agda/Tests/HierarchyValidation.agdai: src/agda/Tests/HierarchyValidation.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/HierarchyValidation.agda
+# Compile src/agda/Tests/PhaseExamples.agda
 src/agda/Tests/PhaseExamples.agdai: src/agda/Tests/PhaseExamples.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/PhaseExamples.agda
+# Compile src/agda/Tests/RegularCategoriesChecklist.agda
 src/agda/Tests/RegularCategoriesChecklist.agdai: src/agda/Tests/RegularCategoriesChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/RegularCategoriesChecklist.agda
+# Compile src/agda/Tests/MonadAdjunctionChecklist.agda
 src/agda/Tests/MonadAdjunctionChecklist.agdai: src/agda/Tests/MonadAdjunctionChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/MonadAdjunctionChecklist.agda
+# Compile src/agda/Tests/UniversalPropertyTests.agda
 src/agda/Tests/UniversalPropertyTests.agdai: src/agda/Tests/UniversalPropertyTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/UniversalPropertyTests.agda
+# Compile src/agda/Tests/EnrichmentChecklist.agda
 src/agda/Tests/EnrichmentChecklist.agdai: src/agda/Tests/EnrichmentChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/EnrichmentChecklist.agda
+# Compile src/agda/Tests/AdvancedPhaseExamples.agda
 src/agda/Tests/AdvancedPhaseExamples.agdai: src/agda/Tests/AdvancedPhaseExamples.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/AdvancedPhaseExamples.agda
+# Compile src/agda/Tests/ErrorAsSpecificationTests.agda
 src/agda/Tests/ErrorAsSpecificationTests.agdai: src/agda/Tests/ErrorAsSpecificationTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/ErrorAsSpecificationTests.agda
+# Compile src/agda/Tests/RealWorldAlgorithmsTests.agda
 src/agda/Tests/RealWorldAlgorithmsTests.agdai: src/agda/Tests/RealWorldAlgorithmsTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/RealWorldAlgorithmsTests.agda
+# Compile src/agda/Tests/PolynomialExtensionsChecklist.agda
 src/agda/Tests/PolynomialExtensionsChecklist.agdai: src/agda/Tests/PolynomialExtensionsChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/PolynomialExtensionsChecklist.agda
+# Compile src/agda/Tests/ModuleTheoryChecklist.agda
 src/agda/Tests/ModuleTheoryChecklist.agdai: src/agda/Tests/ModuleTheoryChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/ModuleTheoryChecklist.agda
+# Compile src/agda/Tests/PhaseCategoryExamplesRunner.agda
 src/agda/Tests/PhaseCategoryExamplesRunner.agdai: src/agda/Tests/PhaseCategoryExamplesRunner.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/PhaseCategoryExamplesRunner.agda
+# Compile src/agda/Tests/PolynomialFieldExtensionsChecklist.agda
 src/agda/Tests/PolynomialFieldExtensionsChecklist.agdai: src/agda/Tests/PolynomialFieldExtensionsChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/PolynomialFieldExtensionsChecklist.agda
+# Compile src/agda/Tests/AlgorithmCompositionTests.agda
 src/agda/Tests/AlgorithmCompositionTests.agdai: src/agda/Tests/AlgorithmCompositionTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/AlgorithmCompositionTests.agda
+# Compile src/agda/Tests/FieldsBasicChecklist.agda
 src/agda/Tests/FieldsBasicChecklist.agdai: src/agda/Tests/FieldsBasicChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/FieldsBasicChecklist.agda
+# Compile src/agda/Tests/SpecificationValidation.agda
 src/agda/Tests/SpecificationValidation.agdai: src/agda/Tests/SpecificationValidation.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/SpecificationValidation.agda
+# Compile src/agda/Tests/AlgorithmSmokeTests.agda
 src/agda/Tests/AlgorithmSmokeTests.agdai: src/agda/Tests/AlgorithmSmokeTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/AlgorithmSmokeTests.agda
+# Compile src/agda/Tests/CoverageReport.agda
 src/agda/Tests/CoverageReport.agdai: src/agda/Tests/CoverageReport.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/CoverageReport.agda
+# Compile src/agda/Tests/GroupsFreeChecklist.agda
 src/agda/Tests/GroupsFreeChecklist.agdai: src/agda/Tests/GroupsFreeChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/GroupsFreeChecklist.agda
+# Compile src/agda/Tests/RingsBasicChecklist.agda
 src/agda/Tests/RingsBasicChecklist.agdai: src/agda/Tests/RingsBasicChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/RingsBasicChecklist.agda
+# Compile src/agda/Tests/Chapter2Checklist.agda
 src/agda/Tests/Chapter2Checklist.agdai: src/agda/Tests/Chapter2Checklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/Chapter2Checklist.agda
+# Compile src/agda/Tests/KanExtensionsChecklist.agda
 src/agda/Tests/KanExtensionsChecklist.agdai: src/agda/Tests/KanExtensionsChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/KanExtensionsChecklist.agda
+# Compile src/agda/Tests/LimitsColimitsChecklist.agda
 src/agda/Tests/LimitsColimitsChecklist.agdai: src/agda/Tests/LimitsColimitsChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/LimitsColimitsChecklist.agda
+# Compile src/agda/Tests/AdvancedMonadTheoryChecklist.agda
 src/agda/Tests/AdvancedMonadTheoryChecklist.agdai: src/agda/Tests/AdvancedMonadTheoryChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/AdvancedMonadTheoryChecklist.agda
+# Compile src/agda/Tests/CoreUniversalPropertiesChecklist.agda
 src/agda/Tests/CoreUniversalPropertiesChecklist.agdai: src/agda/Tests/CoreUniversalPropertiesChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/CoreUniversalPropertiesChecklist.agda
+# Compile src/agda/Tests/ChapterObligationsSmoke.agda
 src/agda/Tests/ChapterObligationsSmoke.agdai: src/agda/Tests/ChapterObligationsSmoke.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/ChapterObligationsSmoke.agda
+# Compile src/agda/Tests/ConstructiveWitnessTests.agda
 src/agda/Tests/ConstructiveWitnessTests.agdai: src/agda/Tests/ConstructiveWitnessTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/ConstructiveWitnessTests.agda
+# Compile src/agda/Tests/PerformanceBoundaryTests.agda
 src/agda/Tests/PerformanceBoundaryTests.agdai: src/agda/Tests/PerformanceBoundaryTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/PerformanceBoundaryTests.agda
+# Compile src/agda/Tests/PathAggregatorTests.agda
 src/agda/Tests/PathAggregatorTests.agdai: src/agda/Tests/PathAggregatorTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/PathAggregatorTests.agda
+# Compile src/agda/Tests/GroupsAbelianChecklist.agda
 src/agda/Tests/GroupsAbelianChecklist.agdai: src/agda/Tests/GroupsAbelianChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/GroupsAbelianChecklist.agda
+# Compile src/agda/Tests/Chapter1Checklist.agda
 src/agda/Tests/Chapter1Checklist.agdai: src/agda/Tests/Chapter1Checklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/Chapter1Checklist.agda
+# Compile src/agda/Tests/AdvancedFieldsChecklist.agda
 src/agda/Tests/AdvancedFieldsChecklist.agdai: src/agda/Tests/AdvancedFieldsChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/AdvancedFieldsChecklist.agda
+# Compile src/agda/Tests/WarningAggregatorsTest.agda
 src/agda/Tests/WarningAggregatorsTest.agdai: src/agda/Tests/WarningAggregatorsTest.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/WarningAggregatorsTest.agda
+# Compile src/agda/Tests/Index.agda
 src/agda/Tests/Index.agdai: src/agda/Tests/Index.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/Index.agda
+# Compile src/agda/Tests/ObligationAdapters.agda
 src/agda/Tests/ObligationAdapters.agdai: src/agda/Tests/ObligationAdapters.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/ObligationAdapters.agda
+# Compile src/agda/Tests/ToposObligationAdapters.agda
 src/agda/Tests/ToposObligationAdapters.agdai: src/agda/Tests/ToposObligationAdapters.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/ToposObligationAdapters.agda
+# Compile src/agda/Tests/Chapters.agda
 src/agda/Tests/Chapters.agdai: src/agda/Tests/Chapters.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/Chapters.agda
+# Compile src/agda/Tests/YonedaChecklist.agda
 src/agda/Tests/YonedaChecklist.agdai: src/agda/Tests/YonedaChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/YonedaChecklist.agda
+# Compile src/agda/Tests/AlgebraicCompletionChecklist.agda
 src/agda/Tests/AlgebraicCompletionChecklist.agdai: src/agda/Tests/AlgebraicCompletionChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/AlgebraicCompletionChecklist.agda
+# Compile src/agda/Tests/FunctorPropertiesChecklist.agda
 src/agda/Tests/FunctorPropertiesChecklist.agdai: src/agda/Tests/FunctorPropertiesChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/FunctorPropertiesChecklist.agda
+# Compile src/agda/Tests/AlgebraChecklist.agda
 src/agda/Tests/AlgebraChecklist.agdai: src/agda/Tests/AlgebraChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/AlgebraChecklist.agda
+# Compile src/agda/Tests/ErrorHandlingTests.agda
 src/agda/Tests/ErrorHandlingTests.agdai: src/agda/Tests/ErrorHandlingTests.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/ErrorHandlingTests.agda
+# Compile src/agda/Tests/GroupsStructureChecklist.agda
 src/agda/Tests/GroupsStructureChecklist.agdai: src/agda/Tests/GroupsStructureChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/GroupsStructureChecklist.agda
+# Compile src/agda/Tests/ModulesChecklist.agda
 src/agda/Tests/ModulesChecklist.agdai: src/agda/Tests/ModulesChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/ModulesChecklist.agda
+# Compile src/agda/Tests/Chapter3Checklist.agda
 src/agda/Tests/Chapter3Checklist.agdai: src/agda/Tests/Chapter3Checklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/Chapter3Checklist.agda
+# Compile src/agda/Tests/SubobjectTheoryChecklist.agda
 src/agda/Tests/SubobjectTheoryChecklist.agdai: src/agda/Tests/SubobjectTheoryChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Tests/SubobjectTheoryChecklist.agda
+# Compile src/agda/Chapter2/Level2sub3.agda
 src/agda/Chapter2/Level2sub3.agdai: src/agda/Chapter2/Level2sub3.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter2/Level2sub3.agda
+# Compile src/agda/Chapter2/Level2sub6.agda
 src/agda/Chapter2/Level2sub6.agdai: src/agda/Chapter2/Level2sub6.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter2/Level2sub6.agda
+# Compile src/agda/Chapter2/Level2sub5.agda
 src/agda/Chapter2/Level2sub5.agdai: src/agda/Chapter2/Level2sub5.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter2/Level2sub5.agda
+# Compile src/agda/Chapter2/Level2sub8.agda
 src/agda/Chapter2/Level2sub8.agdai: src/agda/Chapter2/Level2sub8.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter2/Level2sub8.agda
+# Compile src/agda/Chapter2/Level2sub7.agda
 src/agda/Chapter2/Level2sub7.agdai: src/agda/Chapter2/Level2sub7.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter2/Level2sub7.agda
+# Compile src/agda/Chapter2/Level2sub2.agda
 src/agda/Chapter2/Level2sub2.agdai: src/agda/Chapter2/Level2sub2.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter2/Level2sub2.agda
+# Compile src/agda/Chapter2/Level2sub1.agda
 src/agda/Chapter2/Level2sub1.agdai: src/agda/Chapter2/Level2sub1.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter2/Level2sub1.agda
+# Compile src/agda/Chapter2/Level2sub4.agda
 src/agda/Chapter2/Level2sub4.agdai: src/agda/Chapter2/Level2sub4.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter2/Level2sub4.agda
+# Compile src/agda/Chapter2/Level2Index.agda
 src/agda/Chapter2/Level2Index.agdai: src/agda/Chapter2/Level2Index.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter2/Level2Index.agda
+# Compile src/agda/Chapter3/Level3sub1.agda
 src/agda/Chapter3/Level3sub1.agdai: src/agda/Chapter3/Level3sub1.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter3/Level3sub1.agda
+# Compile src/agda/Chapter3/Level3sub2.agda
 src/agda/Chapter3/Level3sub2.agdai: src/agda/Chapter3/Level3sub2.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter3/Level3sub2.agda
+# Compile src/agda/Chapter3/Level3Index.agda
 src/agda/Chapter3/Level3Index.agdai: src/agda/Chapter3/Level3Index.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter3/Level3Index.agda
+# Compile src/agda/Core.agda
 src/agda/Core.agdai: src/agda/Core.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core.agda
+# Compile src/agda/Examples/RealWorldAlgorithms.agda
 src/agda/Examples/RealWorldAlgorithms.agdai: src/agda/Examples/RealWorldAlgorithms.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/RealWorldAlgorithms.agda
+# Compile src/agda/Examples/TechnicalDebtExample.agda
 src/agda/Examples/TechnicalDebtExample.agdai: src/agda/Examples/TechnicalDebtExample.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/TechnicalDebtExample.agda
+# Compile src/agda/Examples/FunctionField/F2x.agda
 src/agda/Examples/FunctionField/F2x.agdai: src/agda/Examples/FunctionField/F2x.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/FunctionField/F2x.agda
+# Compile src/agda/Examples/AlgorithmCorrectnessExamples.agda
 src/agda/Examples/AlgorithmCorrectnessExamples.agdai: src/agda/Examples/AlgorithmCorrectnessExamples.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/AlgorithmCorrectnessExamples.agda
+# Compile src/agda/Examples/NumberField/Sqrt2.agda
 src/agda/Examples/NumberField/Sqrt2.agdai: src/agda/Examples/NumberField/Sqrt2.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/NumberField/Sqrt2.agda
+# Compile src/agda/Examples/FiniteField/GF8.agda
 src/agda/Examples/FiniteField/GF8.agdai: src/agda/Examples/FiniteField/GF8.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/FiniteField/GF8.agda
+# Compile src/agda/Examples/DeferredItemsScanner.agda
 src/agda/Examples/DeferredItemsScanner.agdai: src/agda/Examples/DeferredItemsScanner.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/DeferredItemsScanner.agda
+# Compile src/agda/Examples/AutomaticEvidenceDemo.agda
 src/agda/Examples/AutomaticEvidenceDemo.agdai: src/agda/Examples/AutomaticEvidenceDemo.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/AutomaticEvidenceDemo.agda
+# Compile src/agda/Examples/ConstructiveWitnessExamples.agda
 src/agda/Examples/ConstructiveWitnessExamples.agdai: src/agda/Examples/ConstructiveWitnessExamples.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/ConstructiveWitnessExamples.agda
+# Compile src/agda/Examples/AgdaMakefileDeps.agda
 src/agda/Examples/AgdaMakefileDeps.agdai: src/agda/Examples/AgdaMakefileDeps.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/AgdaMakefileDeps.agda
+# Compile src/agda/Examples/LazyHybridDemo.agda
 src/agda/Examples/LazyHybridDemo.agdai: src/agda/Examples/LazyHybridDemo.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/LazyHybridDemo.agda
+# Compile src/agda/Examples/TechnicalDebtRegistry.agda
 src/agda/Examples/TechnicalDebtRegistry.agdai: src/agda/Examples/TechnicalDebtRegistry.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/TechnicalDebtRegistry.agda
+# Compile src/agda/Examples/RoadmapIssueSync.agda
 src/agda/Examples/RoadmapIssueSync.agdai: src/agda/Examples/RoadmapIssueSync.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/RoadmapIssueSync.agda
+# Compile src/agda/Examples/MakefileTargets.agda
 src/agda/Examples/MakefileTargets.agdai: src/agda/Examples/MakefileTargets.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/MakefileTargets.agda
+# Compile src/agda/Examples/PhaseCategoryExamples.agda
 src/agda/Examples/PhaseCategoryExamples.agdai: src/agda/Examples/PhaseCategoryExamples.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/PhaseCategoryExamples.agda
+# Compile src/agda/Examples/TechnicalDebtChecklist.agda
 src/agda/Examples/TechnicalDebtChecklist.agdai: src/agda/Examples/TechnicalDebtChecklist.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/TechnicalDebtChecklist.agda
+# Compile src/agda/Examples/AgdaFileScanFFI.agda
 src/agda/Examples/AgdaFileScanFFI.agdai: src/agda/Examples/AgdaFileScanFFI.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/AgdaFileScanFFI.agda
+# Compile src/agda/Examples/ExporterMakefile.agda
 src/agda/Examples/ExporterMakefile.agdai: src/agda/Examples/ExporterMakefile.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Examples/ExporterMakefile.agda
+# Compile src/agda/Markdown/ExportProof.agda
 src/agda/Markdown/ExportProof.agdai: src/agda/Markdown/ExportProof.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Markdown/ExportProof.agda
+# Compile src/agda/Markdown/Normalization.agda
 src/agda/Markdown/Normalization.agdai: src/agda/Markdown/Normalization.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Markdown/Normalization.agda
+# Compile src/agda/Plan/CIM/PandocProofExample.agda
 src/agda/Plan/CIM/PandocProofExample.agdai: src/agda/Plan/CIM/PandocProofExample.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/PandocProofExample.agda
+# Compile src/agda/Plan/CIM/PandocProtocols.agda
 src/agda/Plan/CIM/PandocProtocols.agdai: src/agda/Plan/CIM/PandocProtocols.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/PandocProtocols.agda
+# Compile src/agda/Plan/CIM/CHIPCoreRecompose.agda
 src/agda/Plan/CIM/CHIPCoreRecompose.agdai: src/agda/Plan/CIM/CHIPCoreRecompose.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/CHIPCoreRecompose.agda
+# Compile src/agda/Plan/CIM/PandocProofExport.agda
 src/agda/Plan/CIM/PandocProofExport.agdai: src/agda/Plan/CIM/PandocProofExport.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/PandocProofExport.agda
+# Compile src/agda/Plan/CIM/Utility.agda
 src/agda/Plan/CIM/Utility.agdai: src/agda/Plan/CIM/Utility.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/Utility.agda
+# Compile src/agda/Plan/CIM/IngestedRoadmaps.agda
 src/agda/Plan/CIM/IngestedRoadmaps.agdai: src/agda/Plan/CIM/IngestedRoadmaps.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/IngestedRoadmaps.agda
+# Compile src/agda/Plan/CIM/Structure.agda
 src/agda/Plan/CIM/Structure.agdai: src/agda/Plan/CIM/Structure.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/Structure.agda
+# Compile src/agda/Plan/CIM/DocumentSynthesis.agda
 src/agda/Plan/CIM/DocumentSynthesis.agdai: src/agda/Plan/CIM/DocumentSynthesis.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/DocumentSynthesis.agda
+# Compile src/agda/Plan/CIM/CHIPRecomposed.agda
 src/agda/Plan/CIM/CHIPRecomposed.agdai: src/agda/Plan/CIM/CHIPRecomposed.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/CHIPRecomposed.agda
+# Compile src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agda
 src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agdai: src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agda
+# Compile src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agda
 src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agdai: src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agda
+# Compile src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda
 src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agdai: src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda
+# Compile src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agda
 src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agdai: src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agda
+# Compile src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agda
 src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agdai: src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agda
+# Compile src/agda/Plan/CIM/RoadmapExporter.agda
 src/agda/Plan/CIM/RoadmapExporter.agdai: src/agda/Plan/CIM/RoadmapExporter.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapExporter.agda
+# Compile src/agda/Plan/CIM/CanonicalRoadmap.agda
 src/agda/Plan/CIM/CanonicalRoadmap.agdai: src/agda/Plan/CIM/CanonicalRoadmap.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/CanonicalRoadmap.agda
+# Compile src/agda/Plan/CIM/CHIPConformance.agda
 src/agda/Plan/CIM/CHIPConformance.agdai: src/agda/Plan/CIM/CHIPConformance.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/CHIPConformance.agda
+# Compile src/agda/Plan/CIM/FrameworkMetadata.agda
 src/agda/Plan/CIM/FrameworkMetadata.agdai: src/agda/Plan/CIM/FrameworkMetadata.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/FrameworkMetadata.agda
+# Compile src/agda/Plan/CIM/ModuleExporter.agda
 src/agda/Plan/CIM/ModuleExporter.agdai: src/agda/Plan/CIM/ModuleExporter.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/ModuleExporter.agda
+# Compile src/agda/Plan/CIM/RoadmapIndex.agda
 src/agda/Plan/CIM/RoadmapIndex.agdai: src/agda/Plan/CIM/RoadmapIndex.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapIndex.agda
+# Compile src/agda/Plan/CIM/RoadmapSync.agda
 src/agda/Plan/CIM/RoadmapSync.agdai: src/agda/Plan/CIM/RoadmapSync.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapSync.agda
+# Compile src/agda/Plan/CIM/PandocToMarkdown.agda
 src/agda/Plan/CIM/PandocToMarkdown.agdai: src/agda/Plan/CIM/PandocToMarkdown.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/PandocToMarkdown.agda
+# Compile src/agda/Plan/CIM/DocumentationContent.agda
 src/agda/Plan/CIM/DocumentationContent.agdai: src/agda/Plan/CIM/DocumentationContent.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/DocumentationContent.agda
+# Compile src/agda/Plan/CIM/RoadmapSPPF.agda
 src/agda/Plan/CIM/RoadmapSPPF.agdai: src/agda/Plan/CIM/RoadmapSPPF.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapSPPF.agda
+# Compile src/agda/Plan/CIM/RoadmapSPPFExport.agda
 src/agda/Plan/CIM/RoadmapSPPFExport.agdai: src/agda/Plan/CIM/RoadmapSPPFExport.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/RoadmapSPPFExport.agda
+# Compile src/agda/Plan/CIM/GPNarrativeDAG.agda
 src/agda/Plan/CIM/GPNarrativeDAG.agdai: src/agda/Plan/CIM/GPNarrativeDAG.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/GPNarrativeDAG.agda
+# Compile src/agda/Plan/CIM/MarkdownNormalize.agda
 src/agda/Plan/CIM/MarkdownNormalize.agdai: src/agda/Plan/CIM/MarkdownNormalize.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/MarkdownNormalize.agda
+# Compile src/agda/Plan/CIM/PandocAST.agda
 src/agda/Plan/CIM/PandocAST.agdai: src/agda/Plan/CIM/PandocAST.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/PandocAST.agda
+# Compile src/agda/Plan/CIM/GrammarBridge.agda
 src/agda/Plan/CIM/GrammarBridge.agdai: src/agda/Plan/CIM/GrammarBridge.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/GrammarBridge.agda
+# Compile src/agda/Plan/CIM/MarkdownParse.agda
 src/agda/Plan/CIM/MarkdownParse.agdai: src/agda/Plan/CIM/MarkdownParse.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Plan/CIM/MarkdownParse.agda
+# Compile src/agda/Algebra/Groups/Basic.agda
 src/agda/Algebra/Groups/Basic.agdai: src/agda/Algebra/Groups/Basic.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Groups/Basic.agda
+# Compile src/agda/Algebra/Groups/Theorems/Classical.agda
 src/agda/Algebra/Groups/Theorems/Classical.agdai: src/agda/Algebra/Groups/Theorems/Classical.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Groups/Theorems/Classical.agda
+# Compile src/agda/Algebra/Groups/ClassicalInstance.agda
 src/agda/Algebra/Groups/ClassicalInstance.agdai: src/agda/Algebra/Groups/ClassicalInstance.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Groups/ClassicalInstance.agda
+# Compile src/agda/Algebra/Groups/Structure.agda
 src/agda/Algebra/Groups/Structure.agdai: src/agda/Algebra/Groups/Structure.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Groups/Structure.agda
+# Compile src/agda/Algebra/Groups/BasicWithTheorems.agda
 src/agda/Algebra/Groups/BasicWithTheorems.agdai: src/agda/Algebra/Groups/BasicWithTheorems.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Groups/BasicWithTheorems.agda
+# Compile src/agda/Algebra/Groups/BasicParameterized.agda
 src/agda/Algebra/Groups/BasicParameterized.agdai: src/agda/Algebra/Groups/BasicParameterized.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Groups/BasicParameterized.agda
+# Compile src/agda/Algebra/Groups/Abelian.agda
 src/agda/Algebra/Groups/Abelian.agdai: src/agda/Algebra/Groups/Abelian.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Groups/Abelian.agda
+# Compile src/agda/Algebra/Groups/Types.agda
 src/agda/Algebra/Groups/Types.agdai: src/agda/Algebra/Groups/Types.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Groups/Types.agda
+# Compile src/agda/Algebra/Groups/Free.agda
 src/agda/Algebra/Groups/Free.agdai: src/agda/Algebra/Groups/Free.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Groups/Free.agda
+# Compile src/agda/Algebra/Enrichment.agda
 src/agda/Algebra/Enrichment.agdai: src/agda/Algebra/Enrichment.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Enrichment.agda
+# Compile src/agda/Algebra/Rings/Basic.agda
 src/agda/Algebra/Rings/Basic.agdai: src/agda/Algebra/Rings/Basic.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Rings/Basic.agda
+# Compile src/agda/Algebra/Rings/Theorems/Classical.agda
 src/agda/Algebra/Rings/Theorems/Classical.agdai: src/agda/Algebra/Rings/Theorems/Classical.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Rings/Theorems/Classical.agda
+# Compile src/agda/Algebra/Rings/ClassicalInstance.agda
 src/agda/Algebra/Rings/ClassicalInstance.agdai: src/agda/Algebra/Rings/ClassicalInstance.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Rings/ClassicalInstance.agda
+# Compile src/agda/Algebra/Rings/BasicWithTheorems.agda
 src/agda/Algebra/Rings/BasicWithTheorems.agdai: src/agda/Algebra/Rings/BasicWithTheorems.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Rings/BasicWithTheorems.agda
+# Compile src/agda/Algebra/Rings/Types.agda
 src/agda/Algebra/Rings/Types.agdai: src/agda/Algebra/Rings/Types.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Rings/Types.agda
+# Compile src/agda/Algebra/Modules/Basic.agda
 src/agda/Algebra/Modules/Basic.agdai: src/agda/Algebra/Modules/Basic.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Modules/Basic.agda
+# Compile src/agda/Algebra/Modules/Theorems/Classical.agda
 src/agda/Algebra/Modules/Theorems/Classical.agdai: src/agda/Algebra/Modules/Theorems/Classical.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Modules/Theorems/Classical.agda
+# Compile src/agda/Algebra/Modules/ClassicalInstance.agda
 src/agda/Algebra/Modules/ClassicalInstance.agdai: src/agda/Algebra/Modules/ClassicalInstance.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Modules/ClassicalInstance.agda
+# Compile src/agda/Algebra/Modules/BasicWithTheorems.agda
 src/agda/Algebra/Modules/BasicWithTheorems.agdai: src/agda/Algebra/Modules/BasicWithTheorems.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Modules/BasicWithTheorems.agda
+# Compile src/agda/Algebra/Modules/Types.agda
 src/agda/Algebra/Modules/Types.agdai: src/agda/Algebra/Modules/Types.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Modules/Types.agda
+# Compile src/agda/Algebra/Foundation.agda
 src/agda/Algebra/Foundation.agdai: src/agda/Algebra/Foundation.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Foundation.agda
+# Compile src/agda/Algebra/Fields/Basic.agda
 src/agda/Algebra/Fields/Basic.agdai: src/agda/Algebra/Fields/Basic.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Fields/Basic.agda
+# Compile src/agda/Algebra/Fields/Advanced.agda
 src/agda/Algebra/Fields/Advanced.agdai: src/agda/Algebra/Fields/Advanced.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Fields/Advanced.agda
+# Compile src/agda/Algebra/Fields/Theorems/Classical.agda
 src/agda/Algebra/Fields/Theorems/Classical.agdai: src/agda/Algebra/Fields/Theorems/Classical.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Fields/Theorems/Classical.agda
+# Compile src/agda/Algebra/Fields/ClassicalInstance.agda
 src/agda/Algebra/Fields/ClassicalInstance.agdai: src/agda/Algebra/Fields/ClassicalInstance.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Fields/ClassicalInstance.agda
+# Compile src/agda/Algebra/Fields/BasicWithTheorems.agda
 src/agda/Algebra/Fields/BasicWithTheorems.agdai: src/agda/Algebra/Fields/BasicWithTheorems.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Fields/BasicWithTheorems.agda
+# Compile src/agda/Algebra/Fields/Types.agda
 src/agda/Algebra/Fields/Types.agdai: src/agda/Algebra/Fields/Types.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Fields/Types.agda
+# Compile src/agda/Algebra/Index.agda
 src/agda/Algebra/Index.agdai: src/agda/Algebra/Index.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Algebra/Index.agda
+# Compile src/agda/Chapter1/Level1.agda
 src/agda/Chapter1/Level1.agdai: src/agda/Chapter1/Level1.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter1/Level1.agda
+# Compile src/agda/Chapter1/Level1sub8.agda
 src/agda/Chapter1/Level1sub8.agdai: src/agda/Chapter1/Level1sub8.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter1/Level1sub8.agda
+# Compile src/agda/Chapter1/Level1sub7.agda
 src/agda/Chapter1/Level1sub7.agdai: src/agda/Chapter1/Level1sub7.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter1/Level1sub7.agda
+# Compile src/agda/Chapter1/Level1sub3.agda
 src/agda/Chapter1/Level1sub3.agdai: src/agda/Chapter1/Level1sub3.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter1/Level1sub3.agda
+# Compile src/agda/Chapter1/Level1Index.agda
 src/agda/Chapter1/Level1Index.agdai: src/agda/Chapter1/Level1Index.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter1/Level1Index.agda
+# Compile src/agda/Chapter1/Level1sub2.agda
 src/agda/Chapter1/Level1sub2.agdai: src/agda/Chapter1/Level1sub2.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter1/Level1sub2.agda
+# Compile src/agda/Chapter1/Level1sub4.agda
 src/agda/Chapter1/Level1sub4.agdai: src/agda/Chapter1/Level1sub4.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter1/Level1sub4.agda
+# Compile src/agda/Chapter1/Level1sub5.agda
 src/agda/Chapter1/Level1sub5.agdai: src/agda/Chapter1/Level1sub5.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter1/Level1sub5.agda
+# Compile src/agda/Chapter1/Level1sub6.agda
 src/agda/Chapter1/Level1sub6.agdai: src/agda/Chapter1/Level1sub6.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Chapter1/Level1sub6.agda
+# Compile src/agda/PropertyRegistry.agda
 src/agda/PropertyRegistry.agdai: src/agda/PropertyRegistry.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/PropertyRegistry.agda
+# Compile src/agda/ExporterMakefile.agda
 src/agda/ExporterMakefile.agdai: src/agda/ExporterMakefile.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/ExporterMakefile.agda
+# Compile src/agda/Core/AlgorithmComplexity.agda
 src/agda/Core/AlgorithmComplexity.agdai: src/agda/Core/AlgorithmComplexity.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/AlgorithmComplexity.agda
+# Compile src/agda/Core/ABNF.agda
 src/agda/Core/ABNF.agdai: src/agda/Core/ABNF.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/ABNF.agda
+# Compile src/agda/Core/TechnicalDebt.agda
 src/agda/Core/TechnicalDebt.agdai: src/agda/Core/TechnicalDebt.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/TechnicalDebt.agda
+# Compile src/agda/Core/Witnesses.agda
 src/agda/Core/Witnesses.agdai: src/agda/Core/Witnesses.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Witnesses.agda
+# Compile src/agda/Core/BraidTree.agda
 src/agda/Core/BraidTree.agdai: src/agda/Core/BraidTree.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/BraidTree.agda
+# Compile src/agda/Core/Limitations.agda
 src/agda/Core/Limitations.agdai: src/agda/Core/Limitations.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Limitations.agda
+# Compile src/agda/Core/AlgorithmCorrectness.agda
 src/agda/Core/AlgorithmCorrectness.agdai: src/agda/Core/AlgorithmCorrectness.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/AlgorithmCorrectness.agda
+# Compile src/agda/Core/GrothendieckFibrations.agda
 src/agda/Core/GrothendieckFibrations.agdai: src/agda/Core/GrothendieckFibrations.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/GrothendieckFibrations.agda
+# Compile src/agda/Core/AlgorithmUniversality.agda
 src/agda/Core/AlgorithmUniversality.agdai: src/agda/Core/AlgorithmUniversality.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/AlgorithmUniversality.agda
+# Compile src/agda/Core/AdapterReflection.agda
 src/agda/Core/AdapterReflection.agdai: src/agda/Core/AdapterReflection.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/AdapterReflection.agda
+# Compile src/agda/Core/Phase.agda
 src/agda/Core/Phase.agdai: src/agda/Core/Phase.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Phase.agda
+# Compile src/agda/Core/AdapterAutomation.agda
 src/agda/Core/AdapterAutomation.agdai: src/agda/Core/AdapterAutomation.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/AdapterAutomation.agda
+# Compile src/agda/Core/Utils.agda
 src/agda/Core/Utils.agdai: src/agda/Core/Utils.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Utils.agda
+# Compile src/agda/Core/Algorithms/Registry.agda
 src/agda/Core/Algorithms/Registry.agdai: src/agda/Core/Algorithms/Registry.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Algorithms/Registry.agda
+# Compile src/agda/Core/Algorithms/FunctionFields.agda
 src/agda/Core/Algorithms/FunctionFields.agdai: src/agda/Core/Algorithms/FunctionFields.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Algorithms/FunctionFields.agda
+# Compile src/agda/Core/Algorithms/External.agda
 src/agda/Core/Algorithms/External.agdai: src/agda/Core/Algorithms/External.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Algorithms/External.agda
+# Compile src/agda/Core/Algorithms/FiniteFields.agda
 src/agda/Core/Algorithms/FiniteFields.agdai: src/agda/Core/Algorithms/FiniteFields.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Algorithms/FiniteFields.agda
+# Compile src/agda/Core/Algorithms/AutomaticEvidence.agda
 src/agda/Core/Algorithms/AutomaticEvidence.agdai: src/agda/Core/Algorithms/AutomaticEvidence.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Algorithms/AutomaticEvidence.agda
+# Compile src/agda/Core/Algorithms/NumberFields.agda
 src/agda/Core/Algorithms/NumberFields.agdai: src/agda/Core/Algorithms/NumberFields.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Algorithms/NumberFields.agda
+# Compile src/agda/Core/Algorithms/Bundle.agda
 src/agda/Core/Algorithms/Bundle.agdai: src/agda/Core/Algorithms/Bundle.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Algorithms/Bundle.agda
+# Compile src/agda/Core/Algorithms/InductiveClassification.agda
 src/agda/Core/Algorithms/InductiveClassification.agdai: src/agda/Core/Algorithms/InductiveClassification.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Algorithms/InductiveClassification.agda
+# Compile src/agda/Core/PhaseCategory.agda
 src/agda/Core/PhaseCategory.agdai: src/agda/Core/PhaseCategory.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/PhaseCategory.agda
+# Compile src/agda/Core/Rendering.agda
 src/agda/Core/Rendering.agdai: src/agda/Core/Rendering.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Rendering.agda
+# Compile src/agda/Core/ConstructiveWitnesses.agda
 src/agda/Core/ConstructiveWitnesses.agdai: src/agda/Core/ConstructiveWitnesses.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/ConstructiveWitnesses.agda
+# Compile src/agda/Core/UniversalProperties.agda
 src/agda/Core/UniversalProperties.agdai: src/agda/Core/UniversalProperties.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/UniversalProperties.agda
+# Compile src/agda/Core/IO.agda
 src/agda/Core/IO.agdai: src/agda/Core/IO.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/IO.agda
+# Compile src/agda/Core/GrowthMetrics.agda
 src/agda/Core/GrowthMetrics.agdai: src/agda/Core/GrowthMetrics.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/GrowthMetrics.agda
+# Compile src/agda/Core/AlgebraicAlgorithms.agda
 src/agda/Core/AlgebraicAlgorithms.agdai: src/agda/Core/AlgebraicAlgorithms.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/AlgebraicAlgorithms.agda
+# Compile src/agda/Core/Yoneda.agda
 src/agda/Core/Yoneda.agdai: src/agda/Core/Yoneda.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Yoneda.agda
+# Compile src/agda/Core/GodelBoundary.agda
 src/agda/Core/GodelBoundary.agdai: src/agda/Core/GodelBoundary.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/GodelBoundary.agda
+# Compile src/agda/Core/Strings.agda
 src/agda/Core/Strings.agdai: src/agda/Core/Strings.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/Strings.agda
+# Compile src/agda/Core/PathAggregator.agda
 src/agda/Core/PathAggregator.agdai: src/agda/Core/PathAggregator.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/PathAggregator.agda
+# Compile src/agda/Core/PolynomialsF2.agda
 src/agda/Core/PolynomialsF2.agdai: src/agda/Core/PolynomialsF2.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/PolynomialsF2.agda
+# Compile src/agda/Core/CategoricalAdapter.agda
 src/agda/Core/CategoricalAdapter.agdai: src/agda/Core/CategoricalAdapter.agda
 	$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type src/agda/Core/CategoricalAdapter.agda
+# Generate HTML for src/agda/MetaScan.agda
+build/html/src/agda/MetaScan.agda.html: src/agda/MetaScan.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/MetaScan.agda
+# Generate HTML for src/agda/Metamodel.agda
+build/html/src/agda/Metamodel.agda.html: src/agda/Metamodel.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Metamodel.agda
+# Generate HTML for src/agda/Tests/PropertyRegistryTests.agda
+build/html/src/agda/Tests/PropertyRegistryTests.agda.html: src/agda/Tests/PropertyRegistryTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/PropertyRegistryTests.agda
+# Generate HTML for src/agda/Tests/AbelianCategoriesChecklist.agda
+build/html/src/agda/Tests/AbelianCategoriesChecklist.agda.html: src/agda/Tests/AbelianCategoriesChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/AbelianCategoriesChecklist.agda
+# Generate HTML for src/agda/Tests/DispatchBehaviorTests.agda
+build/html/src/agda/Tests/DispatchBehaviorTests.agda.html: src/agda/Tests/DispatchBehaviorTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/DispatchBehaviorTests.agda
+# Generate HTML for src/agda/Tests/WitnessConstructionTests.agda
+build/html/src/agda/Tests/WitnessConstructionTests.agda.html: src/agda/Tests/WitnessConstructionTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/WitnessConstructionTests.agda
+# Generate HTML for src/agda/Tests/VectorSpaceChecklist.agda
+build/html/src/agda/Tests/VectorSpaceChecklist.agda.html: src/agda/Tests/VectorSpaceChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/VectorSpaceChecklist.agda
+# Generate HTML for src/agda/Tests/ProofObligationStatus.agda
+build/html/src/agda/Tests/ProofObligationStatus.agda.html: src/agda/Tests/ProofObligationStatus.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/ProofObligationStatus.agda
+# Generate HTML for src/agda/Tests/SerializationTests.agda
+build/html/src/agda/Tests/SerializationTests.agda.html: src/agda/Tests/SerializationTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/SerializationTests.agda
+# Generate HTML for src/agda/Tests/GodelBoundaryTests.agda
+build/html/src/agda/Tests/GodelBoundaryTests.agda.html: src/agda/Tests/GodelBoundaryTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/GodelBoundaryTests.agda
+# Generate HTML for src/agda/Tests/ModuleStructureChecklist.agda
+build/html/src/agda/Tests/ModuleStructureChecklist.agda.html: src/agda/Tests/ModuleStructureChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/ModuleStructureChecklist.agda
+# Generate HTML for src/agda/Tests/ToposTheoryChecklist.agda
+build/html/src/agda/Tests/ToposTheoryChecklist.agda.html: src/agda/Tests/ToposTheoryChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/ToposTheoryChecklist.agda
+# Generate HTML for src/agda/Tests/GrothendieckFibrationsChecklist.agda
+build/html/src/agda/Tests/GrothendieckFibrationsChecklist.agda.html: src/agda/Tests/GrothendieckFibrationsChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/GrothendieckFibrationsChecklist.agda
+# Generate HTML for src/agda/Tests/TensorProductChecklist.agda
+build/html/src/agda/Tests/TensorProductChecklist.agda.html: src/agda/Tests/TensorProductChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/TensorProductChecklist.agda
+# Generate HTML for src/agda/Tests/Index_PhaseII.agda
+build/html/src/agda/Tests/Index_PhaseII.agda.html: src/agda/Tests/Index_PhaseII.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/Index_PhaseII.agda
+# Generate HTML for src/agda/Tests/HierarchyValidation.agda
+build/html/src/agda/Tests/HierarchyValidation.agda.html: src/agda/Tests/HierarchyValidation.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/HierarchyValidation.agda
+# Generate HTML for src/agda/Tests/PhaseExamples.agda
+build/html/src/agda/Tests/PhaseExamples.agda.html: src/agda/Tests/PhaseExamples.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/PhaseExamples.agda
+# Generate HTML for src/agda/Tests/RegularCategoriesChecklist.agda
+build/html/src/agda/Tests/RegularCategoriesChecklist.agda.html: src/agda/Tests/RegularCategoriesChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/RegularCategoriesChecklist.agda
+# Generate HTML for src/agda/Tests/MonadAdjunctionChecklist.agda
+build/html/src/agda/Tests/MonadAdjunctionChecklist.agda.html: src/agda/Tests/MonadAdjunctionChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/MonadAdjunctionChecklist.agda
+# Generate HTML for src/agda/Tests/UniversalPropertyTests.agda
+build/html/src/agda/Tests/UniversalPropertyTests.agda.html: src/agda/Tests/UniversalPropertyTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/UniversalPropertyTests.agda
+# Generate HTML for src/agda/Tests/EnrichmentChecklist.agda
+build/html/src/agda/Tests/EnrichmentChecklist.agda.html: src/agda/Tests/EnrichmentChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/EnrichmentChecklist.agda
+# Generate HTML for src/agda/Tests/AdvancedPhaseExamples.agda
+build/html/src/agda/Tests/AdvancedPhaseExamples.agda.html: src/agda/Tests/AdvancedPhaseExamples.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/AdvancedPhaseExamples.agda
+# Generate HTML for src/agda/Tests/ErrorAsSpecificationTests.agda
+build/html/src/agda/Tests/ErrorAsSpecificationTests.agda.html: src/agda/Tests/ErrorAsSpecificationTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/ErrorAsSpecificationTests.agda
+# Generate HTML for src/agda/Tests/RealWorldAlgorithmsTests.agda
+build/html/src/agda/Tests/RealWorldAlgorithmsTests.agda.html: src/agda/Tests/RealWorldAlgorithmsTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/RealWorldAlgorithmsTests.agda
+# Generate HTML for src/agda/Tests/PolynomialExtensionsChecklist.agda
+build/html/src/agda/Tests/PolynomialExtensionsChecklist.agda.html: src/agda/Tests/PolynomialExtensionsChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/PolynomialExtensionsChecklist.agda
+# Generate HTML for src/agda/Tests/ModuleTheoryChecklist.agda
+build/html/src/agda/Tests/ModuleTheoryChecklist.agda.html: src/agda/Tests/ModuleTheoryChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/ModuleTheoryChecklist.agda
+# Generate HTML for src/agda/Tests/PhaseCategoryExamplesRunner.agda
+build/html/src/agda/Tests/PhaseCategoryExamplesRunner.agda.html: src/agda/Tests/PhaseCategoryExamplesRunner.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/PhaseCategoryExamplesRunner.agda
+# Generate HTML for src/agda/Tests/PolynomialFieldExtensionsChecklist.agda
+build/html/src/agda/Tests/PolynomialFieldExtensionsChecklist.agda.html: src/agda/Tests/PolynomialFieldExtensionsChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/PolynomialFieldExtensionsChecklist.agda
+# Generate HTML for src/agda/Tests/AlgorithmCompositionTests.agda
+build/html/src/agda/Tests/AlgorithmCompositionTests.agda.html: src/agda/Tests/AlgorithmCompositionTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/AlgorithmCompositionTests.agda
+# Generate HTML for src/agda/Tests/FieldsBasicChecklist.agda
+build/html/src/agda/Tests/FieldsBasicChecklist.agda.html: src/agda/Tests/FieldsBasicChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/FieldsBasicChecklist.agda
+# Generate HTML for src/agda/Tests/SpecificationValidation.agda
+build/html/src/agda/Tests/SpecificationValidation.agda.html: src/agda/Tests/SpecificationValidation.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/SpecificationValidation.agda
+# Generate HTML for src/agda/Tests/AlgorithmSmokeTests.agda
+build/html/src/agda/Tests/AlgorithmSmokeTests.agda.html: src/agda/Tests/AlgorithmSmokeTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/AlgorithmSmokeTests.agda
+# Generate HTML for src/agda/Tests/CoverageReport.agda
+build/html/src/agda/Tests/CoverageReport.agda.html: src/agda/Tests/CoverageReport.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/CoverageReport.agda
+# Generate HTML for src/agda/Tests/GroupsFreeChecklist.agda
+build/html/src/agda/Tests/GroupsFreeChecklist.agda.html: src/agda/Tests/GroupsFreeChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/GroupsFreeChecklist.agda
+# Generate HTML for src/agda/Tests/RingsBasicChecklist.agda
+build/html/src/agda/Tests/RingsBasicChecklist.agda.html: src/agda/Tests/RingsBasicChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/RingsBasicChecklist.agda
+# Generate HTML for src/agda/Tests/Chapter2Checklist.agda
+build/html/src/agda/Tests/Chapter2Checklist.agda.html: src/agda/Tests/Chapter2Checklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/Chapter2Checklist.agda
+# Generate HTML for src/agda/Tests/KanExtensionsChecklist.agda
+build/html/src/agda/Tests/KanExtensionsChecklist.agda.html: src/agda/Tests/KanExtensionsChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/KanExtensionsChecklist.agda
+# Generate HTML for src/agda/Tests/LimitsColimitsChecklist.agda
+build/html/src/agda/Tests/LimitsColimitsChecklist.agda.html: src/agda/Tests/LimitsColimitsChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/LimitsColimitsChecklist.agda
+# Generate HTML for src/agda/Tests/AdvancedMonadTheoryChecklist.agda
+build/html/src/agda/Tests/AdvancedMonadTheoryChecklist.agda.html: src/agda/Tests/AdvancedMonadTheoryChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/AdvancedMonadTheoryChecklist.agda
+# Generate HTML for src/agda/Tests/CoreUniversalPropertiesChecklist.agda
+build/html/src/agda/Tests/CoreUniversalPropertiesChecklist.agda.html: src/agda/Tests/CoreUniversalPropertiesChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/CoreUniversalPropertiesChecklist.agda
+# Generate HTML for src/agda/Tests/ChapterObligationsSmoke.agda
+build/html/src/agda/Tests/ChapterObligationsSmoke.agda.html: src/agda/Tests/ChapterObligationsSmoke.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/ChapterObligationsSmoke.agda
+# Generate HTML for src/agda/Tests/ConstructiveWitnessTests.agda
+build/html/src/agda/Tests/ConstructiveWitnessTests.agda.html: src/agda/Tests/ConstructiveWitnessTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/ConstructiveWitnessTests.agda
+# Generate HTML for src/agda/Tests/PerformanceBoundaryTests.agda
+build/html/src/agda/Tests/PerformanceBoundaryTests.agda.html: src/agda/Tests/PerformanceBoundaryTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/PerformanceBoundaryTests.agda
+# Generate HTML for src/agda/Tests/PathAggregatorTests.agda
+build/html/src/agda/Tests/PathAggregatorTests.agda.html: src/agda/Tests/PathAggregatorTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/PathAggregatorTests.agda
+# Generate HTML for src/agda/Tests/GroupsAbelianChecklist.agda
+build/html/src/agda/Tests/GroupsAbelianChecklist.agda.html: src/agda/Tests/GroupsAbelianChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/GroupsAbelianChecklist.agda
+# Generate HTML for src/agda/Tests/Chapter1Checklist.agda
+build/html/src/agda/Tests/Chapter1Checklist.agda.html: src/agda/Tests/Chapter1Checklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/Chapter1Checklist.agda
+# Generate HTML for src/agda/Tests/AdvancedFieldsChecklist.agda
+build/html/src/agda/Tests/AdvancedFieldsChecklist.agda.html: src/agda/Tests/AdvancedFieldsChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/AdvancedFieldsChecklist.agda
+# Generate HTML for src/agda/Tests/WarningAggregatorsTest.agda
+build/html/src/agda/Tests/WarningAggregatorsTest.agda.html: src/agda/Tests/WarningAggregatorsTest.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/WarningAggregatorsTest.agda
+# Generate HTML for src/agda/Tests/Index.agda
+build/html/src/agda/Tests/Index.agda.html: src/agda/Tests/Index.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/Index.agda
+# Generate HTML for src/agda/Tests/ObligationAdapters.agda
+build/html/src/agda/Tests/ObligationAdapters.agda.html: src/agda/Tests/ObligationAdapters.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/ObligationAdapters.agda
+# Generate HTML for src/agda/Tests/ToposObligationAdapters.agda
+build/html/src/agda/Tests/ToposObligationAdapters.agda.html: src/agda/Tests/ToposObligationAdapters.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/ToposObligationAdapters.agda
+# Generate HTML for src/agda/Tests/Chapters.agda
+build/html/src/agda/Tests/Chapters.agda.html: src/agda/Tests/Chapters.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/Chapters.agda
+# Generate HTML for src/agda/Tests/YonedaChecklist.agda
+build/html/src/agda/Tests/YonedaChecklist.agda.html: src/agda/Tests/YonedaChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/YonedaChecklist.agda
+# Generate HTML for src/agda/Tests/AlgebraicCompletionChecklist.agda
+build/html/src/agda/Tests/AlgebraicCompletionChecklist.agda.html: src/agda/Tests/AlgebraicCompletionChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/AlgebraicCompletionChecklist.agda
+# Generate HTML for src/agda/Tests/FunctorPropertiesChecklist.agda
+build/html/src/agda/Tests/FunctorPropertiesChecklist.agda.html: src/agda/Tests/FunctorPropertiesChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/FunctorPropertiesChecklist.agda
+# Generate HTML for src/agda/Tests/AlgebraChecklist.agda
+build/html/src/agda/Tests/AlgebraChecklist.agda.html: src/agda/Tests/AlgebraChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/AlgebraChecklist.agda
+# Generate HTML for src/agda/Tests/ErrorHandlingTests.agda
+build/html/src/agda/Tests/ErrorHandlingTests.agda.html: src/agda/Tests/ErrorHandlingTests.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/ErrorHandlingTests.agda
+# Generate HTML for src/agda/Tests/GroupsStructureChecklist.agda
+build/html/src/agda/Tests/GroupsStructureChecklist.agda.html: src/agda/Tests/GroupsStructureChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/GroupsStructureChecklist.agda
+# Generate HTML for src/agda/Tests/ModulesChecklist.agda
+build/html/src/agda/Tests/ModulesChecklist.agda.html: src/agda/Tests/ModulesChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/ModulesChecklist.agda
+# Generate HTML for src/agda/Tests/Chapter3Checklist.agda
+build/html/src/agda/Tests/Chapter3Checklist.agda.html: src/agda/Tests/Chapter3Checklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/Chapter3Checklist.agda
+# Generate HTML for src/agda/Tests/SubobjectTheoryChecklist.agda
+build/html/src/agda/Tests/SubobjectTheoryChecklist.agda.html: src/agda/Tests/SubobjectTheoryChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Tests/SubobjectTheoryChecklist.agda
+# Generate HTML for src/agda/Chapter2/Level2sub3.agda
+build/html/src/agda/Chapter2/Level2sub3.agda.html: src/agda/Chapter2/Level2sub3.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter2/Level2sub3.agda
+# Generate HTML for src/agda/Chapter2/Level2sub6.agda
+build/html/src/agda/Chapter2/Level2sub6.agda.html: src/agda/Chapter2/Level2sub6.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter2/Level2sub6.agda
+# Generate HTML for src/agda/Chapter2/Level2sub5.agda
+build/html/src/agda/Chapter2/Level2sub5.agda.html: src/agda/Chapter2/Level2sub5.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter2/Level2sub5.agda
+# Generate HTML for src/agda/Chapter2/Level2sub8.agda
+build/html/src/agda/Chapter2/Level2sub8.agda.html: src/agda/Chapter2/Level2sub8.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter2/Level2sub8.agda
+# Generate HTML for src/agda/Chapter2/Level2sub7.agda
+build/html/src/agda/Chapter2/Level2sub7.agda.html: src/agda/Chapter2/Level2sub7.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter2/Level2sub7.agda
+# Generate HTML for src/agda/Chapter2/Level2sub2.agda
+build/html/src/agda/Chapter2/Level2sub2.agda.html: src/agda/Chapter2/Level2sub2.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter2/Level2sub2.agda
+# Generate HTML for src/agda/Chapter2/Level2sub1.agda
+build/html/src/agda/Chapter2/Level2sub1.agda.html: src/agda/Chapter2/Level2sub1.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter2/Level2sub1.agda
+# Generate HTML for src/agda/Chapter2/Level2sub4.agda
+build/html/src/agda/Chapter2/Level2sub4.agda.html: src/agda/Chapter2/Level2sub4.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter2/Level2sub4.agda
+# Generate HTML for src/agda/Chapter2/Level2Index.agda
+build/html/src/agda/Chapter2/Level2Index.agda.html: src/agda/Chapter2/Level2Index.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter2/Level2Index.agda
+# Generate HTML for src/agda/Chapter3/Level3sub1.agda
+build/html/src/agda/Chapter3/Level3sub1.agda.html: src/agda/Chapter3/Level3sub1.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter3/Level3sub1.agda
+# Generate HTML for src/agda/Chapter3/Level3sub2.agda
+build/html/src/agda/Chapter3/Level3sub2.agda.html: src/agda/Chapter3/Level3sub2.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter3/Level3sub2.agda
+# Generate HTML for src/agda/Chapter3/Level3Index.agda
+build/html/src/agda/Chapter3/Level3Index.agda.html: src/agda/Chapter3/Level3Index.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter3/Level3Index.agda
+# Generate HTML for src/agda/Core.agda
+build/html/src/agda/Core.agda.html: src/agda/Core.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core.agda
+# Generate HTML for src/agda/Examples/RealWorldAlgorithms.agda
+build/html/src/agda/Examples/RealWorldAlgorithms.agda.html: src/agda/Examples/RealWorldAlgorithms.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/RealWorldAlgorithms.agda
+# Generate HTML for src/agda/Examples/TechnicalDebtExample.agda
+build/html/src/agda/Examples/TechnicalDebtExample.agda.html: src/agda/Examples/TechnicalDebtExample.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/TechnicalDebtExample.agda
+# Generate HTML for src/agda/Examples/FunctionField/F2x.agda
+build/html/src/agda/Examples/FunctionField/F2x.agda.html: src/agda/Examples/FunctionField/F2x.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/FunctionField/F2x.agda
+# Generate HTML for src/agda/Examples/AlgorithmCorrectnessExamples.agda
+build/html/src/agda/Examples/AlgorithmCorrectnessExamples.agda.html: src/agda/Examples/AlgorithmCorrectnessExamples.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/AlgorithmCorrectnessExamples.agda
+# Generate HTML for src/agda/Examples/NumberField/Sqrt2.agda
+build/html/src/agda/Examples/NumberField/Sqrt2.agda.html: src/agda/Examples/NumberField/Sqrt2.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/NumberField/Sqrt2.agda
+# Generate HTML for src/agda/Examples/FiniteField/GF8.agda
+build/html/src/agda/Examples/FiniteField/GF8.agda.html: src/agda/Examples/FiniteField/GF8.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/FiniteField/GF8.agda
+# Generate HTML for src/agda/Examples/DeferredItemsScanner.agda
+build/html/src/agda/Examples/DeferredItemsScanner.agda.html: src/agda/Examples/DeferredItemsScanner.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/DeferredItemsScanner.agda
+# Generate HTML for src/agda/Examples/AutomaticEvidenceDemo.agda
+build/html/src/agda/Examples/AutomaticEvidenceDemo.agda.html: src/agda/Examples/AutomaticEvidenceDemo.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/AutomaticEvidenceDemo.agda
+# Generate HTML for src/agda/Examples/ConstructiveWitnessExamples.agda
+build/html/src/agda/Examples/ConstructiveWitnessExamples.agda.html: src/agda/Examples/ConstructiveWitnessExamples.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/ConstructiveWitnessExamples.agda
+# Generate HTML for src/agda/Examples/AgdaMakefileDeps.agda
+build/html/src/agda/Examples/AgdaMakefileDeps.agda.html: src/agda/Examples/AgdaMakefileDeps.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/AgdaMakefileDeps.agda
+# Generate HTML for src/agda/Examples/LazyHybridDemo.agda
+build/html/src/agda/Examples/LazyHybridDemo.agda.html: src/agda/Examples/LazyHybridDemo.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/LazyHybridDemo.agda
+# Generate HTML for src/agda/Examples/TechnicalDebtRegistry.agda
+build/html/src/agda/Examples/TechnicalDebtRegistry.agda.html: src/agda/Examples/TechnicalDebtRegistry.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/TechnicalDebtRegistry.agda
+# Generate HTML for src/agda/Examples/RoadmapIssueSync.agda
+build/html/src/agda/Examples/RoadmapIssueSync.agda.html: src/agda/Examples/RoadmapIssueSync.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/RoadmapIssueSync.agda
+# Generate HTML for src/agda/Examples/MakefileTargets.agda
+build/html/src/agda/Examples/MakefileTargets.agda.html: src/agda/Examples/MakefileTargets.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/MakefileTargets.agda
+# Generate HTML for src/agda/Examples/PhaseCategoryExamples.agda
+build/html/src/agda/Examples/PhaseCategoryExamples.agda.html: src/agda/Examples/PhaseCategoryExamples.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/PhaseCategoryExamples.agda
+# Generate HTML for src/agda/Examples/TechnicalDebtChecklist.agda
+build/html/src/agda/Examples/TechnicalDebtChecklist.agda.html: src/agda/Examples/TechnicalDebtChecklist.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/TechnicalDebtChecklist.agda
+# Generate HTML for src/agda/Examples/AgdaFileScanFFI.agda
+build/html/src/agda/Examples/AgdaFileScanFFI.agda.html: src/agda/Examples/AgdaFileScanFFI.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/AgdaFileScanFFI.agda
+# Generate HTML for src/agda/Examples/ExporterMakefile.agda
+build/html/src/agda/Examples/ExporterMakefile.agda.html: src/agda/Examples/ExporterMakefile.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Examples/ExporterMakefile.agda
+# Generate HTML for src/agda/Markdown/ExportProof.agda
+build/html/src/agda/Markdown/ExportProof.agda.html: src/agda/Markdown/ExportProof.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Markdown/ExportProof.agda
+# Generate HTML for src/agda/Markdown/Normalization.agda
+build/html/src/agda/Markdown/Normalization.agda.html: src/agda/Markdown/Normalization.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Markdown/Normalization.agda
+# Generate HTML for src/agda/Plan/CIM/PandocProofExample.agda
+build/html/src/agda/Plan/CIM/PandocProofExample.agda.html: src/agda/Plan/CIM/PandocProofExample.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/PandocProofExample.agda
+# Generate HTML for src/agda/Plan/CIM/PandocProtocols.agda
+build/html/src/agda/Plan/CIM/PandocProtocols.agda.html: src/agda/Plan/CIM/PandocProtocols.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/PandocProtocols.agda
+# Generate HTML for src/agda/Plan/CIM/CHIPCoreRecompose.agda
+build/html/src/agda/Plan/CIM/CHIPCoreRecompose.agda.html: src/agda/Plan/CIM/CHIPCoreRecompose.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/CHIPCoreRecompose.agda
+# Generate HTML for src/agda/Plan/CIM/PandocProofExport.agda
+build/html/src/agda/Plan/CIM/PandocProofExport.agda.html: src/agda/Plan/CIM/PandocProofExport.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/PandocProofExport.agda
+# Generate HTML for src/agda/Plan/CIM/Utility.agda
+build/html/src/agda/Plan/CIM/Utility.agda.html: src/agda/Plan/CIM/Utility.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/Utility.agda
+# Generate HTML for src/agda/Plan/CIM/IngestedRoadmaps.agda
+build/html/src/agda/Plan/CIM/IngestedRoadmaps.agda.html: src/agda/Plan/CIM/IngestedRoadmaps.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/IngestedRoadmaps.agda
+# Generate HTML for src/agda/Plan/CIM/Structure.agda
+build/html/src/agda/Plan/CIM/Structure.agda.html: src/agda/Plan/CIM/Structure.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/Structure.agda
+# Generate HTML for src/agda/Plan/CIM/DocumentSynthesis.agda
+build/html/src/agda/Plan/CIM/DocumentSynthesis.agda.html: src/agda/Plan/CIM/DocumentSynthesis.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/DocumentSynthesis.agda
+# Generate HTML for src/agda/Plan/CIM/CHIPRecomposed.agda
+build/html/src/agda/Plan/CIM/CHIPRecomposed.agda.html: src/agda/Plan/CIM/CHIPRecomposed.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/CHIPRecomposed.agda
+# Generate HTML for src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agda
+build/html/src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agda.html: src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agda
+# Generate HTML for src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agda
+build/html/src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agda.html: src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agda
+# Generate HTML for src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda
+build/html/src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda.html: src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda
+# Generate HTML for src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agda
+build/html/src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agda.html: src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agda
+# Generate HTML for src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agda
+build/html/src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agda.html: src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agda
+# Generate HTML for src/agda/Plan/CIM/RoadmapExporter.agda
+build/html/src/agda/Plan/CIM/RoadmapExporter.agda.html: src/agda/Plan/CIM/RoadmapExporter.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/RoadmapExporter.agda
+# Generate HTML for src/agda/Plan/CIM/CanonicalRoadmap.agda
+build/html/src/agda/Plan/CIM/CanonicalRoadmap.agda.html: src/agda/Plan/CIM/CanonicalRoadmap.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/CanonicalRoadmap.agda
+# Generate HTML for src/agda/Plan/CIM/CHIPConformance.agda
+build/html/src/agda/Plan/CIM/CHIPConformance.agda.html: src/agda/Plan/CIM/CHIPConformance.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/CHIPConformance.agda
+# Generate HTML for src/agda/Plan/CIM/FrameworkMetadata.agda
+build/html/src/agda/Plan/CIM/FrameworkMetadata.agda.html: src/agda/Plan/CIM/FrameworkMetadata.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/FrameworkMetadata.agda
+# Generate HTML for src/agda/Plan/CIM/ModuleExporter.agda
+build/html/src/agda/Plan/CIM/ModuleExporter.agda.html: src/agda/Plan/CIM/ModuleExporter.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/ModuleExporter.agda
+# Generate HTML for src/agda/Plan/CIM/RoadmapIndex.agda
+build/html/src/agda/Plan/CIM/RoadmapIndex.agda.html: src/agda/Plan/CIM/RoadmapIndex.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/RoadmapIndex.agda
+# Generate HTML for src/agda/Plan/CIM/RoadmapSync.agda
+build/html/src/agda/Plan/CIM/RoadmapSync.agda.html: src/agda/Plan/CIM/RoadmapSync.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/RoadmapSync.agda
+# Generate HTML for src/agda/Plan/CIM/PandocToMarkdown.agda
+build/html/src/agda/Plan/CIM/PandocToMarkdown.agda.html: src/agda/Plan/CIM/PandocToMarkdown.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/PandocToMarkdown.agda
+# Generate HTML for src/agda/Plan/CIM/DocumentationContent.agda
+build/html/src/agda/Plan/CIM/DocumentationContent.agda.html: src/agda/Plan/CIM/DocumentationContent.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/DocumentationContent.agda
+# Generate HTML for src/agda/Plan/CIM/RoadmapSPPF.agda
+build/html/src/agda/Plan/CIM/RoadmapSPPF.agda.html: src/agda/Plan/CIM/RoadmapSPPF.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/RoadmapSPPF.agda
+# Generate HTML for src/agda/Plan/CIM/RoadmapSPPFExport.agda
+build/html/src/agda/Plan/CIM/RoadmapSPPFExport.agda.html: src/agda/Plan/CIM/RoadmapSPPFExport.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/RoadmapSPPFExport.agda
+# Generate HTML for src/agda/Plan/CIM/GPNarrativeDAG.agda
+build/html/src/agda/Plan/CIM/GPNarrativeDAG.agda.html: src/agda/Plan/CIM/GPNarrativeDAG.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/GPNarrativeDAG.agda
+# Generate HTML for src/agda/Plan/CIM/MarkdownNormalize.agda
+build/html/src/agda/Plan/CIM/MarkdownNormalize.agda.html: src/agda/Plan/CIM/MarkdownNormalize.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/MarkdownNormalize.agda
+# Generate HTML for src/agda/Plan/CIM/PandocAST.agda
+build/html/src/agda/Plan/CIM/PandocAST.agda.html: src/agda/Plan/CIM/PandocAST.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/PandocAST.agda
+# Generate HTML for src/agda/Plan/CIM/GrammarBridge.agda
+build/html/src/agda/Plan/CIM/GrammarBridge.agda.html: src/agda/Plan/CIM/GrammarBridge.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/GrammarBridge.agda
+# Generate HTML for src/agda/Plan/CIM/MarkdownParse.agda
+build/html/src/agda/Plan/CIM/MarkdownParse.agda.html: src/agda/Plan/CIM/MarkdownParse.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Plan/CIM/MarkdownParse.agda
+# Generate HTML for src/agda/Algebra/Groups/Basic.agda
+build/html/src/agda/Algebra/Groups/Basic.agda.html: src/agda/Algebra/Groups/Basic.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Groups/Basic.agda
+# Generate HTML for src/agda/Algebra/Groups/Theorems/Classical.agda
+build/html/src/agda/Algebra/Groups/Theorems/Classical.agda.html: src/agda/Algebra/Groups/Theorems/Classical.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Groups/Theorems/Classical.agda
+# Generate HTML for src/agda/Algebra/Groups/ClassicalInstance.agda
+build/html/src/agda/Algebra/Groups/ClassicalInstance.agda.html: src/agda/Algebra/Groups/ClassicalInstance.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Groups/ClassicalInstance.agda
+# Generate HTML for src/agda/Algebra/Groups/Structure.agda
+build/html/src/agda/Algebra/Groups/Structure.agda.html: src/agda/Algebra/Groups/Structure.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Groups/Structure.agda
+# Generate HTML for src/agda/Algebra/Groups/BasicWithTheorems.agda
+build/html/src/agda/Algebra/Groups/BasicWithTheorems.agda.html: src/agda/Algebra/Groups/BasicWithTheorems.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Groups/BasicWithTheorems.agda
+# Generate HTML for src/agda/Algebra/Groups/BasicParameterized.agda
+build/html/src/agda/Algebra/Groups/BasicParameterized.agda.html: src/agda/Algebra/Groups/BasicParameterized.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Groups/BasicParameterized.agda
+# Generate HTML for src/agda/Algebra/Groups/Abelian.agda
+build/html/src/agda/Algebra/Groups/Abelian.agda.html: src/agda/Algebra/Groups/Abelian.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Groups/Abelian.agda
+# Generate HTML for src/agda/Algebra/Groups/Types.agda
+build/html/src/agda/Algebra/Groups/Types.agda.html: src/agda/Algebra/Groups/Types.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Groups/Types.agda
+# Generate HTML for src/agda/Algebra/Groups/Free.agda
+build/html/src/agda/Algebra/Groups/Free.agda.html: src/agda/Algebra/Groups/Free.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Groups/Free.agda
+# Generate HTML for src/agda/Algebra/Enrichment.agda
+build/html/src/agda/Algebra/Enrichment.agda.html: src/agda/Algebra/Enrichment.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Enrichment.agda
+# Generate HTML for src/agda/Algebra/Rings/Basic.agda
+build/html/src/agda/Algebra/Rings/Basic.agda.html: src/agda/Algebra/Rings/Basic.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Rings/Basic.agda
+# Generate HTML for src/agda/Algebra/Rings/Theorems/Classical.agda
+build/html/src/agda/Algebra/Rings/Theorems/Classical.agda.html: src/agda/Algebra/Rings/Theorems/Classical.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Rings/Theorems/Classical.agda
+# Generate HTML for src/agda/Algebra/Rings/ClassicalInstance.agda
+build/html/src/agda/Algebra/Rings/ClassicalInstance.agda.html: src/agda/Algebra/Rings/ClassicalInstance.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Rings/ClassicalInstance.agda
+# Generate HTML for src/agda/Algebra/Rings/BasicWithTheorems.agda
+build/html/src/agda/Algebra/Rings/BasicWithTheorems.agda.html: src/agda/Algebra/Rings/BasicWithTheorems.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Rings/BasicWithTheorems.agda
+# Generate HTML for src/agda/Algebra/Rings/Types.agda
+build/html/src/agda/Algebra/Rings/Types.agda.html: src/agda/Algebra/Rings/Types.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Rings/Types.agda
+# Generate HTML for src/agda/Algebra/Modules/Basic.agda
+build/html/src/agda/Algebra/Modules/Basic.agda.html: src/agda/Algebra/Modules/Basic.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Modules/Basic.agda
+# Generate HTML for src/agda/Algebra/Modules/Theorems/Classical.agda
+build/html/src/agda/Algebra/Modules/Theorems/Classical.agda.html: src/agda/Algebra/Modules/Theorems/Classical.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Modules/Theorems/Classical.agda
+# Generate HTML for src/agda/Algebra/Modules/ClassicalInstance.agda
+build/html/src/agda/Algebra/Modules/ClassicalInstance.agda.html: src/agda/Algebra/Modules/ClassicalInstance.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Modules/ClassicalInstance.agda
+# Generate HTML for src/agda/Algebra/Modules/BasicWithTheorems.agda
+build/html/src/agda/Algebra/Modules/BasicWithTheorems.agda.html: src/agda/Algebra/Modules/BasicWithTheorems.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Modules/BasicWithTheorems.agda
+# Generate HTML for src/agda/Algebra/Modules/Types.agda
+build/html/src/agda/Algebra/Modules/Types.agda.html: src/agda/Algebra/Modules/Types.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Modules/Types.agda
+# Generate HTML for src/agda/Algebra/Foundation.agda
+build/html/src/agda/Algebra/Foundation.agda.html: src/agda/Algebra/Foundation.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Foundation.agda
+# Generate HTML for src/agda/Algebra/Fields/Basic.agda
+build/html/src/agda/Algebra/Fields/Basic.agda.html: src/agda/Algebra/Fields/Basic.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Fields/Basic.agda
+# Generate HTML for src/agda/Algebra/Fields/Advanced.agda
+build/html/src/agda/Algebra/Fields/Advanced.agda.html: src/agda/Algebra/Fields/Advanced.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Fields/Advanced.agda
+# Generate HTML for src/agda/Algebra/Fields/Theorems/Classical.agda
+build/html/src/agda/Algebra/Fields/Theorems/Classical.agda.html: src/agda/Algebra/Fields/Theorems/Classical.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Fields/Theorems/Classical.agda
+# Generate HTML for src/agda/Algebra/Fields/ClassicalInstance.agda
+build/html/src/agda/Algebra/Fields/ClassicalInstance.agda.html: src/agda/Algebra/Fields/ClassicalInstance.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Fields/ClassicalInstance.agda
+# Generate HTML for src/agda/Algebra/Fields/BasicWithTheorems.agda
+build/html/src/agda/Algebra/Fields/BasicWithTheorems.agda.html: src/agda/Algebra/Fields/BasicWithTheorems.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Fields/BasicWithTheorems.agda
+# Generate HTML for src/agda/Algebra/Fields/Types.agda
+build/html/src/agda/Algebra/Fields/Types.agda.html: src/agda/Algebra/Fields/Types.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Fields/Types.agda
+# Generate HTML for src/agda/Algebra/Index.agda
+build/html/src/agda/Algebra/Index.agda.html: src/agda/Algebra/Index.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Algebra/Index.agda
+# Generate HTML for src/agda/Chapter1/Level1.agda
+build/html/src/agda/Chapter1/Level1.agda.html: src/agda/Chapter1/Level1.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter1/Level1.agda
+# Generate HTML for src/agda/Chapter1/Level1sub8.agda
+build/html/src/agda/Chapter1/Level1sub8.agda.html: src/agda/Chapter1/Level1sub8.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter1/Level1sub8.agda
+# Generate HTML for src/agda/Chapter1/Level1sub7.agda
+build/html/src/agda/Chapter1/Level1sub7.agda.html: src/agda/Chapter1/Level1sub7.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter1/Level1sub7.agda
+# Generate HTML for src/agda/Chapter1/Level1sub3.agda
+build/html/src/agda/Chapter1/Level1sub3.agda.html: src/agda/Chapter1/Level1sub3.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter1/Level1sub3.agda
+# Generate HTML for src/agda/Chapter1/Level1Index.agda
+build/html/src/agda/Chapter1/Level1Index.agda.html: src/agda/Chapter1/Level1Index.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter1/Level1Index.agda
+# Generate HTML for src/agda/Chapter1/Level1sub2.agda
+build/html/src/agda/Chapter1/Level1sub2.agda.html: src/agda/Chapter1/Level1sub2.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter1/Level1sub2.agda
+# Generate HTML for src/agda/Chapter1/Level1sub4.agda
+build/html/src/agda/Chapter1/Level1sub4.agda.html: src/agda/Chapter1/Level1sub4.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter1/Level1sub4.agda
+# Generate HTML for src/agda/Chapter1/Level1sub5.agda
+build/html/src/agda/Chapter1/Level1sub5.agda.html: src/agda/Chapter1/Level1sub5.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter1/Level1sub5.agda
+# Generate HTML for src/agda/Chapter1/Level1sub6.agda
+build/html/src/agda/Chapter1/Level1sub6.agda.html: src/agda/Chapter1/Level1sub6.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Chapter1/Level1sub6.agda
+# Generate HTML for src/agda/PropertyRegistry.agda
+build/html/src/agda/PropertyRegistry.agda.html: src/agda/PropertyRegistry.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/PropertyRegistry.agda
+# Generate HTML for src/agda/ExporterMakefile.agda
+build/html/src/agda/ExporterMakefile.agda.html: src/agda/ExporterMakefile.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/ExporterMakefile.agda
+# Generate HTML for src/agda/Core/AlgorithmComplexity.agda
+build/html/src/agda/Core/AlgorithmComplexity.agda.html: src/agda/Core/AlgorithmComplexity.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/AlgorithmComplexity.agda
+# Generate HTML for src/agda/Core/ABNF.agda
+build/html/src/agda/Core/ABNF.agda.html: src/agda/Core/ABNF.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/ABNF.agda
+# Generate HTML for src/agda/Core/TechnicalDebt.agda
+build/html/src/agda/Core/TechnicalDebt.agda.html: src/agda/Core/TechnicalDebt.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/TechnicalDebt.agda
+# Generate HTML for src/agda/Core/Witnesses.agda
+build/html/src/agda/Core/Witnesses.agda.html: src/agda/Core/Witnesses.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Witnesses.agda
+# Generate HTML for src/agda/Core/BraidTree.agda
+build/html/src/agda/Core/BraidTree.agda.html: src/agda/Core/BraidTree.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/BraidTree.agda
+# Generate HTML for src/agda/Core/Limitations.agda
+build/html/src/agda/Core/Limitations.agda.html: src/agda/Core/Limitations.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Limitations.agda
+# Generate HTML for src/agda/Core/AlgorithmCorrectness.agda
+build/html/src/agda/Core/AlgorithmCorrectness.agda.html: src/agda/Core/AlgorithmCorrectness.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/AlgorithmCorrectness.agda
+# Generate HTML for src/agda/Core/GrothendieckFibrations.agda
+build/html/src/agda/Core/GrothendieckFibrations.agda.html: src/agda/Core/GrothendieckFibrations.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/GrothendieckFibrations.agda
+# Generate HTML for src/agda/Core/AlgorithmUniversality.agda
+build/html/src/agda/Core/AlgorithmUniversality.agda.html: src/agda/Core/AlgorithmUniversality.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/AlgorithmUniversality.agda
+# Generate HTML for src/agda/Core/AdapterReflection.agda
+build/html/src/agda/Core/AdapterReflection.agda.html: src/agda/Core/AdapterReflection.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/AdapterReflection.agda
+# Generate HTML for src/agda/Core/Phase.agda
+build/html/src/agda/Core/Phase.agda.html: src/agda/Core/Phase.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Phase.agda
+# Generate HTML for src/agda/Core/AdapterAutomation.agda
+build/html/src/agda/Core/AdapterAutomation.agda.html: src/agda/Core/AdapterAutomation.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/AdapterAutomation.agda
+# Generate HTML for src/agda/Core/Utils.agda
+build/html/src/agda/Core/Utils.agda.html: src/agda/Core/Utils.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Utils.agda
+# Generate HTML for src/agda/Core/Algorithms/Registry.agda
+build/html/src/agda/Core/Algorithms/Registry.agda.html: src/agda/Core/Algorithms/Registry.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Algorithms/Registry.agda
+# Generate HTML for src/agda/Core/Algorithms/FunctionFields.agda
+build/html/src/agda/Core/Algorithms/FunctionFields.agda.html: src/agda/Core/Algorithms/FunctionFields.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Algorithms/FunctionFields.agda
+# Generate HTML for src/agda/Core/Algorithms/External.agda
+build/html/src/agda/Core/Algorithms/External.agda.html: src/agda/Core/Algorithms/External.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Algorithms/External.agda
+# Generate HTML for src/agda/Core/Algorithms/FiniteFields.agda
+build/html/src/agda/Core/Algorithms/FiniteFields.agda.html: src/agda/Core/Algorithms/FiniteFields.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Algorithms/FiniteFields.agda
+# Generate HTML for src/agda/Core/Algorithms/AutomaticEvidence.agda
+build/html/src/agda/Core/Algorithms/AutomaticEvidence.agda.html: src/agda/Core/Algorithms/AutomaticEvidence.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Algorithms/AutomaticEvidence.agda
+# Generate HTML for src/agda/Core/Algorithms/NumberFields.agda
+build/html/src/agda/Core/Algorithms/NumberFields.agda.html: src/agda/Core/Algorithms/NumberFields.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Algorithms/NumberFields.agda
+# Generate HTML for src/agda/Core/Algorithms/Bundle.agda
+build/html/src/agda/Core/Algorithms/Bundle.agda.html: src/agda/Core/Algorithms/Bundle.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Algorithms/Bundle.agda
+# Generate HTML for src/agda/Core/Algorithms/InductiveClassification.agda
+build/html/src/agda/Core/Algorithms/InductiveClassification.agda.html: src/agda/Core/Algorithms/InductiveClassification.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Algorithms/InductiveClassification.agda
+# Generate HTML for src/agda/Core/PhaseCategory.agda
+build/html/src/agda/Core/PhaseCategory.agda.html: src/agda/Core/PhaseCategory.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/PhaseCategory.agda
+# Generate HTML for src/agda/Core/Rendering.agda
+build/html/src/agda/Core/Rendering.agda.html: src/agda/Core/Rendering.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Rendering.agda
+# Generate HTML for src/agda/Core/ConstructiveWitnesses.agda
+build/html/src/agda/Core/ConstructiveWitnesses.agda.html: src/agda/Core/ConstructiveWitnesses.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/ConstructiveWitnesses.agda
+# Generate HTML for src/agda/Core/UniversalProperties.agda
+build/html/src/agda/Core/UniversalProperties.agda.html: src/agda/Core/UniversalProperties.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/UniversalProperties.agda
+# Generate HTML for src/agda/Core/IO.agda
+build/html/src/agda/Core/IO.agda.html: src/agda/Core/IO.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/IO.agda
+# Generate HTML for src/agda/Core/GrowthMetrics.agda
+build/html/src/agda/Core/GrowthMetrics.agda.html: src/agda/Core/GrowthMetrics.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/GrowthMetrics.agda
+# Generate HTML for src/agda/Core/AlgebraicAlgorithms.agda
+build/html/src/agda/Core/AlgebraicAlgorithms.agda.html: src/agda/Core/AlgebraicAlgorithms.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/AlgebraicAlgorithms.agda
+# Generate HTML for src/agda/Core/Yoneda.agda
+build/html/src/agda/Core/Yoneda.agda.html: src/agda/Core/Yoneda.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Yoneda.agda
+# Generate HTML for src/agda/Core/GodelBoundary.agda
+build/html/src/agda/Core/GodelBoundary.agda.html: src/agda/Core/GodelBoundary.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/GodelBoundary.agda
+# Generate HTML for src/agda/Core/Strings.agda
+build/html/src/agda/Core/Strings.agda.html: src/agda/Core/Strings.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/Strings.agda
+# Generate HTML for src/agda/Core/PathAggregator.agda
+build/html/src/agda/Core/PathAggregator.agda.html: src/agda/Core/PathAggregator.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/PathAggregator.agda
+# Generate HTML for src/agda/Core/PolynomialsF2.agda
+build/html/src/agda/Core/PolynomialsF2.agda.html: src/agda/Core/PolynomialsF2.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/PolynomialsF2.agda
+# Generate HTML for src/agda/Core/CategoricalAdapter.agda
+build/html/src/agda/Core/CategoricalAdapter.agda.html: src/agda/Core/CategoricalAdapter.agdai
+	$(AGDA) --html --html-dir=build/html -i src/agda src/agda/Core/CategoricalAdapter.agda
+# Compile all Agda modules
 agda-all: src/agda/MetaScan.agdai src/agda/Metamodel.agdai src/agda/Tests/PropertyRegistryTests.agdai src/agda/Tests/AbelianCategoriesChecklist.agdai src/agda/Tests/DispatchBehaviorTests.agdai src/agda/Tests/WitnessConstructionTests.agdai src/agda/Tests/VectorSpaceChecklist.agdai src/agda/Tests/ProofObligationStatus.agdai src/agda/Tests/SerializationTests.agdai src/agda/Tests/GodelBoundaryTests.agdai src/agda/Tests/ModuleStructureChecklist.agdai src/agda/Tests/ToposTheoryChecklist.agdai src/agda/Tests/GrothendieckFibrationsChecklist.agdai src/agda/Tests/TensorProductChecklist.agdai src/agda/Tests/Index_PhaseII.agdai src/agda/Tests/HierarchyValidation.agdai src/agda/Tests/PhaseExamples.agdai src/agda/Tests/RegularCategoriesChecklist.agdai src/agda/Tests/MonadAdjunctionChecklist.agdai src/agda/Tests/UniversalPropertyTests.agdai src/agda/Tests/EnrichmentChecklist.agdai src/agda/Tests/AdvancedPhaseExamples.agdai src/agda/Tests/ErrorAsSpecificationTests.agdai src/agda/Tests/RealWorldAlgorithmsTests.agdai src/agda/Tests/PolynomialExtensionsChecklist.agdai src/agda/Tests/ModuleTheoryChecklist.agdai src/agda/Tests/PhaseCategoryExamplesRunner.agdai src/agda/Tests/PolynomialFieldExtensionsChecklist.agdai src/agda/Tests/AlgorithmCompositionTests.agdai src/agda/Tests/FieldsBasicChecklist.agdai src/agda/Tests/SpecificationValidation.agdai src/agda/Tests/AlgorithmSmokeTests.agdai src/agda/Tests/CoverageReport.agdai src/agda/Tests/GroupsFreeChecklist.agdai src/agda/Tests/RingsBasicChecklist.agdai src/agda/Tests/Chapter2Checklist.agdai src/agda/Tests/KanExtensionsChecklist.agdai src/agda/Tests/LimitsColimitsChecklist.agdai src/agda/Tests/AdvancedMonadTheoryChecklist.agdai src/agda/Tests/CoreUniversalPropertiesChecklist.agdai src/agda/Tests/ChapterObligationsSmoke.agdai src/agda/Tests/ConstructiveWitnessTests.agdai src/agda/Tests/PerformanceBoundaryTests.agdai src/agda/Tests/PathAggregatorTests.agdai src/agda/Tests/GroupsAbelianChecklist.agdai src/agda/Tests/Chapter1Checklist.agdai src/agda/Tests/AdvancedFieldsChecklist.agdai src/agda/Tests/WarningAggregatorsTest.agdai src/agda/Tests/Index.agdai src/agda/Tests/ObligationAdapters.agdai src/agda/Tests/ToposObligationAdapters.agdai src/agda/Tests/Chapters.agdai src/agda/Tests/YonedaChecklist.agdai src/agda/Tests/AlgebraicCompletionChecklist.agdai src/agda/Tests/FunctorPropertiesChecklist.agdai src/agda/Tests/AlgebraChecklist.agdai src/agda/Tests/ErrorHandlingTests.agdai src/agda/Tests/GroupsStructureChecklist.agdai src/agda/Tests/ModulesChecklist.agdai src/agda/Tests/Chapter3Checklist.agdai src/agda/Tests/SubobjectTheoryChecklist.agdai src/agda/Chapter2/Level2sub3.agdai src/agda/Chapter2/Level2sub6.agdai src/agda/Chapter2/Level2sub5.agdai src/agda/Chapter2/Level2sub8.agdai src/agda/Chapter2/Level2sub7.agdai src/agda/Chapter2/Level2sub2.agdai src/agda/Chapter2/Level2sub1.agdai src/agda/Chapter2/Level2sub4.agdai src/agda/Chapter2/Level2Index.agdai src/agda/Chapter3/Level3sub1.agdai src/agda/Chapter3/Level3sub2.agdai src/agda/Chapter3/Level3Index.agdai src/agda/Core.agdai src/agda/Examples/RealWorldAlgorithms.agdai src/agda/Examples/TechnicalDebtExample.agdai src/agda/Examples/FunctionField/F2x.agdai src/agda/Examples/AlgorithmCorrectnessExamples.agdai src/agda/Examples/NumberField/Sqrt2.agdai src/agda/Examples/FiniteField/GF8.agdai src/agda/Examples/DeferredItemsScanner.agdai src/agda/Examples/AutomaticEvidenceDemo.agdai src/agda/Examples/ConstructiveWitnessExamples.agdai src/agda/Examples/AgdaMakefileDeps.agdai src/agda/Examples/LazyHybridDemo.agdai src/agda/Examples/TechnicalDebtRegistry.agdai src/agda/Examples/RoadmapIssueSync.agdai src/agda/Examples/MakefileTargets.agdai src/agda/Examples/PhaseCategoryExamples.agdai src/agda/Examples/TechnicalDebtChecklist.agdai src/agda/Examples/AgdaFileScanFFI.agdai src/agda/Examples/ExporterMakefile.agdai src/agda/Markdown/ExportProof.agdai src/agda/Markdown/Normalization.agdai src/agda/Plan/CIM/PandocProofExample.agdai src/agda/Plan/CIM/PandocProtocols.agdai src/agda/Plan/CIM/CHIPCoreRecompose.agdai src/agda/Plan/CIM/PandocProofExport.agdai src/agda/Plan/CIM/Utility.agdai src/agda/Plan/CIM/IngestedRoadmaps.agdai src/agda/Plan/CIM/Structure.agdai src/agda/Plan/CIM/DocumentSynthesis.agdai src/agda/Plan/CIM/CHIPRecomposed.agdai src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agdai src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agdai src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agdai src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agdai src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agdai src/agda/Plan/CIM/RoadmapExporter.agdai src/agda/Plan/CIM/CanonicalRoadmap.agdai src/agda/Plan/CIM/CHIPConformance.agdai src/agda/Plan/CIM/FrameworkMetadata.agdai src/agda/Plan/CIM/ModuleExporter.agdai src/agda/Plan/CIM/RoadmapIndex.agdai src/agda/Plan/CIM/RoadmapSync.agdai src/agda/Plan/CIM/PandocToMarkdown.agdai src/agda/Plan/CIM/DocumentationContent.agdai src/agda/Plan/CIM/RoadmapSPPF.agdai src/agda/Plan/CIM/RoadmapSPPFExport.agdai src/agda/Plan/CIM/GPNarrativeDAG.agdai src/agda/Plan/CIM/MarkdownNormalize.agdai src/agda/Plan/CIM/PandocAST.agdai src/agda/Plan/CIM/GrammarBridge.agdai src/agda/Plan/CIM/MarkdownParse.agdai src/agda/Algebra/Groups/Basic.agdai src/agda/Algebra/Groups/Theorems/Classical.agdai src/agda/Algebra/Groups/ClassicalInstance.agdai src/agda/Algebra/Groups/Structure.agdai src/agda/Algebra/Groups/BasicWithTheorems.agdai src/agda/Algebra/Groups/BasicParameterized.agdai src/agda/Algebra/Groups/Abelian.agdai src/agda/Algebra/Groups/Types.agdai src/agda/Algebra/Groups/Free.agdai src/agda/Algebra/Enrichment.agdai src/agda/Algebra/Rings/Basic.agdai src/agda/Algebra/Rings/Theorems/Classical.agdai src/agda/Algebra/Rings/ClassicalInstance.agdai src/agda/Algebra/Rings/BasicWithTheorems.agdai src/agda/Algebra/Rings/Types.agdai src/agda/Algebra/Modules/Basic.agdai src/agda/Algebra/Modules/Theorems/Classical.agdai src/agda/Algebra/Modules/ClassicalInstance.agdai src/agda/Algebra/Modules/BasicWithTheorems.agdai src/agda/Algebra/Modules/Types.agdai src/agda/Algebra/Foundation.agdai src/agda/Algebra/Fields/Basic.agdai src/agda/Algebra/Fields/Advanced.agdai src/agda/Algebra/Fields/Theorems/Classical.agdai src/agda/Algebra/Fields/ClassicalInstance.agdai src/agda/Algebra/Fields/BasicWithTheorems.agdai src/agda/Algebra/Fields/Types.agdai src/agda/Algebra/Index.agdai src/agda/Chapter1/Level1.agdai src/agda/Chapter1/Level1sub8.agdai src/agda/Chapter1/Level1sub7.agdai src/agda/Chapter1/Level1sub3.agdai src/agda/Chapter1/Level1Index.agdai src/agda/Chapter1/Level1sub2.agdai src/agda/Chapter1/Level1sub4.agdai src/agda/Chapter1/Level1sub5.agdai src/agda/Chapter1/Level1sub6.agdai src/agda/PropertyRegistry.agdai src/agda/ExporterMakefile.agdai src/agda/Core/AlgorithmComplexity.agdai src/agda/Core/ABNF.agdai src/agda/Core/TechnicalDebt.agdai src/agda/Core/Witnesses.agdai src/agda/Core/BraidTree.agdai src/agda/Core/Limitations.agdai src/agda/Core/AlgorithmCorrectness.agdai src/agda/Core/GrothendieckFibrations.agdai src/agda/Core/AlgorithmUniversality.agdai src/agda/Core/AdapterReflection.agdai src/agda/Core/Phase.agdai src/agda/Core/AdapterAutomation.agdai src/agda/Core/Utils.agdai src/agda/Core/Algorithms/Registry.agdai src/agda/Core/Algorithms/FunctionFields.agdai src/agda/Core/Algorithms/External.agdai src/agda/Core/Algorithms/FiniteFields.agdai src/agda/Core/Algorithms/AutomaticEvidence.agdai src/agda/Core/Algorithms/NumberFields.agdai src/agda/Core/Algorithms/Bundle.agdai src/agda/Core/Algorithms/InductiveClassification.agdai src/agda/Core/PhaseCategory.agdai src/agda/Core/Rendering.agdai src/agda/Core/ConstructiveWitnesses.agdai src/agda/Core/UniversalProperties.agdai src/agda/Core/IO.agdai src/agda/Core/GrowthMetrics.agdai src/agda/Core/AlgebraicAlgorithms.agdai src/agda/Core/Yoneda.agdai src/agda/Core/GodelBoundary.agdai src/agda/Core/Strings.agdai src/agda/Core/PathAggregator.agdai src/agda/Core/PolynomialsF2.agdai src/agda/Core/CategoricalAdapter.agdai
+# Generate all HTML documentation
+docs-all: build/html/src/agda/MetaScan.agda.html build/html/src/agda/Metamodel.agda.html build/html/src/agda/Tests/PropertyRegistryTests.agda.html build/html/src/agda/Tests/AbelianCategoriesChecklist.agda.html build/html/src/agda/Tests/DispatchBehaviorTests.agda.html build/html/src/agda/Tests/WitnessConstructionTests.agda.html build/html/src/agda/Tests/VectorSpaceChecklist.agda.html build/html/src/agda/Tests/ProofObligationStatus.agda.html build/html/src/agda/Tests/SerializationTests.agda.html build/html/src/agda/Tests/GodelBoundaryTests.agda.html build/html/src/agda/Tests/ModuleStructureChecklist.agda.html build/html/src/agda/Tests/ToposTheoryChecklist.agda.html build/html/src/agda/Tests/GrothendieckFibrationsChecklist.agda.html build/html/src/agda/Tests/TensorProductChecklist.agda.html build/html/src/agda/Tests/Index_PhaseII.agda.html build/html/src/agda/Tests/HierarchyValidation.agda.html build/html/src/agda/Tests/PhaseExamples.agda.html build/html/src/agda/Tests/RegularCategoriesChecklist.agda.html build/html/src/agda/Tests/MonadAdjunctionChecklist.agda.html build/html/src/agda/Tests/UniversalPropertyTests.agda.html build/html/src/agda/Tests/EnrichmentChecklist.agda.html build/html/src/agda/Tests/AdvancedPhaseExamples.agda.html build/html/src/agda/Tests/ErrorAsSpecificationTests.agda.html build/html/src/agda/Tests/RealWorldAlgorithmsTests.agda.html build/html/src/agda/Tests/PolynomialExtensionsChecklist.agda.html build/html/src/agda/Tests/ModuleTheoryChecklist.agda.html build/html/src/agda/Tests/PhaseCategoryExamplesRunner.agda.html build/html/src/agda/Tests/PolynomialFieldExtensionsChecklist.agda.html build/html/src/agda/Tests/AlgorithmCompositionTests.agda.html build/html/src/agda/Tests/FieldsBasicChecklist.agda.html build/html/src/agda/Tests/SpecificationValidation.agda.html build/html/src/agda/Tests/AlgorithmSmokeTests.agda.html build/html/src/agda/Tests/CoverageReport.agda.html build/html/src/agda/Tests/GroupsFreeChecklist.agda.html build/html/src/agda/Tests/RingsBasicChecklist.agda.html build/html/src/agda/Tests/Chapter2Checklist.agda.html build/html/src/agda/Tests/KanExtensionsChecklist.agda.html build/html/src/agda/Tests/LimitsColimitsChecklist.agda.html build/html/src/agda/Tests/AdvancedMonadTheoryChecklist.agda.html build/html/src/agda/Tests/CoreUniversalPropertiesChecklist.agda.html build/html/src/agda/Tests/ChapterObligationsSmoke.agda.html build/html/src/agda/Tests/ConstructiveWitnessTests.agda.html build/html/src/agda/Tests/PerformanceBoundaryTests.agda.html build/html/src/agda/Tests/PathAggregatorTests.agda.html build/html/src/agda/Tests/GroupsAbelianChecklist.agda.html build/html/src/agda/Tests/Chapter1Checklist.agda.html build/html/src/agda/Tests/AdvancedFieldsChecklist.agda.html build/html/src/agda/Tests/WarningAggregatorsTest.agda.html build/html/src/agda/Tests/Index.agda.html build/html/src/agda/Tests/ObligationAdapters.agda.html build/html/src/agda/Tests/ToposObligationAdapters.agda.html build/html/src/agda/Tests/Chapters.agda.html build/html/src/agda/Tests/YonedaChecklist.agda.html build/html/src/agda/Tests/AlgebraicCompletionChecklist.agda.html build/html/src/agda/Tests/FunctorPropertiesChecklist.agda.html build/html/src/agda/Tests/AlgebraChecklist.agda.html build/html/src/agda/Tests/ErrorHandlingTests.agda.html build/html/src/agda/Tests/GroupsStructureChecklist.agda.html build/html/src/agda/Tests/ModulesChecklist.agda.html build/html/src/agda/Tests/Chapter3Checklist.agda.html build/html/src/agda/Tests/SubobjectTheoryChecklist.agda.html build/html/src/agda/Chapter2/Level2sub3.agda.html build/html/src/agda/Chapter2/Level2sub6.agda.html build/html/src/agda/Chapter2/Level2sub5.agda.html build/html/src/agda/Chapter2/Level2sub8.agda.html build/html/src/agda/Chapter2/Level2sub7.agda.html build/html/src/agda/Chapter2/Level2sub2.agda.html build/html/src/agda/Chapter2/Level2sub1.agda.html build/html/src/agda/Chapter2/Level2sub4.agda.html build/html/src/agda/Chapter2/Level2Index.agda.html build/html/src/agda/Chapter3/Level3sub1.agda.html build/html/src/agda/Chapter3/Level3sub2.agda.html build/html/src/agda/Chapter3/Level3Index.agda.html build/html/src/agda/Core.agda.html build/html/src/agda/Examples/RealWorldAlgorithms.agda.html build/html/src/agda/Examples/TechnicalDebtExample.agda.html build/html/src/agda/Examples/FunctionField/F2x.agda.html build/html/src/agda/Examples/AlgorithmCorrectnessExamples.agda.html build/html/src/agda/Examples/NumberField/Sqrt2.agda.html build/html/src/agda/Examples/FiniteField/GF8.agda.html build/html/src/agda/Examples/DeferredItemsScanner.agda.html build/html/src/agda/Examples/AutomaticEvidenceDemo.agda.html build/html/src/agda/Examples/ConstructiveWitnessExamples.agda.html build/html/src/agda/Examples/AgdaMakefileDeps.agda.html build/html/src/agda/Examples/LazyHybridDemo.agda.html build/html/src/agda/Examples/TechnicalDebtRegistry.agda.html build/html/src/agda/Examples/RoadmapIssueSync.agda.html build/html/src/agda/Examples/MakefileTargets.agda.html build/html/src/agda/Examples/PhaseCategoryExamples.agda.html build/html/src/agda/Examples/TechnicalDebtChecklist.agda.html build/html/src/agda/Examples/AgdaFileScanFFI.agda.html build/html/src/agda/Examples/ExporterMakefile.agda.html build/html/src/agda/Markdown/ExportProof.agda.html build/html/src/agda/Markdown/Normalization.agda.html build/html/src/agda/Plan/CIM/PandocProofExample.agda.html build/html/src/agda/Plan/CIM/PandocProtocols.agda.html build/html/src/agda/Plan/CIM/CHIPCoreRecompose.agda.html build/html/src/agda/Plan/CIM/PandocProofExport.agda.html build/html/src/agda/Plan/CIM/Utility.agda.html build/html/src/agda/Plan/CIM/IngestedRoadmaps.agda.html build/html/src/agda/Plan/CIM/Structure.agda.html build/html/src/agda/Plan/CIM/DocumentSynthesis.agda.html build/html/src/agda/Plan/CIM/CHIPRecomposed.agda.html build/html/src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agda.html build/html/src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agda.html build/html/src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda.html build/html/src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agda.html build/html/src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agda.html build/html/src/agda/Plan/CIM/RoadmapExporter.agda.html build/html/src/agda/Plan/CIM/CanonicalRoadmap.agda.html build/html/src/agda/Plan/CIM/CHIPConformance.agda.html build/html/src/agda/Plan/CIM/FrameworkMetadata.agda.html build/html/src/agda/Plan/CIM/ModuleExporter.agda.html build/html/src/agda/Plan/CIM/RoadmapIndex.agda.html build/html/src/agda/Plan/CIM/RoadmapSync.agda.html build/html/src/agda/Plan/CIM/PandocToMarkdown.agda.html build/html/src/agda/Plan/CIM/DocumentationContent.agda.html build/html/src/agda/Plan/CIM/RoadmapSPPF.agda.html build/html/src/agda/Plan/CIM/RoadmapSPPFExport.agda.html build/html/src/agda/Plan/CIM/GPNarrativeDAG.agda.html build/html/src/agda/Plan/CIM/MarkdownNormalize.agda.html build/html/src/agda/Plan/CIM/PandocAST.agda.html build/html/src/agda/Plan/CIM/GrammarBridge.agda.html build/html/src/agda/Plan/CIM/MarkdownParse.agda.html build/html/src/agda/Algebra/Groups/Basic.agda.html build/html/src/agda/Algebra/Groups/Theorems/Classical.agda.html build/html/src/agda/Algebra/Groups/ClassicalInstance.agda.html build/html/src/agda/Algebra/Groups/Structure.agda.html build/html/src/agda/Algebra/Groups/BasicWithTheorems.agda.html build/html/src/agda/Algebra/Groups/BasicParameterized.agda.html build/html/src/agda/Algebra/Groups/Abelian.agda.html build/html/src/agda/Algebra/Groups/Types.agda.html build/html/src/agda/Algebra/Groups/Free.agda.html build/html/src/agda/Algebra/Enrichment.agda.html build/html/src/agda/Algebra/Rings/Basic.agda.html build/html/src/agda/Algebra/Rings/Theorems/Classical.agda.html build/html/src/agda/Algebra/Rings/ClassicalInstance.agda.html build/html/src/agda/Algebra/Rings/BasicWithTheorems.agda.html build/html/src/agda/Algebra/Rings/Types.agda.html build/html/src/agda/Algebra/Modules/Basic.agda.html build/html/src/agda/Algebra/Modules/Theorems/Classical.agda.html build/html/src/agda/Algebra/Modules/ClassicalInstance.agda.html build/html/src/agda/Algebra/Modules/BasicWithTheorems.agda.html build/html/src/agda/Algebra/Modules/Types.agda.html build/html/src/agda/Algebra/Foundation.agda.html build/html/src/agda/Algebra/Fields/Basic.agda.html build/html/src/agda/Algebra/Fields/Advanced.agda.html build/html/src/agda/Algebra/Fields/Theorems/Classical.agda.html build/html/src/agda/Algebra/Fields/ClassicalInstance.agda.html build/html/src/agda/Algebra/Fields/BasicWithTheorems.agda.html build/html/src/agda/Algebra/Fields/Types.agda.html build/html/src/agda/Algebra/Index.agda.html build/html/src/agda/Chapter1/Level1.agda.html build/html/src/agda/Chapter1/Level1sub8.agda.html build/html/src/agda/Chapter1/Level1sub7.agda.html build/html/src/agda/Chapter1/Level1sub3.agda.html build/html/src/agda/Chapter1/Level1Index.agda.html build/html/src/agda/Chapter1/Level1sub2.agda.html build/html/src/agda/Chapter1/Level1sub4.agda.html build/html/src/agda/Chapter1/Level1sub5.agda.html build/html/src/agda/Chapter1/Level1sub6.agda.html build/html/src/agda/PropertyRegistry.agda.html build/html/src/agda/ExporterMakefile.agda.html build/html/src/agda/Core/AlgorithmComplexity.agda.html build/html/src/agda/Core/ABNF.agda.html build/html/src/agda/Core/TechnicalDebt.agda.html build/html/src/agda/Core/Witnesses.agda.html build/html/src/agda/Core/BraidTree.agda.html build/html/src/agda/Core/Limitations.agda.html build/html/src/agda/Core/AlgorithmCorrectness.agda.html build/html/src/agda/Core/GrothendieckFibrations.agda.html build/html/src/agda/Core/AlgorithmUniversality.agda.html build/html/src/agda/Core/AdapterReflection.agda.html build/html/src/agda/Core/Phase.agda.html build/html/src/agda/Core/AdapterAutomation.agda.html build/html/src/agda/Core/Utils.agda.html build/html/src/agda/Core/Algorithms/Registry.agda.html build/html/src/agda/Core/Algorithms/FunctionFields.agda.html build/html/src/agda/Core/Algorithms/External.agda.html build/html/src/agda/Core/Algorithms/FiniteFields.agda.html build/html/src/agda/Core/Algorithms/AutomaticEvidence.agda.html build/html/src/agda/Core/Algorithms/NumberFields.agda.html build/html/src/agda/Core/Algorithms/Bundle.agda.html build/html/src/agda/Core/Algorithms/InductiveClassification.agda.html build/html/src/agda/Core/PhaseCategory.agda.html build/html/src/agda/Core/Rendering.agda.html build/html/src/agda/Core/ConstructiveWitnesses.agda.html build/html/src/agda/Core/UniversalProperties.agda.html build/html/src/agda/Core/IO.agda.html build/html/src/agda/Core/GrowthMetrics.agda.html build/html/src/agda/Core/AlgebraicAlgorithms.agda.html build/html/src/agda/Core/Yoneda.agda.html build/html/src/agda/Core/GodelBoundary.agda.html build/html/src/agda/Core/Strings.agda.html build/html/src/agda/Core/PathAggregator.agda.html build/html/src/agda/Core/PolynomialsF2.agda.html build/html/src/agda/Core/CategoricalAdapter.agda.html
