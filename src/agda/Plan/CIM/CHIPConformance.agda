@@ -13,7 +13,7 @@ open import Agda.Builtin.Equality using (_≡_)
 open import Agda.Primitive using (Level; lzero; lsuc)
 open import Agda.Builtin.Sigma using (Σ; _,_)
 
-open import Plan.CIM.Utility using (Ambiguity; TransformationSystem; EmergentMetric; Path; CoherenceWitness; BraidedInheritanceFunctor; map; _×_)
+open import Plan.CIM.Utility using (Ambiguity; TransformationSystem; EmergentMetric; Path; CoherenceWitness; BraidedInheritanceFunctor; BraidedSPPF; map; _×_; packed-node)
 
 -- Stub for GradedVectorSpace (was in old Utility, now defined here for compatibility)
 record GradedVectorSpace (n : Nat) : Set₁ where
@@ -42,9 +42,12 @@ composeBraids bif1 bif2 = record
   }
 
 -- SPPF node construction with functorial and braided context
--- TODO: BraidedSPPF not yet defined in Utility.agda
--- makeSPPFNode : ∀ {ℓ} {N : Set ℓ} → Path N → BraidedInheritanceFunctor N N → BraidedSPPF N
--- makeSPPFNode p bif = packed-node p p bif
+-- Integrated from Intake/GP fragments using the newly defined BraidedSPPF
+makeSPPFNode : ∀ {ℓ} {N : Set ℓ} {Sys : TransformationSystem N N}
+             → Path Sys 
+             → BraidedInheritanceFunctor N N 
+             → BraidedSPPF N N Sys
+makeSPPFNode p bif = packed-node p p bif
 
 ------------------------------------------------------------------------
 -- V. Universal Property (Adjunction)
