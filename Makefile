@@ -16,6 +16,7 @@ intake-scan: build/canonical_roadmap.json
 md-normalize: 
 	python3 scripts/normalize_generated_markdown.py
 makefile-validate: 
+	mkdir -p build/reports
 	python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt
 all: agda-all docs-all
 	@echo "all complete"
