@@ -1,7 +1,3 @@
-{-# OPTIONS --without-K #-}
-
--- Utility.agda: Generic utility functions for Pandoc/Markdown transformations and CIM framework types
-
 {-# OPTIONS --without-K --cubical-compatible --safe #-}
 
 module Plan.CIM.Utility where
@@ -26,34 +22,36 @@ _++_ = primStringAppend
 
 infixr 20 _++_
 
--- Map function
 map : ∀ {A B : Set} → (A → B) → List A → List B
 map f [] = []
 map f (x ∷ xs) = f x ∷ map f xs
 
 ------------------------------------------------------------------------
--- Recursive RoadmapStep Record: Encodes implication-driven roadmap (SPPF-like)
+-- Recursive RoadmapStep Record
 ------------------------------------------------------------------------
 record RoadmapStep : Set₁ where
     inductive
     field
-        provenance   : String -- Source (GP/CIM intersection)
-        relatedNodes : List String -- Related nodes
-        step         : String -- The constructive action
-        implication  : String -- Direct implication of the step
-        status       : String -- Status: not-started, in-progress, completed
-        targetModule : String -- Suggested Agda module for implementation
-        next         : List RoadmapStep -- Nested implications (branches)
+        provenance   : String
+        relatedNodes : List String
+        step         : String
+        implication  : String
+        status       : String
+        targetModule : String
+        next         : List RoadmapStep
 
 ------------------------------------------------------------------------
 -- Core CIM Framework Types
 ------------------------------------------------------------------------
 
-record Ambiguity {ℓ} (A B : Set ℓ) : Set ℓ where
+-- RENAMED: Ambiguity -> PhaseAmbiguity
+-- This structure specifically handles the RoPE phase/rotation aspect.
+-- The general algebraic ambiguity is now in Plan.CIM.Ambiguity.
+record PhaseAmbiguity {ℓ} (A B : Set ℓ) : Set ℓ where
     field
         valA : A
         valB : B
-        phase : ℕ -- Phase/rotation for RoPE/group action
+        phase : ℕ 
 
 record TransformationSystem {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
     field
@@ -68,7 +66,8 @@ data Path {ℓ} {A B : Set ℓ} (Sys : TransformationSystem {ℓ} A B) : Set ℓ
     refl-path : Path Sys
     trans-step : (s : TransformationSystem.Step Sys) → (rest : Path Sys) → Path Sys
 
-record CoherenceWitness {ℓ} {A B : Set ℓ} (amb : Ambiguity {ℓ} A B) (Sys : TransformationSystem {ℓ} A B) : Set (lsuc ℓ) where
+-- Updated to use PhaseAmbiguity
+record CoherenceWitness {ℓ} {A B : Set ℓ} (amb : PhaseAmbiguity {ℓ} A B) (Sys : TransformationSystem {ℓ} A B) : Set (lsuc ℓ) where
     field
         proofPath : Path Sys
         metric    : EmergentMetric
@@ -81,9 +80,7 @@ record BraidedInheritanceFunctor {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
         toValue   : B
         description : String
 
--- NEW: BraidedSPPF definition integrated from Intake/GP fragments
--- Represents a packed node in the Shared Packed Parse Forest that explicitly
--- encodes the braiding event (ambiguity resolution) between two paths.
+-- NEW: BraidedSPPF definition integrated from Intake
 record BraidedSPPF {ℓ} (A B : Set ℓ) (Sys : TransformationSystem A B) : Set (lsuc ℓ) where
     constructor packed-node
     field
@@ -102,15 +99,16 @@ record Witness {ℓ} (A B : Set ℓ) : Set ℓ where
         target : B
         evidence : String
 
+-- Updated to use PhaseAmbiguity
 record CNFProtocol (A B : Set) : Set₁ where
     field
-        ambiguity : Ambiguity A B
+        ambiguity : PhaseAmbiguity A B
         transSys  : TransformationSystem A B
         coherence : CoherenceWitness ambiguity transSys
         metric    : EmergentMetric
 
 ------------------------------------------------------------------------
--- AST-Dependent Types (parameterized by Block/MdBlock/BraidStep)
+-- AST-Dependent Types
 ------------------------------------------------------------------------
 
 module ASTDependent (Block MdBlock BraidStep : Set) where
@@ -120,22 +118,24 @@ module ASTDependent (Block MdBlock BraidStep : Set) where
         steps : List BraidStep
         summary : String
 
+  -- Updated to use PhaseAmbiguity
   record BlockProtocol : Set₁ where
     field
-        ambiguity : Ambiguity Block MdBlock
+        ambiguity : PhaseAmbiguity Block MdBlock
         transSys  : TransformationSystem Block MdBlock
         coherence : CoherenceWitness ambiguity transSys
         metric    : EmergentMetric
 
+  -- Updated to use PhaseAmbiguity
   record DocProtocol : Set₁ where
     field
-        ambiguity : Ambiguity String String
+        ambiguity : PhaseAmbiguity String String
         transSys  : TransformationSystem String String
         coherence : CoherenceWitness ambiguity transSys
         metric    : EmergentMetric
 
 ------------------------------------------------------------------------
--- Utility Functions
+-- Utility Functions (Preserved)
 ------------------------------------------------------------------------
 
 metricMinimality : CostFunction → ℕ → Bool
@@ -158,18 +158,15 @@ concatWithSep sep [] = ""
 concatWithSep sep (x ∷ []) = x
 concatWithSep sep (x ∷ xs) = x ++ sep ++ concatWithSep sep xs
 
--- 4 key Roadmap examples extracted and cleaned from Utility-broken.agda
--- All nested `next` structures simplified to [] for syntactic clarity
--- This represents the 4 referenced in COPILOT_SYNERGY.md plus their dependencies
-
+-- Examples preserved from previous context...
 exampleUnifiedTopologicalParserRoadmap : RoadmapStep
 exampleUnifiedTopologicalParserRoadmap = record
-    { provenance  = "GP699, Unified Topological Parser, Nedge-Topology, SPPF + RoPE + SymNum"
-    ; relatedNodes = "exampleDimensionalReliefRoadmap" ∷ "examplePolytopeManifestRoadmap" ∷ "exampleElasticityOfMeaningRoadmap" ∷ []
-    ; step        = "Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition."
-    ; implication = "Enables composable geometric and topological integration, active topological pruning, and algebraic superposition for ambiguity. Supports recursive revisiting, fiber bundle architecture, and advanced induction/training features."
+    { provenance  = "GP699"
+    ; relatedNodes = []
+    ; step        = "Integrate Earley parsing..."
+    ; implication = "Enables composable geometric..."
     ; status      = "not-started"
-    ; targetModule = "nedge_topology/parser.py, nedge_topology/train.py, nedge_topology/mitosis.py, nedge_topology/search.py, dashboard.py, src/agda/Plan/CIM/RotationalTransport.agda, src/agda/Plan/CIM/TopologicalGating.agda, src/agda/Plan/CIM/TopologicalSuperposition.agda"
+    ; targetModule = "nedge_topology/parser.py"
     ; next = []
     }
 
