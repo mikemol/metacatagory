@@ -444,6 +444,99 @@ A: Create a new definition following the `PriorityStrategy` record pattern in `T
 
 ---
 
+## 5. Logic-Formatting Separation Principle (PRIO-ADOPT-1)
+
+All parameterized systems enforce strict separation between **domain logic** and **presentation/formatting**. This ensures testability, maintainability, and clean interfaces.
+
+### Pattern
+
+**Agda: Pure Logic Only**
+
+```agda
+module TechnicalDebt.PriorityMapping where
+
+-- LOGIC LAYER: Domain computation, no side effects
+extractPriorityWeight : Priority → Int
+strategyToWeights : PriorityStrategy → CategoryWeights
+
+-- Postulate FFI details (implementation detail)
+postulate extractPriorityWeight : Priority → Int
+
+-- No JSON, no formatting, no I/O
+```
+
+**Python: Explicit Layers**
+
+```python
+# LOGIC LAYER: Pure computation
+def agda_to_python_weights(strategy_name: str) -> Dict[str, float]:
+    """Pure mapping from Agda priorities to Python categories.
+    No I/O, no side effects."""
+    # ... compute weights ...
+    return weights
+
+def build_weight_profiles() -> Dict[str, Any]:
+    """Compute all profiles. Pure function."""
+    return {s: agda_to_python_weights(s) for s in strategies}
+
+# FORMAT LAYER: Presentation/serialization  
+def format_weights_json(profiles: Dict[str, Any]) -> Dict[str, Any]:
+    """Wrap computed data with JSON metadata."""
+    return {"active": "default", "profiles": profiles, "_comment": "..."}
+```
+
+### Benefits
+
+| Concern | Pure Logic | Presentation |
+|---------|-----------|--------------|
+| Testing | Unit test logic independently | Integration test I/O |
+| Debugging | Isolate domain bugs | Isolate format bugs |
+| Maintenance | Change logic without touching serialization | Change format without touching logic |
+| Reuse | Use same logic in multiple formats | Swap formats without code changes |
+| Dependencies | Minimal (domain types only) | Can import logic layer freely |
+
+### Implementation Checklist
+
+When adding a new parameterized system:
+
+- [ ] **Agda**: Define pure mapping functions, postulate any FFI
+- [ ] **Agda**: Export only types and pure functions (no I/O)
+- [ ] **Python**: Create LOGIC LAYER functions (pure, no side effects)
+- [ ] **Python**: Create FORMAT LAYER for serialization
+- [ ] **Python**: Add unit tests for logic layer only
+- [ ] **Python**: Document mapping strategy clearly
+
+### Example: Adding a New Priority Category
+
+If you wanted to add a `reliability` category to technical debt:
+
+**Agda change** (TechnicalDebt.Priorities):
+```agda
+record PriorityStrategy : Set where
+  field
+    -- ... existing fields ...
+    reliability : Priority  -- NEW: tracking reliability issues
+```
+
+**Python changes** (adopt_priority_strategies.py):
+```python
+# LOGIC LAYER - update mapping
+def agda_to_python_weights(strategy_name: str):
+    # ... existing logic ...
+    # reliability ← highPriority field (safety-adjacent)
+    return {
+        # ... existing categories ...
+        "reliability": agda_strat["high"] / 100.0  # NEW
+    }
+
+# FORMAT LAYER - automatic (inherits from logic output)
+# No changes needed - format_weights_json() will serialize new key
+```
+
+**Result**: New category flows from Agda through Python logic to output format, with clear separation at each layer.
+
+---
+
 ## References
 
 * [AGDA-PARAMETERIZATION-PLAN.md](../architecture/AGDA-PARAMETERIZATION-PLAN.md) - Full design rationale
