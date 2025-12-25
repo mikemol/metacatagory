@@ -15,6 +15,8 @@ open import Agda.Builtin.Nat using (Nat; zero; suc; _+_; _*_; _-_; _<_)
 open import Agda.Builtin.String using (String)
 open import Core.Phase using (Maybe; just; nothing)
 open import Core.Phase using (Bool; true; false)
+open import Algorithms.Basic
+open Algorithms.Basic.Defaults
 
 -- Helper for string concatenation
 postulate _++_ : String → String → String
@@ -149,20 +151,20 @@ open FiniteFieldAlgorithms public
 finiteFieldAlgorithms : ∀ {F E} → (Ffin : IsFiniteField F) → (Efin : IsFiniteField E)
                        → FiniteFieldAlgorithms F E Ffin Efin
 finiteFieldAlgorithms {F} {E} Ffin Efin = record
-  { minimalPolynomialAlg = MinimalPolynomialAlgorithm-generic {F} {E} 
+  { minimalPolynomialAlg = mkMinimalPolynomialAlgorithm {F} {E}
   ; galoisGroupAlg       = record 
       { galoisGroup = λ _ → cyclicGaloisGroup F E Ffin Efin
       ; automorphisms = λ _ → [] 
       ; isSolvable = λ _ → M.mkId "Cyclic=>Solvable" 
       ; limitation = nothing
       }
-  ; splittingFieldAlg    = SplittingFieldAlgorithm-generic {F}
-  ; extensionDegreeAlg   = FieldExtensionDegreeAlgorithm-generic {F} {E}
-  ; subfieldEnumAlg      = SubfieldEnumerationAlgorithm-generic {F} {E}
+  ; splittingFieldAlg    = mkSplittingFieldAlgorithm {F}
+  ; extensionDegreeAlg   = mkFieldExtensionDegreeAlgorithm {F} {E}
+  ; subfieldEnumAlg      = mkSubfieldEnumerationAlgorithm {F} {E}
   ; subgroupEnumAlg      = record 
       { subgroups = cyclicSubgroups F E Ffin Efin 
       }
-  ; algebraicityAlg      = AlgebraicityDecisionAlgorithm-generic {F} {E}
-  ; primitiveElementAlg  = PrimitiveElementAlgorithm-generic {F} {E}
+  ; algebraicityAlg      = mkAlgebraicityDecisionAlgorithm {F} {E}
+  ; primitiveElementAlg  = mkPrimitiveElementAlgorithm {F} {E}
   }
   
