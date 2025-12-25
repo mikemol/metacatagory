@@ -17,17 +17,18 @@ md-fix:
 # Lint intake files specifically
 intake-lint: 
 	npx markdownlint-cli2 "intake/**/*.md" > build/reports/intake-md-lint.txt 2>&1
-# Generate canonical roadmap JSON from intake
-build/canonical_roadmap.json: 
-	python3 scripts/intake_scan.py
-# Scan intake directory for new files
+# Merge all roadmap sources into canonical JSON
+build/canonical_roadmap.json: scripts/merge_roadmaps.py .github/roadmap/tasks.json ROADMAP.md src/agda/Plan/CIM/IngestedRoadmaps/*.agda
+	python3 scripts/merge_roadmaps.py
+# Scan intake directory for roadmap ID coverage
 intake-scan: build/canonical_roadmap.json
+	python3 scripts/intake_scan.py
 	@echo "intake scan complete"
 # Normalize markdown formatting
-md-normalize: 
+md-normalize: scripts/normalize_generated_markdown.py
 	python3 scripts/normalize_generated_markdown.py
 # Validate Makefile consistency
-makefile-validate: 
+makefile-validate: scripts/validate_makefile_docs.py
 	mkdir -p build/reports
 	python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt
 # Build all code and documentation
@@ -37,7 +38,7 @@ all: agda-all docs-all
 check: roadmap-validate-triangle docs-validate makefile-validate
 	@echo "check complete"
 # Generate status badges
-badges: 
+badges: scripts/generate-badges.py build/canonical_roadmap.json .github/badges/weights.json
 	python3 scripts/generate-badges.py
 # Generate per-module markdown documentation
 docs-modules: src/agda/Plan/CIM/ModuleExporter.agdai
@@ -63,9 +64,9 @@ roadmap-sppf: src/agda/Plan/CIM/RoadmapSPPF.agdai
 # Run all constructive build targets
 validate-constructive: docs-all docs-generate docs-modules roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-deps-graph roadmap-enrich roadmap-all-enriched intake-scan md-normalize badges
 	@echo "✓ Constructive validation complete"
-# Merge ingestion streams
-roadmap-merge: 
-	python3 scripts/merge_roadmaps.py
+# Merge ingestion streams (explicit target for manual use)
+roadmap-merge: build/canonical_roadmap.json
+	@echo "✓ Roadmap merge complete"
 # Generate dependency graph
 build/diagrams/agda-deps-full.dot: 
 	mkdir -p build/diagrams
@@ -73,35 +74,35 @@ build/diagrams/agda-deps-full.dot:
 # Generate dependency graph
 roadmap-deps-graph: build/diagrams/agda-deps-full.dot
 	@echo "agda dependency graph generated"
-# Enrich canonical roadmap
-build/canonical_enriched.json: build/canonical_roadmap.json build/diagrams/agda-deps-full.dot
+# Enrich canonical roadmap with dependency graph data
+build/canonical_enriched.json: build/canonical_roadmap.json build/diagrams/agda-deps-full.dot scripts/enrich_canonical.py
 	python3 scripts/enrich_canonical.py
 # Enrich roadmap with graph data
 roadmap-enrich: build/canonical_enriched.json
 	@echo "roadmap enrichment complete"
 # Export canonical roadmap to JSON
-roadmap-export-json: build/canonical_roadmap.json
+roadmap-export-json: build/canonical_roadmap.json scripts/export_canonical_json.py
 	python3 scripts/export_canonical_json.py
 # Export canonical roadmap to Markdown
-roadmap-export-md: build/canonical_roadmap.json
+roadmap-export-md: build/canonical_roadmap.json scripts/export_canonical_md.py
 	python3 scripts/export_canonical_md.py
 # Export enriched roadmap
-roadmap-export-enriched: build/canonical_enriched.json
+roadmap-export-enriched: build/canonical_enriched.json scripts/export_enriched_md.py
 	python3 scripts/export_enriched_md.py
 # Export roadmap dependency graph
-roadmap-export-deps: build/canonical_enriched.json
+roadmap-export-deps: build/canonical_enriched.json scripts/export_dependency_graph.py
 	python3 scripts/export_dependency_graph.py
 # Validate canonical JSON
-roadmap-validate-json: build/canonical_roadmap.json .github/roadmap/tasks.json
+roadmap-validate-json: build/canonical_roadmap.json .github/roadmap/tasks.json scripts/validate_json.py
 	python3 scripts/validate_json.py
 # Validate canonical Markdown
-roadmap-validate-md: build/canonical_roadmap.json ROADMAP.md
+roadmap-validate-md: build/canonical_roadmap.json ROADMAP.md scripts/validate_md.py
 	python3 scripts/validate_md.py
 # Verify Triangle Identity (Agda <-> JSON <-> MD)
 roadmap-validate-triangle: roadmap-validate-json roadmap-validate-md
 	@echo "✓ Triangle validation complete"
 # Export SPPF structure
-roadmap-sppf-export: build/canonical_roadmap.json
+roadmap-sppf-export: build/canonical_roadmap.json scripts/export_roadmap_sppf.py
 	python3 scripts/export_roadmap_sppf.py
 # Build all enriched artifacts
 roadmap-all-enriched: roadmap-export-enriched roadmap-export-deps
@@ -111,7 +112,7 @@ docs-generate: src/agda/Plan/CIM/RoadmapExporter.agdai
 	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/RoadmapExporter.agda && ./src/agda/RoadmapExporter
 	python3 scripts/normalize_generated_markdown.py
 # Validate documentation integrity
-docs-validate: 
+docs-validate: scripts/validate_triangle_identity.py
 	python3 scripts/validate_triangle_identity.py
 # Compile src/agda/MetaScan.agda
 src/agda/MetaScan.agdai: src/agda/MetaScan.agda
