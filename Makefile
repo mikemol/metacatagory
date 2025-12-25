@@ -30,7 +30,7 @@ md-normalize:
 # Validate Makefile consistency
 makefile-validate: 
 	mkdir -p build/reports
-	python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt
+	python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt || (cat build/reports/makefile-validate.txt; exit 1)
 # Build all code and documentation
 all: agda-all docs-all
 	@echo "all complete"

@@ -182,7 +182,7 @@ discoveredTargets =
   ∷ generatorToTarget "md-normalize" "Normalize markdown formatting" ([])
     ("python3 scripts/normalize_generated_markdown.py" ∷ [])
   ∷ validatorToTarget "makefile-validate" "Validate Makefile consistency" "build/reports/makefile-validate.txt"
-    ("mkdir -p build/reports" ∷ "python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt" ∷ [])
+    ("mkdir -p build/reports" ∷ "python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt || (cat build/reports/makefile-validate.txt; exit 1)" ∷ [])
   ∷ generatorToTarget "all" "Build all code and documentation" ("agda-all" ∷ "docs-all" ∷ [])
     ("@echo \"all complete\"" ∷ [])
   ∷ generatorToTarget "check" "Run all validation checks" ("makefile-validate" ∷ "md-lint" ∷ "roadmap-validate-triangle" ∷ "docs-validate" ∷ "all" ∷ [])
