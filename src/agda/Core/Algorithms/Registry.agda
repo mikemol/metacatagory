@@ -14,6 +14,8 @@ open import Algebra.Fields.Advanced
 open import Core.AlgebraicAlgorithms
 open import Core.Algorithms.Bundle
 open import Algorithms.Adapters.BundleAdapter using (defaultAlgorithmBundle)
+open import Algorithms.Basic
+open Algorithms.Basic.Defaults
 open import Core.Algorithms.FiniteFields
 open import Core.Algorithms.NumberFields
 open import Core.Algorithms.FunctionFields
@@ -143,10 +145,10 @@ finiteFieldBundle F E Ffin Efin =
     ; subgroupEnumAlg      = FiniteFieldAlgorithms.subgroupEnumAlg ffAlgs
     ; algebraicityAlg      = FiniteFieldAlgorithms.algebraicityAlg ffAlgs
     ; primitiveElementAlg  = FiniteFieldAlgorithms.primitiveElementAlg ffAlgs
-    ; normalityAlg         = NormalityDecisionAlgorithm-generic {F} {E}
-    ; separabilityAlg      = SeparabilityDecisionAlgorithm-generic {F} {E}
-    ; normalClosureAlg     = NormalClosureAlgorithm-generic {F} {E}
-    ; galoisClosureAlg     = GaloisClosureAlgorithm-generic {F} {E}
+    ; normalityAlg         = mkNormalityDecisionAlgorithm {F} {E}
+    ; separabilityAlg      = mkSeparabilityDecisionAlgorithm {F} {E}
+    ; normalClosureAlg     = mkNormalClosureAlgorithm {F} {E}
+    ; galoisClosureAlg     = mkGaloisClosureAlgorithm {F} {E}
     }
 
 -- ============================================================================
