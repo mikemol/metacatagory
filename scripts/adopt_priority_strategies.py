@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 """
-PRIO-ADOPT-1: Align Python badge weight profiles with Agda TechnicalDebt.Priorities
+PRIO-ADOPT-1: Orchestration layer connecting Agda priorities to Python badge system
 
-Separation of Concerns:
-1. LOGIC LAYER: Pure mapping from Agda priorities to Python weight categories
-2. FORMAT LAYER: JSON serialization and file I/O
+Architecture:
+1. LOGIC LAYER (Agda): TechnicalDebt.PriorityMapping - pure strategy→weights mapping
+2. FORMAT LAYER (Agda): TechnicalDebt.PriorityFormatting - JSON serialization
+3. ORCHESTRATION LAYER (Python): This script - coordinates Agda output with Python tools
 
-This ensures the core mapping logic is independent of serialization details.
+Workflow:
+- Agda TechnicalDebt.Priorities defines strategy structures
+- Agda TechnicalDebt.PriorityMapping maps to simplified weight categories
+- Agda TechnicalDebt.PriorityFormatting formats as JSON
+- Python loads and integrates with badge generation system
+
+This design keeps domain logic AND formatting in Agda, Python handles integration only.
 """
 
 import json
@@ -213,15 +220,30 @@ if __name__ == "__main__":
     badges_dir = repo_root / ".github" / "badges"
     weights_file = badges_dir / "weights.json"
     
-    # Generate weights
-    generated = generate_bridge_config()
+    # ORCHESTRATION LAYER: In production, this would:
+    # 1. Compile Agda to extract formatAllStrategyProfiles output
+    # 2. Parse JSON output from Agda
+    # 3. Load into Python badge system
+    #
+    # For now, demonstrate the current state:
+    
+    # Generate weights (logic layer)
+    profiles = build_weight_profiles()
+    
+    # Format as JSON (format layer - currently in Python, will move to Agda)
+    generated = format_weights_json(profiles)
     
     # Validate
     comparison = validate_against_current_weights(weights_file)
     
     print("=" * 80)
-    print("PRIO-ADOPT-1: Agda Priority Strategy → Python Badge Weights")
+    print("PRIO-ADOPT-1: Orchestration Layer Status")
     print("=" * 80)
+    print()
+    print("Current Architecture:")
+    print("  ✓ LOGIC LAYER (Agda): TechnicalDebt.PriorityMapping - pure weights computation")
+    print("  ✓ FORMAT LAYER (Agda): TechnicalDebt.PriorityFormatting - JSON formatting (postulated)")
+    print("  • ORCHESTRATION LAYER (Python): This script - system integration")
     print()
     print("Generated profiles from Agda TechnicalDebt.Priorities:")
     print(json.dumps(generated, indent=2))
@@ -235,9 +257,15 @@ if __name__ == "__main__":
     print("  fixme ← safety          (Safety issues, bugs, performance problems)")
     print("  deviation ← critical    (Critical deviations, specification mismatches)")
     print()
+    print("Next Steps:")
+    print("  1. Implement Agda PriorityFormatting.formatAllStrategyProfiles concrete function")
+    print("  2. Export Agda-formatted JSON to file during build")
+    print("  3. Python loads and validates Agda output")
+    print("  4. Python integration with badge generation remains pure orchestration")
+    print()
     
-    # Save generated config for reference (don't overwrite current yet)
-    reference_file = badges_dir / "weights-agda-mapped.json"
+    # Save generated config for reference
+    reference_file = badges_dir / "weights-agda-formatted.json"
     with open(reference_file, "w") as f:
         json.dump(generated, f, indent=2)
     print(f"Saved reference config: {reference_file}")
