@@ -19,6 +19,7 @@
 open import Agda.Builtin.String
 open import Agda.Builtin.Unit
 open import Agda.Builtin.IO
+open import Agda.Builtin.Int using (Int)
 
 module TechnicalDebt.PriorityOrchestration
   -- I/O Operations (to be provided by FFI implementation)
@@ -29,11 +30,14 @@ module TechnicalDebt.PriorityOrchestration
   (reportSuccess : String → IO ⊤)
   (reportError : String → IO ⊤)
   (validateJSON : String → IO String)  -- returns "valid" or error message
+  -- Formatting operations (from parameterized formatting module)
+  (intToString : Int → String)
+  (formatAllStrategyProfiles : String)
   where
 
 open import TechnicalDebt.Priorities
 open import TechnicalDebt.PriorityMapping
-open import TechnicalDebt.PriorityFormatting
+open import TechnicalDebt.PriorityFormatting intToString formatAllStrategyProfiles
 
 -- Orchestration functions
 

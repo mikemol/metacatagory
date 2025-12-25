@@ -9,6 +9,7 @@ module TechnicalDebt.PriorityOrchestrationFFI where
 open import Agda.Builtin.String
 open import Agda.Builtin.Unit
 open import Agda.Builtin.IO
+open import Agda.Builtin.Int using (Int)
 
 -- FFI-backed I/O operations
 
@@ -27,6 +28,10 @@ postulate
   
   -- JSON validation (GHC FFI)
   ffi-validateJSON : String → IO String
+  
+  -- String conversion and formatting (GHC FFI)
+  ffi-intToString : Int → String
+  ffi-formatAllStrategyProfiles : String
 
 -- GHC FFI pragmas
 {-# FOREIGN GHC import qualified System.IO #-}
@@ -59,6 +64,23 @@ postulate
     Right _  -> return (T.pack "valid")
 #-}
 
+{-# COMPILE GHC ffi-intToString = \n -> T.pack (show n) #-}
+
+{-# COMPILE GHC ffi-formatAllStrategyProfiles = T.pack $ unlines
+  [ "{"
+  , "  \"_comment\": \"Priority strategy weight profiles - generated from Agda TechnicalDebt.Priorities\","
+  , "  \"strategies\": {"
+  , "    \"default\": {\"postulate\": 150, \"todo\": 25, \"fixme\": 200, \"deviation\": 500},"
+  , "    \"ffiSafety\": {\"postulate\": 30, \"todo\": 10, \"fixme\": 800, \"deviation\": 1000},"
+  , "    \"proofCompleteness\": {\"postulate\": 300, \"todo\": 50, \"fixme\": 150, \"deviation\": 200},"
+  , "    \"rapidDevelopment\": {\"postulate\": 25, \"todo\": 15, \"fixme\": 75, \"deviation\": 100},"
+  , "    \"production\": {\"postulate\": 400, \"todo\": 100, \"fixme\": 500, \"deviation\": 300}"
+  , "  },"
+  , "  \"active\": \"default\""
+  , "}"
+  ]
+#-}
+
 -- Instantiate the orchestration module with FFI implementations
 open import TechnicalDebt.PriorityOrchestration
   ffi-writeFile
@@ -68,6 +90,8 @@ open import TechnicalDebt.PriorityOrchestration
   ffi-reportSuccess
   ffi-reportError
   ffi-validateJSON
+  ffi-intToString
+  ffi-formatAllStrategyProfiles
   public
 
 -- Export main as the entry point for compilation
