@@ -1196,3 +1196,93 @@ files:
 * **GP303: The Adjoint Manifest (v3.0)** — Plan/CIM/IngestedRoadmaps/Geometry.agda [status: not-started]
   Target: `src/agda/Plan/CIM/Implementation.agda`
   Tags: GP
+
+## TechDebt
+
+```yaml
+id: PARAM-ALG-1
+title: Parameterize remaining Core.AlgebraicAlgorithms consumers
+status: not-started
+category: TechDebt
+dependencies:
+- PHASE-II.2
+tags:
+- parameterization
+- Core.AlgebraicAlgorithms
+files:
+- src/agda/Core/AlgorithmUniversality.agda
+- src/agda/Core/AlgorithmCorrectness.agda
+- src/agda/Core/ConstructiveWitnesses.agda
+- src/agda/Core/Algorithms/Bundle.agda
+- src/agda/Core/Algorithms/External.agda
+- src/agda/Core/Algorithms/FiniteFields.agda
+- src/agda/Core/Algorithms/FunctionFields.agda
+- src/agda/Core/Algorithms/NumberFields.agda
+- src/agda/Core/Algorithms/Registry.agda
+- src/agda/Algebra/Index.agda
+- src/agda/Examples/AlgorithmCorrectnessExamples.agda
+- src/agda/Examples/AutomaticEvidenceDemo.agda
+- src/agda/Examples/ConstructiveWitnessExamples.agda
+- src/agda/Examples/FunctionField/F2x.agda
+- src/agda/Examples/LazyHybridDemo.agda
+- src/agda/Examples/NumberField/Sqrt2.agda
+- src/agda/Tests/DispatchBehaviorTests.agda
+- src/agda/Tests/SerializationTests.agda
+- src/agda/Tests/PhaseExamples.agda
+- src/agda/Tests/UniversalPropertyTests.agda
+- src/agda/Tests/ErrorAsSpecificationTests.agda
+- src/agda/Tests/AdvancedPhaseExamples.agda
+- src/agda/Tests/AlgorithmCompositionTests.agda
+- src/agda/Tests/AlgorithmSmokeTests.agda
+- src/agda/Tests/PerformanceBoundaryTests.agda
+- src/agda/Tests/WarningAggregatorsTest.agda
+- src/agda/Tests/ErrorHandlingTests.agda
+- src/agda/Tests/WitnessConstructionTests.agda
+- src/agda/Tests/ConstructiveWitnessTests.agda
+- src/agda/Core/AlgebraicAlgorithms.agda
+- src/agda/Plan/CIM/FrameworkMetadata.agda
+```
+
+* **Parameterize remaining Core.AlgebraicAlgorithms consumers** — intake/parameterization-buffer.md [status: not-started]
+  Target: `src/agda/Core/AlgorithmUniversality.agda`, `src/agda/Core/AlgorithmCorrectness.agda`, `src/agda/Core/ConstructiveWitnesses.agda`, `src/agda/Core/Algorithms/Bundle.agda`, `src/agda/Core/Algorithms/External.agda`, `src/agda/Core/Algorithms/FiniteFields.agda`, `src/agda/Core/Algorithms/FunctionFields.agda`, `src/agda/Core/Algorithms/NumberFields.agda`, `src/agda/Core/Algorithms/Registry.agda`, `src/agda/Algebra/Index.agda`, `src/agda/Examples/AlgorithmCorrectnessExamples.agda`, `src/agda/Examples/AutomaticEvidenceDemo.agda`, `src/agda/Examples/ConstructiveWitnessExamples.agda`, `src/agda/Examples/FunctionField/F2x.agda`, `src/agda/Examples/LazyHybridDemo.agda`, `src/agda/Examples/NumberField/Sqrt2.agda`, `src/agda/Tests/DispatchBehaviorTests.agda`, `src/agda/Tests/SerializationTests.agda`, `src/agda/Tests/PhaseExamples.agda`, `src/agda/Tests/UniversalPropertyTests.agda`, `src/agda/Tests/ErrorAsSpecificationTests.agda`, `src/agda/Tests/AdvancedPhaseExamples.agda`, `src/agda/Tests/AlgorithmCompositionTests.agda`, `src/agda/Tests/AlgorithmSmokeTests.agda`, `src/agda/Tests/PerformanceBoundaryTests.agda`, `src/agda/Tests/WarningAggregatorsTest.agda`, `src/agda/Tests/ErrorHandlingTests.agda`, `src/agda/Tests/WitnessConstructionTests.agda`, `src/agda/Tests/ConstructiveWitnessTests.agda`, `src/agda/Core/AlgebraicAlgorithms.agda`, `src/agda/Plan/CIM/FrameworkMetadata.agda`
+  Tags: parameterization, Core.AlgebraicAlgorithms
+  Depends on: `PHASE-II.2`
+
+```yaml
+id: PARAM-GROWTH-1
+title: Adopt GrowthAnalysis parameterization beyond tests
+status: not-started
+category: TechDebt
+dependencies:
+- PHASE-II.2
+tags:
+- parameterization
+- GrowthAnalysis
+files:
+- src/agda/Tests/PerformanceBoundaryTests.agda
+```
+
+* **Adopt GrowthAnalysis parameterization beyond tests** — intake/parameterization-buffer.md [status: not-started]
+  Target: `src/agda/Tests/PerformanceBoundaryTests.agda`
+  Tags: parameterization, GrowthAnalysis
+  Depends on: `PHASE-II.2`
+
+```yaml
+id: PRIO-ADOPT-1
+title: Adopt TechnicalDebt.Priorities strategies in tooling
+status: not-started
+category: TechDebt
+dependencies:
+- PHASE-II.2
+tags:
+- priorities
+- technical-debt
+files:
+- scripts/generate-badges.py
+- scripts/flag_unannotated_debt.py
+```
+
+* **Adopt TechnicalDebt.Priorities strategies in tooling** — intake/parameterization-buffer.md [status: not-started]
+  Target: `scripts/generate-badges.py`, `scripts/flag_unannotated_debt.py`
+  Tags: priorities, technical-debt
+  Depends on: `PHASE-II.2`
