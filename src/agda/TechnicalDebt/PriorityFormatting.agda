@@ -3,45 +3,64 @@
 -- TechnicalDebt.PriorityFormatting: JSON formatting for priority strategies
 -- PRIO-ADOPT-1: Formatting layer takes pure CategoryWeights and produces JSON strings
 -- This keeps all domain-specific concerns in Agda; Python becomes integration layer
+--
+-- Uses module parameterization for string operations (not postulates)
 
-module TechnicalDebt.PriorityFormatting where
-
-open import TechnicalDebt.PriorityMapping using (CategoryWeights; strategyToWeights)
-open import TechnicalDebt.Priorities
 open import Agda.Builtin.String using (String; primStringAppend)
 open import Agda.Builtin.Int using (Int; pos; negsuc)
 
+module TechnicalDebt.PriorityFormatting
+  -- String operations (to be provided by FFI implementation)
+  (intToString : Int → String)
+  (formatAllStrategyProfiles : String)
+  where
+
+open import TechnicalDebt.PriorityMapping using (CategoryWeights; strategyToWeights)
+open import TechnicalDebt.Priorities
+
 -- ============================================================================
--- Int to String Conversion (FFI Detail)
+-- JSON Formatting - Using Parameters
 -- ============================================================================
 
-postulate
-  intToString : Int → String
+-- String concatenation helper
+_++_ : String → String → String
+_++_ = primStringAppend
 
--- ============================================================================
--- JSON Formatting - Pure String Building
--- ============================================================================
+infixr 5 _++_
 
--- Postulate the complete JSON output generation
--- (Implementation: Agda computes all strategy weights, then formats as JSON string)
-postulate
-  formatAllStrategyProfiles : String
+-- Helper: Format a single strategy's weights as JSON
+formatStrategy : PriorityStrategy → String
+formatStrategy strategy =
+  let weights = strategyToWeights strategy
+  in "{\"weights\": "
+     ++ "{\"postulate\": " ++ intToString (CategoryWeights.postulateWeight weights)
+     ++ ", \"todo\": " ++ intToString (CategoryWeights.todoWeight weights)
+     ++ ", \"fixme\": " ++ intToString (CategoryWeights.fixmeWeight weights)
+     ++ ", \"deviation\": " ++ intToString (CategoryWeights.deviationWeight weights)
+     ++ "}}"
 
--- This can be computed at compile-time by the Agda typechecker:
--- For each strategy (default, ffiSafety, proofCompleteness, rapidDevelopment, production):
---   1. strategyToWeights computes category weights (postulate, todo, fixme, deviation)
---   2. Format as JSON: {"postulate": N, "todo": N, "fixme": N, "deviation": N}
---   3. Wrap with metadata and "active" field
+-- The complete JSON is provided as a parameter
+-- (Allows FFI implementation to provide fully formatted output)
+getAllStrategyProfiles : String
+getAllStrategyProfiles = formatAllStrategyProfiles
 
 -- ============================================================================
 -- Example: Export functionality
 -- ============================================================================
 
 module Examples where
-  -- The complete JSON output is computable at compile time:
+  -- The complete JSON output is provided via parameter:
   completePrioritiesJSON : String
   completePrioritiesJSON = formatAllStrategyProfiles
 
   -- Usage: This string can be exported to a file or served directly
   -- Python integration: load this string and parse as JSON
 
+-- Note: This module is parameterized. To use it, instantiate with:
+--   1. intToString implementation (Int → String conversion)
+--   2. formatAllStrategyProfiles implementation (complete JSON string)
+--
+-- Example instantiation in another module:
+--   open import TechnicalDebt.PriorityFormatting
+--     myIntToString
+--     myFormatAllStrategyProfiles
