@@ -1,6 +1,35 @@
 {
-  "postulate": 2.0,
-  "todo": 1.0,
-  "fixme": 1.5,
-  "deviation": 3.0
+  "active": "default",
+  "profiles": {
+    "default": {
+      "postulate": 2.0,
+      "todo": 1.0,
+      "fixme": 1.5,
+      "deviation": 3.0
+    },
+    "ffiSafety": {
+      "postulate": 2.0,
+      "todo": 1.0,
+      "fixme": 2.0,
+      "deviation": 4.0
+    },
+    "proofCompleteness": {
+      "postulate": 3.5,
+      "todo": 1.0,
+      "fixme": 1.5,
+      "deviation": 3.0
+    },
+    "rapidDevelopment": {
+      "postulate": 1.2,
+      "todo": 0.8,
+      "fixme": 1.0,
+      "deviation": 2.5
+    },
+    "production": {
+      "postulate": 4.0,
+      "todo": 2.0,
+      "fixme": 3.0,
+      "deviation": 5.0
+    }
+  }
 }
