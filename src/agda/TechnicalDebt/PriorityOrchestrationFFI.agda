@@ -29,9 +29,12 @@ postulate
   -- JSON validation (GHC FFI)
   ffi-validateJSON : String → IO String
   
-  -- String conversion and formatting (GHC FFI)
+  -- String conversion (GHC FFI)
   ffi-intToString : Int → String
-  ffi-formatAllStrategyProfiles : String
+  
+  -- Monad operations
+  ffi-bind : ∀ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} → IO A → (A → IO B) → IO B
+  ffi-pure : ∀ {ℓ} {A : Set ℓ} → A → IO A
 
 -- GHC FFI pragmas
 {-# FOREIGN GHC import qualified System.IO #-}
@@ -42,9 +45,9 @@ postulate
 
 {-# COMPILE GHC ffi-writeFile = \path content -> System.IO.writeFile (T.unpack path) (T.unpack content) #-}
 {-# COMPILE GHC ffi-readFile = \path -> fmap T.pack (System.IO.readFile (T.unpack path)) #-}
-{-# COMPILE GHC ffi-fileExists = \path -> do
-  exists <- System.Directory.doesFileExist (T.unpack path)
-  return (if exists then T.pack "true" else T.pack "false")
+{-# COMPILE GHC ffi-fileExists = \path ->
+  System.Directory.doesFileExist (T.unpack path) >>= \exists ->
+    return (if exists then T.pack "true" else T.pack "false")
 #-}
 
 {-# COMPILE GHC ffi-putStrLn = \s -> System.IO.putStrLn (T.unpack s) #-}
@@ -57,29 +60,18 @@ postulate
   System.IO.putStrLn ("\x1b[31m✗ " ++ T.unpack msg ++ "\x1b[0m")
 #-}
 
-{-# COMPILE GHC ffi-validateJSON = \jsonStr -> do
+{-# COMPILE GHC ffi-validateJSON = \jsonStr ->
   let bytes = BSL.pack (T.unpack jsonStr)
-  case Data.Aeson.eitherDecode bytes :: Either String Data.Aeson.Value of
-    Left err -> return (T.pack ("Invalid JSON: " ++ err))
-    Right _  -> return (T.pack "valid")
+  in case Data.Aeson.eitherDecode bytes :: Either String Data.Aeson.Value of
+       { Left err -> return (T.pack ("Invalid JSON: " ++ err))
+       ; Right _  -> return (T.pack "valid")
+       }
 #-}
 
 {-# COMPILE GHC ffi-intToString = \n -> T.pack (show n) #-}
 
-{-# COMPILE GHC ffi-formatAllStrategyProfiles = T.pack $ unlines
-  [ "{"
-  , "  \"_comment\": \"Priority strategy weight profiles - generated from Agda TechnicalDebt.Priorities\","
-  , "  \"strategies\": {"
-  , "    \"default\": {\"postulate\": 150, \"todo\": 25, \"fixme\": 200, \"deviation\": 500},"
-  , "    \"ffiSafety\": {\"postulate\": 30, \"todo\": 10, \"fixme\": 800, \"deviation\": 1000},"
-  , "    \"proofCompleteness\": {\"postulate\": 300, \"todo\": 50, \"fixme\": 150, \"deviation\": 200},"
-  , "    \"rapidDevelopment\": {\"postulate\": 25, \"todo\": 15, \"fixme\": 75, \"deviation\": 100},"
-  , "    \"production\": {\"postulate\": 400, \"todo\": 100, \"fixme\": 500, \"deviation\": 300}"
-  , "  },"
-  , "  \"active\": \"default\""
-  , "}"
-  ]
-#-}
+{-# COMPILE GHC ffi-bind = \_ _ _ _ m f -> m >>= f #-}
+{-# COMPILE GHC ffi-pure = \_ _ x -> return x #-}
 
 -- Instantiate the orchestration module with FFI implementations
 open import TechnicalDebt.PriorityOrchestration
@@ -91,7 +83,8 @@ open import TechnicalDebt.PriorityOrchestration
   ffi-reportError
   ffi-validateJSON
   ffi-intToString
-  ffi-formatAllStrategyProfiles
+  ffi-bind
+  ffi-pure
   public
 
 -- Export main as the entry point for compilation

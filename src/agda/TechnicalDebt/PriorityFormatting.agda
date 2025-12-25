@@ -12,7 +12,6 @@ open import Agda.Builtin.Int using (Int; pos; negsuc)
 module TechnicalDebt.PriorityFormatting
   -- String operations (to be provided by FFI implementation)
   (intToString : Int → String)
-  (formatAllStrategyProfiles : String)
   where
 
 open import TechnicalDebt.PriorityMapping using (CategoryWeights; strategyToWeights)
@@ -38,6 +37,21 @@ formatStrategy strategy =
      ++ ", \"fixme\": " ++ intToString (CategoryWeights.fixmeWeight weights)
      ++ ", \"deviation\": " ++ intToString (CategoryWeights.deviationWeight weights)
      ++ "}}"
+
+-- Aggregate all strategies into a single JSON object (pure Agda)
+formatAllStrategyProfiles : String
+formatAllStrategyProfiles =
+  "{" ++
+  "\"_comment\": \"Priority strategy weight profiles - generated from Agda TechnicalDebt.Priorities\"," ++
+  "\"strategies\": {" ++
+  "\"default\": " ++ formatStrategy defaultStrategy ++ "," ++
+  "\"ffiSafety\": " ++ formatStrategy ffiSafetyStrategy ++ "," ++
+  "\"proofCompleteness\": " ++ formatStrategy proofCompletenessStrategy ++ "," ++
+  "\"rapidDevelopment\": " ++ formatStrategy rapidDevelopmentStrategy ++ "," ++
+  "\"production\": " ++ formatStrategy productionStrategy ++
+  "}," ++
+  "\"active\": \"default\"" ++
+  "}"
 
 -- The complete JSON is provided as a parameter
 -- (Allows FFI implementation to provide fully formatted output)

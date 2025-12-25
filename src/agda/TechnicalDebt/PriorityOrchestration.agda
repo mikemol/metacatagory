@@ -18,8 +18,9 @@
 
 open import Agda.Builtin.String
 open import Agda.Builtin.Unit
-open import Agda.Builtin.IO
+open import Agda.Builtin.IO using (IO)
 open import Agda.Builtin.Int using (Int)
+open import Agda.Primitive using (Level)
 
 module TechnicalDebt.PriorityOrchestration
   -- I/O Operations (to be provided by FFI implementation)
@@ -32,12 +33,26 @@ module TechnicalDebt.PriorityOrchestration
   (validateJSON : String → IO String)  -- returns "valid" or error message
   -- Formatting operations (from parameterized formatting module)
   (intToString : Int → String)
-  (formatAllStrategyProfiles : String)
+  -- Monad operations (to sequence I/O)
+  (bind : ∀ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} → IO A → (A → IO B) → IO B)
+  (pure : ∀ {ℓ} {A : Set ℓ} → A → IO A)
   where
+
+-- Monad operators supplied as module parameters
+-- bind: sequencing; pure: inject value into IO
+-- This keeps I/O effects parameterized (no postulates in this module).
+_>>=_ : ∀ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} → IO A → (A → IO B) → IO B
+_>>=_ = bind
+
+return : ∀ {ℓ} {A : Set ℓ} → A → IO A
+return = pure
+
+_>>_ : ∀ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} → IO A → IO B → IO B
+_>>_ m n = m >>= λ _ → n
 
 open import TechnicalDebt.Priorities
 open import TechnicalDebt.PriorityMapping
-open import TechnicalDebt.PriorityFormatting intToString formatAllStrategyProfiles
+open import TechnicalDebt.PriorityFormatting intToString
 
 -- Orchestration functions
 
