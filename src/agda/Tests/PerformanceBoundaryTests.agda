@@ -369,50 +369,58 @@ module Phase10-AlgorithmComplexityAnnotations where
 -- ============================================================================
 
 module Phase14-GrowthInstrumentation where
-  open import Core.GrowthMetrics as GM using (CoordinateAllocation; GrowthSnapshot; PhaseDensity; YCoordinateDistribution; GrowthRate; ExpansionPattern; metacatagoryGrowthHistory; metacatagoryGrowthSnapshot; phase13Density; phase13YDistribution; metacatagoryGrowthRate; metacatagoryExpansionPattern; verifyGrowthRate; verifyPhaseDensity; verifyGrowthSnapshot)
+  -- Import parameterized GrowthAnalysis module (Phase II.2)
+  -- This enables analysis of different development branches: Metacatagory, Categorical, Classical
+  open import GrowthAnalysis as GA using (metacatagoryHistory; categoricalBranchHistory; classicalBranchHistory)
+  
+  -- Import type definitions from Core.GrowthMetrics
+  open import Core.GrowthMetrics using
+    ( CoordinateAllocation; GrowthSnapshot; PhaseDensity; YCoordinateDistribution; GrowthRate; ExpansionPattern
+    ; verifyGrowthRate; verifyPhaseDensity; verifyGrowthSnapshot
+    )
   open import Core.Utils using (ltNat)
   
-  -- Test: Allocation history tracking
-  test-allocation-history : List GM.CoordinateAllocation
-  test-allocation-history = GM.metacatagoryGrowthHistory
+  -- Test: Allocation history tracking (now using parameterized GrowthAnalysis)
+  test-allocation-history : List CoordinateAllocation
+  test-allocation-history = GA.metacatagoryHistory
   
-  -- Test: Capture growth snapshot
-  test-growth-snapshot : GM.GrowthSnapshot
-  test-growth-snapshot = GM.metacatagoryGrowthSnapshot
+  -- Test: Capture growth snapshot (backward compatible export from GrowthAnalysis)
+  test-growth-snapshot : GrowthSnapshot
+  test-growth-snapshot = GA.metacatagoryGrowthSnapshot
   
-  -- Test: Phase density calculation
-  test-phase-density : GM.PhaseDensity
-  test-phase-density = GM.phase13Density
+  -- Test: Phase density calculation (backward compatible export from GrowthAnalysis)
+  test-phase-density : PhaseDensity
+  test-phase-density = GA.phase13Density
   
-  -- Test: Y-coordinate distribution
-  test-y-distribution : GM.YCoordinateDistribution
-  test-y-distribution = GM.phase13YDistribution
+  -- Test: Y-coordinate distribution (backward compatible export from GrowthAnalysis)
+  test-y-distribution : YCoordinateDistribution
+  test-y-distribution = GA.phase13YDistribution
   
-  -- Test: Growth rate metrics
-  test-growth-rate : GM.GrowthRate
-  test-growth-rate = GM.metacatagoryGrowthRate
+  -- Test: Growth rate metrics (backward compatible export from GrowthAnalysis)
+  test-growth-rate : GrowthRate
+  test-growth-rate = GA.metacatagoryGrowthRate
   
-  -- Test: Expansion pattern classification
-  test-expansion-pattern : GM.ExpansionPattern
-  test-expansion-pattern = GM.metacatagoryExpansionPattern
+  -- Test: Expansion pattern classification (backward compatible export from GrowthAnalysis)
+  test-expansion-pattern : ExpansionPattern
+  test-expansion-pattern = GA.metacatagoryExpansionPattern
   
   -- Verify: Growth rate is valid
   test-verify-growth-rate : Bool
-  test-verify-growth-rate = GM.verifyGrowthRate test-growth-rate
+  test-verify-growth-rate = verifyGrowthRate test-growth-rate
   
   _ : test-verify-growth-rate ≡ true
   _ = refl
   
   -- Verify: Phase density is consistent
   test-verify-density : Bool
-  test-verify-density = GM.verifyPhaseDensity test-phase-density
+  test-verify-density = verifyPhaseDensity test-phase-density
   
   _ : test-verify-density ≡ true
   _ = refl
   
   -- Verify: Snapshot is well-formed
   test-verify-snapshot : Bool
-  test-verify-snapshot = GM.verifyGrowthSnapshot test-growth-snapshot
+  test-verify-snapshot = verifyGrowthSnapshot test-growth-snapshot
   
   _ : test-verify-snapshot ≡ true
   _ = refl
@@ -420,7 +428,7 @@ module Phase14-GrowthInstrumentation where
   -- Test: Phase 13 has objects allocated
   test-phase13-has-objects : Bool
   test-phase13-has-objects =
-    let count = GM.PhaseDensity.objectCount test-phase-density
+    let count = PhaseDensity.objectCount test-phase-density
     in ltNat zero count
   
   _ : test-phase13-has-objects ≡ true
@@ -429,7 +437,7 @@ module Phase14-GrowthInstrumentation where
   -- Test: Multiple phases are used
   test-multiple-phases : Bool
   test-multiple-phases =
-    let phaseCount = GM.GrowthRate.phasesUsed test-growth-rate
+    let phaseCount = GrowthRate.phasesUsed test-growth-rate
     in ltNat (suc zero) phaseCount
   
   _ : test-multiple-phases ≡ true
