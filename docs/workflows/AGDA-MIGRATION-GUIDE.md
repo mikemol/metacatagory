@@ -5,17 +5,20 @@ This guide helps developers migrate from hardcoded Agda elements to the new para
 ## Executive Summary
 
 **What Changed:**
+
 * 21 algorithm postulates → parameterized `Algorithms.Basic` module
 * 18 hardcoded structures → `Algorithms.TestInstances` module
 * Hardcoded growth history → parameterized `GrowthAnalysis` module
 * Hardcoded priorities → strategy-based `TechnicalDebt.Priorities` module
 
 **When to Migrate:**
+
 * New code should always use parameterized modules
 * Existing code can use `Defaults` modules during transition
 * No breaking changes - old imports still work
 
 **Current Status:**
+
 * All parameterized modules created and compiled ✅
 * Backward compatibility maintained ✅
 * Gradual migration path enabled ✅
@@ -160,6 +163,7 @@ myRing = Algorithms.TestInstances.packedCommRingBase
 **Step 1: Update Imports**
 
 **Before:**
+
 ```agda
 open import Core.AlgebraicAlgorithms using (packedFieldBase)
 
@@ -167,6 +171,7 @@ test = packedFieldBase
 ```
 
 **After:**
+
 ```agda
 open import Algorithms.TestInstances using (packedFieldBase)
 
@@ -499,18 +504,19 @@ def format_weights_json(profiles: Dict[str, Any]) -> Dict[str, Any]:
 
 When adding a new parameterized system:
 
-- [ ] **Agda**: Define pure mapping functions, postulate any FFI
-- [ ] **Agda**: Export only types and pure functions (no I/O)
-- [ ] **Python**: Create LOGIC LAYER functions (pure, no side effects)
-- [ ] **Python**: Create FORMAT LAYER for serialization
-- [ ] **Python**: Add unit tests for logic layer only
-- [ ] **Python**: Document mapping strategy clearly
+* [ ] **Agda**: Define pure mapping functions, postulate any FFI
+* [ ] **Agda**: Export only types and pure functions (no I/O)
+* [ ] **Python**: Create LOGIC LAYER functions (pure, no side effects)
+* [ ] **Python**: Create FORMAT LAYER for serialization
+* [ ] **Python**: Add unit tests for logic layer only
+* [ ] **Python**: Document mapping strategy clearly
 
 ### Example: Adding a New Priority Category
 
 If you wanted to add a `reliability` category to technical debt:
 
 **Agda change** (TechnicalDebt.Priorities):
+
 ```agda
 record PriorityStrategy : Set where
   field
@@ -519,6 +525,7 @@ record PriorityStrategy : Set where
 ```
 
 **Python changes** (adopt_priority_strategies.py):
+
 ```python
 # LOGIC LAYER - update mapping
 def agda_to_python_weights(strategy_name: str):
@@ -545,9 +552,9 @@ def agda_to_python_weights(strategy_name: str):
 
 Separate **domain logic** (pure computation) from **formatting** (output generation):
 
-- **Logic Layer**: Pure Agda computation with no I/O or side effects
-- **Format Layer**: Serialization and output (ideally in Agda for compile-time guarantees)
-- **Orchestration Layer**: Python integration and tool invocation
+* **Logic Layer**: Pure Agda computation with no I/O or side effects
+* **Format Layer**: Serialization and output (ideally in Agda for compile-time guarantees)
+* **Orchestration Layer**: Python integration and tool invocation
 
 ### Example: Priority Strategy Formatting
 
@@ -568,10 +575,11 @@ def format_priority_weights(strategy):
 ```
 
 **Problems:**
-- Logic buried in Python script
-- Formatting logic scattered across multiple functions
-- Hard to test logic independently
-- Hard to add new output formats (YAML, TOML, etc.)
+
+* Logic buried in Python script
+* Formatting logic scattered across multiple functions
+* Hard to test logic independently
+* Hard to add new output formats (YAML, TOML, etc.)
 
 #### New Pattern (Separated Layers)
 
@@ -591,10 +599,11 @@ strategyToWeights strategy = record
 ```
 
 **Benefits:**
-- Type-checked at compile-time
-- No I/O, purely computational
-- Independently testable
-- Can be verified mathematically
+
+* Type-checked at compile-time
+* No I/O, purely computational
+* Independently testable
+* Can be verified mathematically
 
 **Layer 2: Format (Agda)**
 
@@ -614,10 +623,11 @@ formatStrategy s =
 ```
 
 **Benefits:**
-- Domain-specific formatting co-located with logic
-- Compile-time format generation
-- Easy to add new strategies without Python changes
-- All formatting rules in one place
+
+* Domain-specific formatting co-located with logic
+* Compile-time format generation
+* Easy to add new strategies without Python changes
+* All formatting rules in one place
 
 **Layer 3: Orchestration (Python)**
 
@@ -637,10 +647,11 @@ def main():
 ```
 
 **Benefits:**
-- Python does integration only
-- No domain logic in Python
-- No formatting logic in Python
-- Easy to swap implementations
+
+* Python does integration only
+* No domain logic in Python
+* No formatting logic in Python
+* Easy to swap implementations
 
 ### Migration Steps
 
@@ -816,17 +827,17 @@ module TestOrchestration where
 
 ### Implementation Checklist
 
-- [ ] **Extract pure logic** from Python into Agda (no I/O, no formatting)
-- [ ] **Create logic tests** (verify computation correctness)
-- [ ] **Move formatting** to Agda (separate from logic)
-- [ ] **Create format tests** (verify output structure)
-- [ ] **Parameterize orchestration** (I/O operations as module parameters)
-- [ ] **Create FFI instantiation** (concrete I/O implementations via GHC)
-- [ ] **Create orchestration tests** (mock I/O operations in Agda)
-- [ ] **Optional: Python wrapper** for build system integration
-- [ ] **Document layer responsibilities** in module comments
-- [ ] **Update ROADMAP** to reference architecture
-- [ ] **Add to onboarding** so new developers understand separation
+* [ ] **Extract pure logic** from Python into Agda (no I/O, no formatting)
+* [ ] **Create logic tests** (verify computation correctness)
+* [ ] **Move formatting** to Agda (separate from logic)
+* [ ] **Create format tests** (verify output structure)
+* [ ] **Parameterize orchestration** (I/O operations as module parameters)
+* [ ] **Create FFI instantiation** (concrete I/O implementations via GHC)
+* [ ] **Create orchestration tests** (mock I/O operations in Agda)
+* [ ] **Optional: Python wrapper** for build system integration
+* [ ] **Document layer responsibilities** in module comments
+* [ ] **Update ROADMAP** to reference architecture
+* [ ] **Add to onboarding** so new developers understand separation
 
 ### Validation Questions
 
@@ -843,17 +854,19 @@ When reviewing code with mixed concerns, ask:
 **Advanced Pattern: Complete Agda Implementation**
 
 For maximum type safety and single-language implementation:
-- Logic: Pure Agda (no I/O, no formatting)
-- Format: Pure Agda (string generation, co-located with logic)
-- Orchestration: Parameterized Agda (I/O operations as module parameters)
-- FFI: Concrete instantiation (GHC backend with System.IO)
-- Optional: Python wrapper (thin compilation/execution wrapper)
+
+* Logic: Pure Agda (no I/O, no formatting)
+* Format: Pure Agda (string generation, co-located with logic)
+* Orchestration: Parameterized Agda (I/O operations as module parameters)
+* FFI: Concrete instantiation (GHC backend with System.IO)
+* Optional: Python wrapper (thin compilation/execution wrapper)
 
 This enables:
-- Compile-time verification of all three layers
-- Native executable performance (via GHC)
-- Testable I/O via mocking (parameterized module instantiation)
-- Single-language codebase (Agda only, Python optional)
+
+* Compile-time verification of all three layers
+* Native executable performance (via GHC)
+* Testable I/O via mocking (parameterized module instantiation)
+* Single-language codebase (Agda only, Python optional)
 
 ---
 
