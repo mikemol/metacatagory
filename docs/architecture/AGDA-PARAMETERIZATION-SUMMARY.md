@@ -131,7 +131,7 @@ record PriorityStrategy : Set where
 
 **Before:**
 
-```
+```text
 Core/
   AlgebraicAlgorithms.agda (413 lines, mixed concerns)
   GrowthMetrics.agda (260 lines, hardcoded data)
@@ -140,7 +140,7 @@ Core/
 
 **After:**
 
-```
+```text
 Algorithms/
   Basic.agda (new, 300 lines, parameterized algorithms)
   TestInstances.agda (new, 200 lines, test fixtures)

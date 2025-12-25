@@ -8,19 +8,27 @@ This table is the human-readable witness for the Makefile triangle identity: the
 | `md-lint` | Lint all markdown files (fail on error) |
 | `md-fix` | Auto-fix markdown lint errors |
 | `intake-lint` | Lint intake files specifically |
+| `build/canonical_roadmap.json` | Generate canonical roadmap JSON from intake |
 | `intake-scan` | Scan intake directory for new files |
 | `md-normalize` | Normalize markdown formatting |
 | `makefile-validate` | Validate Makefile consistency |
 | `all` | Build all code and documentation |
 | `check` | Run all validation checks |
 | `badges` | Generate status badges |
+| `priority-strategy-profiles` | Compile and run Agda priority orchestration (generate strategy profiles) |
+| `priority-badge-weights` | Normalize Agda strategy profiles into badge weights |
+| `docs-modules` | Generate per-module markdown documentation |
+| `docs-all` | Generate documentation (markdown only) |
 | `node-deps` | Install Node.js dependencies |
 | `deferred-items` | Scan for TODOs and FIXMEs |
 | `roadmap-index` | Compile Roadmap Index |
 | `roadmap-sync` | Sync roadmap with external tracker |
 | `roadmap-sppf` | Compile Roadmap SPPF |
+| `validate-constructive` | Run all constructive build targets |
 | `roadmap-merge` | Merge ingestion streams |
+| `build/diagrams/agda-deps-full.dot` | Generate dependency graph |
 | `roadmap-deps-graph` | Generate dependency graph |
+| `build/canonical_enriched.json` | Enrich canonical roadmap |
 | `roadmap-enrich` | Enrich roadmap with graph data |
 | `roadmap-export-json` | Export canonical roadmap to JSON |
 | `roadmap-export-md` | Export canonical roadmap to Markdown |
