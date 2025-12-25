@@ -30,6 +30,11 @@ src/agda/RoadmapIssueSync
 src/agda/ExporterMakefile
 src/agda/MarkdownNormalize
 src/agda/RoadmapExporter
+src/agda/PriorityOrchestrationFFI
+
+# Generated Agda JSON artifacts (intermediate/diagnostic outputs)
+.github/badges/weights-agda-formatted.json
+.github/badges/weights-agda-mapped.json
 
 # Build outputs
 build/
