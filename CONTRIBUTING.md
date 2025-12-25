@@ -51,19 +51,6 @@ make node-deps
 
 * See .github/scripts/README.md for details on automation and metrics.
 
-### Badge Weight Profiles
-
-Automation scripts generate Shields.io badge data under `.github/badges`. You can tune technical-debt weighting via profiles:
-
-- Available profiles (see `.github/badges/weights.json`): `default`, `ffiSafety`, `proofCompleteness`, `rapidDevelopment`, `production`.
-- Select a profile when running badge generation by setting an environment variable:
-
-```bash
-BADGE_WEIGHTS_PROFILE=ffiSafety make badges
-```
-
-If no profile is set, the `active` profile in `.github/badges/weights.json` is used, falling back to `default`.
-
 ## Submitting Changes
 
 1. Fork the repository and create a feature branch.

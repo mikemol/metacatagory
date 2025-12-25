@@ -1255,6 +1255,7 @@ status: not-started
 category: TechDebt
 dependencies:
 - PHASE-II.2
+- ROADMAP-MD-DEP-PHASE-II.2
 tags:
 - parameterization
 - GrowthAnalysis
@@ -1265,7 +1266,7 @@ files:
 * **Adopt GrowthAnalysis parameterization beyond tests** — intake/parameterization-buffer.md [status: not-started]
   Target: `src/agda/Tests/PerformanceBoundaryTests.agda`
   Tags: parameterization, GrowthAnalysis
-  Depends on: `PHASE-II.2`
+  Depends on: `PHASE-II.2`, `ROADMAP-MD-DEP-PHASE-II.2`
 
 ```yaml
 id: PRIO-ADOPT-1
@@ -1274,6 +1275,7 @@ status: not-started
 category: TechDebt
 dependencies:
 - PHASE-II.2
+- ROADMAP-MD-DEP-PHASE-II.2
 tags:
 - priorities
 - technical-debt
@@ -1285,4 +1287,4 @@ files:
 * **Adopt TechnicalDebt.Priorities strategies in tooling** — intake/parameterization-buffer.md [status: not-started]
   Target: `scripts/generate-badges.py`, `scripts/flag_unannotated_debt.py`
   Tags: priorities, technical-debt
-  Depends on: `PHASE-II.2`
+  Depends on: `PHASE-II.2`, `ROADMAP-MD-DEP-PHASE-II.2`

@@ -1529,7 +1529,8 @@
         ],
         "related": [],
         "provenance": [
-            "PARAM-ALG-1|intake/parameterization-buffer.md"
+            "PARAM-ALG-1|intake/parameterization-buffer.md",
+            "ROADMAP-MD-79|ROADMAP.md"
         ]
     },
     {
@@ -1546,11 +1547,13 @@
             "GrowthAnalysis"
         ],
         "dependsOn": [
-            "PHASE-II.2"
+            "PHASE-II.2",
+            "ROADMAP-MD-DEP-PHASE-II.2"
         ],
         "related": [],
         "provenance": [
-            "PARAM-GROWTH-1|intake/parameterization-buffer.md"
+            "PARAM-GROWTH-1|intake/parameterization-buffer.md",
+            "ROADMAP-MD-80|ROADMAP.md"
         ]
     },
     {
@@ -1568,11 +1571,13 @@
             "technical-debt"
         ],
         "dependsOn": [
-            "PHASE-II.2"
+            "PHASE-II.2",
+            "ROADMAP-MD-DEP-PHASE-II.2"
         ],
         "related": [],
         "provenance": [
-            "PRIO-ADOPT-1|intake/parameterization-buffer.md"
+            "PRIO-ADOPT-1|intake/parameterization-buffer.md",
+            "ROADMAP-MD-81|ROADMAP.md"
         ]
     }
 ]
