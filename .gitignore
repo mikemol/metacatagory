@@ -36,8 +36,9 @@ src/agda/PriorityOrchestrationFFI
 .github/badges/weights-agda-formatted.json
 .github/badges/weights-agda-mapped.json
 
-# Build outputs
+# Build outputs (but track witness/reference files for CI)
 build/
+!build/makefile_targets_generated.md
 dist/
 *.egg-info/
 
