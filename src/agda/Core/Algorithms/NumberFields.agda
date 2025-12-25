@@ -15,6 +15,8 @@ open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 -- Import External Oracle capability
 open import Core.Algorithms.External
+open import Algorithms.Basic
+open Algorithms.Basic.Defaults
 
 -- Evidence that a field is a number field
 postulate
@@ -58,8 +60,8 @@ numberFieldAlgorithms {F} {E} Fnf Enf = record
   -- CORRECTED: Use external oracle for Subfields
   ; subfieldEnumAlg      = externalSubfieldEnumerationAlgorithm F E numberFieldExternalConfig
   -- Fallback to generics where external isn't critical yet
-  ; algebraicityAlg      = AlgebraicityDecisionAlgorithm-generic {F} {E}
-  ; primitiveElementAlg  = PrimitiveElementAlgorithm-generic {F} {E}
+  ; algebraicityAlg      = mkAlgebraicityDecisionAlgorithm {F} {E}
+  ; primitiveElementAlg  = mkPrimitiveElementAlgorithm {F} {E}
   }
 
 -- Convenience: construct full registry bundle for number fields
@@ -76,8 +78,8 @@ numberFieldBundle F E Fnf Enf =
     ; subgroupEnumAlg      = externalSubgroupEnumerationAlgorithm F E numberFieldExternalConfig
     ; algebraicityAlg      = NumberFieldAlgorithms.algebraicityAlg nf
     ; primitiveElementAlg  = NumberFieldAlgorithms.primitiveElementAlg nf
-    ; normalityAlg         = NormalityDecisionAlgorithm-generic {F} {E}
-    ; separabilityAlg      = SeparabilityDecisionAlgorithm-generic {F} {E}
-    ; normalClosureAlg     = NormalClosureAlgorithm-generic {F} {E}
-    ; galoisClosureAlg     = GaloisClosureAlgorithm-generic {F} {E}
+    ; normalityAlg         = mkNormalityDecisionAlgorithm {F} {E}
+    ; separabilityAlg      = mkSeparabilityDecisionAlgorithm {F} {E}
+    ; normalClosureAlg     = mkNormalClosureAlgorithm {F} {E}
+    ; galoisClosureAlg     = mkGaloisClosureAlgorithm {F} {E}
     }
