@@ -537,6 +537,242 @@ def agda_to_python_weights(strategy_name: str):
 
 ---
 
+---
+
+## 5. Logic-Formatting Separation
+
+### Pattern Overview
+
+Separate **domain logic** (pure computation) from **formatting** (output generation):
+
+- **Logic Layer**: Pure Agda computation with no I/O or side effects
+- **Format Layer**: Serialization and output (ideally in Agda for compile-time guarantees)
+- **Orchestration Layer**: Python integration and tool invocation
+
+### Example: Priority Strategy Formatting
+
+#### Old Pattern (Mixed Concerns)
+
+```python
+# scripts/generate-badges.py (LOGIC + FORMAT + ORCHESTRATION)
+
+def format_priority_weights(strategy):
+    # THIS MIXES LOGIC AND FORMATTING
+    weights = {
+        'postulate': compute_postulate_weight(strategy),  # LOGIC
+        'todo': compute_todo_weight(strategy),            # LOGIC
+        'fixme': compute_fixme_weight(strategy),          # LOGIC
+    }
+    json_string = json.dumps(weights)  # FORMATTING
+    return json_string                  # ORCHESTRATION
+```
+
+**Problems:**
+- Logic buried in Python script
+- Formatting logic scattered across multiple functions
+- Hard to test logic independently
+- Hard to add new output formats (YAML, TOML, etc.)
+
+#### New Pattern (Separated Layers)
+
+**Layer 1: Logic (Pure Agda)**
+
+```agda
+module TechnicalDebt.PriorityMapping where
+
+-- Pure computation, no I/O, no formatting
+strategyToWeights : PriorityStrategy → CategoryWeights
+strategyToWeights strategy = record
+  { postulateWeight = extractPriorityWeight (strategy.proof)
+  ; todoWeight = extractPriorityWeight (strategy.documentation)
+  ; fixmeWeight = extractPriorityWeight (strategy.safety)
+  ; deviationWeight = extractPriorityWeight (strategy.critical)
+  }
+```
+
+**Benefits:**
+- Type-checked at compile-time
+- No I/O, purely computational
+- Independently testable
+- Can be verified mathematically
+
+**Layer 2: Format (Agda)**
+
+```agda
+module TechnicalDebt.PriorityFormatting where
+
+open import TechnicalDebt.PriorityMapping
+
+-- Postulated JSON generation (can be implemented via FFI)
+formatAllStrategyProfiles : String
+formatAllStrategyProfiles = {- produces valid JSON -}
+
+-- Or build from components
+formatStrategy : PriorityStrategy → String
+formatStrategy s = 
+  "{\"weights\": " ++ formatWeights (strategyToWeights s) ++ "}"
+```
+
+**Benefits:**
+- Domain-specific formatting co-located with logic
+- Compile-time format generation
+- Easy to add new strategies without Python changes
+- All formatting rules in one place
+
+**Layer 3: Orchestration (Python)**
+
+```python
+# scripts/adopt_priority_strategies.py (PURE ORCHESTRATION)
+
+def main():
+    # LOGIC LAYER: Load from TechnicalDebt.PriorityMapping (Agda compiled)
+    weights = agda_to_python_weights()
+    
+    # FORMAT LAYER: Load from TechnicalDebt.PriorityFormatting (Agda compiled)
+    json_output = load_agda_formatted_json()
+    
+    # ORCHESTRATION: Integrate with rest of system
+    validate_and_save(json_output)
+    trigger_build_artifacts()
+```
+
+**Benefits:**
+- Python does integration only
+- No domain logic in Python
+- No formatting logic in Python
+- Easy to swap implementations
+
+### Migration Steps
+
+**Step 1: Extract Logic**
+
+Create pure logic function in Agda with **no I/O, no formatting**:
+
+```agda
+-- ✓ GOOD: Pure computation
+myPureLogic : Input → Output
+myPureLogic input = record { ... }
+
+-- ✗ BAD: Contains I/O
+myMixedLogic : Input → IO Output
+myMixedLogic input = do { ... }
+```
+
+**Step 2: Move Formatting to Agda**
+
+Create formatting functions separate from logic:
+
+```agda
+-- ✗ BAD: Mixed logic and formatting
+strategyToJson : PriorityStrategy → String
+strategyToJson s = ... strategyToWeights s ...  -- MIXING
+
+-- ✓ GOOD: Separate layers
+strategyToJson : PriorityStrategy → String
+strategyToJson s = 
+  let weights = strategyToWeights s  -- LOGIC
+  in formatWeightsAsJson weights     -- FORMAT
+```
+
+**Step 3: Postulate Format Layer**
+
+If Agda string building is complex, postulate and implement via FFI:
+
+```agda
+-- Postulate complex formatting
+postulate
+  formatAllStrategyProfiles : String
+
+-- Provide pure interface
+getStrategyJson : PriorityStrategy → String
+getStrategyJson s = formatAllStrategyProfiles ++ ""  -- Simplified
+```
+
+**Step 4: Update Python to Orchestrate**
+
+Python becomes pure orchestration—no business logic:
+
+```python
+# ✓ GOOD: Pure orchestration
+def main():
+    logic_result = call_agda_logic()      # Load logic results
+    formatted = load_agda_formatting()    # Load formatted output
+    trigger_downstream(formatted)         # Orchestrate
+```
+
+### Testing Each Layer
+
+**Logic Layer Tests** (Pure, Fast, Deterministic)
+
+```python
+# tests/test_priority_mapping.py
+def test_strategy_weights_are_consistent():
+    # Logic should produce same result every time
+    result1 = compute_weights(strategy)
+    result2 = compute_weights(strategy)
+    assert result1 == result2  # ✓ PASSES: deterministic
+
+def test_strategy_specific_emphasis():
+    # ffiSafety emphasizes safety over proof
+    ffi_weights = compute_weights(ffiSafetyStrategy)
+    assert ffi_weights['fixme'] > ffi_weights['postulate']
+```
+
+**Format Layer Tests** (Output Validation)
+
+```python
+def test_json_output_valid():
+    json_str = load_agda_json()
+    parsed = json.loads(json_str)
+    assert 'strategies' in parsed
+    assert all('weights' in s for s in parsed['strategies'])
+```
+
+**Orchestration Tests** (Integration)
+
+```python
+def test_orchestration_pipeline():
+    result = run_orchestration()
+    assert result.returncode == 0
+    assert os.path.exists('output.json')
+```
+
+### Benefits of Separation
+
+| Aspect | Before | After |
+|--------|--------|-------|
+| **Testability** | Hard (mixed concerns) | Easy (test each layer) |
+| **Reusability** | Logic trapped in Python | Logic reusable in Agda, other tools |
+| **Correctness** | Manual testing only | Compile-time verification of formats |
+| **Extensibility** | Add Python code for new formats | Add Agda format function |
+| **Maintainability** | Logic scattered across files | Centralized in one module per layer |
+| **Performance** | Python formatting at runtime | Agda formatting at compile-time |
+
+### Implementation Checklist
+
+- [ ] **Extract pure logic** from Python into Agda (no I/O, no formatting)
+- [ ] **Create logic tests** (verify computation correctness)
+- [ ] **Move formatting** to Agda (separate from logic)
+- [ ] **Create format tests** (verify output structure)
+- [ ] **Refactor Python** to pure orchestration (no business logic)
+- [ ] **Create orchestration tests** (verify integration)
+- [ ] **Document layer responsibilities** in module comments
+- [ ] **Update ROADMAP** to reference architecture
+- [ ] **Add to onboarding** so new developers understand separation
+
+### Validation Questions
+
+When reviewing code with mixed concerns, ask:
+
+1. **Is there pure computation?** → Should be in Agda logic layer, tested independently
+2. **Is there string building?** → Should be in Agda format layer, co-located with logic
+3. **Is there I/O or side effects?** → Should be in Python orchestration layer
+4. **Can logic be tested without format?** → If not, they're not separated
+5. **Can format be changed without logic changes?** → If not, they're not separated
+6. **Can Python be replaced without changing Agda?** → If not, layers are too coupled
+
+---
+
 ## References
 
 * [AGDA-PARAMETERIZATION-PLAN.md](../architecture/AGDA-PARAMETERIZATION-PLAN.md) - Full design rationale
@@ -547,5 +783,5 @@ def agda_to_python_weights(strategy_name: str):
 ---
 
 **Last Updated:** 2025-12-24  
-**Status:** Migration Guide Complete  
+**Status:** Logic-Formatting Separation Pattern Documented  
 **Target Audience:** Developers maintaining/extending the Agda codebase
