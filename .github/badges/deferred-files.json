@@ -335,6 +335,14 @@
     "total": 3,
     "weighted_total": 8.0
   },
+  "src/agda/Algorithms/Basic.agda": {
+    "postulates": 2,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 4,
+    "weighted_total": 6.0
+  },
   "src/agda/Algebra/Enrichment.agda": {
     "postulates": 3,
     "todo": 0,
@@ -528,6 +536,14 @@
     "weighted_total": 2.5
   },
   "scripts/flag_unannotated_debt.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 2.5
+  },
+  "docs/workflows/PARAMETERIZATION.md": {
     "postulates": 0,
     "todo": 1,
     "fixme": 1,
@@ -792,6 +808,14 @@
     "weighted_total": 1.0
   },
   "node_modules/@nodelib/fs.scandir/README.md": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.0
+  },
+  "src/agda/TechnicalDebt/Priorities.agda": {
     "postulates": 0,
     "todo": 1,
     "fixme": 0,
