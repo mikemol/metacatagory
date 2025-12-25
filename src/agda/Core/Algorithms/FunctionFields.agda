@@ -14,6 +14,8 @@ open import Core.Algorithms.Bundle
 open import Core.Witnesses
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
+open import Algorithms.Basic
+open Algorithms.Basic.Defaults
 
 -- Evidence that a field is a (rational) function field over some base
 -- Kept abstract; concrete instances can provide structure as needed.
@@ -40,13 +42,13 @@ functionFieldAlgorithms : ∀ {F E} → (Fff : IsFunctionField F) → (Eff : IsF
 -- DeviationLog [2025-11-18]: Stubbing function field algorithms to generic defaults
 -- (similar rationale as finite & number fields) to unblock Phase II 2.5.
 functionFieldAlgorithms {F} {E} Fff Eff = record
-  { minimalPolynomialAlg = MinimalPolynomialAlgorithm-generic {F} {E}
-  ; galoisGroupAlg       = GaloisGroupAlgorithm-generic {F} {E}
-  ; splittingFieldAlg    = SplittingFieldAlgorithm-generic {F}
-  ; extensionDegreeAlg   = FieldExtensionDegreeAlgorithm-generic {F} {E}
-  ; subfieldEnumAlg      = SubfieldEnumerationAlgorithm-generic {F} {E}
-  ; algebraicityAlg      = AlgebraicityDecisionAlgorithm-generic {F} {E}
-  ; primitiveElementAlg  = PrimitiveElementAlgorithm-generic {F} {E}
+  { minimalPolynomialAlg = mkMinimalPolynomialAlgorithm {F} {E}
+  ; galoisGroupAlg       = mkGaloisGroupAlgorithm {F} {E}
+  ; splittingFieldAlg    = mkSplittingFieldAlgorithm {F}
+  ; extensionDegreeAlg   = mkFieldExtensionDegreeAlgorithm {F} {E}
+  ; subfieldEnumAlg      = mkSubfieldEnumerationAlgorithm {F} {E}
+  ; algebraicityAlg      = mkAlgebraicityDecisionAlgorithm {F} {E}
+  ; primitiveElementAlg  = mkPrimitiveElementAlgorithm {F} {E}
   }
 
 -- Convenience: construct full registry bundle for function fields
@@ -61,11 +63,11 @@ functionFieldBundle F E Fff Eff =
     ; splittingFieldAlg    = FunctionFieldAlgorithms.splittingFieldAlg ff
     ; extensionDegreeAlg   = FunctionFieldAlgorithms.extensionDegreeAlg ff
     ; subfieldEnumAlg      = FunctionFieldAlgorithms.subfieldEnumAlg ff
-    ; subgroupEnumAlg      = SubgroupEnumerationAlgorithm-generic {F} {E}  -- Already generic
+    ; subgroupEnumAlg      = mkSubgroupEnumerationAlgorithm {F} {E}
     ; algebraicityAlg      = FunctionFieldAlgorithms.algebraicityAlg ff
     ; primitiveElementAlg  = FunctionFieldAlgorithms.primitiveElementAlg ff
-    ; normalityAlg         = NormalityDecisionAlgorithm-generic {F} {E}
-    ; separabilityAlg      = SeparabilityDecisionAlgorithm-generic {F} {E}
-    ; normalClosureAlg     = NormalClosureAlgorithm-generic {F} {E}
-    ; galoisClosureAlg     = GaloisClosureAlgorithm-generic {F} {E}
+    ; normalityAlg         = mkNormalityDecisionAlgorithm {F} {E}
+    ; separabilityAlg      = mkSeparabilityDecisionAlgorithm {F} {E}
+    ; normalClosureAlg     = mkNormalClosureAlgorithm {F} {E}
+    ; galoisClosureAlg     = mkGaloisClosureAlgorithm {F} {E}
     }
