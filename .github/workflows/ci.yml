@@ -30,11 +30,13 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Makefile triangle identity check
-        run: make makefile-validate
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-      - name: Full CI
-        run: make all docs-all
+      - name: Run check (aligns with local make)
+        run: make check
 
       - name: Publish Markdown docs into docs/ (push only)
         if: github.event_name == 'push'

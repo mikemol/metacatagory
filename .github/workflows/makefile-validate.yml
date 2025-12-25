@@ -30,9 +30,7 @@ jobs:
           python-version: '3.11'
 
       - name: Run makefile triangle validation
-        run: |
-          mkdir -p build/reports
-          python3 scripts/validate_makefile_docs.py
+        run: make makefile-validate
 
       - name: Upload validation report
         if: always()
@@ -43,8 +41,4 @@ jobs:
           retention-days: 30
 
       - name: Fail on validation errors
-        run: |
-          if [ $? -ne 0 ]; then
-            echo "::error::Makefile triangle identity validation failed. Check the report for details."
-            exit 1
-          fi
+        run: echo "makefile-validate completed"

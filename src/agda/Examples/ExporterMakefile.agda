@@ -170,7 +170,7 @@ renderDocs targets =
 discoveredTargets : List MakefileTarget
 discoveredTargets = 
   validatorToTarget "md-lint" "Lint all markdown files (fail on error)" "build/reports/md-lint.txt" 
-    ("npx markdownlint-cli2 \"**/*.md\" \"!node_modules\" \"!build\" > build/reports/md-lint.txt 2>&1" ∷ [])
+    ("mkdir -p build/reports" ∷ "npx markdownlint-cli2 \"**/*.md\" \"!node_modules\" \"!build\" > build/reports/md-lint.txt 2>&1" ∷ [])
   ∷ generatorToTarget "md-fix" "Auto-fix markdown lint errors" ([])
     ("npx markdownlint-cli2 --fix \"**/*.md\" \"!node_modules\" \"!build\"" ∷ [])
   ∷ validatorToTarget "intake-lint" "Lint intake files specifically" "build/reports/intake-md-lint.txt"
@@ -185,10 +185,14 @@ discoveredTargets =
     ("mkdir -p build/reports" ∷ "python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt" ∷ [])
   ∷ generatorToTarget "all" "Build all code and documentation" ("agda-all" ∷ "docs-all" ∷ [])
     ("@echo \"all complete\"" ∷ [])
-  ∷ generatorToTarget "check" "Run all validation checks" ("roadmap-validate-triangle" ∷ "docs-validate" ∷ "makefile-validate" ∷ [])
+  ∷ generatorToTarget "check" "Run all validation checks" ("makefile-validate" ∷ "node-deps" ∷ "md-lint" ∷ "roadmap-validate-triangle" ∷ "docs-validate" ∷ "all" ∷ [])
     ("@echo \"check complete\"" ∷ [])
-  ∷ generatorToTarget "badges" "Generate status badges" ([]) 
+  ∷ generatorToTarget "badges" "Generate status badges" ("priority-badge-weights" ∷ []) 
     ("python3 scripts/generate-badges.py" ∷ [])
+  ∷ generatorToTarget "priority-strategy-profiles" "Compile and run Agda priority orchestration (generate strategy profiles)" ([]) 
+    ("mkdir -p build" ∷ "$(AGDA) $(AGDA_FLAGS) --compile src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda" ∷ "./src/agda/PriorityOrchestrationFFI" ∷ [])
+  ∷ generatorToTarget "priority-badge-weights" "Normalize Agda strategy profiles into badge weights" ("priority-strategy-profiles" ∷ []) 
+    ("python3 scripts/adopt_priority_strategies.py --input build/priority_strategy_profiles.json --output .github/badges/weights.json" ∷ [])
   ∷ generatorToTarget "docs-modules" "Generate per-module markdown documentation" ("src/agda/Plan/CIM/ModuleExporter.agdai" ∷ [])
     ("$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/ModuleExporter.agda && ./src/agda/Plan/CIM/ModuleExporter" ∷ [])
   ∷ generatorToTarget "docs-all" "Generate documentation (markdown only)" ("docs-generate" ∷ "docs-modules" ∷ [])
@@ -283,16 +287,17 @@ buildArtifact agdaFiles graphEdges =
       phonyNames = "all" ∷ "check" ∷ "md-fix" ∷ "md-lint" ∷ "intake-lint" ∷ "intake-scan"
              ∷ "md-normalize" ∷ "makefile-validate"
              ∷ "badges" ∷ "node-deps" 
+             ∷ "priority-strategy-profiles" ∷ "priority-badge-weights"
              ∷ "regen-makefile" ∷ "agda-all" ∷ "docs-all" 
-           ∷ "deferred-items" ∷ "roadmap-index" ∷ "roadmap-sync" ∷ "roadmap-sppf"
-           ∷ "roadmap-merge" ∷ "roadmap-deps-graph" ∷ "roadmap-enrich"
-           ∷ "roadmap-export-json" ∷ "roadmap-export-md" ∷ "roadmap-export-enriched"
-           ∷ "roadmap-export-deps" ∷ "roadmap-validate-json" ∷ "roadmap-validate-md"
-           ∷ "roadmap-validate-triangle" ∷ "roadmap-sppf-export" ∷ "roadmap-all-enriched"
-           ∷ "docs-generate" ∷ "docs-validate" ∷ "docs-modules" ∷ "validate-constructive" ∷ []
+             ∷ "deferred-items" ∷ "roadmap-index" ∷ "roadmap-sync" ∷ "roadmap-sppf"
+             ∷ "roadmap-merge" ∷ "roadmap-deps-graph" ∷ "roadmap-enrich"
+             ∷ "roadmap-export-json" ∷ "roadmap-export-md" ∷ "roadmap-export-enriched"
+             ∷ "roadmap-export-deps" ∷ "roadmap-validate-json" ∷ "roadmap-validate-md"
+             ∷ "roadmap-validate-triangle" ∷ "roadmap-sppf-export" ∷ "roadmap-all-enriched"
+             ∷ "docs-generate" ∷ "docs-validate" ∷ "docs-modules" ∷ "validate-constructive" ∷ []
       headerSection = record { id = "header"; content = ("# Use local Agda 2.8.0 if available, otherwise system agda" ∷ "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)" ∷ "" ∷ "# Common Agda compilation flags" ∷ "AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type" ∷ []) }
       phonySection = record { id = "phony" 
-                            ; content = (".PHONY: " ++ intercalate " " phonyNames) ∷ [] }
+                ; content = (".PHONY: " ++ intercalate " " phonyNames) ∷ [] }
   in record { sections = headerSection ∷ phonySection ∷ map targetToSection allTargets }
   where
     second : String → String → String

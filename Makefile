@@ -3,13 +3,14 @@ AGDA := $(if $(wildcard .local/agda),.local/agda,agda)
 
 # Common Agda compilation flags
 AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type
-.PHONY: all check md-fix md-lint intake-lint intake-scan md-normalize makefile-validate badges node-deps regen-makefile agda-all docs-all deferred-items roadmap-index roadmap-sync roadmap-sppf roadmap-merge roadmap-deps-graph roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched docs-generate docs-validate docs-modules validate-constructive
+.PHONY: all check md-fix md-lint intake-lint intake-scan md-normalize makefile-validate badges node-deps priority-strategy-profiles priority-badge-weights regen-makefile agda-all docs-all deferred-items roadmap-index roadmap-sync roadmap-sppf roadmap-merge roadmap-deps-graph roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched docs-generate docs-validate docs-modules validate-constructive
 # Regenerate the Makefile from Agda source (Self-Hosting)
 regen-makefile: 
 	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile
 	cp Makefile.generated Makefile
 # Lint all markdown files (fail on error)
 md-lint: 
+	mkdir -p build/reports
 	npx markdownlint-cli2 "**/*.md" "!node_modules" "!build" > build/reports/md-lint.txt 2>&1
 # Auto-fix markdown lint errors
 md-fix: 
@@ -17,29 +18,36 @@ md-fix:
 # Lint intake files specifically
 intake-lint: 
 	npx markdownlint-cli2 "intake/**/*.md" > build/reports/intake-md-lint.txt 2>&1
-# Merge all roadmap sources into canonical JSON
-build/canonical_roadmap.json: scripts/merge_roadmaps.py .github/roadmap/tasks.json ROADMAP.md src/agda/Plan/CIM/IngestedRoadmaps/*.agda
-	python3 scripts/merge_roadmaps.py
-# Scan intake directory for roadmap ID coverage
-intake-scan: build/canonical_roadmap.json
+# Generate canonical roadmap JSON from intake
+build/canonical_roadmap.json: 
 	python3 scripts/intake_scan.py
+# Scan intake directory for new files
+intake-scan: build/canonical_roadmap.json
 	@echo "intake scan complete"
 # Normalize markdown formatting
-md-normalize: scripts/normalize_generated_markdown.py
+md-normalize: 
 	python3 scripts/normalize_generated_markdown.py
 # Validate Makefile consistency
-makefile-validate: scripts/validate_makefile_docs.py
+makefile-validate: 
 	mkdir -p build/reports
 	python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt
 # Build all code and documentation
 all: agda-all docs-all
 	@echo "all complete"
 # Run all validation checks
-check: roadmap-validate-triangle docs-validate makefile-validate
+check: makefile-validate node-deps md-lint roadmap-validate-triangle docs-validate all
 	@echo "check complete"
 # Generate status badges
-badges: scripts/generate-badges.py build/canonical_roadmap.json .github/badges/weights.json
+badges: priority-badge-weights
 	python3 scripts/generate-badges.py
+# Compile and run Agda priority orchestration (generate strategy profiles)
+priority-strategy-profiles: 
+	mkdir -p build
+	$(AGDA) $(AGDA_FLAGS) --compile src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda
+	./src/agda/PriorityOrchestrationFFI
+# Normalize Agda strategy profiles into badge weights
+priority-badge-weights: priority-strategy-profiles
+	python3 scripts/adopt_priority_strategies.py --input build/priority_strategy_profiles.json --output .github/badges/weights.json
 # Generate per-module markdown documentation
 docs-modules: src/agda/Plan/CIM/ModuleExporter.agdai
 	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/ModuleExporter.agda && ./src/agda/Plan/CIM/ModuleExporter
@@ -64,9 +72,9 @@ roadmap-sppf: src/agda/Plan/CIM/RoadmapSPPF.agdai
 # Run all constructive build targets
 validate-constructive: docs-all docs-generate docs-modules roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-deps-graph roadmap-enrich roadmap-all-enriched intake-scan md-normalize badges
 	@echo "✓ Constructive validation complete"
-# Merge ingestion streams (explicit target for manual use)
-roadmap-merge: build/canonical_roadmap.json
-	@echo "✓ Roadmap merge complete"
+# Merge ingestion streams
+roadmap-merge: 
+	python3 scripts/merge_roadmaps.py
 # Generate dependency graph
 build/diagrams/agda-deps-full.dot: 
 	mkdir -p build/diagrams
@@ -74,35 +82,35 @@ build/diagrams/agda-deps-full.dot:
 # Generate dependency graph
 roadmap-deps-graph: build/diagrams/agda-deps-full.dot
 	@echo "agda dependency graph generated"
-# Enrich canonical roadmap with dependency graph data
-build/canonical_enriched.json: build/canonical_roadmap.json build/diagrams/agda-deps-full.dot scripts/enrich_canonical.py
+# Enrich canonical roadmap
+build/canonical_enriched.json: build/canonical_roadmap.json build/diagrams/agda-deps-full.dot
 	python3 scripts/enrich_canonical.py
 # Enrich roadmap with graph data
 roadmap-enrich: build/canonical_enriched.json
 	@echo "roadmap enrichment complete"
 # Export canonical roadmap to JSON
-roadmap-export-json: build/canonical_roadmap.json scripts/export_canonical_json.py
+roadmap-export-json: build/canonical_roadmap.json
 	python3 scripts/export_canonical_json.py
 # Export canonical roadmap to Markdown
-roadmap-export-md: build/canonical_roadmap.json scripts/export_canonical_md.py
+roadmap-export-md: build/canonical_roadmap.json
 	python3 scripts/export_canonical_md.py
 # Export enriched roadmap
-roadmap-export-enriched: build/canonical_enriched.json scripts/export_enriched_md.py
+roadmap-export-enriched: build/canonical_enriched.json
 	python3 scripts/export_enriched_md.py
 # Export roadmap dependency graph
-roadmap-export-deps: build/canonical_enriched.json scripts/export_dependency_graph.py
+roadmap-export-deps: build/canonical_enriched.json
 	python3 scripts/export_dependency_graph.py
 # Validate canonical JSON
-roadmap-validate-json: build/canonical_roadmap.json .github/roadmap/tasks.json scripts/validate_json.py
+roadmap-validate-json: build/canonical_roadmap.json .github/roadmap/tasks.json
 	python3 scripts/validate_json.py
 # Validate canonical Markdown
-roadmap-validate-md: build/canonical_roadmap.json ROADMAP.md scripts/validate_md.py
+roadmap-validate-md: build/canonical_roadmap.json ROADMAP.md
 	python3 scripts/validate_md.py
 # Verify Triangle Identity (Agda <-> JSON <-> MD)
 roadmap-validate-triangle: roadmap-validate-json roadmap-validate-md
 	@echo "✓ Triangle validation complete"
 # Export SPPF structure
-roadmap-sppf-export: build/canonical_roadmap.json scripts/export_roadmap_sppf.py
+roadmap-sppf-export: build/canonical_roadmap.json
 	python3 scripts/export_roadmap_sppf.py
 # Build all enriched artifacts
 roadmap-all-enriched: roadmap-export-enriched roadmap-export-deps
@@ -112,7 +120,7 @@ docs-generate: src/agda/Plan/CIM/RoadmapExporter.agdai
 	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/RoadmapExporter.agda && ./src/agda/RoadmapExporter
 	python3 scripts/normalize_generated_markdown.py
 # Validate documentation integrity
-docs-validate: scripts/validate_triangle_identity.py
+docs-validate: 
 	python3 scripts/validate_triangle_identity.py
 # Compile src/agda/MetaScan.agda
 src/agda/MetaScan.agdai: src/agda/MetaScan.agda
@@ -333,9 +341,36 @@ src/agda/Chapter3/Level3sub2.agdai: src/agda/Chapter3/Level3sub2.agda src/agda/C
 # Compile src/agda/Chapter3/Level3Index.agda
 src/agda/Chapter3/Level3Index.agdai: src/agda/Chapter3/Level3Index.agda src/agda/Chapter3/Level3sub2.agdai src/agda/Chapter3/Level3sub1.agdai
 	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter3/Level3Index.agda
+# Compile src/agda/Algorithms/Instrumented.agda
+src/agda/Algorithms/Instrumented.agdai: src/agda/Algorithms/Instrumented.agda
+	$(AGDA) $(AGDA_FLAGS) src/agda/Algorithms/Instrumented.agda
+# Compile src/agda/Algorithms/Basic.agda
+src/agda/Algorithms/Basic.agdai: src/agda/Algorithms/Basic.agda
+	$(AGDA) $(AGDA_FLAGS) src/agda/Algorithms/Basic.agda
+# Compile src/agda/Algorithms/Adapters/BundleAdapter.agda
+src/agda/Algorithms/Adapters/BundleAdapter.agdai: src/agda/Algorithms/Adapters/BundleAdapter.agda
+	$(AGDA) $(AGDA_FLAGS) src/agda/Algorithms/Adapters/BundleAdapter.agda
+# Compile src/agda/Algorithms/TestInstances.agda
+src/agda/Algorithms/TestInstances.agdai: src/agda/Algorithms/TestInstances.agda
+	$(AGDA) $(AGDA_FLAGS) src/agda/Algorithms/TestInstances.agda
 # Compile src/agda/Core.agda
 src/agda/Core.agdai: src/agda/Core.agda src/agda/Chapter1/Level1.agdai
 	$(AGDA) $(AGDA_FLAGS) src/agda/Core.agda
+# Compile src/agda/TechnicalDebt/PriorityMapping.agda
+src/agda/TechnicalDebt/PriorityMapping.agdai: src/agda/TechnicalDebt/PriorityMapping.agda
+	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/PriorityMapping.agda
+# Compile src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda
+src/agda/TechnicalDebt/PriorityOrchestrationFFI.agdai: src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda
+	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda
+# Compile src/agda/TechnicalDebt/PriorityFormatting.agda
+src/agda/TechnicalDebt/PriorityFormatting.agdai: src/agda/TechnicalDebt/PriorityFormatting.agda
+	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/PriorityFormatting.agda
+# Compile src/agda/TechnicalDebt/PriorityOrchestration.agda
+src/agda/TechnicalDebt/PriorityOrchestration.agdai: src/agda/TechnicalDebt/PriorityOrchestration.agda
+	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/PriorityOrchestration.agda
+# Compile src/agda/TechnicalDebt/Priorities.agda
+src/agda/TechnicalDebt/Priorities.agdai: src/agda/TechnicalDebt/Priorities.agda
+	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/Priorities.agda
 # Compile src/agda/Examples/RealWorldAlgorithms.agda
 src/agda/Examples/RealWorldAlgorithms.agdai: src/agda/Examples/RealWorldAlgorithms.agda src/agda/Core/AlgorithmCorrectness.agdai
 	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/RealWorldAlgorithms.agda
@@ -354,6 +389,9 @@ src/agda/Examples/NumberField/Sqrt2.agdai: src/agda/Examples/NumberField/Sqrt2.a
 # Compile src/agda/Examples/FiniteField/GF8.agda
 src/agda/Examples/FiniteField/GF8.agdai: src/agda/Examples/FiniteField/GF8.agda
 	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/FiniteField/GF8.agda
+# Compile src/agda/Examples/InstrumentedAlgorithmDemo.agda
+src/agda/Examples/InstrumentedAlgorithmDemo.agdai: src/agda/Examples/InstrumentedAlgorithmDemo.agda
+	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/InstrumentedAlgorithmDemo.agda
 # Compile src/agda/Examples/DeferredItemsScanner.agda
 src/agda/Examples/DeferredItemsScanner.agdai: src/agda/Examples/DeferredItemsScanner.agda
 	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/DeferredItemsScanner.agda
@@ -396,6 +434,9 @@ src/agda/Markdown/ExportProof.agdai: src/agda/Markdown/ExportProof.agda
 # Compile src/agda/Markdown/Normalization.agda
 src/agda/Markdown/Normalization.agdai: src/agda/Markdown/Normalization.agda
 	$(AGDA) $(AGDA_FLAGS) src/agda/Markdown/Normalization.agda
+# Compile src/agda/GrowthAnalysis.agda
+src/agda/GrowthAnalysis.agdai: src/agda/GrowthAnalysis.agda
+	$(AGDA) $(AGDA_FLAGS) src/agda/GrowthAnalysis.agda
 # Compile src/agda/Plan/CIM/PolytopeExpansion.agda
 src/agda/Plan/CIM/PolytopeExpansion.agdai: src/agda/Plan/CIM/PolytopeExpansion.agda
 	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PolytopeExpansion.agda
@@ -715,4 +756,4 @@ src/agda/Core/PolynomialsF2.agdai: src/agda/Core/PolynomialsF2.agda src/agda/Cor
 src/agda/Core/CategoricalAdapter.agdai: src/agda/Core/CategoricalAdapter.agda
 	$(AGDA) $(AGDA_FLAGS) src/agda/Core/CategoricalAdapter.agda
 # Compile all Agda modules
-agda-all: src/agda/MetaScan.agdai src/agda/Metamodel.agdai src/agda/Tests/PropertyRegistryTests.agdai src/agda/Tests/AbelianCategoriesChecklist.agdai src/agda/Tests/DispatchBehaviorTests.agdai src/agda/Tests/WitnessConstructionTests.agdai src/agda/Tests/VectorSpaceChecklist.agdai src/agda/Tests/ProofObligationStatus.agdai src/agda/Tests/SerializationTests.agdai src/agda/Tests/GodelBoundaryTests.agdai src/agda/Tests/ModuleStructureChecklist.agdai src/agda/Tests/ToposTheoryChecklist.agdai src/agda/Tests/GrothendieckFibrationsChecklist.agdai src/agda/Tests/TensorProductChecklist.agdai src/agda/Tests/Index_PhaseII.agdai src/agda/Tests/HierarchyValidation.agdai src/agda/Tests/PhaseExamples.agdai src/agda/Tests/RegularCategoriesChecklist.agdai src/agda/Tests/MonadAdjunctionChecklist.agdai src/agda/Tests/UniversalPropertyTests.agdai src/agda/Tests/EnrichmentChecklist.agdai src/agda/Tests/AdvancedPhaseExamples.agdai src/agda/Tests/ErrorAsSpecificationTests.agdai src/agda/Tests/RealWorldAlgorithmsTests.agdai src/agda/Tests/PolynomialExtensionsChecklist.agdai src/agda/Tests/ModuleTheoryChecklist.agdai src/agda/Tests/PhaseCategoryExamplesRunner.agdai src/agda/Tests/PolynomialFieldExtensionsChecklist.agdai src/agda/Tests/AlgorithmCompositionTests.agdai src/agda/Tests/FieldsBasicChecklist.agdai src/agda/Tests/SpecificationValidation.agdai src/agda/Tests/AlgorithmSmokeTests.agdai src/agda/Tests/CoverageReport.agdai src/agda/Tests/GroupsFreeChecklist.agdai src/agda/Tests/RingsBasicChecklist.agdai src/agda/Tests/Chapter2Checklist.agdai src/agda/Tests/KanExtensionsChecklist.agdai src/agda/Tests/LimitsColimitsChecklist.agdai src/agda/Tests/AdvancedMonadTheoryChecklist.agdai src/agda/Tests/CoreUniversalPropertiesChecklist.agdai src/agda/Tests/ChapterObligationsSmoke.agdai src/agda/Tests/ConstructiveWitnessTests.agdai src/agda/Tests/PerformanceBoundaryTests.agdai src/agda/Tests/PathAggregatorTests.agdai src/agda/Tests/GroupsAbelianChecklist.agdai src/agda/Tests/Chapter1Checklist.agdai src/agda/Tests/AdvancedFieldsChecklist.agdai src/agda/Tests/WarningAggregatorsTest.agdai src/agda/Tests/Index.agdai src/agda/Tests/ObligationAdapters.agdai src/agda/Tests/ToposObligationAdapters.agdai src/agda/Tests/Chapters.agdai src/agda/Tests/YonedaChecklist.agdai src/agda/Tests/AlgebraicCompletionChecklist.agdai src/agda/Tests/FunctorPropertiesChecklist.agdai src/agda/Tests/AlgebraChecklist.agdai src/agda/Tests/ErrorHandlingTests.agdai src/agda/Tests/GroupsStructureChecklist.agdai src/agda/Tests/ModulesChecklist.agdai src/agda/Tests/Chapter3Checklist.agdai src/agda/Tests/SubobjectTheoryChecklist.agdai src/agda/Chapter2/Level2sub3.agdai src/agda/Chapter2/Level2sub6.agdai src/agda/Chapter2/Level2sub5.agdai src/agda/Chapter2/Level2sub8.agdai src/agda/Chapter2/Level2sub7.agdai src/agda/Chapter2/Level2sub2.agdai src/agda/Chapter2/Level2sub1.agdai src/agda/Chapter2/Level2sub4.agdai src/agda/Chapter2/Level2Index.agdai src/agda/Chapter3/Level3sub1.agdai src/agda/Chapter3/Level3sub2.agdai src/agda/Chapter3/Level3Index.agdai src/agda/Core.agdai src/agda/Examples/RealWorldAlgorithms.agdai src/agda/Examples/TechnicalDebtExample.agdai src/agda/Examples/FunctionField/F2x.agdai src/agda/Examples/AlgorithmCorrectnessExamples.agdai src/agda/Examples/NumberField/Sqrt2.agdai src/agda/Examples/FiniteField/GF8.agdai src/agda/Examples/DeferredItemsScanner.agdai src/agda/Examples/AutomaticEvidenceDemo.agdai src/agda/Examples/ConstructiveWitnessExamples.agdai src/agda/Examples/AgdaMakefileDeps.agdai src/agda/Examples/LazyHybridDemo.agdai src/agda/Examples/TechnicalDebtRegistry.agdai src/agda/Examples/RoadmapIssueSync.agdai src/agda/Examples/MakefileTargets.agdai src/agda/Examples/PhaseCategoryExamples.agdai src/agda/Examples/TechnicalDebtChecklist.agdai src/agda/Examples/AgdaFileScanFFI.agdai src/agda/Examples/ExporterMakefile.agdai src/agda/Markdown/ExportProof.agdai src/agda/Markdown/Normalization.agdai src/agda/Plan/CIM/PolytopeExpansion.agdai src/agda/Plan/CIM/PandocProofExample.agdai src/agda/Plan/CIM/PandocProtocols.agdai src/agda/Plan/CIM/CHIPCoreRecompose.agdai src/agda/Plan/CIM/PandocProofExport.agdai src/agda/Plan/CIM/Utility.agdai src/agda/Plan/CIM/IngestedRoadmaps.agdai src/agda/Plan/CIM/Structure.agdai src/agda/Plan/CIM/DocumentSynthesis.agdai src/agda/Plan/CIM/CHIPRecomposed.agdai src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agdai src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agdai src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agdai src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agdai src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agdai src/agda/Plan/CIM/RoadmapExporter.agdai src/agda/Plan/CIM/CanonicalRoadmap.agdai src/agda/Plan/CIM/CHIPConformance.agdai src/agda/Plan/CIM/FrameworkMetadata.agdai src/agda/Plan/CIM/ModuleExporter.agdai src/agda/Plan/CIM/RoadmapIndex.agdai src/agda/Plan/CIM/RoadmapSync.agdai src/agda/Plan/CIM/PandocToMarkdown.agdai src/agda/Plan/CIM/DocumentationContent.agdai src/agda/Plan/CIM/YonedaProfiler.agdai src/agda/Plan/CIM/RoadmapSPPF.agdai src/agda/Plan/CIM/Ambiguity.agdai src/agda/Plan/CIM/RoadmapSPPFExport.agdai src/agda/Plan/CIM/GPNarrativeDAG.agdai src/agda/Plan/CIM/MarkdownNormalize.agdai src/agda/Plan/CIM/PandocAST.agdai src/agda/Plan/CIM/GrammarBridge.agdai src/agda/Plan/CIM/MarkdownParse.agdai src/agda/Algebra/Groups/Basic.agdai src/agda/Algebra/Groups/Theorems/Classical.agdai src/agda/Algebra/Groups/ClassicalInstance.agdai src/agda/Algebra/Groups/Structure.agdai src/agda/Algebra/Groups/BasicWithTheorems.agdai src/agda/Algebra/Groups/BasicParameterized.agdai src/agda/Algebra/Groups/Abelian.agdai src/agda/Algebra/Groups/Types.agdai src/agda/Algebra/Groups/Free.agdai src/agda/Algebra/Enrichment.agdai src/agda/Algebra/Rings/Basic.agdai src/agda/Algebra/Rings/Theorems/Classical.agdai src/agda/Algebra/Rings/ClassicalInstance.agdai src/agda/Algebra/Rings/BasicWithTheorems.agdai src/agda/Algebra/Rings/Types.agdai src/agda/Algebra/Modules/Basic.agdai src/agda/Algebra/Modules/Theorems/Classical.agdai src/agda/Algebra/Modules/ClassicalInstance.agdai src/agda/Algebra/Modules/BasicWithTheorems.agdai src/agda/Algebra/Modules/Types.agdai src/agda/Algebra/Foundation.agdai src/agda/Algebra/Fields/Basic.agdai src/agda/Algebra/Fields/Advanced.agdai src/agda/Algebra/Fields/Theorems/Classical.agdai src/agda/Algebra/Fields/ClassicalInstance.agdai src/agda/Algebra/Fields/BasicWithTheorems.agdai src/agda/Algebra/Fields/Types.agdai src/agda/Algebra/Index.agdai src/agda/Chapter1/Level1.agdai src/agda/Chapter1/Level1sub8.agdai src/agda/Chapter1/Level1sub7.agdai src/agda/Chapter1/Level1sub3.agdai src/agda/Chapter1/Level1Index.agdai src/agda/Chapter1/Level1sub2.agdai src/agda/Chapter1/Level1sub4.agdai src/agda/Chapter1/Level1sub5.agdai src/agda/Chapter1/Level1sub6.agdai src/agda/PropertyRegistry.agdai src/agda/ExporterMakefile.agdai src/agda/Core/AlgorithmComplexity.agdai src/agda/Core/ABNF.agdai src/agda/Core/TechnicalDebt.agdai src/agda/Core/Witnesses.agdai src/agda/Core/BraidTree.agdai src/agda/Core/Limitations.agdai src/agda/Core/AlgorithmCorrectness.agdai src/agda/Core/GrothendieckFibrations.agdai src/agda/Core/AlgorithmUniversality.agdai src/agda/Core/AdapterReflection.agdai src/agda/Core/Phase.agdai src/agda/Core/AdapterAutomation.agdai src/agda/Core/Utils.agdai src/agda/Core/Algorithms/Registry.agdai src/agda/Core/Algorithms/FunctionFields.agdai src/agda/Core/Algorithms/External.agdai src/agda/Core/Algorithms/FiniteFields.agdai src/agda/Core/Algorithms/AutomaticEvidence.agdai src/agda/Core/Algorithms/NumberFields.agdai src/agda/Core/Algorithms/Bundle.agdai src/agda/Core/Algorithms/InductiveClassification.agdai src/agda/Core/PhaseCategory.agdai src/agda/Core/Rendering.agdai src/agda/Core/ConstructiveWitnesses.agdai src/agda/Core/UniversalProperties.agdai src/agda/Core/IO.agdai src/agda/Core/GrowthMetrics.agdai src/agda/Core/AlgebraicAlgorithms.agdai src/agda/Core/Yoneda.agdai src/agda/Core/GodelBoundary.agdai src/agda/Core/Strings.agdai src/agda/Core/PathAggregator.agdai src/agda/Core/PolynomialsF2.agdai src/agda/Core/CategoricalAdapter.agdai
+agda-all: src/agda/MetaScan.agdai src/agda/Metamodel.agdai src/agda/Tests/PropertyRegistryTests.agdai src/agda/Tests/AbelianCategoriesChecklist.agdai src/agda/Tests/DispatchBehaviorTests.agdai src/agda/Tests/WitnessConstructionTests.agdai src/agda/Tests/VectorSpaceChecklist.agdai src/agda/Tests/ProofObligationStatus.agdai src/agda/Tests/SerializationTests.agdai src/agda/Tests/GodelBoundaryTests.agdai src/agda/Tests/ModuleStructureChecklist.agdai src/agda/Tests/ToposTheoryChecklist.agdai src/agda/Tests/GrothendieckFibrationsChecklist.agdai src/agda/Tests/TensorProductChecklist.agdai src/agda/Tests/Index_PhaseII.agdai src/agda/Tests/HierarchyValidation.agdai src/agda/Tests/PhaseExamples.agdai src/agda/Tests/RegularCategoriesChecklist.agdai src/agda/Tests/MonadAdjunctionChecklist.agdai src/agda/Tests/UniversalPropertyTests.agdai src/agda/Tests/EnrichmentChecklist.agdai src/agda/Tests/AdvancedPhaseExamples.agdai src/agda/Tests/ErrorAsSpecificationTests.agdai src/agda/Tests/RealWorldAlgorithmsTests.agdai src/agda/Tests/PolynomialExtensionsChecklist.agdai src/agda/Tests/ModuleTheoryChecklist.agdai src/agda/Tests/PhaseCategoryExamplesRunner.agdai src/agda/Tests/PolynomialFieldExtensionsChecklist.agdai src/agda/Tests/AlgorithmCompositionTests.agdai src/agda/Tests/FieldsBasicChecklist.agdai src/agda/Tests/SpecificationValidation.agdai src/agda/Tests/AlgorithmSmokeTests.agdai src/agda/Tests/CoverageReport.agdai src/agda/Tests/GroupsFreeChecklist.agdai src/agda/Tests/RingsBasicChecklist.agdai src/agda/Tests/Chapter2Checklist.agdai src/agda/Tests/KanExtensionsChecklist.agdai src/agda/Tests/LimitsColimitsChecklist.agdai src/agda/Tests/AdvancedMonadTheoryChecklist.agdai src/agda/Tests/CoreUniversalPropertiesChecklist.agdai src/agda/Tests/ChapterObligationsSmoke.agdai src/agda/Tests/ConstructiveWitnessTests.agdai src/agda/Tests/PerformanceBoundaryTests.agdai src/agda/Tests/PathAggregatorTests.agdai src/agda/Tests/GroupsAbelianChecklist.agdai src/agda/Tests/Chapter1Checklist.agdai src/agda/Tests/AdvancedFieldsChecklist.agdai src/agda/Tests/WarningAggregatorsTest.agdai src/agda/Tests/Index.agdai src/agda/Tests/ObligationAdapters.agdai src/agda/Tests/ToposObligationAdapters.agdai src/agda/Tests/Chapters.agdai src/agda/Tests/YonedaChecklist.agdai src/agda/Tests/AlgebraicCompletionChecklist.agdai src/agda/Tests/FunctorPropertiesChecklist.agdai src/agda/Tests/AlgebraChecklist.agdai src/agda/Tests/ErrorHandlingTests.agdai src/agda/Tests/GroupsStructureChecklist.agdai src/agda/Tests/ModulesChecklist.agdai src/agda/Tests/Chapter3Checklist.agdai src/agda/Tests/SubobjectTheoryChecklist.agdai src/agda/Chapter2/Level2sub3.agdai src/agda/Chapter2/Level2sub6.agdai src/agda/Chapter2/Level2sub5.agdai src/agda/Chapter2/Level2sub8.agdai src/agda/Chapter2/Level2sub7.agdai src/agda/Chapter2/Level2sub2.agdai src/agda/Chapter2/Level2sub1.agdai src/agda/Chapter2/Level2sub4.agdai src/agda/Chapter2/Level2Index.agdai src/agda/Chapter3/Level3sub1.agdai src/agda/Chapter3/Level3sub2.agdai src/agda/Chapter3/Level3Index.agdai src/agda/Algorithms/Instrumented.agdai src/agda/Algorithms/Basic.agdai src/agda/Algorithms/Adapters/BundleAdapter.agdai src/agda/Algorithms/TestInstances.agdai src/agda/Core.agdai src/agda/TechnicalDebt/PriorityMapping.agdai src/agda/TechnicalDebt/PriorityOrchestrationFFI.agdai src/agda/TechnicalDebt/PriorityFormatting.agdai src/agda/TechnicalDebt/PriorityOrchestration.agdai src/agda/TechnicalDebt/Priorities.agdai src/agda/Examples/RealWorldAlgorithms.agdai src/agda/Examples/TechnicalDebtExample.agdai src/agda/Examples/FunctionField/F2x.agdai src/agda/Examples/AlgorithmCorrectnessExamples.agdai src/agda/Examples/NumberField/Sqrt2.agdai src/agda/Examples/FiniteField/GF8.agdai src/agda/Examples/InstrumentedAlgorithmDemo.agdai src/agda/Examples/DeferredItemsScanner.agdai src/agda/Examples/AutomaticEvidenceDemo.agdai src/agda/Examples/ConstructiveWitnessExamples.agdai src/agda/Examples/AgdaMakefileDeps.agdai src/agda/Examples/LazyHybridDemo.agdai src/agda/Examples/TechnicalDebtRegistry.agdai src/agda/Examples/RoadmapIssueSync.agdai src/agda/Examples/MakefileTargets.agdai src/agda/Examples/PhaseCategoryExamples.agdai src/agda/Examples/TechnicalDebtChecklist.agdai src/agda/Examples/AgdaFileScanFFI.agdai src/agda/Examples/ExporterMakefile.agdai src/agda/Markdown/ExportProof.agdai src/agda/Markdown/Normalization.agdai src/agda/GrowthAnalysis.agdai src/agda/Plan/CIM/PolytopeExpansion.agdai src/agda/Plan/CIM/PandocProofExample.agdai src/agda/Plan/CIM/PandocProtocols.agdai src/agda/Plan/CIM/CHIPCoreRecompose.agdai src/agda/Plan/CIM/PandocProofExport.agdai src/agda/Plan/CIM/Utility.agdai src/agda/Plan/CIM/IngestedRoadmaps.agdai src/agda/Plan/CIM/Structure.agdai src/agda/Plan/CIM/DocumentSynthesis.agdai src/agda/Plan/CIM/CHIPRecomposed.agdai src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agdai src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agdai src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agdai src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agdai src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agdai src/agda/Plan/CIM/RoadmapExporter.agdai src/agda/Plan/CIM/CanonicalRoadmap.agdai src/agda/Plan/CIM/CHIPConformance.agdai src/agda/Plan/CIM/FrameworkMetadata.agdai src/agda/Plan/CIM/ModuleExporter.agdai src/agda/Plan/CIM/RoadmapIndex.agdai src/agda/Plan/CIM/RoadmapSync.agdai src/agda/Plan/CIM/PandocToMarkdown.agdai src/agda/Plan/CIM/DocumentationContent.agdai src/agda/Plan/CIM/YonedaProfiler.agdai src/agda/Plan/CIM/RoadmapSPPF.agdai src/agda/Plan/CIM/Ambiguity.agdai src/agda/Plan/CIM/RoadmapSPPFExport.agdai src/agda/Plan/CIM/GPNarrativeDAG.agdai src/agda/Plan/CIM/MarkdownNormalize.agdai src/agda/Plan/CIM/PandocAST.agdai src/agda/Plan/CIM/GrammarBridge.agdai src/agda/Plan/CIM/MarkdownParse.agdai src/agda/Algebra/Groups/Basic.agdai src/agda/Algebra/Groups/Theorems/Classical.agdai src/agda/Algebra/Groups/ClassicalInstance.agdai src/agda/Algebra/Groups/Structure.agdai src/agda/Algebra/Groups/BasicWithTheorems.agdai src/agda/Algebra/Groups/BasicParameterized.agdai src/agda/Algebra/Groups/Abelian.agdai src/agda/Algebra/Groups/Types.agdai src/agda/Algebra/Groups/Free.agdai src/agda/Algebra/Enrichment.agdai src/agda/Algebra/Rings/Basic.agdai src/agda/Algebra/Rings/Theorems/Classical.agdai src/agda/Algebra/Rings/ClassicalInstance.agdai src/agda/Algebra/Rings/BasicWithTheorems.agdai src/agda/Algebra/Rings/Types.agdai src/agda/Algebra/Modules/Basic.agdai src/agda/Algebra/Modules/Theorems/Classical.agdai src/agda/Algebra/Modules/ClassicalInstance.agdai src/agda/Algebra/Modules/BasicWithTheorems.agdai src/agda/Algebra/Modules/Types.agdai src/agda/Algebra/Foundation.agdai src/agda/Algebra/Fields/Basic.agdai src/agda/Algebra/Fields/Advanced.agdai src/agda/Algebra/Fields/Theorems/Classical.agdai src/agda/Algebra/Fields/ClassicalInstance.agdai src/agda/Algebra/Fields/BasicWithTheorems.agdai src/agda/Algebra/Fields/Types.agdai src/agda/Algebra/Index.agdai src/agda/Chapter1/Level1.agdai src/agda/Chapter1/Level1sub8.agdai src/agda/Chapter1/Level1sub7.agdai src/agda/Chapter1/Level1sub3.agdai src/agda/Chapter1/Level1Index.agdai src/agda/Chapter1/Level1sub2.agdai src/agda/Chapter1/Level1sub4.agdai src/agda/Chapter1/Level1sub5.agdai src/agda/Chapter1/Level1sub6.agdai src/agda/PropertyRegistry.agdai src/agda/ExporterMakefile.agdai src/agda/Core/AlgorithmComplexity.agdai src/agda/Core/ABNF.agdai src/agda/Core/TechnicalDebt.agdai src/agda/Core/Witnesses.agdai src/agda/Core/BraidTree.agdai src/agda/Core/Limitations.agdai src/agda/Core/AlgorithmCorrectness.agdai src/agda/Core/GrothendieckFibrations.agdai src/agda/Core/AlgorithmUniversality.agdai src/agda/Core/AdapterReflection.agdai src/agda/Core/Phase.agdai src/agda/Core/AdapterAutomation.agdai src/agda/Core/Utils.agdai src/agda/Core/Algorithms/Registry.agdai src/agda/Core/Algorithms/FunctionFields.agdai src/agda/Core/Algorithms/External.agdai src/agda/Core/Algorithms/FiniteFields.agdai src/agda/Core/Algorithms/AutomaticEvidence.agdai src/agda/Core/Algorithms/NumberFields.agdai src/agda/Core/Algorithms/Bundle.agdai src/agda/Core/Algorithms/InductiveClassification.agdai src/agda/Core/PhaseCategory.agdai src/agda/Core/Rendering.agdai src/agda/Core/ConstructiveWitnesses.agdai src/agda/Core/UniversalProperties.agdai src/agda/Core/IO.agdai src/agda/Core/GrowthMetrics.agdai src/agda/Core/AlgebraicAlgorithms.agdai src/agda/Core/Yoneda.agdai src/agda/Core/GodelBoundary.agdai src/agda/Core/Strings.agdai src/agda/Core/PathAggregator.agdai src/agda/Core/PolynomialsF2.agdai src/agda/Core/CategoricalAdapter.agdai
