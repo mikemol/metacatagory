@@ -24,8 +24,9 @@ Makefile.generated
 .local/
 *.tar.xz
 
-# Build outputs
+# Build outputs (but track witness/reference files for CI)
 build/
+!build/makefile_targets_generated.md
 dist/
 *.egg-info/
 
