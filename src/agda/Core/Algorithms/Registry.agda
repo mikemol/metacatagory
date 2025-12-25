@@ -13,6 +13,7 @@ open import Algebra.Fields.Basic
 open import Algebra.Fields.Advanced
 open import Core.AlgebraicAlgorithms
 open import Core.Algorithms.Bundle
+open import Algorithms.Adapters.BundleAdapter using (defaultAlgorithmBundle)
 open import Core.Algorithms.FiniteFields
 open import Core.Algorithms.NumberFields
 open import Core.Algorithms.FunctionFields
@@ -123,20 +124,7 @@ getClassification ⦃ c ⦄ = classification c
 
 -- Generic fallback bundle using all defaults
 genericAlgorithmBundle : (F E : FieldDeclaration) → AlgorithmBundle F E
-genericAlgorithmBundle F E = record
-  { minimalPolynomialAlg = MinimalPolynomialAlgorithm-generic {F} {E}
-  ; galoisGroupAlg       = GaloisGroupAlgorithm-generic {F} {E}
-  ; splittingFieldAlg    = SplittingFieldAlgorithm-generic {F}
-  ; extensionDegreeAlg   = FieldExtensionDegreeAlgorithm-generic {F} {E}
-  ; subfieldEnumAlg      = SubfieldEnumerationAlgorithm-generic {F} {E}
-  ; subgroupEnumAlg      = SubgroupEnumerationAlgorithm-generic {F} {E}
-  ; algebraicityAlg      = AlgebraicityDecisionAlgorithm-generic {F} {E}
-  ; primitiveElementAlg  = PrimitiveElementAlgorithm-generic {F} {E}
-  ; normalityAlg         = NormalityDecisionAlgorithm-generic {F} {E}
-  ; separabilityAlg      = SeparabilityDecisionAlgorithm-generic {F} {E}
-  ; normalClosureAlg     = NormalClosureAlgorithm-generic {F} {E}
-  ; galoisClosureAlg     = GaloisClosureAlgorithm-generic {F} {E}
-  }
+genericAlgorithmBundle F E = defaultAlgorithmBundle F E
 
 -- ============================================================================
 -- Specialized Bundles (Registry Entries)
