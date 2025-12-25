@@ -6,7 +6,7 @@
 module TechnicalDebt.PriorityMapping where
 
 open import TechnicalDebt.Priorities
-open import Core.TechnicalDebt using (Priority)
+open import Core.TechnicalDebt using (Priority; weight)
 open import Core using (_×_; _,_)
 open _×_ public
 open import Agda.Builtin.Int using (Int; pos; negsuc)
@@ -15,9 +15,9 @@ open import Agda.Builtin.Int using (Int; pos; negsuc)
 -- Extract numeric weight from Priority (first term's value)
 -- ============================================================================
 
--- Postulate the extraction function - implementation in terms is FFI/proof detail
-postulate
-  extractPriorityWeight : Priority → Int
+-- Extract numeric weight from Priority using the Core.TechnicalDebt weight function
+extractPriorityWeight : Priority → Int
+extractPriorityWeight p = pos (weight p)
 
 -- ============================================================================
 -- Map PriorityStrategy to category weights
