@@ -19,6 +19,7 @@ Outputs badge data files that can be served via GitHub Pages or committed to the
 """
 
 import json
+import os
 import sys
 from pathlib import Path
 from datetime import datetime, timezone
@@ -59,7 +60,7 @@ def load_config():
             "max_history_entries": 60
         }
     
-    # Load weights
+    # Load weights (may contain profiles)
     weights_file = config_dir / "weights.json"
     if weights_file.exists():
         with open(weights_file) as f:
@@ -105,18 +106,63 @@ def load_json_file(filepath: Path) -> dict[str, Any]:
         return json.load(f)
 
 
+def _resolve_weight_profile(raw: dict[str, Any], profile: str) -> dict[str, float] | None:
+    """Select a weight profile from raw config, supporting legacy flat dicts."""
+    if not isinstance(raw, dict):
+        return None
+
+    # New shape: {"profiles": {"default": {...}, "ffi": {...}}, "active": "default"}
+    profiles = raw.get("profiles") if isinstance(raw.get("profiles"), dict) else None
+    if profiles:
+        # Active profile can come from config; env overrides both
+        active = profile or raw.get("active") or "default"
+        if active in profiles:
+            return profiles[active]
+        # Fallback to first profile
+        first_profile = next(iter(profiles.values())) if profiles else None
+        if first_profile:
+            print(
+                f"Weight profile '{active}' not found; using first available profile",
+                file=sys.stderr,
+            )
+            return first_profile
+
+    # Legacy shape: flat dict of weights
+    if all(isinstance(v, (int, float)) for v in raw.values()):
+        return raw  # Backward compatible single-profile
+
+    return None
+
+
 def load_weights(output_dir: Path) -> dict[str, float]:
-    """Load severity weights from external JSON or use defaults."""
+    """Load severity weights from external JSON or use defaults.
+
+    Supports profile selection via env BADGE_WEIGHTS_PROFILE. Accepts either:
+    - Flat dict {"postulate": 2.0, ...} (legacy)
+    - Profile map {"profiles": {"default": {...}, "ffiSafety": {...}}, "active": "default"}
+    """
+
+    profile = os.environ.get("BADGE_WEIGHTS_PROFILE", "default")
     weights_file = output_dir / "weights.json"
+
     if weights_file.exists():
         try:
-            weights = load_json_file(weights_file)
-            if weights:
-                print(f"Loaded weights from {weights_file}")
-                return weights
+            weights_raw = load_json_file(weights_file)
+            selected = _resolve_weight_profile(weights_raw, profile)
+            if selected:
+                print(
+                    f"Loaded weights from {weights_file} (profile='{profile}')"
+                )
+                return selected
+            else:
+                print(
+                    f"Weights file {weights_file} missing profile '{profile}' and no compatible fallback; using defaults",
+                    file=sys.stderr,
+                )
         except Exception as e:
             print(f"Error loading weights: {e}, using defaults", file=sys.stderr)
-    # Write default weights if not present
+
+    # Write default weights if not present or unusable
     with open(weights_file, "w") as wf:
         json.dump(DEFAULT_WEIGHTS, wf, indent=2)
     print(f"Initialized default weights: {weights_file}")
