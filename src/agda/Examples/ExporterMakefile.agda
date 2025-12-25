@@ -185,7 +185,7 @@ discoveredTargets =
     ("mkdir -p build/reports" ∷ "python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt" ∷ [])
   ∷ generatorToTarget "all" "Build all code and documentation" ("agda-all" ∷ "docs-all" ∷ [])
     ("@echo \"all complete\"" ∷ [])
-  ∷ generatorToTarget "check" "Run all validation checks" ("makefile-validate" ∷ "node-deps" ∷ "md-lint" ∷ "roadmap-validate-triangle" ∷ "docs-validate" ∷ "all" ∷ [])
+  ∷ generatorToTarget "check" "Run all validation checks" ("makefile-validate" ∷ "md-lint" ∷ "roadmap-validate-triangle" ∷ "docs-validate" ∷ "all" ∷ [])
     ("@echo \"check complete\"" ∷ [])
   ∷ generatorToTarget "badges" "Generate status badges" ("priority-badge-weights" ∷ []) 
     ("python3 scripts/generate-badges.py" ∷ [])
