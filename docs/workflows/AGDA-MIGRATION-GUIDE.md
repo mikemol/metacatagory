@@ -674,23 +674,60 @@ strategyToJson s =
   in formatWeightsAsJson weights     -- FORMAT
 ```
 
-**Step 3: Postulate Format Layer**
+**Step 3: Parameterize Orchestration (Complete Agda)**
 
-If Agda string building is complex, postulate and implement via FFI:
+Instead of keeping orchestration in Python, move it to Agda with parameterized I/O:
 
 ```agda
--- Postulate complex formatting
-postulate
-  formatAllStrategyProfiles : String
+-- Parameterized orchestration module
+open import Agda.Builtin.String
+open import Agda.Builtin.Unit
+open import Agda.Builtin.IO
 
--- Provide pure interface
-getStrategyJson : PriorityStrategy → String
-getStrategyJson s = formatAllStrategyProfiles ++ ""  -- Simplified
+module TechnicalDebt.PriorityOrchestration
+  (writeFile : String → String → IO ⊤)
+  (readFile : String → IO String)
+  (putStrLn : String → IO ⊤)
+  -- ... other I/O operations
+  where
+  
+  -- Use the I/O operations to coordinate logic and formatting
+  generateConfig : IO ⊤
+  generateConfig = do
+    let jsonOutput = formatAllStrategyProfiles  -- FORMAT LAYER
+    writeFile "output.json" jsonOutput          -- I/O OPERATION
+    putStrLn "✓ Generated configuration"
 ```
 
-**Step 4: Update Python to Orchestrate**
+**Step 4: Instantiate with FFI**
 
-Python becomes pure orchestration—no business logic:
+Create concrete instantiation with GHC FFI:
+
+```agda
+module TechnicalDebt.PriorityOrchestrationFFI where
+
+postulate
+  ffi-writeFile : String → String → IO ⊤
+  ffi-putStrLn : String → IO ⊤
+  -- ... other FFI operations
+
+{-# COMPILE GHC ffi-writeFile = \path content -> System.IO.writeFile path content #-}
+{-# COMPILE GHC ffi-putStrLn = System.IO.putStrLn #-}
+
+-- Instantiate with FFI implementations
+open import TechnicalDebt.PriorityOrchestration
+  ffi-writeFile
+  ffi-readFile
+  ffi-putStrLn
+  -- ... other implementations
+  public
+```
+
+**Step 5: Optional Python Wrapper**
+
+**Step 5: Optional Python Wrapper**
+
+Python becomes optional thin wrapper for compilation:
 
 ```python
 # ✓ GOOD: Pure orchestration
@@ -698,6 +735,16 @@ def main():
     logic_result = call_agda_logic()      # Load logic results
     formatted = load_agda_formatting()    # Load formatted output
     trigger_downstream(formatted)         # Orchestrate
+```
+
+Or compile Agda directly to executable:
+
+```bash
+agda --compile --include-path=src/agda \
+  src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda
+
+# Run the compiled binary
+./src/agda/TechnicalDebt/PriorityOrchestrationFFI
 ```
 
 ### Testing Each Layer
@@ -728,25 +775,44 @@ def test_json_output_valid():
     assert all('weights' in s for s in parsed['strategies'])
 ```
 
-**Orchestration Tests** (Integration)
+**Orchestration Tests** (Can be in Agda too!)
 
-```python
-def test_orchestration_pipeline():
-    result = run_orchestration()
-    assert result.returncode == 0
-    assert os.path.exists('output.json')
+```agda
+-- Test orchestration by mocking I/O operations
+module TestOrchestration where
+  
+  -- Mock I/O that captures calls
+  mockWriteFile : String → String → IO ⊤
+  mockWriteFile path content = {- record call -}
+  
+  mockPutStrLn : String → IO ⊤
+  mockPutStrLn s = {- record output -}
+  
+  -- Instantiate with mocks
+  open import TechnicalDebt.PriorityOrchestration
+    mockWriteFile
+    mockReadFile
+    mockFileExists
+    mockPutStrLn
+    -- ... other mocks
+  
+  -- Run tests
+  testGeneration : IO ⊤
+  testGeneration = generateReferenceConfig
 ```
 
 ### Benefits of Separation
 
-| Aspect | Before | After |
-|--------|--------|-------|
-| **Testability** | Hard (mixed concerns) | Easy (test each layer) |
-| **Reusability** | Logic trapped in Python | Logic reusable in Agda, other tools |
-| **Correctness** | Manual testing only | Compile-time verification of formats |
-| **Extensibility** | Add Python code for new formats | Add Agda format function |
-| **Maintainability** | Logic scattered across files | Centralized in one module per layer |
-| **Performance** | Python formatting at runtime | Agda formatting at compile-time |
+| Aspect | Before | After (Complete Agda) |
+|--------|--------|----------------------|
+| **Testability** | Hard (mixed concerns) | Easy (all layers testable in Agda) |
+| **Reusability** | Logic trapped in Python | All logic in Agda, reusable everywhere |
+| **Correctness** | Manual testing only | Compile-time verification of all layers |
+| **Extensibility** | Add Python code for new formats | Add Agda format function, parameterize I/O |
+| **Maintainability** | Logic scattered across files | Single-language implementation |
+| **Performance** | Python formatting at runtime | Native compiled executable (GHC) |
+| **Type Safety** | Only at Python boundaries | Full type safety from logic to I/O |
+| **Testing** | Separate Python test suite | Mock I/O in Agda, test all layers |
 
 ### Implementation Checklist
 
@@ -754,8 +820,10 @@ def test_orchestration_pipeline():
 - [ ] **Create logic tests** (verify computation correctness)
 - [ ] **Move formatting** to Agda (separate from logic)
 - [ ] **Create format tests** (verify output structure)
-- [ ] **Refactor Python** to pure orchestration (no business logic)
-- [ ] **Create orchestration tests** (verify integration)
+- [ ] **Parameterize orchestration** (I/O operations as module parameters)
+- [ ] **Create FFI instantiation** (concrete I/O implementations via GHC)
+- [ ] **Create orchestration tests** (mock I/O operations in Agda)
+- [ ] **Optional: Python wrapper** for build system integration
 - [ ] **Document layer responsibilities** in module comments
 - [ ] **Update ROADMAP** to reference architecture
 - [ ] **Add to onboarding** so new developers understand separation
@@ -766,10 +834,26 @@ When reviewing code with mixed concerns, ask:
 
 1. **Is there pure computation?** → Should be in Agda logic layer, tested independently
 2. **Is there string building?** → Should be in Agda format layer, co-located with logic
-3. **Is there I/O or side effects?** → Should be in Python orchestration layer
+3. **Is there I/O or side effects?** → Should be parameterized in Agda orchestration layer
 4. **Can logic be tested without format?** → If not, they're not separated
 5. **Can format be changed without logic changes?** → If not, they're not separated
-6. **Can Python be replaced without changing Agda?** → If not, layers are too coupled
+6. **Can I/O be mocked for testing?** → If not, use module parameterization
+7. **Can the entire system run without Python?** → If not, consider full Agda migration
+
+**Advanced Pattern: Complete Agda Implementation**
+
+For maximum type safety and single-language implementation:
+- Logic: Pure Agda (no I/O, no formatting)
+- Format: Pure Agda (string generation, co-located with logic)
+- Orchestration: Parameterized Agda (I/O operations as module parameters)
+- FFI: Concrete instantiation (GHC backend with System.IO)
+- Optional: Python wrapper (thin compilation/execution wrapper)
+
+This enables:
+- Compile-time verification of all three layers
+- Native executable performance (via GHC)
+- Testable I/O via mocking (parameterized module instantiation)
+- Single-language codebase (Agda only, Python optional)
 
 ---
 
