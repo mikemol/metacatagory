@@ -35,7 +35,7 @@ makefile-validate:
 all: agda-all docs-all
 	@echo "all complete"
 # Run all validation checks
-check: makefile-validate node-deps md-lint roadmap-validate-triangle docs-validate all
+check: makefile-validate md-lint roadmap-validate-triangle docs-validate all
 	@echo "check complete"
 # Generate status badges
 badges: priority-badge-weights
