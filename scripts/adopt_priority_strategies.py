@@ -1,272 +1,130 @@
 #!/usr/bin/env python3
 """
-PRIO-ADOPT-1: Orchestration layer connecting Agda priorities to Python badge system
+PRIO-ADOPT-1: Bridge Agda-generated priority strategies into badge weights.
 
-Architecture:
-1. LOGIC LAYER (Agda): TechnicalDebt.PriorityMapping - pure strategy→weights mapping
-2. FORMAT LAYER (Agda): TechnicalDebt.PriorityFormatting - JSON serialization
-3. ORCHESTRATION LAYER (Python): This script - coordinates Agda output with Python tools
-
-Workflow:
-- Agda TechnicalDebt.Priorities defines strategy structures
-- Agda TechnicalDebt.PriorityMapping maps to simplified weight categories
-- Agda TechnicalDebt.PriorityFormatting formats as JSON
-- Python loads and integrates with badge generation system
-
-This design keeps domain logic AND formatting in Agda, Python handles integration only.
+- Agda owns logic and formatting (TechnicalDebt.PriorityOrchestrationFFI).
+- This script normalizes Agda weights into the badge weight profile shape that
+  scripts/generate-badges.py consumes.
 """
 
+from __future__ import annotations
+
+import argparse
 import json
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict, Optional
 
-# ============================================================================
-# LOGIC LAYER: Pure Priority Mapping
-# ============================================================================
 
-# ============================================================================
-# LOGIC LAYER: Pure Priority Mapping
-# ============================================================================
-
-"""
-Mapping Strategy (domain logic - independent of serialization):
-- postulate ← proof        (Proof obligations, unimplemented algorithms)
-- todo ← documentation    (Documentation TODOs, planned features)  
-- fixme ← safety          (Safety issues, bugs, performance problems)
-- deviation ← critical    (Critical deviations, specification mismatches)
-"""
-
-# Agda Priority values (in positive integers representing weight/urgency)
-AGDA_STRATEGIES = {
-    "default": {
-        "minimal": 1,
-        "low": 10,
-        "medium": 50,
-        "high": 100,
-        "critical": 500,
-        "testFixture": 1,
-        "documentation": 25,
-        "performance": 75,
-        "safety": 200,
-        "proof": 150,
-    },
-    "ffiSafety": {
-        "minimal": 1,
-        "low": 5,
-        "medium": 25,
-        "high": 50,
-        "critical": 1000,
-        "testFixture": 1,
-        "documentation": 10,
-        "performance": 100,
-        "safety": 800,
-        "proof": 30,
-    },
-    "proofCompleteness": {
-        "minimal": 1,
-        "low": 10,
-        "medium": 50,
-        "high": 200,
-        "critical": 500,
-        "testFixture": 1,
-        "documentation": 20,
-        "performance": 30,
-        "safety": 150,
-        "proof": 300,
-    },
-    "rapidDevelopment": {
-        "minimal": 1,
-        "low": 5,
-        "medium": 20,
-        "high": 50,
-        "critical": 100,
-        "testFixture": 1,
-        "documentation": 5,
-        "performance": 10,
-        "safety": 75,
-        "proof": 25,
-    },
-    "production": {
-        "minimal": 10,
-        "low": 50,
-        "medium": 150,
-        "high": 300,
-        "critical": 1000,
-        "testFixture": 5,
-        "documentation": 100,
-        "performance": 200,
-        "safety": 500,
-        "proof": 400,
-    },
+CATEGORY_NORMALIZATION: Dict[str, float] = {
+    "postulate": 100.0,
+    "todo": 50.0,
+    "fixme": 100.0,
+    "deviation": 500.0,
 }
 
-# ============================================================================
-# Semantic Mapping: Agda Priority Fields → Python Badge Categories
-# ============================================================================
 
-def agda_to_python_weights(strategy_name: str) -> Dict[str, float]:
-    """
-    LOGIC LAYER: Pure mapping from Agda PriorityStrategy to Python weight categories.
-    
-    No side effects, no I/O, pure computation.
-    
-    Mapping:
-    - postulate: from proof field (proof obligations as primary postulate category)
-    - todo: from documentation field (doc TODOs as primary todo category)
-    - fixme: from safety field (safety issues require fixes)
-    - deviation: from critical field (critical deviations as specification mismatches)
-    """
-    if strategy_name not in AGDA_STRATEGIES:
-        raise ValueError(f"Unknown strategy: {strategy_name}. Available: {list(AGDA_STRATEGIES.keys())}")
-    
-    agda_strat = AGDA_STRATEGIES[strategy_name]
-    
-    # Map Agda priorities to Python weight categories
-    # Normalize to rough float scales (Python weights typically range 0.8 - 5.0)
+def load_agda_output(path: Path) -> Dict[str, Any]:
+    """Load Agda-generated strategy profiles."""
+    if not path.exists():
+        raise FileNotFoundError(f"Agda priority output not found: {path}")
+
+    with path.open() as handle:
+        data = json.load(handle)
+
+    if not isinstance(data, dict):
+        raise ValueError("Agda output must be a JSON object")
+    if not isinstance(data.get("strategies"), dict):
+        raise ValueError("Agda output missing 'strategies' map")
+
+    return data
+
+
+def normalize_strategy(weights: Dict[str, Any]) -> Dict[str, float]:
+    """Normalize raw integer weights into badge-friendly floats."""
+    normalized: Dict[str, float] = {}
+    for category, divisor in CATEGORY_NORMALIZATION.items():
+        if category not in weights:
+            raise ValueError(f"Strategy weights missing '{category}'")
+
+        value = weights[category]
+        if not isinstance(value, (int, float)):
+            raise ValueError(f"Weight '{category}' must be numeric")
+
+        normalized[category] = value / divisor
+
+    return normalized
+
+
+def convert_agda_profiles(
+    raw: Dict[str, Any], active_override: Optional[str] = None
+) -> Dict[str, Any]:
+    """Convert Agda strategy map into badge weights profile map."""
+    strategies = raw.get("strategies") or {}
+    profiles: Dict[str, Dict[str, float]] = {}
+
+    for name, content in strategies.items():
+        weights = content.get("weights") if isinstance(content, dict) else None
+        if weights is None:
+            raise ValueError(f"Strategy '{name}' missing weights")
+
+        profiles[name] = normalize_strategy(weights)
+
+    if not profiles:
+        raise ValueError("No strategies found in Agda output")
+
+    active = active_override or raw.get("active") or "default"
+    if active not in profiles:
+        active = "default" if "default" in profiles else next(iter(profiles))
+
     return {
-        "postulate": agda_strat["proof"] / 100.0,        # 150 → 1.5, 300 → 3.0, etc
-        "todo": agda_strat["documentation"] / 50.0,      # 25 → 0.5, 10 → 0.2, etc
-        "fixme": agda_strat["safety"] / 100.0,           # 200 → 2.0, 800 → 8.0, etc
-        "deviation": agda_strat["critical"] / 500.0,     # 500 → 1.0, 1000 → 2.0, etc
-    }
-
-
-def build_weight_profiles() -> Dict[str, Any]:
-    """
-    LOGIC LAYER: Compute all weight profiles from all strategies.
-    
-    Pure function: no I/O, no side effects.
-    """
-    profiles = {}
-    for strategy_name in AGDA_STRATEGIES.keys():
-        profiles[strategy_name] = agda_to_python_weights(strategy_name)
-    
-    return profiles
-
-
-# ============================================================================
-# FORMAT LAYER: JSON Serialization
-# ============================================================================
-
-def format_weights_json(profiles: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    FORMAT LAYER: Wrap computed weights with metadata for JSON serialization.
-    
-    Separates domain data from presentation structure.
-    """
-    return {
-        "active": "default",
+        "_comment": "Generated from Agda TechnicalDebt.PriorityOrchestrationFFI (normalized for badges)",
+        "active": active,
         "profiles": profiles,
-        "_comment": "Generated from Agda TechnicalDebt.Priorities. Maps proof→postulate, documentation→todo, safety→fixme, critical→deviation.",
     }
 
 
-def generate_bridge_config() -> dict:
-    """
-    Convenience function combining logic and format layers.
-    (For backward compatibility)
-    """
-    profiles = build_weight_profiles()
-    return format_weights_json(profiles)
+def write_json(path: Path, data: Dict[str, Any]) -> None:
+    """Persist JSON with stable formatting."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w") as handle:
+        json.dump(data, handle, indent=2)
+        handle.write("\n")
 
 
-# ============================================================================
-# Validation and Documentation
-# ============================================================================
-
-def validate_against_current_weights(current_file: Path) -> dict:
-    """Compare generated weights with current weights.json for consistency."""
-    if not current_file.exists():
-        return {"status": "current weights not found"}
-    
-    with open(current_file) as f:
-        current = json.load(f)
-    
-    generated = generate_bridge_config()
-    
-    comparison = {}
-    for strategy_name in AGDA_STRATEGIES.keys():
-        if strategy_name not in current.get("profiles", {}):
-            comparison[strategy_name] = "NEW (not in current weights)"
-            continue
-        
-        current_weights = current["profiles"][strategy_name]
-        generated_weights = generated["profiles"][strategy_name]
-        
-        # Calculate relative differences
-        diffs = {}
-        for key in ["postulate", "todo", "fixme", "deviation"]:
-            if key in current_weights and key in generated_weights:
-                curr_val = current_weights[key]
-                gen_val = generated_weights[key]
-                # Percentage difference
-                if curr_val > 0:
-                    pct_diff = abs(gen_val - curr_val) / curr_val * 100
-                    diffs[key] = f"{pct_diff:.1f}% change"
-        
-        comparison[strategy_name] = diffs if diffs else "identical"
-    
-    return comparison
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Normalize Agda priority strategy profiles into badge weights."
+    )
+    parser.add_argument(
+        "--input",
+        type=Path,
+        default=Path("build/priority_strategy_profiles.json"),
+        help="Agda-generated strategy profiles JSON",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path(".github/badges/weights.json"),
+        help="Destination badge weights file",
+    )
+    parser.add_argument(
+        "--active",
+        help="Override active profile (defaults to Agda 'active' field or 'default')",
+    )
+    return parser.parse_args()
 
 
-# ============================================================================
-# Main
-# ============================================================================
+def main() -> None:
+    args = parse_args()
+
+    agda_raw = load_agda_output(args.input)
+    badge_weights = convert_agda_profiles(agda_raw, args.active)
+    write_json(args.output, badge_weights)
+
+    print(
+        f"Wrote badge weights to {args.output} (active='{badge_weights['active']}')"
+    )
+
 
 if __name__ == "__main__":
-    import sys
-    
-    repo_root = Path(__file__).parent.parent
-    badges_dir = repo_root / ".github" / "badges"
-    weights_file = badges_dir / "weights.json"
-    
-    # ORCHESTRATION LAYER: In production, this would:
-    # 1. Compile Agda to extract formatAllStrategyProfiles output
-    # 2. Parse JSON output from Agda
-    # 3. Load into Python badge system
-    #
-    # For now, demonstrate the current state:
-    
-    # Generate weights (logic layer)
-    profiles = build_weight_profiles()
-    
-    # Format as JSON (format layer - currently in Python, will move to Agda)
-    generated = format_weights_json(profiles)
-    
-    # Validate
-    comparison = validate_against_current_weights(weights_file)
-    
-    print("=" * 80)
-    print("PRIO-ADOPT-1: Orchestration Layer Status")
-    print("=" * 80)
-    print()
-    print("Current Architecture:")
-    print("  ✓ LOGIC LAYER (Agda): TechnicalDebt.PriorityMapping - pure weights computation")
-    print("  ✓ FORMAT LAYER (Agda): TechnicalDebt.PriorityFormatting - JSON formatting (postulated)")
-    print("  • ORCHESTRATION LAYER (Python): This script - system integration")
-    print()
-    print("Generated profiles from Agda TechnicalDebt.Priorities:")
-    print(json.dumps(generated, indent=2))
-    print()
-    print("Validation against current weights.json:")
-    print(json.dumps(comparison, indent=2))
-    print()
-    print("Mapping reference:")
-    print("  postulate ← proof        (Proof obligations, unimplemented algorithms)")
-    print("  todo ← documentation    (Documentation TODOs, planned features)")
-    print("  fixme ← safety          (Safety issues, bugs, performance problems)")
-    print("  deviation ← critical    (Critical deviations, specification mismatches)")
-    print()
-    print("Next Steps:")
-    print("  1. Implement Agda PriorityFormatting.formatAllStrategyProfiles concrete function")
-    print("  2. Export Agda-formatted JSON to file during build")
-    print("  3. Python loads and validates Agda output")
-    print("  4. Python integration with badge generation remains pure orchestration")
-    print()
-    
-    # Save generated config for reference
-    reference_file = badges_dir / "weights-agda-formatted.json"
-    with open(reference_file, "w") as f:
-        json.dump(generated, f, indent=2)
-    print(f"Saved reference config: {reference_file}")
-
+    main()
