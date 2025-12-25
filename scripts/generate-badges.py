@@ -114,6 +114,7 @@ def load_priority_weights(output_dir: Path, profile: str = "default") -> dict:
 # ============================================================================
 
 # Convert threshold dicts to tuples for backwards compatibility
+ROADMAP_PROGRESS_THRESHOLDS = [(t["limit"], t["color"]) for t in THRESHOLD_DATA["roadmap_progress"]]
 DEFERRED_TOTAL_THRESHOLDS = [(t["limit"], t["color"]) for t in THRESHOLD_DATA["deferred_total"]]
 POSTULATES_THRESHOLDS = [(t["limit"], t["color"]) for t in THRESHOLD_DATA["postulates"]]
 TODO_THRESHOLDS = [(t["limit"], t["color"]) for t in THRESHOLD_DATA["todo"]]
