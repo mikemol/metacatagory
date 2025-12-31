@@ -17,7 +17,7 @@ def extract_md_items(md_path):
     return titles
 
 def validate():
-    base = Path("/home/mikemol/github/metacatagory")
+    base = Path(__file__).resolve().parent.parent
     canonical = json.load(open(base / "build/canonical_roadmap.json"))
     md_titles = extract_md_items(base / "ROADMAP.md")
     

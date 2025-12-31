@@ -122,7 +122,7 @@ def export_markdown(canonical_path: Path, output_path: Path):
     print(f"Exported {len(canonical)} items to {output_path}")
 
 if __name__ == "__main__":
-    base = Path("/home/mikemol/github/metacatagory")
+    base = Path(__file__).resolve().parent.parent
     export_markdown(
         base / "build/canonical_roadmap.json",
         base / "ROADMAP.md"
