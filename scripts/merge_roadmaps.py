@@ -283,6 +283,7 @@ def merge_all_sources(base_path: Path) -> List[Dict]:
 
 def export_to_json(items: List[Dict], output_path: Path):
     """Export canonical list to JSON."""
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, 'w') as f:
         json.dump(items, f, indent=2)
     print(f"Exported {len(items)} items to {output_path}")
@@ -327,13 +328,14 @@ def export_to_agda(items: List[Dict], output_path: Path):
     
     lines.append("  ∷ []")
     
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, 'w') as f:
         f.write('\n'.join(lines))
     
     print(f"Exported {len(items)} items to {output_path}")
 
 if __name__ == "__main__":
-    base = Path("/home/mikemol/github/metacatagory")
+    base = Path(__file__).resolve().parent.parent
     
     # Merge all sources
     canonical = merge_all_sources(base)
