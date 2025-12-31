@@ -19,7 +19,7 @@ def normalize_item(item):
     }
 
 def validate():
-    base = Path("/home/mikemol/github/metacatagory")
+    base = Path(__file__).resolve().parent.parent
     canonical = json.load(open(base / "build/canonical_roadmap.json"))
     tasks = json.load(open(base / ".github/roadmap/tasks.json"))
     
