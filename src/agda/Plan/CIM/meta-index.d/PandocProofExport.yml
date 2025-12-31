@@ -1,0 +1,19 @@
+title: 'Meta-Index: Plan.CIM.PandocProofExport'
+sections:
+- name: Scope
+  bullets:
+  - Proof export utilities targeting Pandoc/Markdown.
+- name: Key elements
+  bullets:
+  - Transformations from proof structures to document AST; helpers for formatting
+    proofs.
+- name: Dependencies
+  bullets:
+  - '`Plan.CIM.PandocAST`, rendering modules, and proof data structures.'
+- name: Update triggers
+  bullets:
+  - Schema changes in proof data or document layout.
+  - New proof features requiring export hooks.
+- name: Technical debt / status
+  bullets:
+  - Track export coverage and formatting debt in deferred-items.md and ROADMAP.md.

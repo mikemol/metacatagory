@@ -1,0 +1,65 @@
+# .codex/config.toml
+
+[environment]
+# Explicitly declare what Codex can assume exists
+os = "linux"
+shell = "bash"
+
+# This matters: Codex uses it to decide whether it may run commands
+allow_commands = true
+
+# Declare the project type so Codex doesn't treat this as "generic scripts"
+project_type = "agda-formal-system"
+
+[toolchain]
+# Tell Codex what tools are conceptually relevant
+languages = ["agda", "haskell", "markdown"]
+build_tools = ["agda"]
+package_manager = "none"
+
+[agda]
+# Critical for non-trivial Agda projects
+version = ">=2.6.4"
+stdlib = true
+
+# Where to look
+source_dirs = [
+  "src/agda"
+]
+
+# These flags strongly influence proof style Codex will attempt
+flags = [
+  "--safe",
+  "--without-K"
+]
+
+[codex]
+# Prefer structural refactors over stylistic edits
+edit_style = "structural"
+
+# This is important for your philosophy
+assume_axioms = false
+prefer_construction = true
+
+# Encourage module-parameterized solutions
+prefer_templates = true
+
+# Avoid inventing postulates
+forbid_postulate = true
+
+[analysis]
+# Encourage slower, correctness-first reasoning
+depth = "deep"
+allow_refactor = true
+allow_new_modules = true
+
+[git]
+# Let Codex create branches / commits when in Cloud mode
+auto_branch = true
+commit_style = "small-logical"
+
+[policy]
+axioms_are_interfaces = true
+coherence_must_be_derived = true
+boundaries_not_postulates = true
+

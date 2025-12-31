@@ -1,0 +1,18 @@
+title: 'Meta-Index: Plan.CIM.CHIPCoreRecompose'
+sections:
+- name: Scope
+  bullets:
+  - Placeholder for CHIP core recomposition work; documents intent only.
+- name: Key elements
+  bullets:
+  - Imports `Plan.CIM.Utility`; no concrete definitions yet.
+- name: Dependencies
+  bullets:
+  - Will tie into CHIP recomposition architecture when implemented.
+- name: Update triggers
+  bullets:
+  - Start of CHIP core recomposition implementation.
+  - Architectural or roadmap milestones that require recomposition.
+- name: Technical debt / status
+  bullets:
+  - Placeholder; track in deferred-items.md and ROADMAP.md when activated.

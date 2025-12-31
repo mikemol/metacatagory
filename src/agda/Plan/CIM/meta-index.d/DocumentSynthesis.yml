@@ -1,0 +1,18 @@
+title: 'Meta-Index: Plan.CIM.DocumentSynthesis'
+sections:
+- name: Scope
+  bullets:
+  - Document synthesis over Pandoc/Markdown structures.
+- name: Key elements
+  bullets:
+  - Composition helpers that build or transform documents from roadmap/proof data.
+- name: Dependencies
+  bullets:
+  - '`Plan.CIM.PandocAST`, normalization/rendering modules, and roadmap data.'
+- name: Update triggers
+  bullets:
+  - New synthesis targets or document composition strategies.
+  - Changes in input schemas (roadmap, proofs) that feed synthesis.
+- name: Technical debt / status
+  bullets:
+  - Track synthesis gaps and formatting issues in deferred-items.md and ROADMAP.md.

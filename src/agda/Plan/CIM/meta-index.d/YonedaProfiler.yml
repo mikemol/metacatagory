@@ -1,0 +1,18 @@
+title: 'Meta-Index: Plan.CIM.YonedaProfiler'
+sections:
+- name: Scope
+  bullets:
+  - Profiling/analysis utilities inspired by Yoneda-style reasoning.
+- name: Key elements
+  bullets:
+  - Profilers for concept/category logic; integrates with roadmap/document pipelines.
+- name: Dependencies
+  bullets:
+  - Core category logic in Plan/CIM and related utilities.
+- name: Update triggers
+  bullets:
+  - Changes to profiling strategy or category logic inputs.
+  - New roadmap requirements that adjust profiling outputs.
+- name: Technical debt / status
+  bullets:
+  - Track profiling coverage and open questions in deferred-items.md and ROADMAP.md.

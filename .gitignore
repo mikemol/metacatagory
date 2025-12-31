@@ -93,6 +93,7 @@ coverage/
 .idea/
 .vscode/
 .history/
+.synth
 
 # Auto-fix workflow temp
 *.tmp.md

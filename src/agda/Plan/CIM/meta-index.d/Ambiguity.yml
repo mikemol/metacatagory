@@ -1,0 +1,22 @@
+title: 'Meta-Index: Plan.CIM.Ambiguity'
+sections:
+- name: Scope
+  bullets:
+  - Weighted ambiguity modeling with provenance and external tension oracles.
+- name: Key elements
+  bullets:
+  - '`WeightedOption` record (value, weight, provenance).'
+  - '`Ambiguity` data (determinate, superposition, conflict).'
+  - 'Parameters: `TensionOracle` FFI hook; `LeftIdentityProof` (monad law).'
+- name: Dependencies
+  bullets:
+  - Plan.CIM.Utility; any consuming FFI surface for tension.
+- name: Update triggers
+  bullets:
+  - New ambiguity forms or changes to weighted option structure.
+  - FFI oracle adjustments or law-proof requirements.
+  - Roadmap/architecture updates for ambiguity handling.
+- name: Technical debt / status
+  bullets:
+  - FFI oracle integration is deferred/parameterized; document integrations in deferred-items.md
+    and ROADMAP.md.

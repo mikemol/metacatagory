@@ -1,0 +1,18 @@
+title: 'Meta-Index: Plan.CIM.MarkdownParse'
+sections:
+- name: Scope
+  bullets:
+  - Parsing Markdown into project AST forms.
+- name: Key elements
+  bullets:
+  - Parsers for Markdown constructs feeding `Plan.CIM.PandocAST`.
+- name: Dependencies
+  bullets:
+  - Markdown grammar helpers and AST definitions.
+- name: Update triggers
+  bullets:
+  - Grammar changes or new block/inline forms.
+  - Downstream normalization or rendering shifts that require parser updates.
+- name: Technical debt / status
+  bullets:
+  - Track unsupported constructs and TODOs in deferred-items.md and ROADMAP.md.

@@ -1,0 +1,22 @@
+title: 'Meta-Index: Core.AlgebraicAlgorithms'
+sections:
+- name: Scope
+  bullets:
+  - Shared algebraic decision/structure records for computational algebra workflows.
+- name: Key elements
+  bullets:
+  - Decision type `Dec`.
+  - "Packed structures: `packedMagmaBase/SemigroupBase/MonoidBase`, with `\u2026Ext`\
+    \ chains."
+- name: Dependencies
+  bullets:
+  - Infrastructure.Universe and Infrastructure.Coherence.Path2.
+- name: Update triggers
+  bullets:
+  - Changes to packed structure definitions or decision types.
+  - New algebraic algorithm requirements in Core or Plan/CIM.
+  - Infrastructure shifts (universe/equality).
+- name: Technical debt / status
+  bullets:
+  - "Universe polymorphism not yet generalized to `Set\u2113`; track in deferred-items.md\
+    \ and ROADMAP.md."

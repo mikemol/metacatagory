@@ -1,0 +1,17 @@
+title: 'Meta-Index: Plan.CIM.Structure'
+sections:
+- name: Scope
+  bullets:
+  - Structural helpers that organize Plan/CIM modules and protocols.
+- name: Key elements
+  bullets:
+  - Structural types and combinators used across roadmap/document pipelines.
+- name: Dependencies
+  bullets:
+  - Core Plan/CIM utilities and document algebra modules.
+- name: Update triggers
+  bullets:
+  - New structural patterns or refactors across Plan/CIM.
+- name: Technical debt / status
+  bullets:
+  - Track structural TODOs in deferred-items.md and ROADMAP.md.

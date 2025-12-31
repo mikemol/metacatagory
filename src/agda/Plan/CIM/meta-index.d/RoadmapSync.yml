@@ -1,0 +1,18 @@
+title: 'Meta-Index: Plan.CIM.RoadmapSync'
+sections:
+- name: Scope
+  bullets:
+  - Synchronization of roadmap data with external systems (e.g., GitHub).
+- name: Key elements
+  bullets:
+  - Sync protocols and integration hooks defined in `Plan.CIM.RoadmapSync.agda`.
+- name: Dependencies
+  bullets:
+  - Roadmap data sources, export utilities, and external service interfaces.
+- name: Update triggers
+  bullets:
+  - Changes to external sync targets or authentication flows.
+  - Roadmap schema updates that affect sync payloads.
+- name: Technical debt / status
+  bullets:
+  - Track integration gaps and pending targets in deferred-items.md and ROADMAP.md.

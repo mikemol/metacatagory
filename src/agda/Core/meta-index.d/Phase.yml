@@ -1,0 +1,20 @@
+title: 'Meta-Index: Core.Phase'
+sections:
+- name: Scope
+  bullets:
+  - Compositional transformations between states; phases as first-class morphisms.
+- name: Key elements
+  bullets:
+  - '`Phase` record with helpers `mkPhase`, `idPhase`, `constPhase`.'
+  - "Application operator `_$\u209A_`."
+- name: Dependencies
+  bullets:
+  - Infrastructure.Universe and Infrastructure.Coherence.Path2.
+- name: Update triggers
+  bullets:
+  - Changes to phase composition rules or helper constructors.
+  - Adjustments to infrastructure equality/universe layers.
+  - Roadmap items that alter protocol pipelines using phases.
+- name: Technical debt / status
+  bullets:
+  - Track any refactors or new infrastructure tie-ins in deferred-items.md and ROADMAP.md.

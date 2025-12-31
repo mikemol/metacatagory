@@ -1,0 +1,18 @@
+title: 'Meta-Index: Plan.CIM.MarkdownNormalize'
+sections:
+- name: Scope
+  bullets:
+  - Normalization helpers for Markdown documents.
+- name: Key elements
+  bullets:
+  - Transformations that standardize Markdown blocks/inlines for downstream processing.
+- name: Dependencies
+  bullets:
+  - '`Plan.CIM.MarkdownParse`, `Plan.CIM.PandocAST`, and rendering utilities.'
+- name: Update triggers
+  bullets:
+  - New normalization rules or dialect changes.
+  - Parser or AST shape changes that affect normalization.
+- name: Technical debt / status
+  bullets:
+  - Track normalization gaps or TODOs in deferred-items.md and ROADMAP.md.

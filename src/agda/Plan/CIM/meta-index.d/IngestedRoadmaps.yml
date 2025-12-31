@@ -1,0 +1,18 @@
+title: 'Meta-Index: Plan.CIM.IngestedRoadmaps'
+sections:
+- name: Scope
+  bullets:
+  - Handling of externally ingested roadmap categories.
+- name: Key elements
+  bullets:
+  - Aggregation and normalization of ingested roadmap items.
+- name: Dependencies
+  bullets:
+  - Roadmap index/export pipeline and ingestion utilities.
+- name: Update triggers
+  bullets:
+  - New ingested categories or schema changes.
+  - Adjustments to normalization/merging logic.
+- name: Technical debt / status
+  bullets:
+  - Track ingestion gaps and provenance issues in deferred-items.md and ROADMAP.md.

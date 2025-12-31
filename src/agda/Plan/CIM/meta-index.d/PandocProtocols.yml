@@ -1,0 +1,19 @@
+title: 'Meta-Index: Plan.CIM.PandocProtocols'
+sections:
+- name: Scope
+  bullets:
+  - Protocol-layer helpers for working with Pandoc/Markdown documents.
+- name: Key elements
+  bullets:
+  - Protocol definitions and adapters for document processing workflows.
+- name: Dependencies
+  bullets:
+  - '`Plan.CIM.PandocAST`, normalization/rendering modules, and roadmap-driven document
+    pipelines.'
+- name: Update triggers
+  bullets:
+  - Protocol or workflow changes in document processing.
+  - New document dialect requirements.
+- name: Technical debt / status
+  bullets:
+  - Track protocol boundaries and integration points in deferred-items.md and ROADMAP.md.
