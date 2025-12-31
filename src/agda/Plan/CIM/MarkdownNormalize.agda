@@ -59,6 +59,7 @@ renderInlines (x ∷ xs) = renderInline x ++ renderInlines xs
     renderInline (MdCode s)     = "`" ++ s ++ "`"
     renderInline MdSpace        = " "
     renderInline MdBreak        = "\n"
+    renderInline MdEOL          = "\n"
     renderInline (MdLink ys u)  = "[" ++ renderInlines ys ++ "](" ++ u ++ ")"
     renderInline (MdImage ys u) = "![" ++ renderInlines ys ++ "](" ++ u ++ ")"
 
@@ -83,14 +84,21 @@ mutual
   renderBlockWith indent (MdHeader n ys) = repeatHash n ++ " " ++ renderInlines ys
   renderBlockWith indent (MdCodeBlock s) = "```text\n" ++ s ++ "\n```"
   renderBlockWith indent (MdList items)  = renderList indent items
+  renderBlockWith indent (MdOrderedList items) = renderOrdered indent items
   renderBlockWith indent (MdQuote qs)    = renderQuote indent qs
   renderBlockWith indent MdRule          = "---"
   renderBlockWith indent (MdRaw s)       = s
   renderBlockWith _      MdNull          = ""
+  renderBlockWith _      MdEOB           = ""
+  renderBlockWith _      MdSBB           = ""
 
   renderList : String → List (List MdBlock) → String
   renderList indent [] = ""
   renderList indent (item ∷ xs) = indent ++ "* " ++ renderItem indent item ++ listTail indent xs
+
+  renderOrdered : String → List (List MdBlock) → String
+  renderOrdered indent [] = ""
+  renderOrdered indent (item ∷ xs) = indent ++ "1. " ++ renderItem indent item ++ listTail indent xs
 
   renderItem : String → List MdBlock → String
   renderItem _ [] = ""

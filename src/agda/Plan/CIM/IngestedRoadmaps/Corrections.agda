@@ -6,7 +6,7 @@ module Plan.CIM.IngestedRoadmaps.Corrections where
 
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String
-open import Plan.CIM.Utility using (RoadmapStep)
+open import Plan.CIM.Utility using (RoadmapStep; RoadmapStepV2)
 
 ------------------------------------------------------------------------
 -- Corrections Phase Roadmap Steps
@@ -44,3 +44,19 @@ roadmapGp501 = record
     ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
     ; next         = []
     }
+
+-- Enriched view (placeholder; to be filled by semantic extractor)
+roadmapsV2 : List RoadmapStepV2
+roadmapsV2 =
+  record
+    { gpNumber      = "AXIOM-SYZYGY-001"
+    ; theme         = "Syzygy modules / chain-complex audit"
+    ; category      = "Corrections"
+    ; relatedGPs    = "GP400" ∷ "GP500" ∷ "GP501" ∷ []
+    ; actionItems   = "Materialize F0/F1/F2 with d1,d2 and enforce d1∘d2=0 for kits" ∷ []
+    ; concepts      = "syzygy" ∷ "homological audit" ∷ "generator/relations" ∷ []
+    ; targetModules = "src/agda/Plan/CIM/Implementation.agda" ∷ []
+    ; status        = "planned"
+    ; notes         = "Chain complex over generators/relations to detect missing witnesses (nontrivial homology)."
+    ; nextV2        = []
+    } ∷ []

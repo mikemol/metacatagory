@@ -6,7 +6,7 @@ module Plan.CIM.IngestedRoadmaps.Analysis where
 
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String
-open import Plan.CIM.Utility using (RoadmapStep)
+open import Plan.CIM.Utility using (RoadmapStep; RoadmapStepV2)
 
 ------------------------------------------------------------------------
 -- Analysis Phase Roadmap Steps
@@ -374,3 +374,31 @@ roadmapGp832 = record
     ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
     ; next         = []
     }
+
+-- Enriched view (placeholder; to be filled by semantic extractor)
+roadmapsV2 : List RoadmapStepV2
+roadmapsV2 =
+  record
+    { gpNumber      = "AXIOM-AJP-001"
+    ; theme         = "AJP metrics and phase/throttle policy"
+    ; category      = "Analysis"
+    ; relatedGPs    = "GP810" ∷ "GP812" ∷ []
+    ; actionItems   = "Define Conf/Plaus/Leaf metrics; implement phase intention/throttle interface" ∷ []
+    ; concepts      = "adversarial justification" ∷ "metrics" ∷ "phase gating" ∷ []
+    ; targetModules = "src/agda/Plan/CIM/Implementation.agda" ∷ []
+    ; status        = "planned"
+    ; notes         = "Leaf-first resolution, adversarial repair, lift-dimension gates driven by metrics."
+    ; nextV2        = []
+    } ∷
+  record
+    { gpNumber      = "AXIOM-EARLEY-001"
+    ; theme         = "Differential Earley/SPPF auditor"
+    ; category      = "Analysis"
+    ; relatedGPs    = "GP39" ∷ "GP800" ∷ []
+    ; actionItems   = "Model nodes/edges/diamonds; enforce d1∘d2=0 audit over SPPF charts" ∷ []
+    ; concepts      = "SPPF" ∷ "Earley" ∷ "homological audit" ∷ []
+    ; targetModules = "scripts/export_dependency_graph.py" ∷ "src/agda/Plan/CIM/Implementation.agda" ∷ []
+    ; status        = "planned"
+    ; notes         = "Use diamonds as 2-cells; detect missing commuting witnesses as obligations."
+    ; nextV2        = []
+    } ∷ []

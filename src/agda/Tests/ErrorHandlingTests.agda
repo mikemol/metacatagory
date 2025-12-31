@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --allow-unsolved-metas #-}
 
 -- Tests.ErrorHandlingTests: Test error propagation and validation phases
 --

@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K #-}
-
 module Core.TechnicalDebt where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Metamodel as M
 open import Core using (_×_; _,_)

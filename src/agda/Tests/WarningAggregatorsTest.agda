@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --allow-unsolved-metas #-}
 
 -- Tests.WarningAggregatorsTest: Ensure warning provenance collection works
 

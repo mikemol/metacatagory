@@ -1,11 +1,15 @@
 {-# OPTIONS --without-K #-}
+module Core.GodelBoundary where
 
 -- Core.GodelBoundary: Formalization of incompleteness and theoretical limits
 -- This module reifies the Gödelian constraint by making the system's inability
 -- to achieve total self-reflection an explicit, indexed object within the
 -- solution space itself.
 
-module Core.GodelBoundary where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Core
 open import Metamodel as M

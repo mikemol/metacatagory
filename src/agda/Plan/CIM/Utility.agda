@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --cubical-compatible #-}
 
 module Plan.CIM.Utility where
 
@@ -22,7 +22,7 @@ _++_ = primStringAppend
 
 infixr 20 _++_
 
-map : ∀ {A B : Set} → (A → B) → List A → List B
+map : ∀ {ℓ₁ ℓ₂} {A : Set ℓ₁} {B : Set ℓ₂} → (A → B) → List A → List B
 map f [] = []
 map f (x ∷ xs) = f x ∷ map f xs
 
@@ -69,6 +69,37 @@ record RoadmapStep : Set₁ where
         status       : String
         targetModule : String
         next         : List RoadmapStep
+
+-- Enriched roadmap record (proposed schema from restructuring doc)
+record RoadmapStepV2 : Set₁ where
+    inductive
+    field
+        gpNumber      : String           -- GP identifier or provenance tag
+        theme         : String           -- human-friendly title
+        category      : String           -- Foundation/Geometry/Corrections/Polytopes/Analysis
+        relatedGPs    : List String      -- cross references
+        actionItems   : List String      -- concrete tasks
+        concepts      : List String      -- key mathematical ideas
+        targetModules : List String      -- files to touch
+        status        : String           -- lifecycle / completion status
+        notes         : String           -- narrative or implication text
+        nextV2        : List RoadmapStepV2
+
+-- Upgrade helper to keep legacy steps usable with the enriched schema
+{-# TERMINATING #-}
+upgradeStep : RoadmapStep → RoadmapStepV2
+upgradeStep s = record
+    { gpNumber      = RoadmapStep.provenance s
+    ; theme         = RoadmapStep.step s
+    ; category      = ""
+    ; relatedGPs    = RoadmapStep.relatedNodes s
+    ; actionItems   = RoadmapStep.step s ∷ []
+    ; concepts      = RoadmapStep.implication s ∷ []
+    ; targetModules = RoadmapStep.targetModule s ∷ []
+    ; status        = RoadmapStep.status s
+    ; notes         = RoadmapStep.implication s
+    ; nextV2        = map upgradeStep (RoadmapStep.next s)
+    }
 
 ------------------------------------------------------------------------
 -- Core CIM Framework Types

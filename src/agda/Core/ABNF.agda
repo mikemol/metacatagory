@@ -1,6 +1,11 @@
+
 {-# OPTIONS --without-K #-}
 
 module Core.ABNF where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String using (String)
@@ -22,6 +27,7 @@ concatMap f (x ∷ xs) = f x ++ concatMap f xs
 
 -- ABNF element types
 
+-- ABNF is not yet universe-polymorphic, but Setℓ is now available for future extension
 data ABNF : Set where
   rRule      : String → ABNF → ABNF -- rule name and definition
   rAltern    : List ABNF → ABNF     -- alternation (A / B / ...)
@@ -38,6 +44,8 @@ data ABNF : Set where
 -- Example: ABNF for a digit
 abnfDigit : ABNF
 abnfDigit = rTerminal "0" -- extend with alternation for "1".."9"
+
+-- Architectural note: This module now explicitly imports Infrastructure.Universe and Infrastructure.Coherence.Path2, aligning with the compositional and recursive architectural protocol. Future extensions should use Setℓ for universe polymorphism and _≡_ for equality reasoning.
 
 -- Example: ABNF for JSON (to be filled in)
 -- abnfJSON : ABNF

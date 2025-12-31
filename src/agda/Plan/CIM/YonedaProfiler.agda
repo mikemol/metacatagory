@@ -1,11 +1,6 @@
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K #-}
 
-module Plan.CIM.YonedaProfiler
-  -- [PARAMETER] Category of Concepts
-  (ConceptCategory : M.Identifier)
-  -- [PARAMETER] FFI Oracle
-  (HistoryOracle : (conceptId : String) → List Morphism)
-  where
+module Plan.CIM.YonedaProfiler where
 
 open import Agda.Builtin.String
 open import Agda.Builtin.List
@@ -15,6 +10,11 @@ open import Agda.Builtin.Sigma
 import Core.Yoneda as Core
 import Metamodel as M
 open import Plan.CIM.Utility using (Morphism)
+
+-- Injected category/FFI oracle
+postulate
+  ConceptCategory : M.Identifier
+  HistoryOracle : (conceptId : String) → List Morphism
 
 ------------------------------------------------------------------------
 -- I. Concrete Implementation

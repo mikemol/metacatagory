@@ -1,16 +1,9 @@
 {-# OPTIONS --without-K #-}
-
-open import Agda.Builtin.IO using (IO)
-open import Agda.Builtin.Unit using (⊤; tt)
-open import Agda.Builtin.String using (String)
-open import Agda.Builtin.List using (List; []; _∷_)
-open import Agda.Builtin.Bool using (Bool; true; false)
-
--- | Common IO operations and monadic combinators
--- Consolidates IO patterns used across executable Agda modules
--- FFI primitives provided as module parameters - no postulates required
 module Core.IO
-  -- FFI Primitives as module parameters
+  (String : Set)
+  (⊤ : Set)
+  (tt : ⊤)
+  (IO : Set → Set)
   (_>>=_ : {A B : Set} → IO A → (A → IO B) → IO B)
   (_>>_ : {A B : Set} → IO A → IO B → IO B)
   (return : {A : Set} → A → IO A)
@@ -21,6 +14,20 @@ module Core.IO
   (primPutStrLn : String → IO ⊤)
   (primGetLine : IO String)
   where
+
+open import Agda.Builtin.IO using () renaming (IO to IOᵇ)
+open import Agda.Builtin.Unit using () renaming (⊤ to ⊤ᵇ; tt to ttᵇ)
+open import Agda.Builtin.String using () renaming (String to Stringᵇ)
+open import Agda.Builtin.List using (List; []; _∷_)
+open import Agda.Builtin.Bool using (Bool; true; false)
+
+-- | Common IO operations and monadic combinators
+-- Consolidates IO patterns used across executable Agda modules
+-- FFI primitives provided as module parameters - no postulates required
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 -- ==========================================================
 -- File IO Operations (using provided primitives)

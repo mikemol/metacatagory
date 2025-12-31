@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K #-}
-
 module Core.Utils where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Core.Phase public using (Bool; true; false)
 open import Agda.Builtin.Nat public using (Nat; zero; suc; _+_; _*_; _-_)

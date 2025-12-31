@@ -1,10 +1,14 @@
 {-# OPTIONS --without-K #-}
+module Core.ConstructiveWitnesses where
 
 -- Core.ConstructiveWitnesses: Constructive witness builders with computational content
 -- Unlike Core.Witnesses (which uses M.mkId placeholders), this module provides
 -- witnesses with explicit algorithms, data structures, and correctness proofs.
+open import Agda.Primitive using (Level; lsuc)
 
-module Core.ConstructiveWitnesses where
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Core
 open import Core.Phase
@@ -442,13 +446,14 @@ record MinpolyDividesEvidence (F E : FieldDeclaration) (α : M.Identifier) : Set
 
 -- Build evidence by threading through MinimalPolynomialProperty.divides
 mkMinpolyDividesEvidence :
+  {ℓ : Level} →
   (F E : FieldDeclaration) →
   (α : M.Identifier) →
-  MinimalPolynomialProperty F E α →
+  MinimalPolynomialProperty {ℓ} F E α →
   (p : M.Identifier) →
   (vanishes monic : M.Identifier) →
   MinpolyDividesEvidence F E α
-mkMinpolyDividesEvidence F E α ump p vanishes monic = record
+mkMinpolyDividesEvidence {ℓ} F E α ump p vanishes monic = record
   { minPoly = MinimalPolynomialProperty.minPoly ump
   ; forPolynomial = p
   ; quotient = M.mkId "q"
@@ -508,22 +513,22 @@ dividePolynomialsFromEvidence ev = toDivisionScaffold ev
 
 -- UMP-based helper: divide a polynomial by the minimal polynomial using UMP evidence
 divideByMinimalPolynomial :
-  {F E : FieldDeclaration} → {α : M.Identifier} →
-  (ump : MinimalPolynomialProperty F E α) →
+  {ℓ : Level} → {F E : FieldDeclaration} → {α : M.Identifier} →
+  (ump : MinimalPolynomialProperty {ℓ} F E α) →
   (p vanishes monic : M.Identifier) →
   DivisionScaffold
-divideByMinimalPolynomial {F} {E} {α} ump p vanishes monic =
-  toDivisionScaffold (mkMinpolyDividesEvidence F E α ump p vanishes monic)
+divideByMinimalPolynomial {ℓ} {F} {E} {α} ump p vanishes monic =
+  toDivisionScaffold (mkMinpolyDividesEvidence {ℓ} F E α ump p vanishes monic)
 
 -- Refinement: replace a generic division result with UMP-derived evidence
 refineDivisionByUMP :
-  {F E : FieldDeclaration} → {α : M.Identifier} →
-  (ump : MinimalPolynomialProperty F E α) →
+  {ℓ : Level} → {F E : FieldDeclaration} → {α : M.Identifier} →
+  (ump : MinimalPolynomialProperty {ℓ} F E α) →
   (p vanishes monic : M.Identifier) →
   (base : DivisionScaffold) →
   DivisionScaffold
-refineDivisionByUMP {F} {E} {α} ump p vanishes monic base =
-  divideByMinimalPolynomial {F} {E} {α} ump p vanishes monic
+refineDivisionByUMP {ℓ} {F} {E} {α} ump p vanishes monic base =
+  divideByMinimalPolynomial {ℓ} {F} {E} {α} ump p vanishes monic
 
 -- Refinement: replace a generic division result with explicit evidence
 refineDivisionWithEvidence :

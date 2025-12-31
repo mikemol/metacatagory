@@ -1,9 +1,28 @@
 {-# OPTIONS --without-K #-}
+module Core.UniversalProperties where
+-------------------------------------------------------------------------
+-- Meta-Index: Universe-Polymorphic Upgrade (2025-12-29)
+------------------------------------------------------------------------
 
+-- This module and all dependent property records have been upgraded to be universe-polymorphic.
+-- All records now use {ℓ : Level} and Set ℓ, supporting compositional and recursive reasoning.
+-- Affected modules (propagated):
+--   - Core.UniversalProperties.agda (this file)
+--   - Core.AlgorithmUniversality.agda
+--   - Core.AlgorithmCorrectness.agda
+--   - Core.ConstructiveWitnesses.agda
+--   - (Audited: Core.GrothendieckFibrations.agda, no direct type-level usage)
+-- All type signatures and record applications now require explicit universe level parameters where appropriate.
+-- This change maintains alignment with architectural SPPF and Agda node traceability protocols.
+-- See ROADMAP.md and Utility.agda for recursive revisiting and further context.
 -- Core.UniversalProperties: Categorical characterization of algebraic constructions
 -- This module formalizes the universal properties underlying algorithmic interfaces
 
-module Core.UniversalProperties where
+open import Agda.Primitive using (Level; lsuc)
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Core
 open import Metamodel as M
@@ -20,7 +39,7 @@ open import Algebra.Fields.Basic
 -- 2. A universal morphism
 -- 3. Uniqueness of factorization
 
-record UniversalProperty {Obj : Set₁} (structure : Obj → Set₁) : Set₂ where
+record UniversalProperty {ℓ : Level} {Obj : Set ℓ} (structure : Obj → Set ℓ) : Set (lsuc ℓ) where
   field
     -- The universal object
     universal : Obj
@@ -37,14 +56,14 @@ record UniversalProperty {Obj : Set₁} (structure : Obj → Set₁) : Set₂ wh
 -- ============================================================================
 
 -- Initial object: unique morphism to every other object
-record InitialObject : Set₁ where
+record InitialObject {ℓ : Level} : Set (lsuc ℓ) where
   field
     initial : M.Identifier
     initialMorphism : (X : M.Identifier) → M.Identifier
     initialUnique : (X : M.Identifier) → (f : M.Identifier) → M.Identifier
 
 -- Terminal object: unique morphism from every other object
-record TerminalObject : Set₁ where
+record TerminalObject {ℓ : Level} : Set (lsuc ℓ) where
   field
     terminal : M.Identifier
     terminalMorphism : (X : M.Identifier) → M.Identifier
@@ -55,7 +74,7 @@ record TerminalObject : Set₁ where
 -- ============================================================================
 
 -- Product: terminal object in the category of cones
-record ProductProperty (A B : M.Identifier) : Set₁ where
+record ProductProperty {ℓ : Level} (A B : M.Identifier) : Set (lsuc ℓ) where
   field
     product : M.Identifier
     π₁ : M.Identifier  -- A ← A × B
@@ -72,7 +91,7 @@ record ProductProperty (A B : M.Identifier) : Set₁ where
     mediating-unique : (X : M.Identifier) → (f g h : M.Identifier) → M.Identifier
 
 -- Coproduct: initial object in the category of cocones
-record CoproductProperty (A B : M.Identifier) : Set₁ where
+record CoproductProperty {ℓ : Level} (A B : M.Identifier) : Set (lsuc ℓ) where
   field
     coproduct : M.Identifier
     ι₁ : M.Identifier  -- A → A + B
@@ -93,7 +112,7 @@ record CoproductProperty (A B : M.Identifier) : Set₁ where
 -- ============================================================================
 
 -- Equalizer: universal among morphisms making a parallel pair equal
-record EqualizerProperty (A B : M.Identifier) (f g : M.Identifier) : Set₁ where
+record EqualizerProperty {ℓ : Level} (A B : M.Identifier) (f g : M.Identifier) : Set (lsuc ℓ) where
   field
     equalizer : M.Identifier
     equalize : M.Identifier  -- equalizer → A
@@ -107,7 +126,7 @@ record EqualizerProperty (A B : M.Identifier) (f g : M.Identifier) : Set₁ wher
     mediating-unique : (X : M.Identifier) → (h k : M.Identifier) → M.Identifier
 
 -- Coequalizer: dual to equalizer
-record CoequalizerProperty (A B : M.Identifier) (f g : M.Identifier) : Set₁ where
+record CoequalizerProperty {ℓ : Level} (A B : M.Identifier) (f g : M.Identifier) : Set (lsuc ℓ) where
   field
     coequalizer : M.Identifier
     coequalize : M.Identifier  -- B → coequalizer
@@ -125,7 +144,7 @@ record CoequalizerProperty (A B : M.Identifier) (f g : M.Identifier) : Set₁ wh
 -- ============================================================================
 
 -- Pullback: product in the slice category
-record PullbackProperty (A B C : M.Identifier) (f : M.Identifier) (g : M.Identifier) : Set₁ where
+record PullbackProperty {ℓ : Level} (A B C : M.Identifier) (f : M.Identifier) (g : M.Identifier) : Set (lsuc ℓ) where
   field
     pullback : M.Identifier
     π₁ : M.Identifier  -- pullback → A
@@ -143,7 +162,7 @@ record PullbackProperty (A B C : M.Identifier) (f : M.Identifier) (g : M.Identif
     mediating-unique : (X h k : M.Identifier) → (p m : M.Identifier) → M.Identifier
 
 -- Pushout: coproduct in the coslice category
-record PushoutProperty (A B C : M.Identifier) (f : M.Identifier) (g : M.Identifier) : Set₁ where
+record PushoutProperty {ℓ : Level} (A B C : M.Identifier) (f : M.Identifier) (g : M.Identifier) : Set (lsuc ℓ) where
   field
     pushout : M.Identifier
     ι₁ : M.Identifier  -- B → pushout
@@ -165,7 +184,7 @@ record PushoutProperty (A B C : M.Identifier) (f : M.Identifier) (g : M.Identifi
 -- ============================================================================
 
 -- Minimal polynomial: terminal in category of monic polynomials vanishing at α
-record MinimalPolynomialProperty (F E : FieldDeclaration) (α : M.Identifier) : Set₁ where
+record MinimalPolynomialProperty {ℓ : Level} (F E : FieldDeclaration) (α : M.Identifier) : Set (lsuc ℓ) where
   field
     minPoly : M.Identifier
     
@@ -180,7 +199,7 @@ record MinimalPolynomialProperty (F E : FieldDeclaration) (α : M.Identifier) : 
     divides : (p : M.Identifier) → M.Identifier → M.Identifier → M.Identifier
 
 -- Splitting field: initial field containing all roots
-record SplittingFieldProperty (F : FieldDeclaration) (f : M.Identifier) : Set₁ where
+record SplittingFieldProperty {ℓ : Level} (F : FieldDeclaration) (f : M.Identifier) : Set (lsuc ℓ) where
   field
     splittingField : FieldDeclaration
     embedding : M.Identifier  -- F → splittingField
@@ -196,7 +215,7 @@ record SplittingFieldProperty (F : FieldDeclaration) (f : M.Identifier) : Set₁
               → M.Identifier
 
 -- Galois closure: minimal normal extension containing a given extension
-record GaloisClosureProperty (F E : FieldDeclaration) : Set₁ where
+record GaloisClosureProperty {ℓ : Level} (F E : FieldDeclaration) : Set (lsuc ℓ) where
   field
     galoisClosure : FieldDeclaration
     embeddingF : M.Identifier  -- F → galoisClosure
@@ -215,7 +234,7 @@ record GaloisClosureProperty (F E : FieldDeclaration) : Set₁ where
 -- ============================================================================
 
 -- Rational function field as a free construction
-record RationalFunctionFieldProperty (F : FieldDeclaration) : Set₁ where
+record RationalFunctionFieldProperty {ℓ : Level} (F : FieldDeclaration) : Set (lsuc ℓ) where
   field
     -- F(t): rational functions over F
     rationalFunctionField : FieldDeclaration
@@ -238,7 +257,7 @@ record RationalFunctionFieldProperty (F : FieldDeclaration) : Set₁ where
     unique : (K : FieldDeclaration) → (φ α transcendental : M.Identifier) → (ψ : M.Identifier) → M.Identifier
 
 -- Function field extension degree as dimension
-record FunctionFieldDegreeProperty (F K : FieldDeclaration) : Set₁ where
+record FunctionFieldDegreeProperty {ℓ : Level} (F K : FieldDeclaration) : Set (lsuc ℓ) where
   field
     -- K/F is a function field extension
     baseFunctionField : M.Identifier
@@ -259,7 +278,7 @@ record FunctionFieldDegreeProperty (F K : FieldDeclaration) : Set₁ where
 
 -- Tensor product adjunction: - ⊗_F E ⊣ Hom_F(E, -)
 -- This characterizes field extensions categorically
-record TensorProductAdjunction (F E : FieldDeclaration) : Set₁ where
+record TensorProductAdjunction {ℓ : Level} (F E : FieldDeclaration) : Set (lsuc ℓ) where
   field
     -- The functors
     tensorWith : FieldDeclaration → FieldDeclaration
@@ -279,7 +298,7 @@ record TensorProductAdjunction (F E : FieldDeclaration) : Set₁ where
 
 -- Free construction adjunction: Free ⊣ Forgetful
 -- This underlies polynomial rings, free modules, etc.
-record FreeAdjunction (U : M.Identifier) (F : M.Identifier) : Set₁ where
+record FreeAdjunction {ℓ : Level} (U : M.Identifier) (F : M.Identifier) : Set (lsuc ℓ) where
   field
     -- Unit: X → U(F(X))
     unit : (X : M.Identifier) → M.Identifier
@@ -296,7 +315,7 @@ record FreeAdjunction (U : M.Identifier) (F : M.Identifier) : Set₁ where
 
 -- General adjunction F ⊣ G: natural isomorphism Hom(FX, Y) ≅ Hom(X, GY)
 -- This is the most general form capturing the free-forgetful pattern
-record Adjunction (C D : M.Identifier) (F G : M.Identifier) : Set₁ where
+record Adjunction {ℓ : Level} (C D : M.Identifier) (F G : M.Identifier) : Set (lsuc ℓ) where
   field
     -- Functors
     leftAdjoint : M.Identifier   -- F : C → D
@@ -327,7 +346,7 @@ record Adjunction (C D : M.Identifier) (F G : M.Identifier) : Set₁ where
 -- ============================================================================
 
 -- A limit is a terminal object in the category of cones
-record LimitProperty (D : M.Identifier) : Set₁ where
+record LimitProperty {ℓ : Level} (D : M.Identifier) : Set (lsuc ℓ) where
   field
     limit : M.Identifier
     cone : M.Identifier  -- limit → D (cone morphisms)
@@ -338,7 +357,7 @@ record LimitProperty (D : M.Identifier) : Set₁ where
     mediating-unique : (X : M.Identifier) → (c m : M.Identifier) → M.Identifier
 
 -- A colimit is an initial object in the category of cocones
-record ColimitProperty (D : M.Identifier) : Set₁ where
+record ColimitProperty {ℓ : Level} (D : M.Identifier) : Set (lsuc ℓ) where
   field
     colimit : M.Identifier
     cocone : M.Identifier  -- D → colimit (cocone morphisms)
@@ -355,7 +374,7 @@ record ColimitProperty (D : M.Identifier) : Set₁ where
 -- The algorithm registry itself has a universal property!
 -- Given a field type, select the "best" (most specific) algorithm
 
-record AlgorithmSelectionProperty (F E : FieldDeclaration) : Set₁ where
+record AlgorithmSelectionProperty {ℓ : Level} (F E : FieldDeclaration) : Set (lsuc ℓ) where
   field
     -- Collection of available algorithms (ordered by specificity)
     algorithms : M.Identifier  -- List of algorithm bundles

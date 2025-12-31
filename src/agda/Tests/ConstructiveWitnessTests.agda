@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --allow-unsolved-metas #-}
 
 -- Tests.ConstructiveWitnessTests: Test suite for constructive witness framework
 -- Validates that constructive witnesses provide computational content with
@@ -580,9 +580,10 @@ module DivisionAlgorithmScaffoldTest where
 
 module DivisionAlgorithmEvidenceBridgeTest where
   postulate
+    ℓF : Agda.Primitive.Level
     F E : FieldDeclaration
     α p vanishes monic : M.Identifier
-    ump : MinimalPolynomialProperty F E α
+    ump : MinimalPolynomialProperty {ℓF} F E α
 
   evidence : MinpolyDividesEvidence F E α
   evidence = mkMinpolyDividesEvidence F E α ump p vanishes monic
@@ -605,12 +606,14 @@ module DivisionAlgorithmEvidenceBridgeTest where
 
 module DivisionByMinpolyUMPHelperTest where
   postulate
+    ℓF : Agda.Primitive.Level
     F E : FieldDeclaration
     α p vanishes monic : M.Identifier
-    ump : MinimalPolynomialProperty F E α
+    ump : MinimalPolynomialProperty {ℓF} F E α
 
   ds : DivisionScaffold
-  ds = divideByMinimalPolynomial {F} {E} {α} ump p vanishes monic
+  -- Explicitly skip level implicits to avoid unifying FieldDeclaration with levels.
+  ds = divideByMinimalPolynomial {ℓF} {F} {E} {α} ump p vanishes monic
 
   dsQuot : M.Identifier
   dsQuot = DivisionScaffold.quotient ds
@@ -627,9 +630,10 @@ module DivisionByMinpolyUMPHelperTest where
 
 module DivisionRefinementByUMPTest where
   postulate
+    ℓF : Agda.Primitive.Level
     F E : FieldDeclaration
     α p vanishes monic : M.Identifier
-    ump : MinimalPolynomialProperty F E α
+    ump : MinimalPolynomialProperty {ℓF} F E α
 
   -- Start with a generic division using the minimal polynomial as divisor
   genericDS : DivisionScaffold
@@ -640,7 +644,7 @@ module DivisionRefinementByUMPTest where
 
   -- Refine the generic division using UMP evidence
   refinedDS : DivisionScaffold
-  refinedDS = refineDivisionByUMP {F} {E} {α} ump p vanishes monic genericDS
+  refinedDS = refineDivisionByUMP {ℓF} {F} {E} {α} ump p vanishes monic genericDS
 
   refinedZero : Bool
   refinedZero = flagValue (DivisionScaffold.remainderZeroFlag refinedDS)

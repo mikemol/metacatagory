@@ -1,10 +1,14 @@
 {-# OPTIONS --without-K #-}
+module Core.AlgorithmCorrectness where
 
 -- Core.AlgorithmCorrectness: Formal correctness specifications for algebraic algorithms
 -- This module defines what it means for an algorithm to be "correct" by specifying
 -- proof obligations that connect algorithm outputs to their mathematical properties.
+open import Agda.Primitive using (Level; lsuc)
 
-module Core.AlgorithmCorrectness where
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Core
 open import Core.Phase
@@ -437,7 +441,7 @@ record CorrectnessImpliesInvariant (A Property : Set₁) (Invariant : A → Set�
 -- ============================================================================
 
 -- An algorithm satisfies a universal property
-record SatisfiesUniversalProperty (Object : Set₁) (UMP : Set₁) : Set₁ where
+record SatisfiesUniversalProperty {ℓ : Level} (Object : Set ℓ) (UMP : Set ℓ) : Set (lsuc ℓ) where
   field
     constructedObject : Object
     universalProperty : UMP
@@ -445,11 +449,11 @@ record SatisfiesUniversalProperty (Object : Set₁) (UMP : Set₁) : Set₁ wher
     universality : M.Identifier -- Proof that UMP characterizes the object
 
 -- Correctness via universal property
-record CorrectnessViaUMP (Algorithm : Set₁) (Object : Set₁) (UMP : Set₁) : Set₁ where
+record CorrectnessViaUMP {ℓ : Level} (Algorithm : Set ℓ) (Object : Set ℓ) (UMP : Set ℓ) : Set (lsuc ℓ) where
   field
     algorithm : Algorithm
     producedObject : Object
-    umpSatisfaction : SatisfiesUniversalProperty Object UMP
+    umpSatisfaction : SatisfiesUniversalProperty {ℓ} Object UMP
     correctnessFromUMP : M.Identifier  -- UMP satisfaction implies correctness
 
 -- ============================================================================

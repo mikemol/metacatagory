@@ -6,7 +6,7 @@ module Plan.CIM.IngestedRoadmaps.Geometry where
 
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String
-open import Plan.CIM.Utility using (RoadmapStep)
+open import Plan.CIM.Utility using (RoadmapStep; RoadmapStepV2)
 
 ------------------------------------------------------------------------
 -- Geometry Phase Roadmap Steps
@@ -66,3 +66,19 @@ roadmapGp303 = record
     ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
     ; next         = []
     }
+
+-- Enriched view (placeholder; to be filled by semantic extractor)
+roadmapsV2 : List RoadmapStepV2
+roadmapsV2 =
+  record
+    { gpNumber      = "AXIOM-COH-HEX"
+    ; theme         = "Triangulated hexagon coherence"
+    ; category      = "Geometry"
+    ; relatedGPs    = "GP200" ∷ "GP302" ∷ "GP303" ∷ []
+    ; actionItems   = "Provide hexagon fan data; prove pLeft≡pRight or postulate and audit" ∷ []
+    ; concepts      = "braiding" ∷ "triangulation" ∷ "coherence" ∷ []
+    ; targetModules = "src/agda/Infrastructure/Polytopes/Braiding/HexagonTriangulation.agda" ∷ []
+    ; status        = "in-progress"
+    ; notes         = "Hexagon triangulated with diagonals; currently postulated proofs pending constructive fillers."
+    ; nextV2        = []
+    } ∷ []

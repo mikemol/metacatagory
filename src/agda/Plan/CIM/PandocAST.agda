@@ -56,6 +56,7 @@ data MdInline : Set where
   MdCode       : String → MdInline
   MdSpace      : MdInline
   MdBreak      : MdInline
+  MdEOL        : MdInline  -- End of Line (soft break)
   MdLink       : List MdInline → String → MdInline
   MdImage      : List MdInline → String → MdInline
 
@@ -64,10 +65,13 @@ data MdBlock : Set where
   MdHeader      : Nat → List MdInline → MdBlock
   MdCodeBlock   : String → MdBlock
   MdList        : List (List MdBlock) → MdBlock
+  MdOrderedList : List (List MdBlock) → MdBlock
   MdQuote       : List MdBlock → MdBlock
   MdRule        : MdBlock
   MdRaw         : String → MdBlock
   MdNull        : MdBlock
+  MdEOB         : MdBlock  -- End of Block
+  MdSBB         : MdBlock  -- Separator Between Blocks
 
 record MarkdownDoc : Set where
   field

@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical --safe --guardedness #-}
+{-# OPTIONS --without-K --cubical --guardedness #-}
 
 module Plan.CIM.PandocProtocols where
 
@@ -36,4 +36,3 @@ docCoherence = record { proofPath = refl-path ; metric = record { magnitude = 1 
 
 ------------------------------------------------------------------------
 -- End of PandocProtocols
-

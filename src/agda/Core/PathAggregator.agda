@@ -1,4 +1,5 @@
 {-# OPTIONS --without-K #-}
+module Core.PathAggregator where
 
 -- Core.PathAggregator: Composite HoTT path aggregation for global closure
 --
@@ -9,7 +10,10 @@
 -- Phase 15 (PHASE-V.3): Total HoTT Path Generation
 -- Coordinates: Phase 15 (x=15), local indices start at y=0
 
-module Core.PathAggregator where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Metamodel as M
 open import Core.Phase

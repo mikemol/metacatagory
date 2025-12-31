@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --cubical-compatible #-}
 
 module Plan.CIM.DocumentationContent where
 
@@ -147,39 +147,49 @@ contributingDoc = record
 
 navigationDoc : PandocDoc
 navigationDoc = record
-  { blocks =
-      h 1 (text "MetaCategory Global Navigation" ∷ []) ∷
-      p (text "This document provides a high-level map of the repository's documentation and code structure, helping contributors and users find relevant manuals, guides, and modules quickly." ∷ []) ∷
-      h 2 (text "Top-Level Documentation" ∷ []) ∷
-      p (text "* README.md: System overview, axioms, architecture, and ontological stack." ∷ []) ∷
-      p (text "* ROADMAP.md: Project roadmap, phase status, and planning." ∷ []) ∷
-      p (text "* CONTRIBUTING.md: Contribution guidelines, onboarding, coding standards, and PR process." ∷ []) ∷
-      p (text "* DEFERRED-TRACKING.md: Technical debt and deferred items tracking." ∷ []) ∷
-      p (text "* COPILOT_SYNERGY.md: AI and Copilot integration notes." ∷ []) ∷
-      p (text "* CREDITS.md: Contributors and acknowledgments." ∷ []) ∷
-      p (text "* ingest.md: Data ingestion notes." ∷ []) ∷
-      p (text "* testing.md: Testing philosophy and details." ∷ []) ∷
-      h 2 (text "Source Atlas & Manuals" ∷ []) ∷
-      p (text "* src/agda/README.md: Atlas of the source lattice, dimensional breakdown." ∷ []) ∷
-      p (text "* src/agda/Core/README.md: Core physics, axioms, limits, and algorithms." ∷ []) ∷
-      p (text "* src/agda/Algebra/README.md: Algebraic structures and navigation." ∷ []) ∷
-      p (text "* src/agda/Algebra/Groups/README.md: Abelian groups, enrichment, Grothendieck connection." ∷ []) ∷
-      p (text "* src/agda/Chapter1/README.md: Level 1 onboarding and curriculum." ∷ []) ∷
-      p (text "* src/agda/Tests/README.md: Checklist/test philosophy and boundaries." ∷ []) ∷
-      h 2 (text "Automation & Scripts" ∷ []) ∷
-      p (text ".github/scripts/README.md: Automation philosophy, metric functor, topology visualizer, debt surveyor, and Makefile targets." ∷ []) ∷
-      h 2 (text "Generated Reports" ∷ []) ∷
-      p (text ".github/badges/top-offenders.md: Technical debt offenders report." ∷ []) ∷
-      h 2 (text "Navigation Tips" ∷ []) ∷
-      p (text "* Each major directory contains a README.md with local context and navigation." ∷ []) ∷
-      p (text "* Use the Makefile targets for automation, documentation, and reporting (see .github/scripts/README.md)." ∷ []) ∷
-      p (text "* For onboarding, start with src/agda/Chapter1/README.md and CONTRIBUTING.md." ∷ []) ∷
-      p (text "* For technical debt and deferred items, see DEFERRED-TRACKING.md and generated reports." ∷ []) ∷
-      p (text "* For roadmap and planning, see ROADMAP.md." ∷ []) ∷
-      p (text "For further questions, see CONTRIBUTING.md or open an issue/discussion on GitHub." ∷ []) ∷
-      []
-  ; meta = ""
-  }
+   { blocks =
+         h 1 (text "MetaCategory Global Navigation" ∷ []) ∷
+         p (text "This document provides a high-level map of the repository's documentation and code structure, helping contributors and users find relevant manuals, guides, and modules quickly." ∷ []) ∷
+         h 2 (text "Top-Level Documentation" ∷ []) ∷
+         bullets (
+            "README.md: System overview, axioms, architecture, and ontological stack."
+         ∷ "ROADMAP.md: Project roadmap, phase status, and planning."
+         ∷ "CONTRIBUTING.md: Contribution guidelines, onboarding, coding standards, and PR process."
+         ∷ "DEFERRED-TRACKING.md: Technical debt and deferred items tracking."
+         ∷ "COPILOT_SYNERGY.md: AI and Copilot integration notes."
+         ∷ "CREDITS.md: Contributors and acknowledgments."
+         ∷ "ingest.md: Data ingestion notes."
+         ∷ "testing.md: Testing philosophy and details."
+         ∷ []) ∷
+         h 2 (text "Source Atlas & Manuals" ∷ []) ∷
+         bullets (
+            "src/agda/README.md: Atlas of the source lattice, dimensional breakdown."
+         ∷ "src/agda/Core/README.md: Core physics, axioms, limits, and algorithms."
+         ∷ "src/agda/Algebra/README.md: Algebraic structures and navigation."
+         ∷ "src/agda/Algebra/Groups/README.md: Abelian groups, enrichment, Grothendieck connection."
+         ∷ "src/agda/Chapter1/README.md: Level 1 onboarding and curriculum."
+         ∷ "src/agda/Tests/README.md: Checklist/test philosophy and boundaries."
+         ∷ []) ∷
+         h 2 (text "Automation & Scripts" ∷ []) ∷
+         bullets (
+            ".github/scripts/README.md: Automation philosophy, metric functor, topology visualizer, debt surveyor, and Makefile targets."
+         ∷ []) ∷
+         h 2 (text "Generated Reports" ∷ []) ∷
+         bullets (
+            ".github/badges/top-offenders.md: Technical debt offenders report."
+         ∷ []) ∷
+         h 2 (text "Navigation Tips" ∷ []) ∷
+         bullets (
+            "Each major directory contains a README.md with local context and navigation."
+         ∷ "Use the Makefile targets for automation, documentation, and reporting (see .github/scripts/README.md)."
+         ∷ "For onboarding, start with src/agda/Chapter1/README.md and CONTRIBUTING.md."
+         ∷ "For technical debt and deferred items, see DEFERRED-TRACKING.md and generated reports."
+         ∷ "For roadmap and planning, see ROADMAP.md."
+         ∷ []) ∷
+         p (text "For further questions, see CONTRIBUTING.md or open an issue/discussion on GitHub." ∷ []) ∷
+         []
+   ; meta = ""
+   }
 
 ------------------------------------------------------------------------
 -- ROADMAP content as structured PandocDoc (static preface; dynamics added in exporter)
@@ -204,8 +214,14 @@ roadmapDoc = record
          h 2 (text "How to Regenerate" ∷ []) ∷
          codeBlock "make docs\nmake md-lint" ∷
 
-         h 2 (text "Notes" ∷ []) ∷
-         p (text "This document appends structured roadmap steps and deferred snapshots at render time." ∷ []) ∷
+            h 2 (text "Notes" ∷ []) ∷
+            p (text "This document is a projection from the canonical Agda index. To update:" ∷ []) ∷
+            HorizontalRule ∷
+            OrderedList (
+               (plain (text "Edit canonical in src/agda/Plan/CIM/RoadmapIndex.agda" ∷ []) ∷ []) ∷ [] ∷
+               (plain (text "Run `make roadmap-merge` to refresh build/canonical_roadmap.json" ∷ []) ∷ []) ∷ [] ∷
+                (plain (text "Run `make roadmap-export-md` to regenerate this file" ∷ []) ∷ []) ∷ []
+             ) ∷
          []
    ; meta = ""
    }

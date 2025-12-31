@@ -1,15 +1,17 @@
 {-# OPTIONS --without-K #-}
+module Core.Strings where
 
 open import Agda.Builtin.Nat using (Nat; zero; suc)
-open import Agda.Builtin.String using (String; primStringAppend)
+open import Agda.Builtin.String using (String; primStringAppend; primShowNat)
 open import Agda.Builtin.List using (List; []; _∷_)
 
 -- | Common string manipulation utilities
 -- Consolidates string operations used across the codebase
 -- FFI primitives provided as module parameters - no postulates required
-module Core.Strings
-  (primNatToString : Nat → String)
-  where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 -- ==========================================================
 -- String Concatenation
@@ -48,7 +50,7 @@ unwords = intercalate " "
 -- Convert natural number to string (using provided primitive)
 natToString : Nat → String
 natToString zero = "0"
-natToString n = primNatToString n
+natToString n = primShowNat n
 
 -- Alias for compatibility
 showNat : Nat → String

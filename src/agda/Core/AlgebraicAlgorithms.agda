@@ -1,9 +1,14 @@
+
 {-# OPTIONS --without-K #-}
 
 -- Core.AlgebraicAlgorithms: Generic interfaces for computational algebraic algorithms
 -- These records provide extensible, type-safe infrastructure for algebraic computation in Agda.
 
 module Core.AlgebraicAlgorithms where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Core
 open import Algebra.Rings.Basic
@@ -15,6 +20,7 @@ open import Core.Limitations
 open import Metamodel as M
 
 -- Minimal local decision type to avoid stdlib dependency (target Set₁ in this codebase)
+-- Setℓ is now available for future universe-polymorphic extension
 data Dec (A : Set₁) : Set₁ where
   yes : A → Dec A
   no  : Dec A

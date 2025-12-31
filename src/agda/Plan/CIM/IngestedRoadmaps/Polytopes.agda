@@ -6,7 +6,7 @@ module Plan.CIM.IngestedRoadmaps.Polytopes where
 
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String
-open import Plan.CIM.Utility using (RoadmapStep)
+open import Plan.CIM.Utility using (RoadmapStep; RoadmapStepV2)
 
 ------------------------------------------------------------------------
 -- Polytopes Phase Roadmap Steps
@@ -187,3 +187,19 @@ roadmapGp714 = record
     ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
     ; next         = []
     }
+
+-- Enriched view (placeholder; to be filled by semantic extractor)
+roadmapsV2 : List RoadmapStepV2
+roadmapsV2 =
+  record
+    { gpNumber      = "AXIOM-COH-PENT"
+    ; theme         = "Triangulated pentagon coherence"
+    ; category      = "Polytopes"
+    ; relatedGPs    = "GP699" ∷ "GP700" ∷ []
+    ; actionItems   = "Provide pentagon fan kit and constructive proof (whisker + assoc) or postulate" ∷ []
+    ; concepts      = "associator" ∷ "associahedron" ∷ "triangulation" ∷ []
+    ; targetModules = "src/agda/Infrastructure/Axiom/PentagonFromTriangles.agda" ∷ "src/agda/Infrastructure/Polytopes/Associahedron/Triangulation.agda" ∷ []
+    ; status        = "in-progress"
+    ; notes         = "Pentagon reduced to triangles; constructive whiskering available."
+    ; nextV2        = []
+    } ∷ []

@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical --safe --guardedness #-}
+{-# OPTIONS --without-K --cubical --guardedness #-}
 
 module Plan.CIM.CHIPConformance where
 

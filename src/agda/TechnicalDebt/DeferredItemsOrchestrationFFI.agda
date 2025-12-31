@@ -1,87 +1,142 @@
-{-# OPTIONS --without-K #-}
 
+{-# OPTIONS --without-K #-}
 module TechnicalDebt.DeferredItemsOrchestrationFFI where
 
-{-# FOREIGN GHC
-import qualified Data.Text as T
-import qualified Data.Text.IO as TIO
-import System.Process (readProcess)
-import Control.Exception (catch, SomeException)
-import Data.Char (isSpace)
+{-# FOREIGN GHC import qualified Data.Text as T #-}
+{-# FOREIGN GHC import qualified Data.Text.IO as TIO #-}
+{-# FOREIGN GHC import System.Process (readProcess) #-}
+{-# FOREIGN GHC import Control.Exception (catch, SomeException) #-}
+{-# FOREIGN GHC import Data.Char (isSpace) #-}
 
-countPattern :: String -> IO Int
-countPattern pat = do
-  catch
-    (do result <- readProcess "bash" ["-c", "grep -r --include=\"*.agda\" --include=\"*.md\" '" ++ pat ++ "' src/ README.md 2>/dev/null | wc -l"] ""
-        return (read (dropWhile isSpace result) :: Int))
-    (\(_ :: SomeException) -> return 0)
 
-mainAdapter :: IO ()
-mainAdapter = do
-  dvLog <- countPattern "DeviationLog"
-  post <- countPattern "^[[:space:]]*postulate"
-  todo <- countPattern "TODO"
-  plan <- countPattern "PLANNED"
-  fixme <- countPattern "FIXME"
-  
-  -- Call Agda formatting functions with counts as structured data
-  let markdown = d_buildAndFormatMarkdown_70 (fromIntegral dvLog) (fromIntegral post) (fromIntegral todo) (fromIntegral plan) (fromIntegral fixme)
-  let json = d_buildAndFormatJSON_84 (fromIntegral dvLog) (fromIntegral post) (fromIntegral todo) (fromIntegral plan) (fromIntegral fixme)
+open import Agda.Builtin.IO using (IO)
+open import Agda.Builtin.Unit using (⊤)
+open import Agda.Builtin.Nat using (Nat; zero; suc; _+_)
+open import Agda.Builtin.String using (String; primStringAppend)
 
-  TIO.writeFile "deferred-items.md" markdown
-  TIO.writeFile "deferred-summary.json" json
- #-}
+
+postulate
+  ffi-main : IO ⊤
+  ffi-bind : ∀ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} → IO A → (A → IO B) → IO B
+{-# COMPILE GHC ffi-bind = \_ _ _ _ m f -> m >>= f #-}
+
+
+
+postulate
+  countPattern : String → IO Nat
+{-# COMPILE GHC countPattern = \pat ->
+  let pat' = Data.Text.unpack pat in
+  Control.Exception.catch
+    (System.Process.readProcess "bash" ["-c", "grep -r --include=\"*.agda\" --include=\"*.md\" '" ++ pat' ++ "' src/ README.md 2>/dev/null | wc -l"] "")
+    (\(_ :: Control.Exception.SomeException) -> return "0")
+  >>= \result -> return (fromIntegral (read (dropWhile Data.Char.isSpace result) :: Int))
+  #-}
+
+
+open import Agda.Builtin.String using (String; primStringAppend)
+
+postulate
+  writeFile# : String → String → IO ⊤
+{-# COMPILE GHC writeFile# = \path content ->
+  let path' = Data.Text.unpack path;
+      content' = Data.Text.unpack content
+  in TIO.writeFile path' (T.pack content') >> return ()
+  #-}
+writeFile = writeFile#
+
+-- ...existing code...
+
+
 
 open import Agda.Builtin.IO using (IO)
 open import Agda.Builtin.Unit using (⊤)
 open import Agda.Builtin.String using (String; primStringAppend)
 open import Agda.Builtin.Nat using (Nat; zero; suc; _+_)
 open import Agda.Builtin.List using (List; []; _∷_)
-open import Agda.Builtin.Sigma using (_,_) -- for pair pattern syntax
+open import Core.Phase using (_×_; fst; snd)
 open import TechnicalDebt.DeferredItemsDetection using (DeferredItemCounts)
-open import TechnicalDebt.DeferredItemsFormatting using (Doc; Heading; Field; Table; Concat; formatDeferredItemsDoc; countsAsFields; natToString; _×_)
+open import TechnicalDebt.DeferredItemsFormatting using (AUDAXDoc; AUDAXBlock; AUDAXInline; formatDeferredItemsAUDAXDoc; countsAsFields; natToString; ListLike; Header; Para; CodeBlock; BlockQuote; ListBlock; Table; Field; Raw; Null)
+open TechnicalDebt.DeferredItemsFormatting using (Str; Emph; Strong; Code; Link; Image; Space; Break)
 
 infixr 5 _++_
 _++_ : String → String → String
 _++_ = primStringAppend
 
--- Render helpers
-hashes : Nat → String
-hashes zero    = ""
-hashes (suc n) = "#" ++ hashes n
 
-renderHeading : Nat → String → String
-renderHeading lvl txt = (hashes lvl) ++ " " ++ txt ++ "\n\n"
+audaxHashes : Nat → String
+audaxHashes zero    = ""
+audaxHashes (suc n) = "#" ++ audaxHashes n
 
-renderField : String → String → String
-renderField _ value = "Found **" ++ value ++ "** instances\n\n"
 
-renderTableRows : List (String × String) → String
-renderTableRows [] = ""
-renderTableRows ((name , value) ∷ rs) = "| " ++ name ++ " | " ++ value ++ " |\n" ++ renderTableRows rs
 
-renderTable : List (String × String) → String
-renderTable rows =
-  "| Category | Count |\n|----------|-------|\n" ++ renderTableRows rows
 
-renderDoc : Doc → String
-renderDoc (Heading lvl txt) = renderHeading lvl txt
-renderDoc (Field lbl val)   = renderField lbl val
-renderDoc (Table rows)      = renderTable rows
-renderDoc (Concat [])       = ""
-renderDoc (Concat (d ∷ ds)) = renderDoc d ++ renderDoc (Concat ds)
+{-# TERMINATING #-}
+mutual
+  renderFields : List (String × String) → String
+  renderFields [] = ""
+  renderFields (x ∷ []) = "  \"" ++ fst x ++ "\": " ++ snd x ++ "\n"
+  renderFields (x ∷ rest) = "  \"" ++ fst x ++ "\": " ++ snd x ++ ",\n" ++ renderFields rest
 
-renderMarkdownDoc : Doc → String
-renderMarkdownDoc doc = renderDoc doc
+  audaxRenderDoc : AUDAXDoc → String
+  audaxRenderDoc doc = audaxRenderBlocks (ListLike.items (AUDAXDoc.blocks doc))
 
-postulate
-  ffi-main : IO ⊤
-  ffi-bind : ∀ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} → IO A → (A → IO B) → IO B
-  ffi-pure : ∀ {ℓ} {A : Set ℓ} → A → IO A
+  -- Local map for List (Agda.Builtin.List does not export map)
+  map : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → List A → List B
+  map f [] = []
+  map f (x ∷ xs) = f x ∷ map f xs
 
-{-# COMPILE GHC ffi-main = mainAdapter #-}
-{-# COMPILE GHC ffi-bind = \_ _ _ _ m f -> m >>= f #-}
-{-# COMPILE GHC ffi-pure = \_ _ x -> return x #-}
+  audaxRenderInline : AUDAXInline → String
+  audaxRenderInline (Str s) = s
+  audaxRenderInline (Emph xs) = "*" ++ audaxRenderInlines (ListLike.items xs) ++ "*"
+  audaxRenderInline (Strong xs) = "**" ++ audaxRenderInlines (ListLike.items xs) ++ "**"
+  audaxRenderInline (Code s) = "`" ++ s ++ "`"
+  audaxRenderInline (Link xs url) = "[" ++ audaxRenderInlines (ListLike.items xs) ++ "](" ++ url ++ ")"
+  audaxRenderInline (Image xs url) = "![" ++ audaxRenderInlines (ListLike.items xs) ++ "](" ++ url ++ ")"
+  audaxRenderInline Space = " "
+  audaxRenderInline Break = "  \n"
+
+  audaxRenderInlines : List AUDAXInline → String
+  audaxRenderInlines [] = ""
+  audaxRenderInlines (x ∷ xs) = audaxRenderInline x ++ audaxRenderInlines xs
+
+  audaxRenderBlock : AUDAXBlock → String
+  audaxRenderBlock (Header n xs)       = audaxHashes n ++ " " ++ audaxRenderInlines (ListLike.items xs) ++ "\n\n"
+  audaxRenderBlock (Para xs)           = audaxRenderInlines (ListLike.items xs) ++ "\n\n"
+  audaxRenderBlock (CodeBlock s)       = "```\n" ++ s ++ "\n```\n\n"
+  audaxRenderBlock (BlockQuote bs)     = "> " ++ audaxRenderBlocks (ListLike.items bs)
+  audaxRenderBlock (ListBlock bss)     = audaxRenderListBlocks (map ListLike.items (ListLike.items bss))
+  audaxRenderBlock (Table header rows) = audaxRenderTable (ListLike.items header) (map ListLike.items (ListLike.items rows))
+  audaxRenderBlock (Field lbl val)     = lbl ++ ": " ++ val ++ "\n\n"
+  audaxRenderBlock (Raw s)             = s ++ "\n\n"
+  audaxRenderBlock Null                = ""
+
+  audaxRenderBlocks : List AUDAXBlock → String
+  audaxRenderBlocks [] = ""
+  audaxRenderBlocks (b ∷ bs) = audaxRenderBlock b ++ audaxRenderBlocks bs
+
+  audaxRenderListBlocks : List (List AUDAXBlock) → String
+  audaxRenderListBlocks [] = ""
+  audaxRenderListBlocks (bs ∷ rest) = "- " ++ audaxRenderBlocks bs ++ audaxRenderListBlocks rest
+
+  audaxRenderTable : List String → List (List AUDAXInline) → String
+  audaxRenderTable header rows =
+    let headerRow = "| " ++ audaxJoin " | " header ++ " |\n"
+        sepRow = "|" ++ audaxJoin "|" (map (λ _ → "---") header) ++ "|\n"
+        bodyRows = audaxRenderTableRows rows
+    in headerRow ++ sepRow ++ bodyRows
+
+  audaxRenderTableRows : List (List AUDAXInline) → String
+  audaxRenderTableRows [] = ""
+  audaxRenderTableRows (row ∷ rest) = "| " ++ audaxJoin " | " (map audaxRenderInline row) ++ " |\n" ++ audaxRenderTableRows rest
+
+  audaxJoin : String → List String → String
+  audaxJoin _ [] = ""
+  audaxJoin _ (x ∷ []) = x
+  audaxJoin sep (x ∷ xs) = x ++ sep ++ audaxJoin sep xs
+
+
+
+
 
 buildAndFormatMarkdown : Nat → Nat → Nat → Nat → Nat → String
 buildAndFormatMarkdown dvLog post todo plan fixme =
@@ -92,7 +147,9 @@ buildAndFormatMarkdown dvLog post todo plan fixme =
         ; planned = plan
         ; fixme = fixme
         }
-    in renderMarkdownDoc (formatDeferredItemsDoc counts)
+      audaxDoc = formatDeferredItemsAUDAXDoc counts
+  in audaxRenderDoc audaxDoc
+
 
 buildAndFormatJSON : Nat → Nat → Nat → Nat → Nat → String
 buildAndFormatJSON dvLog post todo plan fixme =
@@ -105,11 +162,7 @@ buildAndFormatJSON dvLog post todo plan fixme =
         }
       fields = countsAsFields counts
   in "{\n" ++ renderFields fields ++ "}\n"
-  where
-    renderFields : List (String × String) → String
-    renderFields [] = ""
-    renderFields ((k , v) ∷ []) = "  \"" ++ k ++ "\": " ++ v ++ "\n"
-    renderFields ((k , v) ∷ rest) = "  \"" ++ k ++ "\": " ++ v ++ ",\n" ++ renderFields rest
+
 
 agdaFormatMarkdown : Nat → Nat → Nat → Nat → Nat → String
 agdaFormatMarkdown = buildAndFormatMarkdown
@@ -118,4 +171,13 @@ agdaFormatJSON : Nat → Nat → Nat → Nat → Nat → String
 agdaFormatJSON = buildAndFormatJSON
 
 main : IO ⊤
-main = ffi-main
+main =
+  ffi-bind (countPattern "DeviationLog") (\dvLog →
+  ffi-bind (countPattern "^[[:space:]]*postulate") (\post →
+  ffi-bind (countPattern "TODO") (\todo →
+  ffi-bind (countPattern "PLANNED") (\plan →
+  ffi-bind (countPattern "FIXME") (\fixme →
+    let markdown = buildAndFormatMarkdown dvLog post todo plan fixme
+        json = buildAndFormatJSON dvLog post todo plan fixme
+    in ffi-bind (writeFile "deferred-items.md" markdown) (\_ →
+       writeFile "deferred-summary.json" json))))))

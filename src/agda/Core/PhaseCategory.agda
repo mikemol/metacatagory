@@ -1,8 +1,12 @@
 {-# OPTIONS --without-K #-}
+module Core.PhaseCategory where
 
 -- Core.PhaseCategory: Formalization of the Category of Phases (minimal)
 
-module Core.PhaseCategory where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Agda.Primitive using (Level; lsuc; _⊔_)
 open import Agda.Builtin.Equality using (_≡_; refl)

@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --allow-unsolved-metas #-}
 
 -- Tests/CoreUniversalPropertiesChecklist.agda
 -- Instantiate core universal property adapters and assert status

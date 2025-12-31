@@ -1,17 +1,6 @@
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K #-}
 
-module Plan.CIM.Ambiguity 
-  -- [PARAMETER] FFI Oracle for Tension Calculation
-  -- This forces the consumer to provide the connection to nedge_topology/mitosis.py
-  (TensionOracle : ∀ {ℓ} {A : Set ℓ} → 
-                   (options : List (Record {ℓ} {A})) → -- Defined below as WeightedOption
-                   Nat)
-  
-  -- [PARAMETER] Rigorous Law Requirements
-  -- The consumer must prove (or explicitly assume) the Monad laws
-  (LeftIdentityProof : ∀ {ℓ} {A B : Set ℓ} (a : A) (f : A → Data {ℓ} B) → 
-                       Map {ℓ} {A} {B} f (determinate a) ≡ f a)
-  where
+module Plan.CIM.Ambiguity where
 
 open import Agda.Builtin.Nat
 open import Agda.Builtin.List
@@ -40,17 +29,22 @@ data Ambiguity {ℓ} (A : Set ℓ) : Set ℓ where
 Data = Ambiguity
 
 -- Functor Implementation
+mapOption : ∀ {ℓ₁ ℓ₂} {A : Set ℓ₁} {B : Set ℓ₂} → (A → B) → List (WeightedOption A) → List (WeightedOption B)
+mapOption g [] = []
+mapOption g (rec ∷ rs) = record { value = g (WeightedOption.value rec) ; weight = WeightedOption.weight rec ; provenance = WeightedOption.provenance rec } ∷ mapOption g rs
+
 mapAmbiguity : ∀ {ℓ} {A B : Set ℓ} → (A → B) → Ambiguity A → Ambiguity B
 mapAmbiguity f (determinate x) = determinate (f x)
 mapAmbiguity f (superposition xs) = superposition (mapOption f xs)
-  where
-    mapOption : (A → B) → List (WeightedOption A) → List (WeightedOption B)
-    mapOption g [] = []
-    mapOption g (rec ∷ rs) = record { value = g (WeightedOption.value rec) ; weight = WeightedOption.weight rec ; provenance = WeightedOption.provenance rec } ∷ mapOption g rs
 mapAmbiguity f (conflict s) = conflict s
 
 -- Helper for signature matching
 Map = mapAmbiguity
+
+-- Injected oracles/axioms
+postulate
+  TensionOracle : ∀ {ℓ} {A : Set ℓ} → (options : List (Record {ℓ} A)) → Nat
+  LeftIdentityProof : ∀ {ℓ} {A B : Set ℓ} (a : A) (f : A → B) → Map {ℓ} {A} {B} f (determinate a) ≡ determinate (f a)
 
 -- [USAGE] using the Parameterized Oracle
 -- We no longer postulate `externalTensionCalc`; we use the module parameter.

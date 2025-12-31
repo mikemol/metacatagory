@@ -1,8 +1,12 @@
 {-# OPTIONS --without-K #-}
+module Core.PolynomialsF2 where
 
 -- Core.PolynomialsF2: Minimal stdlib-free F2 polynomials and division
 
-module Core.PolynomialsF2 where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Core.Phase using (Bool; true; false)

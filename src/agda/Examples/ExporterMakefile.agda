@@ -143,11 +143,11 @@ regenMakefileTarget : MakefileTarget
 regenMakefileTarget = mkTarget
   "regen-makefile"
   "Regenerate the Makefile from Agda source (Self-Hosting)"
-  []
+  ("build/diagrams/agda-deps-full.dot" ∷ [])
   ( "$(AGDA) $(AGDA_FLAGS) --compile src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile"
   ∷ "cp Makefile.generated Makefile"
   ∷ [])
-  false
+  true
 
 -- Documentation Renderer: Generates Markdown table of targets
 renderDocs : List MakefileTarget → String
@@ -199,8 +199,8 @@ discoveredTargets =
     ("@echo \"docs (markdown) complete\"" ∷ [])
   ∷ environmentSetupToTarget "node-deps" "Install Node.js dependencies"
     ("npm install" ∷ [])
-  ∷ generatorToTarget "deferred-items" "Scan for TODOs and FIXMEs" ([])
-    (".github/scripts/detect-deferred-items.sh" ∷ [])
+  ∷ generatorToTarget "deferred-items" "Scan for TODOs and FIXMEs (Agda FFI binary)" ([])
+    ("$(AGDA) $(AGDA_FLAGS) --compile src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda" ∷ "./src/agda/DeferredItemsOrchestrationFFI" ∷ [])
   ∷ generatorToTarget "roadmap-index" "Compile Roadmap Index" ("src/agda/Plan/CIM/RoadmapIndex.agdai" ∷ [])
     ("$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapIndex.agda" ∷ [])
   ∷ generatorToTarget "roadmap-sync" "Sync roadmap with external tracker" ("roadmap-export-json" ∷ "src/agda/Plan/CIM/RoadmapSync.agdai" ∷ [])
@@ -231,10 +231,10 @@ discoveredTargets =
     ("python3 scripts/export_enriched_md.py" ∷ [])
   ∷ generatorToTarget "roadmap-export-deps" "Export roadmap dependency graph" ("build/canonical_enriched.json" ∷ [])
     ("python3 scripts/export_dependency_graph.py" ∷ [])
-  ∷ generatorToTarget "roadmap-validate-json" "Validate canonical JSON" ("build/canonical_roadmap.json" ∷ ".github/roadmap/tasks.json" ∷ [])
+  ∷ generatorToTarget "roadmap-validate-json" "Validate canonical JSON" ("roadmap-export-json" ∷ [])
     ("python3 scripts/validate_json.py" ∷ [])
   ∷ generatorToTarget "roadmap-validate-md" "Validate canonical Markdown" 
-    ("build/canonical_roadmap.json" ∷ "ROADMAP.md" ∷ [])
+    ("roadmap-export-md" ∷ [])
     ("python3 scripts/validate_md.py" ∷ [])
   ∷ generatorToTarget "roadmap-validate-triangle" "Verify Triangle Identity (Agda <-> JSON <-> MD)" ("roadmap-validate-json" ∷ "roadmap-validate-md" ∷ [])
     ("@echo \"✓ Triangle validation complete\"" ∷ [])
@@ -284,17 +284,8 @@ buildArtifact agdaFiles graphEdges =
       aggregateTargets = allAgdaiTarget agdaFiles ∷ []
       -- Include regenMakefileTarget in the list of targets
       allTargets = regenMakefileTarget ∷ discoveredTargets +++ agdaiTargets +++ aggregateTargets
-      phonyNames = "all" ∷ "check" ∷ "md-fix" ∷ "md-lint" ∷ "intake-lint" ∷ "intake-scan"
-             ∷ "md-normalize" ∷ "makefile-validate"
-             ∷ "badges" ∷ "node-deps" 
-             ∷ "priority-strategy-profiles" ∷ "priority-badge-weights"
-             ∷ "regen-makefile" ∷ "agda-all" ∷ "docs-all" 
-             ∷ "deferred-items" ∷ "roadmap-index" ∷ "roadmap-sync" ∷ "roadmap-sppf"
-             ∷ "roadmap-merge" ∷ "roadmap-deps-graph" ∷ "roadmap-enrich"
-             ∷ "roadmap-export-json" ∷ "roadmap-export-md" ∷ "roadmap-export-enriched"
-             ∷ "roadmap-export-deps" ∷ "roadmap-validate-json" ∷ "roadmap-validate-md"
-             ∷ "roadmap-validate-triangle" ∷ "roadmap-sppf-export" ∷ "roadmap-all-enriched"
-             ∷ "docs-generate" ∷ "docs-validate" ∷ "docs-modules" ∷ "validate-constructive" ∷ []
+      phonyTargets = filter (λ t → MakefileTarget.phony t) allTargets
+      phonyNames = map MakefileTarget.name phonyTargets
       headerSection = record { id = "header"; content = ("# Use local Agda 2.8.0 if available, otherwise system agda" ∷ "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)" ∷ "" ∷ "# Common Agda compilation flags" ∷ "AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type" ∷ []) }
       phonySection = record { id = "phony" 
                 ; content = (".PHONY: " ++ intercalate " " phonyNames) ∷ [] }
@@ -340,4 +331,5 @@ main =
       targets = (regenMakefileTarget ∷ discoveredTargets) 
       docsContent = renderDocs targets
   in writeFile "Makefile.generated" content >>= λ _ →
-     writeFile "build/makefile_targets_generated.md" docsContent
+     writeFile "build/makefile_targets_generated.md" docsContent >>= λ _ →
+     writeFile "docs/automation/MAKEFILE-TARGETS.md" docsContent

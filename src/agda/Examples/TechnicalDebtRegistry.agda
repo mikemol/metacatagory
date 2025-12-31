@@ -1,77 +1,30 @@
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --cubical --two-level #-}
 
 module Examples.TechnicalDebtRegistry where
 
+open import Plan.CIM.RoadmapSPPF using (SPPFNode; SPPFGraph)
 open import Agda.Builtin.List using (List; []; _∷_)
-open import Agda.Builtin.String using (String; primStringAppend)
-open import Agda.Builtin.IO using (IO)
-open import Agda.Builtin.Unit using (⊤; tt)
-open import Metamodel as M
-open import Core.TechnicalDebt
+open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 
--- Import registries from specific test suites
-import Tests.AlgorithmCompositionTests
-import Tests.SerializationTests
+-- Technical debt registry as a canonical SPPFGraph
+-- Each debt item is an SPPFNode; the registry is an SPPFGraph
 
--- Access the lists (now compatible because they use Core.TechnicalDebt)
-compositionDebt : List DebtAnnotation
-compositionDebt = Tests.AlgorithmCompositionTests.technicalDebtRegistry
+debtNode1 : SPPFNode
+-- Example node; extend as needed
+-- Use tags or category for technical debt classification
+-- Use parent1/parent2 for dependency/aggregation
 
-serializationDebt : List DebtAnnotation
-serializationDebt = Tests.SerializationTests.technicalDebtRegistry
+debtNode1 = record
+  { nodeId   = "TD001"
+  ; title    = "Refactor registry to SPPFGraph"
+  ; status   = "not-started"
+  ; category = "technical-debt"
+  ; source   = "src/agda/Examples/TechnicalDebtRegistry.agda"
+  ; files    = []
+  ; tags     = "core-refactor" ∷ []
+  ; parent1  = nothing
+  ; parent2  = nothing
+  }
 
--- Central registry accumulator
-registeredRegistries : List (List DebtAnnotation)
-registeredRegistries = compositionDebt ∷ serializationDebt ∷ []
-
--- Helper: List concatenation
-_++_ : {A : Set} → List A → List A → List A
-[] ++ ys = ys
-(x ∷ xs) ++ ys = x ∷ (xs ++ ys)
-
-concat : {A : Set} → List (List A) → List A
-concat [] = []
-concat (x ∷ xs) = x ++ concat xs
-
--- Aggregated registry (flattened)
-allTechnicalDebt : List DebtAnnotation
-allTechnicalDebt = concat registeredRegistries
-
--- Helper: String concatenation
-strCat : String → String → String
-strCat = primStringAppend
-
--- Helper: List map
-map : {A B : Set} → (A → B) → List A → List B
-map f [] = []
-map f (x ∷ xs) = f x ∷ map f xs
-
--- Helper: Join strings
-intercalate : String → List String → String
-intercalate sep [] = ""
-intercalate sep (x ∷ []) = x
-intercalate sep (x ∷ xs) = strCat x (strCat sep (intercalate sep xs))
-
--- Helper: convert DebtAnnotation to JSON string
-debtToJSON : DebtAnnotation → String
-debtToJSON d =
-  let idStr = M.Identifier.name (DebtAnnotation.id d)
-      ratStr = DebtAnnotation.rationale d
-      statStr = DebtAnnotation.status d
-  in strCat "{\"id\": \""
-       (strCat idStr
-       (strCat "\", \"rationale\": \""
-       (strCat ratStr
-       (strCat "\", \"status\": \""
-       (strCat statStr "\"}")))))
-
--- IO primitives (postulated for compilation without stdlib)
-postulate
-  returnIO : {A : Set} → A → IO A
-  printString : String → IO ⊤
-
--- Export allTechnicalDebt as JSON array (mock IO action)
-exportRegistryJSON : IO ⊤
-exportRegistryJSON =
-  let json = strCat "[" (strCat (intercalate ", " (map debtToJSON allTechnicalDebt)) "]")
-  in returnIO tt
+debtRegistry : SPPFGraph
+debtRegistry = record { nodes = debtNode1 ∷ [] }

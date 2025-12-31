@@ -1,9 +1,5 @@
 {-# OPTIONS --guardedness #-}
 
--- | FFI Implementation for Priority Orchestration
--- | Instantiates TechnicalDebt.PriorityOrchestration with concrete I/O operations
--- | Compiles to native executable via GHC backend
-
 module TechnicalDebt.PriorityOrchestrationFFI where
 
 open import Agda.Builtin.String
@@ -18,20 +14,15 @@ postulate
   ffi-writeFile : String → String → IO ⊤
   ffi-readFile : String → IO String
   ffi-fileExists : String → IO String
-  
   -- Console operations (GHC FFI)
   ffi-putStrLn : String → IO ⊤
-  
   -- Colored status reporting (GHC FFI)
   ffi-reportSuccess : String → IO ⊤
   ffi-reportError : String → IO ⊤
-  
   -- JSON validation (GHC FFI)
   ffi-validateJSON : String → IO String
-  
   -- String conversion (GHC FFI)
   ffi-intToString : Int → String
-  
   -- Monad operations
   ffi-bind : ∀ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} → IO A → (A → IO B) → IO B
   ffi-pure : ∀ {ℓ} {A : Set ℓ} → A → IO A
@@ -73,7 +64,6 @@ postulate
 {-# COMPILE GHC ffi-bind = \_ _ _ _ m f -> m >>= f #-}
 {-# COMPILE GHC ffi-pure = \_ _ x -> return x #-}
 
--- Instantiate the orchestration module with FFI implementations
 open import TechnicalDebt.PriorityOrchestration
   ffi-writeFile
   ffi-readFile
@@ -87,5 +77,6 @@ open import TechnicalDebt.PriorityOrchestration
   ffi-pure
   public
 
--- Export main as the entry point for compilation
--- This will be the executable entry point when compiled with --compile
+-- Main entry point for exporting AUDAX Markdown for all strategies
+mainAUDAXMarkdown : IO ⊤
+mainAUDAXMarkdown = exportAllStrategiesAUDAXMarkdown

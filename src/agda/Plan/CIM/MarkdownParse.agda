@@ -20,14 +20,12 @@ false || b = b
 
 infixr 20 _||_
 
-
 open import Agda.Builtin.String using (String; primStringAppend; primStringToList; primStringFromList)
 
 _eqChar_ : Char → Char → Bool
 _eqChar_ = primCharEquality
 
 infix 40 _eqChar_
-
 
 take : ∀ {ℓ} {A : Set ℓ} → Nat → List A → List A
 take zero _ = []
@@ -54,7 +52,6 @@ null (_ ∷ _) = false
 map : ∀ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} → (A → B) → List A → List B
 map _ [] = []
 map f (x ∷ xs) = f x ∷ map f xs
-
 
 equalsString : String → String → Bool
 equalsString s1 s2 = equalsCharList (primStringToList s1) (primStringToList s2)
@@ -105,7 +102,6 @@ joinWithNewline : List String → String
 joinWithNewline [] = ""
 joinWithNewline (x ∷ []) = x
 joinWithNewline (x ∷ xs) = primStringAppend x (primStringAppend "\n" (joinWithNewline xs))
-
 
 data Token : Set where
   THeading   : Nat → String → Token
@@ -202,7 +198,6 @@ tokenizeLines (l ∷ ls) with isFenceLine l
   in TQuoteBlock (QuoteSplit.lines q) ∷ tokenizeLines (QuoteSplit.remaining q)
 ...   | false = tokenizeLine l ∷ tokenizeLines ls
 
-
 makeInlineText : String → List Inline
 makeInlineText s = Str s ∷ []
 
@@ -245,7 +240,6 @@ mutual
   parseBullets acc (t ∷ ts) = BulletList (map single acc) ∷ parseTokens (t ∷ ts)
     where single : String → List Block
           single s = paraFromLines (s ∷ []) ∷ []
-
 
 parseLinesToMarkdown : List String → MarkdownDoc
 parseLinesToMarkdown ls = pandocDocToMarkdown doc

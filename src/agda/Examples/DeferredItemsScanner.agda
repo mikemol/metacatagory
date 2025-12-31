@@ -86,7 +86,6 @@ postulate
   primPutStr : String → IO ⊤
   primPutStrLn : String → IO ⊤
   primGetLine : IO String
-  primNatToStringFFI : Nat → String
 
 {-# COMPILE GHC _>>=_ = \_ _ -> primBind #-}
 {-# COMPILE GHC _>>_ = \_ _ -> primThen #-}
@@ -97,12 +96,10 @@ postulate
 {-# COMPILE GHC primPutStr = primPutStr #-}
 {-# COMPILE GHC primPutStrLn = primPutStrLn #-}
 {-# COMPILE GHC primGetLine = primGetLine #-}
-{-# COMPILE GHC primNatToStringFFI = primNatToString #-}
-
 -- Open shared modules with FFI primitives
-open import Core.Strings primNatToStringFFI
-open import Core.IO _>>=_ _>>_ return primWriteFile primReadFile primAppendFile primPutStr primPutStrLn primGetLine
-open import Core.Rendering _++_ intercalate natToString quoteJSON mapWithPrefix
+open import Core.Strings
+open import Core.IO String ⊤ tt IO _>>=_ _>>_ return primWriteFile primReadFile primAppendFile primPutStr primPutStrLn primGetLine
+open import Core.Rendering
 
 -- Application-specific FFI postulates
 postulate
@@ -312,4 +309,3 @@ runDeferredItemsScanner = do
 -- Executable main
 main : IO ⊤
 main = runDeferredItemsScanner
-

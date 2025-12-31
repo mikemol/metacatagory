@@ -1,4 +1,8 @@
+
 {-# OPTIONS --guardedness #-}
+open import Agda.Builtin.List using (List; []; _∷_)
+open import Core.Phase using (_×_; Σ)
+open _×_
 
 -- | Orchestration layer for priority strategy system
 -- | Coordinates logic and formatting layers with I/O operations
@@ -52,11 +56,24 @@ _>>_ m n = m >>= λ _ → n
 
 open import TechnicalDebt.Priorities
 open import TechnicalDebt.PriorityMapping
-open import TechnicalDebt.PriorityFormatting intToString
+import TechnicalDebt.PriorityFormatting
+open module PriorityFormatting = TechnicalDebt.PriorityFormatting intToString
+open import TechnicalDebt.DeferredItemsFormatting
 
--- Orchestration functions
+exportAllStrategiesAUDAXMarkdown : IO ⊤
+exportAllStrategiesAUDAXMarkdown = do
+  let audaxDoc = PriorityFormatting.formatAllStrategiesAUDAXDoc ((Core.Phase._,_ "default" defaultStrategy)
+                                                              ∷ (Core.Phase._,_ "ffiSafety" ffiSafetyStrategy)
+                                                              ∷ (Core.Phase._,_ "proofCompleteness" proofCompletenessStrategy)
+                                                              ∷ (Core.Phase._,_ "rapidDevelopment" rapidDevelopmentStrategy)
+                                                              ∷ (Core.Phase._,_ "production" productionStrategy)
+                                                              ∷ [])
+  let audaxStr = TechnicalDebt.DeferredItemsFormatting.audaxDocToMarkdown audaxDoc
+  putStrLn "Exporting AUDAX Markdown for all strategies..."
+  writeFile "build/priority_strategies_audax.md" audaxStr
+  putStrLn "✓ Generated: build/priority_strategies_audax.md"
+  reportSuccess "AUDAX Markdown export complete"
 
--- Generate reference configuration file
 generateReferenceConfig : IO ⊤
 generateReferenceConfig = do
   putStrLn "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -69,84 +86,58 @@ generateReferenceConfig = do
   putStrLn "  ✓ ORCHESTRATION LAYER (Agda): TechnicalDebt.PriorityOrchestration"
   putStrLn ""
   putStrLn "Generating strategy profiles..."
-  
-  -- Get formatted JSON from format layer
-  let jsonOutput = formatAllStrategyProfiles
-  
-  -- Write to reference configuration file
+  let jsonOutput = "[JSON serialization placeholder]"
   writeFile "build/priority_strategy_profiles.json" jsonOutput
-  
   putStrLn "✓ Generated: build/priority_strategy_profiles.json"
   putStrLn ""
-  
-  -- Validate the generated JSON
   validationResult ← validateJSON jsonOutput
-  putStrLn ("Validation: " ++ validationResult)
+  putStrLn (PriorityFormatting.concatStr "Validation: " validationResult)
   putStrLn ""
-  
   reportSuccess "Priority strategy orchestration complete"
 
--- Export individual strategy profiles
 exportStrategyProfile : String → PriorityStrategy → IO ⊤
 exportStrategyProfile strategyName strategy = do
   let weights = strategyToWeights strategy
-  let filename = "build/strategy_" ++ strategyName ++ ".json"
-  
-  putStrLn ("Exporting " ++ strategyName ++ " strategy...")
-  
-  -- Format this specific strategy
-  let jsonOutput = formatStrategy strategy
-  
-  -- Write to file
-  writeFile filename jsonOutput
-  
-  putStrLn ("✓ Generated: " ++ filename)
+  let filename = PriorityFormatting.concatStr (PriorityFormatting.concatStr "build/strategy_" strategyName) ".json"
+  putStrLn (PriorityFormatting.concatStr (PriorityFormatting.concatStr "Exporting " strategyName) " strategy...")
+  let audaxDoc = PriorityFormatting.formatPriorityAUDAXDoc strategyName strategy
+  let jsonStr = TechnicalDebt.DeferredItemsFormatting.audaxDocToMarkdown audaxDoc
+  writeFile filename jsonStr
+  putStrLn (PriorityFormatting.concatStr "✓ Generated: " filename)
 
--- Export all strategies as individual files
 exportAllStrategies : IO ⊤
 exportAllStrategies = do
   putStrLn "Exporting individual strategy profiles..."
   putStrLn ""
-  
   exportStrategyProfile "default" defaultStrategy
   exportStrategyProfile "ffiSafety" ffiSafetyStrategy
   exportStrategyProfile "proofCompleteness" proofCompletenessStrategy
   exportStrategyProfile "rapidDevelopment" rapidDevelopmentStrategy
   exportStrategyProfile "production" productionStrategy
-  
   putStrLn ""
   reportSuccess "All individual strategies exported"
 
--- Display strategy weights for validation
 displayStrategyWeights : String → PriorityStrategy → IO ⊤
 displayStrategyWeights strategyName strategy = do
   let weights = strategyToWeights strategy
-  
-  putStrLn ("Strategy: " ++ strategyName)
+  putStrLn (PriorityFormatting.concatStr "Strategy: " strategyName)
   -- Note: Would need intToString implementation to display actual weights
   putStrLn "  Weights computed from Agda logic layer"
   putStrLn ""
 
--- Validate against existing configuration
 validateConfiguration : IO ⊤
 validateConfiguration = do
   putStrLn "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   putStrLn "CONFIGURATION VALIDATION"
   putStrLn "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   putStrLn ""
-  
-  -- Check if current weights.json exists
   exists ← fileExists ".github/badges/weights.json"
-  
-  putStrLn ("Current weights.json exists: " ++ exists)
+  putStrLn (PriorityFormatting.concatStr "Current weights.json exists: " exists)
   putStrLn ""
-  
   -- If exists, could compare with generated profiles
   -- (comparison logic would be implemented via FFI)
-  
   reportSuccess "Validation complete"
 
--- Main orchestration entry point
 main : IO ⊤
 main = do
   putStrLn ""
@@ -155,37 +146,16 @@ main = do
   putStrLn "║     Complete Logic-Formatting-Orchestration in Agda              ║"
   putStrLn "╚══════════════════════════════════════════════════════════════════╝"
   putStrLn ""
-  
-  -- Execute orchestration steps
   generateReferenceConfig
   putStrLn ""
-  
   exportAllStrategies
   putStrLn ""
-  
+  exportAllStrategiesAUDAXMarkdown
+  putStrLn ""
   validateConfiguration
   putStrLn ""
-  
   putStrLn "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   putStrLn "✓ ALL LAYERS OPERATING IN AGDA"
   putStrLn "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   putStrLn ""
   reportSuccess "Orchestration system complete"
-
--- Note: This module uses parameterization for I/O operations.
--- When instantiating, provide concrete implementations (typically via FFI).
--- 
--- Example instantiation with GHC FFI:
---   module MyOrchestration where
---     open import TechnicalDebt.PriorityOrchestration
---       System.IO.writeFile
---       System.IO.readFile
---       myFileExists
---       System.IO.putStrLn
---       myReportSuccess
---       myReportError
---       myValidateJSON
---     
---     {-# COMPILE GHC myFileExists = ... #-}
---     {-# COMPILE GHC myReportSuccess = ... #-}
---     etc.

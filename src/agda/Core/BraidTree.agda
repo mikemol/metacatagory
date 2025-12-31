@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K #-}
-
 module Core.BraidTree where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Agda.Builtin.List
 open import Agda.Builtin.String

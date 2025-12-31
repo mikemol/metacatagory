@@ -1,14 +1,6 @@
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K #-}
 
-module Plan.CIM.PolytopeExpansion
-  -- [PARAMETER] Geometric Oracle (FFI)
-  -- Delegated to nedge_topology/geometry.py
-  (GeometryOracle : (poly : Record) → (point : Point) → Bool)
-  
-  -- [PARAMETER] Dependency Injection
-  -- We need an instance of the Ambiguity module to calculate tension
-  (tensionCalc : ∀ {ℓ} {A : Set ℓ} → List (WeightedOption A) → Nat)
-  where
+module Plan.CIM.PolytopeExpansion where
 
 open import Agda.Builtin.Nat
 open import Agda.Builtin.List
@@ -44,6 +36,12 @@ record Polytope : Set where
 -- Helper
 Record = Polytope
 
+-- [PARAMETER] Geometric Oracle (FFI)
+-- Delegated to nedge_topology/geometry.py
+postulate
+  tensionCalc : ∀ {ℓ} {A : Set ℓ} → List (WeightedOption A) → Nat
+  GeometryOracle : (poly : Polytope) → (point : Point) → Bool
+
 -- [USAGE] Using the Oracle
 checkGeometricInclusion : Polytope → SemanticPoint → Bool
 checkGeometricInclusion = GeometryOracle
@@ -59,15 +57,15 @@ data MitosisResult : Set where
   stable : Polytope → MitosisResult
   expanded : Polytope → MitosisResult
 
+infix 4 _<?_
+_<?_ : Nat → Nat → Bool
+zero <? suc m = true
+suc n <? suc m = n <? m
+_ <? zero = false
+
 -- [USAGE] Using the injected `tensionCalc` would happen here if we had raw options.
 -- Since this module handles Points/Polytopes, `processMitosis` takes `tension` directly.
 processMitosis : SemanticPoint → Nat → MitosisResult
-processMitosis p tension = 
-  if (tension < 50) 
-  then stable (inflate p 0) 
-  else expanded (inflate p tension)
-  where
-    _<_ : Nat → Nat → Bool
-    zero < suc m = true
-    suc n < suc m = n < m
-    _ < zero = false
+processMitosis p tension with tension <? 50
+... | true  = stable (inflate p 0)
+... | false = expanded (inflate p tension)

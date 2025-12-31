@@ -1,80 +1,74 @@
-{-# OPTIONS --without-K #-}
-
--- TechnicalDebt.PriorityFormatting: JSON formatting for priority strategies
--- PRIO-ADOPT-1: Formatting layer takes pure CategoryWeights and produces JSON strings
--- This keeps all domain-specific concerns in Agda; Python becomes integration layer
---
--- Uses module parameterization for string operations (not postulates)
-
+open import Agda.Builtin.Int using (Int)
 open import Agda.Builtin.String using (String; primStringAppend)
-open import Agda.Builtin.Int using (Int; pos; negsuc)
 
-module TechnicalDebt.PriorityFormatting
-  -- String operations (to be provided by FFI implementation)
-  (intToString : Int → String)
-  where
+module TechnicalDebt.PriorityFormatting (intToString : Int → String) where
 
+concatStr : String → String → String
+concatStr = primStringAppend
+
+open import TechnicalDebt.DeferredItemsFormatting using (mkListLike; AUDAXBlock; AUDAXDoc; AUDAXInline; ListLike)
 open import TechnicalDebt.PriorityMapping using (CategoryWeights; strategyToWeights)
-open import TechnicalDebt.Priorities
+open import Agda.Builtin.List using (List; []; _∷_)
+open import TechnicalDebt.Priorities using (PriorityStrategy)
+open import Agda.Primitive using (Level; _⊔_)
+open import Core.Phase using (_×_; Σ; _,_)
+infixr 2 _×_
 
--- ============================================================================
--- JSON Formatting - Using Parameters
--- ============================================================================
 
--- String concatenation helper
-_++_ : String → String → String
-_++_ = primStringAppend
+map : ∀ {ℓ ℓ'} {A : Set ℓ} {B : Set ℓ'} → (A → B) → List A → List B
+map f [] = []
+map f (x ∷ xs) = f x ∷ map f xs
 
-infixr 5 _++_
+weightsAsFields : CategoryWeights → List (String × String)
+weightsAsFields w =
+  ("postulate" , intToString (CategoryWeights.postulateWeight w)) ∷
+  ("todo"      , intToString (CategoryWeights.todoWeight w)) ∷
+  ("fixme"     , intToString (CategoryWeights.fixmeWeight w)) ∷
+  ("deviation", intToString (CategoryWeights.deviationWeight w)) ∷ []
 
--- Helper: Format a single strategy's weights as JSON
-formatStrategy : PriorityStrategy → String
-formatStrategy strategy =
-  let weights = strategyToWeights strategy
-  in "{\"weights\": "
-     ++ "{\"postulate\": " ++ intToString (CategoryWeights.postulateWeight weights)
-     ++ ", \"todo\": " ++ intToString (CategoryWeights.todoWeight weights)
-     ++ ", \"fixme\": " ++ intToString (CategoryWeights.fixmeWeight weights)
-     ++ ", \"deviation\": " ++ intToString (CategoryWeights.deviationWeight weights)
-     ++ "}}"
+formatStrategyBlock : (String × PriorityStrategy) → List AUDAXBlock
+formatStrategyBlock (n , s) =
+  AUDAXBlock.Header 2 (headerBlock) ∷
+  AUDAXBlock.Table header rows ∷ []
+  where
+    w      = strategyToWeights s
+    fields = weightsAsFields w
+    header : ListLike String
+    header = mkListLike ("Category" ∷ "Weight" ∷ [])
+    rows : ListLike (ListLike AUDAXInline)
+    rows   = mkListLike (map (\(k , v) → mkListLike (AUDAXInline.Str k ∷ AUDAXInline.Str v ∷ [])) fields)
+    headerBlock : ListLike AUDAXInline
+    headerBlock = mkListLike (AUDAXInline.Str (concatStr n " Strategy") ∷ [])
 
--- Aggregate all strategies into a single JSON object (pure Agda)
-formatAllStrategyProfiles : String
-formatAllStrategyProfiles =
-  "{" ++
-  "\"_comment\": \"Priority strategy weight profiles - generated from Agda TechnicalDebt.Priorities\"," ++
-  "\"strategies\": {" ++
-  "\"default\": " ++ formatStrategy defaultStrategy ++ "," ++
-  "\"ffiSafety\": " ++ formatStrategy ffiSafetyStrategy ++ "," ++
-  "\"proofCompleteness\": " ++ formatStrategy proofCompletenessStrategy ++ "," ++
-  "\"rapidDevelopment\": " ++ formatStrategy rapidDevelopmentStrategy ++ "," ++
-  "\"production\": " ++ formatStrategy productionStrategy ++
-  "}," ++
-  "\"active\": \"default\"" ++
-  "}"
+-- Helper: flatten list of lists
+_++_ : ∀ {ℓ} {A : Set ℓ} → List A → List A → List A
+[] ++ ys = ys
+(x ∷ xs) ++ ys = x ∷ (xs ++ ys)
+concat : ∀ {ℓ} {A : Set ℓ} → List (List A) → List A
+concat [] = []
+concat (x ∷ xs) = x ++ concat xs
 
--- The complete JSON is provided as a parameter
--- (Allows FFI implementation to provide fully formatted output)
-getAllStrategyProfiles : String
-getAllStrategyProfiles = formatAllStrategyProfiles
 
--- ============================================================================
--- Example: Export functionality
--- ============================================================================
+formatAllStrategiesAUDAXDoc : List (String × PriorityStrategy) → AUDAXDoc
+formatAllStrategiesAUDAXDoc xs =
+  let blocks = concat (map formatStrategyBlock xs)
+  in record { blocks = mkListLike blocks; meta = "" }
 
-module Examples where
-  -- The complete JSON output is provided via parameter:
-  completePrioritiesJSON : String
-  completePrioritiesJSON = formatAllStrategyProfiles
 
-  -- Usage: This string can be exported to a file or served directly
-  -- Python integration: load this string and parse as JSON
+formatPriorityAUDAXDoc : String → PriorityStrategy → AUDAXDoc
+formatPriorityAUDAXDoc name strat =
+  let w      = strategyToWeights strat
+      fields  = weightsAsFields w
+      header : ListLike String
+      header   = mkListLike ("Category" ∷ "Weight" ∷ [])
+      rows : ListLike (ListLike AUDAXInline)
+      rows     = mkListLike (map (\(k , v) → mkListLike (AUDAXInline.Str k ∷ AUDAXInline.Str v ∷ [])) fields)
+      blocks : ListLike AUDAXBlock
+      blocks   = mkListLike (
+        AUDAXBlock.Header 2 (mkListLike (AUDAXInline.Str (concatStr name " Strategy") ∷ [])) ∷
+        AUDAXBlock.Table header rows ∷
+        [] )
+  in record { blocks = blocks; meta = "" }
 
--- Note: This module is parameterized. To use it, instantiate with:
---   1. intToString implementation (Int → String conversion)
---   2. formatAllStrategyProfiles implementation (complete JSON string)
---
--- Example instantiation in another module:
---   open import TechnicalDebt.PriorityFormatting
---     myIntToString
---     myFormatAllStrategyProfiles
+testStr : String
+testStr = concatStr "foo" "bar"

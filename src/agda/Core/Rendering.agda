@@ -1,4 +1,5 @@
 {-# OPTIONS --without-K #-}
+module Core.Rendering where
 
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.List using (List; []; _∷_)
@@ -7,13 +8,10 @@ open import Agda.Builtin.Bool using (Bool; true; false)
 
 -- | Common rendering utilities for structured data
 -- Provides type-safe rendering of structured data to various formats
-module Core.Rendering
-  (_++_ : String → String → String)
-  (intercalate : String → List String → String)
-  (natToString : Nat → String)
-  (quoteJSON : String → String)
-  (mapWithPrefix : String → List String → List String)
-  where
+
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
+open import Core.Strings using (_++_; intercalate; natToString; quoteJSON; mapWithPrefix)
 
 -- ==========================================================
 -- Markdown Rendering

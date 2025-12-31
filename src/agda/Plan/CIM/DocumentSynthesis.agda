@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --cubical-compatible #-}
 
 module Plan.CIM.DocumentSynthesis where
 

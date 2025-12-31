@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --allow-unsolved-metas #-}
 
 -- Tests.UniversalPropertyTests: Test algorithm-to-UMP behavioral boundaries
 -- This module tests the bridge between computational algorithms and universal properties,

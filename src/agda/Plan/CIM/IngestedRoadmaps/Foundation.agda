@@ -6,7 +6,7 @@ module Plan.CIM.IngestedRoadmaps.Foundation where
 
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String
-open import Plan.CIM.Utility using (RoadmapStep)
+open import Plan.CIM.Utility using (RoadmapStep; RoadmapStepV2)
 
 ------------------------------------------------------------------------
 -- Foundation Phase Roadmap Steps
@@ -242,3 +242,19 @@ roadmapGp111 = record
     ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
     ; next         = []
     }
+
+-- Enriched view (placeholder; to be populated by semantic extractor)
+roadmapsV2 : List RoadmapStepV2
+roadmapsV2 =
+  record
+    { gpNumber      = "AXIOM-SI-001"
+    ; theme         = "Solvable interface (Kit/Face/Solver)"
+    ; category      = "Foundation"
+    ; relatedGPs    = "GP01" ∷ "GP02" ∷ []
+    ; actionItems   = "Add PathAlg/Face/FramedFace/Solver types; parameterize axioms as kits" ∷ []
+    ; concepts      = "constructive adequacy" ∷ "Path algebra" ∷ "homological audit" ∷ []
+    ; targetModules = "src/agda/Infrastructure/Axiom/SolvableInterface.agda" ∷ "src/agda/Infrastructure/Axiom/Solver.agda" ∷ []
+    ; status        = "in-progress"
+    ; notes         = "Drop postulates in favor of parameterized faces with total or diagnostic solvers."
+    ; nextV2        = []
+    } ∷ []

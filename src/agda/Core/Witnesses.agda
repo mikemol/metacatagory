@@ -1,10 +1,14 @@
 {-# OPTIONS --without-K #-}
+module Core.Witnesses where
 
 -- Core.Witnesses: Generic witness construction utilities
 -- This module provides reusable builders for common algebraic witness types,
 -- reducing boilerplate and ensuring consistency across specializations.
 
-module Core.Witnesses where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Core
 open import Algebra.Foundation
