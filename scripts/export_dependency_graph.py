@@ -16,11 +16,9 @@ ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
 MERMAID_OUTPUT = REPO_ROOT / "build" / "reports" / "dependency_graph.mmd"
 DOT_OUTPUT = REPO_ROOT / "build" / "reports" / "dependency_graph.dot"
 
-
 def escape_label(text: str) -> str:
     """Escape special characters for labels."""
     return text.replace('"', '\\"').replace("'", "\\'")
-
 
 def generate_mermaid_graph(items: List[Dict]) -> str:
     """Generate Mermaid flowchart from task dependencies."""
@@ -87,7 +85,6 @@ def generate_mermaid_graph(items: List[Dict]) -> str:
     ])
     
     return "\n".join(lines)
-
 
 def generate_dot_graph(items: List[Dict]) -> str:
     """Generate GraphViz DOT format from task dependencies."""
@@ -163,7 +160,6 @@ def generate_dot_graph(items: List[Dict]) -> str:
     
     return "\n".join(lines)
 
-
 def generate_dependency_summary(items: List[Dict]) -> Dict:
     """Generate summary statistics about dependencies."""
     total_tasks = len(items)
@@ -195,7 +191,6 @@ def generate_dependency_summary(items: List[Dict]) -> Dict:
         "total_suggested_deps": total_suggested,
         "most_depended_on": most_depended_on
     }
-
 
 def export_dependency_graphs() -> None:
     """Main export function."""
@@ -235,7 +230,6 @@ def export_dependency_graphs() -> None:
         print(f"\\n  Most depended-on tasks:")
         for task_id, count in summary['most_depended_on']:
             print(f"    - {task_id}: {count} incoming dependencies")
-
 
 if __name__ == "__main__":
     export_dependency_graphs()

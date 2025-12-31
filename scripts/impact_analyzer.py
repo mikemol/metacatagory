@@ -13,7 +13,6 @@ from typing import Dict, List, Set, Tuple
 from dataclasses import dataclass, field
 from collections import defaultdict
 
-
 @dataclass
 class ImpactAssessment:
     """Assessment of impact for a roadmap step."""
@@ -35,7 +34,6 @@ class ImpactAssessment:
     # Priority metrics
     impact_score: float = 0.0
     priority_rank: int = 0
-
 
 class ImpactAnalyzer:
     """Analyzes impact of roadmap changes on module dependencies."""
@@ -434,7 +432,6 @@ class ImpactAnalyzer:
         
         print("\n" + "="*70)
 
-
 def main():
     """Main entry point."""
     print("="*70)
@@ -453,7 +450,6 @@ def main():
     analyzer.generate_report(assessments)
     
     print("\n✓ Impact analysis complete!")
-
 
 if __name__ == '__main__':
     main()

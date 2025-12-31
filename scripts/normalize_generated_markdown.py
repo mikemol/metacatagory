@@ -28,7 +28,6 @@ GENERATED_FILES = [
     "build/reports/test-report.md",
 ]
 
-
 def extract_frontmatter(content: str):
     """Parse all YAML code blocks and return list of dicts."""
     blocks = re.findall(r'```yaml\n(.*?)\n```', content, re.DOTALL)
@@ -43,7 +42,6 @@ def extract_frontmatter(content: str):
         except yaml.YAMLError as e:
             parsed.append({"__parse_error__": str(e)})
     return parsed
-
 
 def normalize_markdown(filepath: Path) -> bool:
     """Run markdownlint --fix on a file."""
@@ -84,7 +82,6 @@ def normalize_markdown(filepath: Path) -> bool:
         print(f"✗ Error normalizing {filepath}: {e}")
         return False
 
-
 def main():
     """Normalize all generated markdown files."""
     print("Normalizing generated markdown files...")
@@ -104,7 +101,6 @@ def main():
     
     if success_count < total_count:
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()

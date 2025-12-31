@@ -33,7 +33,6 @@ TESTS_DIR = ROOT / "src" / "agda" / "Tests"
 COVERAGE_REPORT_FILE = TESTS_DIR / "CoverageReport.agda"
 OUT_DIR = ROOT / "build" / "reports"
 
-
 def parse_coverage_metadata() -> Optional[dict[str, Any]]:
     """
     Parse the structured metadata from Tests/CoverageReport.agda
@@ -57,7 +56,6 @@ def parse_coverage_metadata() -> Optional[dict[str, Any]]:
         return {"expected_total": expected_total}
 
     return None
-
 
 def scan_checklists_with_validation(
     expected_metadata: Optional[dict[str, Any]],
@@ -89,7 +87,6 @@ def scan_checklists_with_validation(
 
     return file_reports, actual_total
 
-
 def main() -> None:
     """Generate coverage report with Agda validation"""
     print("Hybrid Coverage Reporter")
@@ -111,7 +108,6 @@ def main() -> None:
 
     print(f"\nReport written to {OUT_DIR}/test-report.md")
     print(f"Total assertions: {actual_total}")
-
 
 if __name__ == "__main__":
     main()

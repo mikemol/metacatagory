@@ -14,14 +14,12 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-
 CATEGORY_NORMALIZATION: Dict[str, float] = {
     "postulate": 100.0,
     "todo": 50.0,
     "fixme": 100.0,
     "deviation": 500.0,
 }
-
 
 def load_agda_output(path: Path) -> Dict[str, Any]:
     """Load Agda-generated strategy profiles."""
@@ -38,7 +36,6 @@ def load_agda_output(path: Path) -> Dict[str, Any]:
 
     return data
 
-
 def normalize_strategy(weights: Dict[str, Any]) -> Dict[str, float]:
     """Normalize raw integer weights into badge-friendly floats."""
     normalized: Dict[str, float] = {}
@@ -53,7 +50,6 @@ def normalize_strategy(weights: Dict[str, Any]) -> Dict[str, float]:
         normalized[category] = value / divisor
 
     return normalized
-
 
 def convert_agda_profiles(
     raw: Dict[str, Any], active_override: Optional[str] = None
@@ -82,14 +78,12 @@ def convert_agda_profiles(
         "profiles": profiles,
     }
 
-
 def write_json(path: Path, data: Dict[str, Any]) -> None:
     """Persist JSON with stable formatting."""
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w") as handle:
         json.dump(data, handle, indent=2)
         handle.write("\n")
-
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -113,7 +107,6 @@ def parse_args() -> argparse.Namespace:
     )
     return parser.parse_args()
 
-
 def main() -> None:
     args = parse_args()
 
@@ -124,7 +117,6 @@ def main() -> None:
     print(
         f"Wrote badge weights to {args.output} (active='{badge_weights['active']}')"
     )
-
 
 if __name__ == "__main__":
     main()

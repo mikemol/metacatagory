@@ -10,12 +10,10 @@ import sys
 import json
 from typing import Any
 
-
 # --- Load CNF grammar ---
 def load_cnf_grammar(path: str) -> dict[str, Any]:
     with open(path) as f:
         return json.load(f)
-
 
 # --- Example: Apply CNF grammar to a proof trace ---
 def apply_cnf_grammar(
@@ -28,7 +26,6 @@ def apply_cnf_grammar(
         "summary": proof_trace.get("summary", ""),
     }
 
-
 # --- Main entry point ---
 def main():
     if len(sys.argv) != 3:
@@ -38,7 +35,6 @@ def main():
     proof_trace = load_cnf_grammar(sys.argv[2])
     result = apply_cnf_grammar(grammar, proof_trace)
     print(json.dumps(result, indent=2))
-
 
 if __name__ == "__main__":
     main()

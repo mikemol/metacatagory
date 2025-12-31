@@ -24,17 +24,14 @@ import sys
 import json
 from typing import Any
 
-
 # --- Load Pandoc AST and proof object ---
 def load_ast(path: str) -> dict[str, Any]:
     with open(path) as f:
         return json.load(f)
 
-
 def load_proof(path: str) -> list[dict[str, Any]]:
     with open(path) as f:
         return json.load(f)
-
 
 # --- Interpreter core ---
 def apply_proof(ast: dict[str, Any], proof: list[dict[str, Any]]) -> dict[str, Any]:
@@ -56,7 +53,6 @@ def apply_proof(ast: dict[str, Any], proof: list[dict[str, Any]]) -> dict[str, A
         # ... add more rules as needed ...
     return ast
 
-
 # --- Example transformation functions ---
 def normalize_list(
     ast: dict[str, Any], target: Any, params: dict[str, Any]
@@ -65,13 +61,11 @@ def normalize_list(
     # Actual implementation will depend on AST structure and params
     return ast
 
-
 def fix_heading(
     ast: dict[str, Any], target: Any, params: dict[str, Any]
 ) -> dict[str, Any]:
     # Example: convert setext headings to atx
     return ast
-
 
 def remove_blank_lines(
     ast: dict[str, Any], target: Any, params: dict[str, Any]
@@ -79,12 +73,10 @@ def remove_blank_lines(
     # Example: remove multiple blank lines
     return ast
 
-
 # --- Markdown serialization ---
 def ast_to_markdown(ast: dict[str, Any]) -> str:
     # TODO: Implement custom Pandoc AST to markdown renderer
     return ""  # Placeholder
-
 
 # --- Main entry point ---
 def main():
@@ -96,7 +88,6 @@ def main():
     normalized_ast = apply_proof(ast, proof)
     markdown = ast_to_markdown(normalized_ast)
     print(markdown)
-
 
 if __name__ == "__main__":
     main()

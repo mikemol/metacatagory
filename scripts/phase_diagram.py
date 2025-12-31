@@ -29,7 +29,6 @@ RECORD_DECL_RE = re.compile(r"^\s*([A-Za-z0-9_']+)\s*:\s*([A-Za-z0-9_.]+)\.([A-Z
 # E.g., `foo : A.KernelPairAdapter`
 ADAPTER_DECL_RE = re.compile(r"^\s*([A-Za-z0-9_']+)\s*:\s*A\.([A-Za-z0-9_]+)\s*$")
 
-
 def parse_tests() -> dict[str, Any]:
     graph: dict[str, Any] = {
         "modules": {},  # mod -> {records:set(), adapters:set()}
@@ -55,7 +54,6 @@ def parse_tests() -> dict[str, Any]:
         }
     return graph
 
-
 def to_dot(graph: dict[str, Any]) -> str:
     lines = ["digraph phases {", "  rankdir=LR;", "  node [shape=box, style=rounded];"]
     # Define clusters by module
@@ -80,7 +78,6 @@ def to_dot(graph: dict[str, Any]) -> str:
         lines.append("  }")
     lines.append("}")
     return "\n".join(lines)
-
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -108,7 +105,6 @@ def main() -> None:
             print(f"Rendered {svg_path}")
         else:
             print("dot not found; skipping render.")
-
 
 if __name__ == "__main__":
     main()

@@ -20,18 +20,15 @@ import re
 import subprocess
 from typing import Any
 
-
 def is_json_input(text: str) -> bool:
     text = text.lstrip()
     return text.startswith("{") or text.startswith("[")
-
 
 # Read Pandoc JSON from stdin
 # pandoc_json = json.load(sys.stdin)
 
 # Helper to recursively fix list marker spacing and style
 # (asterisk, single space, indent=2)
-
 
 # Pandoc AST: fix unordered list style, spacing, indentation
 def fix_lists(obj: Any, indent: int = 0) -> Any:
@@ -47,7 +44,6 @@ def fix_lists(obj: Any, indent: int = 0) -> Any:
         return [fix_lists(v, indent) for v in obj]
     return obj
 
-
 def fix_list_markers(md: str) -> str:
     # Replace dash list markers with asterisks, fix spacing and indentation
     def repl(match: re.Match) -> str:
@@ -62,7 +58,6 @@ def fix_list_markers(md: str) -> str:
     md = pattern.sub(repl, md)
     return md
 
-
 # Remove multiple blank lines in markdown output
 def remove_multiple_blank_lines(md: str) -> str:
     # Remove all leading blank lines so the first line is non-blank
@@ -75,11 +70,9 @@ def remove_multiple_blank_lines(md: str) -> str:
     md = re.sub(r"\n{3,}", "\n\n", md)
     return md
 
-
 def fix_horizontal_rules(md: str) -> str:
     # Replace any line of dashes or mixed with standard 79-dash rule
     return re.sub(r"^[- ]{5,}$", "-" * 79, md, flags=re.MULTILINE)
-
 
 def fix_headings(md: str) -> str:
     # Convert setext (underlined) headings to atx
@@ -96,10 +89,8 @@ def fix_headings(md: str) -> str:
             i += 1
     return "\n".join(out)
 
-
 # Apply fixes to Pandoc AST
 # pandoc_json = fix_lists(pandoc_json)
-
 
 # Convert back to markdown
 def get_markdown_from_ast(ast: Any) -> str:
@@ -116,14 +107,12 @@ def get_markdown_from_ast(ast: Any) -> str:
         )
         return result.stdout
 
-
 def postprocess_markdown(md: str) -> str:
     md = remove_multiple_blank_lines(md)
     md = fix_list_markers(md)
     md = fix_horizontal_rules(md)
     md = fix_headings(md)
     return md
-
 
 def main() -> None:
     input_text: str = sys.stdin.read()
@@ -135,7 +124,6 @@ def main() -> None:
     else:
         # Markdown: post-process and output markdown
         print(postprocess_markdown(input_text))
-
 
 if __name__ == "__main__":
     main()

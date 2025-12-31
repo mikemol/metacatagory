@@ -48,7 +48,6 @@ TAG_VOCAB = {
     "phase": ["Phase", "PhaseI", "PhaseII", "PhaseIII", "PhaseIV", "PhaseV"]
 }
 
-
 # --- Markdown extraction --------------------------------------------------
 
 def extract_markdown_section(md_path: Path, heading_pattern: str) -> Optional[Dict[str, str]]:
@@ -96,7 +95,6 @@ def extract_markdown_section(md_path: Path, heading_pattern: str) -> Optional[Di
         }
     return None
 
-
 def extract_evidence_from_markdown(item: Dict) -> List[Dict[str, str]]:
     """
     Extract evidence snippets from markdown sources in provenance.
@@ -124,7 +122,6 @@ def extract_evidence_from_markdown(item: Dict) -> List[Dict[str, str]]:
             })
     
     return evidence
-
 
 # --- Agda extraction ------------------------------------------------------
 
@@ -182,7 +179,6 @@ def extract_agda_module_header(agda_path: Path) -> Optional[str]:
     
     return None
 
-
 def extract_agda_exports(agda_path: Path) -> List[str]:
     """
     Extract top-level definition names (heuristic: lines starting with name :).
@@ -201,7 +197,6 @@ def extract_agda_exports(agda_path: Path) -> List[str]:
             exports.append(match.group(1))
     
     return exports[:5]  # Limit to first 5
-
 
 def parse_dot_dependency_graph(dot_path: Path) -> Dict[str, List[str]]:
     """
@@ -237,7 +232,6 @@ def parse_dot_dependency_graph(dot_path: Path) -> Dict[str, List[str]]:
     
     return dependencies
 
-
 def build_module_to_tasks_map(items: List[Dict]) -> Dict[str, List[str]]:
     """
     Build a mapping from module names to task IDs that reference them.
@@ -261,7 +255,6 @@ def build_module_to_tasks_map(items: List[Dict]) -> Dict[str, List[str]]:
     
     return module_to_tasks
 
-
 def extract_evidence_from_agda(item: Dict) -> List[Dict[str, str]]:
     """
     Extract evidence from Agda files in the files list.
@@ -284,7 +277,6 @@ def extract_evidence_from_agda(item: Dict) -> List[Dict[str, str]]:
     
     return evidence
 
-
 def extract_module_anchors(item: Dict) -> List[str]:
     """
     Extract Agda module names from files.
@@ -304,7 +296,6 @@ def extract_module_anchors(item: Dict) -> List[str]:
             anchors.append(module_name)
     
     return anchors
-
 
 # --- Tag normalization ----------------------------------------------------
 
@@ -327,7 +318,6 @@ def normalize_tags(item: Dict) -> List[str]:
             derived.add(tag)
     
     return sorted(derived)
-
 
 # --- Semantic extraction --------------------------------------------------
 
@@ -371,7 +361,6 @@ def infer_intent(item: Dict, evidence: List[Dict]) -> str:
     
     return f"Implement {title} as specified."
 
-
 def infer_deliverable(item: Dict) -> str:
     """
     Infer concrete deliverable from files and title.
@@ -389,7 +378,6 @@ def infer_deliverable(item: Dict) -> str:
         return f"Compiled Agda modules: {', '.join(Path(f).name for f in agda_files[:2])}"
     
     return title
-
 
 def infer_acceptance(item: Dict, definitions: List[str]) -> List[str]:
     """
@@ -423,7 +411,6 @@ def infer_acceptance(item: Dict, definitions: List[str]) -> List[str]:
     
     return acceptance
 
-
 def infer_scope(item: Dict) -> Dict[str, List[str]]:
     """
     Infer scope boundaries from title and tags.
@@ -449,7 +436,6 @@ def infer_scope(item: Dict) -> Dict[str, List[str]]:
     
     return {"in": scope_in, "out": scope_out}
 
-
 def infer_inputs_outputs(item: Dict) -> Dict[str, List[str]]:
     """
     Infer inputs/outputs from files and dependencies.
@@ -468,7 +454,6 @@ def infer_inputs_outputs(item: Dict) -> Dict[str, List[str]]:
         outputs.append(f"Agda modules: {', '.join(Path(f).name for f in agda_files[:3])}")
     
     return {"inputs": inputs, "outputs": outputs}
-
 
 def infer_dependencies_from_imports(item: Dict, module_to_tasks: Dict[str, List[str]], dep_graph: Dict[str, List[str]]) -> List[str]:
     """
@@ -501,7 +486,6 @@ def infer_dependencies_from_imports(item: Dict, module_to_tasks: Dict[str, List[
     
     return sorted(suggested_deps)
 
-
 def estimate_complexity(item: Dict) -> str:
     """
     Estimate complexity from files, dependencies, and tags.
@@ -524,7 +508,6 @@ def estimate_complexity(item: Dict) -> str:
         return "medium"
     else:
         return "high"
-
 
 # --- Main enrichment pipeline ---------------------------------------------
 
@@ -575,7 +558,6 @@ def enrich_item(item: Dict, module_to_tasks: Dict[str, List[str]], dep_graph: Di
     
     return enriched
 
-
 def enrich_canonical() -> None:
     """
     Main entry point: read canonical, enrich, write enriched.
@@ -623,7 +605,6 @@ def enrich_canonical() -> None:
     total_suggested = sum(len(item.get("suggestedDependencies", [])) for item in enriched)
     print(f"✓ Wrote {len(enriched)} enriched items to {ENRICHED_JSON}")
     print(f"  Added {total_suggested} suggested dependencies from Agda dependency graph")
-
 
 if __name__ == "__main__":
     enrich_canonical()

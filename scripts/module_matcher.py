@@ -15,7 +15,6 @@ from typing import Dict, List, Set, Tuple
 from dataclasses import dataclass, field
 from collections import defaultdict
 
-
 @dataclass
 class AgdaModule:
     """Represents an Agda module with metadata."""
@@ -33,7 +32,6 @@ class AgdaModule:
         module_path = rel_path.replace('.agda', '').replace('/', '.')
         return module_path
 
-
 @dataclass
 class ModuleMapping:
     """Maps a RoadmapStep to relevant Agda modules."""
@@ -43,7 +41,6 @@ class ModuleMapping:
     related_modules: List[str] = field(default_factory=list)
     confidence: float = 0.0
     rationale: str = ""
-
 
 class ModuleMatcher:
     """Matches roadmap steps to Agda modules."""
@@ -409,7 +406,6 @@ class ModuleMatcher:
         
         print("\n" + "="*70)
 
-
 def main():
     """Main entry point."""
     print("="*70)
@@ -428,7 +424,6 @@ def main():
     matcher.generate_report(mappings)
     
     print("\n✓ Module matching complete!")
-
 
 if __name__ == '__main__':
     main()

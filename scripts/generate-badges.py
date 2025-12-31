@@ -108,7 +108,6 @@ def load_priority_weights(output_dir: Path, profile: str = "default") -> dict:
     # Fallback to defaults
     return {"postulate": 2.0, "todo": 1.0, "fixme": 1.5, "deviation": 3.0}
 
-
 # ============================================================================
 # FORMAT LAYER: Convert weights to threshold application
 # ============================================================================
@@ -126,7 +125,6 @@ EXCLUDED_DIRS = set(SCAN_CONFIG["excluded_dirs"])
 MAX_HISTORY_ENTRIES = SCAN_CONFIG["max_history_entries"]
 TOP_OFFENDERS_LIMIT = SCAN_CONFIG.get("top_offenders_limit", 15)
 
-
 def color_for(
     value: int, thresholds: list[tuple[int, str]], default: str = "lightgrey"
 ) -> str:
@@ -134,7 +132,6 @@ def color_for(
         if value < limit:
             return color
     return default
-
 
 def load_json_file(filepath: Path) -> dict[str, Any]:
     """Load and parse a JSON file."""
@@ -144,7 +141,6 @@ def load_json_file(filepath: Path) -> dict[str, Any]:
 
     with open(filepath, "r") as f:
         return json.load(f)
-
 
 def _resolve_weight_profile(raw: dict[str, Any], profile: str) -> dict[str, float] | None:
     """Select a weight profile from raw config, supporting legacy flat dicts."""
@@ -172,7 +168,6 @@ def _resolve_weight_profile(raw: dict[str, Any], profile: str) -> dict[str, floa
         return raw  # Backward compatible single-profile
 
     return None
-
 
 def load_weights(output_dir: Path) -> dict[str, float]:
     """
@@ -213,7 +208,6 @@ def load_weights(output_dir: Path) -> dict[str, float]:
         json.dump(DEFAULT_WEIGHTS, wf, indent=2)
     print(f"Initialized default weights: {weights_file}")
     return DEFAULT_WEIGHTS.copy()
-
 
 def generate_roadmap_badges(tasks: list) -> dict[str, dict[str, Any]]:
     """Generate badge data for roadmap tasks."""
@@ -288,7 +282,6 @@ def generate_roadmap_badges(tasks: list) -> dict[str, dict[str, Any]]:
     }
 
     return badges
-
 
 def generate_deferred_badges(summary: dict[str, Any]) -> dict[str, dict[str, Any]]:
     """Generate badge data for deferred items (raw counts + weighted + trend if provided)."""
@@ -400,7 +393,6 @@ def generate_deferred_badges(summary: dict[str, Any]) -> dict[str, dict[str, Any
     }
 
     return badges
-
 
 def scan_repository_for_deferred(
     repo_root: Path, weights: dict[str, float]
@@ -521,7 +513,6 @@ def scan_repository_for_deferred(
         "files": file_counts,
     }
 
-
 def generate_build_badge() -> dict[str, Any]:
     """Generate a build status badge placeholder (actual status from CI)."""
     # This is a static badge; actual build status comes from GitHub Actions badge
@@ -532,7 +523,6 @@ def generate_build_badge() -> dict[str, Any]:
         "message": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "color": "informational",
     }
-
 
 def main():
     """Main entry point."""
@@ -692,7 +682,6 @@ def main():
     with open(top_md_file, "w") as f:
         f.write("\n".join(lines) + "\n")
     print(f"Generated: {top_md_file} (markdown table)")
-
 
 if __name__ == "__main__":
     main()

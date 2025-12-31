@@ -35,7 +35,6 @@ from rich.console import Console
 
 console = Console()
 
-
 @dataclass
 class PhaseNode:
     """Represents a phase in the development (chapter/section/theorem)."""
@@ -47,7 +46,6 @@ class PhaseNode:
     node_type: str
     properties: dict[str, Any] = field(default_factory=dict)
 
-
 @dataclass
 class PhaseEdge:
     """Represents a dependency/link between phases."""
@@ -56,7 +54,6 @@ class PhaseEdge:
     target: str
     edge_type: str  # 'contains', 'depends_on', 'links_to', 'witness'
     properties: dict[str, Any] = field(default_factory=dict)
-
 
 class PhaseDiagramGenerator:
     """Generates phase diagrams from test suite structure."""
@@ -324,7 +321,6 @@ class PhaseDiagramGenerator:
         output_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
         console.print(f"[green]✓[/green] JSON export written to {output_path}")
 
-
 def main() -> None:
     """Main entry point."""
     import argparse
@@ -393,7 +389,6 @@ def main() -> None:
         generator.export_json(json_path)
 
     console.print("[bold green]✓ Phase diagram generation complete![/bold green]")
-
 
 if __name__ == "__main__":
     main()

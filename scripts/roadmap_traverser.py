@@ -16,7 +16,6 @@ from dataclasses import dataclass, asdict
 from enum import Enum
 from pathlib import Path
 
-
 class Status(Enum):
     """Roadmap step status."""
     NOT_STARTED = "not-started"
@@ -24,7 +23,6 @@ class Status(Enum):
     BLOCKED = "blocked"
     COMPLETED = "completed"
     DEFERRED = "deferred"
-
 
 @dataclass
 class RoadmapStep:
@@ -52,7 +50,6 @@ class RoadmapStep:
         d['status'] = self.status.value
         return d
 
-
 @dataclass
 class StepChecklist:
     """Checklist for a roadmap step."""
@@ -77,7 +74,6 @@ class StepChecklist:
             'estimated_effort': self.estimated_effort,
             'priority': self.priority,
         }
-
 
 class RoadmapTraverser:
     """Agent for traversing and processing roadmap steps."""
@@ -332,7 +328,6 @@ class RoadmapTraverser:
         
         return report
 
-
 def main():
     """Main execution."""
     print("=" * 70)
@@ -383,7 +378,6 @@ def main():
     
     print(f"\n✓ Full report saved to: {output_path}")
     print(f"{'─' * 70}\n")
-
 
 if __name__ == '__main__':
     main()

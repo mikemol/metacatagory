@@ -15,7 +15,6 @@ REPO_ROOT = Path(__file__).parent.parent
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
 OUTPUT_MD = REPO_ROOT / "build" / "reports" / "tasks_enriched.md"
 
-
 def format_list(items: List[str], indent: int = 0) -> str:
     """Format a list of items as Markdown bullet points."""
     if not items:
@@ -25,7 +24,6 @@ def format_list(items: List[str], indent: int = 0) -> str:
     for item in items:
         result.append(f"{'  ' * indent}- {item}")
     return "\n".join(result) + "\n"
-
 
 def format_evidence(evidence: List[Dict], indent: int = 0) -> str:
     """Format evidence snippets with source attribution."""
@@ -42,7 +40,6 @@ def format_evidence(evidence: List[Dict], indent: int = 0) -> str:
         result.append(f"{'  ' * (indent + 1)}> {text}")
     
     return "\n".join(result) + "\n"
-
 
 def format_scope(scope: Dict, indent: int = 0) -> str:
     """Format scope in/out boundaries."""
@@ -64,7 +61,6 @@ def format_scope(scope: Dict, indent: int = 0) -> str:
             result.append(f"{'  ' * (indent + 1)}- {item}")
     
     return "\n".join(result) + "\n"
-
 
 def format_task_section(item: Dict, idx: int) -> str:
     """Format a single task as a Markdown section."""
@@ -270,7 +266,6 @@ def format_task_section(item: Dict, idx: int) -> str:
     
     return "\n".join(lines)
 
-
 def export_enriched_markdown() -> None:
     """Main export function."""
     if not ENRICHED_JSON.exists():
@@ -367,7 +362,6 @@ def export_enriched_markdown() -> None:
         f.write("\n".join(lines))
     
     print(f"✓ Wrote enriched digest to {OUTPUT_MD} ({len(lines)} lines)")
-
 
 if __name__ == "__main__":
     export_enriched_markdown()

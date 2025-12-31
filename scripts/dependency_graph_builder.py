@@ -14,7 +14,6 @@ from typing import Dict, List, Set, Tuple
 from dataclasses import dataclass, field
 from collections import defaultdict, deque
 
-
 @dataclass
 class DependencyNode:
     """Represents a node in the dependency graph."""
@@ -25,7 +24,6 @@ class DependencyNode:
     
     def __hash__(self):
         return hash(self.module_name)
-
 
 class DependencyGraphBuilder:
     """Builds and analyzes module dependency graphs."""
@@ -402,7 +400,6 @@ class DependencyGraphBuilder:
         
         print("\n" + "="*70)
 
-
 def main():
     """Main entry point."""
     print("="*70)
@@ -421,7 +418,6 @@ def main():
     builder.generate_report()
     
     print("\n✓ Dependency graph analysis complete!")
-
 
 if __name__ == '__main__':
     main()

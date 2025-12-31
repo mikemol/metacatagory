@@ -22,7 +22,6 @@ from typing import Dict, List, Set, Tuple
 
 REPO_ROOT = Path(__file__).parent.parent
 
-
 def validate_descriptions(items: List[Dict]) -> Tuple[List[Dict], int, List[str]]:
     """Verify every item has a description.
     
@@ -44,7 +43,6 @@ def validate_descriptions(items: List[Dict]) -> Tuple[List[Dict], int, List[str]
             
     return items, missing, missing_ids
 
-
 def load_canonical_json() -> List[Dict]:
     """Load canonical roadmap from JSON (supports list or {items:[...]})."""
     json_path = REPO_ROOT / "build" / "canonical_roadmap.json"
@@ -63,7 +61,6 @@ def load_canonical_json() -> List[Dict]:
     
     print("✗ Unexpected JSON shape in canonical_roadmap.json")
     return []
-
 
 def load_roadmap_markdown() -> Tuple[List[str], List[Dict]]:
     """Extract roadmap item IDs and frontmatter from ROADMAP.md."""
@@ -98,7 +95,6 @@ def load_roadmap_markdown() -> Tuple[List[str], List[Dict]]:
         ids.add(match.group(1))
     
     return sorted(ids), frontmatter_items
-
 
 def validate_json_to_markdown(json_items: List[Dict], md_ids: List[str], md_frontmatter: List[Dict]) -> Tuple[bool, str]:
     """Validate JSON items match markdown IDs."""
@@ -177,7 +173,6 @@ def validate_json_to_markdown(json_items: List[Dict], md_ids: List[str], md_fron
     
     return valid, "\n".join(messages)
 
-
 def validate_item_content(json_items: List[Dict]) -> Tuple[bool, str]:
     """Validate required fields in JSON items."""
     messages = []
@@ -210,7 +205,6 @@ def validate_item_content(json_items: List[Dict]) -> Tuple[bool, str]:
         messages.append(f"✓ All items have required fields")
     
     return valid, "\n".join(messages)
-
 
 def main():
     """Run triangle identity validation."""
@@ -272,7 +266,6 @@ def main():
     else:
         print("✗ Some validations failed")
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()

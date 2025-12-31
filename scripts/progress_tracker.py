@@ -11,7 +11,6 @@ from datetime import datetime
 from typing import Dict, List, Optional
 from pathlib import Path
 
-
 class ProgressTracker:
     """Track progress on roadmap steps."""
     
@@ -123,7 +122,6 @@ class ProgressTracker:
         
         return report
 
-
 def main():
     """Example usage."""
     tracker = ProgressTracker()
@@ -145,7 +143,6 @@ def main():
     
     tracker.generate_progress_report('build/roadmap_progress_report.json')
     print("\n✓ Progress report saved")
-
 
 if __name__ == '__main__':
     main()

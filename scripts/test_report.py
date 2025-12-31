@@ -49,7 +49,6 @@ MODULE_RE = re.compile(r"^\s*module\s+([A-Za-z0-9_.]+)\s+where\s*$")
 # Allow True/False variants some files use
 ALT_TRUE_RE = re.compile(r"\b(?:B\.)?true\b|\bTrue\b")
 
-
 def scan_file(path: Path) -> dict[str, Any]:
     adapters = []  # list of (name, type)
     statuses = 0
@@ -70,7 +69,6 @@ def scan_file(path: Path) -> dict[str, Any]:
         "status_assertions": statuses,
     }  # type: dict[str, Any]
 
-
 def summarize(file_reports: list[dict[str, Any]]) -> dict[str, Any]:
     total_status = sum(fr["status_assertions"] for fr in file_reports)
     adapter_counts = {}
@@ -82,7 +80,6 @@ def summarize(file_reports: list[dict[str, Any]]) -> dict[str, Any]:
         "total_status_assertions": total_status,
         "adapter_type_counts": adapter_counts,
     }  # type: dict[str, Any]
-
 
 def write_outputs(summary: dict[str, Any], out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -109,7 +106,6 @@ def write_outputs(summary: dict[str, Any], out_dir: Path) -> None:
         lines.append("")
     (out_dir / "test-report.md").write_text("\n".join(lines), encoding="utf-8")
 
-
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -133,7 +129,6 @@ def main() -> int:
     write_outputs(summary, out_dir)
     print(f"Wrote report to {out_dir}/test-report.(json|md)")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

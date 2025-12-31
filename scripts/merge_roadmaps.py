@@ -18,7 +18,6 @@ from typing import List, Dict
 def normalize_title(title: str) -> str:
     return re.sub(r"\W+", " ", title).strip().lower()
 
-
 def ensure_provenance(item: Dict) -> None:
     """Ensure each item carries at least one provenance marker."""
     src = item.get("source", "")
@@ -195,7 +194,6 @@ def deduplicate_by_id(items: List[Dict]) -> List[Dict]:
             seen[item_id] = item
     
     return list(seen.values())
-
 
 def merge_by_title(items: List[Dict]) -> List[Dict]:
     """Merge duplicates that share the same normalized title, preserving provenance.

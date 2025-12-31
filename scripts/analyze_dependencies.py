@@ -14,7 +14,6 @@ REPO_ROOT = Path(__file__).parent.parent
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
 CANONICAL_JSON = REPO_ROOT / "build" / "canonical_roadmap.json"
 
-
 def analyze_suggestions() -> None:
     """Analyze suggested dependencies."""
     if not ENRICHED_JSON.exists():
@@ -54,7 +53,6 @@ def analyze_suggestions() -> None:
     print("  python3 scripts/analyze_dependencies.py --promote")
     print("\nTo see a specific task's suggestions:")
     print("  python3 scripts/analyze_dependencies.py --task PHASE-IV.2")
-
 
 def promote_suggestions() -> None:
     """Promote selected suggestions to canonical dependsOn."""
@@ -100,7 +98,6 @@ def promote_suggestions() -> None:
     print("\nRun the pipeline again to see updated enrichment:")
     print("  make roadmap-all-enriched")
 
-
 def show_task_suggestions(task_id: str) -> None:
     """Show suggestions for a specific task."""
     if not ENRICHED_JSON.exists():
@@ -132,7 +129,6 @@ def show_task_suggestions(task_id: str) -> None:
     print(f"\nExisting dependencies ({len(item.get('dependsOn', []))}):")
     for dep_id in item.get("dependsOn", []):
         print(f"  - {dep_id}")
-
 
 if __name__ == "__main__":
     import sys

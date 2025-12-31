@@ -19,7 +19,6 @@ REPORT_MD = REPORT_DIR / "intake_coverage.md"
 
 ID_PATTERN = re.compile(r"\b(?:PHASE-[A-Za-z0-9.\-]+|ROADMAP-MD-\d+|GP-[A-Za-z0-9.\-]+)\b")
 
-
 def load_canonical_ids() -> Set[str]:
     if not CANONICAL_PATH.exists():
         CANONICAL_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -36,16 +35,13 @@ def load_canonical_ids() -> Set[str]:
                 ids.add(cleaned)
     return ids
 
-
 def iter_intake_files() -> Iterable[Path]:
     for path in INTAKE_DIR.rglob("*"):
         if path.is_file() and ".md" in path.name:
             yield path
 
-
 def relative(path: Path) -> str:
     return path.resolve().relative_to(ROOT).as_posix()
-
 
 def build_coverage(canonical_ids: Set[str], files: Iterable[Path]) -> Dict[str, List[str]]:
     coverage: Dict[str, List[str]] = defaultdict(list)
@@ -77,11 +73,9 @@ def build_coverage(canonical_ids: Set[str], files: Iterable[Path]) -> Dict[str, 
         "files_without_ids": sorted(files_without_ids),
     }
 
-
 def write_json_report(payload: dict) -> None:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     REPORT_JSON.write_text(json.dumps(payload, indent=2))
-
 
 def write_markdown_report(payload: dict, canonical_ids: Set[str]) -> None:
     coverage = payload["canonical_coverage"]
@@ -137,7 +131,6 @@ def write_markdown_report(payload: dict, canonical_ids: Set[str]) -> None:
 
     REPORT_MD.write_text("\n".join(lines))
 
-
 def main() -> None:
     canonical_ids = load_canonical_ids()
     files = list(iter_intake_files())
@@ -163,7 +156,6 @@ def main() -> None:
 
     write_json_report(report)
     write_markdown_report(report, canonical_ids)
-
 
 if __name__ == "__main__":
     main()

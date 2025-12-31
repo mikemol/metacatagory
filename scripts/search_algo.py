@@ -29,7 +29,6 @@ from typing import Any
 DECL_RE = re.compile(r'^\s*(?:record|data|postulate|module)\b.*$|^\s*constructor\s+[A-Za-z0-9_]+\b.*$', re.MULTILINE)
 NAME_CAPTURE_RE = re.compile(r'^\s*record\s+([A-Za-z0-9_]+)\b|^\s*constructor\s+([A-Za-z0-9_]+)\b')
 
-
 def index_paths(root: Path) -> list[dict[str, Any]]:
     files = sorted(root.rglob("*.agda"))
     entries: list[dict[str, Any]] = []
@@ -51,11 +50,9 @@ def index_paths(root: Path) -> list[dict[str, Any]]:
                 )
     return entries
 
-
 def query(entries: list[dict[str, Any]], q: str) -> list[dict[str, Any]]:
     ql = q.lower()
     return [e for e in entries if ql in e["text"].lower() or (e["name"] and ql in e["name"].lower())]
-
 
 def main() -> None:
     ap = argparse.ArgumentParser()
@@ -70,7 +67,6 @@ def main() -> None:
     matches: list[dict[str, Any]] = query(entries, args.q)
     for m in matches:
         print(f"{m['file']}:{m['line']}: {m['text']}")
-
 
 if __name__ == "__main__":
     main()

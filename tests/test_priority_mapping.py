@@ -21,7 +21,6 @@ from adopt_priority_strategies import (
     format_weights_json,
 )
 
-
 class TestPriorityMappingLogic(unittest.TestCase):
     """Test LOGIC LAYER: pure mapping functions"""
 
@@ -162,7 +161,6 @@ class TestPriorityMappingLogic(unittest.TestCase):
         with self.assertRaises(ValueError):
             agda_to_python_weights("nonexistent_strategy")
 
-
 class TestPriorityMappingFormat(unittest.TestCase):
     """Test FORMAT LAYER: serialization functions"""
 
@@ -203,7 +201,6 @@ class TestPriorityMappingFormat(unittest.TestCase):
         except TypeError as e:
             self.fail(f"Format should be JSON-serializable: {e}")
 
-
 class TestLogicFormatSeparation(unittest.TestCase):
     """Verify separation of concerns between logic and format layers"""
 
@@ -229,7 +226,6 @@ class TestLogicFormatSeparation(unittest.TestCase):
         # Pure assertions on logic, independent of format
         self.assertGreater(weights["fixme"], 1.0)
         self.assertLess(weights["postulate"], 1.0)
-
 
 if __name__ == "__main__":
     unittest.main()

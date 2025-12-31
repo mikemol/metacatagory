@@ -8,7 +8,6 @@ import re
 import sys
 from pathlib import Path
 
-
 def reconstruct_table_section(lines, start_idx):
     """
     Reconstruct a table from collapsed format.
@@ -52,7 +51,6 @@ def reconstruct_table_section(lines, start_idx):
         # Generic fallback
         return table_lines, i
 
-
 def reconstruct_formal_type_table(lines):
     """Reconstruct tables with Formal Type | Exegesis | Source pattern."""
     # Standard 3-column table
@@ -65,21 +63,17 @@ def reconstruct_formal_type_table(lines):
     # For now, preserve original format with minimal fixes
     return lines
 
-
 def reconstruct_ncell_table(lines):
     """Reconstruct n-Cell hierarchy tables."""
     return lines
-
 
 def reconstruct_categorical_table(lines):
     """Reconstruct categorical construction tables."""
     return lines
 
-
 def reconstruct_component_table(lines):
     """Reconstruct component/operation tables."""
     return lines
-
 
 def process_file(filepath):
     """Process a single markdown file to fix table corruption."""
@@ -109,7 +103,6 @@ def process_file(filepath):
     
     print(f"  ✓ Processed {filepath}")
 
-
 def main():
     intake_dir = Path("intake")
     
@@ -120,7 +113,6 @@ def main():
         process_file(filepath)
     
     print(f"\nProcessed {len(files)} files")
-
 
 if __name__ == "__main__":
     main()
