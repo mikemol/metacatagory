@@ -14,10 +14,6 @@ YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
-echo "# Deferred Items Report" > "$OUTPUT_FILE"
-echo "Generated on: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> "$OUTPUT_FILE"
-echo "" >> "$OUTPUT_FILE"
-
 # Initialize counters
 DEVIATION_LOG_COUNT=0
 POSTULATE_COUNT=0
@@ -49,15 +45,25 @@ search_pattern() {
     echo "Found **$count** instances:" >> "$OUTPUT_FILE"
     echo "" >> "$OUTPUT_FILE"
     
-    # Format results as markdown list with file links
+    # Format results as markdown list with file links (using asterisks for MD004 compliance)
     echo "$results" | while IFS=: read -r file line content; do
-        # Trim whitespace from content
+        # Trim whitespace from content and remove inner spaces in backticks
         content=$(echo "$content" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-        echo "- \`$file:$line\` — \`$content\`" >> "$OUTPUT_FILE"
+        # Remove space after/before backticks in inline code
+        content=$(echo "$content" | sed 's/` /`/g;s/ `/`/g')
+        echo "* \`$file:$line\` — \`$content\`" >> "$OUTPUT_FILE"
     done
     
     echo "" >> "$OUTPUT_FILE"
 }
+
+# Start with proper markdown heading (MD022: blank line before heading)
+{
+    echo "# Deferred Items Report"
+    echo ""
+    echo "Generated on: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+    echo ""
+} > "$OUTPUT_FILE"
 
 # Search for different types of deferred items
 echo -e "${YELLOW}Scanning for DeviationLog entries...${NC}"
@@ -75,20 +81,20 @@ search_pattern "PLANNED" "PLANNED Items" "PLANNED_COUNT"
 echo -e "${YELLOW}Scanning for FIXME items...${NC}"
 search_pattern "FIXME" "FIXME Items" "FIXME_COUNT"
 
-# Add summary section
-TOTAL=$((DEVIATION_LOG_COUNT + POSTULATE_COUNT + TODO_COUNT + PLANNED_COUNT + FIXME_COUNT))
-
-echo "## Summary" >> "$OUTPUT_FILE"
-echo "" >> "$OUTPUT_FILE"
-echo "| Category | Count |" >> "$OUTPUT_FILE"
-echo "|----------|-------|" >> "$OUTPUT_FILE"
-echo "| DeviationLog | $DEVIATION_LOG_COUNT |" >> "$OUTPUT_FILE"
-echo "| Postulates | $POSTULATE_COUNT |" >> "$OUTPUT_FILE"
-echo "| TODO | $TODO_COUNT |" >> "$OUTPUT_FILE"
-echo "| PLANNED | $PLANNED_COUNT |" >> "$OUTPUT_FILE"
-echo "| FIXME | $FIXME_COUNT |" >> "$OUTPUT_FILE"
-echo "| **Total** | **$TOTAL** |" >> "$OUTPUT_FILE"
-echo "" >> "$OUTPUT_FILE"
+# Add summary section (MD022: blank line before heading)
+{
+    echo ""
+    echo "## Summary"
+    echo ""
+    echo "| Category | Count |"
+    echo "|----------|-------|"
+    echo "| DeviationLog | $DEVIATION_LOG_COUNT |"
+    echo "| Postulates | $POSTULATE_COUNT |"
+    echo "| TODO | $TODO_COUNT |"
+    echo "| PLANNED | $PLANNED_COUNT |"
+    echo "| FIXME | $FIXME_COUNT |"
+    echo "| **Total** | **$((DEVIATION_LOG_COUNT + POSTULATE_COUNT + TODO_COUNT + PLANNED_COUNT + FIXME_COUNT))** |"
+} >> "$OUTPUT_FILE"
 
 # Generate JSON summary for programmatic access
 cat > "$SUMMARY_FILE" <<EOF

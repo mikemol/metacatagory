@@ -1,4 +1,9 @@
+
 # Roadmap Index
+
+## AUDAX: Agda Unified Document Algebra Initiative
+
+* [AUDAX.md](AUDAX.md): Unifies all document/reporting pipelines under a single, extensible algebra. Tracks scope, objectives, and migration status.
 
 Consolidated pointers to roadmap-shaped artifacts across the repo.
 

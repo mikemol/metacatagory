@@ -7,7 +7,9 @@ This roadmap is synthesized from tracked work items and structured roadmap steps
 ## Status Snapshot
 
 * Agda: 2.8.0 (project setting)
+
 * Docs regenerated via make docs
+
 * Deferred items tracked in DEFERRED-TRACKING.md
 
 ## How to Regenerate
@@ -19,24 +21,39 @@ make md-lint
 
 ## Notes
 
-This document appends structured roadmap steps and deferred snapshots at render time.
+This document is a projection from the canonical Agda index. To update:
+
+1. Edit canonical in src/agda/Plan/CIM/RoadmapIndex.agda
+
+2.
+3. Run `make roadmap-merge` to refresh build/canonical_roadmap.json
+
+4.
+5. Run `make roadmap-export-md` to regenerate this file
 
 ## Structured Roadmaps
 
 * **Provide algebraic structures...** — Enables formal treatment... [status: not-started]
 Target: `src/agda/Plan/CIM/Ambiguity.agda`
+
 * **Establish metric structures...** — Enables quantitative... [status: not-started]
 Target: `src/agda/Plan/CIM/Metricization.agda`
+
 * **Define compositional...** — Enables systematic... [status: not-started]
 Target: `src/agda/Plan/CIM/TransformationSystem.agda`
+
 * **Implement functorial mappings...** — Enables formal... [status: not-started]
 Target: `src/agda/Plan/CIM/FunctorialConstructs.agda`
+
 * **Integrate 2D gating logic...** — Enables composable phase space... [status: not-started]
 Target: `src/agda/Plan/CIM/Elasticity.agda`
+
 * **Implement topological inflation...** — Enables composable category expansion... [status: not-started]
 Target: `src/agda/Plan/CIM/PolytopeExpansion.agda`
+
 * **Implement Mitosis Engine...** — Enables dynamic... [status: not-started]
 Target: `nedge_topology/mitosis.py`
+
 * **Integrate Earley parsing...** — Enables composable geometric... [status: not-started]
 Target: `nedge_topology/parser.py`
 

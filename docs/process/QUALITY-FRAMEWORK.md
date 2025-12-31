@@ -15,6 +15,7 @@ Every claim has a constructive witness; nothing is postulated without justificat
 Examples:
 
 * Agda proof obligations must be satisfied
+
 * Algorithms carry complexity witnesses
 
 ### Correct (C)
@@ -24,6 +25,7 @@ Specifications match implementations; invariants are preserved
 Examples:
 
 * UniversalProperties match AlgebraicStructures via adapters
+
 * Phase composition respects associativity
 
 ### Complete (C)
@@ -33,6 +35,7 @@ All covered concepts are fully developed; no truncated fragments
 Examples:
 
 * Framework definitions include all 6 frameworks (not partial)
+
 * Gap analysis identifies all symmetric differences
 
 ### Concrete (C)
@@ -42,6 +45,7 @@ Abstractions are grounded in concrete algorithms and data structures
 Examples:
 
 * Universal properties realized as field algorithms
+
 * Phases execute as actual transformations
 
 ### Meticulous (M)
@@ -51,6 +55,7 @@ Care taken with edge cases, termination, and resource bounds
 Examples:
 
 * Complexity analysis includes worst-case bounds
+
 * Termination proofs for recursive structures
 
 ### Coherent (C)
@@ -60,6 +65,7 @@ All components integrate coherently; no contradictions or gaps
 Examples:
 
 * Category laws verified for PhaseCategory
+
 * Emergent metrics consistent across induction layers
 
 ---

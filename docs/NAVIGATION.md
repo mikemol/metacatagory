@@ -36,11 +36,11 @@ This document provides a high-level map of the repository's documentation and co
 
 ## Automation & Scripts
 
-.github/scripts/README.md: Automation philosophy, metric functor, topology visualizer, debt surveyor, and Makefile targets.
+* .github/scripts/README.md: Automation philosophy, metric functor, topology visualizer, debt surveyor, and Makefile targets.
 
 ## Generated Reports
 
-.github/badges/top-offenders.md: Technical debt offenders report.
+* .github/badges/top-offenders.md: Technical debt offenders report.
 
 ## Navigation Tips
 

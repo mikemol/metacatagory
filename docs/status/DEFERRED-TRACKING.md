@@ -7,8 +7,11 @@ Tracks deferred work items identified during the Agda 2.8.0 migration and refact
 Source: deferred-summary.json (auto-generated)
 
 * Totals: 567 items
+
 * Postulates: 351
+
 * TODOs: 155
+
 * Other markers (FIXME/HACK/etc.): 61
 
 ## Tracking Strategy
@@ -18,37 +21,56 @@ Source: deferred-summary.json (auto-generated)
 Items blocking core functionality or Plan.CIM completion.
 
 * [ ] CHIPCoreRecompose.agda (8-line stub); blocked by Core re-enable
-  Effort: 100-150 lines; Timeline: after Core restored; Ref: ROADMAP.md Phase 2.1
+
+Effort: 100-150 lines; Timeline: after Core restored; Ref: ROADMAP.md Phase 2.1
+
 * [ ] PandocProtocols.agda stubs (blockAmb, blockTransSys, blockCoherence, docAmb, docTransSys, docCoherence)
-  Effort: 50-100 lines semantic impls; Ref: ROADMAP.md Phase 2.3
+
+Effort: 50-100 lines semantic impls; Ref: ROADMAP.md Phase 2.3
+
 * [ ] CHIPConformance.agda stubs (makeSPPFNode, composeBraids refinement)
-  Effort: 50-80 lines; Ref: ROADMAP.md Phase 2.3
+
+Effort: 50-80 lines; Ref: ROADMAP.md Phase 2.3
+
 * [ ] Core.disabled/ modules (23 modules)
-  Phase theory, categorical foundations, adjunction/limits; Effort: 1-2 weeks; Ref: ROADMAP.md Phase 3.2
+
+Phase theory, categorical foundations, adjunction/limits; Effort: 1-2 weeks; Ref: ROADMAP.md Phase 3.2
+
 * [ ] Algebra.disabled/ subset (for Core deps)
-  Groups/rings/modules/fields; Effort: 3-5 days; Ref: ROADMAP.md Phase 3.2
+
+Groups/rings/modules/fields; Effort: 3-5 days; Ref: ROADMAP.md Phase 3.2
 
 ### Medium-Priority Deferred Items
 
 Improves functionality but not blocking major milestones.
 
 * [ ] Examples.disabled/ modules (13 modules)
-  TechnicalDebtRegistry and demonstration examples; Effort: 1-3 days/module; Ref: ROADMAP.md Phase 3.1
+
+TechnicalDebtRegistry and demonstration examples; Effort: 1-3 days/module; Ref: ROADMAP.md Phase 3.1
+
 * [ ] Plan.CIM integration tests
-  E2E transformation pipeline, grammar conformance, proof export; Effort: 100-150 lines; Ref: ROADMAP.md Phase 2.2
+
+E2E transformation pipeline, grammar conformance, proof export; Effort: 100-150 lines; Ref: ROADMAP.md Phase 2.2
+
 * [ ] Plan.CIM documentation
-  Architecture/API/tutorials; Effort: 1-2 days; Ref: ROADMAP.md Phase 4.1
+
+Architecture/API/tutorials; Effort: 1-2 days; Ref: ROADMAP.md Phase 4.1
 
 ### Low-Priority Deferred Items
 
 Nice-to-have improvements, cleanup, or exploratory work.
 
 * [ ] Utility-broken.agda recovery
-  Extract 77 roadmap examples; fix syntax; merge into Plan.CIM.Utility.agda; Effort: 4-6 hours; Ref: intake/refactoring-roadmap-migration.md
+
+Extract 77 roadmap examples; fix syntax; merge into Plan.CIM.Utility.agda; Effort: 4-6 hours; Ref: intake/refactoring-roadmap-migration.md
+
 * [ ] Script modernization
-  Python 3.10+ features, type hints, error handling; Effort: 2-3 days; Ref: scripts/
+
+Python 3.10+ features, type hints, error handling; Effort: 2-3 days; Ref: scripts/
+
 * [ ] CHIP protocol semantic enrichment
-  Ambiguity detection, transformation metrics, coherence validation; Research 1-2 weeks; Deferred to ROADMAP-DRAFT.md
+
+Ambiguity detection, transformation metrics, coherence validation; Research 1-2 weeks; Deferred to ROADMAP-DRAFT.md
 
 ## Deferred Item Sources
 
@@ -88,21 +110,29 @@ Other markers (61):
 ### Adding New Deferred Items
 
 * Add inline marker: -- TODO: [category] description or postulate name : Type
+
 * Run make deferred-items to refresh deferred-summary.json
+
 * If high/medium priority, add to sections above
+
 * Reference ROADMAP.md if it blocks a phase
 
 ### Resolving Deferred Items
 
 * Remove marker or replace postulate with implementation
+
 * Run make deferred-items to refresh counts
+
 * Check off item in this document
+
 * Update ROADMAP.md if a milestone is unblocked
 
 ### Periodic Review
 
 * Weekly: review high-priority items and blockers
+
 * Monthly: reprioritize medium/low items
+
 * Per milestone: regenerate deferred-summary.json and verify counts
 
 ## Tools
@@ -137,8 +167,11 @@ make Flag Unannotated Technical Debt
 ## Cross-References
 
 * Primary roadmap: ROADMAP.md
+
 * Worklog: intake/refactoring-roadmap-migration.md
+
 * Generated data: deferred-summary.json (gitignored)
+
 * Build tasks: .vscode/tasks.json
 
 ## Status Snapshot

@@ -1,7 +1,3 @@
-# Makefile targets (witness)
-
-This table is the human-readable witness for the Makefile triangle identity: the generated Makefile, its regeneration source, and this documentation must agree on the public targets.
-
 | Target | Description |
 | :--- | :--- |
 | `regen-makefile` | Regenerate the Makefile from Agda source (Self-Hosting) |
@@ -20,7 +16,7 @@ This table is the human-readable witness for the Makefile triangle identity: the
 | `docs-modules` | Generate per-module markdown documentation |
 | `docs-all` | Generate documentation (markdown only) |
 | `node-deps` | Install Node.js dependencies |
-| `deferred-items` | Scan for TODOs and FIXMEs |
+| `deferred-items` | Scan for TODOs and FIXMEs (Agda FFI binary) |
 | `roadmap-index` | Compile Roadmap Index |
 | `roadmap-sync` | Sync roadmap with external tracker |
 | `roadmap-sppf` | Compile Roadmap SPPF |

@@ -14,9 +14,9 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp400|Plan/CIM/IngestedRoadmaps/Corrections.agda",
-            "ROADMAP-MD-1|ROADMAP.md"
-        ]
+            "GP-Gp400|Plan/CIM/IngestedRoadmaps/Corrections.agda"
+        ],
+        "description": "Introduces the concept of 'Elasticity of Meaning' by separating internal tension (creativity) from external resonance (relevance) in parsing, enabling a 2D decision logic for semantic acceptance or pruning."
     },
     {
         "id": "GP-Gp500",
@@ -33,9 +33,9 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp500|Plan/CIM/IngestedRoadmaps/Corrections.agda",
-            "ROADMAP-MD-2|ROADMAP.md"
-        ]
+            "GP-Gp500|Plan/CIM/IngestedRoadmaps/Corrections.agda"
+        ],
+        "description": "Formalizes 'Dimensional Relief' by inflating the symmetry group of crowded semantic categories, reducing internal tension through higher-dimensional polytopes and redistributing meaning."
     },
     {
         "id": "GP-Gp501",
@@ -52,9 +52,9 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp501|Plan/CIM/IngestedRoadmaps/Corrections.agda",
-            "ROADMAP-MD-3|ROADMAP.md"
-        ]
+            "GP-Gp501|Plan/CIM/IngestedRoadmaps/Corrections.agda"
+        ],
+        "description": "Establishes the 'Polytope Manifest' and the Mitosis Engine, which dynamically upgrades categories to polytopes when semantic tension is high, automating topological inflation in the parser."
     },
     {
         "id": "GP-Gp800",
@@ -71,9 +71,9 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp800|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-4|ROADMAP.md"
-        ]
+            "GP-Gp800|Plan/CIM/IngestedRoadmaps/Analysis.agda"
+        ],
+        "description": "Identifies missing morphisms in the system, specifically the Yoneda embedding and Braided SPPF, and proposes their integration to capture contextual and topological meaning."
     },
     {
         "id": "GP-Gp801",
@@ -90,9 +90,9 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp801|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-5|ROADMAP.md"
-        ]
+            "GP-Gp801|Plan/CIM/IngestedRoadmaps/Analysis.agda"
+        ],
+        "description": "Explains the emergence of exterior algebra in the parser, combining Yoneda embeddings (context) and braiding (topology) to enable wedge-product reasoning and orientation-aware parsing."
     },
     {
         "id": "GP-Gp802",
@@ -109,9 +109,9 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp802|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-6|ROADMAP.md"
-        ]
+            "GP-Gp802|Plan/CIM/IngestedRoadmaps/Analysis.agda"
+        ],
+        "description": "Connects algebraic and geometric perspectives by relating paths, surfaces, and polytopes to code components, and introduces curvature (holonomy) as a measure of semantic discrepancy."
     },
     {
         "id": "GP-Gp803",
@@ -128,9 +128,9 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp803|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-7|ROADMAP.md"
-        ]
+            "GP-Gp803|Plan/CIM/IngestedRoadmaps/Analysis.agda"
+        ],
+        "description": "Operationalizes exterior algebra in the system, distinguishing between derivational paths and contextual surfaces, and introduces holonomy checks and holographic induction for rule synthesis."
     },
     {
         "id": "GP-Gp804",
@@ -147,9 +147,9 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp804|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-8|ROADMAP.md"
-        ]
+            "GP-Gp804|Plan/CIM/IngestedRoadmaps/Analysis.agda"
+        ],
+        "description": "Highlights the need for homological algebra in the parser, specifically chain complexes and boundary operators, to ensure logical validity and detect global semantic inconsistencies."
     },
     {
         "id": "GP-Gp805",
@@ -166,9 +166,9 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp805|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-9|ROADMAP.md"
-        ]
+            "GP-Gp805|Plan/CIM/IngestedRoadmaps/Analysis.agda"
+        ],
+        "description": "Describes the discovery of 'dark matter' in the semantic manifold via abductive reasoning, using homology to predict missing concepts and synthesize hypothetical vectors for knowledge gaps."
     },
     {
         "id": "GP-Gp806",
@@ -185,9 +185,9 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp806|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-10|ROADMAP.md"
-        ]
+            "GP-Gp806|Plan/CIM/IngestedRoadmaps/Analysis.agda"
+        ],
+        "description": "Details the geometry of inference through symmetry completion, enabling the parser to infer 'ghost vertices' and complete orbits in upgraded symmetry groups, automating structural generalization."
     },
     {
         "id": "GP-Gp807",
@@ -204,8 +204,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp807|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-11|ROADMAP.md"
+            "GP-Gp807|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -223,8 +222,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp808|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-12|ROADMAP.md"
+            "GP-Gp808|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -242,8 +240,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp809|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-13|ROADMAP.md"
+            "GP-Gp809|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -261,8 +258,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp810|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-14|ROADMAP.md"
+            "GP-Gp810|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -280,8 +276,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp811|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-15|ROADMAP.md"
+            "GP-Gp811|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -299,8 +294,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp812|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-16|ROADMAP.md"
+            "GP-Gp812|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -318,8 +312,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp813|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-17|ROADMAP.md"
+            "GP-Gp813|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -337,8 +330,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp814|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-18|ROADMAP.md"
+            "GP-Gp814|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -356,8 +348,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp815|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-19|ROADMAP.md"
+            "GP-Gp815|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -375,8 +366,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp816|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-20|ROADMAP.md"
+            "GP-Gp816|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -394,8 +384,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp817|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-21|ROADMAP.md"
+            "GP-Gp817|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -413,8 +402,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp818|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-22|ROADMAP.md"
+            "GP-Gp818|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -432,8 +420,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp819|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-23|ROADMAP.md"
+            "GP-Gp819|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -451,8 +438,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp820|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-24|ROADMAP.md"
+            "GP-Gp820|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -470,8 +456,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp821|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-25|ROADMAP.md"
+            "GP-Gp821|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -489,8 +474,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp822|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-26|ROADMAP.md"
+            "GP-Gp822|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -508,8 +492,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp823|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-27|ROADMAP.md"
+            "GP-Gp823|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -527,8 +510,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp824|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-28|ROADMAP.md"
+            "GP-Gp824|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -546,8 +528,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp825|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-29|ROADMAP.md"
+            "GP-Gp825|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -565,8 +546,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp826|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-30|ROADMAP.md"
+            "GP-Gp826|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -584,8 +564,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp827|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-31|ROADMAP.md"
+            "GP-Gp827|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -603,8 +582,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp828|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-32|ROADMAP.md"
+            "GP-Gp828|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -622,8 +600,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp829|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-33|ROADMAP.md"
+            "GP-Gp829|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -641,8 +618,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp830|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-34|ROADMAP.md"
+            "GP-Gp830|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -660,8 +636,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp831|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-35|ROADMAP.md"
+            "GP-Gp831|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -679,8 +654,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp832|Plan/CIM/IngestedRoadmaps/Analysis.agda",
-            "ROADMAP-MD-36|ROADMAP.md"
+            "GP-Gp832|Plan/CIM/IngestedRoadmaps/Analysis.agda"
         ]
     },
     {
@@ -698,8 +672,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp699|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-37|ROADMAP.md"
+            "GP-Gp699|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -717,8 +690,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp700|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-38|ROADMAP.md"
+            "GP-Gp700|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -736,8 +708,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp701|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-39|ROADMAP.md"
+            "GP-Gp701|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -755,8 +726,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp702|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-40|ROADMAP.md"
+            "GP-Gp702|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -774,8 +744,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp703|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-41|ROADMAP.md"
+            "GP-Gp703|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -793,8 +762,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp704|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-42|ROADMAP.md"
+            "GP-Gp704|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -812,8 +780,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp705|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-43|ROADMAP.md"
+            "GP-Gp705|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -831,8 +798,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp706|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-44|ROADMAP.md"
+            "GP-Gp706|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -850,8 +816,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp707|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-45|ROADMAP.md"
+            "GP-Gp707|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -869,8 +834,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp708|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-46|ROADMAP.md"
+            "GP-Gp708|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -888,8 +852,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp709|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-47|ROADMAP.md"
+            "GP-Gp709|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -907,8 +870,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp710|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-48|ROADMAP.md"
+            "GP-Gp710|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -926,8 +888,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp711|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-49|ROADMAP.md"
+            "GP-Gp711|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -945,8 +906,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp712|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-50|ROADMAP.md"
+            "GP-Gp712|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -964,8 +924,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp713|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-51|ROADMAP.md"
+            "GP-Gp713|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -983,8 +942,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp714|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
-            "ROADMAP-MD-52|ROADMAP.md"
+            "GP-Gp714|Plan/CIM/IngestedRoadmaps/Polytopes.agda"
         ]
     },
     {
@@ -1002,8 +960,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp01|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-53|ROADMAP.md"
+            "GP-Gp01|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1021,8 +978,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp010|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-54|ROADMAP.md"
+            "GP-Gp010|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1040,8 +996,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp02|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-55|ROADMAP.md"
+            "GP-Gp02|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1059,8 +1014,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp03|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-56|ROADMAP.md"
+            "GP-Gp03|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1078,8 +1032,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp04|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-57|ROADMAP.md"
+            "GP-Gp04|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1097,8 +1050,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp05|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-58|ROADMAP.md"
+            "GP-Gp05|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1116,8 +1068,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp06|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-59|ROADMAP.md"
+            "GP-Gp06|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1135,8 +1086,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp07|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-60|ROADMAP.md"
+            "GP-Gp07|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1154,8 +1104,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp09|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-61|ROADMAP.md"
+            "GP-Gp09|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1173,8 +1122,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp100|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-62|ROADMAP.md"
+            "GP-Gp100|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1192,8 +1140,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp101|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-63|ROADMAP.md"
+            "GP-Gp101|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1211,8 +1158,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp102|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-64|ROADMAP.md"
+            "GP-Gp102|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1230,8 +1176,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp103|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-65|ROADMAP.md"
+            "GP-Gp103|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1249,8 +1194,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp104|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-66|ROADMAP.md"
+            "GP-Gp104|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1268,8 +1212,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp105|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-67|ROADMAP.md"
+            "GP-Gp105|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1287,8 +1230,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp106|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-68|ROADMAP.md"
+            "GP-Gp106|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1306,8 +1248,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp107|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-69|ROADMAP.md"
+            "GP-Gp107|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1325,8 +1266,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp108|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-70|ROADMAP.md"
+            "GP-Gp108|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1344,8 +1284,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp109|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-71|ROADMAP.md"
+            "GP-Gp109|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1363,8 +1302,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp110|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-72|ROADMAP.md"
+            "GP-Gp110|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1382,8 +1320,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp111|Plan/CIM/IngestedRoadmaps/Foundation.agda",
-            "ROADMAP-MD-73|ROADMAP.md"
+            "GP-Gp111|Plan/CIM/IngestedRoadmaps/Foundation.agda"
         ]
     },
     {
@@ -1401,8 +1338,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp200|Plan/CIM/IngestedRoadmaps/Geometry.agda",
-            "ROADMAP-MD-74|ROADMAP.md"
+            "GP-Gp200|Plan/CIM/IngestedRoadmaps/Geometry.agda"
         ]
     },
     {
@@ -1420,8 +1356,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp201|Plan/CIM/IngestedRoadmaps/Geometry.agda",
-            "ROADMAP-MD-75|ROADMAP.md"
+            "GP-Gp201|Plan/CIM/IngestedRoadmaps/Geometry.agda"
         ]
     },
     {
@@ -1439,8 +1374,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp300|Plan/CIM/IngestedRoadmaps/Geometry.agda",
-            "ROADMAP-MD-76|ROADMAP.md"
+            "GP-Gp300|Plan/CIM/IngestedRoadmaps/Geometry.agda"
         ]
     },
     {
@@ -1458,8 +1392,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp302|Plan/CIM/IngestedRoadmaps/Geometry.agda",
-            "ROADMAP-MD-77|ROADMAP.md"
+            "GP-Gp302|Plan/CIM/IngestedRoadmaps/Geometry.agda"
         ]
     },
     {
@@ -1477,107 +1410,7 @@
         "dependsOn": [],
         "related": [],
         "provenance": [
-            "GP-Gp303|Plan/CIM/IngestedRoadmaps/Geometry.agda",
-            "ROADMAP-MD-78|ROADMAP.md"
-        ]
-    },
-    {
-        "id": "PARAM-ALG-1",
-        "title": "Parameterize remaining Core.AlgebraicAlgorithms consumers",
-        "status": "not-started",
-        "category": "TechDebt",
-        "source": "intake/parameterization-buffer.md",
-        "files": [
-            "src/agda/Core/AlgorithmUniversality.agda",
-            "src/agda/Core/AlgorithmCorrectness.agda",
-            "src/agda/Core/ConstructiveWitnesses.agda",
-            "src/agda/Core/Algorithms/Bundle.agda",
-            "src/agda/Core/Algorithms/External.agda",
-            "src/agda/Core/Algorithms/FiniteFields.agda",
-            "src/agda/Core/Algorithms/FunctionFields.agda",
-            "src/agda/Core/Algorithms/NumberFields.agda",
-            "src/agda/Core/Algorithms/Registry.agda",
-            "src/agda/Algebra/Index.agda",
-            "src/agda/Examples/AlgorithmCorrectnessExamples.agda",
-            "src/agda/Examples/AutomaticEvidenceDemo.agda",
-            "src/agda/Examples/ConstructiveWitnessExamples.agda",
-            "src/agda/Examples/FunctionField/F2x.agda",
-            "src/agda/Examples/LazyHybridDemo.agda",
-            "src/agda/Examples/NumberField/Sqrt2.agda",
-            "src/agda/Tests/DispatchBehaviorTests.agda",
-            "src/agda/Tests/SerializationTests.agda",
-            "src/agda/Tests/PhaseExamples.agda",
-            "src/agda/Tests/UniversalPropertyTests.agda",
-            "src/agda/Tests/ErrorAsSpecificationTests.agda",
-            "src/agda/Tests/AdvancedPhaseExamples.agda",
-            "src/agda/Tests/AlgorithmCompositionTests.agda",
-            "src/agda/Tests/AlgorithmSmokeTests.agda",
-            "src/agda/Tests/PerformanceBoundaryTests.agda",
-            "src/agda/Tests/WarningAggregatorsTest.agda",
-            "src/agda/Tests/ErrorHandlingTests.agda",
-            "src/agda/Tests/WitnessConstructionTests.agda",
-            "src/agda/Tests/ConstructiveWitnessTests.agda",
-            "src/agda/Core/AlgebraicAlgorithms.agda",
-            "src/agda/Plan/CIM/FrameworkMetadata.agda"
-        ],
-        "tags": [
-            "parameterization",
-            "Core.AlgebraicAlgorithms"
-        ],
-        "dependsOn": [
-            "PHASE-II.2"
-        ],
-        "related": [],
-        "provenance": [
-            "PARAM-ALG-1|intake/parameterization-buffer.md",
-            "ROADMAP-MD-79|ROADMAP.md"
-        ]
-    },
-    {
-        "id": "PARAM-GROWTH-1",
-        "title": "Adopt GrowthAnalysis parameterization beyond tests",
-        "status": "not-started",
-        "category": "TechDebt",
-        "source": "intake/parameterization-buffer.md",
-        "files": [
-            "src/agda/Tests/PerformanceBoundaryTests.agda"
-        ],
-        "tags": [
-            "parameterization",
-            "GrowthAnalysis"
-        ],
-        "dependsOn": [
-            "PHASE-II.2",
-            "ROADMAP-MD-DEP-PHASE-II.2"
-        ],
-        "related": [],
-        "provenance": [
-            "PARAM-GROWTH-1|intake/parameterization-buffer.md",
-            "ROADMAP-MD-80|ROADMAP.md"
-        ]
-    },
-    {
-        "id": "PRIO-ADOPT-1",
-        "title": "Adopt TechnicalDebt.Priorities strategies in tooling",
-        "status": "not-started",
-        "category": "TechDebt",
-        "source": "intake/parameterization-buffer.md",
-        "files": [
-            "scripts/generate-badges.py",
-            "scripts/flag_unannotated_debt.py"
-        ],
-        "tags": [
-            "priorities",
-            "technical-debt"
-        ],
-        "dependsOn": [
-            "PHASE-II.2",
-            "ROADMAP-MD-DEP-PHASE-II.2"
-        ],
-        "related": [],
-        "provenance": [
-            "PRIO-ADOPT-1|intake/parameterization-buffer.md",
-            "ROADMAP-MD-81|ROADMAP.md"
+            "GP-Gp303|Plan/CIM/IngestedRoadmaps/Geometry.agda"
         ]
     }
 ]

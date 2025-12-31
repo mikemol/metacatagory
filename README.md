@@ -78,18 +78,25 @@ This is the proving ground. It systematically maps algebraic constructs to categ
 
 * **Provide algebraic structures...** — Enables formal treatment... [status: not-started]
 Target: `src/agda/Plan/CIM/Ambiguity.agda`
+
 * **Establish metric structures...** — Enables quantitative... [status: not-started]
 Target: `src/agda/Plan/CIM/Metricization.agda`
+
 * **Define compositional...** — Enables systematic... [status: not-started]
 Target: `src/agda/Plan/CIM/TransformationSystem.agda`
+
 * **Implement functorial mappings...** — Enables formal... [status: not-started]
 Target: `src/agda/Plan/CIM/FunctorialConstructs.agda`
+
 * **Integrate 2D gating logic...** — Enables composable phase space... [status: not-started]
 Target: `src/agda/Plan/CIM/Elasticity.agda`
+
 * **Implement topological inflation...** — Enables composable category expansion... [status: not-started]
 Target: `src/agda/Plan/CIM/PolytopeExpansion.agda`
+
 * **Implement Mitosis Engine...** — Enables dynamic... [status: not-started]
 Target: `nedge_topology/mitosis.py`
+
 * **Integrate Earley parsing...** — Enables composable geometric... [status: not-started]
 Target: `nedge_topology/parser.py`
 
