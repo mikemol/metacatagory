@@ -1249,7 +1249,6 @@ exampleLodayRealizationRoadmap = record
             }
         ∷ []    }
 
-
 exampleLodayStasheffManifestRoadmap : RoadmapStep
 exampleLodayStasheffManifestRoadmap = record
     { provenance  = "GP703, Loday-Stasheff Manifest, Generative Geometry Engine, Ladder of Higher Homotopies"
@@ -1273,7 +1272,6 @@ exampleLodayStasheffManifestRoadmap = record
             ; next = []
             }
         ∷ []    }
-
 
 exampleGeometryOfChoiceRoadmap : RoadmapStep
 exampleGeometryOfChoiceRoadmap = record
@@ -1299,7 +1297,6 @@ exampleGeometryOfChoiceRoadmap = record
             }
         ∷ []    }
 
-
 exampleStrategicMitosisRoadmap : RoadmapStep
 exampleStrategicMitosisRoadmap = record
     { provenance  = "GP705, Strategic Mitosis Manifest, Strategy Analyzer, Recursive Split/Symmetric Doubling/Radial Bump"
@@ -1324,7 +1321,6 @@ exampleStrategicMitosisRoadmap = record
             }
         ∷ []    }
 
-
 exampleOperationalVelocityRoadmap : RoadmapStep
 exampleOperationalVelocityRoadmap = record
     { provenance  = "GP706, Operational Velocity, Deployment Artifact, deploy.sh, Bootstrap Sequence"
@@ -1348,7 +1344,6 @@ exampleOperationalVelocityRoadmap = record
             ; next = []
             }
         ∷ []    }
-
 
 exampleTopologicalSurgeryRoadmap : RoadmapStep
 exampleTopologicalSurgeryRoadmap = record
@@ -1437,7 +1432,6 @@ exampleSpectralManifestRoadmap = record
     ; targetModule = "nedge_topology/parser.py, nedge_topology/induction.py, dashboard.py"
     ; next = []
     }
-
 
 exampleYonedaBraidedRoadmap : RoadmapStep
 exampleYonedaBraidedRoadmap = record
@@ -1549,7 +1543,6 @@ exampleLogarithmicIsomorphismRoadmap = record
     ; next = []
     }
 
-
 exampleSemanticGatingRoadmap : RoadmapStep
 exampleSemanticGatingRoadmap = record
     { provenance  = "GP100, Semantic Gating"
@@ -1659,7 +1652,6 @@ examplePlusConstructionRoadmap = record
     ; targetModule = "nedge_topology/sheaf.py"
     ; next = []
     }
-
 
 exampleFractalSheafRoadmap : RoadmapStep
 exampleFractalSheafRoadmap = record
