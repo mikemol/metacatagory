@@ -9,8 +9,12 @@ the project's markdown style guide.
 import subprocess
 import sys
 import re
-import yaml
 from pathlib import Path
+
+try:
+    import yaml  # type: ignore
+except ImportError:
+    yaml = None
 
 REPO_ROOT = Path(__file__).parent.parent
 
@@ -32,6 +36,10 @@ def extract_frontmatter(content: str):
     """Parse all YAML code blocks and return list of dicts."""
     blocks = re.findall(r'```yaml\n(.*?)\n```', content, re.DOTALL)
     parsed = []
+    if yaml is None:
+        # Fallback: record presence but skip strict parsing
+        return [{"__parse_error__": "yaml module missing"} for _ in blocks]
+
     for block in blocks:
         try:
             data = yaml.safe_load(block)
