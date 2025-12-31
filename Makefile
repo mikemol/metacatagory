@@ -20,7 +20,7 @@ intake-lint:
 	npx markdownlint-cli2 "intake/**/*.md" > build/reports/intake-md-lint.txt 2>&1
 # Generate canonical roadmap JSON from intake
 build/canonical_roadmap.json: 
-	python3 scripts/intake_scan.py
+	python3 scripts/merge_roadmaps.py
 # Scan intake directory for new files
 intake-scan: build/canonical_roadmap.json
 	@echo "intake scan complete"
