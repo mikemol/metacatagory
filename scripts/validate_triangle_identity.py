@@ -14,11 +14,15 @@ This enforces the triangle identity:
 """
 
 import json
-import yaml
 import re
 import sys
 from pathlib import Path
 from typing import Dict, List, Set, Tuple
+
+try:
+    import yaml  # type: ignore
+except ImportError:
+    yaml = None
 
 REPO_ROOT = Path(__file__).parent.parent
 
@@ -75,14 +79,25 @@ def load_roadmap_markdown() -> Tuple[List[str], List[Dict]]:
     # Extract YAML frontmatter blocks
     frontmatter_items = []
     yaml_blocks = re.findall(r'```yaml\n(.*?)\n```', content, re.DOTALL)
-    
-    for yaml_block in yaml_blocks:
-        try:
-            data = yaml.safe_load(yaml_block)
-            if data and isinstance(data, dict):
-                frontmatter_items.append(data)
-        except yaml.YAMLError as e:
-            print(f"Warning: Failed to parse YAML block: {e}")
+
+    if yaml is not None:
+        for yaml_block in yaml_blocks:
+            try:
+                data = yaml.safe_load(yaml_block)
+                if data and isinstance(data, dict):
+                    frontmatter_items.append(data)
+            except yaml.YAMLError as e:
+                print(f"Warning: Failed to parse YAML block: {e}")
+    else:
+        # Minimal fallback: parse key: value lines (no nested structures)
+        for yaml_block in yaml_blocks:
+            entry: Dict[str, str] = {}
+            for line in yaml_block.splitlines():
+                if ":" in line:
+                    key, value = line.split(":", 1)
+                    entry[key.strip()] = value.strip()
+            if entry:
+                frontmatter_items.append(entry)
     
     # Extract IDs from frontmatter
     ids = set()
