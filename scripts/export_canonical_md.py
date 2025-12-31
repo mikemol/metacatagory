@@ -2,9 +2,13 @@
 """Export canonical roadmap to ROADMAP.md format."""
 
 import json
-import yaml
 from pathlib import Path
 from collections import defaultdict
+
+try:
+    import yaml  # type: ignore
+except ImportError:
+    yaml = None
 
 HEADER = """# Metacatagory Development Roadmap
 
@@ -35,6 +39,22 @@ This document is a projection from the canonical Agda index. To update:
 3. Run `make roadmap-export-md` to regenerate this file
 
 """
+
+def dump_yaml(data: dict) -> str:
+    """Serialize frontmatter without requiring PyYAML at runtime."""
+    if yaml is not None:
+        return yaml.dump(data, default_flow_style=False, sort_keys=False).rstrip()
+
+    # Minimal fallback for dict[str, str | list[str]]
+    lines = []
+    for key, value in data.items():
+        if isinstance(value, list):
+            lines.append(f"{key}:")
+            for item in value:
+                lines.append(f"  - {item}")
+        else:
+            lines.append(f"{key}: {value}")
+    return "\n".join(lines)
 
 def export_markdown(canonical_path: Path, output_path: Path):
     """Export canonical to ROADMAP.md."""
@@ -73,7 +93,7 @@ def export_markdown(canonical_path: Path, output_path: Path):
                 frontmatter['files'] = item['files']
             
             # Generate YAML frontmatter block
-            yaml_str = yaml.dump(frontmatter, default_flow_style=False, sort_keys=False)
+            yaml_str = dump_yaml(frontmatter)
             lines.append("```yaml")
             lines.append(yaml_str.rstrip())
             lines.append("```")
