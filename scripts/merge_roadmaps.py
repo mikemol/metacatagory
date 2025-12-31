@@ -37,6 +37,7 @@ def load_tasks_json(path: Path) -> List[Dict]:
         item = {
             "id": task.get("id", ""),
             "title": task.get("title", ""),
+            "description": task.get("description", task.get("title", "")),
             "status": task.get("status", "not-started"),
             "category": task.get("category", ""),
             "source": task.get("source", ""),
@@ -76,6 +77,7 @@ def parse_roadmap_md(path: Path) -> List[Dict]:
         item = {
             "id": item_id,
             "title": title.strip(),
+            "description": description.strip(),
             "status": status.strip(),
             "category": "Roadmap",
             "source": "ROADMAP.md",
@@ -117,13 +119,14 @@ def parse_ingested_agda(base_path: Path) -> List[Dict]:
         pattern = r'roadmap(Gp\d+) : RoadmapStep\s+roadmap\1 = record\s+\{[^}]+provenance\s+=\s+"([^"]+)"[^}]+step\s+=\s+"([^"]+)"[^}]+status\s+=\s+"([^"]+)"[^}]+targetModule\s+=\s+"([^"]+)"'
         
         matches = re.finditer(pattern, content, re.DOTALL)
-        
+
         for match in matches:
             gp_id, provenance, step, status, target = match.groups()
-            
+
             item = {
                 "id": f"GP-{gp_id}",
                 "title": provenance.strip(),
+                "description": step.strip(),
                 "status": status.strip(),
                 "category": "IngestedGP",
                 "source": f"Plan/CIM/IngestedRoadmaps/{agda_file.name}",
@@ -228,6 +231,7 @@ def merge_by_title(items: List[Dict]) -> List[Dict]:
         merged_item = {
             "id": primary["id"],
             "title": primary["title"],
+            "description": primary.get("description", primary["title"]),
             "status": primary["status"],
             "category": primary["category"],
             "source": primary["source"],
@@ -241,6 +245,14 @@ def merge_by_title(items: List[Dict]) -> List[Dict]:
         merged.append(merged_item)
 
     return merged
+
+def backfill_descriptions(items: List[Dict]) -> List[Dict]:
+    """Ensure every item has a description; fall back to title if missing."""
+    for item in items:
+        desc = item.get("description")
+        if not desc:
+            item["description"] = item.get("title", "")
+    return items
 
 def merge_all_sources(base_path: Path) -> List[Dict]:
     """Merge all roadmap sources into unified list."""
@@ -264,6 +276,7 @@ def merge_all_sources(base_path: Path) -> List[Dict]:
     # Deduplicate
     merged = deduplicate_by_id(all_items)
     merged = merge_by_title(merged)
+    merged = backfill_descriptions(merged)
     print(f"Total items after deduplication: {len(merged)}")
 
     return merged

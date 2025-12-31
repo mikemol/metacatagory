@@ -29,6 +29,7 @@ make md-lint
 ## Notes
 
 This document is a projection from the canonical Agda index. To update:
+
 1. Edit canonical in src/agda/Plan/CIM/RoadmapIndex.agda
 2. Run `make roadmap-merge` to refresh build/canonical_roadmap.json
 3. Run `make roadmap-export-md` to regenerate this file

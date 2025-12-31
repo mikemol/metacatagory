@@ -4,6 +4,12 @@
 import json
 from pathlib import Path
 
+
+ROOT = Path(__file__).resolve().parent.parent
+CANONICAL_PATH = ROOT / "build" / "canonical_roadmap.json"
+OUTPUT_PATH = ROOT / ".github" / "roadmap" / "tasks.json"
+
+
 def export_tasks_json(canonical_path: Path, output_path: Path):
     """Export canonical to GitHub tasks.json."""
     with open(canonical_path) as f:
@@ -22,8 +28,4 @@ def export_tasks_json(canonical_path: Path, output_path: Path):
     print(f"Exported {len(filtered)} items to {output_path}")
 
 if __name__ == "__main__":
-    base = Path("/home/mikemol/github/metacatagory")
-    export_tasks_json(
-        base / "build/canonical_roadmap.json",
-        base / ".github/roadmap/tasks.json"
-    )
+    export_tasks_json(CANONICAL_PATH, OUTPUT_PATH)
