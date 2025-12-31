@@ -18,7 +18,7 @@ def extract_md_items(md_path):
 
 def validate():
     base = Path(__file__).resolve().parent.parent
-    canonical = json.load(open(base / "build/canonical_roadmap.json"))
+    canonical = json.load(open(base / "build/planning_index.json"))
     md_titles = extract_md_items(base / "ROADMAP.md")
     
     # Get canonical titles

@@ -12,7 +12,7 @@ from typing import Dict, Iterable, List, Set
 
 ROOT = Path(__file__).resolve().parent.parent
 INTAKE_DIR = ROOT / "intake"
-CANONICAL_PATH = ROOT / "build" / "canonical_roadmap.json"
+CANONICAL_PATH = ROOT / "build" / "planning_index.json"
 REPORT_DIR = ROOT / "build" / "reports"
 REPORT_JSON = REPORT_DIR / "intake_coverage.json"
 REPORT_MD = REPORT_DIR / "intake_coverage.md"

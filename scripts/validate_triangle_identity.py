@@ -3,8 +3,8 @@
 Validate triangle identity across documentation formats.
 
 Checks consistency between:
-- Agda source data (Plan.CIM.CanonicalRoadmap)
-- JSON exports (build/canonical_roadmap.json)
+- Agda source data (Plan.CIM.PlanningKernel)
+- JSON exports (build/planning_index.json)
 - Markdown exports (docs/planning/ROADMAP.md)
 
 This enforces the triangle identity:
@@ -48,11 +48,11 @@ def validate_descriptions(items: List[Dict]) -> Tuple[List[Dict], int, List[str]
     return items, missing, missing_ids
 
 def load_canonical_json() -> List[Dict]:
-    """Load canonical roadmap from JSON (supports list or {items:[...]})."""
-    json_path = REPO_ROOT / "build" / "canonical_roadmap.json"
+    """Load planning index from JSON (supports list or {items:[...]})."""
+    json_path = REPO_ROOT / "build" / "planning_index.json"
     if not json_path.exists():
         print(f"✗ {json_path} not found")
-        print("  Run: make roadmap-merge")
+        print("  Run: make planning-index-json")
         return []
     
     with open(json_path) as f:
@@ -63,7 +63,7 @@ def load_canonical_json() -> List[Dict]:
     if isinstance(data, dict):
         return data.get("items", [])
     
-    print("✗ Unexpected JSON shape in canonical_roadmap.json")
+        print("✗ Unexpected JSON shape in planning_index.json")
     return []
 
 def load_roadmap_markdown() -> Tuple[List[str], List[Dict]]:

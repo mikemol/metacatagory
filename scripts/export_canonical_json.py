@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""Export canonical roadmap to tasks.json format."""
+"""Export unified planning index to tasks.json format."""
 
 import json
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent.parent
-CANONICAL_PATH = ROOT / "build" / "canonical_roadmap.json"
+PLANNING_PATH = ROOT / "build" / "planning_index.json"
 OUTPUT_PATH = ROOT / ".github" / "roadmap" / "tasks.json"
 
 
-def export_tasks_json(canonical_path: Path, output_path: Path):
-    """Export canonical to GitHub tasks.json."""
-    with open(canonical_path) as f:
+def export_tasks_json(source_path: Path, output_path: Path):
+    """Export planning index to GitHub tasks.json."""
+    with open(source_path) as f:
         canonical = json.load(f)
     
     # Filter out legacy items that shouldn't sync to GitHub
@@ -28,4 +28,4 @@ def export_tasks_json(canonical_path: Path, output_path: Path):
     print(f"Exported {len(filtered)} items to {output_path}")
 
 if __name__ == "__main__":
-    export_tasks_json(CANONICAL_PATH, OUTPUT_PATH)
+    export_tasks_json(PLANNING_PATH, OUTPUT_PATH)

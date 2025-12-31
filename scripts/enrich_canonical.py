@@ -2,7 +2,7 @@
 """
 Enrich canonical roadmap with semantic details extracted from source materials.
 
-Reads build/canonical_roadmap.json and outputs build/canonical_enriched.json
+Reads build/planning_index.json and outputs build/canonical_enriched.json
 with additional fields:
   - intent: why the task exists (1-2 sentences)
   - deliverable: concrete artifact/behavior expected
@@ -26,7 +26,7 @@ from typing import List, Dict, Any, Optional
 # --- Configuration --------------------------------------------------------
 
 REPO_ROOT = Path(__file__).parent.parent
-CANONICAL_JSON = REPO_ROOT / "build" / "canonical_roadmap.json"
+CANONICAL_JSON = REPO_ROOT / "build" / "planning_index.json"
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
 
 # Controlled tag vocabulary

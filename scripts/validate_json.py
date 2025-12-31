@@ -20,7 +20,7 @@ def normalize_item(item):
 
 def validate():
     base = Path(__file__).resolve().parent.parent
-    canonical = json.load(open(base / "build/canonical_roadmap.json"))
+    canonical = json.load(open(base / "build/planning_index.json"))
     tasks = json.load(open(base / ".github/roadmap/tasks.json"))
     
     # Build canonical dict (exclude legacy items not in tasks.json)
