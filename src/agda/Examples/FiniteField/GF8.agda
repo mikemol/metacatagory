@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Examples.FiniteField.GF8: Worked example of GF(8)/GF(2)
 -- Demonstrates algorithm registry usage and witness construction for a concrete finite field.
 
@@ -6,6 +8,7 @@ module Examples.FiniteField.GF8 where
 open import Core
 open import Algebra.Index
 open import Metamodel as M
+open import Agda.Builtin.List
 
 -- ============================================================================
 -- Field Declarations
@@ -34,8 +37,8 @@ gf8Algorithms = finiteFieldAlgorithms GF2-is-finite GF8-is-finite
 minPolyAlg : MinimalPolynomialAlgorithm GF2 GF8
 minPolyAlg = FiniteFieldAlgorithms.minimalPolynomialAlg gf8Algorithms
 
-galoisGroupAlg : GaloisGroupAlgorithm GF2 GF8
-galoisGroupAlg = FiniteFieldAlgorithms.galoisGroupAlg gf8Algorithms
+gf8GaloisGroupAlg : GaloisGroupAlgorithm GF2 GF8
+gf8GaloisGroupAlg = FiniteFieldAlgorithms.galoisGroupAlg gf8Algorithms
 
 -- ============================================================================
 -- Example Computations
@@ -51,7 +54,7 @@ galoisGroupAlg = FiniteFieldAlgorithms.galoisGroupAlg gf8Algorithms
 
 -- Get Galois group Gal(GF(8)/GF(2)) ≅ Z/3Z (cyclic of order 3)
 galoisGrp : GaloisGroup GF2 GF8
-galoisGrp = GaloisGroupAlgorithm.galoisGroup galoisGroupAlg (M.mkId "irreducible-poly")
+galoisGrp = GaloisGroupAlgorithm.galoisGroup gf8GaloisGroupAlg (M.mkId "irreducible-poly")
 
 -- Extension degree [GF(8) : GF(2)] = 3
 extensionDeg : ExtensionDegree GF2 GF8

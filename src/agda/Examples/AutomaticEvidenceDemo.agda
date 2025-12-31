@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Demonstration: Fully Automatic Evidence Detection
 -- Shows how to get near-automatic dispatch with instance evidence
 

@@ -1,0 +1,17 @@
+title: 'Meta-Index: Plan.CIM.DocumentationContent'
+sections:
+- name: Scope
+  bullets:
+  - Helpers for documentation content assembly and reuse.
+- name: Key elements
+  bullets:
+  - Content helpers supporting document generation workflows.
+- name: Dependencies
+  bullets:
+  - Document algebra modules and roadmap-driven docs.
+- name: Update triggers
+  bullets:
+  - Changes to documentation patterns or reusable snippets.
+- name: Technical debt / status
+  bullets:
+  - Track missing helpers or duplication in deferred-items.md and ROADMAP.md.

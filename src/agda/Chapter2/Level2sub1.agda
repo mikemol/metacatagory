@@ -1,9 +1,11 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter2.Level2sub1 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
 open import Agda.Builtin.String   using (String)
 open import Agda.Builtin.List     using (List; []; _∷_)
-open import Agda.Builtin.Bool     using (Bool)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Metamodel as M
@@ -630,5 +632,5 @@ postulate
                                  (TorsionTheoryDeclaration.category decl)) C.TorsionTheoryAxiomsName
 
 ------------------------------------------------------------------------
--- End of structural encoding for 2/1.ebnf (Abelian categories & related concepts)
+-- End of structural encoding for Abelian categories & related concepts
 ------------------------------------------------------------------------

@@ -1,5 +1,7 @@
+{-# OPTIONS --without-K #-}
+
 -- Level2_6: Enriched Category Theory (Chapter 2, Section 6)
--- This module encodes the structural content of Section 6 from the EBNF grammar.
+-- This module encodes the structural content of Section 6 (Enriched Category Theory).
 -- It covers symmetric monoidal closed categories, enriched categories, change of base,
 -- enriched functors, natural transformations, adjunctions, the Yoneda lemma,
 -- tensors, cotensors, and weighted limits.

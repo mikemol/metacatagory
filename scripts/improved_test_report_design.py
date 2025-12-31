@@ -10,8 +10,6 @@ Instead of parsing Agda source with regex, this script:
 This eliminates regex fragility while keeping the build process simple.
 """
 
-import json
-import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -58,8 +56,7 @@ OUT_DIR = ROOT / "build" / "reports"
 # - Agda --compile generates executable that outputs JSON
 # - Python script reads JSON instead of parsing Agda source
 
-
-def improved_design_notes():
+def improved_design_notes() -> None:
     """
     Example of what CoverageMetadata.agda would look like:
 
@@ -92,7 +89,6 @@ def improved_design_notes():
     ```
     """
     pass
-
 
 if __name__ == "__main__":
     print(__doc__)

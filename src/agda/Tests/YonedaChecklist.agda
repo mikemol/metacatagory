@@ -1,11 +1,11 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --allow-unsolved-metas --without-K #-}
 
 -- Tests.YonedaChecklist: Test instances for Yoneda lemma
 -- PHASE-IV.2: Constructive instance of Yoneda lemma
 
 module Tests.YonedaChecklist where
 
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤)
 open import Tests.ObligationAdapters as A
@@ -223,4 +223,3 @@ yonedaTestsPass = true
 -- Boundary marker: Yoneda lemma validated (PHASE-IV.2 complete)
 yonedaComplete : M.Identifier
 yonedaComplete = M.mkId "✓ Yoneda lemma constructive instance complete (PHASE-IV.2)"
-

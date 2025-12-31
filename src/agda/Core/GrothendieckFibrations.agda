@@ -1,14 +1,20 @@
+{-# OPTIONS --without-K #-}
+module Core.GrothendieckFibrations where
+
 -- Core.GrothendieckFibrations: Grothendieck fibrations with Beck-Chevalley condition
 -- This module formalizes fibrations, cartesian lifts, and proves Beck-Chevalley coherence
 
-module Core.GrothendieckFibrations where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Core
 open import Metamodel as M
 open import Algebra.Foundation
 open import Chapter2.Level2sub8 as C2S8
 open import Chapter1.Level1sub3 as C1S3
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤)
 
 -- ============================================================================

@@ -1,15 +1,14 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --allow-unsolved-metas --without-K #-}
 
 -- Tests.MonadAdjunctionChecklist: Test instances for monad-adjunction theory
 
 module Tests.MonadAdjunctionChecklist where
 
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤)
 open import Tests.ObligationAdapters as A
 open import Core.CategoricalAdapter
-
 
 -- Monad-adjunction correspondence (7 assertions)
 
@@ -54,4 +53,3 @@ comonadFromAdjunctionAdapt = A.mkComonadFromAdjunctionAdapter _ _ refl
 
 _ : A.isFilledComonadFromAdjunction comonadFromAdjunctionAdapt ≡ true
 _ = refl
-

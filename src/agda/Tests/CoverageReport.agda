@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.CoverageReport: Type-safe test coverage metadata
 -- Provides structured data for external tooling without regex parsing
 --
@@ -12,7 +14,7 @@ open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Nat using (Nat; zero; suc; _+_)
 open import Agda.Builtin.Unit using (⊤)
 open import Agda.Builtin.Equality using (_≡_; refl)
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 
 ------------------------------------------------------------------------
 -- Phase I.1.2: Well-Founded Indexing for Adapters and Declarations

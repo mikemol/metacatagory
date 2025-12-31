@@ -1,10 +1,12 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.TensorProductChecklist
 -- Minimal instances for tensor product adapters
 
 module Tests.TensorProductChecklist where
 
 open import Agda.Builtin.Equality
-open import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤; tt)
 
 import Metamodel as M
@@ -266,7 +268,7 @@ tensorProdAbAdapt : A.TensorProductAbAdapter
 tensorProdAbAdapt = A.mkTensorProductAbAdapter abelianGroupDeclA abelianGroupDeclB tensorProdAbDecl tensorProductDecl refl
 
 -- Status assertion
-_ : A.isFilledTensorProductAb tensorProdAbAdapt ≡ B.true
+_ : A.isFilledTensorProductAb tensorProdAbAdapt ≡ true
 _ = refl
 
 -- Categorical assertions for TensorProductAb (omitted here; smoke-tested via adapter wiring)

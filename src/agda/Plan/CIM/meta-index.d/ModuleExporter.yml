@@ -1,0 +1,18 @@
+title: 'Meta-Index: Plan.CIM.ModuleExporter'
+sections:
+- name: Scope
+  bullets:
+  - Exporting module data/FFI interfaces for Plan/CIM components.
+- name: Key elements
+  bullets:
+  - Export utilities for modules and FFI boundaries.
+- name: Dependencies
+  bullets:
+  - Plan/CIM module definitions and export pipeline.
+- name: Update triggers
+  bullets:
+  - New FFI operations or export patterns.
+  - Roadmap/architecture changes that adjust exported modules.
+- name: Technical debt / status
+  bullets:
+  - Track export coverage and extensibility in deferred-items.md and ROADMAP.md.

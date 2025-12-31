@@ -1,9 +1,6 @@
 name: Deferred Items Review
 
 on:
-  schedule:
-    # Run weekly on Monday at 9 AM UTC
-    - cron: '0 9 * * 1'
   pull_request:
     types: [opened, synchronize]
   workflow_dispatch:  # Allow manual triggering
@@ -34,16 +31,12 @@ jobs:
         run: |
           chmod +x current/.github/scripts/*.sh
 
-      - name: Scan current branch for deferred items
-        run: |
-          cd current
-          .github/scripts/detect-deferred-items.sh deferred-items-current.md
+      - name: Review deferred items (current branch)
+        run: make deferred-items
 
-      - name: Scan base branch for deferred items (PR only)
+      - name: Review deferred items (base branch, PR only)
         if: github.event_name == 'pull_request'
-        run: |
-          cd base
-          .github/scripts/detect-deferred-items.sh deferred-items-base.md
+        run: make deferred-items
 
       - name: Compare deferred items (PR only)
         if: github.event_name == 'pull_request'

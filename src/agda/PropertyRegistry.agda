@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module PropertyRegistry where
 
 open import Metamodel as M
@@ -14,7 +16,6 @@ ExactCategoryId = M.mkId "ExactCategory"
 
 BarrExactCategoryId : M.Identifier
 BarrExactCategoryId = M.mkId "BarrExactCategory"
-
 
 FiniteLimitsId : M.Identifier
 FiniteLimitsId = M.mkId "FiniteLimits"
@@ -76,3 +77,7 @@ HasGeneratorId = M.mkId "HasGenerator"
 -- Functor-level properties
 AlgebraicFunctorId : M.Identifier
 AlgebraicFunctorId = M.mkId "AlgebraicFunctor"
+
+-- Technical debt property identifier
+TechnicalDebtId : M.Identifier
+TechnicalDebtId = M.mkId "TechnicalDebt"

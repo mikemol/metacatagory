@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Examples.ConstructiveWitnessExamples: Demonstrations of constructive witness construction
 -- This module shows how to build computable witnesses with explicit algorithms
 -- and correctness proofs, contrasting with the placeholder-based Core.Witnesses.
@@ -16,8 +18,12 @@ open import Algebra.Fields.Advanced
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
-import Agda.Builtin.Bool as B
-open B using () renaming (Bool to Boolean; true to tt; false to ff)
+open import Agda.Builtin.Unit using (⊤; tt)
+open import Core.Phase using (Bool; true; false)
+
+-- Alias for clarity
+Boolean : Set
+Boolean = Bool
 
 -- ============================================================================
 -- Example 1: Constructive Minimal Polynomial
@@ -331,5 +337,5 @@ module ValidationWorkflowExample where
   evidence = record
     { algorithm = witness
     ; witnessData = M.mkId "computed-data"
-    ; isComputed = tt
+    ; isComputed = true
     }

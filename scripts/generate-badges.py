@@ -312,21 +312,44 @@ def scan_repository_for_deferred(
             with open(path, "r", encoding="utf-8", errors="ignore") as f:
                 for line in f:
                     stripped = line.strip()
-                    if "postulate" in stripped and not stripped.startswith("--"):
-                        c = stripped.count("postulate")
-                        postulates += c
-                        local_postulates += c
+
+                    # Postulate: only in .agda files, skip comments and string literals
+                    if ext == ".agda" and "postulate" in stripped:
+                        if not stripped.startswith("--"):
+                            # Exclude variable names and dictionary keys
+                            if (
+                                '"postulate' not in line
+                                and "'postulate" not in line
+                                and "postulates" not in line
+                            ):
+                                c = stripped.count("postulate")
+                                postulates += c
+                                local_postulates += c
+
+                    # TODO/FIXME: look for comment-like patterns
                     if "TODO" in line:
-                        c = line.count("TODO")
-                        todo += c
-                        local_todo += c
+                        # Exclude label strings in JSON/badges
+                        if '"TODO"' not in line and "'TODO'" not in line:
+                            c = line.count("TODO")
+                            todo += c
+                            local_todo += c
+
                     if "FIXME" in line:
-                        c = line.count("FIXME")
-                        fixme += c
-                        local_fixme += c
+                        # Exclude label strings in JSON/badges
+                        if '"FIXME"' not in line and "'FIXME'" not in line:
+                            c = line.count("FIXME")
+                            fixme += c
+                            local_fixme += c
+
+                    # Deviation: exclude string literals in search patterns
                     if "DeviationLog" in line or "DEVIATION" in line:
-                        deviation_log += 1
-                        local_deviation += 1
+                        if (
+                            '"DEVIATION"' not in line
+                            and "'DEVIATION'" not in line
+                            and '"DeviationLog"' not in line
+                        ):
+                            deviation_log += 1
+                            local_deviation += 1
         except Exception:
             continue
         if any([local_postulates, local_todo, local_fixme, local_deviation]):

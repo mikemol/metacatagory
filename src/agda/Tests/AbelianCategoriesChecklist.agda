@@ -1,7 +1,9 @@
+{-# OPTIONS --without-K #-}
+
 module Tests.AbelianCategoriesChecklist where
 
 open import Tests.ObligationAdapters as A
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (refl; _≡_)
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Metamodel using (mkId)

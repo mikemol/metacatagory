@@ -1,0 +1,36 @@
+{
+  "active": "default",
+  "profiles": {
+    "default": {
+      "postulate": 1.5,
+      "todo": 0.5,
+      "fixme": 2.0,
+      "deviation": 1.0
+    },
+    "ffiSafety": {
+      "postulate": 0.3,
+      "todo": 0.2,
+      "fixme": 8.0,
+      "deviation": 2.0
+    },
+    "proofCompleteness": {
+      "postulate": 3.0,
+      "todo": 0.4,
+      "fixme": 1.5,
+      "deviation": 1.0
+    },
+    "rapidDevelopment": {
+      "postulate": 0.25,
+      "todo": 0.1,
+      "fixme": 0.75,
+      "deviation": 0.2
+    },
+    "production": {
+      "postulate": 4.0,
+      "todo": 2.0,
+      "fixme": 5.0,
+      "deviation": 2.0
+    }
+  },
+  "_comment": "Generated from Agda TechnicalDebt.Priorities. Maps proof\u2192postulate, documentation\u2192todo, safety\u2192fixme, critical\u2192deviation."
+}

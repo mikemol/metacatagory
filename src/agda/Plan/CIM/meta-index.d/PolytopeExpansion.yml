@@ -1,0 +1,17 @@
+title: 'Meta-Index: Plan.CIM.PolytopeExpansion'
+sections:
+- name: Scope
+  bullets:
+  - Planned polytope expansion/topological inflation work.
+- name: Key elements
+  bullets:
+  - Placeholder for geometric protocol and FFI boundary logic.
+- name: Dependencies
+  bullets:
+  - Will depend on polytope/FFI infrastructure when implemented.
+- name: Update triggers
+  bullets:
+  - Roadmap milestones for polytope expansion or new geometric protocols.
+- name: Technical debt / status
+  bullets:
+  - Placeholder; track implementation steps in deferred-items.md and ROADMAP.md.

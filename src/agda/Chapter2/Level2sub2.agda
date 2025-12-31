@@ -1,9 +1,11 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter2.Level2sub2 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
 open import Agda.Builtin.String   using (String)
 open import Agda.Builtin.List     using (List; []; _∷_)
-open import Agda.Builtin.Bool     using (Bool)
+open import Core.Phase using (Bool)
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Metamodel as M
@@ -245,5 +247,5 @@ postulate
               C.BarrEmbeddingTheoremName
 
 ------------------------------------------------------------------------
--- End of structural encoding for 2/2.ebnf (Regular & Barr-exact categories)
+-- End of structural encoding for Regular & Barr-exact categories
 ------------------------------------------------------------------------

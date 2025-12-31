@@ -1,9 +1,11 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter1.Level1sub4 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
 open import Agda.Builtin.String   using (String)
 open import Agda.Builtin.List     using (List; []; _∷_)
-open import Agda.Builtin.Bool     using (Bool)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Metamodel as M
@@ -242,6 +244,6 @@ postulate
     -> Proof (InjectiveS (InjectiveObject.I obj)) InjectiveLiftingName
 
 ------------------------------------------------------------------------
--- Notes: Structural encoding of 1/4.ebnf. CATEGORY prose preserved as
+-- Notes: Structural encoding of Subobject Theory. CATEGORY prose preserved as
 -- comments. Bridge postulates connect axiom records to Core.Proof.
 ------------------------------------------------------------------------

@@ -1,10 +1,16 @@
+{-# OPTIONS --without-K #-}
+module Core.AlgorithmComplexity where
+
 -- Core.AlgorithmComplexity: Complexity classification for algorithmic operations
 --
 -- Phase III.1 (3.3): Complexity Classification and Measurement
 -- Provides indexed properties linking algorithms to computational complexity classes,
 -- establishing the reference point for efficiency measurement.
 
-module Core.AlgorithmComplexity where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Unit using (⊤)

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.PhaseExamples: Demonstrating formal Phase abstraction in tests
 --
 -- This module shows how the Phase type formalizes behavioral boundaries
@@ -207,4 +209,3 @@ module PhaseLawsExample where
 --
 -- This formalizes what was previously implicit in our test suite organization.
 -- Note: Parallel composition (⊗) exists but has product type conflicts with Core._×_
-

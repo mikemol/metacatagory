@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.PathAggregatorTests: Validate integrated path + growth evolution
 
 module Tests.PathAggregatorTests where
@@ -6,7 +8,7 @@ open import Core.PathAggregator
 open import Metamodel as M
 open import Core.GrowthMetrics as GM
 open import Agda.Builtin.Equality using (_≡_; refl)
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
 
 -- Test: Path snapshot validity

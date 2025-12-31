@@ -1,35 +1,16 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter1.Level1 where
 
+open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Unit     using (⊤; tt)
-open import Agda.Builtin.Bool     using (Bool)
-open import Agda.Builtin.String   using (String)
-open import Agda.Builtin.List     using (List; []; _∷_)
-open import Agda.Builtin.Equality using (_≡_)
+open import Agda.Builtin.Equality using (_≡_; refl)
+open import Agda.Builtin.String using (String)
 
--- Reuse basic identifiers/terminals and logical propositions from the metamodel
 open import Metamodel as M
 open import PropertyRegistry as P
+open import Core.Phase using (_×_; _,_) public
 
-------------------------------------------------------------------------
--- Helpers
-------------------------------------------------------------------------
--- NonEmpty is defined in Metamodel
-open M using (NonEmpty; ne)
-open NonEmpty public
-
--- Product type (used throughout)
-infixr 4 _,_
-record _×_ (A B : Set) : Set where
-  constructor _,_
-  field fst : A
-        snd : B
-open _×_ public
-
-------------------------------------------------------------------------
--- Supporting primitives for this level
-------------------------------------------------------------------------
-
--- Names of axioms referenced in promotions
 data AxiomName : Set where
   IdentityAxiomName         : AxiomName
   AssociativityAxiomName    : AxiomName
@@ -197,7 +178,7 @@ postulate
   Holds     : M.Proposition -> Set
   AxiomProp : (subject : Subject) -> (ax : AxiomName) -> M.Proposition
 
--- Concrete proposition constructors reflecting the EBNF typing prose
+-- Concrete proposition constructors reflecting the categorical typing prose
 postulate
   AssocProp    : (G : M.Identifier) -> M.Proposition
   IdProp       : (G : M.Identifier) -> M.Proposition
@@ -715,7 +696,7 @@ record MorphismMapping : Set where
 open MorphismMapping public
 
 ------------------------------------------------------------------------
--- Declarations mirroring the EBNF productions
+-- Declarations mirroring the categorical productions
 ------------------------------------------------------------------------
 
 -- PreCategoryDeclaration ::= PRECATEGORY ...
@@ -841,7 +822,8 @@ record InverseMorphism : Set where
   field f : M.Identifier
 
 -- Theorems
-record TheoremDeclaration : Set where
+-- FIXED: TheoremDeclaration needs to be Set₁ because it contains M.Proposition (which is Set₁)
+record TheoremDeclaration : Set₁ where
   constructor THEOREM
   field name : String
         prop : M.Proposition
@@ -865,7 +847,8 @@ record CategoryPropertyDefinition : Set where
 postulate
   op : M.Proposition -> M.Proposition
 
-record DualStatement : Set where
+-- FIXED: DualStatement needs to be Set₁ because it contains M.Proposition (which is Set₁)
+record DualStatement : Set₁ where
   constructor _^op
   field P : M.Proposition
 
@@ -876,25 +859,25 @@ record DualityMappingAxiom : Set where
 
 -- Fixed mapping presets captured by constructors (using × defined earlier)
 DualityMappingPreset : Set
-DualityMappingPreset = List (ConceptName × ConceptName)
+DualityMappingPreset = List (Core.Phase.Σ ConceptName (λ _ → ConceptName))
 
 -- (_×_ product type defined earlier in Helpers section)
 
 -- Example canonical preset list (TERMINAL↔INITIAL, PRODUCT↔COPRODUCT, ...)
 DUALITY_PRESET : DualityMappingPreset
 DUALITY_PRESET =
-  (TERMINAL_OBJECT , INITIAL_OBJECT) ∷
-  (INITIAL_OBJECT  , TERMINAL_OBJECT) ∷
-  (PRODUCT         , COPRODUCT)      ∷
-  (COPRODUCT       , PRODUCT)        ∷
-  (PULLBACK        , PUSHOUT)        ∷
-  (PUSHOUT         , PULLBACK)       ∷
-  (EQUALIZER       , COEQUALIZER)    ∷
-  (COEQUALIZER     , EQUALIZER)      ∷
-  (LIMIT           , COLIMIT)        ∷
-  (COLIMIT         , LIMIT)          ∷
-  (MONOMORPHISM    , EPIMORPHISM)    ∷
-  (EPIMORPHISM     , MONOMORPHISM)   ∷
+  Core.Phase._,ₛ_ TERMINAL_OBJECT INITIAL_OBJECT ∷
+  Core.Phase._,ₛ_ INITIAL_OBJECT TERMINAL_OBJECT ∷
+  Core.Phase._,ₛ_ PRODUCT COPRODUCT ∷
+  Core.Phase._,ₛ_ COPRODUCT PRODUCT ∷
+  Core.Phase._,ₛ_ PULLBACK PUSHOUT ∷
+  Core.Phase._,ₛ_ PUSHOUT PULLBACK ∷
+  Core.Phase._,ₛ_ EQUALIZER COEQUALIZER ∷
+  Core.Phase._,ₛ_ COEQUALIZER EQUALIZER ∷
+  Core.Phase._,ₛ_ LIMIT COLIMIT ∷
+  Core.Phase._,ₛ_ COLIMIT LIMIT ∷
+  Core.Phase._,ₛ_ MONOMORPHISM EPIMORPHISM ∷
+  Core.Phase._,ₛ_ EPIMORPHISM MONOMORPHISM ∷
   []
 
 -- Dual theorem inference
@@ -905,7 +888,7 @@ record DualTheoremInference : Set where
 -- CATEGORY: Functorial mapping of proofs under duality.
 
 ------------------------------------------------------------------------
--- Notes: This file mirrors src/ebnf/1/1.ebnf as Agda records/enums.
+-- Notes: This file formalizes the base Category Theory concepts as Agda records/enums.
 -- The typing/CATEGORY annotations are preserved as comments or opaque
 -- proof placeholders (⊤) when appropriate would be added later.
 ------------------------------------------------------------------------

@@ -1,8 +1,10 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.RingsBasicChecklist: Coverage for Algebra.Rings.Basic (Ring Theory & Ideal Theory)
 
 module Tests.RingsBasicChecklist where
 
-import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Metamodel as M
@@ -113,7 +115,7 @@ idealDecl = record
 idealAdapt : A.IdealAdapter
 idealAdapt = A.mkIdealAdapter ringDecl idealDecl ringDecl refl
 
-idealStatus : A.isFilledIdeal idealAdapt ≡ B.true
+idealStatus : A.isFilledIdeal idealAdapt ≡ true
 idealStatus = refl
 
 -- Categorical assertions
@@ -133,7 +135,7 @@ primeIdealDecl = record
 primeIdealAdapt : A.PrimeIdealAdapter
 primeIdealAdapt = A.mkPrimeIdealAdapter commRingDecl primeIdealDecl commRingDecl refl
 
-primeIdealStatus : A.isFilledPrimeIdeal primeIdealAdapt ≡ B.true
+primeIdealStatus : A.isFilledPrimeIdeal primeIdealAdapt ≡ true
 primeIdealStatus = refl
 
 -- Categorical assertions
@@ -153,7 +155,7 @@ maxIdealDecl = record
 maxIdealAdapt : A.MaximalIdealAdapter
 maxIdealAdapt = A.mkMaximalIdealAdapter commRingDecl maxIdealDecl commRingDecl refl
 
-maxIdealStatus : A.isFilledMaximalIdeal maxIdealAdapt ≡ B.true
+maxIdealStatus : A.isFilledMaximalIdeal maxIdealAdapt ≡ true
 maxIdealStatus = refl
 
 -- Categorical assertions
@@ -172,7 +174,7 @@ integralDomainDecl = record
 integralDomainAdapt : A.IntegralDomainAdapter
 integralDomainAdapt = A.mkIntegralDomainAdapter integralDomainDecl commRingDecl refl
 
-integralDomainStatus : A.isFilledIntegralDomain integralDomainAdapt ≡ B.true
+integralDomainStatus : A.isFilledIntegralDomain integralDomainAdapt ≡ true
 integralDomainStatus = refl
 
 -- Categorical assertions
@@ -195,7 +197,7 @@ irreducibleDecl = record
 irreducibleAdapt : A.IrreducibleElementAdapter
 irreducibleAdapt = A.mkIrreducibleElementAdapter integralDomainDecl p irreducibleDecl integralDomainDecl refl
 
-irreducibleStatus : A.isFilledIrreducibleElement irreducibleAdapt ≡ B.true
+irreducibleStatus : A.isFilledIrreducibleElement irreducibleAdapt ≡ true
 irreducibleStatus = refl
 
 -- Categorical assertions
@@ -215,7 +217,7 @@ primeElemDecl = record
 primeElemAdapt : A.PrimeElementAdapter
 primeElemAdapt = A.mkPrimeElementAdapter integralDomainDecl p primeElemDecl integralDomainDecl refl
 
-primeElemStatus : A.isFilledPrimeElement primeElemAdapt ≡ B.true
+primeElemStatus : A.isFilledPrimeElement primeElemAdapt ≡ true
 primeElemStatus = refl
 
 -- Categorical assertions
@@ -234,7 +236,7 @@ ufdDecl = record
 ufdAdapt : A.UFDAdapter
 ufdAdapt = A.mkUFDAdapter ufdDecl integralDomainDecl refl
 
-ufdStatus : A.isFilledUFD ufdAdapt ≡ B.true
+ufdStatus : A.isFilledUFD ufdAdapt ≡ true
 ufdStatus = refl
 
 -- Categorical assertions
@@ -253,7 +255,7 @@ pidDecl = record
 pidAdapt : A.PrincipalIdealDomainAdapter
 pidAdapt = A.mkPrincipalIdealDomainAdapter pidDecl integralDomainDecl refl
 
-pidStatus : A.isFilledPrincipalIdealDomain pidAdapt ≡ B.true
+pidStatus : A.isFilledPrincipalIdealDomain pidAdapt ≡ true
 pidStatus = refl
 
 -- Categorical assertions
@@ -273,7 +275,7 @@ euclideanDecl = record
 euclideanAdapt : A.EuclideanDomainAdapter
 euclideanAdapt = A.mkEuclideanDomainAdapter euclideanDecl integralDomainDecl refl
 
-euclideanStatus : A.isFilledEuclideanDomain euclideanAdapt ≡ B.true
+euclideanStatus : A.isFilledEuclideanDomain euclideanAdapt ≡ true
 euclideanStatus = refl
 
 -- Categorical assertions
@@ -294,7 +296,7 @@ multSysDecl = record
 multSysAdapt : A.MultiplicativeSystemAdapter
 multSysAdapt = A.mkMultiplicativeSystemAdapter commRingDecl multSysDecl commRingDecl refl
 
-multSysStatus : A.isFilledMultiplicativeSystem multSysAdapt ≡ B.true
+multSysStatus : A.isFilledMultiplicativeSystem multSysAdapt ≡ true
 multSysStatus = refl
 
 -- Categorical assertions
@@ -315,7 +317,7 @@ localizationDecl = record
 localizationAdapt : A.LocalizationAdapter
 localizationAdapt = A.mkLocalizationAdapter commRingDecl multSysDecl localizationDecl commRingDecl refl
 
-localizationStatus : A.isFilledLocalization localizationAdapt ≡ B.true
+localizationStatus : A.isFilledLocalization localizationAdapt ≡ true
 localizationStatus = refl
 
 -- Categorical assertions
@@ -338,7 +340,7 @@ fieldOfFracDecl = record
 fieldOfFracAdapt : A.FieldOfFractionsAdapter
 fieldOfFracAdapt = A.mkFieldOfFractionsAdapter integralDomainDecl fieldOfFracDecl integralDomainDecl refl
 
-fieldOfFracStatus : A.isFilledFieldOfFractions fieldOfFracAdapt ≡ B.true
+fieldOfFracStatus : A.isFilledFieldOfFractions fieldOfFracAdapt ≡ true
 fieldOfFracStatus = refl
 
 -- Categorical assertions
@@ -358,7 +360,7 @@ polyRingDecl = record
 polyRingAdapt : A.PolynomialRingAdapter
 polyRingAdapt = A.mkPolynomialRingAdapter commRingDecl polyRingDecl commRingDecl refl
 
-polyRingStatus : A.isFilledPolynomialRing polyRingAdapt ≡ B.true
+polyRingStatus : A.isFilledPolynomialRing polyRingAdapt ≡ true
 polyRingStatus = refl
 
 -- Categorical assertions
@@ -379,7 +381,7 @@ quotRingDecl = record
 quotRingAdapt : A.QuotientRingAdapter
 quotRingAdapt = A.mkQuotientRingAdapter ringDecl idealDecl quotRingDecl ringDecl refl
 
-quotRingStatus : A.isFilledQuotientRing quotRingAdapt ≡ B.true
+quotRingStatus : A.isFilledQuotientRing quotRingAdapt ≡ true
 quotRingStatus = refl
 
 -- Categorical assertions

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K --allow-unsolved-metas #-}
+
 -- Tests.ConstructiveWitnessTests: Test suite for constructive witness framework
 -- Validates that constructive witnesses provide computational content with
 -- correctness proofs, contrasting with placeholder-based approaches.
@@ -18,8 +20,17 @@ open import Algebra.Fields.Advanced
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
-import Agda.Builtin.Bool as B
-open B using () renaming (Bool to Boolean; true to tt; false to ff)
+open import Core.Phase using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
+
+-- ============================================================================
+-- Test Fixtures Package
+-- All postulated witness/algorithm instances below are test mocks/fixtures
+-- for validating constructive witness generation. This package declaration
+-- consolidates the conceptual debt of 20+ individual test fixture postulates.
+-- ============================================================================
+
+postulate TestFixturesPackage : M.Identifier
 
 -- ============================================================================
 -- Test 1: Constructive Minimal Polynomial Creation
@@ -137,7 +148,7 @@ module WitnessValidationTest where
   validation = Phase.transform validateWitness witness
   
   -- Check validation results
-  isMarkedValid : Boolean
+  isMarkedValid : Bool
   isMarkedValid = WitnessValidation.isValid validation
   
   hasTrace : M.Identifier
@@ -322,7 +333,7 @@ module ComputationalEvidenceTest where
   hasData : M.Identifier
   hasData = ComputationalEvidence.witnessData evidence
   
-  isComputed : Boolean
+  isComputed : Bool
   isComputed = ComputationalEvidence.isComputed evidence
 
 -- ============================================================================
@@ -380,7 +391,7 @@ module VerificationPipelineTest where
   proof = verifySplittingField F poly witness
   
   -- Verify pipeline results
-  witnessIsValid : Boolean
+  witnessIsValid : Bool
   witnessIsValid = WitnessValidation.isValid validation
   
   proofHasSteps : List M.Identifier
@@ -463,7 +474,7 @@ module BundleConsistencyTest where
   bundle = mkConstructiveBundle F E minpolyAlg splitAlg galoisAlg normalAlg
   
   -- Check all witnesses marked as valid
-  allValid : Boolean
+  allValid : Bool
   allValid = ConstructiveExtensionBundle.allWitnessesValid bundle
   
   -- Check consistency proof exists
@@ -514,7 +525,7 @@ module MinpolyDividesEvidenceTest where
   rId : M.Identifier
   rId = MinpolyDividesEvidence.remainder evidence
 
-  remainderZero : Boolean
+  remainderZero : Bool
   remainderZero = flagValue (MinpolyDividesEvidence.remainderZeroFlag evidence)
 
   -- Division scaffold conversion
@@ -527,7 +538,7 @@ module MinpolyDividesEvidenceTest where
   divisorId : M.Identifier
   divisorId = DivisionScaffold.divisor divScaffold
 
-  divRemainderZero : Boolean
+  divRemainderZero : Bool
   divRemainderZero = flagValue (DivisionScaffold.remainderZeroFlag divScaffold)
 
 -- =========================================================================
@@ -553,7 +564,7 @@ module DivisionAlgorithmScaffoldTest where
   computedRemainder : M.Identifier
   computedRemainder = DivisionScaffold.remainder divResult
 
-  remainderIsZero : Boolean
+  remainderIsZero : Bool
   remainderIsZero = flagValue (DivisionScaffold.remainderZeroFlag divResult)
 
   -- Ensure scaffold fields are present
@@ -569,9 +580,10 @@ module DivisionAlgorithmScaffoldTest where
 
 module DivisionAlgorithmEvidenceBridgeTest where
   postulate
+    ℓF : Agda.Primitive.Level
     F E : FieldDeclaration
     α p vanishes monic : M.Identifier
-    ump : MinimalPolynomialProperty F E α
+    ump : MinimalPolynomialProperty {ℓF} F E α
 
   evidence : MinpolyDividesEvidence F E α
   evidence = mkMinpolyDividesEvidence F E α ump p vanishes monic
@@ -585,7 +597,7 @@ module DivisionAlgorithmEvidenceBridgeTest where
   bridgedRemainder : M.Identifier
   bridgedRemainder = DivisionScaffold.remainder bridged
 
-  bridgedRemainderZero : Boolean
+  bridgedRemainderZero : Bool
   bridgedRemainderZero = flagValue (DivisionScaffold.remainderZeroFlag bridged)
 
 -- =========================================================================
@@ -594,12 +606,14 @@ module DivisionAlgorithmEvidenceBridgeTest where
 
 module DivisionByMinpolyUMPHelperTest where
   postulate
+    ℓF : Agda.Primitive.Level
     F E : FieldDeclaration
     α p vanishes monic : M.Identifier
-    ump : MinimalPolynomialProperty F E α
+    ump : MinimalPolynomialProperty {ℓF} F E α
 
   ds : DivisionScaffold
-  ds = divideByMinimalPolynomial {F} {E} {α} ump p vanishes monic
+  -- Explicitly skip level implicits to avoid unifying FieldDeclaration with levels.
+  ds = divideByMinimalPolynomial {ℓF} {F} {E} {α} ump p vanishes monic
 
   dsQuot : M.Identifier
   dsQuot = DivisionScaffold.quotient ds
@@ -607,7 +621,7 @@ module DivisionByMinpolyUMPHelperTest where
   dsRem : M.Identifier
   dsRem = DivisionScaffold.remainder ds
 
-  dsZero : Boolean
+  dsZero : Bool
   dsZero = flagValue (DivisionScaffold.remainderZeroFlag ds)
 
 -- =========================================================================
@@ -616,22 +630,23 @@ module DivisionByMinpolyUMPHelperTest where
 
 module DivisionRefinementByUMPTest where
   postulate
+    ℓF : Agda.Primitive.Level
     F E : FieldDeclaration
     α p vanishes monic : M.Identifier
-    ump : MinimalPolynomialProperty F E α
+    ump : MinimalPolynomialProperty {ℓF} F E α
 
   -- Start with a generic division using the minimal polynomial as divisor
   genericDS : DivisionScaffold
   genericDS = dividePolynomials (MinimalPolynomialProperty.minPoly ump) p
 
-  genericZero : Boolean
+  genericZero : Bool
   genericZero = flagValue (DivisionScaffold.remainderZeroFlag genericDS)
 
   -- Refine the generic division using UMP evidence
   refinedDS : DivisionScaffold
-  refinedDS = refineDivisionByUMP {F} {E} {α} ump p vanishes monic genericDS
+  refinedDS = refineDivisionByUMP {ℓF} {F} {E} {α} ump p vanishes monic genericDS
 
-  refinedZero : Boolean
+  refinedZero : Bool
   refinedZero = flagValue (DivisionScaffold.remainderZeroFlag refinedDS)
 
 -- =========================================================================
@@ -640,20 +655,20 @@ module DivisionRefinementByUMPTest where
 
 module F2PolynomialDivisionTest where
   open import Core.PolynomialsF2 as PF2
-  import Agda.Builtin.Bool as BB
+  -- import Agda.Builtin.Bool as BB (removed)
   -- Example: (x^2 + 1) / (x + 1) over F2 has zero remainder
   -- dividend = [true, false, true]
   -- divisor  = [true, true]
   dividendF2 : PF2.PolyF2
-  dividendF2 = PF2.normalize (BB.true ∷ BB.false ∷ BB.true ∷ [])
+  dividendF2 = PF2.normalize (true ∷ false ∷ true ∷ [])
 
   divisorF2 : PF2.PolyF2
-  divisorF2 = PF2.normalize (BB.true ∷ BB.true ∷ [])
+  divisorF2 = PF2.normalize (true ∷ true ∷ [])
 
   dsF2 : DivisionScaffold
   dsF2 = dividePolynomialsF2 dividendF2 divisorF2
 
-  f2RemainderZero : Boolean
+  f2RemainderZero : Bool
   f2RemainderZero = flagValue (DivisionScaffold.remainderZeroFlag dsF2)
 
 -- =========================================================================

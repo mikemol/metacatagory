@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.AlgorithmSmokeTests: Smoke tests for algorithm interfaces
 -- This module instantiates all algorithm interfaces with minimal dummy structures
 -- to verify that the interfaces are well-formed and can be instantiated generically.
@@ -10,16 +12,46 @@ open import Algebra.Groups.Abelian
 open import Algebra.Rings.Basic
 open import Algebra.Fields.Basic
 open import Algebra.Fields.Advanced
-open import Core.AlgebraicAlgorithms
+-- Import Core.AlgebraicAlgorithms without opening (to avoid ambiguity with Algorithms.TestInstances)
+-- But re-export the algorithm record types
+open import Core.AlgebraicAlgorithms as CoreAlgo using
+  ( MinimalPolynomialAlgorithm; MinimalPolynomialAlgorithm-generic
+  ; GaloisGroupAlgorithm; GaloisGroupAlgorithm-generic
+  ; SplittingFieldAlgorithm; SplittingFieldAlgorithm-generic
+  ; FieldExtensionDegreeAlgorithm; FieldExtensionDegreeAlgorithm-generic
+  ; SubfieldEnumerationAlgorithm; SubfieldEnumerationAlgorithm-generic
+  ; SubgroupEnumerationAlgorithm; SubgroupEnumerationAlgorithm-generic
+  ; AlgebraicityDecisionAlgorithm; AlgebraicityDecisionAlgorithm-generic
+  ; PrimitiveElementAlgorithm; PrimitiveElementAlgorithm-generic
+  ; NormalityDecisionAlgorithm; NormalityDecisionAlgorithm-generic
+  ; SeparabilityDecisionAlgorithm; SeparabilityDecisionAlgorithm-generic
+  ; NormalClosureAlgorithm; NormalClosureAlgorithm-generic
+  ; GaloisClosureAlgorithm; GaloisClosureAlgorithm-generic
+  ; PerfectFieldDecisionAlgorithm; PerfectFieldDecisionAlgorithm-generic
+  ; Dec; yes; no
+  )
 open import Core.Witnesses
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 
+-- Import parameterized test fixtures (Phase II.2)
+open import Algorithms.TestInstances using
+  ( packedMagmaBase; packedSemigroupBase; packedMonoidBase; packedInverseBase
+  ; packedGroupBase; packedAbelianGroupBase; packedRingBase; packedUnitalRingBase
+  ; packedCommRingBase; packedFieldBase
+  ; packedMagmaExt; packedSemigroupExt; packedMonoidExt; packedInverseExt
+  ; packedGroupExt; packedAbelianGroupExt; packedRingExt; packedUnitalRingExt
+  ; packedCommRingExt; packedFieldExt
+  )
+
 -- ============================================================================
 -- Dummy Field Structures for Testing
 -- ============================================================================
+--
+-- These are now imported from Algorithms.TestInstances (Phase II.2 parameterization)
+-- for better separation of concerns: test fixtures isolated from algorithm interfaces.
 
--- Reuse packed base chain from Core.AlgebraicAlgorithms
+-- Re-export for backward compatibility
 dummyMagma : MagmaDeclaration
 dummyMagma = packedMagmaBase
 
@@ -50,7 +82,7 @@ dummyCommRing = packedCommRingBase
 dummyField : FieldDeclaration
 dummyField = packedFieldBase
 
--- Extension field: reuse packed extension chain
+-- Extension field fixtures
 dummyExtMagma : MagmaDeclaration
 dummyExtMagma = packedMagmaExt
 

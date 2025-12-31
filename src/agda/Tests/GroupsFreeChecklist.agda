@@ -1,8 +1,10 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.GroupsFreeChecklist: Coverage for Algebra.Groups.Free (Free Groups and Categorical Constructions)
 
 module Tests.GroupsFreeChecklist where
 
-import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Metamodel as M
@@ -77,7 +79,7 @@ productInGrpDecl = record
 productInGrpAdapt : A.ProductInGrpAdapter
 productInGrpAdapt = A.mkProductInGrpAdapter G H productInGrpDecl G refl
 
-productInGrpStatus : A.isFilledProductInGrp productInGrpAdapt ≡ B.true
+productInGrpStatus : A.isFilledProductInGrp productInGrpAdapt ≡ true
 productInGrpStatus = refl
 
 -- Categorical assertions
@@ -100,7 +102,7 @@ coproductInGrpDecl = record
 coproductInGrpAdapt : A.CoproductInGrpAdapter
 coproductInGrpAdapt = A.mkCoproductInGrpAdapter G H coproductInGrpDecl G refl
 
-coproductInGrpStatus : A.isFilledCoproductInGrp coproductInGrpAdapt ≡ B.true
+coproductInGrpStatus : A.isFilledCoproductInGrp coproductInGrpAdapt ≡ true
 coproductInGrpStatus = refl
 
 -- Categorical assertions
@@ -120,7 +122,7 @@ freeGroupObjectDecl = record
 freeGroupObjectAdapt : A.FreeGroupObjectAdapter
 freeGroupObjectAdapt = A.mkFreeGroupObjectAdapter X freeGroupObjectDecl X refl
 
-freeGroupObjectStatus : A.isFilledFreeGroupObject freeGroupObjectAdapt ≡ B.true
+freeGroupObjectStatus : A.isFilledFreeGroupObject freeGroupObjectAdapt ≡ true
 freeGroupObjectStatus = refl
 
 -- Categorical assertions
@@ -142,7 +144,7 @@ freeGroupDecl = record
 freeGroupAdapt : A.FreeGroupAdapter
 freeGroupAdapt = A.mkFreeGroupAdapter X freeGroupDecl X refl
 
-freeGroupStatus : A.isFilledFreeGroup freeGroupAdapt ≡ B.true
+freeGroupStatus : A.isFilledFreeGroup freeGroupAdapt ≡ true
 freeGroupStatus = refl
 
 -- Categorical assertions
@@ -162,7 +164,7 @@ groupPresentationDecl = record
 groupPresentationAdapt : A.GroupPresentationAdapter
 groupPresentationAdapt = A.mkGroupPresentationAdapter groupPresentationDecl X refl
 
-groupPresentationStatus : A.isFilledGroupPresentation groupPresentationAdapt ≡ B.true
+groupPresentationStatus : A.isFilledGroupPresentation groupPresentationAdapt ≡ true
 groupPresentationStatus = refl
 
 -- Categorical assertions
@@ -183,7 +185,7 @@ abelianizationDecl = record
 abelianizationAdapt : A.AbelianizationAdapter
 abelianizationAdapt = A.mkAbelianizationAdapter G abelianizationDecl G refl
 
-abelianizationStatus : A.isFilledAbelianization abelianizationAdapt ≡ B.true
+abelianizationStatus : A.isFilledAbelianization abelianizationAdapt ≡ true
 abelianizationStatus = refl
 
 -- Categorical assertions
@@ -203,5 +205,5 @@ fgAbelianGroupDecl = record
 fgAbelianGroupAdapt : A.FinitelyGeneratedAbelianGroupAdapter
 fgAbelianGroupAdapt = A.mkFinitelyGeneratedAbelianGroupAdapter fgAbelianGroupDecl abelianGroupDecl refl
 
-fgAbelianGroupStatus : A.isFilledFinitelyGeneratedAbelianGroup fgAbelianGroupAdapt ≡ B.true
+fgAbelianGroupStatus : A.isFilledFinitelyGeneratedAbelianGroup fgAbelianGroupAdapt ≡ true
 fgAbelianGroupStatus = refl

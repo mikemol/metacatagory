@@ -17,10 +17,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install markdownlint-cli2
-        run: npm install --no-audit --no-fund markdownlint-cli2@0.13.0
-      - name: Run markdownlint
-        run: npx markdownlint-cli2 '**/*.md' '!build/**'
+      - name: Markdown lint
+        run: make md-lint
       - name: Summary
         if: ${{ success() }}
         run: echo "Markdown lint completed successfully"

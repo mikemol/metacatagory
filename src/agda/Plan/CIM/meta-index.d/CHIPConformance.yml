@@ -1,0 +1,21 @@
+title: 'Meta-Index: Plan.CIM.CHIPConformance'
+sections:
+- name: Scope
+  bullets:
+  - Protocol conformance utilities for CHIP, including graded metrics and SPPF nodes.
+- name: Key elements
+  bullets:
+  - '`GradedVectorSpace` record (dimensions, `EmergentMetric`).'
+  - 'Helpers: `mapGVS`, `composeBraids`, `makeSPPFNode`.'
+  - Uses PhaseAmbiguity, TransformationSystem, BraidedSPPF utilities.
+- name: Dependencies
+  bullets:
+  - '`Plan.CIM.Utility` (metrics, braids, SPPF helpers) and CHIP protocol definitions.'
+- name: Update triggers
+  bullets:
+  - New metrics, braid functors, or SPPF node forms.
+  - Protocol boundary changes in roadmap/architecture.
+  - Parsing or category-theory refinements that affect conformance.
+- name: Technical debt / status
+  bullets:
+  - Track protocol and SPPF evolution in deferred-items.md and ROADMAP.md.

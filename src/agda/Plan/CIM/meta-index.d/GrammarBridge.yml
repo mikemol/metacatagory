@@ -1,0 +1,18 @@
+title: 'Meta-Index: Plan.CIM.GrammarBridge'
+sections:
+- name: Scope
+  bullets:
+  - Bridges between grammar representations and roadmap/document pipelines.
+- name: Key elements
+  bullets:
+  - Grammar adapters/normalizers connecting parsing to downstream processing.
+- name: Dependencies
+  bullets:
+  - Markdown/Pandoc parsing modules and roadmap document workflows.
+- name: Update triggers
+  bullets:
+  - Grammar changes or new adapters.
+  - Downstream pipeline shifts requiring new bridge logic.
+- name: Technical debt / status
+  bullets:
+  - Track adapter coverage and TODOs in deferred-items.md and ROADMAP.md.

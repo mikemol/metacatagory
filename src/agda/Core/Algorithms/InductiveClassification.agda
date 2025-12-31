@@ -1,10 +1,15 @@
+{-# OPTIONS --without-K #-}
+
 -- Experimental: Can we resolve circular dependencies with inductive/coinductive types?
 -- This explores whether mutual recursion or well-founded induction can break the cycle
 
 module Core.Algorithms.InductiveClassification where
 
 open import Core
+open import Algebra.Rings.Basic using (FieldDeclaration)
 open import Algebra.Fields.Basic
+open import Core.Algorithms.FiniteFields using (IsFiniteField)
+open import Core.Algorithms.NumberFields using (IsNumberField)
 open import Metamodel as M
 
 -- ============================================================================
@@ -15,7 +20,7 @@ open import Metamodel as M
 
 mutual
   -- A field type with its evidence (dependent pair)
-  data FieldClass : FieldDeclaration → Set where
+  data FieldClass : FieldDeclaration → Set₁ where
     FiniteField   : {F : FieldDeclaration} → IsFiniteField* F → FieldClass F
     NumberField   : {F : FieldDeclaration} → IsNumberField* F → FieldClass F
     GenericField  : {F : FieldDeclaration} → FieldClass F
@@ -24,9 +29,11 @@ mutual
   -- (hypothetical - exploring if this pattern could work)
   data IsFiniteField* (F : FieldDeclaration) : Set where
     finiteEvidence : M.Identifier → IsFiniteField* F  -- Placeholder
+    -- TODO: replace placeholder with concrete invariants and proofs
   
   data IsNumberField* (F : FieldDeclaration) : Set where
     numberEvidence : M.Identifier → IsNumberField* F  -- Placeholder
+    -- TODO: replace placeholder with concrete invariants and proofs
 
 -- Question: Could we define classification as an inductive process?
 -- classify : (F : FieldDeclaration) → FieldClass F

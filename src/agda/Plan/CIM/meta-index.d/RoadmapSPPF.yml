@@ -1,0 +1,17 @@
+title: 'Meta-Index: Plan.CIM.RoadmapSPPF'
+sections:
+- name: Scope
+  bullets:
+  - SPPF representation of roadmap structures.
+- name: Key elements
+  bullets:
+  - SPPF nodes/graphs tailored to roadmap data.
+- name: Dependencies
+  bullets:
+  - Roadmap schemas and SPPF utilities from `Plan.CIM.Utility`.
+- name: Update triggers
+  bullets:
+  - Changes to roadmap schemas or SPPF encoding strategies.
+- name: Technical debt / status
+  bullets:
+  - Track SPPF coverage and missing nodes in deferred-items.md and ROADMAP.md.

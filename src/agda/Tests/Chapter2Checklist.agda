@@ -1,11 +1,12 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/Chapter2Checklist.agda
 -- 1–2 trivial inhabitants per Level2subN module to broaden smoke coverage.
 
 module Tests.Chapter2Checklist where
 
 open import Agda.Builtin.Unit using (⊤; tt)
-import Agda.Builtin.Bool as B
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Metamodel as M
@@ -38,7 +39,7 @@ open import Core.CategoricalAdapter
 
 chk2s1A : S1.AdditivityEquivalenceTheorem
 -- TODO(Ch2 §2.1): Replace with an actual additive-category instance when ready.
-chk2s1A = S1.THEOREM_AdditivityEquivalence (M.mkId "C") B.true B.true (M.mkId "iso")
+chk2s1A = S1.THEOREM_AdditivityEquivalence (M.mkId "C") true true (M.mkId "iso")
 
 chk2s1B : S1.HomFunctorIsAdditiveTheorem
 -- TODO(Ch2 §2.1): Replace with Hom functor built from a concrete category.
@@ -58,7 +59,7 @@ addCatDecl = S1.ADDITIVE_CATEGORY (M.mkId "AddCat") zeroObj enrichment []
 add-cat-adapter : A.AdditiveCategoryAdapter
 add-cat-adapter = A.mkAdditiveCategoryAdapter addCatDecl (M.mkId "AddCat") zeroObj refl refl (λ _ → addCatDecl)
 
-add-cat-status-is-filled : A.isFilledAdditive add-cat-adapter ≡ B.true
+add-cat-status-is-filled : A.isFilledAdditive add-cat-adapter ≡ true
 add-cat-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.additiveCategoryCategorical add-cat-adapter) tt) ≡ A.AdditiveCategoryAdapter.decl add-cat-adapter
 _ = refl
@@ -96,7 +97,7 @@ biproductDecl = record
 biprod-adapter : A.BiproductAdapter
 biprod-adapter = A.mkBiproductAdapter biproductDecl (M.mkId "A") (M.mkId "B") (M.mkId "A⊕B") refl refl refl (λ _ → biproductDecl)
 
-biprod-status-is-filled : A.isFilledBiproduct biprod-adapter ≡ B.true
+biprod-status-is-filled : A.isFilledBiproduct biprod-adapter ≡ true
 biprod-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.biproductCategorical biprod-adapter) tt) ≡ A.BiproductAdapter.decl biprod-adapter
 _ = refl
@@ -144,7 +145,7 @@ reg-fact-adapter = A.mkRegularFactorizationAdapter regCatDecl
                      (S2.RegularEpimorphismProperty.coequalizerWitness chk2s2A)
                      reg-fact-link (λ _ → regCatDecl)
 
-reg-fact-status-is-filled : A.isFilledRegularFactorization reg-fact-adapter ≡ B.true
+reg-fact-status-is-filled : A.isFilledRegularFactorization reg-fact-adapter ≡ true
 reg-fact-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.regularFactorizationCategorical reg-fact-adapter) tt) ≡ A.RegularFactorizationAdapter.decl reg-fact-adapter
 _ = refl
@@ -157,7 +158,7 @@ kp-adapter =
   A.mkKernelPairAdapter chk2s2B (M.mkId "f") (M.mkId "k1") (M.mkId "k2") (M.mkId "pb")
     refl refl refl refl (λ _ → chk2s2B)
 
-kp-status-is-filled : A.isFilledKernelPair kp-adapter ≡ B.true
+kp-status-is-filled : A.isFilledKernelPair kp-adapter ≡ true
 kp-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.kernelPairCategorical kp-adapter) tt) ≡ A.KernelPairAdapter.decl kp-adapter
 _ = refl
@@ -170,7 +171,7 @@ ier-adapter =
   A.mkInternalEquivalenceRelationAdapter chk2s2C (M.mkId "r1") (M.mkId "r2") (M.mkId "mono<r1,r2>")
     refl refl refl (λ _ → chk2s2C)
 
-ier-status-is-filled : A.isFilledInternalEquiv ier-adapter ≡ B.true
+ier-status-is-filled : A.isFilledInternalEquiv ier-adapter ≡ true
 ier-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.internalEquivalenceRelationCategorical ier-adapter) tt) ≡ A.InternalEquivalenceRelationAdapter.decl ier-adapter
 _ = refl
@@ -183,7 +184,7 @@ res-adapter =
   A.mkRegularExactSequenceAdapter chk2s2D (M.mkId "f") (M.mkId "e")
     refl refl (λ _ → chk2s2D)
 
-res-status-is-filled : A.isFilledRegularExact res-adapter ≡ B.true
+res-status-is-filled : A.isFilledRegularExact res-adapter ≡ true
 res-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.regularExactSequenceCategorical res-adapter) tt) ≡ A.RegularExactSequenceAdapter.decl res-adapter
 _ = refl
@@ -201,7 +202,7 @@ lawvere = S3.LAWVERE_THEORY_WITH_base_object (M.mkId "T") (M.mkId "X") (M.mkId "
 lawvere-adapter : A.LawvereTheoryAdapter
 lawvere-adapter = A.mkLawvereTheoryAdapter lawvere (M.mkId "T") (M.mkId "X") refl refl (λ _ → lawvere)
 
-lawvere-status-is-filled : A.isFilledLawvereTheory lawvere-adapter ≡ B.true
+lawvere-status-is-filled : A.isFilledLawvereTheory lawvere-adapter ≡ true
 lawvere-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.lawvereTheoryCategorical lawvere-adapter) tt) ≡ A.LawvereTheoryAdapter.decl lawvere-adapter
 _ = refl
@@ -215,7 +216,7 @@ algCat = S3._is_ALGEBRAIC_CATEGORY (M.mkId "C") lawvere (M.mkId "equiv")
 alg-cat-adapter : A.AlgebraicCategoryAdapter
 alg-cat-adapter = A.mkAlgebraicCategoryAdapter algCat (M.mkId "C") lawvere refl refl (λ _ → algCat)
 
-alg-cat-status-is-filled : A.isFilledAlgebraicCategory alg-cat-adapter ≡ B.true
+alg-cat-status-is-filled : A.isFilledAlgebraicCategory alg-cat-adapter ≡ true
 alg-cat-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.algebraicCategoryCategorical alg-cat-adapter) tt) ≡ A.AlgebraicCategoryAdapter.decl alg-cat-adapter
 _ = refl
@@ -300,7 +301,7 @@ locallyPresentableC = record
 lp-cat-adapter : A.LocallyPresentableAdapter
 lp-cat-adapter = A.mkLocallyPresentableAdapter locallyPresentableC catDeclC alpha1 refl refl
 
-lp-cat-status-is-filled : A.isFilledLocallyPresentable lp-cat-adapter ≡ B.true
+lp-cat-status-is-filled : A.isFilledLocallyPresentable lp-cat-adapter ≡ true
 lp-cat-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.locallyPresentableCategorical lp-cat-adapter) tt) ≡ A.LocallyPresentableAdapter.decl lp-cat-adapter
 _ = refl
@@ -331,7 +332,7 @@ hom-link = refl
 hom-adapter : A.HomObjectAdapter
 hom-adapter = A.mkHomObjectAdapter chk2s6A (M.mkId "HomAB") hom-link
 
-hom-status-is-filled : A.isFilledHom hom-adapter ≡ B.true
+hom-status-is-filled : A.isFilledHom hom-adapter ≡ true
 hom-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.homObjectCategorical hom-adapter) tt) ≡ A.HomObjectAdapter.decl hom-adapter
 _ = refl
@@ -352,7 +353,7 @@ id-link = refl
 id-adapter : A.IdEnrichedAdapter
 id-adapter = A.mkIdEnrichedAdapter chk2s6B idMor id-link
 
-id-status-is-filled : A.isFilledId id-adapter ≡ B.true
+id-status-is-filled : A.isFilledId id-adapter ≡ true
 id-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.idEnrichedCategorical id-adapter) tt) ≡ A.IdEnrichedAdapter.decl id-adapter
 _ = refl

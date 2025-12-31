@@ -1,0 +1,18 @@
+title: 'Meta-Index: Plan.CIM.PandocShowMdBlock'
+sections:
+- name: Scope
+  bullets:
+  - Rendering helpers for Markdown-specific block nodes.
+- name: Key elements
+  bullets:
+  - Pretty-printers for MdBlock collections; shared helpers with block rendering.
+- name: Dependencies
+  bullets:
+  - '`Plan.CIM.PandocAST`, Markdown normalization, and rendering utilities.'
+- name: Update triggers
+  bullets:
+  - New MdBlock variants or rendering patterns.
+  - Changes in Markdown dialect targets.
+- name: Technical debt / status
+  bullets:
+  - Track rendering gaps or dialect-specific tweaks in deferred-items.md and ROADMAP.md.

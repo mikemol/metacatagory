@@ -1,9 +1,11 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter1.Level1sub2 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
 open import Agda.Builtin.String   using (String)
 open import Agda.Builtin.List     using (List; []; _∷_)
-open import Agda.Builtin.Bool     using (Bool)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Metamodel as M
@@ -11,7 +13,7 @@ open import Core      as C
 
 -- Local helpers
 
--- A simple stand-in for expression-like terms appearing in EBNF equations
+-- A simple stand-in for expression-like terms appearing in structural equations
 Expr : Set
 Expr = String
 
@@ -440,7 +442,7 @@ record InitialityEquivalence : Set where
   field unit : ⊤
 
 ------------------------------------------------------------------------
--- Notes: This module mirrors src/ebnf/1/2.ebnf with structural records.
+-- Notes: This module formalizes Limits and Colimits with structural records.
 -- Many fields are simplified to Identifiers and Strings (Expr) to keep
 -- the module self-contained. CATEGORY narratives are preserved as comments.
 ------------------------------------------------------------------------

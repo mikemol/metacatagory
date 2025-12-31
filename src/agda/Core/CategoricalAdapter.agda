@@ -1,6 +1,12 @@
+{-# OPTIONS --without-K #-}
+module Core.CategoricalAdapter where
+
 -- Core.CategoricalAdapter: Universal categorical interface for adapters
 
-module Core.CategoricalAdapter where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Agda.Primitive using (Level; lsuc)
 open import Agda.Builtin.Unit using (⊤; tt)

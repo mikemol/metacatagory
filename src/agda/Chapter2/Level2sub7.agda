@@ -1,5 +1,7 @@
+{-# OPTIONS --without-K #-}
+
 -- Level2_7: Topological Categories (Chapter 2, Section 7)
--- This module encodes the structural content of Section 7 from the EBNF grammar.
+-- This module encodes the structural content of Section 7 (Topological Categories).
 -- It covers exponentiable spaces, compactly generated spaces, and topological functors.
 
 module Chapter2.Level2sub7 where

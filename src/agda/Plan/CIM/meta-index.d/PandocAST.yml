@@ -1,0 +1,22 @@
+title: 'Meta-Index: Plan.CIM.PandocAST'
+sections:
+- name: Scope
+  bullets:
+  - Pandoc/Markdown AST used for document normalization and transformation.
+- name: Key elements
+  bullets:
+  - '`Inline` variants (Str, Emph, Strong, Code, Space, SoftBreak, LineBreak, Math,
+    RawInline, Link, Image, Note).'
+  - '`Block` variants (Para, Plain, CodeBlock, RawBlock, Header, BlockQuote, OrderedList,
+    BulletList, HorizontalRule, Table, Null).'
+- name: Dependencies
+  bullets:
+  - Pandoc/Markdown document model references; consumes Plan/CIM utilities.
+- name: Update triggers
+  bullets:
+  - Adding/removing block or inline variants.
+  - Document model changes affecting normalization or rendering.
+  - Roadmap/architecture updates for document processing.
+- name: Technical debt / status
+  bullets:
+  - Track AST evolution and extensibility requirements in deferred-items.md and ROADMAP.md.

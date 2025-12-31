@@ -1,9 +1,11 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter1.Level1sub5 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
 open import Agda.Builtin.String   using (String)
 open import Agda.Builtin.List     using (List; []; _∷_)
-open import Agda.Builtin.Bool     using (Bool)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Metamodel as M
@@ -359,7 +361,7 @@ postulate
     -> Proof (CategoryPropertyS C) C.SubobjectLatticeCompletenessName
 
 ------------------------------------------------------------------------
--- Notes: Structural encoding of 1/5.ebnf covering graphs, path categories,
+-- Notes: Structural encoding of Graphs, Fractions, and Factorization, path categories,
 -- calculus of fractions, orthogonal subcategories, factorization systems,
 -- and universal closure operations. CATEGORY prose preserved as comments.
 -- Bridge postulates connect theorem records to Core.Proof.

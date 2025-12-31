@@ -1,0 +1,17 @@
+title: 'Meta-Index: Plan.CIM.FrameworkMetadata'
+sections:
+- name: Scope
+  bullets:
+  - Metadata helpers for framework and boundary protocols.
+- name: Key elements
+  bullets:
+  - Metadata records/functions used to annotate framework components.
+- name: Dependencies
+  bullets:
+  - Roadmap/architecture documentation and Plan/CIM utilities.
+- name: Update triggers
+  bullets:
+  - New metadata fields or boundary protocol changes.
+- name: Technical debt / status
+  bullets:
+  - Track metadata schema updates in deferred-items.md and ROADMAP.md.

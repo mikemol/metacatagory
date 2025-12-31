@@ -1,9 +1,11 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter1.Level1sub3 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
 open import Agda.Builtin.String   using (String)
 open import Agda.Builtin.List     using (List; []; _∷_)
-open import Agda.Builtin.Bool     using (Bool)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Metamodel as M
@@ -348,7 +350,7 @@ postulate
                C.LeftAdjPreservesColimitsName
 
 ------------------------------------------------------------------------
--- Notes: Structural encoding of 1/3.ebnf. CATEGORY narratives preserved
+-- Notes: Structural encoding of Adjunctions. CATEGORY narratives preserved
 -- as comments near each construct. Bridge functions into the unified proof
 -- layer (Core.Proof) can be added incrementally where needed.
 ------------------------------------------------------------------------

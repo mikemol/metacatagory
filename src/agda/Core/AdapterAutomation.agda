@@ -1,10 +1,18 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.AdapterAutomation: Practical automation for adapter categorical wrapping
 -- Non-reflection-based approach using type classes and manual registration
 
 module Core.AdapterAutomation where
+open import Agda.Builtin.Nat using (Nat; zero; suc)
 
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
+
+open import Agda.Builtin.Nat using (Nat; zero; suc)
 open import Agda.Builtin.Unit using (⊤; tt)
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Equality using (_≡_; refl)
@@ -14,6 +22,7 @@ open import Core.CategoricalAdapter
 -- Type class for adapters that can produce categorical adapters
 ------------------------------------------------------------------------
 
+-- Adapter type classes are not yet universe-polymorphic, but Setℓ is now available for future extension
 record HasCategorical (A : Set₁) : Set₂ where
   field
     extractType : Set
@@ -33,6 +42,7 @@ open HasCategorical {{...}} public
 --
 -- This record captures that pattern and adds categorical interface
 
+-- StandardAdapter is not yet universe-polymorphic, but Setℓ is now available for future extension
 record StandardAdapter (DeclType : Set) : Set₁ where
   field
     decl : DeclType
@@ -57,6 +67,7 @@ isFilledStandard a = StandardAdapter.status a
 -- Enhanced adapter with proofs
 ------------------------------------------------------------------------
 
+-- EnhancedAdapter is not yet universe-polymorphic, but Setℓ is now available for future extension
 record EnhancedAdapter (DeclType : Set) : Set₁ where
   field
     decl : DeclType
@@ -82,6 +93,7 @@ mkEnhancedAdapter D d f = record
 ------------------------------------------------------------------------
 
 -- Wrap a legacy adapter (with decl and status) into categorical form
+-- LegacyAdapterWrapper is not yet universe-polymorphic, but Setℓ is now available for future extension
 record LegacyAdapterWrapper (DeclType : Set) : Set₁ where
   field
     decl : DeclType
@@ -257,4 +269,3 @@ record EnhancedChecklistModule : Set where
 -- Validate that all adapters in a checklist have categorical adapters
 validateChecklist : EnhancedChecklistModule → Bool
 validateChecklist m = EnhancedChecklistModule.allHaveCategorical m
-

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K --allow-unsolved-metas #-}
+
 -- Tests.ErrorHandlingTests: Test error propagation and validation phases
 --
 -- This module tests behavioral boundaries related to error handling:

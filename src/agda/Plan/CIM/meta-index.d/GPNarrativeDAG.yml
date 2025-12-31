@@ -1,0 +1,17 @@
+title: 'Meta-Index: Plan.CIM.GPNarrativeDAG'
+sections:
+- name: Scope
+  bullets:
+  - Narrative DAG representation for GP roadmap items.
+- name: Key elements
+  bullets:
+  - DAG nodes/status annotations for GP narratives.
+- name: Dependencies
+  bullets:
+  - GP roadmap categories and DAG helpers; document/roadmap exports.
+- name: Update triggers
+  bullets:
+  - New GP nodes/statuses or schema changes.
+- name: Technical debt / status
+  bullets:
+  - Track DAG evolution and missing annotations in deferred-items.md and ROADMAP.md.

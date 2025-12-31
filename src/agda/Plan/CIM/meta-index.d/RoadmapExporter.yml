@@ -1,0 +1,18 @@
+title: 'Meta-Index: Plan.CIM.RoadmapExporter'
+sections:
+- name: Scope
+  bullets:
+  - Exporting roadmap data to external formats (e.g., markdown/JSON).
+- name: Key elements
+  bullets:
+  - Export helpers driven by canonical roadmap structures.
+- name: Dependencies
+  bullets:
+  - '`Plan.CIM.RoadmapIndex`/`CanonicalRoadmap` and document/export utilities.'
+- name: Update triggers
+  bullets:
+  - Format/schema changes for exported roadmaps.
+  - Roadmap ingestion changes that alter export expectations.
+- name: Technical debt / status
+  bullets:
+  - Track missing fields or format gaps in deferred-items.md and ROADMAP.md.

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Core where
 
 -- Core re-exports: a stable surface for downstream modules

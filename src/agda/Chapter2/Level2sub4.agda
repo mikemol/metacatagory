@@ -1,9 +1,11 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter2.Level2sub4 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
 open import Agda.Builtin.String   using (String)
 open import Agda.Builtin.List     using (List; []; _∷_)
-open import Agda.Builtin.Bool     using (Bool)
+open import Core.Phase using (Bool)
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Metamodel as M
@@ -458,8 +460,8 @@ record EffectiveDescentMorphism : Set where
 
 -- Note: Monad-related structures can be integrated with the proof layer
 -- using the generic scaffolding when needed. For now, structural records
--- capture the semantic content from 2/4.ebnf.
+-- capture the semantic content of Monad Theory.
 
 ------------------------------------------------------------------------
--- End of structural encoding for 2/4.ebnf (Monads)
+-- End of structural encoding for Monads
 ------------------------------------------------------------------------

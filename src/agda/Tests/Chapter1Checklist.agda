@@ -1,12 +1,14 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/Chapter1Checklist.agda
 -- 1–2 trivial inhabitants per Level1subN module to broaden smoke coverage.
 
 module Tests.Chapter1Checklist where
 
 open import Agda.Builtin.Unit using (⊤; tt)
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
-import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Metamodel as M
 
 -- Submodule imports
@@ -64,7 +66,7 @@ adj-adapter : A.AdjunctionHomAdapter
 adj-adapter = A.mkAdjunctionHomAdapter chk1s3A (M.mkId "F") (M.mkId "G") (M.mkId "C") (M.mkId "D")
                                adj-F-link adj-G-link adj-C-link adj-D-link
 
-adj-status-is-filled : A.isFilledAdjunction adj-adapter ≡ B.true
+adj-status-is-filled : A.isFilledAdjunction adj-adapter ≡ true
 adj-status-is-filled = refl
 -- Categorical assertions for adjunction hom adapter
 _ : (CategoricalAdapter.morphism (A.adjunctionHomCategorical adj-adapter) tt) ≡ A.AdjunctionHomAdapter.decl adj-adapter
@@ -95,7 +97,7 @@ strong-mono-link = refl
 strong-mono-adapter : A.StrongMonoAdapter
 strong-mono-adapter = A.mkStrongMonoAdapter chk1s4B (M.mkId "m") strong-mono-link (λ _ → chk1s4B)
 
-strong-mono-status-is-filled : A.isFilledStrongMono strong-mono-adapter ≡ B.true
+strong-mono-status-is-filled : A.isFilledStrongMono strong-mono-adapter ≡ true
 strong-mono-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.strongMonoCategorical strong-mono-adapter) tt) ≡ A.StrongMonoAdapter.decl strong-mono-adapter
 _ = refl
@@ -112,7 +114,7 @@ can-fs-link = refl
 can-fs-adapter : A.CanonicalFactorizationAdapter
 can-fs-adapter = A.mkCanonicalFactorizationAdapter chk1s4C can-fs-link (λ _ → chk1s4C)
 
-can-fs-status-is-filled : A.isFilledCanonicalFactorization can-fs-adapter ≡ B.true
+can-fs-status-is-filled : A.isFilledCanonicalFactorization can-fs-adapter ≡ true
 can-fs-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.canonicalFactorizationCategorical can-fs-adapter) tt) ≡ A.CanonicalFactorizationAdapter.decl can-fs-adapter
 _ = refl
@@ -141,7 +143,7 @@ refl-adapter : A.ReflectiveLocalizationAdapter
 refl-adapter = A.mkReflectiveLocalizationAdapter chk1s5A (M.mkId "R") (M.mkId "C") (M.mkId "L")
                                 refl-R-link refl-C-link refl-L-link (λ _ → chk1s5A)
 
-refl-status-is-filled : A.isFilledReflectiveLocalization refl-adapter ≡ B.true
+refl-status-is-filled : A.isFilledReflectiveLocalization refl-adapter ≡ true
 refl-status-is-filled = refl
 _ : (CategoricalAdapter.morphism (A.reflectiveLocalizationCategorical refl-adapter) tt) ≡ A.ReflectiveLocalizationAdapter.decl refl-adapter
 _ = refl

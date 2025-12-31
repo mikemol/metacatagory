@@ -1,0 +1,21 @@
+title: 'Meta-Index: Plan.CIM.CHIPRecomposed'
+sections:
+- name: Scope
+  bullets:
+  - Block-level recomposition and tracing for CHIP protocols.
+- name: Key elements
+  bullets:
+  - '`recomposeBlockCoherence`, `composeBraidTraces`, `buildSteps`.'
+  - Imports Utility (Ambiguity, TransformationSystem, CoherenceWitness, metrics, path
+    ops) and document adapters (PandocAST/ToMarkdown/Protocols/GrammarBridge).
+- name: Dependencies
+  bullets:
+  - Transformation and braid utilities from `Plan.CIM.Utility`; document adapters
+    for block handling.
+- name: Update triggers
+  bullets:
+  - New block types or protocol transformations.
+  - Changes to coherence/braid protocols in roadmap/architecture.
+- name: Technical debt / status
+  bullets:
+  - Track protocol/trace evolution in deferred-items.md and ROADMAP.md.

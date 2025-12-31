@@ -1,5 +1,5 @@
 {
-  "generated": "2025-12-31T00:26:29.525434Z",
+  "generated": "2025-11-20T01:03:23.216723Z",
   "badges": [
     "roadmap-progress",
     "roadmap-active",
@@ -9,7 +9,6 @@
     "deferred-total",
     "deferred-weighted",
     "deferred-trend",
-    "deferred-trend-weekly",
     "deferred-deviations",
     "deferred-postulates",
     "deferred-todo",

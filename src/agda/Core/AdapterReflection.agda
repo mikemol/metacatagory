@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.AdapterReflection: Metaprogramming utilities for automatic adapter wrapping
 -- Provides macros and reflection-based tools to automate categorical adapter generation
 
@@ -6,6 +8,7 @@ module Core.AdapterReflection where
 open import Agda.Builtin.Reflection renaming (bindTC to _>>=_)
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String using (String)
+open import Agda.Builtin.Bool using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.Nat using (Nat)
 open import Agda.Builtin.Equality using (_≡_; refl)
@@ -28,7 +31,7 @@ data AdapterMetadata : Set where
 extractPrimaryField : Name → TC AdapterMetadata
 extractPrimaryField adapterName = do
   -- Get the type definition
-  def ← getDefinition adapterName
+  definition ← getDefinition adapterName
   -- Extract record fields
   -- Look for field named "decl" or the first non-status field
   -- Return metadata
@@ -43,7 +46,7 @@ generateCategoricalField : (T : Set) → Term
 generateCategoricalField T = 
   -- Generate: categorical : CategoricalAdapter T
   -- This would use quoteTerm and reflection API
-  unknown  -- Placeholder
+  unknown  -- TODO: implement quoteTerm-based field generation
 
 -- Generate constructor that includes the categorical adapter
 generateMkWithCategorical : Name → TC (List Clause)
@@ -61,7 +64,7 @@ macro
   deriveCategorical : Name → Term → TC ⊤
   deriveCategorical adapterName hole = do
     -- 1. Extract adapter record structure
-    meta ← extractPrimaryField adapterName
+    metadata ← extractPrimaryField adapterName
     -- 2. Generate categorical field
     -- 3. Inject into the adapter definition
     -- 4. Unify with hole
@@ -168,4 +171,3 @@ buildInventory (n ∷ ns) = do
   -- Convert to JSON
   -- Cons to rest
   returnTC rest
-

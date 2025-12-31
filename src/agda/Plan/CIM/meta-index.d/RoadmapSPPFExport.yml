@@ -1,0 +1,17 @@
+title: 'Meta-Index: Plan.CIM.RoadmapSPPFExport'
+sections:
+- name: Scope
+  bullets:
+  - Exporting roadmap SPPF representations to external formats.
+- name: Key elements
+  bullets:
+  - Conversions from SPPF nodes/graphs into serialized outputs.
+- name: Dependencies
+  bullets:
+  - '`Plan.CIM.RoadmapSPPF`, SPPF utilities, and export helpers.'
+- name: Update triggers
+  bullets:
+  - SPPF schema changes or new export targets.
+- name: Technical debt / status
+  bullets:
+  - Track export coverage and format debt in deferred-items.md and ROADMAP.md.

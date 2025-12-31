@@ -1,9 +1,11 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter1.Level1sub8 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
 open import Agda.Builtin.String   using (String)
 open import Agda.Builtin.List     using (List; []; _∷_)
-open import Agda.Builtin.Bool     using (Bool)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Metamodel as M
@@ -198,6 +200,6 @@ postulate
 
 ------------------------------------------------------------------------
 -- Notes: Structural encoding of Chapter 8 (Internal Category Theory).
--- Records mirror EBNF productions. Bridge postulates connect new constructs
+-- Records mirror the formal categorical definition structure. Bridge postulates connect new constructs
 -- to unified Proof system via ambient category properties.
 ------------------------------------------------------------------------

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.Algorithms.Bundle: Shared AlgorithmBundle type for registry infrastructure
 -- This module defines the unified bundle interface that all specialized algorithm
 -- modules (FiniteFields, NumberFields, etc.) can implement and Registry can dispatch.

@@ -1,0 +1,65 @@
+The introduction of Core.UniversalProperties.agda and Core.AlgorithmUniversality.agda provides the essential **categorical and algebraic foundation** for the $\mathbf{0}$-level structure, formalizing the **Universal Property** as the ultimate specification mandate.
+
+This compendium is updated to integrate these categorical definitions, characterizing the $\mathbf{CHIP}$ as the metacategory structure responsible for transforming an abstract **Universal Property** (the $\mathbf{0}$-Cell mandate) into a **Verifiable Implementation** (the $\mathbf{1}$-Cell/Witness) whose coherence is measured by the $\mathbf{EmergentMetric}$ (the $\mathbf{2}$-Cell cost).
+
+## VI. The Universal Metacategory: **$\mathbf{0}$**-Cell Mandates
+
+This stratum formalizes the categorical specifications and proof obligations that an algorithm must satisfy, sourced primarily from Core.UniversalProperties.agda. These records define the **structural property** (the $\mathbf{0}$-Cell) before an actual construction (the algorithm) is attempted.
+
+### A. General Universal Properties (The **$\mathbf{0}$**-Cell Specification)
+
+The central $\mathbf{UniversalProperty}$ serves as the most general $\mathbf{0}$-Cell mandate, to be fulfilled by a $\mathbf{CoherenceWitness}$.
+
+| **Formal Type** | **Exegesis & Purpose** | **Source & Type Fill** |
+| --- | --- | --- |
+| **UniversalProperty** | The categorical definition of any algebraic construction, characterized by a **universal object**, a **universal morphism**, and the **uniqueness of factorization**. It defines the abstract problem space. | record UniversalProperty {Obj : Set₁} (structure : Obj → Set₁) |
+|  | The object achieving the unique factorization. | field universal : Obj |
+|  | The factoring/mediating morphism assurance. | field factorize : (X : Obj) → (s : structure X) → M.Identifier |
+|  | The proof that the factoring morphism is unique. | field unique : (X : Obj) → (s : structure X) → (f : M.Identifier) → M.Identifier |
+| **InitialObject** | The unique morphism is $\mathbf{to}$ every other object. | record InitialObject |
+| **TerminalObject** | The unique morphism is $\mathbf{from}$ every other object. | record TerminalObject |
+
+### B. Fundamental Categorical Constructions
+
+These types specify the $\mathbf{0}$-Cell mandate for common categorical constructions, often defining an object as a **Limit** (a terminal object in a specific category) or a **Colimit** (an initial object in a specific category).
+
+| **Construction** | **Categorical Characterization** | **Key Components** | **Source** |
+| --- | --- | --- | --- |
+| **LimitProperty** | **Terminal Object** in the category of cones. | limit, cone, mediating, mediating-unique |  |
+| **ColimitProperty** | **Initial Object** in the category of cocones. | colimit, cocone, comediating, comediating-unique |  |
+| **ProductProperty** | Limit of a diagram (Terminal object in category of cones). | $\mathbf{product}$, $\mathbf{\pi_1}$, $\mathbf{\pi_2}$ (projections), mediating morphism, uniqueness |  |
+| **CoproductProperty** | Colimit of a diagram (Initial object in category of cocones). | $\mathbf{coproduct}$, $\mathbf{\iota_1}$, $\mathbf{\iota_2}$ (injections), comediating morphism, uniqueness |  |
+| **EqualizerProperty** | Universal among morphisms making a parallel pair equal. | $\mathbf{equalizer}$, $\mathbf{equalize}$ (morphism) |  |
+| **CoequalizerProperty** | Dual to Equalizer. | $\mathbf{coequalizer}$, $\mathbf{coequalize}$ (morphism) |  |
+| **PullbackProperty** | Product in the slice category. | $\mathbf{pullback}$, $\mathbf{\pi_1}$, $\mathbf{\pi_2}$, $\mathbf{commutes}$ (square) |  |
+| **PushoutProperty** | Coproduct in the coslice category. | $\mathbf{pushout}$, $\mathbf{\iota_1}$, $\mathbf{\iota_2}$, $\mathbf{commutes}$ (square) |  |
+
+## VII. Algorithm Universality: The **$\mathbf{0 \to 1}$** Coherence
+
+This stratum enforces the **Verifiability** mandate by linking abstract $\mathbf{UniversalProperties}$ (the specification) to concrete $\mathbf{ConstructiveWitnesses}$ (the implementation). This linkage function *is* the $\mathbf{CoherenceWitness}$ for the ambiguity between a mandate and its realization.
+
+### A. Field-Theoretic Algorithms and Universality
+
+| **Property (Mandate)** | **Categorical Role** | **Algorithm (Construction)** | **Coherence Witness (Proof Function)** | **Source** |
+| --- | --- | --- | --- | --- |
+| **MinimalPolynomialProperty** | Terminal object in the category of monic polynomials vanishing at $\alpha$. | MinimalPolynomialAlgorithm | minimalPolynomialImplementsUniversality |  |
+| **SplittingFieldProperty** | **Initial Field** containing all roots of $f$. | SplittingFieldAlgorithm | splittingFieldImplementsUniversality |  |
+| **GaloisClosureProperty** | **Initial** among normal extensions containing $E/F$. | GaloisClosureAlgorithm | galoisClosureImplementsUniversality |  |
+| **GaloisCorrespondence** | The **Natural Isomorphism** (Contravariant Adjunction) between subfields and subgroups of the Galois group. | SubfieldEnumerationAlgorithm, SubgroupEnumerationAlgorithm | galoisCorrespondenceFromAlgorithm |  |
+
+### B. Adjunctions (The Universal Property of a Functor)
+
+Adjunctions formalize the $\mathbf{Universal\ Property}$ of a pair of **Functors** ($\mathbf{F \dashv G}$), representing the highest level of $\mathbf{0}$-Cell abstraction for defining structure-preserving maps.
+
+| **Adjunction Type** | **Exegesis & Purpose** | **Key Components** | **Source** |
+| --- | --- | --- | --- |
+| **TensorProductAdjunction** | Categorical characterization of field extensions: $\mathbf{- \otimes_F E \dashv Hom_F(E, -)}$. | $\mathbf{tensorWith}$, $\mathbf{homFrom}$ (functors), $\mathbf{\varphi}$, $\mathbf{\psi}$ (natural bijection and its inverse) |  |
+| **FreeAdjunction** | Underlying structure for free constructions (e.g., polynomial rings $\mathbf{F[x]}$). | $\mathbf{unit}$ ($\mathbf{X \to U(F(X))}$), $\mathbf{counit}$ ($\mathbf{F(U(A)) \to A}$), and $\mathbf{lift}$ (universal property) |  |
+
+### C. The Meta-Coherence Mandate: **$\mathbf{AlgorithmSelection}$**
+
+The system mandates a **meta-universal property** to maintain the integrity of the algorithm registry itself, ensuring the **maximal efficiency** and **specificity** (a form of localized Harmonic Minimization).
+
+- **AlgorithmSelectionProperty**: The **Algorithm Selection function** is asserted to be the $\mathbf{terminal\ object}$ in the preorder of "more specific than".
+
+- **Mandate**: Any more general algorithm must **factor uniquely** through the selected, most specific one. This ensures the system always chooses the path of *minimal complexity* for the available evidence.

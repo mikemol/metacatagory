@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/AlgebraChecklist.agda
 -- Comprehensive coverage for Algebra subtree with concrete instances
 
@@ -5,7 +7,7 @@ module Tests.AlgebraChecklist where
 
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Metamodel as M
-import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Core.CategoricalAdapter
 import Tests.ObligationAdapters as A
@@ -32,7 +34,7 @@ magmaDecl = record
 magma-adapter : A.MagmaAdapter
 magma-adapter = A.mkMagmaAdapter magmaDecl
 
-magma-status : A.isFilledMagma magma-adapter ≡ B.true
+magma-status : A.isFilledMagma magma-adapter ≡ true
 magma-status = refl
 -- Categorical assertions for Magma
 _ : (CategoricalAdapter.morphism (A.magmaCategorical magma-adapter) tt) ≡ A.MagmaAdapter.decl magma-adapter
@@ -59,7 +61,7 @@ semigroup-link = refl
 semigroup-adapter : A.SemigroupAdapter
 semigroup-adapter = A.mkSemigroupAdapter semigroupDecl magmaDecl semigroup-link
 
-semigroup-status : A.isFilledSemigroup semigroup-adapter ≡ B.true
+semigroup-status : A.isFilledSemigroup semigroup-adapter ≡ true
 semigroup-status = refl
 -- Categorical assertions for Semigroup
 _ : (CategoricalAdapter.morphism (A.semigroupCategorical semigroup-adapter) tt) ≡ A.SemigroupAdapter.decl semigroup-adapter
@@ -87,7 +89,7 @@ monoid-link = refl
 monoid-adapter : A.MonoidAdapter
 monoid-adapter = A.mkMonoidAdapter monoidDecl semigroupDecl monoid-link
 
-monoid-status : A.isFilledMonoid monoid-adapter ≡ B.true
+monoid-status : A.isFilledMonoid monoid-adapter ≡ true
 monoid-status = refl
 -- Categorical assertions for Monoid
 _ : (CategoricalAdapter.morphism (A.monoidCategorical monoid-adapter) tt) ≡ A.MonoidAdapter.decl monoid-adapter
@@ -116,7 +118,7 @@ group-link = refl
 group-adapter : A.GroupAdapter
 group-adapter = A.mkGroupAdapter groupDecl monoidDecl group-link
 
-group-status : A.isFilledGroup group-adapter ≡ B.true
+group-status : A.isFilledGroup group-adapter ≡ true
 group-status = refl
 -- Categorical assertions for Group
 _ : (CategoricalAdapter.morphism (A.groupCategorical group-adapter) tt) ≡ A.GroupAdapter.decl group-adapter
@@ -144,7 +146,7 @@ abelian-link = refl
 abelian-adapter : A.AbelianGroupAdapter
 abelian-adapter = A.mkAbelianGroupAdapter abelianGroupDecl groupDecl abelian-link
 
-abelian-status : A.isFilledAbelianGroup abelian-adapter ≡ B.true
+abelian-status : A.isFilledAbelianGroup abelian-adapter ≡ true
 abelian-status = refl
 -- Categorical assertions for Abelian Group
 _ : (CategoricalAdapter.morphism (A.abelianGroupCategorical abelian-adapter) tt) ≡ A.AbelianGroupAdapter.decl abelian-adapter
@@ -173,7 +175,7 @@ ring-link = refl
 ring-adapter : A.RingAdapter
 ring-adapter = A.mkRingAdapter ringDecl abelianGroupDecl ring-link
 
-ring-status : A.isFilledRing ring-adapter ≡ B.true
+ring-status : A.isFilledRing ring-adapter ≡ true
 ring-status = refl
 -- Categorical assertions for Ring
 _ : (CategoricalAdapter.morphism (A.ringCategorical ring-adapter) tt) ≡ A.RingAdapter.decl ring-adapter
@@ -196,7 +198,7 @@ unital-link = refl
 unital-adapter : A.UnitalRingAdapter
 unital-adapter = A.mkUnitalRingAdapter unitalRingDecl ringDecl unital-link
 
-unital-status : A.isFilledUnitalRing unital-adapter ≡ B.true
+unital-status : A.isFilledUnitalRing unital-adapter ≡ true
 unital-status = refl
 -- Categorical assertions for Unital Ring
 _ : (CategoricalAdapter.morphism (A.unitalRingCategorical unital-adapter) tt) ≡ A.UnitalRingAdapter.decl unital-adapter
@@ -217,7 +219,7 @@ comm-ring-link = refl
 comm-ring-adapter : A.CommutativeRingAdapter
 comm-ring-adapter = A.mkCommutativeRingAdapter commRingDecl unitalRingDecl comm-ring-link
 
-comm-ring-status : A.isFilledCommutativeRing comm-ring-adapter ≡ B.true
+comm-ring-status : A.isFilledCommutativeRing comm-ring-adapter ≡ true
 comm-ring-status = refl
 -- Categorical assertions for Commutative Ring
 _ : (CategoricalAdapter.morphism (A.commutativeRingCategorical comm-ring-adapter) tt) ≡ A.CommutativeRingAdapter.decl comm-ring-adapter
@@ -238,7 +240,7 @@ div-ring-link = refl
 div-ring-adapter : A.DivisionRingAdapter
 div-ring-adapter = A.mkDivisionRingAdapter divRingDecl unitalRingDecl div-ring-link
 
-div-ring-status : A.isFilledDivisionRing div-ring-adapter ≡ B.true
+div-ring-status : A.isFilledDivisionRing div-ring-adapter ≡ true
 div-ring-status = refl
 -- Categorical assertions for Division Ring
 _ : (CategoricalAdapter.morphism (A.divisionRingCategorical div-ring-adapter) tt) ≡ A.DivisionRingAdapter.decl div-ring-adapter
@@ -259,7 +261,7 @@ field-link = refl
 field-adapter : A.FieldAdapter
 field-adapter = A.mkFieldAdapter fieldDecl commRingDecl field-link
 
-field-status : A.isFilledField field-adapter ≡ B.true
+field-status : A.isFilledField field-adapter ≡ true
 field-status = refl
 -- Categorical assertions for Field
 _ : (CategoricalAdapter.morphism (A.fieldCategorical field-adapter) tt) ≡ A.FieldAdapter.decl field-adapter

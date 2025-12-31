@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/ChapterObligationsSmoke.agda
 -- Leverage proof-obligation records from the chapters as smoke tests by
 -- constructing trivial inhabitants with dummy witnesses.
@@ -5,7 +7,7 @@
 module Tests.ChapterObligationsSmoke where
 
 open import Agda.Builtin.Unit using (⊤; tt)
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Metamodel as M
 
 -- Chapter 1 samples

@@ -1,9 +1,9 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --allow-unsolved-metas --without-K #-}
 
 module Tests.SubobjectTheoryChecklist where
 
 open import Tests.ObligationAdapters as A
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (refl; _≡_)
 import Metamodel as M
 

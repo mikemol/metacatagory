@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K --allow-unsolved-metas #-}
+
 -- Tests/CoreUniversalPropertiesChecklist.agda
 -- Instantiate core universal property adapters and assert status
 
@@ -5,7 +7,7 @@ module Tests.CoreUniversalPropertiesChecklist where
 
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.Equality using (_≡_; refl)
-import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Metamodel as M
 open import Core.CategoricalAdapter
 import Tests.ObligationAdapters as A
@@ -25,7 +27,7 @@ initialObj = record
 initial-adapter : A.InitialObjectAdapter
 initial-adapter = A.mkInitialObjectAdapter initialObj (CUP.InitialObject.initial initialObj) refl
 
-initial-status : A.isFilledInitialObject initial-adapter ≡ B.true
+initial-status : A.isFilledInitialObject initial-adapter ≡ true
 initial-status = refl
 
 -- Categorical assertions
@@ -44,7 +46,7 @@ terminalObj = record
 terminal-adapter : A.TerminalObjectAdapter
 terminal-adapter = A.mkTerminalObjectAdapter terminalObj (CUP.TerminalObject.terminal terminalObj) refl
 
-terminal-status : A.isFilledTerminalObject terminal-adapter ≡ B.true
+terminal-status : A.isFilledTerminalObject terminal-adapter ≡ true
 terminal-status = refl
 
 -- Categorical assertions
@@ -75,7 +77,7 @@ prodProp = record
 product-adapter : A.ProductPropertyAdapter
 product-adapter = A.mkProductPropertyAdapter A₀ B₀ prodProp (CUP.ProductProperty.product prodProp) refl
 
-product-status : A.isFilledProductProperty product-adapter ≡ B.true
+product-status : A.isFilledProductProperty product-adapter ≡ true
 product-status = refl
 
 -- Categorical assertions
@@ -98,7 +100,7 @@ coprodProp = record
 coproduct-adapter : A.CoproductPropertyAdapter
 coproduct-adapter = A.mkCoproductPropertyAdapter A₀ B₀ coprodProp (CUP.CoproductProperty.coproduct coprodProp) refl
 
-coproduct-status : A.isFilledCoproductProperty coproduct-adapter ≡ B.true
+coproduct-status : A.isFilledCoproductProperty coproduct-adapter ≡ true
 coproduct-status = refl
 
 -- Categorical assertions
@@ -132,7 +134,7 @@ eqProp = record
 equalizer-adapter : A.EqualizerPropertyAdapter
 equalizer-adapter = A.mkEqualizerPropertyAdapter A₁ B₁ f g eqProp (CUP.EqualizerProperty.equalizer eqProp) refl
 
-equalizer-status : A.isFilledEqualizerProperty equalizer-adapter ≡ B.true
+equalizer-status : A.isFilledEqualizerProperty equalizer-adapter ≡ true
 equalizer-status = refl
 
 -- Categorical assertions
@@ -154,7 +156,7 @@ coeqProp = record
 coequalizer-adapter : A.CoequalizerPropertyAdapter
 coequalizer-adapter = A.mkCoequalizerPropertyAdapter A₁ B₁ f g coeqProp (CUP.CoequalizerProperty.coequalizer coeqProp) refl
 
-coequalizer-status : A.isFilledCoequalizerProperty coequalizer-adapter ≡ B.true
+coequalizer-status : A.isFilledCoequalizerProperty coequalizer-adapter ≡ true
 coequalizer-status = refl
 
 -- Categorical assertions
@@ -191,7 +193,7 @@ pbProp = record
 pullback-adapter : A.PullbackPropertyAdapter
 pullback-adapter = A.mkPullbackPropertyAdapter A₂ B₂ C₂ f₂ g₂ pbProp (CUP.PullbackProperty.pullback pbProp) refl
 
-pullback-status : A.isFilledPullbackProperty pullback-adapter ≡ B.true
+pullback-status : A.isFilledPullbackProperty pullback-adapter ≡ true
 pullback-status = refl
 
 -- Categorical assertions
@@ -215,7 +217,7 @@ poProp = record
 pushout-adapter : A.PushoutPropertyAdapter
 pushout-adapter = A.mkPushoutPropertyAdapter A₂ B₂ C₂ f₂ g₂ poProp (CUP.PushoutProperty.pushout poProp) refl
 
-pushout-status : A.isFilledPushoutProperty pushout-adapter ≡ B.true
+pushout-status : A.isFilledPushoutProperty pushout-adapter ≡ true
 pushout-status = refl
 
 -- Categorical assertions
@@ -243,7 +245,7 @@ limProp = record
 limit-adapter : A.LimitPropertyAdapter
 limit-adapter = A.mkLimitPropertyAdapter D limProp (CUP.LimitProperty.limit limProp) refl
 
-limit-status : A.isFilledLimitProperty limit-adapter ≡ B.true
+limit-status : A.isFilledLimitProperty limit-adapter ≡ true
 limit-status = refl
 
 -- Categorical assertions
@@ -264,7 +266,7 @@ colimProp = record
 colimit-adapter : A.ColimitPropertyAdapter
 colimit-adapter = A.mkColimitPropertyAdapter D colimProp (CUP.ColimitProperty.colimit colimProp) refl
 
-colimit-status : A.isFilledColimitProperty colimit-adapter ≡ B.true
+colimit-status : A.isFilledColimitProperty colimit-adapter ≡ true
 colimit-status = refl
 
 -- Categorical assertions

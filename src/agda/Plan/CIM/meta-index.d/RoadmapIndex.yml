@@ -1,0 +1,20 @@
+title: 'Meta-Index: Plan.CIM.RoadmapIndex'
+sections:
+- name: Scope
+  bullets:
+  - Canonical index of roadmap items that drives generated projections (MD/JSON).
+- name: Key elements
+  bullets:
+  - Roadmap nodes, categories, and projection helpers defined in `Plan.CIM.RoadmapIndex.agda`.
+- name: Dependencies
+  bullets:
+  - Document algebra modules and roadmap export pipeline (make targets, JSON/MD generation).
+- name: Update triggers
+  bullets:
+  - Schema or workflow changes for roadmap ingestion/export.
+  - New roadmap categories or status fields.
+  - Architecture/ROADMAP.md updates that alter the canonical index.
+- name: Technical debt / status
+  bullets:
+  - Keep deferred-items.md in sync when schema shifts; regen projections (`make roadmap-merge`,
+    `make roadmap-export-md`) after changes.

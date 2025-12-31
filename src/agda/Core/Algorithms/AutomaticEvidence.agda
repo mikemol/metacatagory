@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Exploring Fully Automatic Evidence Detection
 -- Can we make Agda automatically detect field types and provide evidence?
 
@@ -7,8 +9,10 @@ open import Core
 open import Algebra.Foundation
 open import Algebra.Rings.Basic
 open import Algebra.Fields.Basic
+open import Core.Algorithms.FiniteFields using (IsFiniteField)
+open import Core.Algorithms.NumberFields using (IsNumberField)
 open import Metamodel as M
-open import Agda.Builtin.Sigma using (Σ; _,_)
+open import Agda.Builtin.Sigma using (Σ)
 
 -- ============================================================================
 -- Experiment: Automatic Evidence Detection
@@ -38,6 +42,7 @@ record AutoIsFiniteField (F : FieldDeclaration) : Set where
 -- instance
 --   autoDetectFiniteField : {F : FieldDeclaration} → AutoIsFiniteField F
 --   autoDetectFiniteField {F} = ??? -- Would need to inspect F's structure
+-- TODO: implement reflection-based detection once field invariants are defined
 
 -- ============================================================================
 -- Approach 2: Type-Directed Evidence Construction

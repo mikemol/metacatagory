@@ -1,0 +1,44 @@
+name: Makefile Triangle Identity Check
+on:
+  pull_request:
+    paths:
+      - 'Makefile'
+      - 'Makefile.generated'
+      - 'docs/automation/MAKEFILE-TARGETS.md'
+      - 'src/agda/Examples/ExporterMakefile.agda'
+      - 'scripts/validate_makefile_docs.py'
+  push:
+    paths:
+      - 'Makefile'
+      - 'Makefile.generated'
+      - 'docs/automation/MAKEFILE-TARGETS.md'
+      - 'src/agda/Examples/ExporterMakefile.agda'
+      - 'scripts/validate_makefile_docs.py'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate Makefile Triangle Identity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run makefile triangle validation
+        run: make makefile-validate
+
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: makefile-validation-report
+          path: build/reports/makefile-validate.txt
+          retention-days: 30
+
+      - name: Fail on validation errors
+        run: echo "makefile-validate completed"

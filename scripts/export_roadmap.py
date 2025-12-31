@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+"""
+Export ingested roadmap steps to structured Markdown ROADMAP.
+"""
+
+import json
+import os
+from pathlib import Path
+from typing import Dict, List
+
+def load_metadata(metadata_path: str) -> Dict:
+    """Load the ingested metadata."""
+    with open(metadata_path, 'r') as f:
+        return json.load(f)
+
+def generate_markdown_section(metadata: Dict) -> str:
+    """Generate a markdown section for each GP file."""
+    
+    md = "## Ingested Roadmap from GP Files\n\n"
+    md += f"This section consolidates roadmap items extracted from {metadata['total_files']} GP files.\n\n"
+    
+    # Group files by category (using first part of filename)
+    categories = {}
+    for gp_id, meta in metadata['files'].items():
+        # Extract category from GP ID (e.g., "GP01" -> "01", "GP830" -> "830")
+        num = gp_id.replace('GP', '')
+        if num.startswith('0'):
+            cat = "Foundational (00-99)"
+        elif num.startswith('1'):
+            cat = "Structural (100-199)"
+        elif num.startswith('2'):
+            cat = "Geometric (200-299)"
+        elif num.startswith('3'):
+            cat = "Topological (300-399)"
+        elif num.startswith('4'):
+            cat = "Semantic (400-499)"
+        elif num.startswith('5'):
+            cat = "Polytope (500-599)"
+        elif num.startswith('7'):
+            cat = "Analysis (700-799)"
+        elif num.startswith('8'):
+            cat = "Unified (800-899)"
+        else:
+            cat = "Other"
+        
+        if cat not in categories:
+            categories[cat] = []
+        categories[cat].append((gp_id, meta))
+    
+    # Generate sections
+    for category in sorted(categories.keys()):
+        md += f"\n### {category}\n\n"
+        
+        for gp_id, meta in sorted(categories[category]):
+            title = meta['title']
+            summary = meta['summary']
+            
+            md += f"**{gp_id}**: {title}\n"
+            md += f"> {summary}\n"
+            
+            if meta.get('keywords'):
+                md += f"> *Keywords*: {', '.join(meta['keywords'])}\n"
+            
+            md += "\n"
+    
+    return md
+
+def main():
+    """Main execution."""
+    metadata_path = '/home/mikemol/github/metacatagory/build/ingested_metadata.json'
+    roadmap_path = '/home/mikemol/github/metacatagory/ROADMAP.md'
+    
+    print("Generating Markdown roadmap from ingested metadata...")
+    
+    # Load metadata
+    if not os.path.exists(metadata_path):
+        print(f"Metadata file not found: {metadata_path}")
+        return
+    
+    metadata = load_metadata(metadata_path)
+    
+    # Generate markdown
+    markdown = generate_markdown_section(metadata)
+    
+    # Read existing ROADMAP
+    if os.path.exists(roadmap_path):
+        with open(roadmap_path, 'r') as f:
+            existing = f.read()
+        
+        # Find insertion point (before ## Implementation Status if it exists)
+        insertion_point = existing.find("## Implementation Status")
+        if insertion_point == -1:
+            insertion_point = existing.find("## See Also")
+        if insertion_point == -1:
+            insertion_point = len(existing)
+        
+        # Insert new section
+        updated = existing[:insertion_point] + "\n" + markdown + "\n" + existing[insertion_point:]
+    else:
+        updated = markdown
+    
+    # Save updated ROADMAP
+    with open(roadmap_path, 'w') as f:
+        f.write(updated)
+    
+    print(f"✓ Updated {roadmap_path}")
+    print(f"✓ Added {metadata['total_files']} ingested roadmap items")
+
+if __name__ == '__main__':
+    main()

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.Algorithms.External: Bridge to external computer algebra systems
 -- This module provides oracle/IO hooks for verified computation using Sage, Pari, SymPy, etc.
 -- Computational content is delegated to external tools with typed evidence stubs returned to Agda.
@@ -15,8 +17,10 @@ open import Core.Algorithms.Bundle
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String using (String)
-open import Agda.Builtin.Maybe using (Maybe; nothing; just)
+open import Core.Phase using (Maybe; nothing; just)
 open import Agda.Primitive using (Level; lzero; lsuc; _⊔_)
+open import Algorithms.Basic
+open Algorithms.Basic.Defaults
 
 private
   ℓ₀ = lzero
@@ -213,12 +217,12 @@ externalAlgorithmBundle F E config = record
   ; extensionDegreeAlg   = externalExtensionDegreeAlgorithm F E config
   ; subfieldEnumAlg      = externalSubfieldEnumerationAlgorithm F E config
   ; subgroupEnumAlg      = externalSubgroupEnumerationAlgorithm F E config
-  ; algebraicityAlg      = AlgebraicityDecisionAlgorithm-generic {F} {E}
-  ; primitiveElementAlg  = PrimitiveElementAlgorithm-generic {F} {E}
-  ; normalityAlg         = NormalityDecisionAlgorithm-generic {F} {E}
-  ; separabilityAlg      = SeparabilityDecisionAlgorithm-generic {F} {E}
-  ; normalClosureAlg     = NormalClosureAlgorithm-generic {F} {E}
-  ; galoisClosureAlg     = GaloisClosureAlgorithm-generic {F} {E}
+  ; algebraicityAlg      = mkAlgebraicityDecisionAlgorithm {F} {E}
+  ; primitiveElementAlg  = mkPrimitiveElementAlgorithm {F} {E}
+  ; normalityAlg         = mkNormalityDecisionAlgorithm {F} {E}
+  ; separabilityAlg      = mkSeparabilityDecisionAlgorithm {F} {E}
+  ; normalClosureAlg     = mkNormalClosureAlgorithm {F} {E}
+  ; galoisClosureAlg     = mkGaloisClosureAlgorithm {F} {E}
   }
 
 -- ============================================================================

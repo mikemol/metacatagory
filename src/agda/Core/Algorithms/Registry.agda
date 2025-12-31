@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.Algorithms.Registry: Centralized algorithm discovery and dispatch
 -- This module provides a unified interface for finding and invoking algebraic algorithms
 -- based on field types and problem categories, enabling systematic extension and reuse.
@@ -11,13 +13,16 @@ open import Algebra.Fields.Basic
 open import Algebra.Fields.Advanced
 open import Core.AlgebraicAlgorithms
 open import Core.Algorithms.Bundle
+open import Algorithms.Adapters.BundleAdapter using (defaultAlgorithmBundle)
+open import Algorithms.Basic
+open Algorithms.Basic.Defaults
 open import Core.Algorithms.FiniteFields
 open import Core.Algorithms.NumberFields
 open import Core.Algorithms.FunctionFields
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Equality using (_≡_; refl)
-open import Agda.Builtin.Sigma using (Σ; _,_; fst; snd)
+open import Core.Phase using (Σ; fst; snd; _,ₛ_)
 
 -- ============================================================================
 -- Algorithm Categories
@@ -85,15 +90,15 @@ open Classifiable public
 
 -- Smart constructor: finite field evidence → classifiable
 finiteFieldClassifiable : {F : FieldDeclaration} (ev : IsFiniteField F) → Classifiable F
-finiteFieldClassifiable {F} ev = record { classification = (FiniteFieldType , ev) }
+finiteFieldClassifiable {F} ev = record { classification = Core.Phase._,ₛ_ FiniteFieldType ev }
 
 -- Smart constructor: number field evidence → classifiable  
 numberFieldClassifiable : {F : FieldDeclaration} (ev : IsNumberField F) → Classifiable F
-numberFieldClassifiable {F} ev = record { classification = (NumberFieldType , ev) }
+numberFieldClassifiable {F} ev = record { classification = Core.Phase._,ₛ_ NumberFieldType ev }
 
 -- Smart constructor: function field evidence → classifiable
 functionFieldClassifiable : {F : FieldDeclaration} (ev : IsFunctionField F) → Classifiable F
-functionFieldClassifiable {F} ev = record { classification = (FunctionFieldType , ev) }
+functionFieldClassifiable {F} ev = record { classification = Core.Phase._,ₛ_ FunctionFieldType ev }
 
 -- ============================================================================
 -- Smart Constructors (for explicit use when instances aren't available)
@@ -101,13 +106,13 @@ functionFieldClassifiable {F} ev = record { classification = (FunctionFieldType 
 
 -- Manual classification: build classification pairs explicitly
 classifyAsFiniteField : (F : FieldDeclaration) → IsFiniteField F → FieldClassification F
-classifyAsFiniteField F ev = (FiniteFieldType , ev)
+classifyAsFiniteField F ev = Core.Phase._,ₛ_ FiniteFieldType ev
 
 classifyAsNumberField : (F : FieldDeclaration) → IsNumberField F → FieldClassification F
-classifyAsNumberField F ev = (NumberFieldType , ev)
+classifyAsNumberField F ev = Core.Phase._,ₛ_ NumberFieldType ev
 
 classifyAsFunctionField : (F : FieldDeclaration) → IsFunctionField F → FieldClassification F
-classifyAsFunctionField F ev = (FunctionFieldType , ev)
+classifyAsFunctionField F ev = Core.Phase._,ₛ_ FunctionFieldType ev
 
 -- Extract classification from Classifiable instance
 getClassification : {F : FieldDeclaration} → ⦃ _ : Classifiable F ⦄ → FieldClassification F
@@ -121,20 +126,7 @@ getClassification ⦃ c ⦄ = classification c
 
 -- Generic fallback bundle using all defaults
 genericAlgorithmBundle : (F E : FieldDeclaration) → AlgorithmBundle F E
-genericAlgorithmBundle F E = record
-  { minimalPolynomialAlg = MinimalPolynomialAlgorithm-generic {F} {E}
-  ; galoisGroupAlg       = GaloisGroupAlgorithm-generic {F} {E}
-  ; splittingFieldAlg    = SplittingFieldAlgorithm-generic {F}
-  ; extensionDegreeAlg   = FieldExtensionDegreeAlgorithm-generic {F} {E}
-  ; subfieldEnumAlg      = SubfieldEnumerationAlgorithm-generic {F} {E}
-  ; subgroupEnumAlg      = SubgroupEnumerationAlgorithm-generic {F} {E}
-  ; algebraicityAlg      = AlgebraicityDecisionAlgorithm-generic {F} {E}
-  ; primitiveElementAlg  = PrimitiveElementAlgorithm-generic {F} {E}
-  ; normalityAlg         = NormalityDecisionAlgorithm-generic {F} {E}
-  ; separabilityAlg      = SeparabilityDecisionAlgorithm-generic {F} {E}
-  ; normalClosureAlg     = NormalClosureAlgorithm-generic {F} {E}
-  ; galoisClosureAlg     = GaloisClosureAlgorithm-generic {F} {E}
-  }
+genericAlgorithmBundle F E = defaultAlgorithmBundle F E
 
 -- ============================================================================
 -- Specialized Bundles (Registry Entries)
@@ -153,10 +145,10 @@ finiteFieldBundle F E Ffin Efin =
     ; subgroupEnumAlg      = FiniteFieldAlgorithms.subgroupEnumAlg ffAlgs
     ; algebraicityAlg      = FiniteFieldAlgorithms.algebraicityAlg ffAlgs
     ; primitiveElementAlg  = FiniteFieldAlgorithms.primitiveElementAlg ffAlgs
-    ; normalityAlg         = NormalityDecisionAlgorithm-generic {F} {E}
-    ; separabilityAlg      = SeparabilityDecisionAlgorithm-generic {F} {E}
-    ; normalClosureAlg     = NormalClosureAlgorithm-generic {F} {E}
-    ; galoisClosureAlg     = GaloisClosureAlgorithm-generic {F} {E}
+    ; normalityAlg         = mkNormalityDecisionAlgorithm {F} {E}
+    ; separabilityAlg      = mkSeparabilityDecisionAlgorithm {F} {E}
+    ; normalClosureAlg     = mkNormalClosureAlgorithm {F} {E}
+    ; galoisClosureAlg     = mkGaloisClosureAlgorithm {F} {E}
     }
 
 -- ============================================================================
@@ -200,13 +192,13 @@ dispatchBundle : (F E : FieldDeclaration)
                → FieldClassification F 
                → FieldClassification E 
                → AlgorithmBundle F E
-dispatchBundle F E (FiniteFieldType , evF) (FiniteFieldType , evE) = 
+dispatchBundle F E (Core.Phase._,ₛ_ FiniteFieldType evF) (Core.Phase._,ₛ_ FiniteFieldType evE) =
   finiteFieldBundle F E evF evE
-dispatchBundle F E (NumberFieldType , evF) (NumberFieldType , evE) = 
+dispatchBundle F E (Core.Phase._,ₛ_ NumberFieldType evF) (Core.Phase._,ₛ_ NumberFieldType evE) =
   numberFieldBundle F E evF evE
-dispatchBundle F E (FunctionFieldType , evF) (FunctionFieldType , evE) =
+dispatchBundle F E (Core.Phase._,ₛ_ FunctionFieldType evF) (Core.Phase._,ₛ_ FunctionFieldType evE) =
   functionFieldBundle F E evF evE
-dispatchBundle F E _ _ = 
+dispatchBundle F E _ _ =
   genericAlgorithmBundle F E  -- Fallback for unsupported/mixed combinations
 
 -- Dispatch with explicit classifications (uses classifyAsFiniteField/classifyAsNumberField defined above)
@@ -502,4 +494,3 @@ lookupGaloisClosureAuto F E = AlgorithmBundle.galoisClosureAlg (lookupAlgorithmB
 -- lookupGaloisGroupWithClassification Q GF8 
 --   (classifyAsNumberField Q nfEvidence) 
 --   (classifyAsFiniteField GF8 ffEvidence)
-

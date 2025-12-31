@@ -1,7 +1,14 @@
+
+{-# OPTIONS --without-K #-}
+
 -- Core.AlgebraicAlgorithms: Generic interfaces for computational algebraic algorithms
 -- These records provide extensible, type-safe infrastructure for algebraic computation in Agda.
 
 module Core.AlgebraicAlgorithms where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Core
 open import Algebra.Rings.Basic
@@ -13,13 +20,14 @@ open import Core.Limitations
 open import Metamodel as M
 
 -- Minimal local decision type to avoid stdlib dependency (target Set₁ in this codebase)
+-- Setℓ is now available for future universe-polymorphic extension
 data Dec (A : Set₁) : Set₁ where
   yes : A → Dec A
   no  : Dec A
 
 -- Lists from builtins (avoid stdlib dependency)
 open import Agda.Builtin.List using (List; []; _∷_)
-open import Agda.Builtin.Maybe using (Maybe; just; nothing)
+open import Core.Phase using (Maybe; just; nothing)
 
 -- ==========================================================================
 -- Packed Nodes: Reusable dummy algebraic structures for smoke tests (Phase I.1.5)
@@ -301,7 +309,6 @@ record PerfectFieldDecisionAlgorithm (F : FieldDeclaration) : Set₁ where
 -- ============================================================================
 -- Extensibility: External/Verified Computation
 -- ============================================================================
-
 
 -- ==========================================================================
 -- Generic scaffolds for all algorithm interfaces

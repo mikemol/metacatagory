@@ -1,7 +1,13 @@
+{-# OPTIONS --without-K #-}
+module Core.AlgorithmUniversality where
+
 -- Core.AlgorithmUniversality: Linking algorithms to universal properties
 -- Shows how each algorithm interface implements or computes a universal construction
 
-module Core.AlgorithmUniversality where
+
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Core
 open import Metamodel as M
@@ -26,11 +32,11 @@ postulate
 -- category of monic polynomials that vanish at α
 
 minimalPolynomialImplementsUniversality 
-  : (F E : FieldDeclaration)
+  : {ℓ : Level} → (F E : FieldDeclaration)
   → (alg : MinimalPolynomialAlgorithm F E)
   → (α : M.Identifier)
-  → MinimalPolynomialProperty F E α
-minimalPolynomialImplementsUniversality F E alg α = record
+  → MinimalPolynomialProperty {ℓ} F E α
+minimalPolynomialImplementsUniversality {ℓ} F E alg α = record
   { minPoly = MinimalPolynomialAlgorithm.minimalPolynomial alg α
   ; vanishesAt = M.mkId "α-is-root"
   ; isMonic = M.mkId "minpoly-monic"
@@ -45,11 +51,11 @@ minimalPolynomialImplementsUniversality F E alg α = record
 -- category of field extensions containing all roots of f
 
 splittingFieldImplementsUniversality
-  : (F : FieldDeclaration)
+  : {ℓ : Level} → (F : FieldDeclaration)
   → (alg : SplittingFieldAlgorithm F)
   → (f : M.Identifier)
-  → SplittingFieldProperty F f
-splittingFieldImplementsUniversality F alg f = 
+  → SplittingFieldProperty {ℓ} F f
+splittingFieldImplementsUniversality {ℓ} F alg f = 
   let sf = SplittingFieldAlgorithm.splittingField alg f
   in record
     { splittingField = SplittingField.splittingField sf
@@ -67,10 +73,10 @@ splittingFieldImplementsUniversality F alg f =
 -- category of normal extensions containing E/F
 
 galoisClosureImplementsUniversality
-  : (F E : FieldDeclaration)
+  : {ℓ : Level} → (F E : FieldDeclaration)
   → (alg : GaloisClosureAlgorithm F E)
-  → GaloisClosureProperty F E
-galoisClosureImplementsUniversality F E alg = record
+  → GaloisClosureProperty {ℓ} F E
+galoisClosureImplementsUniversality {ℓ} F E alg = record
   { galoisClosure = record { underlyingRing = packedCommRingBase ; inverses = M.mkId "gc-inverses" }  -- dummy field
   ; embeddingF = M.mkId "F→GC"
   ; embeddingE = M.mkId "E→GC"
@@ -87,10 +93,10 @@ galoisClosureImplementsUniversality F E alg = record
 -- Phase 0.1: Constructive proof of tensor product as categorical product
 
 tensorProductAsProduct
-  : (F E₁ E₂ : FieldDeclaration)
+  : {ℓ : Level} → (F E₁ E₂ : FieldDeclaration)
   → (id₁ id₂ : M.Identifier)  -- Identifiers for the objects
-  → ProductProperty id₁ id₂
-tensorProductAsProduct F E₁ E₂ id₁ id₂ = record
+  → ProductProperty {ℓ} id₁ id₂
+tensorProductAsProduct {ℓ} F E₁ E₂ id₁ id₂ = record
   { product = M.mkId "E₁⊗E₂"  -- E₁ ⊗_F E₂ tensor product field
   ; π₁ = M.mkId "π₁:E₁⊗E₂→E₁"  -- First projection: tensor → E₁
   ; π₂ = M.mkId "π₂:E₁⊗E₂→E₂"  -- Second projection: tensor → E₂
@@ -109,10 +115,10 @@ tensorProductAsProduct F E₁ E₂ id₁ id₂ = record
 -- Phase 0.2: Constructive proof of compositum as categorical coproduct
 
 compositumAsCoproduct
-  : (F E₁ E₂ : FieldDeclaration)
+  : {ℓ : Level} → (F E₁ E₂ : FieldDeclaration)
   → (id₁ id₂ : M.Identifier)  -- Identifiers for the objects
-  → CoproductProperty id₁ id₂
-compositumAsCoproduct F E₁ E₂ id₁ id₂ = record
+  → CoproductProperty {ℓ} id₁ id₂
+compositumAsCoproduct {ℓ} F E₁ E₂ id₁ id₂ = record
   { coproduct = M.mkId "E₁·E₂"  -- E₁ · E₂ compositum field
   ; ι₁ = M.mkId "ι₁:E₁→E₁·E₂"  -- First injection: E₁ → compositum
   ; ι₂ = M.mkId "ι₂:E₂→E₁·E₂"  -- Second injection: E₂ → compositum
@@ -131,11 +137,11 @@ compositumAsCoproduct F E₁ E₂ id₁ id₂ = record
 -- Phase 0.3: Constructive proof of fixed field as categorical equalizer
 
 fixedFieldAsEqualizer
-  : (F E : FieldDeclaration)
+  : {ℓ : Level} → (F E : FieldDeclaration)
   → (σ : FieldAutomorphism F E)
   → (idE σId idId : M.Identifier)  -- E, σ, id as identifiers
-  → EqualizerProperty idE idE σId idId
-fixedFieldAsEqualizer F E σ idE σId idId = record
+  → EqualizerProperty {ℓ} idE idE σId idId
+fixedFieldAsEqualizer {ℓ} F E σ idE σId idId = record
   { equalizer = M.mkId "E^G"  -- E^G (fixed field under automorphism group)
   ; equalize = M.mkId "ι:E^G→E"  -- Inclusion: fixed field → E
   ; equalizes = M.mkId "σ∘ι≡id∘ι"  -- σ ∘ ι = id ∘ ι (elements fixed by σ)
@@ -152,12 +158,12 @@ fixedFieldAsEqualizer F E σ idE σId idId = record
 -- Phase 0.4 (Part 1): Constructive proof of subfield intersection as categorical pullback
 
 subfieldIntersectionAsPullback
-  : (F K₁ K₂ E : FieldDeclaration)
+  : {ℓ : Level} → (F K₁ K₂ E : FieldDeclaration)
   → (i₁ : M.Identifier)  -- K₁ → E
   → (i₂ : M.Identifier)  -- K₂ → E
   → (idK₁ idK₂ idE : M.Identifier)  -- Identifiers for objects
-  → PullbackProperty idK₁ idK₂ idE i₁ i₂
-subfieldIntersectionAsPullback F K₁ K₂ E i₁ i₂ idK₁ idK₂ idE = record
+  → PullbackProperty {ℓ} idK₁ idK₂ idE i₁ i₂
+subfieldIntersectionAsPullback {ℓ} F K₁ K₂ E i₁ i₂ idK₁ idK₂ idE = record
   { pullback = M.mkId "K₁∩K₂"  -- K₁ ∩ K₂ intersection subfield
   ; π₁ = M.mkId "π₁:K₁∩K₂→K₁"  -- Projection to K₁
   ; π₂ = M.mkId "π₂:K₁∩K₂→K₂"  -- Projection to K₂
@@ -176,12 +182,12 @@ subfieldIntersectionAsPullback F K₁ K₂ E i₁ i₂ idK₁ idK₂ idE = recor
 -- Phase 0.4 (Part 2): Constructive proof of subfield join as categorical pushout
 
 subfieldJoinAsPushout
-  : (F K₁ K₂ : FieldDeclaration)
+  : {ℓ : Level} → (F K₁ K₂ : FieldDeclaration)
   → (i₁ : M.Identifier)  -- F → K₁
   → (i₂ : M.Identifier)  -- F → K₂
   → (idF idK₁ idK₂ : M.Identifier)  -- Identifiers for objects
-  → PushoutProperty idF idK₁ idK₂ i₁ i₂
-subfieldJoinAsPushout F K₁ K₂ i₁ i₂ idF idK₁ idK₂ = record
+  → PushoutProperty {ℓ} idF idK₁ idK₂ i₁ i₂
+subfieldJoinAsPushout {ℓ} F K₁ K₂ i₁ i₂ idF idK₁ idK₂ = record
   { pushout = M.mkId "K₁·K₂"  -- K₁ · K₂ compositum (join)
   ; ι₁ = M.mkId "ι₁:K₁→K₁·K₂"  -- Injection from K₁
   ; ι₂ = M.mkId "ι₂:K₂→K₁·K₂"  -- Injection from K₂
@@ -199,9 +205,9 @@ subfieldJoinAsPushout F K₁ K₂ i₁ i₂ idF idK₁ idK₂ = record
 -- F[x] is the free F-algebra on one generator
 
 polynomialRingAsFree
-  : (F : FieldDeclaration)
-  → FreeAdjunction (proof) (proof)
-polynomialRingAsFree F = record
+  : {ℓ : Level} → (F : FieldDeclaration)
+  → FreeAdjunction {ℓ} (proof) (proof)
+polynomialRingAsFree {ℓ} F = record
   { unit = λ X → proof  -- X → F[X]
   ; counit = λ A → proof  -- F[U(A)] → A (evaluation)
   ; lift = λ X A f → proof  -- extends f : X → U(A) to F[X] → A
@@ -217,9 +223,9 @@ polynomialRingAsFree F = record
 -- This is the universal property of rational function fields
 
 rationalFunctionFieldAsInitial
-  : (F : FieldDeclaration)
-  → RationalFunctionFieldProperty F
-rationalFunctionFieldAsInitial F = record
+  : {ℓ : Level} → (F : FieldDeclaration)
+  → RationalFunctionFieldProperty {ℓ} F
+rationalFunctionFieldAsInitial {ℓ} F = record
   { rationalFunctionField = proof  -- F(t)
   ; embedding = proof  -- F → F(t)
   ; generator = proof  -- t
@@ -230,10 +236,10 @@ rationalFunctionFieldAsInitial F = record
 
 -- Function field degree computes transcendence degree + algebraic degree
 functionFieldDegreeProperty
-  : (F K : FieldDeclaration)
+  : {ℓ : Level} → (F K : FieldDeclaration)
   → (degAlg : FieldExtensionDegreeAlgorithm F K)
-  → FunctionFieldDegreeProperty F K
-functionFieldDegreeProperty F K degAlg = record
+  → FunctionFieldDegreeProperty {ℓ} F K
+functionFieldDegreeProperty {ℓ} F K degAlg = record
   { baseFunctionField = proof
   ; degree = proof  -- Computed by degAlg
   ; transcendenceBasis = proof
@@ -249,9 +255,9 @@ functionFieldDegreeProperty F K degAlg = record
 -- which is terminal in the preorder of algorithm applicability
 
 algorithmSelectionUniversality
-  : (F E : FieldDeclaration)
-  → AlgorithmSelectionProperty F E
-algorithmSelectionUniversality F E = record
+  : {ℓ : Level} → (F E : FieldDeclaration)
+  → AlgorithmSelectionProperty {ℓ} F E
+algorithmSelectionUniversality {ℓ} F E = record
   { algorithms = proof  -- Available bundles
   ; select = λ evidence → proof
   ; isTerminal = λ alg → proof

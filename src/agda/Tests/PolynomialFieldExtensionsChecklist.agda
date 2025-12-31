@@ -1,9 +1,9 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --allow-unsolved-metas --without-K #-}
 
 module Tests.PolynomialFieldExtensionsChecklist where
 
 open import Agda.Builtin.Equality using (_≡_; refl)
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤)
 import Agda.Builtin.Nat as N
 import Agda.Builtin.String as S
@@ -258,4 +258,3 @@ _ : A.isFilledTranscendenceBasis transcendenceBasisAdapt ≡ true
 _ = refl
 
 -- Categorical assertions (omitted; adapter wiring smoke-tested via isFilledX)
-

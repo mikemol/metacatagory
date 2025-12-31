@@ -1,10 +1,24 @@
 #!/usr/bin/env python3
+
 """
+SPPF-Composable Onboarding Header
+
+Roadmap: src/agda/Plan/CIM/Utility.agda
+Architecture: ARCHITECTURE.md
+Onboarding: COPILOT_SYNERGY.md
+
+Constructive Proof Semantics:
+- This script participates in the composable SPPF model, mirroring Agda record patterns for protocol,
+    witness, and universal property semantics.
+- All logic should be traceable to roadmap nodes and architectural principles.
+- For onboarding, review the architecture and roadmap, and recursively revisit related nodes for
+    context and composability.
+
 Test report generator for MetaCategory Agda tests.
 
 Scans src/agda/Tests/*.agda files and extracts:
 - Declared adapter instances (type names like A.SomeAdapter)
-- Status assertions of the form `… ≡ B.true` (or `… ≡ true` in some modules)
+- Status assertions of the form `… ≡ true`
 - Count per file and per adapter type
 
 Outputs:
@@ -13,26 +27,29 @@ Outputs:
 
 Heuristic/static analysis only; does not attempt to parse Agda fully.
 """
+
 from __future__ import annotations
 import argparse
 import json
 import re
 import sys
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 TESTS_DIR = ROOT / "src" / "agda" / "Tests"
 OUT_DIR = ROOT / "build" / "reports"
 
 ADAPTER_TYPE_RE = re.compile(r"^\s*([a-zA-Z0-9_\-']+)\s*:\s*A\.([A-Za-z0-9_]+)\b")
-STATUS_ASSERT_RE = re.compile(r"^\s*([a-zA-Z0-9_\-']+)\s*:\s*A\.[A-Za-z0-9_]+\s+[a-zA-Z0-9_\-']+\s*≡\s*(?:B\.)?true\s*$")
+STATUS_ASSERT_RE = re.compile(
+    r"^\s*([a-zA-Z0-9_\-']+)\s*:\s*A\.[A-Za-z0-9_]+\s+[a-zA-Z0-9_\-']+\s*≡\s*(?:B\.)?true\s*$"
+)
 MODULE_RE = re.compile(r"^\s*module\s+([A-Za-z0-9_.]+)\s+where\s*$")
 
 # Allow True/False variants some files use
 ALT_TRUE_RE = re.compile(r"\b(?:B\.)?true\b|\bTrue\b")
 
-
-def scan_file(path: Path):
+def scan_file(path: Path) -> dict[str, Any]:
     adapters = []  # list of (name, type)
     statuses = 0
     module_name = None
@@ -50,10 +67,9 @@ def scan_file(path: Path):
         "module": module_name,
         "adapters": adapters,
         "status_assertions": statuses,
-    }
+    }  # type: dict[str, Any]
 
-
-def summarize(file_reports):
+def summarize(file_reports: list[dict[str, Any]]) -> dict[str, Any]:
     total_status = sum(fr["status_assertions"] for fr in file_reports)
     adapter_counts = {}
     for fr in file_reports:
@@ -63,12 +79,13 @@ def summarize(file_reports):
         "files": file_reports,
         "total_status_assertions": total_status,
         "adapter_type_counts": adapter_counts,
-    }
+    }  # type: dict[str, Any]
 
-
-def write_outputs(summary, out_dir: Path):
+def write_outputs(summary: dict[str, Any], out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "test-report.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    (out_dir / "test-report.json").write_text(
+        json.dumps(summary, indent=2), encoding="utf-8"
+    )
     # Markdown
     lines = []
     lines.append("# MetaCategory Test Report\n")
@@ -89,11 +106,14 @@ def write_outputs(summary, out_dir: Path):
         lines.append("")
     (out_dir / "test-report.md").write_text("\n".join(lines), encoding="utf-8")
 
-
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--tests-dir", default=str(TESTS_DIR), help="Directory with Agda Tests/*.agda")
-    parser.add_argument("--out-dir", default=str(OUT_DIR), help="Output directory for reports")
+    parser.add_argument(
+        "--tests-dir", default=str(TESTS_DIR), help="Directory with Agda Tests/*.agda"
+    )
+    parser.add_argument(
+        "--out-dir", default=str(OUT_DIR), help="Output directory for reports"
+    )
     args = parser.parse_args()
 
     tests_dir = Path(args.tests_dir)
@@ -109,7 +129,6 @@ def main():
     write_outputs(summary, out_dir)
     print(f"Wrote report to {out_dir}/test-report.(json|md)")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Core.Phase: Formal abstraction for behavioral phase boundaries
 --
 -- A Phase represents a transformation between system states with:
@@ -9,9 +11,13 @@
 -- This formalizes the testing strategy's notion of phase boundaries
 -- as first-class values in the type system.
 
+
 module Core.Phase where
 
+-- Explicitly import foundational universe and equality from Infrastructure
+open import Infrastructure.Universe using (Setℓ)
 open import Agda.Primitive using (Level; _⊔_)
+open import Infrastructure.Coherence.Path2 using (whisker; _∙₂_)
 open import Agda.Builtin.Equality using (_≡_; refl)
 
 private
@@ -19,39 +25,33 @@ private
     ℓ ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
 
 -- ============================================================================
--- Core Phase Type
--- ============================================================================
 
 -- A phase represents a transformation from A to B with property preservation
-record Phase {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
+record Phase {ℓ₁ ℓ₂ : Level} (A : Setℓ ℓ₁) (B : Setℓ ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
   field
     -- The transformation function
     transform : A → B
-    
-    -- Optional: Invariant that should be preserved
-    -- (We use Maybe-like encoding since we don't have stdlib)
-    -- For now, we keep it simple and can extend with dependent properties later
+    -- (Optional: Invariant preservation, extendable)
+
 
 -- Convenient syntax for accessing the transform
-_$ₚ_ : ∀ {A : Set ℓ₁} {B : Set ℓ₂} → Phase A B → A → B
+_$ₚ_ : ∀ {A : Setℓ ℓ₁} {B : Setℓ ℓ₂} → Phase A B → A → B
 phase $ₚ input = Phase.transform phase input
 
 infixl 9 _$ₚ_
 
 -- ============================================================================
--- Phase Construction Helpers
--- ============================================================================
 
 -- Create a phase from a simple function
-mkPhase : ∀ {A : Set ℓ₁} {B : Set ℓ₂} → (A → B) → Phase A B
+mkPhase : ∀ {A : Setℓ ℓ₁} {B : Setℓ ℓ₂} → (A → B) → Phase A B
 mkPhase f = record { transform = f }
 
 -- Identity phase (no transformation)
-idPhase : ∀ {A : Set ℓ} → Phase A A
+idPhase : ∀ {A : Setℓ ℓ} → Phase A A
 idPhase = mkPhase (λ x → x)
 
 -- Constant phase (ignores input)
-constPhase : ∀ {A : Set ℓ₁} {B : Set ℓ₂} → B → Phase A B
+constPhase : ∀ {A : Setℓ ℓ₁} {B : Setℓ ℓ₂} → B → Phase A B
 constPhase b = mkPhase (λ _ → b)
 
 -- ============================================================================
@@ -65,7 +65,6 @@ p₁ ⟫ p₂ = mkPhase (λ a → p₂ $ₚ (p₁ $ₚ a))
 
 infixr 8 _⟫_
 
--- Product type for parallel composition (since we don't have stdlib)
 record _×_ {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
   constructor _,_
   field
@@ -76,6 +75,22 @@ open _×_ public
 
 infixr 4 _×_
 infixr 5 _,_
+
+-- Dependent pair (Sigma type)
+record Σ {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : A → Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
+  constructor _,ₛ_
+  field
+    fst : A
+    snd : B fst
+
+open Σ public
+
+infixr 4 Σ
+infixr 5 _,ₛ_
+
+-- Example usage:
+--   Σ ℕ (λ n → List n)
+--   (n ,ₛ xs)
 
 -- Parallel composition: two independent phases that can run simultaneously
 -- Output is a product (pair) of results

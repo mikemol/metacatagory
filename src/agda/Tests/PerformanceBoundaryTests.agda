@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.PerformanceBoundaryTests: Track computational complexity phase boundaries
 --
 -- This suite tests where complexity changes occur in algorithm pipelines:
@@ -23,7 +25,7 @@ open import Agda.Builtin.Unit using (⊤)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Primitive using (Level; _⊔_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
-open import Agda.Builtin.Bool using (true; false) renaming (Bool to Bool')
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.List using (List; []; _∷_)
 
 -- Re-export complexity classification from Core.AlgorithmComplexity
@@ -357,7 +359,7 @@ module Phase10-AlgorithmComplexityAnnotations where
     ; limitation = nothing
     }
     where open import Core.AlgebraicAlgorithms using (Dec; no)
-          open import Agda.Builtin.Maybe using (nothing)
+          open import Core.Phase using (nothing)
   
   annotatedMinPoly : AnnotatedAlgorithm (MinimalPolynomialAlgorithm F E)
   annotatedMinPoly = annotateAlgorithm minPolyExample minPolyComplexity
@@ -367,67 +369,76 @@ module Phase10-AlgorithmComplexityAnnotations where
 -- ============================================================================
 
 module Phase14-GrowthInstrumentation where
-  open import Core.GrowthMetrics as GM
+  -- Import parameterized GrowthAnalysis module (Phase II.2)
+  -- This enables analysis of different development branches: Metacatagory, Categorical, Classical
+  open import GrowthAnalysis as GA using (metacatagoryHistory; categoricalBranchHistory; classicalBranchHistory)
   
-  -- Test: Allocation history tracking
-  test-allocation-history : List GM.CoordinateAllocation
-  test-allocation-history = GM.metacatagoryGrowthHistory
+  -- Import type definitions from Core.GrowthMetrics
+  open import Core.GrowthMetrics using
+    ( CoordinateAllocation; GrowthSnapshot; PhaseDensity; YCoordinateDistribution; GrowthRate; ExpansionPattern
+    ; verifyGrowthRate; verifyPhaseDensity; verifyGrowthSnapshot
+    )
+  open import Core.Utils using (ltNat)
   
-  -- Test: Capture growth snapshot
-  test-growth-snapshot : GM.GrowthSnapshot
-  test-growth-snapshot = GM.metacatagoryGrowthSnapshot
+  -- Test: Allocation history tracking (now using parameterized GrowthAnalysis)
+  test-allocation-history : List CoordinateAllocation
+  test-allocation-history = GA.metacatagoryHistory
   
-  -- Test: Phase density calculation
-  test-phase-density : GM.PhaseDensity
-  test-phase-density = GM.phase13Density
+  -- Test: Capture growth snapshot (backward compatible export from GrowthAnalysis)
+  test-growth-snapshot : GrowthSnapshot
+  test-growth-snapshot = GA.metacatagoryGrowthSnapshot
   
-  -- Test: Y-coordinate distribution
-  test-y-distribution : GM.YCoordinateDistribution
-  test-y-distribution = GM.phase13YDistribution
+  -- Test: Phase density calculation (backward compatible export from GrowthAnalysis)
+  test-phase-density : PhaseDensity
+  test-phase-density = GA.phase13Density
   
-  -- Test: Growth rate metrics
-  test-growth-rate : GM.GrowthRate
-  test-growth-rate = GM.metacatagoryGrowthRate
+  -- Test: Y-coordinate distribution (backward compatible export from GrowthAnalysis)
+  test-y-distribution : YCoordinateDistribution
+  test-y-distribution = GA.phase13YDistribution
   
-  -- Test: Expansion pattern classification
-  test-expansion-pattern : GM.ExpansionPattern
-  test-expansion-pattern = GM.metacatagoryExpansionPattern
+  -- Test: Growth rate metrics (backward compatible export from GrowthAnalysis)
+  test-growth-rate : GrowthRate
+  test-growth-rate = GA.metacatagoryGrowthRate
+  
+  -- Test: Expansion pattern classification (backward compatible export from GrowthAnalysis)
+  test-expansion-pattern : ExpansionPattern
+  test-expansion-pattern = GA.metacatagoryExpansionPattern
   
   -- Verify: Growth rate is valid
-  test-verify-growth-rate : Bool'
-  test-verify-growth-rate = GM.verifyGrowthRate test-growth-rate
+  test-verify-growth-rate : Bool
+  test-verify-growth-rate = verifyGrowthRate test-growth-rate
   
   _ : test-verify-growth-rate ≡ true
   _ = refl
   
   -- Verify: Phase density is consistent
-  test-verify-density : Bool'
-  test-verify-density = GM.verifyPhaseDensity test-phase-density
+  test-verify-density : Bool
+  test-verify-density = verifyPhaseDensity test-phase-density
   
   _ : test-verify-density ≡ true
   _ = refl
   
   -- Verify: Snapshot is well-formed
-  test-verify-snapshot : Bool'
-  test-verify-snapshot = GM.verifyGrowthSnapshot test-growth-snapshot
+  test-verify-snapshot : Bool
+  test-verify-snapshot = verifyGrowthSnapshot test-growth-snapshot
   
   _ : test-verify-snapshot ≡ true
   _ = refl
   
   -- Test: Phase 13 has objects allocated
-  test-phase13-has-objects : Bool'
+  test-phase13-has-objects : Bool
   test-phase13-has-objects =
-    let count = GM.PhaseDensity.objectCount test-phase-density
-    in GM.ltNat zero count
+    let count = PhaseDensity.objectCount test-phase-density
+    in ltNat zero count
   
   _ : test-phase13-has-objects ≡ true
   _ = refl
   
   -- Test: Multiple phases are used
-  test-multiple-phases : Bool'
+  test-multiple-phases : Bool
   test-multiple-phases =
-    let phaseCount = GM.GrowthRate.phasesUsed test-growth-rate
-    in GM.ltNat (suc zero) phaseCount
+    let phaseCount = GrowthRate.phasesUsed test-growth-rate
+    in ltNat (suc zero) phaseCount
   
   _ : test-multiple-phases ≡ true
   _ = refl
@@ -451,4 +462,3 @@ module Phase14-GrowthInstrumentation where
 -- 11. Growth rate instrumentation (Phase 14 / PHASE-V.2): Track solution space expansion patterns
 --
 -- Coverage: 11 phases tracking computational complexity boundaries and growth metrics
-

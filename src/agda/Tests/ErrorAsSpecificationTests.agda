@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.ErrorAsSpecificationTests: Error-as-Specification (Phase III.3 - 3.2)
 -- Status: COMPLETE [2025-11-19]
 --
@@ -16,8 +18,8 @@ open import Algebra.Rings.Basic
 open import Algebra.Fields.Basic
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.List   using (List; []; _∷_)
-open import Agda.Builtin.Bool   using (Bool; true; false)
-open import Agda.Builtin.Maybe  using (Maybe; just; nothing)
+open import Core.Phase using (Bool; true; false)
+open import Core.Phase using (Maybe; just; nothing)
 open import Agda.Builtin.Equality using (_≡_; refl)
 
 -- ============================================================================

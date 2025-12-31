@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.ModuleTheoryChecklist
 -- Minimal instances for additional module-theory adapters
 -- (Hom functors, duality, tensor products, free modules)
@@ -5,7 +7,7 @@
 module Tests.ModuleTheoryChecklist where
 
 open import Agda.Builtin.Equality
-open import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤)
 
 import Metamodel as M
@@ -465,28 +467,28 @@ rightModuleAdapt : A.RightModuleAdapter
 rightModuleAdapt = A.mkRightModuleAdapter ringDecl rightModuleDecl ringDecl refl
 
 -- Status assertions
-_ : A.isFilledHomFunctor homFunctorAdapt ≡ B.true
+_ : A.isFilledHomFunctor homFunctorAdapt ≡ true
 _ = refl
 
-_ : A.isFilledDualModule dualModuleAdapt ≡ B.true
+_ : A.isFilledDualModule dualModuleAdapt ≡ true
 _ = refl
 
-_ : A.isFilledReflexiveModule reflexiveModuleAdapt ≡ B.true
+_ : A.isFilledReflexiveModule reflexiveModuleAdapt ≡ true
 _ = refl
 
-_ : A.isFilledTensorProductModule tensorProductModuleAdapt ≡ B.true
+_ : A.isFilledTensorProductModule tensorProductModuleAdapt ≡ true
 _ = refl
 
-_ : A.isFilledFreeModule freeModuleAdapt ≡ B.true
+_ : A.isFilledFreeModule freeModuleAdapt ≡ true
 _ = refl
 
-_ : A.isFilledFreeModuleFunctor freeModuleFunctorAdapt ≡ B.true
+_ : A.isFilledFreeModuleFunctor freeModuleFunctorAdapt ≡ true
 _ = refl
 
-_ : A.isFilledForgetfulModuleFunctor forgetfulModuleFunctorAdapt ≡ B.true
+_ : A.isFilledForgetfulModuleFunctor forgetfulModuleFunctorAdapt ≡ true
 _ = refl
 
-_ : A.isFilledRightModule rightModuleAdapt ≡ B.true
+_ : A.isFilledRightModule rightModuleAdapt ≡ true
 _ = refl
 
 -- Categorical assertions (omitted; adapter wiring smoke-tested via isFilledX)

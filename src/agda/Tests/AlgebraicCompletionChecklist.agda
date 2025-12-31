@@ -1,8 +1,8 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --allow-unsolved-metas --without-K #-}
 
 module Tests.AlgebraicCompletionChecklist where
 
-import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤)
 import Agda.Builtin.Nat as N
@@ -308,7 +308,7 @@ exactSequenceAdapt =
     ringDecl
     refl
 
-_ : A.isFilledExactSequence exactSequenceAdapt ≡ B.true
+_ : A.isFilledExactSequence exactSequenceAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -330,7 +330,7 @@ categoryOfModulesAdapt =
     ringDecl
     refl
 
-_ : A.isFilledCategoryOfModules categoryOfModulesAdapt ≡ B.true
+_ : A.isFilledCategoryOfModules categoryOfModulesAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -428,7 +428,7 @@ vectorSpaceAdapt =
     fieldDecl
     refl
 
-_ : A.isFilledVectorSpace vectorSpaceAdapt ≡ B.true
+_ : A.isFilledVectorSpace vectorSpaceAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -521,7 +521,7 @@ rAlgebraAdapt =
     commRingDecl
     refl
 
-_ : A.isFilledRAlgebra rAlgebraAdapt ≡ B.true
+_ : A.isFilledRAlgebra rAlgebraAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -625,5 +625,5 @@ algebraHomomorphismAdapt =
     commRingDecl
     refl
 
-_ : A.isFilledAlgebraHomomorphism algebraHomomorphismAdapt ≡ B.true
+_ : A.isFilledAlgebraHomomorphism algebraHomomorphismAdapt ≡ true
 _ = refl

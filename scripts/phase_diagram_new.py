@@ -1,15 +1,24 @@
 #!/usr/bin/env python3
+
 """
+SPPF-Composable Onboarding Header
+
+Roadmap: src/agda/Plan/CIM/Utility.agda
+Architecture: ARCHITECTURE.md
+Onboarding: COPILOT_SYNERGY.md
+
+Constructive Proof Semantics:
+- This script participates in the composable SPPF model, mirroring Agda record patterns for protocol,
+    witness, and universal property semantics.
+- All logic should be traceable to roadmap nodes and architectural principles.
+- For onboarding, review the architecture and roadmap, and recursively revisit related nodes for
+    context and composability.
+
 Phase Diagram Generator for Metacatagory Project
 
 Analyzes test adapters to identify phase boundaries exercised:
-- Chapter/section relationships
-- Theorem dependencies
-- Constructive witnesses and proof obligations
 
 Outputs:
-- Graphviz DOT format
-- Optional SVG/PNG rendering (requires graphviz binary)
 """
 
 import re
@@ -17,13 +26,14 @@ import json
 from pathlib import Path
 from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Dict, List, Set, Tuple
+from typing import Any
+
+# Use built-in generics for type hints (PEP 585, Python 3.9+)
 import networkx as nx
 from graphviz import Digraph
 from rich.console import Console
 
 console = Console()
-
 
 @dataclass
 class PhaseNode:
@@ -33,9 +43,8 @@ class PhaseNode:
     label: str
     chapter: str
     section: str
-    node_type: str  # 'chapter', 'section', 'adapter', 'witness'
-    properties: Dict[str, any] = field(default_factory=dict)
-
+    node_type: str
+    properties: dict[str, Any] = field(default_factory=dict)
 
 @dataclass
 class PhaseEdge:
@@ -44,24 +53,23 @@ class PhaseEdge:
     source: str
     target: str
     edge_type: str  # 'contains', 'depends_on', 'links_to', 'witness'
-    properties: Dict[str, any] = field(default_factory=dict)
-
+    properties: dict[str, Any] = field(default_factory=dict)
 
 class PhaseDiagramGenerator:
     """Generates phase diagrams from test suite structure."""
 
-    def __init__(self, test_dir: Path):
+    def __init__(self, test_dir: Path) -> None:
         self.test_dir = test_dir
-        self.nodes: Dict[str, PhaseNode] = {}
-        self.edges: List[PhaseEdge] = []
+        self.nodes: dict[str, PhaseNode] = {}
+        self.edges: list[PhaseEdge] = []
         self.graph = nx.DiGraph()
 
-    def parse_test_files(self):
+    def parse_test_files(self) -> None:
         """Parse test files to extract phase structure."""
         for test_file in sorted(self.test_dir.glob("Chapter*Checklist.agda")):
             self._parse_chapter_file(test_file)
 
-    def _parse_chapter_file(self, filepath: Path):
+    def _parse_chapter_file(self, filepath: Path) -> None:
         """Parse a single chapter checklist file."""
         filename = filepath.stem
         chapter_match = re.match(r"(Chapter\d+)", filename)
@@ -183,7 +191,7 @@ class PhaseDiagramGenerator:
 
         return "0"
 
-    def build_graph(self):
+    def build_graph(self) -> None:
         """Build NetworkX graph from nodes and edges."""
         for node in self.nodes.values():
             self.graph.add_node(
@@ -198,7 +206,7 @@ class PhaseDiagramGenerator:
             if edge.source in self.graph and edge.target in self.graph:
                 self.graph.add_edge(edge.source, edge.target, edge_type=edge.edge_type)
 
-    def generate_dot(self, output_path: Path, show_adapters: bool = True):
+    def generate_dot(self, output_path: Path, show_adapters: bool = True) -> Digraph:
         """Generate Graphviz DOT file."""
         dot = Digraph(comment="Metacatagory Phase Diagram")
         dot.attr(rankdir="TB", splines="ortho")
@@ -221,28 +229,28 @@ class PhaseDiagramGenerator:
 
         # Add chapter subgraphs
         for chapter, nodes_in_chapter in sorted(chapters.items()):
-            with dot.subgraph(name=f"cluster_{chapter}") as c:
-                c.attr(label=chapter, style="rounded", color="#1976D2")
+            # Set cluster attributes for chapter
+            dot.attr("subgraph", name=f"cluster_{chapter}")
+            dot.attr(label=chapter, style="rounded", color="#1976D2")
 
-                # Group sections
-                sections = defaultdict(list)
-                for node in nodes_in_chapter:
-                    if node.node_type == "section":
-                        c.node(node.id, label=node.label, fillcolor=colors["section"])
-                    elif node.node_type == "adapter" and show_adapters:
-                        sections[node.section].append(node)
+            # Group sections
+            sections = defaultdict(list)
+            for node in nodes_in_chapter:
+                if node.node_type == "section":
+                    dot.node(node.id, label=node.label, fillcolor=colors["section"])
+                elif node.node_type == "adapter" and show_adapters:
+                    sections[node.section].append(node)
 
-                # Add adapters within sections
-                if show_adapters:
-                    for section, adapters in sorted(sections.items()):
-                        section_id = f"{chapter}.{section}"
-                        for adapter in adapters:
-                            c.node(
-                                adapter.id,
-                                label=adapter.label,
-                                fillcolor=colors["adapter"],
-                                shape="ellipse",
-                            )
+            # Add adapters within sections
+            if show_adapters:
+                for section, adapters in sorted(sections.items()):
+                    for adapter in adapters:
+                        dot.node(
+                            adapter.id,
+                            label=adapter.label,
+                            fillcolor=colors["adapter"],
+                            shape="ellipse",
+                        )
 
         # Add edges
         for edge in self.edges:
@@ -266,7 +274,7 @@ class PhaseDiagramGenerator:
 
         return dot
 
-    def render_diagram(self, dot_file: Path, output_format: str = "svg"):
+    def render_diagram(self, dot_file: Path, output_format: str = "svg") -> Path | None:
         """Render diagram to image using Graphviz."""
         try:
             from graphviz import Source
@@ -285,7 +293,7 @@ class PhaseDiagramGenerator:
             )
             return None
 
-    def export_json(self, output_path: Path):
+    def export_json(self, output_path: Path) -> None:
         """Export phase structure as JSON."""
         data = {
             "nodes": [
@@ -313,8 +321,7 @@ class PhaseDiagramGenerator:
         output_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
         console.print(f"[green]✓[/green] JSON export written to {output_path}")
 
-
-def main():
+def main() -> None:
     """Main entry point."""
     import argparse
 
@@ -382,7 +389,6 @@ def main():
         generator.export_json(json_path)
 
     console.print("[bold green]✓ Phase diagram generation complete![/bold green]")
-
 
 if __name__ == "__main__":
     main()

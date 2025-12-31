@@ -1,0 +1,20 @@
+title: 'Meta-Index: Plan.CIM.Utility'
+sections:
+- name: Scope
+  bullets:
+  - Shared utilities (metrics, transformations, paths, ambiguity, SPPF helpers) for
+    Plan/CIM.
+- name: Key elements
+  bullets:
+  - Types/functions for PhaseAmbiguity, TransformationSystem, EmergentMetric, Path/CoherenceWitness,
+    braids, SPPF nodes.
+- name: Dependencies
+  bullets:
+  - Core infrastructure modules and document/roadmap pipelines.
+- name: Update triggers
+  bullets:
+  - New shared helpers or changes to existing utility types.
+  - Upstream shifts in protocols that consume these helpers.
+- name: Technical debt / status
+  bullets:
+  - Track utility gaps and breaking changes in deferred-items.md and ROADMAP.md.

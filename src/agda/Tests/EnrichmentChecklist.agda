@@ -1,10 +1,10 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --allow-unsolved-metas --without-K #-}
 
 module Tests.EnrichmentChecklist where
 
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤)
-open import Agda.Builtin.Bool as B using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 import Metamodel as M
 import Algebra.Foundation as AFo
 import Algebra.Enrichment as AE
@@ -59,7 +59,7 @@ monoidAsMonoidalAdapt =
     natMonoidDecl
     refl
 
-_ : A.isFilledMonoidAsMonoidalCategory monoidAsMonoidalAdapt ≡ B.true
+_ : A.isFilledMonoidAsMonoidalCategory monoidAsMonoidalAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -82,7 +82,7 @@ abAsSymMonoidalAdapt =
     abGroupDecl
     refl
 
-_ : A.isFilledAbelianGroupAsSymmetricMonoidal abAsSymMonoidalAdapt ≡ B.true
+_ : A.isFilledAbelianGroupAsSymmetricMonoidal abAsSymMonoidalAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -103,7 +103,7 @@ monoidEnrichedAdapt =
     natMonoidDecl
     refl
 
-_ : A.isFilledMonoidEnrichedCategory monoidEnrichedAdapt ≡ B.true
+_ : A.isFilledMonoidEnrichedCategory monoidEnrichedAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -124,7 +124,7 @@ distanceCategoryAdapt =
     natMonoidDecl
     refl
 
-_ : A.isFilledDistanceCategory distanceCategoryAdapt ≡ B.true
+_ : A.isFilledDistanceCategory distanceCategoryAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -146,7 +146,7 @@ abEnrichedAdapt =
     (AGA.Ab.underlyingCategory abCategory)
     refl
 
-_ : A.isFilledAbEnrichedCategory abEnrichedAdapt ≡ B.true
+_ : A.isFilledAbEnrichedCategory abEnrichedAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -172,7 +172,7 @@ genericEnrichmentAdapt =
     catDecl
     refl
 
-_ : A.isFilledGenericEnrichment genericEnrichmentAdapt ≡ B.true
+_ : A.isFilledGenericEnrichment genericEnrichmentAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -194,7 +194,7 @@ groupActionEnrichedAdapt =
     groupDecl
     refl
 
-_ : A.isFilledGroupActionEnrichedCategory groupActionEnrichedAdapt ≡ B.true
+_ : A.isFilledGroupActionEnrichedCategory groupActionEnrichedAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -213,7 +213,7 @@ moduleEnrichedAdapt : A.ModuleEnrichedCategoryAdapter
 moduleEnrichedAdapt =
   A.mkModuleEnrichedCategoryAdapter moduleEnriched
 
-_ : A.isFilledModuleEnrichedCategory moduleEnrichedAdapt ≡ B.true
+_ : A.isFilledModuleEnrichedCategory moduleEnrichedAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -231,7 +231,7 @@ lawvereTheoryEnrichedAdapt : A.LawvereTheoryEnrichedCategoryAdapter
 lawvereTheoryEnrichedAdapt =
   A.mkLawvereTheoryEnrichedCategoryAdapter lawvereTheoryEnriched
 
-_ : A.isFilledLawvereTheoryEnrichedCategory lawvereTheoryEnrichedAdapt ≡ B.true
+_ : A.isFilledLawvereTheoryEnrichedCategory lawvereTheoryEnrichedAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -254,7 +254,7 @@ abSelfEnrichedAdapt =
     abCategory
     refl
 
-_ : A.isFilledAbSelfEnriched abSelfEnrichedAdapt ≡ B.true
+_ : A.isFilledAbSelfEnriched abSelfEnrichedAdapt ≡ true
 _ = refl
 
 -- ============================================================================
@@ -276,8 +276,7 @@ abSelfEnrichmentViaIntHomAdapt =
     abCategory
     refl
 
-_ : A.isFilledAbSelfEnrichmentViaInternalHom abSelfEnrichmentViaIntHomAdapt ≡ B.true
+_ : A.isFilledAbSelfEnrichmentViaInternalHom abSelfEnrichmentViaIntHomAdapt ≡ true
 _ = refl
 -- Intentionally omit brittle categorical equalities; type-checking the
 -- categorical views is covered by constructing them during isFilled checks.
-

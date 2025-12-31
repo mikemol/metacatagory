@@ -1,9 +1,11 @@
+{-# OPTIONS --without-K #-}
+
 module Chapter1.Level1sub7 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
 open import Agda.Builtin.String   using (String)
 open import Agda.Builtin.List     using (List; []; _∷_)
-open import Agda.Builtin.Bool     using (Bool)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_)
 
 open import Metamodel as M
@@ -406,7 +408,7 @@ postulate
     -> Proof (CategoryPropertyS C) CauchyViaDistributorsName
 
 ------------------------------------------------------------------------
--- Notes: Structural encoding of 1/7.ebnf covering 2-categories, 2-functors,
+-- Notes: Structural encoding of 2-Categories, Bicategories, and Distributors, 2-functors,
 -- modifications, n-categories, 2-limits, bilimits, lax functors, pseudo-functors,
 -- bicategories, distributors, and Cauchy completeness via distributors.
 -- CATEGORY prose preserved as comments. Bridge postulates connect axiom

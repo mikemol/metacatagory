@@ -1,0 +1,21 @@
+title: 'Meta-Index: Core.ABNF'
+sections:
+- name: Scope
+  bullets:
+  - Formal ABNF syntax (RFC 5234) as an inductive AST for protocol grammars.
+- name: Key elements
+  bullets:
+  - '`ABNF` data type; example `abnfDigit`.'
+  - List helpers `_++_`, `concatMap` for grammar assembly.
+- name: Dependencies
+  bullets:
+  - Infrastructure.Universe (universe alias) and Infrastructure.Coherence.Path2 (whiskering/equality).
+- name: Update triggers
+  bullets:
+  - Grammar constructor or combinator changes.
+  - Shifts in infrastructure equality/universe layers.
+  - Roadmap items that adjust parsing or grammar transformation workflows.
+- name: Technical debt / status
+  bullets:
+  - "Universe polymorphism not yet generalized to `Set\u2113`; track in deferred-items.md\
+    \ and ROADMAP.md."

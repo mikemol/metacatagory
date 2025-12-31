@@ -1,10 +1,12 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.VectorSpaceChecklist
 -- Minimal instances for vector space structure adapters
 
 module Tests.VectorSpaceChecklist where
 
 open import Agda.Builtin.Equality
-open import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Core.CategoricalAdapter
 
@@ -163,7 +165,7 @@ dimensionAdapt : A.DimensionAdapter
 dimensionAdapt = A.mkDimensionAdapter fieldDecl vectorSpaceDecl dimensionDecl (M.mkId "3") refl
 
 -- Status assertions
-_ : A.isFilledBasisOfVectorSpace basisAdapt ≡ B.true
+_ : A.isFilledBasisOfVectorSpace basisAdapt ≡ true
 _ = refl
 
 -- Categorical assertions
@@ -172,7 +174,7 @@ _ = refl
 _ : CategoricalAdapter.isomorphism (A.basisOfVectorSpaceCategorical basisAdapt) ≡ refl
 _ = refl
 
-_ : A.isFilledDimension dimensionAdapt ≡ B.true
+_ : A.isFilledDimension dimensionAdapt ≡ true
 _ = refl
 
 -- Categorical assertions

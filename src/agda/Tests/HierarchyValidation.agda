@@ -1,10 +1,12 @@
+{-# OPTIONS --without-K #-}
+
 module Tests.HierarchyValidation where
 
 -- Phase I.1.3: Hierarchy Composition Validation (P5 DAG)
 -- We verify that indices respect the algebraic hierarchy orderings.
 -- Per user guidance, avoid brittle inline equality proofs; use Bool checks.
 
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
 

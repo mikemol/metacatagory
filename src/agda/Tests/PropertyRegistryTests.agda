@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.PropertyRegistryTests: Validate property registry identifiers and usage
 --
 -- This suite ensures that stable identifiers in PropertyRegistry are

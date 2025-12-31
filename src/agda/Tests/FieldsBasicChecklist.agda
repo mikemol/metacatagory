@@ -1,8 +1,10 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.FieldsBasicChecklist: Coverage for Algebra.Fields.Basic (Core Galois Theory)
 
 module Tests.FieldsBasicChecklist where
 
-import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤; tt)
 import Metamodel as M
@@ -116,7 +118,7 @@ subfieldDecl = record
 subfieldAdapt : A.SubfieldAdapter
 subfieldAdapt = A.mkSubfieldAdapter F subfieldDecl F refl
 
-subfieldStatus : A.isFilledSubfield subfieldAdapt ≡ B.true
+subfieldStatus : A.isFilledSubfield subfieldAdapt ≡ true
 subfieldStatus = refl
 
 -- Field extension
@@ -131,7 +133,7 @@ fieldExtDecl = record
 fieldExtAdapt : A.FieldExtensionAdapter
 fieldExtAdapt = A.mkFieldExtensionAdapter F E fieldExtDecl F refl
 
-fieldExtStatus : A.isFilledFieldExtension fieldExtAdapt ≡ B.true
+fieldExtStatus : A.isFilledFieldExtension fieldExtAdapt ≡ true
 fieldExtStatus = refl
 
 -- Algebraic element
@@ -147,7 +149,7 @@ algElemDecl = record
 algElemAdapt : A.AlgebraicElementAdapter
 algElemAdapt = A.mkAlgebraicElementAdapter F E α algElemDecl F refl
 
-algElemStatus : A.isFilledAlgebraicElement algElemAdapt ≡ B.true
+algElemStatus : A.isFilledAlgebraicElement algElemAdapt ≡ true
 algElemStatus = refl
 
 -- Algebraic extension
@@ -161,7 +163,7 @@ algExtDecl = record
 algExtAdapt : A.AlgebraicExtensionAdapter
 algExtAdapt = A.mkAlgebraicExtensionAdapter F E algExtDecl F refl
 
-algExtStatus : A.isFilledAlgebraicExtension algExtAdapt ≡ B.true
+algExtStatus : A.isFilledAlgebraicExtension algExtAdapt ≡ true
 algExtStatus = refl
 
 -- Field automorphism
@@ -176,7 +178,7 @@ fieldAutDecl = record
 fieldAutAdapt : A.FieldAutomorphismAdapter
 fieldAutAdapt = A.mkFieldAutomorphismAdapter F E fieldAutDecl F refl
 
-fieldAutStatus : A.isFilledFieldAutomorphism fieldAutAdapt ≡ B.true
+fieldAutStatus : A.isFilledFieldAutomorphism fieldAutAdapt ≡ true
 fieldAutStatus = refl
 
 -- Galois group
@@ -191,7 +193,7 @@ galoisGrpDecl = record
 galoisGrpAdapt : A.GaloisGroupAdapter
 galoisGrpAdapt = A.mkGaloisGroupAdapter F E galoisGrpDecl F refl
 
-galoisGrpStatus : A.isFilledGaloisGroup galoisGrpAdapt ≡ B.true
+galoisGrpStatus : A.isFilledGaloisGroup galoisGrpAdapt ≡ true
 galoisGrpStatus = refl
 
 -- Galois extension
@@ -206,7 +208,7 @@ galoisExtDecl = record
 galoisExtAdapt : A.GaloisExtensionAdapter
 galoisExtAdapt = A.mkGaloisExtensionAdapter F E galoisExtDecl F refl
 
-galoisExtStatus : A.isFilledGaloisExtension galoisExtAdapt ≡ B.true
+galoisExtStatus : A.isFilledGaloisExtension galoisExtAdapt ≡ true
 galoisExtStatus = refl
 
 -- Normal extension
@@ -220,7 +222,7 @@ normalExtDecl = record
 normalExtAdapt : A.NormalExtensionAdapter
 normalExtAdapt = A.mkNormalExtensionAdapter F E normalExtDecl F refl
 
-normalExtStatus : A.isFilledNormalExtension normalExtAdapt ≡ B.true
+normalExtStatus : A.isFilledNormalExtension normalExtAdapt ≡ true
 normalExtStatus = refl
 
 -- Separable extension
@@ -234,7 +236,7 @@ sepExtDecl = record
 sepExtAdapt : A.SeparableExtensionAdapter
 sepExtAdapt = A.mkSeparableExtensionAdapter F E sepExtDecl F refl
 
-sepExtStatus : A.isFilledSeparableExtension sepExtAdapt ≡ B.true
+sepExtStatus : A.isFilledSeparableExtension sepExtAdapt ≡ true
 sepExtStatus = refl
 
 -- Splitting field
@@ -249,7 +251,7 @@ splitFieldDecl = record
 splitFieldAdapt : A.SplittingFieldAdapter
 splitFieldAdapt = A.mkSplittingFieldAdapter F f splitFieldDecl F refl
 
-splitFieldStatus : A.isFilledSplittingField splitFieldAdapt ≡ B.true
+splitFieldStatus : A.isFilledSplittingField splitFieldAdapt ≡ true
 splitFieldStatus = refl
 
 -- Algebraic closure
@@ -263,5 +265,5 @@ algClosureDecl = record
 algClosureAdapt : A.AlgebraicClosureAdapter
 algClosureAdapt = A.mkAlgebraicClosureAdapter F algClosureDecl F refl
 
-algClosureStatus : A.isFilledAlgebraicClosure algClosureAdapt ≡ B.true
+algClosureStatus : A.isFilledAlgebraicClosure algClosureAdapt ≡ true
 algClosureStatus = refl

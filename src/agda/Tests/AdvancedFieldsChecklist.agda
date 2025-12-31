@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests/AdvancedFieldsChecklist.agda
 -- Coverage for Algebra.Fields.Advanced with concrete instances
 
@@ -5,7 +7,7 @@ module Tests.AdvancedFieldsChecklist where
 
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.Equality using (_≡_; refl)
-import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Metamodel as M
 open import Core.CategoricalAdapter
 import Tests.ObligationAdapters as A
@@ -83,7 +85,7 @@ inseparable = record { baseField = F ; extensionField = E ; isInseparable = M.mk
 inseparable-adapter : A.InseparableExtensionAdapter
 inseparable-adapter = A.mkInseparableExtensionAdapter F E inseparable (AFA.InseparableExtension.baseField inseparable) refl
 
-inseparable-status : A.isFilledInseparableExtension inseparable-adapter ≡ B.true
+inseparable-status : A.isFilledInseparableExtension inseparable-adapter ≡ true
 inseparable-status = refl
 
 -- Categorical assertions
@@ -98,7 +100,7 @@ purely = record { baseField = F ; extensionField = E ; isPurelyInseparable = M.m
 purely-adapter : A.PurelyInseparableExtensionAdapter
 purely-adapter = A.mkPurelyInseparableExtensionAdapter F E purely (AFA.PurelyInseparableExtension.baseField purely) refl
 
-purely-status : A.isFilledPurelyInseparableExtension purely-adapter ≡ B.true
+purely-status : A.isFilledPurelyInseparableExtension purely-adapter ≡ true
 purely-status = refl
 
 -- Categorical assertions
@@ -115,7 +117,7 @@ perfect = record { baseField = F ; isPerfect = M.mkId "perfect" }
 perfect-adapter : A.PerfectFieldAdapter
 perfect-adapter = A.mkPerfectFieldAdapter F perfect (AFA.PerfectField.baseField perfect) refl
 
-perfect-status : A.isFilledPerfectField perfect-adapter ≡ B.true
+perfect-status : A.isFilledPerfectField perfect-adapter ≡ true
 perfect-status = refl
 
 -- Categorical assertions
@@ -130,7 +132,7 @@ algClosed = record { baseField = F ; isAlgebraicallyClosed = M.mkId "aclosed" }
 algClosed-adapter : A.AlgebraicallyClosedFieldAdapter
 algClosed-adapter = A.mkAlgebraicallyClosedFieldAdapter F algClosed (AFA.AlgebraicallyClosedField.baseField algClosed) refl
 
-algClosed-status : A.isFilledAlgebraicallyClosedField algClosed-adapter ≡ B.true
+algClosed-status : A.isFilledAlgebraicallyClosedField algClosed-adapter ≡ true
 algClosed-status = refl
 
 -- Categorical assertions
@@ -147,7 +149,7 @@ normalClosure = record { baseField = F ; extensionField = E ; normalClosure = E 
 normalClosure-adapter : A.NormalClosureAdapter
 normalClosure-adapter = A.mkNormalClosureAdapter F E normalClosure (AFA.NormalClosure.normalClosure normalClosure) refl
 
-normalClosure-status : A.isFilledNormalClosure normalClosure-adapter ≡ B.true
+normalClosure-status : A.isFilledNormalClosure normalClosure-adapter ≡ true
 normalClosure-status = refl
 
 -- Categorical assertions
@@ -162,7 +164,7 @@ galoisClosure = record { baseField = F ; extensionField = E ; galoisClosure = E 
 galoisClosure-adapter : A.GaloisClosureAdapter
 galoisClosure-adapter = A.mkGaloisClosureAdapter F E galoisClosure (AFA.GaloisClosure.galoisClosure galoisClosure) refl
 
-galoisClosure-status : A.isFilledGaloisClosure galoisClosure-adapter ≡ B.true
+galoisClosure-status : A.isFilledGaloisClosure galoisClosure-adapter ≡ true
 galoisClosure-status = refl
 
 -- Categorical assertions
@@ -177,7 +179,7 @@ frobenius = record { baseField = F ; frobeniusMap = M.mkId "φ" ; isFrobenius = 
 frobenius-adapter : A.FrobeniusEndomorphismAdapter
 frobenius-adapter = A.mkFrobeniusEndomorphismAdapter F frobenius (AFA.FrobeniusEndomorphism.baseField frobenius) refl
 
-frobenius-status : A.isFilledFrobeniusEndomorphism frobenius-adapter ≡ B.true
+frobenius-status : A.isFilledFrobeniusEndomorphism frobenius-adapter ≡ true
 frobenius-status = refl
 
 -- Categorical assertions
@@ -194,7 +196,7 @@ ratFF = record { baseField = K ; functionField = K ; isRationalFunctionField = M
 ratFF-adapter : A.RationalFunctionFieldAdapter
 ratFF-adapter = A.mkRationalFunctionFieldAdapter K ratFF (AFA.RationalFunctionField.functionField ratFF) refl
 
-ratFF-status : A.isFilledRationalFunctionField ratFF-adapter ≡ B.true
+ratFF-status : A.isFilledRationalFunctionField ratFF-adapter ≡ true
 ratFF-status = refl
 
 -- Categorical assertions
@@ -209,7 +211,7 @@ algFF = record { baseField = K ; functionField = K ; isAlgebraicFunctionField = 
 algFF-adapter : A.AlgebraicFunctionFieldAdapter
 algFF-adapter = A.mkAlgebraicFunctionFieldAdapter K algFF (AFA.AlgebraicFunctionField.functionField algFF) refl
 
-algFF-status : A.isFilledAlgebraicFunctionField algFF-adapter ≡ B.true
+algFF-status : A.isFilledAlgebraicFunctionField algFF-adapter ≡ true
 algFF-status = refl
 
 -- Categorical assertions

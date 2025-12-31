@@ -1,8 +1,10 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.AdvancedMonadTheoryChecklist: Test instances for advanced monad theory
 
 module Tests.AdvancedMonadTheoryChecklist where
 
-open import Agda.Builtin.Bool using (Bool; true; false)
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Equality using (refl; _≡_)
 open import Agda.Builtin.Unit using (⊤)
 open import Tests.ObligationAdapters as A
@@ -27,7 +29,6 @@ postulate
   testRankThm1 : C2S4.RankTheoremForMonadicCategoriesTheorem.baseCategory testRankTheorem ≡ testRankThmBaseCategory
   testRankThm2 : C2S4.RankTheoremForMonadicCategoriesTheorem.monadWithRank testRankTheorem ≡ testRankThmMonadWithRank
   testRankThm3 : C2S4.RankTheoremForMonadicCategoriesTheorem.algebraCategory testRankTheorem ≡ testRankThmAlgCat
-
 
 -- Advanced monad theory (3 assertions)
 

@@ -1,8 +1,10 @@
+{-# OPTIONS --without-K #-}
+
 -- Tests.ObligationAdapters: Tiny adapters and a common status predicate
 
 module Tests.ObligationAdapters where
 
-import Agda.Builtin.Bool as B
+open import Core.Phase using (Bool; true; false)
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.Equality using (_≡_)
 open import Metamodel as M
@@ -46,7 +48,7 @@ import Chapter2.Level2sub6 as Enriched
 -- Common status predicate wrapper
 record ObligationStatus : Set₁ where
   field
-    status : B.Bool
+    status : Bool
 
 -- Adapter: Identity morphism in an enriched category
 record IdEnrichedAdapter : Set₁ where
@@ -54,16 +56,16 @@ record IdEnrichedAdapter : Set₁ where
     decl     : S6.IdentityMorphismDeclaration_Enriched
     expected : C1L.MorphismDeclaration
     link     : S6.IdentityMorphismDeclaration_Enriched.identityMorphismInV decl ≡ expected
-    status   : B.Bool
+    status   : Bool
 
 mkIdEnrichedAdapter :
   (d : S6.IdentityMorphismDeclaration_Enriched) →
   (e : C1L.MorphismDeclaration) →
   (p : S6.IdentityMorphismDeclaration_Enriched.identityMorphismInV d ≡ e) →
   IdEnrichedAdapter
-mkIdEnrichedAdapter d e p = record { decl = d ; expected = e ; link = p ; status = B.true }
+mkIdEnrichedAdapter d e p = record { decl = d ; expected = e ; link = p ; status = true }
 
-isFilledId : IdEnrichedAdapter → B.Bool
+isFilledId : IdEnrichedAdapter → Bool
 isFilledId a = IdEnrichedAdapter.status a
 
 idEnrichedCategorical : IdEnrichedAdapter →
@@ -77,16 +79,16 @@ record HomObjectAdapter : Set₁ where
     decl     : S6.HomObjectDeclaration
     expected : M.Identifier
     link     : S6.HomObjectDeclaration.homObjectInV decl ≡ expected
-    status   : B.Bool
+    status   : Bool
 
 mkHomObjectAdapter :
   (d : S6.HomObjectDeclaration) →
   (e : M.Identifier) →
   (p : S6.HomObjectDeclaration.homObjectInV d ≡ e) →
   HomObjectAdapter
-mkHomObjectAdapter d e p = record { decl = d ; expected = e ; link = p ; status = B.true }
+mkHomObjectAdapter d e p = record { decl = d ; expected = e ; link = p ; status = true }
 
-isFilledHom : HomObjectAdapter → B.Bool
+isFilledHom : HomObjectAdapter → Bool
 isFilledHom a = HomObjectAdapter.status a
 
 homObjectCategorical : HomObjectAdapter →
@@ -107,16 +109,16 @@ record LocalHomeomorphismAdapter : Set₁ where
     decl     : C3S2.MorphismPropertyAssertionLocalHomeomorphism
     expected : M.Identifier
     link     : C3S2.MorphismPropertyAssertionLocalHomeomorphism.morphism decl ≡ expected
-    status   : B.Bool
+    status   : Bool
 
 mkLocalHomeomorphismAdapter :
   (d : C3S2.MorphismPropertyAssertionLocalHomeomorphism) →
   (e : M.Identifier) →
   (p : C3S2.MorphismPropertyAssertionLocalHomeomorphism.morphism d ≡ e) →
   LocalHomeomorphismAdapter
-mkLocalHomeomorphismAdapter d e p = record { decl = d ; expected = e ; link = p ; status = B.true }
+mkLocalHomeomorphismAdapter d e p = record { decl = d ; expected = e ; link = p ; status = true }
 
-isFilledLocalHomeo : LocalHomeomorphismAdapter → B.Bool
+isFilledLocalHomeo : LocalHomeomorphismAdapter → Bool
 isFilledLocalHomeo a = LocalHomeomorphismAdapter.status a
 
 -- Categorical view for Local Homeomorphism
@@ -131,7 +133,7 @@ record EtaleSpaceAdapter : Set₁ where
     expectedLocalHomeo : C3S2.MorphismPropertyAssertionLocalHomeomorphism
     projLink          : C3S2.EtaleSpaceOver.projection decl ≡ expectedProjection
     locLink           : C3S2.EtaleSpaceOver.isLocalHomeomorphism decl ≡ expectedLocalHomeo
-    status            : B.Bool
+    status            : Bool
 
 mkEtaleSpaceAdapter :
   (d : C3S2.EtaleSpaceOver) →
@@ -142,9 +144,9 @@ mkEtaleSpaceAdapter :
   EtaleSpaceAdapter
 mkEtaleSpaceAdapter d p h pl hl = record
   { decl = d ; expectedProjection = p ; expectedLocalHomeo = h
-  ; projLink = pl ; locLink = hl ; status = B.true }
+  ; projLink = pl ; locLink = hl ; status = true }
 
-isFilledEtale : EtaleSpaceAdapter → B.Bool
+isFilledEtale : EtaleSpaceAdapter → Bool
 isFilledEtale a = EtaleSpaceAdapter.status a
 
 -- Categorical view for Étale Space
@@ -160,16 +162,16 @@ record LocaleFrameDualityAdapter : Set₁ where
     decl       : C3S1.LocaleFrameDualityTheorem
     expectedOP : Set
     link       : C3S1.LocaleFrameDualityTheorem.isOppositeCategory decl ≡ expectedOP
-    status     : B.Bool
+    status     : Bool
 
 mkLocaleFrameDualityAdapter :
   (d : C3S1.LocaleFrameDualityTheorem) →
   (op : Set) →
   (p : C3S1.LocaleFrameDualityTheorem.isOppositeCategory d ≡ op) →
   LocaleFrameDualityAdapter
-mkLocaleFrameDualityAdapter d op p = record { decl = d ; expectedOP = op ; link = p ; status = B.true }
+mkLocaleFrameDualityAdapter d op p = record { decl = d ; expectedOP = op ; link = p ; status = true }
 
-isFilledDuality : LocaleFrameDualityAdapter → B.Bool
+isFilledDuality : LocaleFrameDualityAdapter → Bool
 isFilledDuality a = LocaleFrameDualityAdapter.status a
 
 -- Categorical view for Locale–Frame Duality Theorem
@@ -188,7 +190,7 @@ record AdjunctionHomAdapter : Set₁ where
     linkG : C1S3.AdjunctionHomDecl.G decl ≡ expG
     linkC : C1S3.AdjunctionHomDecl.C decl ≡ expC
     linkD : C1S3.AdjunctionHomDecl.D decl ≡ expD
-    status : B.Bool
+    status : Bool
 
 mkAdjunctionHomAdapter :
   (d : C1S3.AdjunctionHomDecl) →
@@ -200,9 +202,9 @@ mkAdjunctionHomAdapter :
   AdjunctionHomAdapter
 mkAdjunctionHomAdapter d f g c d' pf pg pc pd =
   record { decl = d ; expF = f ; expG = g ; expC = c ; expD = d'
-         ; linkF = pf ; linkG = pg ; linkC = pc ; linkD = pd ; status = B.true }
+         ; linkF = pf ; linkG = pg ; linkC = pc ; linkD = pd ; status = true }
 
-isFilledAdjunction : AdjunctionHomAdapter → B.Bool
+isFilledAdjunction : AdjunctionHomAdapter → Bool
 isFilledAdjunction a = AdjunctionHomAdapter.status a
 
 -- Categorical view for AdjunctionHom
@@ -219,19 +221,19 @@ record CanonicalFactorizationAdapter : Set₁ where
   field
     decl  : C1S4.CanonicalFactorizationSystem
     link  : C1S4.CanonicalFactorizationSystem.unit decl ≡ tt
-    status : B.Bool
+    status : Bool
 
 mkCanonicalFactorizationAdapter :
   (d : C1S4.CanonicalFactorizationSystem) →
   (p : C1S4.CanonicalFactorizationSystem.unit d ≡ tt) →
   (f : ⊤ → C1S4.CanonicalFactorizationSystem) →
   CanonicalFactorizationAdapter
-mkCanonicalFactorizationAdapter d p f = record { decl = d ; link = p ; status = B.true }
+mkCanonicalFactorizationAdapter d p f = record { decl = d ; link = p ; status = true }
 
 canonicalFactorizationCategorical : CanonicalFactorizationAdapter → CategoricalAdapter {lzero} C1S4.CanonicalFactorizationSystem
 canonicalFactorizationCategorical adapt = mkCategoricalAdapter C1S4.CanonicalFactorizationSystem (λ _ → CanonicalFactorizationAdapter.decl adapt)
 
-isFilledCanonicalFactorization : CanonicalFactorizationAdapter → B.Bool
+isFilledCanonicalFactorization : CanonicalFactorizationAdapter → Bool
 isFilledCanonicalFactorization a = CanonicalFactorizationAdapter.status a
 
 -- ==========================================================
@@ -243,7 +245,7 @@ record RegularFactorizationAdapter : Set₁ where
     decl     : C2S2.RegularCategoryDeclaration
     expected : M.Identifier
     link     : C2S2.RegularCategoryDeclaration.regularEpiMonoFactorizationWitness decl ≡ expected
-    status   : B.Bool
+    status   : Bool
 
 mkRegularFactorizationAdapter :
   (d : C2S2.RegularCategoryDeclaration) →
@@ -251,12 +253,12 @@ mkRegularFactorizationAdapter :
   (p : C2S2.RegularCategoryDeclaration.regularEpiMonoFactorizationWitness d ≡ e) →
   (f : ⊤ → C2S2.RegularCategoryDeclaration) →
   RegularFactorizationAdapter
-mkRegularFactorizationAdapter d e p f = record { decl = d ; expected = e ; link = p ; status = B.true }
+mkRegularFactorizationAdapter d e p f = record { decl = d ; expected = e ; link = p ; status = true }
 
 regularFactorizationCategorical : RegularFactorizationAdapter → CategoricalAdapter {lzero} C2S2.RegularCategoryDeclaration
 regularFactorizationCategorical adapt = mkCategoricalAdapter C2S2.RegularCategoryDeclaration (λ _ → RegularFactorizationAdapter.decl adapt)
 
-isFilledRegularFactorization : RegularFactorizationAdapter → B.Bool
+isFilledRegularFactorization : RegularFactorizationAdapter → Bool
 isFilledRegularFactorization a = RegularFactorizationAdapter.status a
 
 -- ==========================================================
@@ -270,7 +272,7 @@ record ReflectiveLocalizationAdapter : Set₁ where
     linkR : C1S5.ReflectiveSubcategoryAsLocalizationTheorem.reflectiveSubcat decl ≡ expR
     linkC : C1S5.ReflectiveSubcategoryAsLocalizationTheorem.ambientCategory decl ≡ expC
     linkL : C1S5.ReflectiveSubcategoryAsLocalizationTheorem.reflector decl ≡ expL
-    status : B.Bool
+    status : Bool
 
 mkReflectiveLocalizationAdapter :
   (d : C1S5.ReflectiveSubcategoryAsLocalizationTheorem) →
@@ -281,12 +283,12 @@ mkReflectiveLocalizationAdapter :
   (f : ⊤ → C1S5.ReflectiveSubcategoryAsLocalizationTheorem) →
   ReflectiveLocalizationAdapter
 mkReflectiveLocalizationAdapter d r c l pr pc pl f =
-  record { decl = d ; expR = r ; expC = c ; expL = l ; linkR = pr ; linkC = pc ; linkL = pl ; status = B.true }
+  record { decl = d ; expR = r ; expC = c ; expL = l ; linkR = pr ; linkC = pc ; linkL = pl ; status = true }
 
 reflectiveLocalizationCategorical : ReflectiveLocalizationAdapter → CategoricalAdapter {lzero} C1S5.ReflectiveSubcategoryAsLocalizationTheorem
 reflectiveLocalizationCategorical adapt = mkCategoricalAdapter C1S5.ReflectiveSubcategoryAsLocalizationTheorem (λ _ → ReflectiveLocalizationAdapter.decl adapt)
 
-isFilledReflectiveLocalization : ReflectiveLocalizationAdapter → B.Bool
+isFilledReflectiveLocalization : ReflectiveLocalizationAdapter → Bool
 isFilledReflectiveLocalization a = ReflectiveLocalizationAdapter.status a
 
 -- ==========================================================
@@ -304,7 +306,7 @@ record KernelPairAdapter : Set₁ where
     linkK1 : C2S2.KernelPairDeclaration.projection1 decl ≡ expK1
     linkK2 : C2S2.KernelPairDeclaration.projection2 decl ≡ expK2
     linkPB : C2S2.KernelPairDeclaration.pullbackSquareWitness decl ≡ expPB
-    status : B.Bool
+    status : Bool
 
 mkKernelPairAdapter :
   (d : C2S2.KernelPairDeclaration) →
@@ -316,13 +318,13 @@ mkKernelPairAdapter :
   (f : ⊤ → C2S2.KernelPairDeclaration) →
   KernelPairAdapter
 mkKernelPairAdapter d m k1 k2 pb pm pk1 pk2 ppb f =
-  record { decl = d ; expM = m ; expK1 = k1 ; expK2 = k2 ; expPB = pb
-         ; linkM = pm ; linkK1 = pk1 ; linkK2 = pk2 ; linkPB = ppb ; status = B.true }
+    record { decl = d ; expM = m ; expK1 = k1 ; expK2 = k2 ; expPB = pb
+      ; linkM = pm ; linkK1 = pk1 ; linkK2 = pk2 ; linkPB = ppb ; status = true }
 
 kernelPairCategorical : KernelPairAdapter → CategoricalAdapter {lzero} C2S2.KernelPairDeclaration
 kernelPairCategorical adapt = mkCategoricalAdapter C2S2.KernelPairDeclaration (λ _ → KernelPairAdapter.decl adapt)
 
-isFilledKernelPair : KernelPairAdapter → B.Bool
+isFilledKernelPair : KernelPairAdapter → Bool
 isFilledKernelPair a = KernelPairAdapter.status a
 
 -- ==========================================================
@@ -334,7 +336,7 @@ record StrongMonoAdapter : Set₁ where
     decl     : C1S4.StrongMonomorphism
     expected : M.Identifier
     link     : C1S4.StrongMonomorphism.m decl ≡ expected
-    status   : B.Bool
+    status   : Bool
 
 mkStrongMonoAdapter :
   (d : C1S4.StrongMonomorphism) →
@@ -342,12 +344,12 @@ mkStrongMonoAdapter :
   (p : C1S4.StrongMonomorphism.m d ≡ e) →
   (f : ⊤ → C1S4.StrongMonomorphism) →
   StrongMonoAdapter
-mkStrongMonoAdapter d e p f = record { decl = d ; expected = e ; link = p ; status = B.true }
+mkStrongMonoAdapter d e p f = record { decl = d ; expected = e ; link = p ; status = true }
 
 strongMonoCategorical : StrongMonoAdapter → CategoricalAdapter {lzero} C1S4.StrongMonomorphism
 strongMonoCategorical adapt = mkCategoricalAdapter C1S4.StrongMonomorphism (λ _ → StrongMonoAdapter.decl adapt)
 
-isFilledStrongMono : StrongMonoAdapter → B.Bool
+isFilledStrongMono : StrongMonoAdapter → Bool
 isFilledStrongMono a = StrongMonoAdapter.status a
 
 -- ==========================================================
@@ -363,7 +365,7 @@ record InternalEquivalenceRelationAdapter : Set₁ where
     linkR1  : C2S2.InternalEquivalenceRelationDeclaration.relLeft decl ≡ expR1
     linkR2  : C2S2.InternalEquivalenceRelationDeclaration.relRight decl ≡ expR2
     linkMono : C2S2.InternalEquivalenceRelationDeclaration.monoIntoProductWitness decl ≡ expMono
-    status  : B.Bool
+    status  : Bool
 
 mkInternalEquivalenceRelationAdapter :
   (d : C2S2.InternalEquivalenceRelationDeclaration) →
@@ -374,13 +376,13 @@ mkInternalEquivalenceRelationAdapter :
   (f : ⊤ → C2S2.InternalEquivalenceRelationDeclaration) →
   InternalEquivalenceRelationAdapter
 mkInternalEquivalenceRelationAdapter d r1 r2 mono pr1 pr2 pmono f =
-  record { decl = d ; expR1 = r1 ; expR2 = r2 ; expMono = mono
-         ; linkR1 = pr1 ; linkR2 = pr2 ; linkMono = pmono ; status = B.true }
+    record { decl = d ; expR1 = r1 ; expR2 = r2 ; expMono = mono
+      ; linkR1 = pr1 ; linkR2 = pr2 ; linkMono = pmono ; status = true }
 
 internalEquivalenceRelationCategorical : InternalEquivalenceRelationAdapter → CategoricalAdapter {lzero} C2S2.InternalEquivalenceRelationDeclaration
 internalEquivalenceRelationCategorical adapt = mkCategoricalAdapter C2S2.InternalEquivalenceRelationDeclaration (λ _ → InternalEquivalenceRelationAdapter.decl adapt)
 
-isFilledInternalEquiv : InternalEquivalenceRelationAdapter → B.Bool
+isFilledInternalEquiv : InternalEquivalenceRelationAdapter → Bool
 isFilledInternalEquiv a = InternalEquivalenceRelationAdapter.status a
 
 -- ==========================================================
@@ -394,7 +396,7 @@ record RegularExactSequenceAdapter : Set₁ where
     expQuotientMorphism : M.Identifier
     linkKernel   : C2S2.KernelPairDeclaration.morphism (C2S2.RegularExactSequenceDeclaration.kernelPair decl) ≡ expKernelMorphism
     linkQuotient : C2S2.RegularEpimorphismProperty.morphism (C2S2.RegularExactSequenceDeclaration.quotient decl) ≡ expQuotientMorphism
-    status : B.Bool
+    status : Bool
 
 mkRegularExactSequenceAdapter :
   (d : C2S2.RegularExactSequenceDeclaration) →
@@ -404,13 +406,13 @@ mkRegularExactSequenceAdapter :
   (f : ⊤ → C2S2.RegularExactSequenceDeclaration) →
   RegularExactSequenceAdapter
 mkRegularExactSequenceAdapter d k q pk pq f =
-  record { decl = d ; expKernelMorphism = k ; expQuotientMorphism = q
-         ; linkKernel = pk ; linkQuotient = pq ; status = B.true }
+    record { decl = d ; expKernelMorphism = k ; expQuotientMorphism = q
+      ; linkKernel = pk ; linkQuotient = pq ; status = true }
 
 regularExactSequenceCategorical : RegularExactSequenceAdapter → CategoricalAdapter {lzero} C2S2.RegularExactSequenceDeclaration
 regularExactSequenceCategorical adapt = mkCategoricalAdapter C2S2.RegularExactSequenceDeclaration (λ _ → RegularExactSequenceAdapter.decl adapt)
 
-isFilledRegularExact : RegularExactSequenceAdapter → B.Bool
+isFilledRegularExact : RegularExactSequenceAdapter → Bool
 isFilledRegularExact a = RegularExactSequenceAdapter.status a
 
 -- ==========================================================
@@ -424,7 +426,7 @@ record AdditiveCategoryAdapter : Set₁ where
     expZero : C2S1.HasZeroObjectProperty
     linkCat : C2S1.AdditiveCategoryDeclaration.category decl ≡ expCategory
     linkZero : C2S1.AdditiveCategoryDeclaration.hasZeroObject decl ≡ expZero
-    status : B.Bool
+    status : Bool
 
 mkAdditiveCategoryAdapter :
   (d : C2S1.AdditiveCategoryDeclaration) →
@@ -435,13 +437,13 @@ mkAdditiveCategoryAdapter :
   (f : ⊤ → C2S1.AdditiveCategoryDeclaration) →
   AdditiveCategoryAdapter
 mkAdditiveCategoryAdapter d cat zero pcat pzero f =
-  record { decl = d ; expCategory = cat ; expZero = zero
-         ; linkCat = pcat ; linkZero = pzero ; status = B.true }
+    record { decl = d ; expCategory = cat ; expZero = zero
+      ; linkCat = pcat ; linkZero = pzero ; status = true }
 
 additiveCategoryCategorical : AdditiveCategoryAdapter → CategoricalAdapter {lzero} C2S1.AdditiveCategoryDeclaration
 additiveCategoryCategorical adapt = mkCategoricalAdapter C2S1.AdditiveCategoryDeclaration (λ _ → AdditiveCategoryAdapter.decl adapt)
 
-isFilledAdditive : AdditiveCategoryAdapter → B.Bool
+isFilledAdditive : AdditiveCategoryAdapter → Bool
 isFilledAdditive a = AdditiveCategoryAdapter.status a
 
 record AbelianCategoryAdapter : Set₁ where
@@ -451,7 +453,7 @@ record AbelianCategoryAdapter : Set₁ where
     expAdditive : C2S1.AdditiveCategoryDeclaration
     linkCat : C2S1.AbelianCategoryDeclaration.category decl ≡ expCategory
     linkAdd : C2S1.AbelianCategoryDeclaration.additive decl ≡ expAdditive
-    status : B.Bool
+    status : Bool
 
 mkAbelianCategoryAdapter :
   (d : C2S1.AbelianCategoryDeclaration) →
@@ -463,12 +465,12 @@ mkAbelianCategoryAdapter :
   AbelianCategoryAdapter
 mkAbelianCategoryAdapter d cat add pcat padd f =
   record { decl = d ; expCategory = cat ; expAdditive = add
-         ; linkCat = pcat ; linkAdd = padd ; status = B.true }
+         ; linkCat = pcat ; linkAdd = padd ; status = true }
 
 abelianCategoryCategorical : AbelianCategoryAdapter → CategoricalAdapter {lzero} C2S1.AbelianCategoryDeclaration
 abelianCategoryCategorical adapt = mkCategoricalAdapter C2S1.AbelianCategoryDeclaration (λ _ → AbelianCategoryAdapter.decl adapt)
 
-isFilledAbelian : AbelianCategoryAdapter → B.Bool
+isFilledAbelian : AbelianCategoryAdapter → Bool
 isFilledAbelian a = AbelianCategoryAdapter.status a
 
 record BiproductAdapter : Set₁ where
@@ -480,7 +482,7 @@ record BiproductAdapter : Set₁ where
     linkLeft : C2S1.BiproductObject.left decl ≡ expLeft
     linkRight : C2S1.BiproductObject.right decl ≡ expRight
     linkObject : C2S1.BiproductObject.object decl ≡ expObject
-    status : B.Bool
+    status : Bool
 
 mkBiproductAdapter :
   (d : C2S1.BiproductObject) →
@@ -492,12 +494,12 @@ mkBiproductAdapter :
   BiproductAdapter
 mkBiproductAdapter d l r obj pl pr pobj f =
   record { decl = d ; expLeft = l ; expRight = r ; expObject = obj
-         ; linkLeft = pl ; linkRight = pr ; linkObject = pobj ; status = B.true }
+         ; linkLeft = pl ; linkRight = pr ; linkObject = pobj ; status = true }
 
 biproductCategorical : BiproductAdapter → CategoricalAdapter {lzero} C2S1.BiproductObject
 biproductCategorical adapt = mkCategoricalAdapter C2S1.BiproductObject (λ _ → BiproductAdapter.decl adapt)
 
-isFilledBiproduct : BiproductAdapter → B.Bool
+isFilledBiproduct : BiproductAdapter → Bool
 isFilledBiproduct a = BiproductAdapter.status a
 
 -- ==========================================================
@@ -511,7 +513,7 @@ record LawvereTheoryAdapter : Set₁ where
     expBase : M.Identifier
     linkTheory : C2S3.LawvereTheoryDeclaration.theoryCategory decl ≡ expTheory
     linkBase : C2S3.LawvereTheoryDeclaration.baseObject decl ≡ expBase
-    status : B.Bool
+    status : Bool
 
 mkLawvereTheoryAdapter :
   (d : C2S3.LawvereTheoryDeclaration) →
@@ -522,9 +524,9 @@ mkLawvereTheoryAdapter :
   LawvereTheoryAdapter
 mkLawvereTheoryAdapter d th base pth pbase morph =
   record { decl = d ; expTheory = th ; expBase = base
-         ; linkTheory = pth ; linkBase = pbase ; status = B.true }
+         ; linkTheory = pth ; linkBase = pbase ; status = true }
 
-isFilledLawvereTheory : LawvereTheoryAdapter → B.Bool
+isFilledLawvereTheory : LawvereTheoryAdapter → Bool
 isFilledLawvereTheory a = LawvereTheoryAdapter.status a
 
 lawvereTheoryCategorical : LawvereTheoryAdapter → CategoricalAdapter {lzero} C2S3.LawvereTheoryDeclaration
@@ -537,7 +539,7 @@ record AlgebraicCategoryAdapter : Set₁ where
     expTheory : C2S3.LawvereTheoryDeclaration
     linkCat : C2S3.AlgebraicCategoryDeclaration.category decl ≡ expCategory
     linkTheory : C2S3.AlgebraicCategoryDeclaration.witnessTheory decl ≡ expTheory
-    status : B.Bool
+    status : Bool
 
 mkAlgebraicCategoryAdapter :
   (d : C2S3.AlgebraicCategoryDeclaration) →
@@ -549,9 +551,9 @@ mkAlgebraicCategoryAdapter :
   AlgebraicCategoryAdapter
 mkAlgebraicCategoryAdapter d cat th pcat pth morph =
   record { decl = d ; expCategory = cat ; expTheory = th
-         ; linkCat = pcat ; linkTheory = pth ; status = B.true }
+         ; linkCat = pcat ; linkTheory = pth ; status = true }
 
-isFilledAlgebraicCategory : AlgebraicCategoryAdapter → B.Bool
+isFilledAlgebraicCategory : AlgebraicCategoryAdapter → Bool
 isFilledAlgebraicCategory a = AlgebraicCategoryAdapter.status a
 
 algebraicCategoryCategorical : AlgebraicCategoryAdapter → CategoricalAdapter {lzero} C2S3.AlgebraicCategoryDeclaration
@@ -568,7 +570,7 @@ record MonadAdapter : Set₁ where
     expDatum : C2S4.MonadData
     linkName : C2S4.MonadDeclaration.name decl ≡ expName
     linkDatum : C2S4.MonadDeclaration.datum decl ≡ expDatum
-    status : B.Bool
+    status : Bool
 
 mkMonadAdapter :
   (d : C2S4.MonadDeclaration) →
@@ -579,9 +581,9 @@ mkMonadAdapter :
   MonadAdapter
 mkMonadAdapter d n dat pn pdat =
   record { decl = d ; expName = n ; expDatum = dat
-         ; linkName = pn ; linkDatum = pdat ; status = B.true }
+         ; linkName = pn ; linkDatum = pdat ; status = true }
 
-isFilledMonad : MonadAdapter → B.Bool
+isFilledMonad : MonadAdapter → Bool
 isFilledMonad a = MonadAdapter.status a
 
 -- Categorical view for Monad
@@ -597,7 +599,7 @@ record TAlgebraAdapter : Set₁ where
     monad : C2S4.MonadDeclaration
     linkCarrier : C2S4.TAlgebraData.carrier decl ≡ expCarrier
     linkMonad : C2S4.TAlgebraData.monad decl ≡ monad
-    status : B.Bool
+    status : Bool
 
 mkTAlgebraAdapter :
   (d : C2S4.TAlgebraData) →
@@ -608,9 +610,9 @@ mkTAlgebraAdapter :
   TAlgebraAdapter
 mkTAlgebraAdapter d c m pc pm =
   record { decl = d ; expCarrier = c ; monad = m
-         ; linkCarrier = pc ; linkMonad = pm ; status = B.true }
+         ; linkCarrier = pc ; linkMonad = pm ; status = true }
 
-isFilledTAlgebra : TAlgebraAdapter → B.Bool
+isFilledTAlgebra : TAlgebraAdapter → Bool
 isFilledTAlgebra a = TAlgebraAdapter.status a
 
 -- Categorical view for TAlgebra
@@ -630,7 +632,7 @@ record LocallyPresentableAdapter : Set₁ where
     expRank : C1S6.RegularCardinal
     linkCat : C2S5.LocallyPresentableCategoryDeclaration.category decl ≡ expCat
     linkRank : C2S5.LocallyPresentableCategoryDeclaration.rank decl ≡ expRank
-    status : B.Bool
+    status : Bool
 
 mkLocallyPresentableAdapter :
   (d : C2S5.LocallyPresentableCategoryDeclaration) →
@@ -641,9 +643,9 @@ mkLocallyPresentableAdapter :
   LocallyPresentableAdapter
 mkLocallyPresentableAdapter d cat rk pcat prk =
   record { decl = d ; expCat = cat ; expRank = rk
-         ; linkCat = pcat ; linkRank = prk ; status = B.true }
+         ; linkCat = pcat ; linkRank = prk ; status = true }
 
-isFilledLocallyPresentable : LocallyPresentableAdapter → B.Bool
+isFilledLocallyPresentable : LocallyPresentableAdapter → Bool
 isFilledLocallyPresentable a = LocallyPresentableAdapter.status a
 
 locallyPresentableCategorical : LocallyPresentableAdapter →
@@ -662,7 +664,7 @@ record MonoidalCategoryAdapter : Set₁ where
     expAssociator : S6.AssociatorDeclaration
     linkDatum : S6.MonoidalCategoryDeclaration.datum decl ≡ expDatum
     linkAssoc : S6.MonoidalCategoryDeclaration.associator decl ≡ expAssociator
-    status : B.Bool
+    status : Bool
 
 mkMonoidalCategoryAdapter :
   (d : S6.MonoidalCategoryDeclaration) →
@@ -673,9 +675,9 @@ mkMonoidalCategoryAdapter :
   MonoidalCategoryAdapter
 mkMonoidalCategoryAdapter d dat assoc pdat passoc =
   record { decl = d ; expDatum = dat ; expAssociator = assoc
-         ; linkDatum = pdat ; linkAssoc = passoc ; status = B.true }
+         ; linkDatum = pdat ; linkAssoc = passoc ; status = true }
 
-isFilledMonoidal : MonoidalCategoryAdapter → B.Bool
+isFilledMonoidal : MonoidalCategoryAdapter → Bool
 isFilledMonoidal a = MonoidalCategoryAdapter.status a
 
 monoidalCategoryCategorical : MonoidalCategoryAdapter →
@@ -690,7 +692,7 @@ record SymmetricMonoidalAdapter : Set₁ where
     expBraiding : S6.BraidingDeclaration
     linkMonoidal : S6.SymmetricMonoidalCategoryDeclaration.monoidalCategory decl ≡ expMonoidal
     linkBraiding : S6.SymmetricMonoidalCategoryDeclaration.braiding decl ≡ expBraiding
-    status : B.Bool
+    status : Bool
 
 mkSymmetricMonoidalAdapter :
   (d : S6.SymmetricMonoidalCategoryDeclaration) →
@@ -701,9 +703,9 @@ mkSymmetricMonoidalAdapter :
   SymmetricMonoidalAdapter
 mkSymmetricMonoidalAdapter d mon br pmon pbr =
   record { decl = d ; expMonoidal = mon ; expBraiding = br
-         ; linkMonoidal = pmon ; linkBraiding = pbr ; status = B.true }
+         ; linkMonoidal = pmon ; linkBraiding = pbr ; status = true }
 
-isFilledSymmetricMonoidal : SymmetricMonoidalAdapter → B.Bool
+isFilledSymmetricMonoidal : SymmetricMonoidalAdapter → Bool
 isFilledSymmetricMonoidal a = SymmetricMonoidalAdapter.status a
 
 symmetricMonoidalCategoryCategorical : SymmetricMonoidalAdapter →
@@ -720,7 +722,7 @@ record InternalHomAdapter : Set₁ where
     linkCat : S6.InternalHomObjectDeclaration.category decl ≡ expCat
     linkSource : S6.InternalHomObjectDeclaration.sourceObject decl ≡ expSource
     linkTarget : S6.InternalHomObjectDeclaration.targetObject decl ≡ expTarget
-    status : B.Bool
+    status : Bool
 
 mkInternalHomAdapter :
   (d : S6.InternalHomObjectDeclaration) →
@@ -732,9 +734,9 @@ mkInternalHomAdapter :
   InternalHomAdapter
 mkInternalHomAdapter d cat src tgt pcat psrc ptgt =
   record { decl = d ; expCat = cat ; expSource = src ; expTarget = tgt
-         ; linkCat = pcat ; linkSource = psrc ; linkTarget = ptgt ; status = B.true }
+         ; linkCat = pcat ; linkSource = psrc ; linkTarget = ptgt ; status = true }
 
-isFilledInternalHom : InternalHomAdapter → B.Bool
+isFilledInternalHom : InternalHomAdapter → Bool
 isFilledInternalHom a = InternalHomAdapter.status a
 
 internalHomCategorical : InternalHomAdapter →
@@ -753,7 +755,7 @@ record CGWH_CategoryAdapter : Set₁ where
     expUnderlyingCat : C1S3.CategoryDeclaration
     linkTopCat : C2S7.CGWH_CategoryDeclaration.topCategory decl ≡ expTopCat
     linkUnderlyingCat : C2S7.CGWH_CategoryDeclaration.underlyingCategory decl ≡ expUnderlyingCat
-    status : B.Bool
+    status : Bool
 
 mkCGWH_CategoryAdapter :
   (d : C2S7.CGWH_CategoryDeclaration) →
@@ -764,9 +766,9 @@ mkCGWH_CategoryAdapter :
   CGWH_CategoryAdapter
 mkCGWH_CategoryAdapter d topcat cat ptop pcat =
   record { decl = d ; expTopCat = topcat ; expUnderlyingCat = cat
-         ; linkTopCat = ptop ; linkUnderlyingCat = pcat ; status = B.true }
+         ; linkTopCat = ptop ; linkUnderlyingCat = pcat ; status = true }
 
-isFilledCGWH : CGWH_CategoryAdapter → B.Bool
+isFilledCGWH : CGWH_CategoryAdapter → Bool
 isFilledCGWH a = CGWH_CategoryAdapter.status a
 
 cgwhCategoryCategorical : CGWH_CategoryAdapter →
@@ -779,7 +781,7 @@ record TopologicalFunctorAdapter : Set₁ where
     decl : C2S7.TopologicalFunctorProperty
     expFunctor : M.Identifier
     linkFunctor : C2S7.TopologicalFunctorProperty.functor decl ≡ expFunctor
-    status : B.Bool
+    status : Bool
 
 mkTopologicalFunctorAdapter :
   (d : C2S7.TopologicalFunctorProperty) →
@@ -788,9 +790,9 @@ mkTopologicalFunctorAdapter :
   TopologicalFunctorAdapter
 mkTopologicalFunctorAdapter d f pf =
   record { decl = d ; expFunctor = f
-         ; linkFunctor = pf ; status = B.true }
+         ; linkFunctor = pf ; status = true }
 
-isFilledTopologicalFunctor : TopologicalFunctorAdapter → B.Bool
+isFilledTopologicalFunctor : TopologicalFunctorAdapter → Bool
 isFilledTopologicalFunctor a = TopologicalFunctorAdapter.status a
 
 topologicalFunctorCategorical : TopologicalFunctorAdapter →
@@ -807,7 +809,7 @@ record FibrationAdapter : Set₁ where
     decl : C2S8.FibrationDeclaration
     expProjection : C2S8.FibrationProjectionFunctor
     linkProjection : C2S8.FibrationDeclaration.projectionFunctor decl ≡ expProjection
-    status : B.Bool
+    status : Bool
 
 mkFibrationAdapter :
   (d : C2S8.FibrationDeclaration) →
@@ -816,13 +818,13 @@ mkFibrationAdapter :
   (f : ⊤ → C2S8.FibrationDeclaration) →
   FibrationAdapter
 mkFibrationAdapter d proj pproj f =
-  record { decl = d ; expProjection = proj
-         ; linkProjection = pproj ; status = B.true }
+    record { decl = d ; expProjection = proj
+      ; linkProjection = pproj ; status = true }
 
 fibrationCategorical : FibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.FibrationDeclaration
 fibrationCategorical adapt = mkCategoricalAdapter C2S8.FibrationDeclaration (λ _ → FibrationAdapter.decl adapt)
 
-isFilledFibration : FibrationAdapter → B.Bool
+isFilledFibration : FibrationAdapter → Core.Phase.Bool
 isFilledFibration a = FibrationAdapter.status a
 
 record OpfibrationAdapter : Set₁ where
@@ -830,7 +832,7 @@ record OpfibrationAdapter : Set₁ where
     decl : C2S8.OpfibrationDeclaration
     expProjection : C2S8.FibrationProjectionFunctor
     linkProjection : C2S8.OpfibrationDeclaration.projectionFunctor decl ≡ expProjection
-    status : B.Bool
+    status : Bool
 
 mkOpfibrationAdapter :
   (d : C2S8.OpfibrationDeclaration) →
@@ -840,12 +842,12 @@ mkOpfibrationAdapter :
   OpfibrationAdapter
 mkOpfibrationAdapter d proj pproj f =
   record { decl = d ; expProjection = proj
-         ; linkProjection = pproj ; status = B.true }
+         ; linkProjection = pproj ; status = true }
 
 opfibrationCategorical : OpfibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.OpfibrationDeclaration
 opfibrationCategorical adapt = mkCategoricalAdapter C2S8.OpfibrationDeclaration (λ _ → OpfibrationAdapter.decl adapt)
 
-isFilledOpfibration : OpfibrationAdapter → B.Bool
+isFilledOpfibration : OpfibrationAdapter → Bool
 isFilledOpfibration a = OpfibrationAdapter.status a
 
 -- ==========================================================
@@ -861,7 +863,7 @@ record ShortExactSequenceAdapter : Set₁ where
     linkA : C2S1.ShortExactSequenceDeclaration.A decl ≡ expA
     linkB : C2S1.ShortExactSequenceDeclaration.B decl ≡ expB
     linkC : C2S1.ShortExactSequenceDeclaration.C decl ≡ expC
-    status : B.Bool
+    status : Bool
 
 mkShortExactSequenceAdapter :
   (d : C2S1.ShortExactSequenceDeclaration) →
@@ -872,9 +874,9 @@ mkShortExactSequenceAdapter :
   ShortExactSequenceAdapter
 mkShortExactSequenceAdapter d a b c pa pb pc =
   record { decl = d ; expA = a ; expB = b ; expC = c
-         ; linkA = pa ; linkB = pb ; linkC = pc ; status = B.true }
+         ; linkA = pa ; linkB = pb ; linkC = pc ; status = true }
 
-isFilledShortExactSequence : ShortExactSequenceAdapter → B.Bool
+isFilledShortExactSequence : ShortExactSequenceAdapter → Bool
 isFilledShortExactSequence a = ShortExactSequenceAdapter.status a
 
 shortExactSequenceCategorical : ShortExactSequenceAdapter →
@@ -891,7 +893,7 @@ record ZeroMorphismAdapter : Set₁ where
     linkFrom : C2S1.ZeroMorphismDeclaration.from decl ≡ expFrom
     linkTo : C2S1.ZeroMorphismDeclaration.to decl ≡ expTo
     linkViaZero : C2S1.ZeroMorphismDeclaration.viaZeroObject decl ≡ expViaZero
-    status : B.Bool
+    status : Bool
 
 mkZeroMorphismAdapter :
   (d : C2S1.ZeroMorphismDeclaration) →
@@ -902,9 +904,9 @@ mkZeroMorphismAdapter :
   ZeroMorphismAdapter
 mkZeroMorphismAdapter d from to via pfrom pto pvia =
   record { decl = d ; expFrom = from ; expTo = to ; expViaZero = via
-         ; linkFrom = pfrom ; linkTo = pto ; linkViaZero = pvia ; status = B.true }
+         ; linkFrom = pfrom ; linkTo = pto ; linkViaZero = pvia ; status = true }
 
-isFilledZeroMorphism : ZeroMorphismAdapter → B.Bool
+isFilledZeroMorphism : ZeroMorphismAdapter → Bool
 isFilledZeroMorphism a = ZeroMorphismAdapter.status a
 
 zeroMorphismCategorical : ZeroMorphismAdapter →
@@ -921,7 +923,7 @@ record TorsionTheoryAdapter : Set₁ where
     linkCat : C2S1.TorsionTheoryDeclaration.category decl ≡ expCategory
     linkTorsion : C2S1.TorsionTheoryDeclaration.torsionClass decl ≡ expTorsionClass
     linkTorsionFree : C2S1.TorsionTheoryDeclaration.torsionFreeClass decl ≡ expTorsionFreeClass
-    status : B.Bool
+    status : Bool
 
 mkTorsionTheoryAdapter :
   (d : C2S1.TorsionTheoryDeclaration) →
@@ -932,9 +934,9 @@ mkTorsionTheoryAdapter :
   TorsionTheoryAdapter
 mkTorsionTheoryAdapter d cat tclass tfclass pcat pt ptf =
   record { decl = d ; expCategory = cat ; expTorsionClass = tclass ; expTorsionFreeClass = tfclass
-         ; linkCat = pcat ; linkTorsion = pt ; linkTorsionFree = ptf ; status = B.true }
+         ; linkCat = pcat ; linkTorsion = pt ; linkTorsionFree = ptf ; status = true }
 
-isFilledTorsionTheory : TorsionTheoryAdapter → B.Bool
+isFilledTorsionTheory : TorsionTheoryAdapter → Bool
 isFilledTorsionTheory a = TorsionTheoryAdapter.status a
 
 torsionTheoryCategorical : TorsionTheoryAdapter →
@@ -955,7 +957,7 @@ record BialgebraAdapter : Set₁ where
     linkCarrier : C2S3.BialgebraDeclaration.carrier decl ≡ expCarrier
     linkModel1 : C2S3.BialgebraDeclaration.model1 decl ≡ expModel1
     linkModel2 : C2S3.BialgebraDeclaration.model2 decl ≡ expModel2
-    status : B.Bool
+    status : Bool
 
 mkBialgebraAdapter :
   (d : C2S3.BialgebraDeclaration) →
@@ -966,9 +968,9 @@ mkBialgebraAdapter :
   BialgebraAdapter
 mkBialgebraAdapter d car m1 m2 pcar pm1 pm2 =
   record { decl = d ; expCarrier = car ; expModel1 = m1 ; expModel2 = m2
-         ; linkCarrier = pcar ; linkModel1 = pm1 ; linkModel2 = pm2 ; status = B.true }
+         ; linkCarrier = pcar ; linkModel1 = pm1 ; linkModel2 = pm2 ; status = true }
 
-isFilledBialgebra : BialgebraAdapter → B.Bool
+isFilledBialgebra : BialgebraAdapter → Bool
 isFilledBialgebra a = BialgebraAdapter.status a
 
 bialgebraCategorical : BialgebraAdapter →
@@ -987,7 +989,7 @@ record ComonadAdapter : Set₁ where
     expDatum : C2S4.ComonadData
     linkName : C2S4.ComonadDeclaration.name decl ≡ expName
     linkDatum : C2S4.ComonadDeclaration.datum decl ≡ expDatum
-    status : B.Bool
+    status : Bool
 
 mkComonadAdapter :
   (d : C2S4.ComonadDeclaration) →
@@ -998,9 +1000,9 @@ mkComonadAdapter :
   ComonadAdapter
 mkComonadAdapter d n dat pn pdat =
   record { decl = d ; expName = n ; expDatum = dat
-         ; linkName = pn ; linkDatum = pdat ; status = B.true }
+         ; linkName = pn ; linkDatum = pdat ; status = true }
 
-isFilledComonad : ComonadAdapter → B.Bool
+isFilledComonad : ComonadAdapter → Bool
 isFilledComonad a = ComonadAdapter.status a
 
 comonadCategorical : ComonadAdapter →
@@ -1019,7 +1021,7 @@ record AccessibleCategoryAdapter : Set₁ where
     expRank : C1S6.RegularCardinal
     linkCat : C2S5.AccessibleCategoryDeclaration.category decl ≡ expCat
     linkRank : C2S5.AccessibleCategoryDeclaration.rank decl ≡ expRank
-    status : B.Bool
+    status : Bool
 
 mkAccessibleCategoryAdapter :
   (d : C2S5.AccessibleCategoryDeclaration) →
@@ -1030,9 +1032,9 @@ mkAccessibleCategoryAdapter :
   AccessibleCategoryAdapter
 mkAccessibleCategoryAdapter d cat rk pcat prk =
   record { decl = d ; expCat = cat ; expRank = rk
-         ; linkCat = pcat ; linkRank = prk ; status = B.true }
+         ; linkCat = pcat ; linkRank = prk ; status = true }
 
-isFilledAccessibleCategory : AccessibleCategoryAdapter → B.Bool
+isFilledAccessibleCategory : AccessibleCategoryAdapter → Bool
 isFilledAccessibleCategory a = AccessibleCategoryAdapter.status a
 
 accessibleCategoryCategorical : AccessibleCategoryAdapter →
@@ -1045,7 +1047,7 @@ record SketchAdapter : Set₁ where
     decl : C2S5.SketchDeclaration
     expUnderlyingCat : C1S3.CategoryDeclaration
     linkUnderlyingCat : C2S5.SketchDeclaration.underlyingCategory decl ≡ expUnderlyingCat
-    status : B.Bool
+    status : Bool
 
 mkSketchAdapter :
   (d : C2S5.SketchDeclaration) →
@@ -1054,9 +1056,9 @@ mkSketchAdapter :
   SketchAdapter
 mkSketchAdapter d cat pcat =
   record { decl = d ; expUnderlyingCat = cat
-         ; linkUnderlyingCat = pcat ; status = B.true }
+         ; linkUnderlyingCat = pcat ; status = true }
 
-isFilledSketch : SketchAdapter → B.Bool
+isFilledSketch : SketchAdapter → Bool
 isFilledSketch a = SketchAdapter.status a
 
 sketchCategorical : SketchAdapter →
@@ -1071,15 +1073,15 @@ sketchCategorical adapt =
 record HeytingAlgebraAdapter : Set₁ where
   field
     decl : C3S1.HeytingAlgebraDeclaration
-    status : B.Bool
+    status : Bool
 
 mkHeytingAlgebraAdapter :
   (d : C3S1.HeytingAlgebraDeclaration) →
   HeytingAlgebraAdapter
 mkHeytingAlgebraAdapter d =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
-isFilledHeytingAlgebra : HeytingAlgebraAdapter → B.Bool
+isFilledHeytingAlgebra : HeytingAlgebraAdapter → Bool
 isFilledHeytingAlgebra a = HeytingAlgebraAdapter.status a
 
 -- Categorical view for Heyting Algebra
@@ -1091,7 +1093,7 @@ record FrameAdapter : Set₁ where
     decl : C3S1.FrameDeclaration
     expHeyting : C3S1.HeytingAlgebraDeclaration
     linkHeyting : C3S1.FrameDeclaration.underlyingHeytingAlgebra decl ≡ expHeyting
-    status : B.Bool
+    status : Bool
 
 mkFrameAdapter :
   (d : C3S1.FrameDeclaration) →
@@ -1100,9 +1102,9 @@ mkFrameAdapter :
   FrameAdapter
 mkFrameAdapter d h ph =
   record { decl = d ; expHeyting = h
-         ; linkHeyting = ph ; status = B.true }
+         ; linkHeyting = ph ; status = true }
 
-isFilledFrame : FrameAdapter → B.Bool
+isFilledFrame : FrameAdapter → Bool
 isFilledFrame a = FrameAdapter.status a
 
 -- Categorical view for Frame
@@ -1114,7 +1116,7 @@ record LocaleAdapter : Set₁ where
     decl : C3S1.LocaleDeclaration
     expFrame : C3S1.FrameDeclaration
     linkFrame : C3S1.LocaleDeclaration.associatedFrame decl ≡ expFrame
-    status : B.Bool
+    status : Bool
 
 mkLocaleAdapter :
   (d : C3S1.LocaleDeclaration) →
@@ -1123,9 +1125,9 @@ mkLocaleAdapter :
   LocaleAdapter
 mkLocaleAdapter d f pf =
   record { decl = d ; expFrame = f
-         ; linkFrame = pf ; status = B.true }
+         ; linkFrame = pf ; status = true }
 
-isFilledLocale : LocaleAdapter → B.Bool
+isFilledLocale : LocaleAdapter → Bool
 isFilledLocale a = LocaleAdapter.status a
 
 -- Categorical view for Locale
@@ -1139,7 +1141,7 @@ record LocaleMorphismAdapter : Set₁ where
     expTarget : C3S1.LocaleDeclaration
     linkSource : C3S1.LocaleMorphismDeclaration.sourceLocale decl ≡ expSource
     linkTarget : C3S1.LocaleMorphismDeclaration.targetLocale decl ≡ expTarget
-    status : B.Bool
+    status : Bool
 
 mkLocaleMorphismAdapter :
   (d : C3S1.LocaleMorphismDeclaration) →
@@ -1149,9 +1151,9 @@ mkLocaleMorphismAdapter :
   LocaleMorphismAdapter
 mkLocaleMorphismAdapter d src tgt psrc ptgt =
   record { decl = d ; expSource = src ; expTarget = tgt
-         ; linkSource = psrc ; linkTarget = ptgt ; status = B.true }
+         ; linkSource = psrc ; linkTarget = ptgt ; status = true }
 
-isFilledLocaleMorphism : LocaleMorphismAdapter → B.Bool
+isFilledLocaleMorphism : LocaleMorphismAdapter → Bool
 isFilledLocaleMorphism a = LocaleMorphismAdapter.status a
 
 -- Categorical view for Locale Morphism
@@ -1163,7 +1165,7 @@ record NucleusAdapter : Set₁ where
     decl : C3S1.NucleusDeclaration
     expFrame : C3S1.FrameDeclaration
     linkFrame : C3S1.NucleusDeclaration.frame decl ≡ expFrame
-    status : B.Bool
+    status : Bool
 
 mkNucleusAdapter :
   (d : C3S1.NucleusDeclaration) →
@@ -1172,9 +1174,9 @@ mkNucleusAdapter :
   NucleusAdapter
 mkNucleusAdapter d f pf =
   record { decl = d ; expFrame = f
-         ; linkFrame = pf ; status = B.true }
+         ; linkFrame = pf ; status = true }
 
-isFilledNucleus : NucleusAdapter → B.Bool
+isFilledNucleus : NucleusAdapter → Bool
 isFilledNucleus a = NucleusAdapter.status a
 
 -- Categorical view for Nucleus
@@ -1188,7 +1190,7 @@ record SublocaleAdapter : Set₁ where
     expParent : C3S1.LocaleDeclaration
     linkSublocale : C3S1.SublocaleDeclaration.sublocale decl ≡ expSublocale
     linkParent : C3S1.SublocaleDeclaration.parentLocale decl ≡ expParent
-    status : B.Bool
+    status : Bool
 
 mkSublocaleAdapter :
   (d : C3S1.SublocaleDeclaration) →
@@ -1199,9 +1201,9 @@ mkSublocaleAdapter :
   SublocaleAdapter
 mkSublocaleAdapter d sub par psub ppar =
   record { decl = d ; expSublocale = sub ; expParent = par
-         ; linkSublocale = psub ; linkParent = ppar ; status = B.true }
+         ; linkSublocale = psub ; linkParent = ppar ; status = true }
 
-isFilledSublocale : SublocaleAdapter → B.Bool
+isFilledSublocale : SublocaleAdapter → Bool
 isFilledSublocale a = SublocaleAdapter.status a
 
 -- Categorical view for Sublocale
@@ -1213,7 +1215,7 @@ record OpenLocaleMorphismAdapter : Set₁ where
     decl : C3S1.OpenLocaleMorphismDeclaration
     expMorphism : C3S1.LocaleMorphismDeclaration
     linkMorphism : C3S1.OpenLocaleMorphismDeclaration.localeMorphism decl ≡ expMorphism
-    status : B.Bool
+    status : Bool
 
 mkOpenLocaleMorphismAdapter :
   (d : C3S1.OpenLocaleMorphismDeclaration) →
@@ -1222,9 +1224,9 @@ mkOpenLocaleMorphismAdapter :
   OpenLocaleMorphismAdapter
 mkOpenLocaleMorphismAdapter d m pm =
   record { decl = d ; expMorphism = m
-         ; linkMorphism = pm ; status = B.true }
+         ; linkMorphism = pm ; status = true }
 
-isFilledOpenLocaleMorphism : OpenLocaleMorphismAdapter → B.Bool
+isFilledOpenLocaleMorphism : OpenLocaleMorphismAdapter → Bool
 isFilledOpenLocaleMorphism a = OpenLocaleMorphismAdapter.status a
 
 -- Categorical view for Open Locale Morphism
@@ -1234,15 +1236,15 @@ openLocaleMorphismCategorical adapt = mkCategoricalAdapter C3S1.OpenLocaleMorphi
 record SoberSpaceAdapter : Set₁ where
   field
     decl : C3S1.SoberSpaceDeclaration
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSoberSpaceAdapter :
   (d : C3S1.SoberSpaceDeclaration) →
   SoberSpaceAdapter
 mkSoberSpaceAdapter d =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
-isFilledSoberSpace : SoberSpaceAdapter → B.Bool
+isFilledSoberSpace : SoberSpaceAdapter → Core.Phase.Bool
 isFilledSoberSpace a = SoberSpaceAdapter.status a
 
 -- Categorical view for Sober Space
@@ -1254,7 +1256,7 @@ record SpatialLocaleAdapter : Set₁ where
     decl : C3S1.SpatialLocaleDeclaration
     expLocale : C3S1.LocaleDeclaration
     linkLocale : C3S1.SpatialLocaleDeclaration.locale decl ≡ expLocale
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSpatialLocaleAdapter :
   (d : C3S1.SpatialLocaleDeclaration) →
@@ -1263,9 +1265,9 @@ mkSpatialLocaleAdapter :
   SpatialLocaleAdapter
 mkSpatialLocaleAdapter d loc ploc =
   record { decl = d ; expLocale = loc
-         ; linkLocale = ploc ; status = B.true }
+         ; linkLocale = ploc ; status = true }
 
-isFilledSpatialLocale : SpatialLocaleAdapter → B.Bool
+isFilledSpatialLocale : SpatialLocaleAdapter → Core.Phase.Bool
 isFilledSpatialLocale a = SpatialLocaleAdapter.status a
 
 -- Categorical view for Spatial Locale
@@ -1281,7 +1283,7 @@ record SheafOnLocaleAdapter : Set₁ where
     decl : C3S2.SheafOnLocaleDeclaration
     expPresheaf : C3S2.PresheafOnLocale
     linkPresheaf : C3S2.SheafOnLocaleDeclaration.underlyingPresheaf decl ≡ expPresheaf
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSheafOnLocaleAdapter :
   (d : C3S2.SheafOnLocaleDeclaration) →
@@ -1290,9 +1292,9 @@ mkSheafOnLocaleAdapter :
   SheafOnLocaleAdapter
 mkSheafOnLocaleAdapter d psh ppsh =
   record { decl = d ; expPresheaf = psh
-         ; linkPresheaf = ppsh ; status = B.true }
+         ; linkPresheaf = ppsh ; status = true }
 
-isFilledSheafOnLocale : SheafOnLocaleAdapter → B.Bool
+isFilledSheafOnLocale : SheafOnLocaleAdapter → Core.Phase.Bool
 isFilledSheafOnLocale a = SheafOnLocaleAdapter.status a
 
 -- Categorical view for Sheaf on Locale
@@ -1304,7 +1306,7 @@ record GrothendieckToposAdapter : Set₁ where
     decl : C3S2.GrothendieckToposDeclaration
     expCategory : C1S3.CategoryDeclaration
     linkCategory : C3S2.GrothendieckToposDeclaration.category decl ≡ expCategory
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkGrothendieckToposAdapter :
   (d : C3S2.GrothendieckToposDeclaration) →
@@ -1313,9 +1315,9 @@ mkGrothendieckToposAdapter :
   GrothendieckToposAdapter
 mkGrothendieckToposAdapter d cat pcat =
   record { decl = d ; expCategory = cat
-         ; linkCategory = pcat ; status = B.true }
+         ; linkCategory = pcat ; status = true }
 
-isFilledGrothendieckTopos : GrothendieckToposAdapter → B.Bool
+isFilledGrothendieckTopos : GrothendieckToposAdapter → Core.Phase.Bool
 isFilledGrothendieckTopos a = GrothendieckToposAdapter.status a
 
 -- Categorical view for Grothendieck Topos
@@ -1327,7 +1329,7 @@ record OmegaSetAdapter : Set₁ where
     decl : C3S2.OmegaSetDeclarationVerified
     expData : C3S2.OmegaSetData
     linkData : C3S2.OmegaSetDeclarationVerified.dataOmegaSet decl ≡ expData
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkOmegaSetAdapter :
   (d : C3S2.OmegaSetDeclarationVerified) →
@@ -1336,9 +1338,9 @@ mkOmegaSetAdapter :
   OmegaSetAdapter
 mkOmegaSetAdapter d data' pdata =
   record { decl = d ; expData = data'
-         ; linkData = pdata ; status = B.true }
+         ; linkData = pdata ; status = true }
 
-isFilledOmegaSet : OmegaSetAdapter → B.Bool
+isFilledOmegaSet : OmegaSetAdapter → Core.Phase.Bool
 isFilledOmegaSet a = OmegaSetAdapter.status a
 
 -- Categorical view for OmegaSet
@@ -1349,12 +1351,12 @@ omegaSetCategorical adapt = mkCategoricalAdapter C3S2.OmegaSetDeclarationVerifie
 record PresheafOnLocaleAdapter : Set₁ where
   field
     decl : C3S2.PresheafOnLocale
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPresheafOnLocaleAdapter : C3S2.PresheafOnLocale → PresheafOnLocaleAdapter
-mkPresheafOnLocaleAdapter d = record { decl = d ; status = B.true }
+mkPresheafOnLocaleAdapter d = record { decl = d ; status = true }
 
-isFilledPresheafOnLocale : PresheafOnLocaleAdapter → B.Bool
+isFilledPresheafOnLocale : PresheafOnLocaleAdapter → Core.Phase.Bool
 isFilledPresheafOnLocale a = PresheafOnLocaleAdapter.status a
 
 -- Sheaf gluing axiom
@@ -1363,7 +1365,7 @@ record SheafGluingAxiomAdapter : Set₁ where
     decl : C3S2.SheafGluingAxiom
     expPresheaf : C3S2.PresheafOnLocale
     linkPresheaf : C3S2.SheafGluingAxiom.presheaf decl ≡ expPresheaf
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSheafGluingAxiomAdapter :
   (d : C3S2.SheafGluingAxiom) →
@@ -1371,9 +1373,9 @@ mkSheafGluingAxiomAdapter :
   (ppsh : C3S2.SheafGluingAxiom.presheaf d ≡ psh) →
   SheafGluingAxiomAdapter
 mkSheafGluingAxiomAdapter d psh ppsh =
-  record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = B.true }
+  record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = true }
 
-isFilledSheafGluingAxiom : SheafGluingAxiomAdapter → B.Bool
+isFilledSheafGluingAxiom : SheafGluingAxiomAdapter → Core.Phase.Bool
 isFilledSheafGluingAxiom a = SheafGluingAxiomAdapter.status a
 
 -- Category of sheaves
@@ -1382,7 +1384,7 @@ record CategoryOfSheavesAdapter : Set₁ where
     decl : C3S2.CategoryOfSheaves
     expCategory : C1S3.CategoryDeclaration
     linkCategory : C3S2.CategoryOfSheaves.underlyingCategory decl ≡ expCategory
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCategoryOfSheavesAdapter :
   (d : C3S2.CategoryOfSheaves) →
@@ -1390,9 +1392,9 @@ mkCategoryOfSheavesAdapter :
   (pcat : C3S2.CategoryOfSheaves.underlyingCategory d ≡ cat) →
   CategoryOfSheavesAdapter
 mkCategoryOfSheavesAdapter d cat pcat =
-  record { decl = d ; expCategory = cat ; linkCategory = pcat ; status = B.true }
+  record { decl = d ; expCategory = cat ; linkCategory = pcat ; status = true }
 
-isFilledCategoryOfSheaves : CategoryOfSheavesAdapter → B.Bool
+isFilledCategoryOfSheaves : CategoryOfSheavesAdapter → Core.Phase.Bool
 isFilledCategoryOfSheaves a = CategoryOfSheavesAdapter.status a
 
 -- Category of sheaves is a topos theorem
@@ -1403,7 +1405,7 @@ record CategoryOfSheavesIsAToposTheoremAdapter : Set₁ where
     expTopos : C3S2.GrothendieckToposDeclaration
     linkSheafCat : C3S2.CategoryOfSheavesIsAToposTheorem.sheafCategory decl ≡ expSheafCat
     linkTopos : C3S2.CategoryOfSheavesIsAToposTheorem.isGrothendieckTopos decl ≡ expTopos
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCategoryOfSheavesIsAToposTheoremAdapter :
   (d : C3S2.CategoryOfSheavesIsAToposTheorem) →
@@ -1414,9 +1416,9 @@ mkCategoryOfSheavesIsAToposTheoremAdapter :
   CategoryOfSheavesIsAToposTheoremAdapter
 mkCategoryOfSheavesIsAToposTheoremAdapter d sc tp psc ptp =
   record { decl = d ; expSheafCat = sc ; expTopos = tp
-         ; linkSheafCat = psc ; linkTopos = ptp ; status = B.true }
+         ; linkSheafCat = psc ; linkTopos = ptp ; status = true }
 
-isFilledCategoryOfSheavesIsAToposTheorem : CategoryOfSheavesIsAToposTheoremAdapter → B.Bool
+isFilledCategoryOfSheavesIsAToposTheorem : CategoryOfSheavesIsAToposTheoremAdapter → Core.Phase.Bool
 isFilledCategoryOfSheavesIsAToposTheorem a = CategoryOfSheavesIsAToposTheoremAdapter.status a
 
 -- Exponential object in sheaf category
@@ -1427,7 +1429,7 @@ record ExponentialObjectSheafAdapter : Set₁ where
     expExponent : C3S2.SheafOnLocaleDeclaration
     linkBase : C3S2.ExponentialObjectSheaf.baseSheaf decl ≡ expBase
     linkExponent : C3S2.ExponentialObjectSheaf.exponentSheaf decl ≡ expExponent
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkExponentialObjectSheafAdapter :
   (d : C3S2.ExponentialObjectSheaf) →
@@ -1438,9 +1440,9 @@ mkExponentialObjectSheafAdapter :
   ExponentialObjectSheafAdapter
 mkExponentialObjectSheafAdapter d b e pb pe =
   record { decl = d ; expBase = b ; expExponent = e
-         ; linkBase = pb ; linkExponent = pe ; status = B.true }
+         ; linkBase = pb ; linkExponent = pe ; status = true }
 
-isFilledExponentialObjectSheaf : ExponentialObjectSheafAdapter → B.Bool
+isFilledExponentialObjectSheaf : ExponentialObjectSheafAdapter → Core.Phase.Bool
 isFilledExponentialObjectSheaf a = ExponentialObjectSheafAdapter.status a
 
 -- Subobject classifier
@@ -1449,7 +1451,7 @@ record SubobjectClassifierAxiomAdapter : Set₁ where
     decl : C3S2.SubobjectClassifierAxiom
     expCharMap : C3S2.CharacteristicMapConstructor
     linkCharMap : C3S2.SubobjectClassifierAxiom.characteristicMap decl ≡ expCharMap
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSubobjectClassifierAxiomAdapter :
   (d : C3S2.SubobjectClassifierAxiom) →
@@ -1457,9 +1459,9 @@ mkSubobjectClassifierAxiomAdapter :
   (pcm : C3S2.SubobjectClassifierAxiom.characteristicMap d ≡ cm) →
   SubobjectClassifierAxiomAdapter
 mkSubobjectClassifierAxiomAdapter d cm pcm =
-  record { decl = d ; expCharMap = cm ; linkCharMap = pcm ; status = B.true }
+  record { decl = d ; expCharMap = cm ; linkCharMap = pcm ; status = true }
 
-isFilledSubobjectClassifierAxiom : SubobjectClassifierAxiomAdapter → B.Bool
+isFilledSubobjectClassifierAxiom : SubobjectClassifierAxiomAdapter → Core.Phase.Bool
 isFilledSubobjectClassifierAxiom a = SubobjectClassifierAxiomAdapter.status a
 
 -- Étale space
@@ -1468,7 +1470,7 @@ record EtaleSpaceOverAdapter : Set₁ where
     decl : C3S2.EtaleSpaceOver
     expProj : M.Identifier
     linkProj : C3S2.EtaleSpaceOver.projection decl ≡ expProj
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkEtaleSpaceOverAdapter :
   (d : C3S2.EtaleSpaceOver) →
@@ -1476,9 +1478,9 @@ mkEtaleSpaceOverAdapter :
   (pp : C3S2.EtaleSpaceOver.projection d ≡ p) →
   EtaleSpaceOverAdapter
 mkEtaleSpaceOverAdapter d p pp =
-  record { decl = d ; expProj = p ; linkProj = pp ; status = B.true }
+  record { decl = d ; expProj = p ; linkProj = pp ; status = true }
 
-isFilledEtaleSpaceOver : EtaleSpaceOverAdapter → B.Bool
+isFilledEtaleSpaceOver : EtaleSpaceOverAdapter → Core.Phase.Bool
 isFilledEtaleSpaceOver a = EtaleSpaceOverAdapter.status a
 
 -- Category of étale spaces
@@ -1487,7 +1489,7 @@ record CategoryOfEtaleSpacesAdapter : Set₁ where
     decl : C3S2.CategoryOfEtaleSpaces
     expCategory : C1S3.CategoryDeclaration
     linkCategory : C3S2.CategoryOfEtaleSpaces.categoryStructure decl ≡ expCategory
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCategoryOfEtaleSpacesAdapter :
   (d : C3S2.CategoryOfEtaleSpaces) →
@@ -1495,9 +1497,9 @@ mkCategoryOfEtaleSpacesAdapter :
   (pcat : C3S2.CategoryOfEtaleSpaces.categoryStructure d ≡ cat) →
   CategoryOfEtaleSpacesAdapter
 mkCategoryOfEtaleSpacesAdapter d cat pcat =
-  record { decl = d ; expCategory = cat ; linkCategory = pcat ; status = B.true }
+  record { decl = d ; expCategory = cat ; linkCategory = pcat ; status = true }
 
-isFilledCategoryOfEtaleSpaces : CategoryOfEtaleSpacesAdapter → B.Bool
+isFilledCategoryOfEtaleSpaces : CategoryOfEtaleSpacesAdapter → Core.Phase.Bool
 isFilledCategoryOfEtaleSpaces a = CategoryOfEtaleSpacesAdapter.status a
 
 -- Stalk constructor
@@ -1506,7 +1508,7 @@ record StalkConstructorAdapter : Set₁ where
     decl : C3S2.StalkConstructor
     expPresheaf : C3S2.PresheafOnLocale
     linkPresheaf : C3S2.StalkConstructor.presheaf decl ≡ expPresheaf
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkStalkConstructorAdapter :
   (d : C3S2.StalkConstructor) →
@@ -1514,9 +1516,9 @@ mkStalkConstructorAdapter :
   (ppsh : C3S2.StalkConstructor.presheaf d ≡ psh) →
   StalkConstructorAdapter
 mkStalkConstructorAdapter d psh ppsh =
-  record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = B.true }
+  record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = true }
 
-isFilledStalkConstructor : StalkConstructorAdapter → B.Bool
+isFilledStalkConstructor : StalkConstructorAdapter → Core.Phase.Bool
 isFilledStalkConstructor a = StalkConstructorAdapter.status a
 
 -- Total space of stalks
@@ -1525,7 +1527,7 @@ record TotalSpaceOfStalksAdapter : Set₁ where
     decl : C3S2.TotalSpaceOfStalks
     expPresheaf : C3S2.PresheafOnLocale
     linkPresheaf : C3S2.TotalSpaceOfStalks.presheaf decl ≡ expPresheaf
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkTotalSpaceOfStalksAdapter :
   (d : C3S2.TotalSpaceOfStalks) →
@@ -1533,9 +1535,9 @@ mkTotalSpaceOfStalksAdapter :
   (ppsh : C3S2.TotalSpaceOfStalks.presheaf d ≡ psh) →
   TotalSpaceOfStalksAdapter
 mkTotalSpaceOfStalksAdapter d psh ppsh =
-  record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = B.true }
+  record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = true }
 
-isFilledTotalSpaceOfStalks : TotalSpaceOfStalksAdapter → B.Bool
+isFilledTotalSpaceOfStalks : TotalSpaceOfStalksAdapter → Core.Phase.Bool
 isFilledTotalSpaceOfStalks a = TotalSpaceOfStalksAdapter.status a
 
 -- Sheaf of sections functor
@@ -1546,7 +1548,7 @@ record SheafOfSectionsFunctorAdapter : Set₁ where
     expSheaf : C3S2.SheafOnLocaleDeclaration
     linkEtale : C3S2.SheafOfSectionsFunctor.etaleSpace decl ≡ expEtale
     linkSheaf : C3S2.SheafOfSectionsFunctor.isSheaf decl ≡ expSheaf
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSheafOfSectionsFunctorAdapter :
   (d : C3S2.SheafOfSectionsFunctor) →
@@ -1557,9 +1559,9 @@ mkSheafOfSectionsFunctorAdapter :
   SheafOfSectionsFunctorAdapter
 mkSheafOfSectionsFunctorAdapter d et sh pet psh =
   record { decl = d ; expEtale = et ; expSheaf = sh
-         ; linkEtale = pet ; linkSheaf = psh ; status = B.true }
+         ; linkEtale = pet ; linkSheaf = psh ; status = true }
 
-isFilledSheafOfSectionsFunctor : SheafOfSectionsFunctorAdapter → B.Bool
+isFilledSheafOfSectionsFunctor : SheafOfSectionsFunctorAdapter → Core.Phase.Bool
 isFilledSheafOfSectionsFunctor a = SheafOfSectionsFunctorAdapter.status a
 
 -- Sheaf-étale equivalence theorem
@@ -1574,7 +1576,7 @@ record SheafEtaleEquivalenceTheoremAdapter : Set₁ where
     linkEtaleCat : C3S2.SheafEtaleEquivalenceTheorem.etaleCategory decl ≡ expEtaleCat
     linkStalksF : C3S2.SheafEtaleEquivalenceTheorem.stalksToEtaleFunctor decl ≡ expStalksF
     linkSectionsF : C3S2.SheafEtaleEquivalenceTheorem.sectionsToSheafFunctor decl ≡ expSectionsF
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSheafEtaleEquivalenceTheoremAdapter :
   (d : C3S2.SheafEtaleEquivalenceTheorem) →
@@ -1591,9 +1593,9 @@ mkSheafEtaleEquivalenceTheoremAdapter d sc ec sf tf psc pec psf ptf =
   record { decl = d ; expSheafCat = sc ; expEtaleCat = ec
          ; expStalksF = sf ; expSectionsF = tf
          ; linkSheafCat = psc ; linkEtaleCat = pec
-         ; linkStalksF = psf ; linkSectionsF = ptf ; status = B.true }
+         ; linkStalksF = psf ; linkSectionsF = ptf ; status = true }
 
-isFilledSheafEtaleEquivalenceTheorem : SheafEtaleEquivalenceTheoremAdapter → B.Bool
+isFilledSheafEtaleEquivalenceTheorem : SheafEtaleEquivalenceTheoremAdapter → Core.Phase.Bool
 isFilledSheafEtaleEquivalenceTheorem a = SheafEtaleEquivalenceTheoremAdapter.status a
 
 -- Direct image functor
@@ -1602,7 +1604,7 @@ record DirectImageFunctorLocaleAdapter : Set₁ where
     decl : C3S2.DirectImageFunctorLocale
     expFunctor : M.Identifier
     linkFunctor : C3S2.DirectImageFunctorLocale.underlyingFunctor decl ≡ expFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkDirectImageFunctorLocaleAdapter :
   (d : C3S2.DirectImageFunctorLocale) →
@@ -1610,9 +1612,9 @@ mkDirectImageFunctorLocaleAdapter :
   (pf : C3S2.DirectImageFunctorLocale.underlyingFunctor d ≡ f) →
   DirectImageFunctorLocaleAdapter
 mkDirectImageFunctorLocaleAdapter d f pf =
-  record { decl = d ; expFunctor = f ; linkFunctor = pf ; status = B.true }
+  record { decl = d ; expFunctor = f ; linkFunctor = pf ; status = true }
 
-isFilledDirectImageFunctorLocale : DirectImageFunctorLocaleAdapter → B.Bool
+isFilledDirectImageFunctorLocale : DirectImageFunctorLocaleAdapter → Core.Phase.Bool
 isFilledDirectImageFunctorLocale a = DirectImageFunctorLocaleAdapter.status a
 
 -- Inverse image functor
@@ -1621,7 +1623,7 @@ record InverseImageFunctorLocaleAdapter : Set₁ where
     decl : C3S2.InverseImageFunctorLocale
     expFunctor : M.Identifier
     linkFunctor : C3S2.InverseImageFunctorLocale.underlyingFunctor decl ≡ expFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkInverseImageFunctorLocaleAdapter :
   (d : C3S2.InverseImageFunctorLocale) →
@@ -1629,9 +1631,9 @@ mkInverseImageFunctorLocaleAdapter :
   (pf : C3S2.InverseImageFunctorLocale.underlyingFunctor d ≡ f) →
   InverseImageFunctorLocaleAdapter
 mkInverseImageFunctorLocaleAdapter d f pf =
-  record { decl = d ; expFunctor = f ; linkFunctor = pf ; status = B.true }
+  record { decl = d ; expFunctor = f ; linkFunctor = pf ; status = true }
 
-isFilledInverseImageFunctorLocale : InverseImageFunctorLocaleAdapter → B.Bool
+isFilledInverseImageFunctorLocale : InverseImageFunctorLocaleAdapter → Core.Phase.Bool
 isFilledInverseImageFunctorLocale a = InverseImageFunctorLocaleAdapter.status a
 
 -- Change of base adjunction theorem
@@ -1644,7 +1646,7 @@ record LocaleChangeOfBaseAdjunctionTheoremAdapter : Set₁ where
     linkInverse : C3S2.LocaleChangeOfBaseAdjunctionTheorem.inverseImageFunctor decl ≡ expInverse
     linkDirect : C3S2.LocaleChangeOfBaseAdjunctionTheorem.directImageFunctor decl ≡ expDirect
     linkAdj : C3S2.LocaleChangeOfBaseAdjunctionTheorem.adjunction decl ≡ expAdj
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkLocaleChangeOfBaseAdjunctionTheoremAdapter :
   (d : C3S2.LocaleChangeOfBaseAdjunctionTheorem) →
@@ -1657,9 +1659,9 @@ mkLocaleChangeOfBaseAdjunctionTheoremAdapter :
   LocaleChangeOfBaseAdjunctionTheoremAdapter
 mkLocaleChangeOfBaseAdjunctionTheoremAdapter d inv dir adj pinv pdir padj =
   record { decl = d ; expInverse = inv ; expDirect = dir ; expAdj = adj
-         ; linkInverse = pinv ; linkDirect = pdir ; linkAdj = padj ; status = B.true }
+         ; linkInverse = pinv ; linkDirect = pdir ; linkAdj = padj ; status = true }
 
-isFilledLocaleChangeOfBaseAdjunctionTheorem : LocaleChangeOfBaseAdjunctionTheoremAdapter → B.Bool
+isFilledLocaleChangeOfBaseAdjunctionTheorem : LocaleChangeOfBaseAdjunctionTheoremAdapter → Core.Phase.Bool
 isFilledLocaleChangeOfBaseAdjunctionTheorem a = LocaleChangeOfBaseAdjunctionTheoremAdapter.status a
 
 -- Étale morphism induces sheaf equivalence theorem
@@ -1668,7 +1670,7 @@ record EtaleMorphismInducesSheafEquivalenceTheoremAdapter : Set₁ where
     decl : C3S2.EtaleMorphismInducesSheafEquivalenceTheorem
     expInverse : C3S2.InverseImageFunctorLocale
     linkInverse : C3S2.EtaleMorphismInducesSheafEquivalenceTheorem.inverseImageFunctor decl ≡ expInverse
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkEtaleMorphismInducesSheafEquivalenceTheoremAdapter :
   (d : C3S2.EtaleMorphismInducesSheafEquivalenceTheorem) →
@@ -1676,9 +1678,9 @@ mkEtaleMorphismInducesSheafEquivalenceTheoremAdapter :
   (pinv : C3S2.EtaleMorphismInducesSheafEquivalenceTheorem.inverseImageFunctor d ≡ inv) →
   EtaleMorphismInducesSheafEquivalenceTheoremAdapter
 mkEtaleMorphismInducesSheafEquivalenceTheoremAdapter d inv pinv =
-  record { decl = d ; expInverse = inv ; linkInverse = pinv ; status = B.true }
+  record { decl = d ; expInverse = inv ; linkInverse = pinv ; status = true }
 
-isFilledEtaleMorphismInducesSheafEquivalenceTheorem : EtaleMorphismInducesSheafEquivalenceTheoremAdapter → B.Bool
+isFilledEtaleMorphismInducesSheafEquivalenceTheorem : EtaleMorphismInducesSheafEquivalenceTheoremAdapter → Core.Phase.Bool
 isFilledEtaleMorphismInducesSheafEquivalenceTheorem a = EtaleMorphismInducesSheafEquivalenceTheoremAdapter.status a
 
 -- Ω-sets are complete Ω-sets theorem
@@ -1693,7 +1695,7 @@ record SheavesAreCompleteOmegaSetsRefinedTheoremAdapter : Set₁ where
     linkOmegaCat : C3S2.SheavesAreCompleteOmegaSetsRefinedTheorem.completeOmegaSetCategory decl ≡ expOmegaCat
     linkFunctorA : C3S2.SheavesAreCompleteOmegaSetsRefinedTheorem.functorA decl ≡ expFunctorA
     linkFunctorS : C3S2.SheavesAreCompleteOmegaSetsRefinedTheorem.functorS decl ≡ expFunctorS
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSheavesAreCompleteOmegaSetsRefinedTheoremAdapter :
   (d : C3S2.SheavesAreCompleteOmegaSetsRefinedTheorem) →
@@ -1710,9 +1712,9 @@ mkSheavesAreCompleteOmegaSetsRefinedTheoremAdapter d sc oc fa fs psc poc pfa pfs
   record { decl = d ; expSheafCat = sc ; expOmegaCat = oc
          ; expFunctorA = fa ; expFunctorS = fs
          ; linkSheafCat = psc ; linkOmegaCat = poc
-         ; linkFunctorA = pfa ; linkFunctorS = pfs ; status = B.true }
+         ; linkFunctorA = pfa ; linkFunctorS = pfs ; status = true }
 
-isFilledSheavesAreCompleteOmegaSetsRefinedTheorem : SheavesAreCompleteOmegaSetsRefinedTheoremAdapter → B.Bool
+isFilledSheavesAreCompleteOmegaSetsRefinedTheorem : SheavesAreCompleteOmegaSetsRefinedTheoremAdapter → Core.Phase.Bool
 isFilledSheavesAreCompleteOmegaSetsRefinedTheorem a = SheavesAreCompleteOmegaSetsRefinedTheoremAdapter.status a
 
 -- Sheaf of rings
@@ -1721,7 +1723,7 @@ record SheafOfRingsAdapter : Set₁ where
     decl : C3S2.SheafOfRings
     expSheaf : C3S2.SheafOnLocaleDeclaration
     linkSheaf : C3S2.SheafOfRings.underlyingSheaf decl ≡ expSheaf
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSheafOfRingsAdapter :
   (d : C3S2.SheafOfRings) →
@@ -1729,9 +1731,9 @@ mkSheafOfRingsAdapter :
   (psh : C3S2.SheafOfRings.underlyingSheaf d ≡ sh) →
   SheafOfRingsAdapter
 mkSheafOfRingsAdapter d sh psh =
-  record { decl = d ; expSheaf = sh ; linkSheaf = psh ; status = B.true }
+  record { decl = d ; expSheaf = sh ; linkSheaf = psh ; status = true }
 
-isFilledSheafOfRings : SheafOfRingsAdapter → B.Bool
+isFilledSheafOfRings : SheafOfRingsAdapter → Core.Phase.Bool
 isFilledSheafOfRings a = SheafOfRingsAdapter.status a
 
 -- Sheaf of O-modules
@@ -1742,7 +1744,7 @@ record SheafOfOModulesAdapter : Set₁ where
     expModSheaf : C3S2.SheafOnLocaleDeclaration
     linkRingSheaf : C3S2.SheafOfOModules.sheafOfRings decl ≡ expRingSheaf
     linkModSheaf : C3S2.SheafOfOModules.underlyingSheaf decl ≡ expModSheaf
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSheafOfOModulesAdapter :
   (d : C3S2.SheafOfOModules) →
@@ -1753,9 +1755,9 @@ mkSheafOfOModulesAdapter :
   SheafOfOModulesAdapter
 mkSheafOfOModulesAdapter d rs ms prs pms =
   record { decl = d ; expRingSheaf = rs ; expModSheaf = ms
-         ; linkRingSheaf = prs ; linkModSheaf = pms ; status = B.true }
+         ; linkRingSheaf = prs ; linkModSheaf = pms ; status = true }
 
-isFilledSheafOfOModules : SheafOfOModulesAdapter → B.Bool
+isFilledSheafOfOModules : SheafOfOModulesAdapter → Core.Phase.Bool
 isFilledSheafOfOModules a = SheafOfOModulesAdapter.status a
 
 -- Category of O-modules is abelian
@@ -1766,7 +1768,7 @@ record CategoryOfOModulesIsAbelianCorollaryAdapter : Set₁ where
     expCategory : C1S3.CategoryDeclaration
     linkRingSheaf : C3S2.CategoryOfOModulesIsAbelianCorollary.sheafOfRings decl ≡ expRingSheaf
     linkCategory : C3S2.CategoryOfOModulesIsAbelianCorollary.categoryOfOModules decl ≡ expCategory
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCategoryOfOModulesIsAbelianCorollaryAdapter :
   (d : C3S2.CategoryOfOModulesIsAbelianCorollary) →
@@ -1777,9 +1779,9 @@ mkCategoryOfOModulesIsAbelianCorollaryAdapter :
   CategoryOfOModulesIsAbelianCorollaryAdapter
 mkCategoryOfOModulesIsAbelianCorollaryAdapter d rs cat prs pcat =
   record { decl = d ; expRingSheaf = rs ; expCategory = cat
-         ; linkRingSheaf = prs ; linkCategory = pcat ; status = B.true }
+         ; linkRingSheaf = prs ; linkCategory = pcat ; status = true }
 
-isFilledCategoryOfOModulesIsAbelianCorollary : CategoryOfOModulesIsAbelianCorollaryAdapter → B.Bool
+isFilledCategoryOfOModulesIsAbelianCorollary : CategoryOfOModulesIsAbelianCorollaryAdapter → Core.Phase.Bool
 isFilledCategoryOfOModulesIsAbelianCorollary a = CategoryOfOModulesIsAbelianCorollaryAdapter.status a
 
 ------------------------------------------------------------------------
@@ -1790,12 +1792,12 @@ isFilledCategoryOfOModulesIsAbelianCorollary a = CategoryOfOModulesIsAbelianCoro
 record MagmaAdapter : Set₁ where
   field
     decl : AFo.MagmaDeclaration
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkMagmaAdapter : AFo.MagmaDeclaration → MagmaAdapter
-mkMagmaAdapter d = record { decl = d ; status = B.true }
+mkMagmaAdapter d = record { decl = d ; status = true }
 
-isFilledMagma : MagmaAdapter → B.Bool
+isFilledMagma : MagmaAdapter → Core.Phase.Bool
 isFilledMagma a = MagmaAdapter.status a
 
 -- Categorical view for Magma
@@ -1808,7 +1810,7 @@ record SemigroupAdapter : Set₁ where
     decl : AFo.SemigroupDeclaration
     expMagma : AFo.MagmaDeclaration
     linkMagma : AFo.SemigroupDeclaration.underlyingMagma decl ≡ expMagma
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSemigroupAdapter :
   (d : AFo.SemigroupDeclaration) →
@@ -1816,9 +1818,9 @@ mkSemigroupAdapter :
   (pm : AFo.SemigroupDeclaration.underlyingMagma d ≡ m) →
   SemigroupAdapter
 mkSemigroupAdapter d m pm =
-  record { decl = d ; expMagma = m ; linkMagma = pm ; status = B.true }
+  record { decl = d ; expMagma = m ; linkMagma = pm ; status = true }
 
-isFilledSemigroup : SemigroupAdapter → B.Bool
+isFilledSemigroup : SemigroupAdapter → Core.Phase.Bool
 isFilledSemigroup a = SemigroupAdapter.status a
 
 -- Categorical view for Semigroup
@@ -1831,7 +1833,7 @@ record MonoidAdapter : Set₁ where
     decl : AFo.MonoidDeclaration
     expSemigroup : AFo.SemigroupDeclaration
     linkSemigroup : AFo.MonoidDeclaration.underlyingSemigroup decl ≡ expSemigroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkMonoidAdapter :
   (d : AFo.MonoidDeclaration) →
@@ -1839,9 +1841,9 @@ mkMonoidAdapter :
   (ps : AFo.MonoidDeclaration.underlyingSemigroup d ≡ s) →
   MonoidAdapter
 mkMonoidAdapter d s ps =
-  record { decl = d ; expSemigroup = s ; linkSemigroup = ps ; status = B.true }
+  record { decl = d ; expSemigroup = s ; linkSemigroup = ps ; status = true }
 
-isFilledMonoid : MonoidAdapter → B.Bool
+isFilledMonoid : MonoidAdapter → Core.Phase.Bool
 isFilledMonoid a = MonoidAdapter.status a
 
 -- Categorical view for Monoid
@@ -1854,7 +1856,7 @@ record GroupAdapter : Set₁ where
     decl : AFo.GroupDeclaration
     expMonoid : AFo.MonoidDeclaration
     linkMonoid : AFo.GroupDeclaration.underlyingMonoid decl ≡ expMonoid
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkGroupAdapter :
   (d : AFo.GroupDeclaration) →
@@ -1862,9 +1864,9 @@ mkGroupAdapter :
   (pm : AFo.GroupDeclaration.underlyingMonoid d ≡ m) →
   GroupAdapter
 mkGroupAdapter d m pm =
-  record { decl = d ; expMonoid = m ; linkMonoid = pm ; status = B.true }
+  record { decl = d ; expMonoid = m ; linkMonoid = pm ; status = true }
 
-isFilledGroup : GroupAdapter → B.Bool
+isFilledGroup : GroupAdapter → Core.Phase.Bool
 isFilledGroup a = GroupAdapter.status a
 
 -- Categorical view for Group
@@ -1877,7 +1879,7 @@ record AbelianGroupAdapter : Set₁ where
     decl : AFo.AbelianGroupDeclaration
     expGroup : AFo.GroupDeclaration
     linkGroup : AFo.AbelianGroupDeclaration.underlyingGroup decl ≡ expGroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAbelianGroupAdapter :
   (d : AFo.AbelianGroupDeclaration) →
@@ -1885,9 +1887,9 @@ mkAbelianGroupAdapter :
   (pg : AFo.AbelianGroupDeclaration.underlyingGroup d ≡ g) →
   AbelianGroupAdapter
 mkAbelianGroupAdapter d g pg =
-  record { decl = d ; expGroup = g ; linkGroup = pg ; status = B.true }
+  record { decl = d ; expGroup = g ; linkGroup = pg ; status = true }
 
-isFilledAbelianGroup : AbelianGroupAdapter → B.Bool
+isFilledAbelianGroup : AbelianGroupAdapter → Core.Phase.Bool
 isFilledAbelianGroup a = AbelianGroupAdapter.status a
 
 -- Categorical view for Abelian Group
@@ -1900,7 +1902,7 @@ record RingAdapter : Set₁ where
     decl : AR.RingDeclaration
     expAdditiveGroup : AFo.AbelianGroupDeclaration
     linkAdditiveGroup : AR.RingDeclaration.additiveGroup decl ≡ expAdditiveGroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkRingAdapter :
   (d : AR.RingDeclaration) →
@@ -1908,9 +1910,9 @@ mkRingAdapter :
   (pag : AR.RingDeclaration.additiveGroup d ≡ ag) →
   RingAdapter
 mkRingAdapter d ag pag =
-  record { decl = d ; expAdditiveGroup = ag ; linkAdditiveGroup = pag ; status = B.true }
+  record { decl = d ; expAdditiveGroup = ag ; linkAdditiveGroup = pag ; status = true }
 
-isFilledRing : RingAdapter → B.Bool
+isFilledRing : RingAdapter → Core.Phase.Bool
 isFilledRing a = RingAdapter.status a
 
 -- Categorical view for Ring
@@ -1923,7 +1925,7 @@ record UnitalRingAdapter : Set₁ where
     decl : AR.UnitalRingDeclaration
     expRing : AR.RingDeclaration
     linkRing : AR.UnitalRingDeclaration.underlyingRing decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkUnitalRingAdapter :
   (d : AR.UnitalRingDeclaration) →
@@ -1931,9 +1933,9 @@ mkUnitalRingAdapter :
   (pr : AR.UnitalRingDeclaration.underlyingRing d ≡ r) →
   UnitalRingAdapter
 mkUnitalRingAdapter d r pr =
-  record { decl = d ; expRing = r ; linkRing = pr ; status = B.true }
+  record { decl = d ; expRing = r ; linkRing = pr ; status = true }
 
-isFilledUnitalRing : UnitalRingAdapter → B.Bool
+isFilledUnitalRing : UnitalRingAdapter → Core.Phase.Bool
 isFilledUnitalRing a = UnitalRingAdapter.status a
 
 -- Categorical view for Unital Ring
@@ -1946,7 +1948,7 @@ record CommutativeRingAdapter : Set₁ where
     decl : AR.CommutativeRingDeclaration
     expUnitalRing : AR.UnitalRingDeclaration
     linkUnitalRing : AR.CommutativeRingDeclaration.underlyingRing decl ≡ expUnitalRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCommutativeRingAdapter :
   (d : AR.CommutativeRingDeclaration) →
@@ -1954,9 +1956,9 @@ mkCommutativeRingAdapter :
   (pur : AR.CommutativeRingDeclaration.underlyingRing d ≡ ur) →
   CommutativeRingAdapter
 mkCommutativeRingAdapter d ur pur =
-  record { decl = d ; expUnitalRing = ur ; linkUnitalRing = pur ; status = B.true }
+  record { decl = d ; expUnitalRing = ur ; linkUnitalRing = pur ; status = true }
 
-isFilledCommutativeRing : CommutativeRingAdapter → B.Bool
+isFilledCommutativeRing : CommutativeRingAdapter → Core.Phase.Bool
 isFilledCommutativeRing a = CommutativeRingAdapter.status a
 
 -- Categorical view for Commutative Ring
@@ -1969,7 +1971,7 @@ record DivisionRingAdapter : Set₁ where
     decl : AR.DivisionRingDeclaration
     expUnitalRing : AR.UnitalRingDeclaration
     linkUnitalRing : AR.DivisionRingDeclaration.underlyingRing decl ≡ expUnitalRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkDivisionRingAdapter :
   (d : AR.DivisionRingDeclaration) →
@@ -1977,9 +1979,9 @@ mkDivisionRingAdapter :
   (pur : AR.DivisionRingDeclaration.underlyingRing d ≡ ur) →
   DivisionRingAdapter
 mkDivisionRingAdapter d ur pur =
-  record { decl = d ; expUnitalRing = ur ; linkUnitalRing = pur ; status = B.true }
+  record { decl = d ; expUnitalRing = ur ; linkUnitalRing = pur ; status = true }
 
-isFilledDivisionRing : DivisionRingAdapter → B.Bool
+isFilledDivisionRing : DivisionRingAdapter → Core.Phase.Bool
 isFilledDivisionRing a = DivisionRingAdapter.status a
 
 -- Categorical view for Division Ring
@@ -1992,7 +1994,7 @@ record FieldAdapter : Set₁ where
     decl : AR.FieldDeclaration
     expCommutativeRing : AR.CommutativeRingDeclaration
     linkCommutativeRing : AR.FieldDeclaration.underlyingRing decl ≡ expCommutativeRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFieldAdapter :
   (d : AR.FieldDeclaration) →
@@ -2000,9 +2002,9 @@ mkFieldAdapter :
   (pcr : AR.FieldDeclaration.underlyingRing d ≡ cr) →
   FieldAdapter
 mkFieldAdapter d cr pcr =
-  record { decl = d ; expCommutativeRing = cr ; linkCommutativeRing = pcr ; status = B.true }
+  record { decl = d ; expCommutativeRing = cr ; linkCommutativeRing = pcr ; status = true }
 
-isFilledField : FieldAdapter → B.Bool
+isFilledField : FieldAdapter → Core.Phase.Bool
 isFilledField a = FieldAdapter.status a
 
 -- Categorical view for Field
@@ -2019,7 +2021,7 @@ record InitialObjectAdapter : Set₁ where
     decl : CUP.InitialObject
     expInitial : M.Identifier
     linkInitial : CUP.InitialObject.initial decl ≡ expInitial
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkInitialObjectAdapter :
   (d : CUP.InitialObject) →
@@ -2027,9 +2029,9 @@ mkInitialObjectAdapter :
   (pi : CUP.InitialObject.initial d ≡ i) →
   InitialObjectAdapter
 mkInitialObjectAdapter d i pi =
-  record { decl = d ; expInitial = i ; linkInitial = pi ; status = B.true }
+  record { decl = d ; expInitial = i ; linkInitial = pi ; status = true }
 
-isFilledInitialObject : InitialObjectAdapter → B.Bool
+isFilledInitialObject : InitialObjectAdapter → Core.Phase.Bool
 isFilledInitialObject a = InitialObjectAdapter.status a
 
 -- Categorical view for InitialObject
@@ -2044,7 +2046,7 @@ record TerminalObjectAdapter : Set₁ where
     decl : CUP.TerminalObject
     expTerminal : M.Identifier
     linkTerminal : CUP.TerminalObject.terminal decl ≡ expTerminal
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkTerminalObjectAdapter :
   (d : CUP.TerminalObject) →
@@ -2052,9 +2054,9 @@ mkTerminalObjectAdapter :
   (pt : CUP.TerminalObject.terminal d ≡ t) →
   TerminalObjectAdapter
 mkTerminalObjectAdapter d t pt =
-  record { decl = d ; expTerminal = t ; linkTerminal = pt ; status = B.true }
+  record { decl = d ; expTerminal = t ; linkTerminal = pt ; status = true }
 
-isFilledTerminalObject : TerminalObjectAdapter → B.Bool
+isFilledTerminalObject : TerminalObjectAdapter → Core.Phase.Bool
 isFilledTerminalObject a = TerminalObjectAdapter.status a
 
 -- Categorical view for TerminalObject
@@ -2070,7 +2072,7 @@ record ProductPropertyAdapter : Set₁ where
     decl : CUP.ProductProperty A B
     expProduct : M.Identifier
     linkProduct : CUP.ProductProperty.product decl ≡ expProduct
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkProductPropertyAdapter :
   (A B : M.Identifier) →
@@ -2079,9 +2081,9 @@ mkProductPropertyAdapter :
   (pp : CUP.ProductProperty.product d ≡ p) →
   ProductPropertyAdapter
 mkProductPropertyAdapter A B d p pp =
-  record { A = A ; B = B ; decl = d ; expProduct = p ; linkProduct = pp ; status = B.true }
+  record { A = A ; B = B ; decl = d ; expProduct = p ; linkProduct = pp ; status = true }
 
-isFilledProductProperty : ProductPropertyAdapter → B.Bool
+isFilledProductProperty : ProductPropertyAdapter → Core.Phase.Bool
 isFilledProductProperty a = ProductPropertyAdapter.status a
 
 -- Categorical view for ProductProperty
@@ -2099,7 +2101,7 @@ record CoproductPropertyAdapter : Set₁ where
     decl : CUP.CoproductProperty A B
     expCoproduct : M.Identifier
     linkCoproduct : CUP.CoproductProperty.coproduct decl ≡ expCoproduct
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCoproductPropertyAdapter :
   (A B : M.Identifier) →
@@ -2108,9 +2110,9 @@ mkCoproductPropertyAdapter :
   (pc : CUP.CoproductProperty.coproduct d ≡ c) →
   CoproductPropertyAdapter
 mkCoproductPropertyAdapter A B d c pc =
-  record { A = A ; B = B ; decl = d ; expCoproduct = c ; linkCoproduct = pc ; status = B.true }
+  record { A = A ; B = B ; decl = d ; expCoproduct = c ; linkCoproduct = pc ; status = true }
 
-isFilledCoproductProperty : CoproductPropertyAdapter → B.Bool
+isFilledCoproductProperty : CoproductPropertyAdapter → Core.Phase.Bool
 isFilledCoproductProperty a = CoproductPropertyAdapter.status a
 
 -- Categorical view for CoproductProperty
@@ -2128,7 +2130,7 @@ record EqualizerPropertyAdapter : Set₁ where
     decl : CUP.EqualizerProperty A B f g
     expEqualizer : M.Identifier
     linkEqualizer : CUP.EqualizerProperty.equalizer decl ≡ expEqualizer
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkEqualizerPropertyAdapter :
   (A B f g : M.Identifier) →
@@ -2137,9 +2139,9 @@ mkEqualizerPropertyAdapter :
   (pe : CUP.EqualizerProperty.equalizer d ≡ e) →
   EqualizerPropertyAdapter
 mkEqualizerPropertyAdapter A B f g d e pe =
-  record { A = A ; B = B ; f = f ; g = g ; decl = d ; expEqualizer = e ; linkEqualizer = pe ; status = B.true }
+  record { A = A ; B = B ; f = f ; g = g ; decl = d ; expEqualizer = e ; linkEqualizer = pe ; status = true }
 
-isFilledEqualizerProperty : EqualizerPropertyAdapter → B.Bool
+isFilledEqualizerProperty : EqualizerPropertyAdapter → Core.Phase.Bool
 isFilledEqualizerProperty a = EqualizerPropertyAdapter.status a
 
 -- Categorical view for EqualizerProperty
@@ -2163,7 +2165,7 @@ record CoequalizerPropertyAdapter : Set₁ where
     decl : CUP.CoequalizerProperty A B f g
     expCoequalizer : M.Identifier
     linkCoequalizer : CUP.CoequalizerProperty.coequalizer decl ≡ expCoequalizer
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCoequalizerPropertyAdapter :
   (A B f g : M.Identifier) →
@@ -2172,9 +2174,9 @@ mkCoequalizerPropertyAdapter :
   (pe : CUP.CoequalizerProperty.coequalizer d ≡ e) →
   CoequalizerPropertyAdapter
 mkCoequalizerPropertyAdapter A B f g d e pe =
-  record { A = A ; B = B ; f = f ; g = g ; decl = d ; expCoequalizer = e ; linkCoequalizer = pe ; status = B.true }
+  record { A = A ; B = B ; f = f ; g = g ; decl = d ; expCoequalizer = e ; linkCoequalizer = pe ; status = true }
 
-isFilledCoequalizerProperty : CoequalizerPropertyAdapter → B.Bool
+isFilledCoequalizerProperty : CoequalizerPropertyAdapter → Core.Phase.Bool
 isFilledCoequalizerProperty a = CoequalizerPropertyAdapter.status a
 
 -- Categorical view for CoequalizerProperty
@@ -2198,7 +2200,7 @@ record PullbackPropertyAdapter : Set₁ where
     decl : CUP.PullbackProperty A B C f g
     expPullback : M.Identifier
     linkPullback : CUP.PullbackProperty.pullback decl ≡ expPullback
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPullbackPropertyAdapter :
   (A B C f g : M.Identifier) →
@@ -2207,9 +2209,9 @@ mkPullbackPropertyAdapter :
   (pp : CUP.PullbackProperty.pullback d ≡ p) →
   PullbackPropertyAdapter
 mkPullbackPropertyAdapter A B C f g d p pp =
-  record { A = A ; B = B ; C = C ; f = f ; g = g ; decl = d ; expPullback = p ; linkPullback = pp ; status = B.true }
+  record { A = A ; B = B ; C = C ; f = f ; g = g ; decl = d ; expPullback = p ; linkPullback = pp ; status = true }
 
-isFilledPullbackProperty : PullbackPropertyAdapter → B.Bool
+isFilledPullbackProperty : PullbackPropertyAdapter → Core.Phase.Bool
 isFilledPullbackProperty a = PullbackPropertyAdapter.status a
 
 -- Categorical view for PullbackProperty
@@ -2235,7 +2237,7 @@ record PushoutPropertyAdapter : Set₁ where
     decl : CUP.PushoutProperty A B C f g
     expPushout : M.Identifier
     linkPushout : CUP.PushoutProperty.pushout decl ≡ expPushout
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPushoutPropertyAdapter :
   (A B C f g : M.Identifier) →
@@ -2244,9 +2246,9 @@ mkPushoutPropertyAdapter :
   (pp : CUP.PushoutProperty.pushout d ≡ p) →
   PushoutPropertyAdapter
 mkPushoutPropertyAdapter A B C f g d p pp =
-  record { A = A ; B = B ; C = C ; f = f ; g = g ; decl = d ; expPushout = p ; linkPushout = pp ; status = B.true }
+  record { A = A ; B = B ; C = C ; f = f ; g = g ; decl = d ; expPushout = p ; linkPushout = pp ; status = true }
 
-isFilledPushoutProperty : PushoutPropertyAdapter → B.Bool
+isFilledPushoutProperty : PushoutPropertyAdapter → Core.Phase.Bool
 isFilledPushoutProperty a = PushoutPropertyAdapter.status a
 
 -- Categorical view for PushoutProperty
@@ -2272,7 +2274,7 @@ record LimitPropertyAdapter : Set₁ where
     decl : CUP.LimitProperty D
     expLimit : M.Identifier
     linkLimit : CUP.LimitProperty.limit decl ≡ expLimit
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkLimitPropertyAdapter :
   (D : M.Identifier) →
@@ -2281,9 +2283,9 @@ mkLimitPropertyAdapter :
   (pl : CUP.LimitProperty.limit d ≡ l) →
   LimitPropertyAdapter
 mkLimitPropertyAdapter D d l pl =
-  record { D = D ; decl = d ; expLimit = l ; linkLimit = pl ; status = B.true }
+  record { D = D ; decl = d ; expLimit = l ; linkLimit = pl ; status = true }
 
-isFilledLimitProperty : LimitPropertyAdapter → B.Bool
+isFilledLimitProperty : LimitPropertyAdapter → Core.Phase.Bool
 isFilledLimitProperty a = LimitPropertyAdapter.status a
 
 -- Categorical view for LimitProperty
@@ -2300,7 +2302,7 @@ record ColimitPropertyAdapter : Set₁ where
     decl : CUP.ColimitProperty D
     expColimit : M.Identifier
     linkColimit : CUP.ColimitProperty.colimit decl ≡ expColimit
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkColimitPropertyAdapter :
   (D : M.Identifier) →
@@ -2309,9 +2311,9 @@ mkColimitPropertyAdapter :
   (pc : CUP.ColimitProperty.colimit d ≡ c) →
   ColimitPropertyAdapter
 mkColimitPropertyAdapter D d c pc =
-  record { D = D ; decl = d ; expColimit = c ; linkColimit = pc ; status = B.true }
+  record { D = D ; decl = d ; expColimit = c ; linkColimit = pc ; status = true }
 
-isFilledColimitProperty : ColimitPropertyAdapter → B.Bool
+isFilledColimitProperty : ColimitPropertyAdapter → Core.Phase.Bool
 isFilledColimitProperty a = ColimitPropertyAdapter.status a
 
 -- Categorical view for ColimitProperty
@@ -2332,7 +2334,7 @@ record LeftModuleAdapter : Set₁ where
     decl : AM.LeftModule R
     expRing : AR.RingDeclaration
     linkRing : AM.LeftModule.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkLeftModuleAdapter :
   (R : AR.RingDeclaration) →
@@ -2341,9 +2343,9 @@ mkLeftModuleAdapter :
   (pr : AM.LeftModule.ring d ≡ er) →
   LeftModuleAdapter
 mkLeftModuleAdapter R d er pr =
-  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledLeftModule : LeftModuleAdapter → B.Bool
+isFilledLeftModule : LeftModuleAdapter → Core.Phase.Bool
 isFilledLeftModule a = LeftModuleAdapter.status a
 
 -- Categorical view for LeftModule
@@ -2361,7 +2363,7 @@ record ModuleHomomorphismAdapter : Set₁ where
     decl : AM.ModuleHomomorphism R M N
     expRing : AR.RingDeclaration
     linkRing : AM.ModuleHomomorphism.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkModuleHomomorphismAdapter :
   (R : AR.RingDeclaration) →
@@ -2371,9 +2373,9 @@ mkModuleHomomorphismAdapter :
   (pr : AM.ModuleHomomorphism.ring d ≡ er) →
   ModuleHomomorphismAdapter
 mkModuleHomomorphismAdapter R M N d er pr =
-  record { R = R ; M = M ; N = N ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; M = M ; N = N ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledModuleHom : ModuleHomomorphismAdapter → B.Bool
+isFilledModuleHom : ModuleHomomorphismAdapter → Core.Phase.Bool
 isFilledModuleHom a = ModuleHomomorphismAdapter.status a
 
 -- Categorical view for ModuleHomomorphism
@@ -2396,7 +2398,7 @@ record SubmoduleAdapter : Set₁ where
     decl : AM.Submodule R M
     expRing : AR.RingDeclaration
     linkRing : AM.Submodule.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSubmoduleAdapter :
   (R : AR.RingDeclaration) →
@@ -2406,9 +2408,9 @@ mkSubmoduleAdapter :
   (pr : AM.Submodule.ring d ≡ er) →
   SubmoduleAdapter
 mkSubmoduleAdapter R M d er pr =
-  record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledSubmodule : SubmoduleAdapter → B.Bool
+isFilledSubmodule : SubmoduleAdapter → Core.Phase.Bool
 isFilledSubmodule a = SubmoduleAdapter.status a
 
 -- Categorical view for Submodule
@@ -2428,7 +2430,7 @@ record QuotientModuleAdapter : Set₁ where
     decl : AM.QuotientModule R M N
     expRing : AR.RingDeclaration
     linkRing : AM.QuotientModule.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkQuotientModuleAdapter :
   (R : AR.RingDeclaration) →
@@ -2439,9 +2441,9 @@ mkQuotientModuleAdapter :
   (pr : AM.QuotientModule.ring d ≡ er) →
   QuotientModuleAdapter
 mkQuotientModuleAdapter R M N d er pr =
-  record { R = R ; M = M ; N = N ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; M = M ; N = N ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledQuotientModule : QuotientModuleAdapter → B.Bool
+isFilledQuotientModule : QuotientModuleAdapter → Core.Phase.Bool
 isFilledQuotientModule a = QuotientModuleAdapter.status a
 
 -- Categorical view for QuotientModule
@@ -2464,7 +2466,7 @@ record KernelOfModuleHomomorphismAdapter : Set₁ where
     decl : AM.KernelOfModuleHomomorphism R f
     expRing : AR.RingDeclaration
     linkRing : AM.KernelOfModuleHomomorphism.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkKernelOfModuleHomomorphismAdapter :
   (R : AR.RingDeclaration) →
@@ -2474,9 +2476,9 @@ mkKernelOfModuleHomomorphismAdapter :
   (pr : AM.KernelOfModuleHomomorphism.ring d ≡ er) →
   KernelOfModuleHomomorphismAdapter
 mkKernelOfModuleHomomorphismAdapter R f d er pr =
-  record { R = R ; f = f ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; f = f ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledKernelModuleHom : KernelOfModuleHomomorphismAdapter → B.Bool
+isFilledKernelModuleHom : KernelOfModuleHomomorphismAdapter → Core.Phase.Bool
 isFilledKernelModuleHom a = KernelOfModuleHomomorphismAdapter.status a
 
 -- Categorical view for KernelOfModuleHomomorphism
@@ -2497,7 +2499,7 @@ record ImageOfModuleHomomorphismAdapter : Set₁ where
     decl : AM.ImageOfModuleHomomorphism R f
     expRing : AR.RingDeclaration
     linkRing : AM.ImageOfModuleHomomorphism.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkImageOfModuleHomomorphismAdapter :
   (R : AR.RingDeclaration) →
@@ -2507,9 +2509,9 @@ mkImageOfModuleHomomorphismAdapter :
   (pr : AM.ImageOfModuleHomomorphism.ring d ≡ er) →
   ImageOfModuleHomomorphismAdapter
 mkImageOfModuleHomomorphismAdapter R f d er pr =
-  record { R = R ; f = f ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; f = f ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledImageModuleHom : ImageOfModuleHomomorphismAdapter → B.Bool
+isFilledImageModuleHom : ImageOfModuleHomomorphismAdapter → Core.Phase.Bool
 isFilledImageModuleHom a = ImageOfModuleHomomorphismAdapter.status a
 
 -- Categorical view for ImageOfModuleHomomorphism
@@ -2530,7 +2532,7 @@ record CokernelOfModuleHomomorphismAdapter : Set₁ where
     decl : AM.CokernelOfModuleHomomorphism R f
     expRing : AR.RingDeclaration
     linkRing : AM.CokernelOfModuleHomomorphism.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCokernelOfModuleHomomorphismAdapter :
   (R : AR.RingDeclaration) →
@@ -2540,9 +2542,9 @@ mkCokernelOfModuleHomomorphismAdapter :
   (pr : AM.CokernelOfModuleHomomorphism.ring d ≡ er) →
   CokernelOfModuleHomomorphismAdapter
 mkCokernelOfModuleHomomorphismAdapter R f d er pr =
-  record { R = R ; f = f ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; f = f ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledCokernelModuleHom : CokernelOfModuleHomomorphismAdapter → B.Bool
+isFilledCokernelModuleHom : CokernelOfModuleHomomorphismAdapter → Core.Phase.Bool
 isFilledCokernelModuleHom a = CokernelOfModuleHomomorphismAdapter.status a
 
 -- Categorical view for CokernelOfModuleHomomorphism
@@ -2562,7 +2564,7 @@ record ModuleExactSequenceAdapter : Set₁ where
     decl : AM.ExactSequence R
     expRing : AR.RingDeclaration
     linkRing : AM.ExactSequence.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkModuleExactSequenceAdapter :
   (R : AR.RingDeclaration) →
@@ -2571,9 +2573,9 @@ mkModuleExactSequenceAdapter :
   (pr : AM.ExactSequence.ring d ≡ er) →
   ModuleExactSequenceAdapter
 mkModuleExactSequenceAdapter R d er pr =
-  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledModuleExactSequence : ModuleExactSequenceAdapter → B.Bool
+isFilledModuleExactSequence : ModuleExactSequenceAdapter → Core.Phase.Bool
 isFilledModuleExactSequence a = ModuleExactSequenceAdapter.status a
 
 -- Categorical view for Module ExactSequence
@@ -2590,7 +2592,7 @@ record ModuleShortExactSequenceAdapter : Set₁ where
     decl : AM.ShortExactSequence R
     expRing : AR.RingDeclaration
     linkRing : AM.ShortExactSequence.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkModuleShortExactSequenceAdapter :
   (R : AR.RingDeclaration) →
@@ -2599,9 +2601,9 @@ mkModuleShortExactSequenceAdapter :
   (pr : AM.ShortExactSequence.ring d ≡ er) →
   ModuleShortExactSequenceAdapter
 mkModuleShortExactSequenceAdapter R d er pr =
-  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledModuleShortExactSequence : ModuleShortExactSequenceAdapter → B.Bool
+isFilledModuleShortExactSequence : ModuleShortExactSequenceAdapter → Core.Phase.Bool
 isFilledModuleShortExactSequence a = ModuleShortExactSequenceAdapter.status a
 
 -- Categorical view for Module ShortExactSequence
@@ -2622,7 +2624,7 @@ record InseparableExtensionAdapter : Set₁ where
     decl : AFA.InseparableExtension F E
     expBase : AR.FieldDeclaration
     linkBase : AFA.InseparableExtension.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkInseparableExtensionAdapter :
   (F E : AR.FieldDeclaration) →
@@ -2631,9 +2633,9 @@ mkInseparableExtensionAdapter :
   (pb : AFA.InseparableExtension.baseField d ≡ eb) →
   InseparableExtensionAdapter
 mkInseparableExtensionAdapter F E d eb pb =
-  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledInseparableExtension : InseparableExtensionAdapter → B.Bool
+isFilledInseparableExtension : InseparableExtensionAdapter → Core.Phase.Bool
 isFilledInseparableExtension a = InseparableExtensionAdapter.status a
 
 -- Categorical view for InseparableExtension
@@ -2653,7 +2655,7 @@ record PurelyInseparableExtensionAdapter : Set₁ where
     decl : AFA.PurelyInseparableExtension F E
     expBase : AR.FieldDeclaration
     linkBase : AFA.PurelyInseparableExtension.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPurelyInseparableExtensionAdapter :
   (F E : AR.FieldDeclaration) →
@@ -2662,9 +2664,9 @@ mkPurelyInseparableExtensionAdapter :
   (pb : AFA.PurelyInseparableExtension.baseField d ≡ eb) →
   PurelyInseparableExtensionAdapter
 mkPurelyInseparableExtensionAdapter F E d eb pb =
-  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledPurelyInseparableExtension : PurelyInseparableExtensionAdapter → B.Bool
+isFilledPurelyInseparableExtension : PurelyInseparableExtensionAdapter → Core.Phase.Bool
 isFilledPurelyInseparableExtension a = PurelyInseparableExtensionAdapter.status a
 
 -- Categorical view for PurelyInseparableExtension
@@ -2684,7 +2686,7 @@ record PerfectFieldAdapter : Set₁ where
     decl : AFA.PerfectField F
     expBase : AR.FieldDeclaration
     linkBase : AFA.PerfectField.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPerfectFieldAdapter :
   (F : AR.FieldDeclaration) →
@@ -2693,9 +2695,9 @@ mkPerfectFieldAdapter :
   (pb : AFA.PerfectField.baseField d ≡ eb) →
   PerfectFieldAdapter
 mkPerfectFieldAdapter F d eb pb =
-  record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledPerfectField : PerfectFieldAdapter → B.Bool
+isFilledPerfectField : PerfectFieldAdapter → Core.Phase.Bool
 isFilledPerfectField a = PerfectFieldAdapter.status a
 
 -- Categorical view for PerfectField
@@ -2712,7 +2714,7 @@ record AlgebraicallyClosedFieldAdapter : Set₁ where
     decl : AFA.AlgebraicallyClosedField F
     expBase : AR.FieldDeclaration
     linkBase : AFA.AlgebraicallyClosedField.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAlgebraicallyClosedFieldAdapter :
   (F : AR.FieldDeclaration) →
@@ -2721,9 +2723,9 @@ mkAlgebraicallyClosedFieldAdapter :
   (pb : AFA.AlgebraicallyClosedField.baseField d ≡ eb) →
   AlgebraicallyClosedFieldAdapter
 mkAlgebraicallyClosedFieldAdapter F d eb pb =
-  record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledAlgebraicallyClosedField : AlgebraicallyClosedFieldAdapter → B.Bool
+isFilledAlgebraicallyClosedField : AlgebraicallyClosedFieldAdapter → Core.Phase.Bool
 isFilledAlgebraicallyClosedField a = AlgebraicallyClosedFieldAdapter.status a
 
 -- Categorical view for AlgebraicallyClosedField
@@ -2741,7 +2743,7 @@ record NormalClosureAdapter : Set₁ where
     decl : AFA.NormalClosure F E
     expNormal : AR.FieldDeclaration
     linkNormal : AFA.NormalClosure.normalClosure decl ≡ expNormal
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkNormalClosureAdapter :
   (F E : AR.FieldDeclaration) →
@@ -2750,9 +2752,9 @@ mkNormalClosureAdapter :
   (pn : AFA.NormalClosure.normalClosure d ≡ en) →
   NormalClosureAdapter
 mkNormalClosureAdapter F E d en pn =
-  record { F = F ; E = E ; decl = d ; expNormal = en ; linkNormal = pn ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expNormal = en ; linkNormal = pn ; status = true }
 
-isFilledNormalClosure : NormalClosureAdapter → B.Bool
+isFilledNormalClosure : NormalClosureAdapter → Core.Phase.Bool
 isFilledNormalClosure a = NormalClosureAdapter.status a
 
 -- Categorical view for NormalClosure
@@ -2770,7 +2772,7 @@ record GaloisClosureAdapter : Set₁ where
     decl : AFA.GaloisClosure F E
     expGalois : AR.FieldDeclaration
     linkGalois : AFA.GaloisClosure.galoisClosure decl ≡ expGalois
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkGaloisClosureAdapter :
   (F E : AR.FieldDeclaration) →
@@ -2779,9 +2781,9 @@ mkGaloisClosureAdapter :
   (pg : AFA.GaloisClosure.galoisClosure d ≡ eg) →
   GaloisClosureAdapter
 mkGaloisClosureAdapter F E d eg pg =
-  record { F = F ; E = E ; decl = d ; expGalois = eg ; linkGalois = pg ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expGalois = eg ; linkGalois = pg ; status = true }
 
-isFilledGaloisClosure : GaloisClosureAdapter → B.Bool
+isFilledGaloisClosure : GaloisClosureAdapter → Core.Phase.Bool
 isFilledGaloisClosure a = GaloisClosureAdapter.status a
 
 -- Categorical view for GaloisClosure
@@ -2799,7 +2801,7 @@ record FrobeniusEndomorphismAdapter : Set₁ where
     decl : AFA.FrobeniusEndomorphism F
     expBase : AR.FieldDeclaration
     linkBase : AFA.FrobeniusEndomorphism.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFrobeniusEndomorphismAdapter :
   (F : AR.FieldDeclaration) →
@@ -2808,9 +2810,9 @@ mkFrobeniusEndomorphismAdapter :
   (pb : AFA.FrobeniusEndomorphism.baseField d ≡ eb) →
   FrobeniusEndomorphismAdapter
 mkFrobeniusEndomorphismAdapter F d eb pb =
-  record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledFrobeniusEndomorphism : FrobeniusEndomorphismAdapter → B.Bool
+isFilledFrobeniusEndomorphism : FrobeniusEndomorphismAdapter → Core.Phase.Bool
 isFilledFrobeniusEndomorphism a = FrobeniusEndomorphismAdapter.status a
 
 -- Categorical view for FrobeniusEndomorphism
@@ -2827,7 +2829,7 @@ record RationalFunctionFieldAdapter : Set₁ where
     decl : AFA.RationalFunctionField K
     expFunctionField : AR.FieldDeclaration
     linkFunctionField : AFA.RationalFunctionField.functionField decl ≡ expFunctionField
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkRationalFunctionFieldAdapter :
   (K : AR.FieldDeclaration) →
@@ -2836,9 +2838,9 @@ mkRationalFunctionFieldAdapter :
   (pf : AFA.RationalFunctionField.functionField d ≡ eff) →
   RationalFunctionFieldAdapter
 mkRationalFunctionFieldAdapter K d eff pf =
-  record { K = K ; decl = d ; expFunctionField = eff ; linkFunctionField = pf ; status = B.true }
+  record { K = K ; decl = d ; expFunctionField = eff ; linkFunctionField = pf ; status = true }
 
-isFilledRationalFunctionField : RationalFunctionFieldAdapter → B.Bool
+isFilledRationalFunctionField : RationalFunctionFieldAdapter → Core.Phase.Bool
 isFilledRationalFunctionField a = RationalFunctionFieldAdapter.status a
 
 -- Categorical view for RationalFunctionField
@@ -2855,7 +2857,7 @@ record AlgebraicFunctionFieldAdapter : Set₁ where
     decl : AFA.AlgebraicFunctionField K
     expFunctionField : AR.FieldDeclaration
     linkFunctionField : AFA.AlgebraicFunctionField.functionField decl ≡ expFunctionField
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAlgebraicFunctionFieldAdapter :
   (K : AR.FieldDeclaration) →
@@ -2864,9 +2866,9 @@ mkAlgebraicFunctionFieldAdapter :
   (pf : AFA.AlgebraicFunctionField.functionField d ≡ eff) →
   AlgebraicFunctionFieldAdapter
 mkAlgebraicFunctionFieldAdapter K d eff pf =
-  record { K = K ; decl = d ; expFunctionField = eff ; linkFunctionField = pf ; status = B.true }
+  record { K = K ; decl = d ; expFunctionField = eff ; linkFunctionField = pf ; status = true }
 
-isFilledAlgebraicFunctionField : AlgebraicFunctionFieldAdapter → B.Bool
+isFilledAlgebraicFunctionField : AlgebraicFunctionFieldAdapter → Core.Phase.Bool
 isFilledAlgebraicFunctionField a = AlgebraicFunctionFieldAdapter.status a
 
 -- Categorical view for AlgebraicFunctionField
@@ -2887,7 +2889,7 @@ record SubfieldAdapter : Set₁ where
     decl : AFB.Subfield F
     expSubfield : AR.FieldDeclaration
     linkSubfield : AFB.Subfield.subfield decl ≡ expSubfield
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSubfieldAdapter :
   (F : AR.FieldDeclaration) →
@@ -2896,9 +2898,9 @@ mkSubfieldAdapter :
   (ps : AFB.Subfield.subfield d ≡ es) →
   SubfieldAdapter
 mkSubfieldAdapter F d es ps =
-  record { F = F ; decl = d ; expSubfield = es ; linkSubfield = ps ; status = B.true }
+  record { F = F ; decl = d ; expSubfield = es ; linkSubfield = ps ; status = true }
 
-isFilledSubfield : SubfieldAdapter → B.Bool
+isFilledSubfield : SubfieldAdapter → Core.Phase.Bool
 isFilledSubfield a = SubfieldAdapter.status a
 
 -- Categorical view for Subfield
@@ -2915,7 +2917,7 @@ record FieldExtensionAdapter : Set₁ where
     decl : AFB.FieldExtension F E
     expBase : AR.FieldDeclaration
     linkBase : AFB.FieldExtension.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFieldExtensionAdapter :
   (F E : AR.FieldDeclaration) →
@@ -2924,9 +2926,9 @@ mkFieldExtensionAdapter :
   (pb : AFB.FieldExtension.baseField d ≡ eb) →
   FieldExtensionAdapter
 mkFieldExtensionAdapter F E d eb pb =
-  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledFieldExtension : FieldExtensionAdapter → B.Bool
+isFilledFieldExtension : FieldExtensionAdapter → Core.Phase.Bool
 isFilledFieldExtension a = FieldExtensionAdapter.status a
 
 -- Categorical view for FieldExtension
@@ -2944,7 +2946,7 @@ record AlgebraicElementAdapter : Set₁ where
     decl : AFB.AlgebraicElement F E α
     expBase : AR.FieldDeclaration
     linkBase : AFB.AlgebraicElement.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAlgebraicElementAdapter :
   (F E : AR.FieldDeclaration) →
@@ -2954,9 +2956,9 @@ mkAlgebraicElementAdapter :
   (pb : AFB.AlgebraicElement.baseField d ≡ eb) →
   AlgebraicElementAdapter
 mkAlgebraicElementAdapter F E α d eb pb =
-  record { F = F ; E = E ; α = α ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; E = E ; α = α ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledAlgebraicElement : AlgebraicElementAdapter → B.Bool
+isFilledAlgebraicElement : AlgebraicElementAdapter → Core.Phase.Bool
 isFilledAlgebraicElement a = AlgebraicElementAdapter.status a
 
 -- Categorical view for AlgebraicElement
@@ -2978,7 +2980,7 @@ record AlgebraicExtensionAdapter : Set₁ where
     decl : AFB.AlgebraicExtension F E
     expBase : AR.FieldDeclaration
     linkBase : AFB.AlgebraicExtension.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAlgebraicExtensionAdapter :
   (F E : AR.FieldDeclaration) →
@@ -2987,9 +2989,9 @@ mkAlgebraicExtensionAdapter :
   (pb : AFB.AlgebraicExtension.baseField d ≡ eb) →
   AlgebraicExtensionAdapter
 mkAlgebraicExtensionAdapter F E d eb pb =
-  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledAlgebraicExtension : AlgebraicExtensionAdapter → B.Bool
+isFilledAlgebraicExtension : AlgebraicExtensionAdapter → Core.Phase.Bool
 isFilledAlgebraicExtension a = AlgebraicExtensionAdapter.status a
 
 -- Categorical view for AlgebraicExtension
@@ -3009,7 +3011,7 @@ record FieldAutomorphismAdapter : Set₁ where
     decl : AFB.FieldAutomorphism F E
     expBase : AR.FieldDeclaration
     linkBase : AFB.FieldAutomorphism.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFieldAutomorphismAdapter :
   (F E : AR.FieldDeclaration) →
@@ -3018,9 +3020,9 @@ mkFieldAutomorphismAdapter :
   (pb : AFB.FieldAutomorphism.baseField d ≡ eb) →
   FieldAutomorphismAdapter
 mkFieldAutomorphismAdapter F E d eb pb =
-  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledFieldAutomorphism : FieldAutomorphismAdapter → B.Bool
+isFilledFieldAutomorphism : FieldAutomorphismAdapter → Core.Phase.Bool
 isFilledFieldAutomorphism a = FieldAutomorphismAdapter.status a
 
 -- Categorical view for FieldAutomorphism
@@ -3040,7 +3042,7 @@ record GaloisGroupAdapter : Set₁ where
     decl : AFB.GaloisGroup F E
     expBase : AR.FieldDeclaration
     linkBase : AFB.GaloisGroup.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkGaloisGroupAdapter :
   (F E : AR.FieldDeclaration) →
@@ -3049,9 +3051,9 @@ mkGaloisGroupAdapter :
   (pb : AFB.GaloisGroup.baseField d ≡ eb) →
   GaloisGroupAdapter
 mkGaloisGroupAdapter F E d eb pb =
-  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledGaloisGroup : GaloisGroupAdapter → B.Bool
+isFilledGaloisGroup : GaloisGroupAdapter → Core.Phase.Bool
 isFilledGaloisGroup a = GaloisGroupAdapter.status a
 
 -- Categorical view for GaloisGroup
@@ -3071,7 +3073,7 @@ record GaloisExtensionAdapter : Set₁ where
     decl : AFB.GaloisExtension F E
     expBase : AR.FieldDeclaration
     linkBase : AFB.GaloisExtension.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkGaloisExtensionAdapter :
   (F E : AR.FieldDeclaration) →
@@ -3080,9 +3082,9 @@ mkGaloisExtensionAdapter :
   (pb : AFB.GaloisExtension.baseField d ≡ eb) →
   GaloisExtensionAdapter
 mkGaloisExtensionAdapter F E d eb pb =
-  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledGaloisExtension : GaloisExtensionAdapter → B.Bool
+isFilledGaloisExtension : GaloisExtensionAdapter → Core.Phase.Bool
 isFilledGaloisExtension a = GaloisExtensionAdapter.status a
 
 -- Categorical view for GaloisExtension
@@ -3102,7 +3104,7 @@ record NormalExtensionAdapter : Set₁ where
     decl : AFB.NormalExtension F E
     expBase : AR.FieldDeclaration
     linkBase : AFB.NormalExtension.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkNormalExtensionAdapter :
   (F E : AR.FieldDeclaration) →
@@ -3111,9 +3113,9 @@ mkNormalExtensionAdapter :
   (pb : AFB.NormalExtension.baseField d ≡ eb) →
   NormalExtensionAdapter
 mkNormalExtensionAdapter F E d eb pb =
-  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledNormalExtension : NormalExtensionAdapter → B.Bool
+isFilledNormalExtension : NormalExtensionAdapter → Core.Phase.Bool
 isFilledNormalExtension a = NormalExtensionAdapter.status a
 
 -- Categorical view for NormalExtension
@@ -3133,7 +3135,7 @@ record SeparableExtensionAdapter : Set₁ where
     decl : AFB.SeparableExtension F E
     expBase : AR.FieldDeclaration
     linkBase : AFB.SeparableExtension.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSeparableExtensionAdapter :
   (F E : AR.FieldDeclaration) →
@@ -3142,9 +3144,9 @@ mkSeparableExtensionAdapter :
   (pb : AFB.SeparableExtension.baseField d ≡ eb) →
   SeparableExtensionAdapter
 mkSeparableExtensionAdapter F E d eb pb =
-  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledSeparableExtension : SeparableExtensionAdapter → B.Bool
+isFilledSeparableExtension : SeparableExtensionAdapter → Core.Phase.Bool
 isFilledSeparableExtension a = SeparableExtensionAdapter.status a
 
 -- Categorical view for SeparableExtension
@@ -3165,7 +3167,7 @@ record SplittingFieldAdapter : Set₁ where
     decl : AFB.SplittingField F f
     expBase : AR.FieldDeclaration
     linkBase : AFB.SplittingField.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSplittingFieldAdapter :
   (F : AR.FieldDeclaration) →
@@ -3175,9 +3177,9 @@ mkSplittingFieldAdapter :
   (pb : AFB.SplittingField.baseField d ≡ eb) →
   SplittingFieldAdapter
 mkSplittingFieldAdapter F f d eb pb =
-  record { F = F ; f = f ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; f = f ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledSplittingField : SplittingFieldAdapter → B.Bool
+isFilledSplittingField : SplittingFieldAdapter → Core.Phase.Bool
 isFilledSplittingField a = SplittingFieldAdapter.status a
 
 -- Categorical view for SplittingField
@@ -3197,7 +3199,7 @@ record AlgebraicClosureAdapter : Set₁ where
     decl : AFB.AlgebraicClosure F
     expBase : AR.FieldDeclaration
     linkBase : AFB.AlgebraicClosure.baseField decl ≡ expBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAlgebraicClosureAdapter :
   (F : AR.FieldDeclaration) →
@@ -3206,9 +3208,9 @@ mkAlgebraicClosureAdapter :
   (pb : AFB.AlgebraicClosure.baseField d ≡ eb) →
   AlgebraicClosureAdapter
 mkAlgebraicClosureAdapter F d eb pb =
-  record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = B.true }
+  record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
-isFilledAlgebraicClosure : AlgebraicClosureAdapter → B.Bool
+isFilledAlgebraicClosure : AlgebraicClosureAdapter → Core.Phase.Bool
 isFilledAlgebraicClosure a = AlgebraicClosureAdapter.status a
 
 -- Categorical view for AlgebraicClosure
@@ -3230,7 +3232,7 @@ record IdealAdapter : Set₁ where
     decl : AR.Ideal R
     expRing : AR.RingDeclaration
     linkRing : AR.Ideal.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkIdealAdapter :
   (R : AR.RingDeclaration) →
@@ -3239,9 +3241,9 @@ mkIdealAdapter :
   (pr : AR.Ideal.ring d ≡ er) →
   IdealAdapter
 mkIdealAdapter R d er pr =
-  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledIdeal : IdealAdapter → B.Bool
+isFilledIdeal : IdealAdapter → Core.Phase.Bool
 isFilledIdeal a = IdealAdapter.status a
 
 -- Categorical view for Ideal
@@ -3258,7 +3260,7 @@ record PrimeIdealAdapter : Set₁ where
     decl : AR.PrimeIdeal R
     expRing : AR.CommutativeRingDeclaration
     linkRing : AR.PrimeIdeal.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPrimeIdealAdapter :
   (R : AR.CommutativeRingDeclaration) →
@@ -3267,9 +3269,9 @@ mkPrimeIdealAdapter :
   (pr : AR.PrimeIdeal.ring d ≡ er) →
   PrimeIdealAdapter
 mkPrimeIdealAdapter R d er pr =
-  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledPrimeIdeal : PrimeIdealAdapter → B.Bool
+isFilledPrimeIdeal : PrimeIdealAdapter → Core.Phase.Bool
 isFilledPrimeIdeal a = PrimeIdealAdapter.status a
 
 -- Categorical view for PrimeIdeal
@@ -3286,7 +3288,7 @@ record MaximalIdealAdapter : Set₁ where
     decl : AR.MaximalIdeal R
     expRing : AR.CommutativeRingDeclaration
     linkRing : AR.MaximalIdeal.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkMaximalIdealAdapter :
   (R : AR.CommutativeRingDeclaration) →
@@ -3295,9 +3297,9 @@ mkMaximalIdealAdapter :
   (pr : AR.MaximalIdeal.ring d ≡ er) →
   MaximalIdealAdapter
 mkMaximalIdealAdapter R d er pr =
-  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledMaximalIdeal : MaximalIdealAdapter → B.Bool
+isFilledMaximalIdeal : MaximalIdealAdapter → Core.Phase.Bool
 isFilledMaximalIdeal a = MaximalIdealAdapter.status a
 
 -- Categorical view for MaximalIdeal
@@ -3313,7 +3315,7 @@ record IntegralDomainAdapter : Set₁ where
     decl : AR.IntegralDomain
     expRing : AR.CommutativeRingDeclaration
     linkRing : AR.IntegralDomain.underlyingRing decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkIntegralDomainAdapter :
   (d : AR.IntegralDomain) →
@@ -3321,9 +3323,9 @@ mkIntegralDomainAdapter :
   (pr : AR.IntegralDomain.underlyingRing d ≡ er) →
   IntegralDomainAdapter
 mkIntegralDomainAdapter d er pr =
-  record { decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledIntegralDomain : IntegralDomainAdapter → B.Bool
+isFilledIntegralDomain : IntegralDomainAdapter → Core.Phase.Bool
 isFilledIntegralDomain a = IntegralDomainAdapter.status a
 
 -- Categorical view for IntegralDomain
@@ -3340,7 +3342,7 @@ record IrreducibleElementAdapter : Set₁ where
     decl : AR.IrreducibleElement R p
     expDomain : AR.IntegralDomain
     linkDomain : AR.IrreducibleElement.domain decl ≡ expDomain
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkIrreducibleElementAdapter :
   (R : AR.IntegralDomain) →
@@ -3350,9 +3352,9 @@ mkIrreducibleElementAdapter :
   (pd : AR.IrreducibleElement.domain d ≡ ed) →
   IrreducibleElementAdapter
 mkIrreducibleElementAdapter R p d ed pd =
-  record { R = R ; p = p ; decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+  record { R = R ; p = p ; decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
-isFilledIrreducibleElement : IrreducibleElementAdapter → B.Bool
+isFilledIrreducibleElement : IrreducibleElementAdapter → Core.Phase.Bool
 isFilledIrreducibleElement a = IrreducibleElementAdapter.status a
 
 -- Categorical view for IrreducibleElement
@@ -3373,7 +3375,7 @@ record PrimeElementAdapter : Set₁ where
     decl : AR.PrimeElement R p
     expDomain : AR.IntegralDomain
     linkDomain : AR.PrimeElement.domain decl ≡ expDomain
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPrimeElementAdapter :
   (R : AR.IntegralDomain) →
@@ -3383,9 +3385,9 @@ mkPrimeElementAdapter :
   (pd : AR.PrimeElement.domain d ≡ ed) →
   PrimeElementAdapter
 mkPrimeElementAdapter R p d ed pd =
-  record { R = R ; p = p ; decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+  record { R = R ; p = p ; decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
-isFilledPrimeElement : PrimeElementAdapter → B.Bool
+isFilledPrimeElement : PrimeElementAdapter → Core.Phase.Bool
 isFilledPrimeElement a = PrimeElementAdapter.status a
 
 -- Categorical view for PrimeElement
@@ -3404,7 +3406,7 @@ record UFDAdapter : Set₁ where
     decl : AR.UFD
     expDomain : AR.IntegralDomain
     linkDomain : AR.UFD.domain decl ≡ expDomain
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkUFDAdapter :
   (d : AR.UFD) →
@@ -3412,9 +3414,9 @@ mkUFDAdapter :
   (pd : AR.UFD.domain d ≡ ed) →
   UFDAdapter
 mkUFDAdapter d ed pd =
-  record { decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+  record { decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
-isFilledUFD : UFDAdapter → B.Bool
+isFilledUFD : UFDAdapter → Core.Phase.Bool
 isFilledUFD a = UFDAdapter.status a
 
 -- Categorical view for UFD
@@ -3427,7 +3429,7 @@ record PrincipalIdealDomainAdapter : Set₁ where
     decl : AR.PrincipalIdealDomain
     expDomain : AR.IntegralDomain
     linkDomain : AR.PrincipalIdealDomain.domain decl ≡ expDomain
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPrincipalIdealDomainAdapter :
   (d : AR.PrincipalIdealDomain) →
@@ -3435,9 +3437,9 @@ mkPrincipalIdealDomainAdapter :
   (pd : AR.PrincipalIdealDomain.domain d ≡ ed) →
   PrincipalIdealDomainAdapter
 mkPrincipalIdealDomainAdapter d ed pd =
-  record { decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+  record { decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
-isFilledPrincipalIdealDomain : PrincipalIdealDomainAdapter → B.Bool
+isFilledPrincipalIdealDomain : PrincipalIdealDomainAdapter → Core.Phase.Bool
 isFilledPrincipalIdealDomain a = PrincipalIdealDomainAdapter.status a
 
 -- Categorical view for PrincipalIdealDomain
@@ -3452,7 +3454,7 @@ record EuclideanDomainAdapter : Set₁ where
     decl : AR.EuclideanDomain
     expDomain : AR.IntegralDomain
     linkDomain : AR.EuclideanDomain.domain decl ≡ expDomain
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkEuclideanDomainAdapter :
   (d : AR.EuclideanDomain) →
@@ -3460,9 +3462,9 @@ mkEuclideanDomainAdapter :
   (pd : AR.EuclideanDomain.domain d ≡ ed) →
   EuclideanDomainAdapter
 mkEuclideanDomainAdapter d ed pd =
-  record { decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+  record { decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
-isFilledEuclideanDomain : EuclideanDomainAdapter → B.Bool
+isFilledEuclideanDomain : EuclideanDomainAdapter → Core.Phase.Bool
 isFilledEuclideanDomain a = EuclideanDomainAdapter.status a
 
 -- Categorical view for EuclideanDomain
@@ -3478,7 +3480,7 @@ record MultiplicativeSystemAdapter : Set₁ where
     decl : AR.MultiplicativeSystem R
     expRing : AR.CommutativeRingDeclaration
     linkRing : AR.MultiplicativeSystem.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkMultiplicativeSystemAdapter :
   (R : AR.CommutativeRingDeclaration) →
@@ -3487,9 +3489,9 @@ mkMultiplicativeSystemAdapter :
   (pr : AR.MultiplicativeSystem.ring d ≡ er) →
   MultiplicativeSystemAdapter
 mkMultiplicativeSystemAdapter R d er pr =
-  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledMultiplicativeSystem : MultiplicativeSystemAdapter → B.Bool
+isFilledMultiplicativeSystem : MultiplicativeSystemAdapter → Core.Phase.Bool
 isFilledMultiplicativeSystem a = MultiplicativeSystemAdapter.status a
 
 -- Categorical view for MultiplicativeSystem
@@ -3507,7 +3509,7 @@ record LocalizationAdapter : Set₁ where
     decl : AR.Localization R S
     expRing : AR.CommutativeRingDeclaration
     linkRing : AR.Localization.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkLocalizationAdapter :
   (R : AR.CommutativeRingDeclaration) →
@@ -3517,9 +3519,9 @@ mkLocalizationAdapter :
   (pr : AR.Localization.ring d ≡ er) →
   LocalizationAdapter
 mkLocalizationAdapter R S d er pr =
-  record { R = R ; S = S ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; S = S ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledLocalization : LocalizationAdapter → B.Bool
+isFilledLocalization : LocalizationAdapter → Core.Phase.Bool
 isFilledLocalization a = LocalizationAdapter.status a
 
 -- Categorical view for Localization
@@ -3537,7 +3539,7 @@ record FieldOfFractionsAdapter : Set₁ where
     decl : AR.FieldOfFractions R
     expDomain : AR.IntegralDomain
     linkDomain : AR.FieldOfFractions.domain decl ≡ expDomain
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFieldOfFractionsAdapter :
   (R : AR.IntegralDomain) →
@@ -3546,9 +3548,9 @@ mkFieldOfFractionsAdapter :
   (pd : AR.FieldOfFractions.domain d ≡ ed) →
   FieldOfFractionsAdapter
 mkFieldOfFractionsAdapter R d ed pd =
-  record { R = R ; decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+  record { R = R ; decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
-isFilledFieldOfFractions : FieldOfFractionsAdapter → B.Bool
+isFilledFieldOfFractions : FieldOfFractionsAdapter → Core.Phase.Bool
 isFilledFieldOfFractions a = FieldOfFractionsAdapter.status a
 
 -- Categorical view for FieldOfFractions
@@ -3565,7 +3567,7 @@ record PolynomialRingAdapter : Set₁ where
     decl : AR.PolynomialRing R
     expCoeffRing : AR.CommutativeRingDeclaration
     linkCoeffRing : AR.PolynomialRing.coefficientRing decl ≡ expCoeffRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPolynomialRingAdapter :
   (R : AR.CommutativeRingDeclaration) →
@@ -3574,9 +3576,9 @@ mkPolynomialRingAdapter :
   (pc : AR.PolynomialRing.coefficientRing d ≡ ec) →
   PolynomialRingAdapter
 mkPolynomialRingAdapter R d ec pc =
-  record { R = R ; decl = d ; expCoeffRing = ec ; linkCoeffRing = pc ; status = B.true }
+  record { R = R ; decl = d ; expCoeffRing = ec ; linkCoeffRing = pc ; status = true }
 
-isFilledPolynomialRing : PolynomialRingAdapter → B.Bool
+isFilledPolynomialRing : PolynomialRingAdapter → Core.Phase.Bool
 isFilledPolynomialRing a = PolynomialRingAdapter.status a
 
 -- Categorical view for PolynomialRing
@@ -3594,7 +3596,7 @@ record QuotientRingAdapter : Set₁ where
     decl : AR.QuotientRing R I
     expRing : AR.RingDeclaration
     linkRing : AR.QuotientRing.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkQuotientRingAdapter :
   (R : AR.RingDeclaration) →
@@ -3604,9 +3606,9 @@ mkQuotientRingAdapter :
   (pr : AR.QuotientRing.ring d ≡ er) →
   QuotientRingAdapter
 mkQuotientRingAdapter R I d er pr =
-  record { R = R ; I = I ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; I = I ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledQuotientRing : QuotientRingAdapter → B.Bool
+isFilledQuotientRing : QuotientRingAdapter → Core.Phase.Bool
 isFilledQuotientRing a = QuotientRingAdapter.status a
 
 -- Categorical view for QuotientRing
@@ -3628,7 +3630,7 @@ record ProductInGrpAdapter : Set₁ where
     decl : AGF.ProductInGrp G H
     expGroup1 : AFo.GroupDeclaration
     linkGroup1 : AGF.ProductInGrp.group1 decl ≡ expGroup1
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkProductInGrpAdapter :
   (G H : AFo.GroupDeclaration) →
@@ -3637,9 +3639,9 @@ mkProductInGrpAdapter :
   (pg : AGF.ProductInGrp.group1 d ≡ eg) →
   ProductInGrpAdapter
 mkProductInGrpAdapter G H d eg pg =
-  record { G = G ; H = H ; decl = d ; expGroup1 = eg ; linkGroup1 = pg ; status = B.true }
+  record { G = G ; H = H ; decl = d ; expGroup1 = eg ; linkGroup1 = pg ; status = true }
 
-isFilledProductInGrp : ProductInGrpAdapter → B.Bool
+isFilledProductInGrp : ProductInGrpAdapter → Core.Phase.Bool
 isFilledProductInGrp a = ProductInGrpAdapter.status a
 
 -- Categorical view for ProductInGrp
@@ -3656,7 +3658,7 @@ record CoproductInGrpAdapter : Set₁ where
     decl : AGF.CoproductInGrp G H
     expGroup1 : AFo.GroupDeclaration
     linkGroup1 : AGF.CoproductInGrp.group1 decl ≡ expGroup1
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCoproductInGrpAdapter :
   (G H : AFo.GroupDeclaration) →
@@ -3665,9 +3667,9 @@ mkCoproductInGrpAdapter :
   (pg : AGF.CoproductInGrp.group1 d ≡ eg) →
   CoproductInGrpAdapter
 mkCoproductInGrpAdapter G H d eg pg =
-  record { G = G ; H = H ; decl = d ; expGroup1 = eg ; linkGroup1 = pg ; status = B.true }
+  record { G = G ; H = H ; decl = d ; expGroup1 = eg ; linkGroup1 = pg ; status = true }
 
-isFilledCoproductInGrp : CoproductInGrpAdapter → B.Bool
+isFilledCoproductInGrp : CoproductInGrpAdapter → Core.Phase.Bool
 isFilledCoproductInGrp a = CoproductInGrpAdapter.status a
 
 -- Categorical view for CoproductInGrp
@@ -3684,7 +3686,7 @@ record FreeGroupObjectAdapter : Set₁ where
     decl : AGF.FreeGroupObject X
     expGenSet : M.Identifier
     linkGenSet : AGF.FreeGroupObject.generatingSet decl ≡ expGenSet
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFreeGroupObjectAdapter :
   (X : M.Identifier) →
@@ -3693,9 +3695,9 @@ mkFreeGroupObjectAdapter :
   (pg : AGF.FreeGroupObject.generatingSet d ≡ eg) →
   FreeGroupObjectAdapter
 mkFreeGroupObjectAdapter X d eg pg =
-  record { X = X ; decl = d ; expGenSet = eg ; linkGenSet = pg ; status = B.true }
+  record { X = X ; decl = d ; expGenSet = eg ; linkGenSet = pg ; status = true }
 
-isFilledFreeGroupObject : FreeGroupObjectAdapter → B.Bool
+isFilledFreeGroupObject : FreeGroupObjectAdapter → Core.Phase.Bool
 isFilledFreeGroupObject a = FreeGroupObjectAdapter.status a
 
 -- Categorical view for FreeGroupObject
@@ -3712,7 +3714,7 @@ record FreeGroupAdapter : Set₁ where
     decl : AGF.FreeGroup X
     expGenSet : M.Identifier
     linkGenSet : AGF.FreeGroup.generatingSet decl ≡ expGenSet
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFreeGroupAdapter :
   (X : M.Identifier) →
@@ -3721,9 +3723,9 @@ mkFreeGroupAdapter :
   (pg : AGF.FreeGroup.generatingSet d ≡ eg) →
   FreeGroupAdapter
 mkFreeGroupAdapter X d eg pg =
-  record { X = X ; decl = d ; expGenSet = eg ; linkGenSet = pg ; status = B.true }
+  record { X = X ; decl = d ; expGenSet = eg ; linkGenSet = pg ; status = true }
 
-isFilledFreeGroup : FreeGroupAdapter → B.Bool
+isFilledFreeGroup : FreeGroupAdapter → Core.Phase.Bool
 isFilledFreeGroup a = FreeGroupAdapter.status a
 
 -- Categorical view for FreeGroup
@@ -3739,7 +3741,7 @@ record GroupPresentationAdapter : Set₁ where
     decl : AGF.GroupPresentation
     expGenerators : M.Identifier
     linkGenerators : AGF.GroupPresentation.generators decl ≡ expGenerators
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkGroupPresentationAdapter :
   (d : AGF.GroupPresentation) →
@@ -3747,9 +3749,9 @@ mkGroupPresentationAdapter :
   (pg : AGF.GroupPresentation.generators d ≡ eg) →
   GroupPresentationAdapter
 mkGroupPresentationAdapter d eg pg =
-  record { decl = d ; expGenerators = eg ; linkGenerators = pg ; status = B.true }
+  record { decl = d ; expGenerators = eg ; linkGenerators = pg ; status = true }
 
-isFilledGroupPresentation : GroupPresentationAdapter → B.Bool
+isFilledGroupPresentation : GroupPresentationAdapter → Core.Phase.Bool
 isFilledGroupPresentation a = GroupPresentationAdapter.status a
 
 -- Categorical view for GroupPresentation
@@ -3765,7 +3767,7 @@ record AbelianizationAdapter : Set₁ where
     decl : AGF.Abelianization G
     expGroup : AFo.GroupDeclaration
     linkGroup : AGF.Abelianization.group decl ≡ expGroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAbelianizationAdapter :
   (G : AFo.GroupDeclaration) →
@@ -3774,9 +3776,9 @@ mkAbelianizationAdapter :
   (pg : AGF.Abelianization.group d ≡ eg) →
   AbelianizationAdapter
 mkAbelianizationAdapter G d eg pg =
-  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
-isFilledAbelianization : AbelianizationAdapter → B.Bool
+isFilledAbelianization : AbelianizationAdapter → Core.Phase.Bool
 isFilledAbelianization a = AbelianizationAdapter.status a
 
 -- Categorical view for Abelianization
@@ -3792,7 +3794,7 @@ record FinitelyGeneratedAbelianGroupAdapter : Set₁ where
     decl : AGF.FinitelyGeneratedAbelianGroup
     expGroup : AFo.AbelianGroupDeclaration
     linkGroup : AGF.FinitelyGeneratedAbelianGroup.underlyingGroup decl ≡ expGroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFinitelyGeneratedAbelianGroupAdapter :
   (d : AGF.FinitelyGeneratedAbelianGroup) →
@@ -3800,9 +3802,9 @@ mkFinitelyGeneratedAbelianGroupAdapter :
   (pg : AGF.FinitelyGeneratedAbelianGroup.underlyingGroup d ≡ eg) →
   FinitelyGeneratedAbelianGroupAdapter
 mkFinitelyGeneratedAbelianGroupAdapter d eg pg =
-  record { decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+  record { decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
-isFilledFinitelyGeneratedAbelianGroup : FinitelyGeneratedAbelianGroupAdapter → B.Bool
+isFilledFinitelyGeneratedAbelianGroup : FinitelyGeneratedAbelianGroupAdapter → Core.Phase.Bool
 isFilledFinitelyGeneratedAbelianGroup a = FinitelyGeneratedAbelianGroupAdapter.status a
 
 -- ==========================================================
@@ -3816,7 +3818,7 @@ record InvariantFactorDecompositionAdapter : Set₁ where
     decl : AGS.InvariantFactorDecomposition A
     expFreeRank : M.Identifier
     linkFreeRank : AGS.InvariantFactorDecomposition.freeRank decl ≡ expFreeRank
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkInvariantFactorDecompositionAdapter :
   (A : AGF.FinitelyGeneratedAbelianGroup) →
@@ -3825,9 +3827,9 @@ mkInvariantFactorDecompositionAdapter :
   (pf : AGS.InvariantFactorDecomposition.freeRank d ≡ ef) →
   InvariantFactorDecompositionAdapter
 mkInvariantFactorDecompositionAdapter A d ef pf =
-  record { A = A ; decl = d ; expFreeRank = ef ; linkFreeRank = pf ; status = B.true }
+  record { A = A ; decl = d ; expFreeRank = ef ; linkFreeRank = pf ; status = true }
 
-isFilledInvariantFactorDecomposition : InvariantFactorDecompositionAdapter → B.Bool
+isFilledInvariantFactorDecomposition : InvariantFactorDecompositionAdapter → Core.Phase.Bool
 isFilledInvariantFactorDecomposition a = InvariantFactorDecompositionAdapter.status a
 
 -- Categorical view for InvariantFactorDecomposition
@@ -3844,7 +3846,7 @@ record TorsionSubgroupAdapter : Set₁ where
     decl : AGS.TorsionSubgroup A
     expAbelianGroup : AFo.AbelianGroupDeclaration
     linkAbelianGroup : AGS.TorsionSubgroup.abelianGroup decl ≡ expAbelianGroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkTorsionSubgroupAdapter :
   (A : AFo.AbelianGroupDeclaration) →
@@ -3853,9 +3855,9 @@ mkTorsionSubgroupAdapter :
   (pa : AGS.TorsionSubgroup.abelianGroup d ≡ ea) →
   TorsionSubgroupAdapter
 mkTorsionSubgroupAdapter A d ea pa =
-  record { A = A ; decl = d ; expAbelianGroup = ea ; linkAbelianGroup = pa ; status = B.true }
+  record { A = A ; decl = d ; expAbelianGroup = ea ; linkAbelianGroup = pa ; status = true }
 
-isFilledTorsionSubgroup : TorsionSubgroupAdapter → B.Bool
+isFilledTorsionSubgroup : TorsionSubgroupAdapter → Core.Phase.Bool
 isFilledTorsionSubgroup a = TorsionSubgroupAdapter.status a
 
 -- Categorical view for TorsionSubgroup
@@ -3873,7 +3875,7 @@ record GroupActionAdapter : Set₁ where
     decl : AGS.GroupAction G X
     expGroup : AFo.GroupDeclaration
     linkGroup : AGS.GroupAction.group decl ≡ expGroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkGroupActionAdapter :
   (G : AFo.GroupDeclaration) →
@@ -3883,9 +3885,9 @@ mkGroupActionAdapter :
   (pg : AGS.GroupAction.group d ≡ eg) →
   GroupActionAdapter
 mkGroupActionAdapter G X d eg pg =
-  record { G = G ; X = X ; decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+  record { G = G ; X = X ; decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
-isFilledGroupAction : GroupActionAdapter → B.Bool
+isFilledGroupAction : GroupActionAdapter → Core.Phase.Bool
 isFilledGroupAction a = GroupActionAdapter.status a
 
 -- Categorical view for GroupAction
@@ -3906,7 +3908,7 @@ record OrbitAdapter : Set₁ where
     decl : AGS.Orbit G X act x
     expGroupAction : AGS.GroupAction G X
     linkGroupAction : AGS.Orbit.groupAction decl ≡ expGroupAction
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkOrbitAdapter :
   (G : AFo.GroupDeclaration) →
@@ -3918,9 +3920,9 @@ mkOrbitAdapter :
   (pa : AGS.Orbit.groupAction d ≡ ea) →
   OrbitAdapter
 mkOrbitAdapter G X act x d ea pa =
-  record { G = G ; X = X ; act = act ; x = x ; decl = d ; expGroupAction = ea ; linkGroupAction = pa ; status = B.true }
+  record { G = G ; X = X ; act = act ; x = x ; decl = d ; expGroupAction = ea ; linkGroupAction = pa ; status = true }
 
-isFilledOrbit : OrbitAdapter → B.Bool
+isFilledOrbit : OrbitAdapter → Core.Phase.Bool
 isFilledOrbit a = OrbitAdapter.status a
 
 -- Categorical view for Orbit
@@ -3941,7 +3943,7 @@ record StabilizerAdapter : Set₁ where
     decl : AGS.Stabilizer G X act x
     expGroupAction : AGS.GroupAction G X
     linkGroupAction : AGS.Stabilizer.groupAction decl ≡ expGroupAction
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkStabilizerAdapter :
   (G : AFo.GroupDeclaration) →
@@ -3953,9 +3955,9 @@ mkStabilizerAdapter :
   (pa : AGS.Stabilizer.groupAction d ≡ ea) →
   StabilizerAdapter
 mkStabilizerAdapter G X act x d ea pa =
-  record { G = G ; X = X ; act = act ; x = x ; decl = d ; expGroupAction = ea ; linkGroupAction = pa ; status = B.true }
+  record { G = G ; X = X ; act = act ; x = x ; decl = d ; expGroupAction = ea ; linkGroupAction = pa ; status = true }
 
-isFilledStabilizer : StabilizerAdapter → B.Bool
+isFilledStabilizer : StabilizerAdapter → Core.Phase.Bool
 isFilledStabilizer a = StabilizerAdapter.status a
 
 -- Categorical view for Stabilizer
@@ -3974,7 +3976,7 @@ record PGroupAdapter : Set₁ where
     decl : AGS.PGroup p G
     expPrime : M.Identifier
     linkPrime : AGS.PGroup.prime decl ≡ expPrime
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPGroupAdapter :
   (p : M.Identifier) →
@@ -3984,9 +3986,9 @@ mkPGroupAdapter :
   (pp : AGS.PGroup.prime d ≡ ep) →
   PGroupAdapter
 mkPGroupAdapter p G d ep pp =
-  record { p = p ; G = G ; decl = d ; expPrime = ep ; linkPrime = pp ; status = B.true }
+  record { p = p ; G = G ; decl = d ; expPrime = ep ; linkPrime = pp ; status = true }
 
-isFilledPGroup : PGroupAdapter → B.Bool
+isFilledPGroup : PGroupAdapter → Core.Phase.Bool
 isFilledPGroup a = PGroupAdapter.status a
 
 -- Categorical view for PGroup
@@ -4004,7 +4006,7 @@ record SylowPSubgroupAdapter : Set₁ where
     decl : AGS.SylowPSubgroup p G
     expPrime : M.Identifier
     linkPrime : AGS.SylowPSubgroup.prime decl ≡ expPrime
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSylowPSubgroupAdapter :
   (p : M.Identifier) →
@@ -4014,9 +4016,9 @@ mkSylowPSubgroupAdapter :
   (pp : AGS.SylowPSubgroup.prime d ≡ ep) →
   SylowPSubgroupAdapter
 mkSylowPSubgroupAdapter p G d ep pp =
-  record { p = p ; G = G ; decl = d ; expPrime = ep ; linkPrime = pp ; status = B.true }
+  record { p = p ; G = G ; decl = d ; expPrime = ep ; linkPrime = pp ; status = true }
 
-isFilledSylowPSubgroup : SylowPSubgroupAdapter → B.Bool
+isFilledSylowPSubgroup : SylowPSubgroupAdapter → Core.Phase.Bool
 isFilledSylowPSubgroup a = SylowPSubgroupAdapter.status a
 
 -- Categorical view for SylowPSubgroup
@@ -4033,7 +4035,7 @@ record SimpleGroupAdapter : Set₁ where
     decl : AGS.SimpleGroup G
     expGroup : AFo.GroupDeclaration
     linkGroup : AGS.SimpleGroup.group decl ≡ expGroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSimpleGroupAdapter :
   (G : AFo.GroupDeclaration) →
@@ -4042,9 +4044,9 @@ mkSimpleGroupAdapter :
   (pg : AGS.SimpleGroup.group d ≡ eg) →
   SimpleGroupAdapter
 mkSimpleGroupAdapter G d eg pg =
-  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
-isFilledSimpleGroup : SimpleGroupAdapter → B.Bool
+isFilledSimpleGroup : SimpleGroupAdapter → Core.Phase.Bool
 isFilledSimpleGroup a = SimpleGroupAdapter.status a
 
 -- Categorical view for SimpleGroup
@@ -4061,7 +4063,7 @@ record CompositionSeriesAdapter : Set₁ where
     decl : AGS.CompositionSeries G
     expGroup : AFo.GroupDeclaration
     linkGroup : AGS.CompositionSeries.group decl ≡ expGroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCompositionSeriesAdapter :
   (G : AFo.GroupDeclaration) →
@@ -4070,9 +4072,9 @@ mkCompositionSeriesAdapter :
   (pg : AGS.CompositionSeries.group d ≡ eg) →
   CompositionSeriesAdapter
 mkCompositionSeriesAdapter G d eg pg =
-  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
-isFilledCompositionSeries : CompositionSeriesAdapter → B.Bool
+isFilledCompositionSeries : CompositionSeriesAdapter → Core.Phase.Bool
 isFilledCompositionSeries a = CompositionSeriesAdapter.status a
 
 -- Categorical view for CompositionSeries
@@ -4089,7 +4091,7 @@ record SolvableGroupAdapter : Set₁ where
     decl : AGS.SolvableGroup G
     expGroup : AFo.GroupDeclaration
     linkGroup : AGS.SolvableGroup.group decl ≡ expGroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSolvableGroupAdapter :
   (G : AFo.GroupDeclaration) →
@@ -4098,9 +4100,9 @@ mkSolvableGroupAdapter :
   (pg : AGS.SolvableGroup.group d ≡ eg) →
   SolvableGroupAdapter
 mkSolvableGroupAdapter G d eg pg =
-  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
-isFilledSolvableGroup : SolvableGroupAdapter → B.Bool
+isFilledSolvableGroup : SolvableGroupAdapter → Core.Phase.Bool
 isFilledSolvableGroup a = SolvableGroupAdapter.status a
 
 -- Categorical view for SolvableGroup
@@ -4117,7 +4119,7 @@ record NilpotentGroupAdapter : Set₁ where
     decl : AGS.NilpotentGroup G
     expGroup : AFo.GroupDeclaration
     linkGroup : AGS.NilpotentGroup.group decl ≡ expGroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkNilpotentGroupAdapter :
   (G : AFo.GroupDeclaration) →
@@ -4126,9 +4128,9 @@ mkNilpotentGroupAdapter :
   (pg : AGS.NilpotentGroup.group d ≡ eg) →
   NilpotentGroupAdapter
 mkNilpotentGroupAdapter G d eg pg =
-  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = B.true }
+  record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
-isFilledNilpotentGroup : NilpotentGroupAdapter → B.Bool
+isFilledNilpotentGroup : NilpotentGroupAdapter → Core.Phase.Bool
 isFilledNilpotentGroup a = NilpotentGroupAdapter.status a
 
 -- Categorical view for NilpotentGroup
@@ -4149,7 +4151,7 @@ record FreeAbelianGroupAdapter : Set₁ where
     decl : AGA.FreeAbelianGroup X
     expUnderlyingSet : M.Identifier
     linkUnderlyingSet : AGA.FreeAbelianGroup.underlyingSet decl ≡ expUnderlyingSet
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFreeAbelianGroupAdapter :
   (X : M.Identifier) →
@@ -4158,9 +4160,9 @@ mkFreeAbelianGroupAdapter :
   (pu : AGA.FreeAbelianGroup.underlyingSet d ≡ eu) →
   FreeAbelianGroupAdapter
 mkFreeAbelianGroupAdapter X d eu pu =
-  record { X = X ; decl = d ; expUnderlyingSet = eu ; linkUnderlyingSet = pu ; status = B.true }
+  record { X = X ; decl = d ; expUnderlyingSet = eu ; linkUnderlyingSet = pu ; status = true }
 
-isFilledFreeAbelianGroup : FreeAbelianGroupAdapter → B.Bool
+isFilledFreeAbelianGroup : FreeAbelianGroupAdapter → Core.Phase.Bool
 isFilledFreeAbelianGroup a = FreeAbelianGroupAdapter.status a
 
 -- Categorical view for FreeAbelianGroup
@@ -4176,7 +4178,7 @@ record FreeForgetfulAdjunctionAbAdapter : Set₁ where
     decl : AGA.FreeForgetfulAdjunctionAb
     expFreeFunctor : M.Identifier
     linkFreeFunctor : AGA.FreeForgetfulAdjunctionAb.freeFunctor decl ≡ expFreeFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFreeForgetfulAdjunctionAbAdapter :
   (d : AGA.FreeForgetfulAdjunctionAb) →
@@ -4184,9 +4186,9 @@ mkFreeForgetfulAdjunctionAbAdapter :
   (pf : AGA.FreeForgetfulAdjunctionAb.freeFunctor d ≡ ef) →
   FreeForgetfulAdjunctionAbAdapter
 mkFreeForgetfulAdjunctionAbAdapter d ef pf =
-  record { decl = d ; expFreeFunctor = ef ; linkFreeFunctor = pf ; status = B.true }
+  record { decl = d ; expFreeFunctor = ef ; linkFreeFunctor = pf ; status = true }
 
-isFilledFreeForgetfulAdjunctionAb : FreeForgetfulAdjunctionAbAdapter → B.Bool
+isFilledFreeForgetfulAdjunctionAb : FreeForgetfulAdjunctionAbAdapter → Core.Phase.Bool
 isFilledFreeForgetfulAdjunctionAb a = FreeForgetfulAdjunctionAbAdapter.status a
 
 -- Categorical view for FreeForgetfulAdjunctionAb
@@ -4202,7 +4204,7 @@ record GrothendieckGroupAdapter : Set₁ where
     decl : AGA.GrothendieckGroup M
     expUnderlyingSet : M.Identifier
     linkUnderlyingSet : AGA.GrothendieckGroup.underlyingSet decl ≡ expUnderlyingSet
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkGrothendieckGroupAdapter :
   (M : AFo.MonoidDeclaration) →
@@ -4211,9 +4213,9 @@ mkGrothendieckGroupAdapter :
   (pu : AGA.GrothendieckGroup.underlyingSet d ≡ eu) →
   GrothendieckGroupAdapter
 mkGrothendieckGroupAdapter M d eu pu =
-  record { M = M ; decl = d ; expUnderlyingSet = eu ; linkUnderlyingSet = pu ; status = B.true }
+  record { M = M ; decl = d ; expUnderlyingSet = eu ; linkUnderlyingSet = pu ; status = true }
 
-isFilledGrothendieckGroup : GrothendieckGroupAdapter → B.Bool
+isFilledGrothendieckGroup : GrothendieckGroupAdapter → Core.Phase.Bool
 isFilledGrothendieckGroup a = GrothendieckGroupAdapter.status a
 
 -- Categorical view for GrothendieckGroup
@@ -4231,7 +4233,7 @@ record TensorProductAbAdapter : Set₁ where
     decl : AGA.TensorProductAb A B
     expTensorProduct : AFo.AbelianGroupDeclaration
     linkTensorProduct : AGA.TensorProductAb.tensorProduct decl ≡ expTensorProduct
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkTensorProductAbAdapter :
   (A B : AFo.AbelianGroupDeclaration) →
@@ -4240,9 +4242,9 @@ mkTensorProductAbAdapter :
   (pt : AGA.TensorProductAb.tensorProduct d ≡ et) →
   TensorProductAbAdapter
 mkTensorProductAbAdapter A B d et pt =
-  record { A = A ; B = B ; decl = d ; expTensorProduct = et ; linkTensorProduct = pt ; status = B.true }
+  record { A = A ; B = B ; decl = d ; expTensorProduct = et ; linkTensorProduct = pt ; status = true }
 
-isFilledTensorProductAb : TensorProductAbAdapter → B.Bool
+isFilledTensorProductAb : TensorProductAbAdapter → Core.Phase.Bool
 isFilledTensorProductAb a = TensorProductAbAdapter.status a
 
 -- Categorical view for TensorProductAb
@@ -4252,7 +4254,6 @@ tensorProductAbCategorical adapt =
   mkCategoricalAdapter (AGA.TensorProductAb (TensorProductAbAdapter.A adapt) (TensorProductAbAdapter.B adapt))
     (λ _ → TensorProductAbAdapter.decl adapt)
 
-
 -- Basis of vector space
 record BasisOfVectorSpaceAdapter : Set₁ where
   field
@@ -4261,7 +4262,7 @@ record BasisOfVectorSpaceAdapter : Set₁ where
     decl : AM.BasisOfVectorSpace F V
     expBasisSet : M.Identifier
     linkBasisSet : AM.BasisOfVectorSpace.basisSet decl ≡ expBasisSet
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkBasisOfVectorSpaceAdapter :
   (F : AR.FieldDeclaration) →
@@ -4271,9 +4272,9 @@ mkBasisOfVectorSpaceAdapter :
   (pb : AM.BasisOfVectorSpace.basisSet d ≡ eb) →
   BasisOfVectorSpaceAdapter
 mkBasisOfVectorSpaceAdapter F V d eb pb =
-  record { F = F ; V = V ; decl = d ; expBasisSet = eb ; linkBasisSet = pb ; status = B.true }
+  record { F = F ; V = V ; decl = d ; expBasisSet = eb ; linkBasisSet = pb ; status = true }
 
-isFilledBasisOfVectorSpace : BasisOfVectorSpaceAdapter → B.Bool
+isFilledBasisOfVectorSpace : BasisOfVectorSpaceAdapter → Core.Phase.Bool
 isFilledBasisOfVectorSpace a = BasisOfVectorSpaceAdapter.status a
 
 -- Categorical view for BasisOfVectorSpace
@@ -4294,7 +4295,7 @@ record DimensionAdapter : Set₁ where
     decl : AM.Dimension F V
     expDimensionValue : M.Identifier
     linkDimensionValue : AM.Dimension.dimension decl ≡ expDimensionValue
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkDimensionAdapter :
   (F : AR.FieldDeclaration) →
@@ -4304,9 +4305,9 @@ mkDimensionAdapter :
   (pdv : AM.Dimension.dimension d ≡ edv) →
   DimensionAdapter
 mkDimensionAdapter F V d edv pdv =
-  record { F = F ; V = V ; decl = d ; expDimensionValue = edv ; linkDimensionValue = pdv ; status = B.true }
+  record { F = F ; V = V ; decl = d ; expDimensionValue = edv ; linkDimensionValue = pdv ; status = true }
 
-isFilledDimension : DimensionAdapter → B.Bool
+isFilledDimension : DimensionAdapter → Core.Phase.Bool
 isFilledDimension a = DimensionAdapter.status a
 
 -- Categorical view for Dimension
@@ -4327,7 +4328,7 @@ record MultivariatePolynomialRingAdapter : Set₁ where
     decl : AR.MultivariatePolynomialRing R n
     expRing : AR.CommutativeRingDeclaration
     linkRing : AR.MultivariatePolynomialRing.polynomialRing decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkMultivariatePolynomialRingAdapter :
   (R : AR.CommutativeRingDeclaration) →
@@ -4337,9 +4338,9 @@ mkMultivariatePolynomialRingAdapter :
   (pr : AR.MultivariatePolynomialRing.polynomialRing d ≡ er) →
   MultivariatePolynomialRingAdapter
 mkMultivariatePolynomialRingAdapter R n d er pr =
-  record { R = R ; n = n ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; n = n ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledMultivariatePolynomialRing : MultivariatePolynomialRingAdapter → B.Bool
+isFilledMultivariatePolynomialRing : MultivariatePolynomialRingAdapter → Core.Phase.Bool
 isFilledMultivariatePolynomialRing a = MultivariatePolynomialRingAdapter.status a
 
 -- Categorical view for MultivariatePolynomialRing
@@ -4349,7 +4350,6 @@ multivariatePolynomialRingCategorical adapt =
   mkCategoricalAdapter (AR.MultivariatePolynomialRing (MultivariatePolynomialRingAdapter.R adapt) (MultivariatePolynomialRingAdapter.n adapt))
     (λ _ → MultivariatePolynomialRingAdapter.decl adapt)
 
-
 -- Content of polynomial
 record ContentOfPolynomialAdapter : Set₁ where
   field
@@ -4358,7 +4358,7 @@ record ContentOfPolynomialAdapter : Set₁ where
     decl : AR.ContentOfPolynomial R f
     expContent : M.Identifier
     linkContent : AR.ContentOfPolynomial.content decl ≡ expContent
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkContentOfPolynomialAdapter :
   (R : AR.UFD) →
@@ -4368,9 +4368,9 @@ mkContentOfPolynomialAdapter :
   (pc : AR.ContentOfPolynomial.content d ≡ ec) →
   ContentOfPolynomialAdapter
 mkContentOfPolynomialAdapter R f d ec pc =
-  record { R = R ; f = f ; decl = d ; expContent = ec ; linkContent = pc ; status = B.true }
+  record { R = R ; f = f ; decl = d ; expContent = ec ; linkContent = pc ; status = true }
 
-isFilledContentOfPolynomial : ContentOfPolynomialAdapter → B.Bool
+isFilledContentOfPolynomial : ContentOfPolynomialAdapter → Core.Phase.Bool
 isFilledContentOfPolynomial a = ContentOfPolynomialAdapter.status a
 
 -- Categorical view for ContentOfPolynomial
@@ -4380,7 +4380,6 @@ contentOfPolynomialCategorical adapt =
   mkCategoricalAdapter (AR.ContentOfPolynomial (ContentOfPolynomialAdapter.R adapt) (ContentOfPolynomialAdapter.f adapt))
     (λ _ → ContentOfPolynomialAdapter.decl adapt)
 
-
 -- Primitive polynomial
 record PrimitivePolynomialAdapter : Set₁ where
   field
@@ -4389,7 +4388,7 @@ record PrimitivePolynomialAdapter : Set₁ where
     decl : AR.PrimitivePolynomial R f
     expUFD : AR.UFD
     linkUFD : AR.PrimitivePolynomial.ufd decl ≡ expUFD
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPrimitivePolynomialAdapter :
   (R : AR.UFD) →
@@ -4399,9 +4398,9 @@ mkPrimitivePolynomialAdapter :
   (pu : AR.PrimitivePolynomial.ufd d ≡ eu) →
   PrimitivePolynomialAdapter
 mkPrimitivePolynomialAdapter R f d eu pu =
-  record { R = R ; f = f ; decl = d ; expUFD = eu ; linkUFD = pu ; status = B.true }
+  record { R = R ; f = f ; decl = d ; expUFD = eu ; linkUFD = pu ; status = true }
 
-isFilledPrimitivePolynomial : PrimitivePolynomialAdapter → B.Bool
+isFilledPrimitivePolynomial : PrimitivePolynomialAdapter → Core.Phase.Bool
 isFilledPrimitivePolynomial a = PrimitivePolynomialAdapter.status a
 
 -- Categorical view for PrimitivePolynomial
@@ -4411,7 +4410,6 @@ primitivePolynomialCategorical adapt =
   mkCategoricalAdapter (AR.PrimitivePolynomial (PrimitivePolynomialAdapter.R adapt) (PrimitivePolynomialAdapter.f adapt))
     (λ _ → PrimitivePolynomialAdapter.decl adapt)
 
-
 -- Prime spectrum
 record PrimeSpectrumAdapter : Set₁ where
   field
@@ -4419,7 +4417,7 @@ record PrimeSpectrumAdapter : Set₁ where
     decl : AR.PrimeSpectrum R
     expTopologicalSpace : M.Identifier
     linkTopologicalSpace : AR.PrimeSpectrum.topology decl ≡ expTopologicalSpace
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPrimeSpectrumAdapter :
   (R : AR.CommutativeRingDeclaration) →
@@ -4428,9 +4426,9 @@ mkPrimeSpectrumAdapter :
   (pts : AR.PrimeSpectrum.topology d ≡ ets) →
   PrimeSpectrumAdapter
 mkPrimeSpectrumAdapter R d ets pts =
-  record { R = R ; decl = d ; expTopologicalSpace = ets ; linkTopologicalSpace = pts ; status = B.true }
+  record { R = R ; decl = d ; expTopologicalSpace = ets ; linkTopologicalSpace = pts ; status = true }
 
-isFilledPrimeSpectrum : PrimeSpectrumAdapter → B.Bool
+isFilledPrimeSpectrum : PrimeSpectrumAdapter → Core.Phase.Bool
 isFilledPrimeSpectrum a = PrimeSpectrumAdapter.status a
 
 -- Categorical view for PrimeSpectrum
@@ -4440,7 +4438,6 @@ primeSpectrumCategorical adapt =
   mkCategoricalAdapter (AR.PrimeSpectrum (PrimeSpectrumAdapter.R adapt))
     (λ _ → PrimeSpectrumAdapter.decl adapt)
 
-
 -- Projective module
 record ProjectiveModuleAdapter : Set₁ where
   field
@@ -4449,7 +4446,7 @@ record ProjectiveModuleAdapter : Set₁ where
     decl : AM.ProjectiveModule R P
     expRing : AR.RingDeclaration
     linkRing : AM.ProjectiveModule.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkProjectiveModuleAdapter :
   (R : AR.RingDeclaration) →
@@ -4459,9 +4456,9 @@ mkProjectiveModuleAdapter :
   (pr : AM.ProjectiveModule.ring d ≡ er) →
   ProjectiveModuleAdapter
 mkProjectiveModuleAdapter R P d er pr =
-  record { R = R ; P = P ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; P = P ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledProjectiveModule : ProjectiveModuleAdapter → B.Bool
+isFilledProjectiveModule : ProjectiveModuleAdapter → Core.Phase.Bool
 isFilledProjectiveModule a = ProjectiveModuleAdapter.status a
 
 -- Injective module
@@ -4472,7 +4469,7 @@ record InjectiveModuleAdapter : Set₁ where
     decl : AM.InjectiveModule R I
     expRing : AR.RingDeclaration
     linkRing : AM.InjectiveModule.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkInjectiveModuleAdapter :
   (R : AR.RingDeclaration) →
@@ -4482,9 +4479,9 @@ mkInjectiveModuleAdapter :
   (pr : AM.InjectiveModule.ring d ≡ er) →
   InjectiveModuleAdapter
 mkInjectiveModuleAdapter R I d er pr =
-  record { R = R ; I = I ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; I = I ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledInjectiveModule : InjectiveModuleAdapter → B.Bool
+isFilledInjectiveModule : InjectiveModuleAdapter → Core.Phase.Bool
 isFilledInjectiveModule a = InjectiveModuleAdapter.status a
 
 -- Torsion element
@@ -4496,7 +4493,7 @@ record TorsionElementAdapter : Set₁ where
     decl : AM.TorsionElement R M m
     expDomain : AR.IntegralDomain
     linkDomain : AM.TorsionElement.domain decl ≡ expDomain
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkTorsionElementAdapter :
   (R : AR.IntegralDomain) →
@@ -4507,9 +4504,9 @@ mkTorsionElementAdapter :
   (pd : AM.TorsionElement.domain d ≡ ed) →
   TorsionElementAdapter
 mkTorsionElementAdapter R M m d ed pd =
-  record { R = R ; M = M ; m = m ; decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+  record { R = R ; M = M ; m = m ; decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
-isFilledTorsionElement : TorsionElementAdapter → B.Bool
+isFilledTorsionElement : TorsionElementAdapter → Core.Phase.Bool
 isFilledTorsionElement a = TorsionElementAdapter.status a
 
 -- Torsion submodule
@@ -4520,7 +4517,7 @@ record TorsionSubmoduleAdapter : Set₁ where
     decl : AM.TorsionSubmodule R M
     expDomain : AR.IntegralDomain
     linkDomain : AM.TorsionSubmodule.domain decl ≡ expDomain
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkTorsionSubmoduleAdapter :
   (R : AR.IntegralDomain) →
@@ -4530,9 +4527,9 @@ mkTorsionSubmoduleAdapter :
   (pd : AM.TorsionSubmodule.domain d ≡ ed) →
   TorsionSubmoduleAdapter
 mkTorsionSubmoduleAdapter R M d ed pd =
-  record { R = R ; M = M ; decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+  record { R = R ; M = M ; decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
-isFilledTorsionSubmodule : TorsionSubmoduleAdapter → B.Bool
+isFilledTorsionSubmodule : TorsionSubmoduleAdapter → Core.Phase.Bool
 isFilledTorsionSubmodule a = TorsionSubmoduleAdapter.status a
 
 -- Torsion-free module
@@ -4543,7 +4540,7 @@ record TorsionFreeModuleAdapter : Set₁ where
     decl : AM.TorsionFreeModule R M
     expDomain : AR.IntegralDomain
     linkDomain : AM.TorsionFreeModule.domain decl ≡ expDomain
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkTorsionFreeModuleAdapter :
   (R : AR.IntegralDomain) →
@@ -4553,9 +4550,9 @@ mkTorsionFreeModuleAdapter :
   (pd : AM.TorsionFreeModule.domain d ≡ ed) →
   TorsionFreeModuleAdapter
 mkTorsionFreeModuleAdapter R M d ed pd =
-  record { R = R ; M = M ; decl = d ; expDomain = ed ; linkDomain = pd ; status = B.true }
+  record { R = R ; M = M ; decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
-isFilledTorsionFreeModule : TorsionFreeModuleAdapter → B.Bool
+isFilledTorsionFreeModule : TorsionFreeModuleAdapter → Core.Phase.Bool
 isFilledTorsionFreeModule a = TorsionFreeModuleAdapter.status a
 
 -- Structure theorem for finitely generated modules over PID
@@ -4566,7 +4563,7 @@ record StructureTheoremPIDAdapter : Set₁ where
     decl : AM.StructureTheoremPID R M
     expPID : AR.PrincipalIdealDomain
     linkPID : AM.StructureTheoremPID.pid decl ≡ expPID
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkStructureTheoremPIDAdapter :
   (R : AR.PrincipalIdealDomain) →
@@ -4576,9 +4573,9 @@ mkStructureTheoremPIDAdapter :
   (pp : AM.StructureTheoremPID.pid d ≡ ep) →
   StructureTheoremPIDAdapter
 mkStructureTheoremPIDAdapter R M d ep pp =
-  record { R = R ; M = M ; decl = d ; expPID = ep ; linkPID = pp ; status = B.true }
+  record { R = R ; M = M ; decl = d ; expPID = ep ; linkPID = pp ; status = true }
 
-isFilledStructureTheoremPID : StructureTheoremPIDAdapter → B.Bool
+isFilledStructureTheoremPID : StructureTheoremPIDAdapter → Core.Phase.Bool
 isFilledStructureTheoremPID a = StructureTheoremPIDAdapter.status a
 
 projectiveModuleCategorical : (adapt : ProjectiveModuleAdapter) →
@@ -4625,7 +4622,7 @@ record HomFunctorAdapter : Set₁ where
     decl : AM.HomFunctor R M
     expRing : AR.RingDeclaration
     linkRing : AM.HomFunctor.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkHomFunctorAdapter :
   (R : AR.RingDeclaration) →
@@ -4635,9 +4632,9 @@ mkHomFunctorAdapter :
   (pr : AM.HomFunctor.ring d ≡ er) →
   HomFunctorAdapter
 mkHomFunctorAdapter R M d er pr =
-  record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledHomFunctor : HomFunctorAdapter → B.Bool
+isFilledHomFunctor : HomFunctorAdapter → Core.Phase.Bool
 isFilledHomFunctor a = HomFunctorAdapter.status a
 
 -- Dual module
@@ -4648,7 +4645,7 @@ record DualModuleAdapter : Set₁ where
     decl : AM.DualModule R M
     expRing : AR.RingDeclaration
     linkRing : AM.DualModule.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkDualModuleAdapter :
   (R : AR.RingDeclaration) →
@@ -4658,9 +4655,9 @@ mkDualModuleAdapter :
   (pr : AM.DualModule.ring d ≡ er) →
   DualModuleAdapter
 mkDualModuleAdapter R M d er pr =
-  record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledDualModule : DualModuleAdapter → B.Bool
+isFilledDualModule : DualModuleAdapter → Core.Phase.Bool
 isFilledDualModule a = DualModuleAdapter.status a
 
 -- Reflexive module
@@ -4671,7 +4668,7 @@ record ReflexiveModuleAdapter : Set₁ where
     decl : AM.ReflexiveModule R M
     expRing : AR.RingDeclaration
     linkRing : AM.ReflexiveModule.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkReflexiveModuleAdapter :
   (R : AR.RingDeclaration) →
@@ -4681,9 +4678,9 @@ mkReflexiveModuleAdapter :
   (pr : AM.ReflexiveModule.ring d ≡ er) →
   ReflexiveModuleAdapter
 mkReflexiveModuleAdapter R M d er pr =
-  record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledReflexiveModule : ReflexiveModuleAdapter → B.Bool
+isFilledReflexiveModule : ReflexiveModuleAdapter → Core.Phase.Bool
 isFilledReflexiveModule a = ReflexiveModuleAdapter.status a
 
 -- Tensor product of modules
@@ -4694,7 +4691,7 @@ record TensorProductModuleAdapter : Set₁ where
     M : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing R))
     N : AM.LeftModule (AR.UnitalRingDeclaration.underlyingRing (AR.CommutativeRingDeclaration.underlyingRing R))
     decl : AM.TensorProduct R M N
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkTensorProductModuleAdapter :
   (R : AR.CommutativeRingDeclaration) →
@@ -4702,9 +4699,9 @@ mkTensorProductModuleAdapter :
   (d : AM.TensorProduct R M N) →
   TensorProductModuleAdapter
 mkTensorProductModuleAdapter R M N d =
-  record { R = R ; M = M ; N = N ; decl = d ; status = B.true }
+  record { R = R ; M = M ; N = N ; decl = d ; status = true }
 
-isFilledTensorProductModule : TensorProductModuleAdapter → B.Bool
+isFilledTensorProductModule : TensorProductModuleAdapter → Core.Phase.Bool
 isFilledTensorProductModule a = TensorProductModuleAdapter.status a
 
 -- Free module
@@ -4715,7 +4712,7 @@ record FreeModuleAdapter : Set₁ where
     decl : AM.FreeModule R X
     expRing : AR.RingDeclaration
     linkRing : AM.FreeModule.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFreeModuleAdapter :
   (R : AR.RingDeclaration) →
@@ -4725,9 +4722,9 @@ mkFreeModuleAdapter :
   (pr : AM.FreeModule.ring d ≡ er) →
   FreeModuleAdapter
 mkFreeModuleAdapter R X d er pr =
-  record { R = R ; X = X ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; X = X ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledFreeModule : FreeModuleAdapter → B.Bool
+isFilledFreeModule : FreeModuleAdapter → Core.Phase.Bool
 isFilledFreeModule a = FreeModuleAdapter.status a
 
 -- Free module functor
@@ -4737,7 +4734,7 @@ record FreeModuleFunctorAdapter : Set₁ where
     decl : AM.FreeModuleFunctor R
     expRing : AR.RingDeclaration
     linkRing : AM.FreeModuleFunctor.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFreeModuleFunctorAdapter :
   (R : AR.RingDeclaration) →
@@ -4746,9 +4743,9 @@ mkFreeModuleFunctorAdapter :
   (pr : AM.FreeModuleFunctor.ring d ≡ er) →
   FreeModuleFunctorAdapter
 mkFreeModuleFunctorAdapter R d er pr =
-  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledFreeModuleFunctor : FreeModuleFunctorAdapter → B.Bool
+isFilledFreeModuleFunctor : FreeModuleFunctorAdapter → Core.Phase.Bool
 isFilledFreeModuleFunctor a = FreeModuleFunctorAdapter.status a
 
 -- Forgetful module functor
@@ -4758,7 +4755,7 @@ record ForgetfulModuleFunctorAdapter : Set₁ where
     decl : AM.ForgetfulModuleFunctor R
     expRing : AR.RingDeclaration
     linkRing : AM.ForgetfulModuleFunctor.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkForgetfulModuleFunctorAdapter :
   (R : AR.RingDeclaration) →
@@ -4767,9 +4764,9 @@ mkForgetfulModuleFunctorAdapter :
   (pr : AM.ForgetfulModuleFunctor.ring d ≡ er) →
   ForgetfulModuleFunctorAdapter
 mkForgetfulModuleFunctorAdapter R d er pr =
-  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledForgetfulModuleFunctor : ForgetfulModuleFunctorAdapter → B.Bool
+isFilledForgetfulModuleFunctor : ForgetfulModuleFunctorAdapter → Core.Phase.Bool
 isFilledForgetfulModuleFunctor a = ForgetfulModuleFunctorAdapter.status a
 
 -- Right module
@@ -4779,7 +4776,7 @@ record RightModuleAdapter : Set₁ where
     decl : AM.RightModule R
     expRing : AR.RingDeclaration
     linkRing : AM.RightModule.ring decl ≡ expRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkRightModuleAdapter :
   (R : AR.RingDeclaration) →
@@ -4788,9 +4785,9 @@ mkRightModuleAdapter :
   (pr : AM.RightModule.ring d ≡ er) →
   RightModuleAdapter
 mkRightModuleAdapter R d er pr =
-  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = B.true }
+  record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
-isFilledRightModule : RightModuleAdapter → B.Bool
+isFilledRightModule : RightModuleAdapter → Core.Phase.Bool
 isFilledRightModule a = RightModuleAdapter.status a
 
 homFunctorCategorical : (adapt : HomFunctorAdapter) →
@@ -4841,7 +4838,6 @@ rightModuleCategorical adapt =
   mkCategoricalAdapter (AM.RightModule (RightModuleAdapter.R adapt))
     (λ _ → RightModuleAdapter.decl adapt)
 
-
 -- ============================================================================
 -- Extension Degree and Polynomial-Related Adapters
 -- ============================================================================
@@ -4855,7 +4851,7 @@ record ExtensionDegreeAdapter : Set₁ where
     expExt : AR.FieldDeclaration
     link : AFB.ExtensionDegree.baseField decl ≡ expected
     linkExt : AFB.ExtensionDegree.extensionField decl ≡ expExt
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkExtensionDegreeAdapter :
   (F E : AR.FieldDeclaration) →
@@ -4866,11 +4862,10 @@ mkExtensionDegreeAdapter :
   (pe : AFB.ExtensionDegree.extensionField d ≡ ee) →
   ExtensionDegreeAdapter
 mkExtensionDegreeAdapter F E d ef ee pf pe =
-  record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = true }
 
-isFilledExtensionDegree : ExtensionDegreeAdapter → B.Bool
+isFilledExtensionDegree : ExtensionDegreeAdapter → Core.Phase.Bool
 isFilledExtensionDegree a = ExtensionDegreeAdapter.status a
-
 
 -- Inseparable degree [E : F]ᵢ
 record InseparableDegreeAdapter : Set₁ where
@@ -4881,7 +4876,7 @@ record InseparableDegreeAdapter : Set₁ where
     expExt : AR.FieldDeclaration
     link : AFA.InseparableDegree.baseField decl ≡ expected
     linkExt : AFA.InseparableDegree.extensionField decl ≡ expExt
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkInseparableDegreeAdapter :
   (F E : AR.FieldDeclaration) →
@@ -4892,11 +4887,10 @@ mkInseparableDegreeAdapter :
   (pe : AFA.InseparableDegree.extensionField d ≡ ee) →
   InseparableDegreeAdapter
 mkInseparableDegreeAdapter F E d ef ee pf pe =
-  record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = true }
 
-isFilledInseparableDegree : InseparableDegreeAdapter → B.Bool
+isFilledInseparableDegree : InseparableDegreeAdapter → Core.Phase.Bool
 isFilledInseparableDegree a = InseparableDegreeAdapter.status a
-
 
 -- Separable degree [E : F]ₛ
 record SeparableDegreeAdapter : Set₁ where
@@ -4907,7 +4901,7 @@ record SeparableDegreeAdapter : Set₁ where
     expExt : AR.FieldDeclaration
     link : AFA.SeparableDegree.baseField decl ≡ expected
     linkExt : AFA.SeparableDegree.extensionField decl ≡ expExt
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSeparableDegreeAdapter :
   (F E : AR.FieldDeclaration) →
@@ -4918,11 +4912,10 @@ mkSeparableDegreeAdapter :
   (pe : AFA.SeparableDegree.extensionField d ≡ ee) →
   SeparableDegreeAdapter
 mkSeparableDegreeAdapter F E d ef ee pf pe =
-  record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = true }
 
-isFilledSeparableDegree : SeparableDegreeAdapter → B.Bool
+isFilledSeparableDegree : SeparableDegreeAdapter → Core.Phase.Bool
 isFilledSeparableDegree a = SeparableDegreeAdapter.status a
-
 
 -- Simple extension F(α)
 record SimpleExtensionAdapter : Set₁ where
@@ -4934,7 +4927,7 @@ record SimpleExtensionAdapter : Set₁ where
     expExt : AR.FieldDeclaration
     link : AFB.SimpleExtension.baseField decl ≡ expected
     linkExt : AFB.SimpleExtension.extensionField decl ≡ expExt
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSimpleExtensionAdapter :
   (F E : AR.FieldDeclaration) →
@@ -4946,11 +4939,10 @@ mkSimpleExtensionAdapter :
   (pe : AFB.SimpleExtension.extensionField d ≡ ee) →
   SimpleExtensionAdapter
 mkSimpleExtensionAdapter F E α d ef ee pf pe =
-  record { F = F ; E = E ; α = α ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = B.true }
+  record { F = F ; E = E ; α = α ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = true }
 
-isFilledSimpleExtension : SimpleExtensionAdapter → B.Bool
+isFilledSimpleExtension : SimpleExtensionAdapter → Core.Phase.Bool
 isFilledSimpleExtension a = SimpleExtensionAdapter.status a
-
 
 -- Transcendental element
 record TranscendentalElementAdapter : Set₁ where
@@ -4962,7 +4954,7 @@ record TranscendentalElementAdapter : Set₁ where
     expExt : AR.FieldDeclaration
     link : AFB.TranscendentalElement.baseField decl ≡ expected
     linkExt : AFB.TranscendentalElement.extensionField decl ≡ expExt
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkTranscendentalElementAdapter :
   (F E : AR.FieldDeclaration) →
@@ -4974,11 +4966,10 @@ mkTranscendentalElementAdapter :
   (pe : AFB.TranscendentalElement.extensionField d ≡ ee) →
   TranscendentalElementAdapter
 mkTranscendentalElementAdapter F E α d ef ee pf pe =
-  record { F = F ; E = E ; α = α ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = B.true }
+  record { F = F ; E = E ; α = α ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = true }
 
-isFilledTranscendentalElement : TranscendentalElementAdapter → B.Bool
+isFilledTranscendentalElement : TranscendentalElementAdapter → Core.Phase.Bool
 isFilledTranscendentalElement a = TranscendentalElementAdapter.status a
-
 
 -- Transcendence basis
 record TranscendenceBasisAdapter : Set₁ where
@@ -4989,7 +4980,7 @@ record TranscendenceBasisAdapter : Set₁ where
     expExt : AR.FieldDeclaration
     link : AFB.TranscendenceBasis.baseField decl ≡ expected
     linkExt : AFB.TranscendenceBasis.extensionField decl ≡ expExt
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkTranscendenceBasisAdapter :
   (F E : AR.FieldDeclaration) →
@@ -5000,9 +4991,9 @@ mkTranscendenceBasisAdapter :
   (pe : AFB.TranscendenceBasis.extensionField d ≡ ee) →
   TranscendenceBasisAdapter
 mkTranscendenceBasisAdapter F E d ef ee pf pe =
-  record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = B.true }
+  record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = true }
 
-isFilledTranscendenceBasis : TranscendenceBasisAdapter → B.Bool
+isFilledTranscendenceBasis : TranscendenceBasisAdapter → Core.Phase.Bool
 isFilledTranscendenceBasis a = TranscendenceBasisAdapter.status a
 
 extensionDegreeCategorical : (adapt : ExtensionDegreeAdapter) →
@@ -5041,7 +5032,6 @@ transcendenceBasisCategorical adapt =
   mkCategoricalAdapter (AFB.TranscendenceBasis (TranscendenceBasisAdapter.F adapt) (TranscendenceBasisAdapter.E adapt))
     (λ _ → TranscendenceBasisAdapter.decl adapt)
 
-
 -- ============================================================================
 -- Enrichment-Specific Adapters
 -- ============================================================================
@@ -5052,7 +5042,7 @@ record MonoidAsMonoidalCategoryAdapter : Set₁ where
     decl : AE.MonoidAsMonoidalCategory
     expectedMonoid : AFo.MonoidDeclaration
     link : AE.MonoidAsMonoidalCategory.monoid decl ≡ expectedMonoid
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkMonoidAsMonoidalCategoryAdapter :
   (d : AE.MonoidAsMonoidalCategory) →
@@ -5060,11 +5050,10 @@ mkMonoidAsMonoidalCategoryAdapter :
   (p : AE.MonoidAsMonoidalCategory.monoid d ≡ em) →
   MonoidAsMonoidalCategoryAdapter
 mkMonoidAsMonoidalCategoryAdapter d em p =
-  record { decl = d ; expectedMonoid = em ; link = p ; status = B.true }
+  record { decl = d ; expectedMonoid = em ; link = p ; status = true }
 
-isFilledMonoidAsMonoidalCategory : MonoidAsMonoidalCategoryAdapter → B.Bool
+isFilledMonoidAsMonoidalCategory : MonoidAsMonoidalCategoryAdapter → Core.Phase.Bool
 isFilledMonoidAsMonoidalCategory a = MonoidAsMonoidalCategoryAdapter.status a
-
 
 -- Abelian group as symmetric monoidal category
 record AbelianGroupAsSymmetricMonoidalAdapter : Set₁ where
@@ -5072,7 +5061,7 @@ record AbelianGroupAsSymmetricMonoidalAdapter : Set₁ where
     decl : AE.AbelianGroupAsSymmetricMonoidal
     expectedAbGroup : AFo.AbelianGroupDeclaration
     link : AE.AbelianGroupAsSymmetricMonoidal.abelianGroup decl ≡ expectedAbGroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAbelianGroupAsSymmetricMonoidalAdapter :
   (d : AE.AbelianGroupAsSymmetricMonoidal) →
@@ -5080,11 +5069,10 @@ mkAbelianGroupAsSymmetricMonoidalAdapter :
   (p : AE.AbelianGroupAsSymmetricMonoidal.abelianGroup d ≡ eab) →
   AbelianGroupAsSymmetricMonoidalAdapter
 mkAbelianGroupAsSymmetricMonoidalAdapter d eab p =
-  record { decl = d ; expectedAbGroup = eab ; link = p ; status = B.true }
+  record { decl = d ; expectedAbGroup = eab ; link = p ; status = true }
 
-isFilledAbelianGroupAsSymmetricMonoidal : AbelianGroupAsSymmetricMonoidalAdapter → B.Bool
+isFilledAbelianGroupAsSymmetricMonoidal : AbelianGroupAsSymmetricMonoidalAdapter → Core.Phase.Bool
 isFilledAbelianGroupAsSymmetricMonoidal a = AbelianGroupAsSymmetricMonoidalAdapter.status a
-
 
 -- Monoid-enriched category
 record MonoidEnrichedCategoryAdapter : Set₁ where
@@ -5092,7 +5080,7 @@ record MonoidEnrichedCategoryAdapter : Set₁ where
     decl : AE.MonoidEnrichedCategory
     expectedMonoid : AFo.MonoidDeclaration
     link : AE.MonoidEnrichedCategory.enrichingMonoid decl ≡ expectedMonoid
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkMonoidEnrichedCategoryAdapter :
   (d : AE.MonoidEnrichedCategory) →
@@ -5100,11 +5088,10 @@ mkMonoidEnrichedCategoryAdapter :
   (p : AE.MonoidEnrichedCategory.enrichingMonoid d ≡ em) →
   MonoidEnrichedCategoryAdapter
 mkMonoidEnrichedCategoryAdapter d em p =
-  record { decl = d ; expectedMonoid = em ; link = p ; status = B.true }
+  record { decl = d ; expectedMonoid = em ; link = p ; status = true }
 
-isFilledMonoidEnrichedCategory : MonoidEnrichedCategoryAdapter → B.Bool
+isFilledMonoidEnrichedCategory : MonoidEnrichedCategoryAdapter → Core.Phase.Bool
 isFilledMonoidEnrichedCategory a = MonoidEnrichedCategoryAdapter.status a
-
 
 -- Distance category (enriched over ℕ)
 record DistanceCategoryAdapter : Set₁ where
@@ -5112,7 +5099,7 @@ record DistanceCategoryAdapter : Set₁ where
     decl : AE.DistanceCategory
     expectedMonoid : AFo.MonoidDeclaration
     link : AE.DistanceCategory.naturalNumbersMonoid decl ≡ expectedMonoid
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkDistanceCategoryAdapter :
   (d : AE.DistanceCategory) →
@@ -5120,11 +5107,10 @@ mkDistanceCategoryAdapter :
   (p : AE.DistanceCategory.naturalNumbersMonoid d ≡ em) →
   DistanceCategoryAdapter
 mkDistanceCategoryAdapter d em p =
-  record { decl = d ; expectedMonoid = em ; link = p ; status = B.true }
+  record { decl = d ; expectedMonoid = em ; link = p ; status = true }
 
-isFilledDistanceCategory : DistanceCategoryAdapter → B.Bool
+isFilledDistanceCategory : DistanceCategoryAdapter → Core.Phase.Bool
 isFilledDistanceCategory a = DistanceCategoryAdapter.status a
-
 
 -- Ab-enriched category (additive category)
 record AbEnrichedCategoryAdapter : Set₁ where
@@ -5132,7 +5118,7 @@ record AbEnrichedCategoryAdapter : Set₁ where
     decl : AE.AbEnrichedCategory
     expectedCat : AFo.CategoryOfAbelianGroups
     link : AE.AbEnrichedCategory.enrichingCategory decl ≡ expectedCat
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAbEnrichedCategoryAdapter :
   (d : AE.AbEnrichedCategory) →
@@ -5140,11 +5126,10 @@ mkAbEnrichedCategoryAdapter :
   (p : AE.AbEnrichedCategory.enrichingCategory d ≡ ec) →
   AbEnrichedCategoryAdapter
 mkAbEnrichedCategoryAdapter d ec p =
-  record { decl = d ; expectedCat = ec ; link = p ; status = B.true }
+  record { decl = d ; expectedCat = ec ; link = p ; status = true }
 
-isFilledAbEnrichedCategory : AbEnrichedCategoryAdapter → B.Bool
+isFilledAbEnrichedCategory : AbEnrichedCategoryAdapter → Core.Phase.Bool
 isFilledAbEnrichedCategory a = AbEnrichedCategoryAdapter.status a
-
 
 -- Generic enrichment over monoidal category V
 record GenericEnrichmentAdapter : Set₁ where
@@ -5153,7 +5138,7 @@ record GenericEnrichmentAdapter : Set₁ where
     decl : AE.GenericEnrichment V
     expectedCat : C1S3.CategoryDeclaration
     link : AE.GenericEnrichment.enrichingCategory decl ≡ expectedCat
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkGenericEnrichmentAdapter :
   (V : Enriched.MonoidalCategoryDeclaration) →
@@ -5162,11 +5147,10 @@ mkGenericEnrichmentAdapter :
   (p : AE.GenericEnrichment.enrichingCategory d ≡ ec) →
   GenericEnrichmentAdapter
 mkGenericEnrichmentAdapter V d ec p =
-  record { V = V ; decl = d ; expectedCat = ec ; link = p ; status = B.true }
+  record { V = V ; decl = d ; expectedCat = ec ; link = p ; status = true }
 
-isFilledGenericEnrichment : GenericEnrichmentAdapter → B.Bool
+isFilledGenericEnrichment : GenericEnrichmentAdapter → Core.Phase.Bool
 isFilledGenericEnrichment a = GenericEnrichmentAdapter.status a
-
 
 -- Group action enriched category
 record GroupActionEnrichedCategoryAdapter : Set₁ where
@@ -5174,7 +5158,7 @@ record GroupActionEnrichedCategoryAdapter : Set₁ where
     decl : AE.GroupActionEnrichedCategory
     expectedGroup : AFo.GroupDeclaration
     link : AE.GroupActionEnrichedCategory.actingGroup decl ≡ expectedGroup
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkGroupActionEnrichedCategoryAdapter :
   (d : AE.GroupActionEnrichedCategory) →
@@ -5182,43 +5166,40 @@ mkGroupActionEnrichedCategoryAdapter :
   (p : AE.GroupActionEnrichedCategory.actingGroup d ≡ eg) →
   GroupActionEnrichedCategoryAdapter
 mkGroupActionEnrichedCategoryAdapter d eg p =
-  record { decl = d ; expectedGroup = eg ; link = p ; status = B.true }
+  record { decl = d ; expectedGroup = eg ; link = p ; status = true }
 
-isFilledGroupActionEnrichedCategory : GroupActionEnrichedCategoryAdapter → B.Bool
+isFilledGroupActionEnrichedCategory : GroupActionEnrichedCategoryAdapter → Core.Phase.Bool
 isFilledGroupActionEnrichedCategory a = GroupActionEnrichedCategoryAdapter.status a
-
 
 -- Module-enriched category (over a ring)
 record ModuleEnrichedCategoryAdapter : Set₁ where
   field
     decl : AE.ModuleEnrichedCategory
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkModuleEnrichedCategoryAdapter :
   (d : AE.ModuleEnrichedCategory) →
   ModuleEnrichedCategoryAdapter
 mkModuleEnrichedCategoryAdapter d =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
-isFilledModuleEnrichedCategory : ModuleEnrichedCategoryAdapter → B.Bool
+isFilledModuleEnrichedCategory : ModuleEnrichedCategoryAdapter → Core.Phase.Bool
 isFilledModuleEnrichedCategory a = ModuleEnrichedCategoryAdapter.status a
-
 
 -- Lawvere theory enriched category
 record LawvereTheoryEnrichedCategoryAdapter : Set₁ where
   field
     decl : AE.LawvereTheoryEnrichedCategory
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkLawvereTheoryEnrichedCategoryAdapter :
   (d : AE.LawvereTheoryEnrichedCategory) →
   LawvereTheoryEnrichedCategoryAdapter
 mkLawvereTheoryEnrichedCategoryAdapter d =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
-isFilledLawvereTheoryEnrichedCategory : LawvereTheoryEnrichedCategoryAdapter → B.Bool
+isFilledLawvereTheoryEnrichedCategory : LawvereTheoryEnrichedCategoryAdapter → Core.Phase.Bool
 isFilledLawvereTheoryEnrichedCategory a = LawvereTheoryEnrichedCategoryAdapter.status a
-
 
 -- Ab self-enriched
 record AbSelfEnrichedAdapter : Set₁ where
@@ -5226,7 +5207,7 @@ record AbSelfEnrichedAdapter : Set₁ where
     decl : AGA.AbSelfEnriched
     expectedCat : AGA.Ab
     link : AGA.AbSelfEnriched.category decl ≡ expectedCat
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAbSelfEnrichedAdapter :
   (d : AGA.AbSelfEnriched) →
@@ -5234,11 +5215,10 @@ mkAbSelfEnrichedAdapter :
   (p : AGA.AbSelfEnriched.category d ≡ ec) →
   AbSelfEnrichedAdapter
 mkAbSelfEnrichedAdapter d ec p =
-  record { decl = d ; expectedCat = ec ; link = p ; status = B.true }
+  record { decl = d ; expectedCat = ec ; link = p ; status = true }
 
-isFilledAbSelfEnriched : AbSelfEnrichedAdapter → B.Bool
+isFilledAbSelfEnriched : AbSelfEnrichedAdapter → Core.Phase.Bool
 isFilledAbSelfEnriched a = AbSelfEnrichedAdapter.status a
-
 
 -- Ab self-enrichment via internal hom
 record AbSelfEnrichmentViaInternalHomAdapter : Set₁ where
@@ -5246,7 +5226,7 @@ record AbSelfEnrichmentViaInternalHomAdapter : Set₁ where
     decl : AGA.AbSelfEnrichmentViaInternalHom
     expectedCat : AGA.Ab
     link : AGA.AbSelfEnrichmentViaInternalHom.category decl ≡ expectedCat
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAbSelfEnrichmentViaInternalHomAdapter :
   (d : AGA.AbSelfEnrichmentViaInternalHom) →
@@ -5254,9 +5234,9 @@ mkAbSelfEnrichmentViaInternalHomAdapter :
   (p : AGA.AbSelfEnrichmentViaInternalHom.category d ≡ ec) →
   AbSelfEnrichmentViaInternalHomAdapter
 mkAbSelfEnrichmentViaInternalHomAdapter d ec p =
-  record { decl = d ; expectedCat = ec ; link = p ; status = B.true }
+  record { decl = d ; expectedCat = ec ; link = p ; status = true }
 
-isFilledAbSelfEnrichmentViaInternalHom : AbSelfEnrichmentViaInternalHomAdapter → B.Bool
+isFilledAbSelfEnrichmentViaInternalHom : AbSelfEnrichmentViaInternalHomAdapter → Core.Phase.Bool
 isFilledAbSelfEnrichmentViaInternalHom a = AbSelfEnrichmentViaInternalHomAdapter.status a
 
 monoidAsMonoidalCategorical : (adapt : MonoidAsMonoidalCategoryAdapter) →
@@ -5315,7 +5295,6 @@ abSelfEnrichmentViaInternalHomCategorical : (adapt : AbSelfEnrichmentViaInternal
 abSelfEnrichmentViaInternalHomCategorical adapt = 
   mkCategoricalAdapter AGA.AbSelfEnrichmentViaInternalHom (λ _ → AbSelfEnrichmentViaInternalHomAdapter.decl adapt)
 
-
 -- ============================================================================
 -- Module Category Theory and R-Algebras
 -- ============================================================================
@@ -5327,7 +5306,7 @@ record ExactSequenceAdapter : Set₁ where
     decl : AM.ExactSequence R
     expectedRing : AR.RingDeclaration
     link : AM.ExactSequence.ring decl ≡ expectedRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkExactSequenceAdapter :
   (R : AR.RingDeclaration) →
@@ -5336,11 +5315,10 @@ mkExactSequenceAdapter :
   (p : AM.ExactSequence.ring d ≡ er) →
   ExactSequenceAdapter
 mkExactSequenceAdapter R d er p =
-  record { R = R ; decl = d ; expectedRing = er ; link = p ; status = B.true }
+  record { R = R ; decl = d ; expectedRing = er ; link = p ; status = true }
 
-isFilledExactSequence : ExactSequenceAdapter → B.Bool
+isFilledExactSequence : ExactSequenceAdapter → Core.Phase.Bool
 isFilledExactSequence a = ExactSequenceAdapter.status a
-
 
 -- Category of modules R-Mod
 record CategoryOfModulesAdapter : Set₁ where
@@ -5349,7 +5327,7 @@ record CategoryOfModulesAdapter : Set₁ where
     decl : AM.CategoryOfModules R
     expectedRing : AR.RingDeclaration
     link : AM.CategoryOfModules.ring decl ≡ expectedRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCategoryOfModulesAdapter :
   (R : AR.RingDeclaration) →
@@ -5358,11 +5336,10 @@ mkCategoryOfModulesAdapter :
   (p : AM.CategoryOfModules.ring d ≡ er) →
   CategoryOfModulesAdapter
 mkCategoryOfModulesAdapter R d er p =
-  record { R = R ; decl = d ; expectedRing = er ; link = p ; status = B.true }
+  record { R = R ; decl = d ; expectedRing = er ; link = p ; status = true }
 
-isFilledCategoryOfModules : CategoryOfModulesAdapter → B.Bool
+isFilledCategoryOfModules : CategoryOfModulesAdapter → Core.Phase.Bool
 isFilledCategoryOfModules a = CategoryOfModulesAdapter.status a
-
 
 -- Vector space over a field
 record VectorSpaceAdapter : Set₁ where
@@ -5371,7 +5348,7 @@ record VectorSpaceAdapter : Set₁ where
     decl : AM.VectorSpace F
     expectedField : AR.FieldDeclaration
     link : AM.VectorSpace.field' decl ≡ expectedField
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkVectorSpaceAdapter :
   (F : AR.FieldDeclaration) →
@@ -5380,11 +5357,10 @@ mkVectorSpaceAdapter :
   (p : AM.VectorSpace.field' d ≡ ef) →
   VectorSpaceAdapter
 mkVectorSpaceAdapter F d ef p =
-  record { F = F ; decl = d ; expectedField = ef ; link = p ; status = B.true }
+  record { F = F ; decl = d ; expectedField = ef ; link = p ; status = true }
 
-isFilledVectorSpace : VectorSpaceAdapter → B.Bool
+isFilledVectorSpace : VectorSpaceAdapter → Core.Phase.Bool
 isFilledVectorSpace a = VectorSpaceAdapter.status a
-
 
 -- R-algebra (ring with compatible R-module structure)
 record RAlgebraAdapter : Set₁ where
@@ -5393,7 +5369,7 @@ record RAlgebraAdapter : Set₁ where
     decl : AM.RAlgebra R
     expectedRing : AR.CommutativeRingDeclaration
     link : AM.RAlgebra.coefficientRing decl ≡ expectedRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkRAlgebraAdapter :
   (R : AR.CommutativeRingDeclaration) →
@@ -5402,11 +5378,10 @@ mkRAlgebraAdapter :
   (p : AM.RAlgebra.coefficientRing d ≡ er) →
   RAlgebraAdapter
 mkRAlgebraAdapter R d er p =
-  record { R = R ; decl = d ; expectedRing = er ; link = p ; status = B.true }
+  record { R = R ; decl = d ; expectedRing = er ; link = p ; status = true }
 
-isFilledRAlgebra : RAlgebraAdapter → B.Bool
+isFilledRAlgebra : RAlgebraAdapter → Core.Phase.Bool
 isFilledRAlgebra a = RAlgebraAdapter.status a
-
 
 -- Algebra homomorphism
 record AlgebraHomomorphismAdapter : Set₁ where
@@ -5416,7 +5391,7 @@ record AlgebraHomomorphismAdapter : Set₁ where
     decl : AM.AlgebraHomomorphism R A B
     expectedRing : AR.CommutativeRingDeclaration
     link : AM.AlgebraHomomorphism.coefficientRing decl ≡ expectedRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAlgebraHomomorphismAdapter :
   (R : AR.CommutativeRingDeclaration) →
@@ -5426,9 +5401,9 @@ mkAlgebraHomomorphismAdapter :
   (p : AM.AlgebraHomomorphism.coefficientRing d ≡ er) →
   AlgebraHomomorphismAdapter
 mkAlgebraHomomorphismAdapter R A B d er p =
-  record { R = R ; A = A ; B = B ; decl = d ; expectedRing = er ; link = p ; status = B.true }
+  record { R = R ; A = A ; B = B ; decl = d ; expectedRing = er ; link = p ; status = true }
 
-isFilledAlgebraHomomorphism : AlgebraHomomorphismAdapter → B.Bool
+isFilledAlgebraHomomorphism : AlgebraHomomorphismAdapter → Core.Phase.Bool
 isFilledAlgebraHomomorphism a = AlgebraHomomorphismAdapter.status a
 
 exactSequenceCategorical : (adapt : ExactSequenceAdapter) →
@@ -5461,7 +5436,6 @@ algebraHomomorphismCategorical adapt =
   mkCategoricalAdapter (AM.AlgebraHomomorphism (AlgebraHomomorphismAdapter.R adapt) (AlgebraHomomorphismAdapter.A adapt) (AlgebraHomomorphismAdapter.B adapt))
     (λ _ → AlgebraHomomorphismAdapter.decl adapt)
 
-
 ------------------------------------------------------------------------
 -- Monad-Adjunction Theory (Chapter2.Level2sub4)
 ------------------------------------------------------------------------
@@ -5472,7 +5446,7 @@ record CategoryOfAlgebrasAdapter : Set₁ where
     decl : C2S4.CategoryOfAlgebras
     expectedMonad : C2S4.MonadDeclaration
     link : C2S4.CategoryOfAlgebras.monad decl ≡ expectedMonad
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCategoryOfAlgebrasAdapter :
   (d : C2S4.CategoryOfAlgebras) →
@@ -5480,9 +5454,9 @@ mkCategoryOfAlgebrasAdapter :
   (p : C2S4.CategoryOfAlgebras.monad d ≡ em) →
   CategoryOfAlgebrasAdapter
 mkCategoryOfAlgebrasAdapter d em p =
-  record { decl = d ; expectedMonad = em ; link = p ; status = B.true }
+  record { decl = d ; expectedMonad = em ; link = p ; status = true }
 
-isFilledCategoryOfAlgebras : CategoryOfAlgebrasAdapter → B.Bool
+isFilledCategoryOfAlgebras : CategoryOfAlgebrasAdapter → Core.Phase.Bool
 isFilledCategoryOfAlgebras a = CategoryOfAlgebrasAdapter.status a
 
 -- Categorical view for CategoryOfAlgebras
@@ -5491,14 +5465,13 @@ categoryOfAlgebrasCategorical : CategoryOfAlgebrasAdapter →
 categoryOfAlgebrasCategorical adapt =
   mkCategoricalAdapter C2S4.CategoryOfAlgebras (λ _ → CategoryOfAlgebrasAdapter.decl adapt)
 
-
 -- Theorem: Adjunction induces monad
 record AdjunctionInducesMonadTheoremAdapter : Set₁ where
   field
     decl : C2S4.AdjunctionInducesMonadTheorem
     expectedMonad : C2S4.MonadDeclaration
     link : C2S4.AdjunctionInducesMonadTheorem.inducedMonad decl ≡ expectedMonad
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAdjunctionInducesMonadTheoremAdapter :
   (d : C2S4.AdjunctionInducesMonadTheorem) →
@@ -5506,9 +5479,9 @@ mkAdjunctionInducesMonadTheoremAdapter :
   (p : C2S4.AdjunctionInducesMonadTheorem.inducedMonad d ≡ em) →
   AdjunctionInducesMonadTheoremAdapter
 mkAdjunctionInducesMonadTheoremAdapter d em p =
-  record { decl = d ; expectedMonad = em ; link = p ; status = B.true }
+  record { decl = d ; expectedMonad = em ; link = p ; status = true }
 
-isFilledAdjunctionInducesMonadTheorem : AdjunctionInducesMonadTheoremAdapter → B.Bool
+isFilledAdjunctionInducesMonadTheorem : AdjunctionInducesMonadTheoremAdapter → Core.Phase.Bool
 isFilledAdjunctionInducesMonadTheorem a = AdjunctionInducesMonadTheoremAdapter.status a
 
 -- Categorical view for AdjunctionInducesMonadTheorem
@@ -5516,7 +5489,6 @@ adjunctionInducesMonadTheoremCategorical : AdjunctionInducesMonadTheoremAdapter 
   CategoricalAdapter {lzero} C2S4.AdjunctionInducesMonadTheorem
 adjunctionInducesMonadTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.AdjunctionInducesMonadTheorem (λ _ → AdjunctionInducesMonadTheoremAdapter.decl adapt)
-
 
 -- Eilenberg-Moore adjunction from monad
 record EilenbergMooreAdjunctionAdapter : Set₁ where
@@ -5526,7 +5498,7 @@ record EilenbergMooreAdjunctionAdapter : Set₁ where
     expectedAlgCat : C2S4.CategoryOfAlgebras
     link1 : C2S4.EilenbergMooreAdjunction.monad decl ≡ expectedMonad
     link2 : C2S4.EilenbergMooreAdjunction.algebraCategory decl ≡ expectedAlgCat
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkEilenbergMooreAdjunctionAdapter :
   (d : C2S4.EilenbergMooreAdjunction) →
@@ -5536,9 +5508,9 @@ mkEilenbergMooreAdjunctionAdapter :
   (p2 : C2S4.EilenbergMooreAdjunction.algebraCategory d ≡ eac) →
   EilenbergMooreAdjunctionAdapter
 mkEilenbergMooreAdjunctionAdapter d em eac p1 p2 =
-  record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledEilenbergMooreAdjunction : EilenbergMooreAdjunctionAdapter → B.Bool
+isFilledEilenbergMooreAdjunction : EilenbergMooreAdjunctionAdapter → Core.Phase.Bool
 isFilledEilenbergMooreAdjunction a = EilenbergMooreAdjunctionAdapter.status a
 
 -- Categorical view for EilenbergMooreAdjunction
@@ -5546,7 +5518,6 @@ eilenbergMooreAdjunctionCategorical : EilenbergMooreAdjunctionAdapter →
   CategoricalAdapter {lzero} C2S4.EilenbergMooreAdjunction
 eilenbergMooreAdjunctionCategorical adapt =
   mkCategoricalAdapter C2S4.EilenbergMooreAdjunction (λ _ → EilenbergMooreAdjunctionAdapter.decl adapt)
-
 
 -- Monad-adjunction correspondence theorem
 record MonadAdjunctionCorrespondenceTheoremAdapter : Set₁ where
@@ -5556,7 +5527,7 @@ record MonadAdjunctionCorrespondenceTheoremAdapter : Set₁ where
     expectedEM : C2S4.EilenbergMooreAdjunction
     link1 : C2S4.MonadAdjunctionCorrespondenceTheorem.monad decl ≡ expectedMonad
     link2 : C2S4.MonadAdjunctionCorrespondenceTheorem.emAdjunction decl ≡ expectedEM
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkMonadAdjunctionCorrespondenceTheoremAdapter :
   (d : C2S4.MonadAdjunctionCorrespondenceTheorem) →
@@ -5566,9 +5537,9 @@ mkMonadAdjunctionCorrespondenceTheoremAdapter :
   (p2 : C2S4.MonadAdjunctionCorrespondenceTheorem.emAdjunction d ≡ eEM) →
   MonadAdjunctionCorrespondenceTheoremAdapter
 mkMonadAdjunctionCorrespondenceTheoremAdapter d em eEM p1 p2 =
-  record { decl = d ; expectedMonad = em ; expectedEM = eEM ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedMonad = em ; expectedEM = eEM ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledMonadAdjunctionCorrespondenceTheorem : MonadAdjunctionCorrespondenceTheoremAdapter → B.Bool
+isFilledMonadAdjunctionCorrespondenceTheorem : MonadAdjunctionCorrespondenceTheoremAdapter → Core.Phase.Bool
 isFilledMonadAdjunctionCorrespondenceTheorem a = MonadAdjunctionCorrespondenceTheoremAdapter.status a
 
 -- Categorical view for MonadAdjunctionCorrespondenceTheorem
@@ -5577,14 +5548,13 @@ monadAdjunctionCorrespondenceTheoremCategorical : MonadAdjunctionCorrespondenceT
 monadAdjunctionCorrespondenceTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.MonadAdjunctionCorrespondenceTheorem (λ _ → MonadAdjunctionCorrespondenceTheoremAdapter.decl adapt)
 
-
 -- Beck monadicity theorem
 record BeckMonadicityTheoremAdapter : Set₁ where
   field
     decl : C2S4.BeckMonadicityTheorem
     expectedReflects : C2S4.ReflectsIsomorphismsProperty
     link : C2S4.BeckMonadicityTheorem.reflectsIsomorphisms decl ≡ expectedReflects
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkBeckMonadicityTheoremAdapter :
   (d : C2S4.BeckMonadicityTheorem) →
@@ -5592,9 +5562,9 @@ mkBeckMonadicityTheoremAdapter :
   (p : C2S4.BeckMonadicityTheorem.reflectsIsomorphisms d ≡ er) →
   BeckMonadicityTheoremAdapter
 mkBeckMonadicityTheoremAdapter d er p =
-  record { decl = d ; expectedReflects = er ; link = p ; status = B.true }
+  record { decl = d ; expectedReflects = er ; link = p ; status = true }
 
-isFilledBeckMonadicityTheorem : BeckMonadicityTheoremAdapter → B.Bool
+isFilledBeckMonadicityTheorem : BeckMonadicityTheoremAdapter → Core.Phase.Bool
 isFilledBeckMonadicityTheorem a = BeckMonadicityTheoremAdapter.status a
 
 -- Categorical view for BeckMonadicityTheorem
@@ -5603,14 +5573,13 @@ beckMonadicityTheoremCategorical : BeckMonadicityTheoremAdapter →
 beckMonadicityTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.BeckMonadicityTheorem (λ _ → BeckMonadicityTheoremAdapter.decl adapt)
 
-
 -- Functor property: is monadic
 record MonadicFunctorPropertyAdapter : Set₁ where
   field
     decl : C2S4.MonadicFunctorProperty
     expectedFunctor : M.Identifier
     link : C2S4.MonadicFunctorProperty.functor decl ≡ expectedFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkMonadicFunctorPropertyAdapter :
   (d : C2S4.MonadicFunctorProperty) →
@@ -5618,9 +5587,9 @@ mkMonadicFunctorPropertyAdapter :
   (p : C2S4.MonadicFunctorProperty.functor d ≡ ef) →
   MonadicFunctorPropertyAdapter
 mkMonadicFunctorPropertyAdapter d ef p =
-  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
-isFilledMonadicFunctorProperty : MonadicFunctorPropertyAdapter → B.Bool
+isFilledMonadicFunctorProperty : MonadicFunctorPropertyAdapter → Core.Phase.Bool
 isFilledMonadicFunctorProperty a = MonadicFunctorPropertyAdapter.status a
 
 -- Categorical view for MonadicFunctorProperty
@@ -5629,14 +5598,13 @@ monadicFunctorPropertyCategorical : MonadicFunctorPropertyAdapter →
 monadicFunctorPropertyCategorical adapt =
   mkCategoricalAdapter C2S4.MonadicFunctorProperty (λ _ → MonadicFunctorPropertyAdapter.decl adapt)
 
-
 -- Comonad from adjunction (for descent theory)
 record ComonadFromAdjunctionAdapter : Set₁ where
   field
     decl : C2S4.ComonadFromAdjunction
     expectedComonad : C2S4.ComonadDeclaration
     link : C2S4.ComonadFromAdjunction.inducedComonad decl ≡ expectedComonad
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkComonadFromAdjunctionAdapter :
   (d : C2S4.ComonadFromAdjunction) →
@@ -5644,9 +5612,9 @@ mkComonadFromAdjunctionAdapter :
   (p : C2S4.ComonadFromAdjunction.inducedComonad d ≡ ec) →
   ComonadFromAdjunctionAdapter
 mkComonadFromAdjunctionAdapter d ec p =
-  record { decl = d ; expectedComonad = ec ; link = p ; status = B.true }
+  record { decl = d ; expectedComonad = ec ; link = p ; status = true }
 
-isFilledComonadFromAdjunction : ComonadFromAdjunctionAdapter → B.Bool
+isFilledComonadFromAdjunction : ComonadFromAdjunctionAdapter → Core.Phase.Bool
 isFilledComonadFromAdjunction a = ComonadFromAdjunctionAdapter.status a
 
 -- Categorical view for ComonadFromAdjunction
@@ -5654,7 +5622,6 @@ comonadFromAdjunctionCategorical : ComonadFromAdjunctionAdapter →
   CategoricalAdapter {lzero} C2S4.ComonadFromAdjunction
 comonadFromAdjunctionCategorical adapt =
   mkCategoricalAdapter C2S4.ComonadFromAdjunction (λ _ → ComonadFromAdjunctionAdapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Limits and Colimits in Algebra Categories (Chapter2.Level2sub4)
@@ -5668,7 +5635,7 @@ record ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter : Set₁ where
     expectedAlgCat : C2S4.CategoryOfAlgebras
     link1 : C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem.monad decl ≡ expectedMonad
     link2 : C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem.algebraCategory decl ≡ expectedAlgCat
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter :
   (d : C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem) →
@@ -5678,9 +5645,9 @@ mkForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter :
   (p2 : C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem.algebraCategory d ≡ eac) →
   ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter
 mkForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter d em eac p1 p2 =
-  record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledForgetfulFunctorFromAlgebrasCreatesLimitsTheorem : ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter → B.Bool
+isFilledForgetfulFunctorFromAlgebrasCreatesLimitsTheorem : ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter → Core.Phase.Bool
 isFilledForgetfulFunctorFromAlgebrasCreatesLimitsTheorem a = ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter.status a
 
 -- Categorical view for ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem
@@ -5688,7 +5655,6 @@ forgetfulFunctorFromAlgebrasCreatesLimitsTheoremCategorical : ForgetfulFunctorFr
   CategoricalAdapter {lzero} C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem
 forgetfulFunctorFromAlgebrasCreatesLimitsTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem (λ _ → ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter.decl adapt)
-
 
 -- Corollary: Completeness of algebra categories
 record CompletenessOfAlgebraCategoriesCorollaryAdapter : Set₁ where
@@ -5698,7 +5664,7 @@ record CompletenessOfAlgebraCategoriesCorollaryAdapter : Set₁ where
     expectedAlgCat : C2S4.CategoryOfAlgebras
     link1 : C2S4.CompletenessOfAlgebraCategoriesCorollary.monad decl ≡ expectedMonad
     link2 : C2S4.CompletenessOfAlgebraCategoriesCorollary.algebraCategory decl ≡ expectedAlgCat
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCompletenessOfAlgebraCategoriesCorollaryAdapter :
   (d : C2S4.CompletenessOfAlgebraCategoriesCorollary) →
@@ -5708,9 +5674,9 @@ mkCompletenessOfAlgebraCategoriesCorollaryAdapter :
   (p2 : C2S4.CompletenessOfAlgebraCategoriesCorollary.algebraCategory d ≡ eac) →
   CompletenessOfAlgebraCategoriesCorollaryAdapter
 mkCompletenessOfAlgebraCategoriesCorollaryAdapter d em eac p1 p2 =
-  record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledCompletenessOfAlgebraCategoriesCorollary : CompletenessOfAlgebraCategoriesCorollaryAdapter → B.Bool
+isFilledCompletenessOfAlgebraCategoriesCorollary : CompletenessOfAlgebraCategoriesCorollaryAdapter → Core.Phase.Bool
 isFilledCompletenessOfAlgebraCategoriesCorollary a = CompletenessOfAlgebraCategoriesCorollaryAdapter.status a
 
 -- Categorical view for CompletenessOfAlgebraCategoriesCorollary
@@ -5718,7 +5684,6 @@ completenessOfAlgebraCategoriesCorollaryCategorical : CompletenessOfAlgebraCateg
   CategoricalAdapter {lzero} C2S4.CompletenessOfAlgebraCategoriesCorollary
 completenessOfAlgebraCategoriesCorollaryCategorical adapt =
   mkCategoricalAdapter C2S4.CompletenessOfAlgebraCategoriesCorollary (λ _ → CompletenessOfAlgebraCategoriesCorollaryAdapter.decl adapt)
-
 
 -- Reflexive pair
 record ReflexivePairAdapter : Set₁ where
@@ -5728,7 +5693,7 @@ record ReflexivePairAdapter : Set₁ where
     expectedCodomain : M.Identifier
     link1 : C2S4.ReflexivePair.domain decl ≡ expectedDomain
     link2 : C2S4.ReflexivePair.codomain decl ≡ expectedCodomain
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkReflexivePairAdapter :
   (d : C2S4.ReflexivePair) →
@@ -5738,9 +5703,9 @@ mkReflexivePairAdapter :
   (p2 : C2S4.ReflexivePair.codomain d ≡ ecod) →
   ReflexivePairAdapter
 mkReflexivePairAdapter d edom ecod p1 p2 =
-  record { decl = d ; expectedDomain = edom ; expectedCodomain = ecod ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedDomain = edom ; expectedCodomain = ecod ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledReflexivePair : ReflexivePairAdapter → B.Bool
+isFilledReflexivePair : ReflexivePairAdapter → Core.Phase.Bool
 isFilledReflexivePair a = ReflexivePairAdapter.status a
 
 -- Categorical view for ReflexivePair
@@ -5748,7 +5713,6 @@ reflexivePairCategorical : ReflexivePairAdapter →
   CategoricalAdapter {lzero} C2S4.ReflexivePair
 reflexivePairCategorical adapt =
   mkCategoricalAdapter C2S4.ReflexivePair (λ _ → ReflexivePairAdapter.decl adapt)
-
 
 -- Theorem: Forgetful functor preserves coequalizers of reflexive pairs
 record ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter : Set₁ where
@@ -5760,7 +5724,7 @@ record ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter : Set₁ where
     link1 : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem.monad decl ≡ expectedMonad
     link2 : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem.algebraCategory decl ≡ expectedAlgCat
     link3 : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem.reflexivePair decl ≡ expectedRefPair
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter :
   (d : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem) →
@@ -5772,9 +5736,9 @@ mkForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter :
   (p3 : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem.reflexivePair d ≡ erp) →
   ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter
 mkForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter d em eac erp p1 p2 p3 =
-  record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; expectedRefPair = erp ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = B.true }
+  record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; expectedRefPair = erp ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = true }
 
-isFilledForgetfulFunctorPreservesCertainCoequalizersTheorem : ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter → B.Bool
+isFilledForgetfulFunctorPreservesCertainCoequalizersTheorem : ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter → Core.Phase.Bool
 isFilledForgetfulFunctorPreservesCertainCoequalizersTheorem a = ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter.status a
 
 -- Categorical view for ForgetfulFunctorPreservesCertainCoequalizersTheorem
@@ -5783,14 +5747,13 @@ forgetfulFunctorPreservesCertainCoequalizersTheoremCategorical : ForgetfulFuncto
 forgetfulFunctorPreservesCertainCoequalizersTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem (λ _ → ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter.decl adapt)
 
-
 -- Functor property: reflects isomorphisms
 record ReflectsIsomorphismsPropertyAdapter : Set₁ where
   field
     decl : C2S4.ReflectsIsomorphismsProperty
     expectedFunctor : M.Identifier
     link : C2S4.ReflectsIsomorphismsProperty.functor decl ≡ expectedFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkReflectsIsomorphismsPropertyAdapter :
   (d : C2S4.ReflectsIsomorphismsProperty) →
@@ -5798,9 +5761,9 @@ mkReflectsIsomorphismsPropertyAdapter :
   (p : C2S4.ReflectsIsomorphismsProperty.functor d ≡ ef) →
   ReflectsIsomorphismsPropertyAdapter
 mkReflectsIsomorphismsPropertyAdapter d ef p =
-  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
-isFilledReflectsIsomorphismsProperty : ReflectsIsomorphismsPropertyAdapter → B.Bool
+isFilledReflectsIsomorphismsProperty : ReflectsIsomorphismsPropertyAdapter → Core.Phase.Bool
 isFilledReflectsIsomorphismsProperty a = ReflectsIsomorphismsPropertyAdapter.status a
 
 -- Categorical view for ReflectsIsomorphismsProperty
@@ -5809,14 +5772,13 @@ reflectsIsomorphismsPropertyCategorical : ReflectsIsomorphismsPropertyAdapter �
 reflectsIsomorphismsPropertyCategorical adapt =
   mkCategoricalAdapter C2S4.ReflectsIsomorphismsProperty (λ _ → ReflectsIsomorphismsPropertyAdapter.decl adapt)
 
-
 -- U-split pair
 record USplitPairAdapter : Set₁ where
   field
     decl : C2S4.USplitPair
     expectedFunctor : M.Identifier
     link : C2S4.USplitPair.functor decl ≡ expectedFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkUSplitPairAdapter :
   (d : C2S4.USplitPair) →
@@ -5824,9 +5786,9 @@ mkUSplitPairAdapter :
   (p : C2S4.USplitPair.functor d ≡ ef) →
   USplitPairAdapter
 mkUSplitPairAdapter d ef p =
-  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
-isFilledUSplitPair : USplitPairAdapter → B.Bool
+isFilledUSplitPair : USplitPairAdapter → Core.Phase.Bool
 isFilledUSplitPair a = USplitPairAdapter.status a
 
 -- Categorical view for USplitPair
@@ -5834,7 +5796,6 @@ uSplitPairCategorical : USplitPairAdapter →
   CategoricalAdapter {lzero} C2S4.USplitPair
 uSplitPairCategorical adapt =
   mkCategoricalAdapter C2S4.USplitPair (λ _ → USplitPairAdapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Regular Category Theory (Chapter2.Level2sub2)
@@ -5848,7 +5809,7 @@ record RegularCategoryDeclarationAdapter : Set₁ where
     expectedStability : C2S2.StabilityUnderPullbackProperty
     link1 : C2S2.RegularCategoryDeclaration.finiteLimits decl ≡ expectedFiniteLimits
     link2 : C2S2.RegularCategoryDeclaration.regularEpiStability decl ≡ expectedStability
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkRegularCategoryDeclarationAdapter :
   (d : C2S2.RegularCategoryDeclaration) →
@@ -5858,9 +5819,9 @@ mkRegularCategoryDeclarationAdapter :
   (p2 : C2S2.RegularCategoryDeclaration.regularEpiStability d ≡ es) →
   RegularCategoryDeclarationAdapter
 mkRegularCategoryDeclarationAdapter d efl es p1 p2 =
-  record { decl = d ; expectedFiniteLimits = efl ; expectedStability = es ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedFiniteLimits = efl ; expectedStability = es ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledRegularCategoryDeclaration : RegularCategoryDeclarationAdapter → B.Bool
+isFilledRegularCategoryDeclaration : RegularCategoryDeclarationAdapter → Core.Phase.Bool
 isFilledRegularCategoryDeclaration a = RegularCategoryDeclarationAdapter.status a
 
 -- Categorical view for RegularCategoryDeclaration
@@ -5869,14 +5830,13 @@ regularCategoryDeclarationCategorical : RegularCategoryDeclarationAdapter →
 regularCategoryDeclarationCategorical adapt =
   mkCategoricalAdapter C2S2.RegularCategoryDeclaration (λ _ → RegularCategoryDeclarationAdapter.decl adapt)
 
-
 -- Kernel pair of a morphism
 record KernelPairDeclarationAdapter : Set₁ where
   field
     decl : C2S2.KernelPairDeclaration
     expectedMorphism : M.Identifier
     link : C2S2.KernelPairDeclaration.morphism decl ≡ expectedMorphism
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkKernelPairDeclarationAdapter :
   (d : C2S2.KernelPairDeclaration) →
@@ -5884,9 +5844,9 @@ mkKernelPairDeclarationAdapter :
   (p : C2S2.KernelPairDeclaration.morphism d ≡ em) →
   KernelPairDeclarationAdapter
 mkKernelPairDeclarationAdapter d em p =
-  record { decl = d ; expectedMorphism = em ; link = p ; status = B.true }
+  record { decl = d ; expectedMorphism = em ; link = p ; status = true }
 
-isFilledKernelPairDeclaration : KernelPairDeclarationAdapter → B.Bool
+isFilledKernelPairDeclaration : KernelPairDeclarationAdapter → Core.Phase.Bool
 isFilledKernelPairDeclaration a = KernelPairDeclarationAdapter.status a
 
 -- Categorical view for KernelPairDeclaration
@@ -5895,14 +5855,13 @@ kernelPairDeclarationCategorical : KernelPairDeclarationAdapter →
 kernelPairDeclarationCategorical adapt =
   mkCategoricalAdapter C2S2.KernelPairDeclaration (λ _ → KernelPairDeclarationAdapter.decl adapt)
 
-
 -- Internal equivalence relation
 record InternalEquivalenceRelationDeclarationAdapter : Set₁ where
   field
     decl : C2S2.InternalEquivalenceRelationDeclaration
     expectedObjectA : M.Identifier
     link : C2S2.InternalEquivalenceRelationDeclaration.objectA decl ≡ expectedObjectA
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkInternalEquivalenceRelationDeclarationAdapter :
   (d : C2S2.InternalEquivalenceRelationDeclaration) →
@@ -5910,9 +5869,9 @@ mkInternalEquivalenceRelationDeclarationAdapter :
   (p : C2S2.InternalEquivalenceRelationDeclaration.objectA d ≡ eoa) →
   InternalEquivalenceRelationDeclarationAdapter
 mkInternalEquivalenceRelationDeclarationAdapter d eoa p =
-  record { decl = d ; expectedObjectA = eoa ; link = p ; status = B.true }
+  record { decl = d ; expectedObjectA = eoa ; link = p ; status = true }
 
-isFilledInternalEquivalenceRelationDeclaration : InternalEquivalenceRelationDeclarationAdapter → B.Bool
+isFilledInternalEquivalenceRelationDeclaration : InternalEquivalenceRelationDeclarationAdapter → Core.Phase.Bool
 isFilledInternalEquivalenceRelationDeclaration a = InternalEquivalenceRelationDeclarationAdapter.status a
 
 -- Categorical view for InternalEquivalenceRelationDeclaration
@@ -5921,14 +5880,13 @@ internalEquivalenceRelationDeclarationCategorical : InternalEquivalenceRelationD
 internalEquivalenceRelationDeclarationCategorical adapt =
   mkCategoricalAdapter C2S2.InternalEquivalenceRelationDeclaration (λ _ → InternalEquivalenceRelationDeclarationAdapter.decl adapt)
 
-
 -- Exact category (regular + effective relations)
 record ExactCategoryDeclarationAdapter : Set₁ where
   field
     decl : C2S2.ExactCategoryDeclaration
     expectedRegular : C2S2.RegularCategoryDeclaration
     link : C2S2.ExactCategoryDeclaration.regular decl ≡ expectedRegular
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkExactCategoryDeclarationAdapter :
   (d : C2S2.ExactCategoryDeclaration) →
@@ -5936,9 +5894,9 @@ mkExactCategoryDeclarationAdapter :
   (p : C2S2.ExactCategoryDeclaration.regular d ≡ er) →
   ExactCategoryDeclarationAdapter
 mkExactCategoryDeclarationAdapter d er p =
-  record { decl = d ; expectedRegular = er ; link = p ; status = B.true }
+  record { decl = d ; expectedRegular = er ; link = p ; status = true }
 
-isFilledExactCategoryDeclaration : ExactCategoryDeclarationAdapter → B.Bool
+isFilledExactCategoryDeclaration : ExactCategoryDeclarationAdapter → Core.Phase.Bool
 isFilledExactCategoryDeclaration a = ExactCategoryDeclarationAdapter.status a
 
 -- Categorical view for ExactCategoryDeclaration
@@ -5946,7 +5904,6 @@ exactCategoryDeclarationCategorical : ExactCategoryDeclarationAdapter →
   CategoricalAdapter {lzero} C2S2.ExactCategoryDeclaration
 exactCategoryDeclarationCategorical adapt =
   mkCategoricalAdapter C2S2.ExactCategoryDeclaration (λ _ → ExactCategoryDeclarationAdapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Advanced Monad Theory (Chapter2.Level2sub4)
@@ -5960,7 +5917,7 @@ record MonadWithRankAdapter : Set₁ where
     expectedCardinal : C2S4.RegularCardinal
     link1 : C2S4.MonadWithRank.monad decl ≡ expectedMonad
     link2 : C2S4.MonadWithRank.cardinal decl ≡ expectedCardinal
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkMonadWithRankAdapter :
   (d : C2S4.MonadWithRank) →
@@ -5970,9 +5927,10 @@ mkMonadWithRankAdapter :
   (p2 : C2S4.MonadWithRank.cardinal d ≡ ec) →
   MonadWithRankAdapter
 mkMonadWithRankAdapter d em ec p1 p2 =
-  record { decl = d ; expectedMonad = em ; expectedCardinal = ec ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedMonad = em ; expectedCardinal = ec ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledMonadWithRank : MonadWithRankAdapter → B.Bool
+open import Core.Phase using (Bool)
+isFilledMonadWithRank : MonadWithRankAdapter → Bool
 isFilledMonadWithRank a = MonadWithRankAdapter.status a
 
 -- Categorical view for MonadWithRank
@@ -5981,14 +5939,13 @@ monadWithRankCategorical : MonadWithRankAdapter →
 monadWithRankCategorical adapt =
   mkCategoricalAdapter C2S4.MonadWithRank (λ _ → MonadWithRankAdapter.decl adapt)
 
-
 -- Locally α-presentable category
 record LocallyPresentableCategoryAdapter : Set₁ where
   field
     decl : C2S4.LocallyPresentableCategory
     expectedCardinal : C2S4.RegularCardinal
     link : C2S4.LocallyPresentableCategory.cardinal decl ≡ expectedCardinal
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkLocallyPresentableCategoryAdapter :
   (d : C2S4.LocallyPresentableCategory) →
@@ -5996,9 +5953,9 @@ mkLocallyPresentableCategoryAdapter :
   (p : C2S4.LocallyPresentableCategory.cardinal d ≡ ec) →
   LocallyPresentableCategoryAdapter
 mkLocallyPresentableCategoryAdapter d ec p =
-  record { decl = d ; expectedCardinal = ec ; link = p ; status = B.true }
+  record { decl = d ; expectedCardinal = ec ; link = p ; status = true }
 
-isFilledLocallyPresentableCategory : LocallyPresentableCategoryAdapter → B.Bool
+isFilledLocallyPresentableCategory : LocallyPresentableCategoryAdapter → Core.Phase.Bool
 isFilledLocallyPresentableCategory a = LocallyPresentableCategoryAdapter.status a
 
 -- Categorical view for LocallyPresentableCategory
@@ -6006,7 +5963,6 @@ locallyPresentableCategoryCategorical : LocallyPresentableCategoryAdapter →
   CategoricalAdapter {lzero} C2S4.LocallyPresentableCategory
 locallyPresentableCategoryCategorical adapt =
   mkCategoricalAdapter C2S4.LocallyPresentableCategory (λ _ → LocallyPresentableCategoryAdapter.decl adapt)
-
 
 -- Rank theorem for monadic categories
 record RankTheoremForMonadicCategoriesTheoremAdapter : Set₁ where
@@ -6018,7 +5974,7 @@ record RankTheoremForMonadicCategoriesTheoremAdapter : Set₁ where
     link1 : C2S4.RankTheoremForMonadicCategoriesTheorem.baseCategory decl ≡ expectedBaseCategory
     link2 : C2S4.RankTheoremForMonadicCategoriesTheorem.monadWithRank decl ≡ expectedMonadWithRank
     link3 : C2S4.RankTheoremForMonadicCategoriesTheorem.algebraCategory decl ≡ expectedAlgCat
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkRankTheoremForMonadicCategoriesTheoremAdapter :
   (d : C2S4.RankTheoremForMonadicCategoriesTheorem) →
@@ -6030,9 +5986,9 @@ mkRankTheoremForMonadicCategoriesTheoremAdapter :
   (p3 : C2S4.RankTheoremForMonadicCategoriesTheorem.algebraCategory d ≡ eac) →
   RankTheoremForMonadicCategoriesTheoremAdapter
 mkRankTheoremForMonadicCategoriesTheoremAdapter d ebc emr eac p1 p2 p3 =
-  record { decl = d ; expectedBaseCategory = ebc ; expectedMonadWithRank = emr ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = B.true }
+  record { decl = d ; expectedBaseCategory = ebc ; expectedMonadWithRank = emr ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = true }
 
-isFilledRankTheoremForMonadicCategoriesTheorem : RankTheoremForMonadicCategoriesTheoremAdapter → B.Bool
+isFilledRankTheoremForMonadicCategoriesTheorem : RankTheoremForMonadicCategoriesTheoremAdapter → Core.Phase.Bool
 isFilledRankTheoremForMonadicCategoriesTheorem a = RankTheoremForMonadicCategoriesTheoremAdapter.status a
 
 -- Categorical view for RankTheoremForMonadicCategoriesTheorem
@@ -6040,7 +5996,6 @@ rankTheoremForMonadicCategoriesTheoremCategorical : RankTheoremForMonadicCategor
   CategoricalAdapter {lzero} C2S4.RankTheoremForMonadicCategoriesTheorem
 rankTheoremForMonadicCategoriesTheoremCategorical adapt =
   mkCategoricalAdapter C2S4.RankTheoremForMonadicCategoriesTheorem (λ _ → RankTheoremForMonadicCategoriesTheoremAdapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Functor Properties: Preserve/Reflect/Create Limits (Chapter1.Level1sub2)
@@ -6052,7 +6007,7 @@ record FunctorPreservesLimitsAdapter : Set₁ where
     decl : C1S2.FunctorPreservesLimits
     expectedFunctor : M.Identifier
     link : C1S2.FunctorPreservesLimits.F decl ≡ expectedFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFunctorPreservesLimitsAdapter :
   (d : C1S2.FunctorPreservesLimits) →
@@ -6060,9 +6015,9 @@ mkFunctorPreservesLimitsAdapter :
   (p : C1S2.FunctorPreservesLimits.F d ≡ ef) →
   FunctorPreservesLimitsAdapter
 mkFunctorPreservesLimitsAdapter d ef p =
-  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
-isFilledFunctorPreservesLimits : FunctorPreservesLimitsAdapter → B.Bool
+isFilledFunctorPreservesLimits : FunctorPreservesLimitsAdapter → Core.Phase.Bool
 isFilledFunctorPreservesLimits a = FunctorPreservesLimitsAdapter.status a
 
 -- Categorical view for FunctorPreservesLimits
@@ -6071,14 +6026,13 @@ functorPreservesLimitsCategorical : FunctorPreservesLimitsAdapter →
 functorPreservesLimitsCategorical adapt =
   mkCategoricalAdapter C1S2.FunctorPreservesLimits (λ _ → FunctorPreservesLimitsAdapter.decl adapt)
 
-
 -- Functor reflects limits
 record FunctorReflectsLimitsAdapter : Set₁ where
   field
     decl : C1S2.FunctorReflectsLimits
     expectedFunctor : M.Identifier
     link : C1S2.FunctorReflectsLimits.F decl ≡ expectedFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFunctorReflectsLimitsAdapter :
   (d : C1S2.FunctorReflectsLimits) →
@@ -6086,9 +6040,9 @@ mkFunctorReflectsLimitsAdapter :
   (p : C1S2.FunctorReflectsLimits.F d ≡ ef) →
   FunctorReflectsLimitsAdapter
 mkFunctorReflectsLimitsAdapter d ef p =
-  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
-isFilledFunctorReflectsLimits : FunctorReflectsLimitsAdapter → B.Bool
+isFilledFunctorReflectsLimits : FunctorReflectsLimitsAdapter → Core.Phase.Bool
 isFilledFunctorReflectsLimits a = FunctorReflectsLimitsAdapter.status a
 
 -- Categorical view for FunctorReflectsLimits
@@ -6097,14 +6051,13 @@ functorReflectsLimitsCategorical : FunctorReflectsLimitsAdapter →
 functorReflectsLimitsCategorical adapt =
   mkCategoricalAdapter C1S2.FunctorReflectsLimits (λ _ → FunctorReflectsLimitsAdapter.decl adapt)
 
-
 -- Functor creates limits
 record FunctorCreatesLimitsAdapter : Set₁ where
   field
     decl : C1S2.FunctorCreatesLimits
     expectedFunctor : M.Identifier
     link : C1S2.FunctorCreatesLimits.F decl ≡ expectedFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFunctorCreatesLimitsAdapter :
   (d : C1S2.FunctorCreatesLimits) →
@@ -6112,9 +6065,9 @@ mkFunctorCreatesLimitsAdapter :
   (p : C1S2.FunctorCreatesLimits.F d ≡ ef) →
   FunctorCreatesLimitsAdapter
 mkFunctorCreatesLimitsAdapter d ef p =
-  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
-isFilledFunctorCreatesLimits : FunctorCreatesLimitsAdapter → B.Bool
+isFilledFunctorCreatesLimits : FunctorCreatesLimitsAdapter → Core.Phase.Bool
 isFilledFunctorCreatesLimits a = FunctorCreatesLimitsAdapter.status a
 
 -- Categorical view for FunctorCreatesLimits
@@ -6123,14 +6076,13 @@ functorCreatesLimitsCategorical : FunctorCreatesLimitsAdapter →
 functorCreatesLimitsCategorical adapt =
   mkCategoricalAdapter C1S2.FunctorCreatesLimits (λ _ → FunctorCreatesLimitsAdapter.decl adapt)
 
-
 -- Theorem: Creation implies reflection
 record CreationImpliesReflectionAdapter : Set₁ where
   field
     decl : C1S2.CreationImpliesReflection
     expectedFunctor : M.Identifier
     link : C1S2.CreationImpliesReflection.F decl ≡ expectedFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCreationImpliesReflectionAdapter :
   (d : C1S2.CreationImpliesReflection) →
@@ -6138,9 +6090,9 @@ mkCreationImpliesReflectionAdapter :
   (p : C1S2.CreationImpliesReflection.F d ≡ ef) →
   CreationImpliesReflectionAdapter
 mkCreationImpliesReflectionAdapter d ef p =
-  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
-isFilledCreationImpliesReflection : CreationImpliesReflectionAdapter → B.Bool
+isFilledCreationImpliesReflection : CreationImpliesReflectionAdapter → Core.Phase.Bool
 isFilledCreationImpliesReflection a = CreationImpliesReflectionAdapter.status a
 
 -- Categorical view for CreationImpliesReflection
@@ -6149,14 +6101,13 @@ creationImpliesReflectionCategorical : CreationImpliesReflectionAdapter →
 creationImpliesReflectionCategorical adapt =
   mkCategoricalAdapter C1S2.CreationImpliesReflection (λ _ → CreationImpliesReflectionAdapter.decl adapt)
 
-
 -- Theorem: Isomorphisms of categories reflect limits
 record IsomorphismsOfCategoriesReflectLimitsAdapter : Set₁ where
   field
     decl : C1S2.IsomorphismsOfCategoriesReflectLimits
     expectedFunctor : M.Identifier
     link : C1S2.IsomorphismsOfCategoriesReflectLimits.F decl ≡ expectedFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkIsomorphismsOfCategoriesReflectLimitsAdapter :
   (d : C1S2.IsomorphismsOfCategoriesReflectLimits) →
@@ -6164,9 +6115,9 @@ mkIsomorphismsOfCategoriesReflectLimitsAdapter :
   (p : C1S2.IsomorphismsOfCategoriesReflectLimits.F d ≡ ef) →
   IsomorphismsOfCategoriesReflectLimitsAdapter
 mkIsomorphismsOfCategoriesReflectLimitsAdapter d ef p =
-  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
-isFilledIsomorphismsOfCategoriesReflectLimits : IsomorphismsOfCategoriesReflectLimitsAdapter → B.Bool
+isFilledIsomorphismsOfCategoriesReflectLimits : IsomorphismsOfCategoriesReflectLimitsAdapter → Core.Phase.Bool
 isFilledIsomorphismsOfCategoriesReflectLimits a = IsomorphismsOfCategoriesReflectLimitsAdapter.status a
 
 -- Categorical view for IsomorphismsOfCategoriesReflectLimits
@@ -6175,14 +6126,13 @@ isomorphismsOfCategoriesReflectLimitsCategorical : IsomorphismsOfCategoriesRefle
 isomorphismsOfCategoriesReflectLimitsCategorical adapt =
   mkCategoricalAdapter C1S2.IsomorphismsOfCategoriesReflectLimits (λ _ → IsomorphismsOfCategoriesReflectLimitsAdapter.decl adapt)
 
-
 -- Theorem: Right adjoints preserve limits
 record RightAdjointsPreserveLimits_L2Adapter : Set₁ where
   field
     decl : C1S2.RightAdjointsPreserveLimits_L2
     expectedFunctor : M.Identifier
     link : C1S2.RightAdjointsPreserveLimits_L2.F decl ≡ expectedFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkRightAdjointsPreserveLimits_L2Adapter :
   (d : C1S2.RightAdjointsPreserveLimits_L2) →
@@ -6190,9 +6140,9 @@ mkRightAdjointsPreserveLimits_L2Adapter :
   (p : C1S2.RightAdjointsPreserveLimits_L2.F d ≡ ef) →
   RightAdjointsPreserveLimits_L2Adapter
 mkRightAdjointsPreserveLimits_L2Adapter d ef p =
-  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
-isFilledRightAdjointsPreserveLimits_L2 : RightAdjointsPreserveLimits_L2Adapter → B.Bool
+isFilledRightAdjointsPreserveLimits_L2 : RightAdjointsPreserveLimits_L2Adapter → Core.Phase.Bool
 isFilledRightAdjointsPreserveLimits_L2 a = RightAdjointsPreserveLimits_L2Adapter.status a
 
 -- Categorical view for RightAdjointsPreserveLimits_L2
@@ -6200,7 +6150,6 @@ rightAdjointsPreserveLimits_L2Categorical : RightAdjointsPreserveLimits_L2Adapte
   CategoricalAdapter {lzero} C1S2.RightAdjointsPreserveLimits_L2
 rightAdjointsPreserveLimits_L2Categorical adapt =
   mkCategoricalAdapter C1S2.RightAdjointsPreserveLimits_L2 (λ _ → RightAdjointsPreserveLimits_L2Adapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Yoneda Lemma (Chapter1.Level1sub8)
@@ -6212,7 +6161,7 @@ record InternalYonedaEmbeddingAdapter : Set₁ where
     decl : C1S8.InternalYonedaEmbedding
     expectedInternalCategory : C1S8.InternalCategory
     link : C1S8.InternalYonedaEmbedding.internalCategory decl ≡ expectedInternalCategory
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkInternalYonedaEmbeddingAdapter :
   (d : C1S8.InternalYonedaEmbedding) →
@@ -6220,9 +6169,9 @@ mkInternalYonedaEmbeddingAdapter :
   (p : C1S8.InternalYonedaEmbedding.internalCategory d ≡ eic) →
   InternalYonedaEmbeddingAdapter
 mkInternalYonedaEmbeddingAdapter d eic p =
-  record { decl = d ; expectedInternalCategory = eic ; link = p ; status = B.true }
+  record { decl = d ; expectedInternalCategory = eic ; link = p ; status = true }
 
-isFilledInternalYonedaEmbedding : InternalYonedaEmbeddingAdapter → B.Bool
+isFilledInternalYonedaEmbedding : InternalYonedaEmbeddingAdapter → Core.Phase.Bool
 isFilledInternalYonedaEmbedding a = InternalYonedaEmbeddingAdapter.status a
 
 -- Categorical view for InternalYonedaEmbedding
@@ -6230,7 +6179,6 @@ internalYonedaEmbeddingCategorical : InternalYonedaEmbeddingAdapter →
   CategoricalAdapter {lzero} C1S8.InternalYonedaEmbedding
 internalYonedaEmbeddingCategorical adapt =
   mkCategoricalAdapter C1S8.InternalYonedaEmbedding (λ _ → InternalYonedaEmbeddingAdapter.decl adapt)
-
 
 -- Internal Yoneda lemma theorem
 record InternalYonedaLemmaAdapter : Set₁ where
@@ -6240,7 +6188,7 @@ record InternalYonedaLemmaAdapter : Set₁ where
     expectedPresheaf : C1S8.InternalPresheaf
     link1 : C1S8.InternalYonedaLemma.internalCategory decl ≡ expectedInternalCategory
     link2 : C1S8.InternalYonedaLemma.presheaf decl ≡ expectedPresheaf
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkInternalYonedaLemmaAdapter :
   (d : C1S8.InternalYonedaLemma) →
@@ -6250,9 +6198,9 @@ mkInternalYonedaLemmaAdapter :
   (p2 : C1S8.InternalYonedaLemma.presheaf d ≡ ep) →
   InternalYonedaLemmaAdapter
 mkInternalYonedaLemmaAdapter d eic ep p1 p2 =
-  record { decl = d ; expectedInternalCategory = eic ; expectedPresheaf = ep ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedInternalCategory = eic ; expectedPresheaf = ep ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledInternalYonedaLemma : InternalYonedaLemmaAdapter → B.Bool
+isFilledInternalYonedaLemma : InternalYonedaLemmaAdapter → Core.Phase.Bool
 isFilledInternalYonedaLemma a = InternalYonedaLemmaAdapter.status a
 
 -- Categorical view for InternalYonedaLemma
@@ -6260,7 +6208,6 @@ internalYonedaLemmaCategorical : InternalYonedaLemmaAdapter →
   CategoricalAdapter {lzero} C1S8.InternalYonedaLemma
 internalYonedaLemmaCategorical adapt =
   mkCategoricalAdapter C1S8.InternalYonedaLemma (λ _ → InternalYonedaLemmaAdapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Kan Extensions (Chapter1.Level1sub3)
@@ -6274,7 +6221,7 @@ record KanExtensionContextAdapter : Set₁ where
     expectedT : M.Identifier
     link1 : C1S3.KanExtensionContext.K decl ≡ expectedK
     link2 : C1S3.KanExtensionContext.T decl ≡ expectedT
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkKanExtensionContextAdapter :
   (d : C1S3.KanExtensionContext) →
@@ -6284,9 +6231,9 @@ mkKanExtensionContextAdapter :
   (p2 : C1S3.KanExtensionContext.T d ≡ et) →
   KanExtensionContextAdapter
 mkKanExtensionContextAdapter d ek et p1 p2 =
-  record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledKanExtensionContext : KanExtensionContextAdapter → B.Bool
+isFilledKanExtensionContext : KanExtensionContextAdapter → Core.Phase.Bool
 isFilledKanExtensionContext a = KanExtensionContextAdapter.status a
 
 -- Categorical view for KanExtensionContext
@@ -6295,14 +6242,13 @@ kanExtensionContextCategorical : KanExtensionContextAdapter →
 kanExtensionContextCategorical adapt =
   mkCategoricalAdapter C1S3.KanExtensionContext (λ _ → KanExtensionContextAdapter.decl adapt)
 
-
 -- Left Kan candidate
 record LeftKanCandidateAdapter : Set₁ where
   field
     decl : C1S3.LeftKanCandidate
     expectedM : M.Identifier
     link : C1S3.LeftKanCandidate.M decl ≡ expectedM
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkLeftKanCandidateAdapter :
   (d : C1S3.LeftKanCandidate) →
@@ -6310,9 +6256,9 @@ mkLeftKanCandidateAdapter :
   (p : C1S3.LeftKanCandidate.M d ≡ em) →
   LeftKanCandidateAdapter
 mkLeftKanCandidateAdapter d em p =
-  record { decl = d ; expectedM = em ; link = p ; status = B.true }
+  record { decl = d ; expectedM = em ; link = p ; status = true }
 
-isFilledLeftKanCandidate : LeftKanCandidateAdapter → B.Bool
+isFilledLeftKanCandidate : LeftKanCandidateAdapter → Core.Phase.Bool
 isFilledLeftKanCandidate a = LeftKanCandidateAdapter.status a
 
 -- Categorical view for LeftKanCandidate
@@ -6321,14 +6267,13 @@ leftKanCandidateCategorical : LeftKanCandidateAdapter →
 leftKanCandidateCategorical adapt =
   mkCategoricalAdapter C1S3.LeftKanCandidate (λ _ → LeftKanCandidateAdapter.decl adapt)
 
-
 -- Right Kan candidate
 record RightKanCandidateAdapter : Set₁ where
   field
     decl : C1S3.RightKanCandidate
     expectedM : M.Identifier
     link : C1S3.RightKanCandidate.M decl ≡ expectedM
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkRightKanCandidateAdapter :
   (d : C1S3.RightKanCandidate) →
@@ -6336,9 +6281,9 @@ mkRightKanCandidateAdapter :
   (p : C1S3.RightKanCandidate.M d ≡ em) →
   RightKanCandidateAdapter
 mkRightKanCandidateAdapter d em p =
-  record { decl = d ; expectedM = em ; link = p ; status = B.true }
+  record { decl = d ; expectedM = em ; link = p ; status = true }
 
-isFilledRightKanCandidate : RightKanCandidateAdapter → B.Bool
+isFilledRightKanCandidate : RightKanCandidateAdapter → Core.Phase.Bool
 isFilledRightKanCandidate a = RightKanCandidateAdapter.status a
 
 -- Categorical view for RightKanCandidate
@@ -6346,7 +6291,6 @@ rightKanCandidateCategorical : RightKanCandidateAdapter →
   CategoricalAdapter {lzero} C1S3.RightKanCandidate
 rightKanCandidateCategorical adapt =
   mkCategoricalAdapter C1S3.RightKanCandidate (λ _ → RightKanCandidateAdapter.decl adapt)
-
 
 -- Theorem: Left Kan extension is initial object
 record LeftKanExtensionIsInitialObjectAdapter : Set₁ where
@@ -6356,7 +6300,7 @@ record LeftKanExtensionIsInitialObjectAdapter : Set₁ where
     expectedT : M.Identifier
     link1 : C1S3.LeftKanExtensionIsInitialObject.K decl ≡ expectedK
     link2 : C1S3.LeftKanExtensionIsInitialObject.T decl ≡ expectedT
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkLeftKanExtensionIsInitialObjectAdapter :
   (d : C1S3.LeftKanExtensionIsInitialObject) →
@@ -6366,9 +6310,9 @@ mkLeftKanExtensionIsInitialObjectAdapter :
   (p2 : C1S3.LeftKanExtensionIsInitialObject.T d ≡ et) →
   LeftKanExtensionIsInitialObjectAdapter
 mkLeftKanExtensionIsInitialObjectAdapter d ek et p1 p2 =
-  record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledLeftKanExtensionIsInitialObject : LeftKanExtensionIsInitialObjectAdapter → B.Bool
+isFilledLeftKanExtensionIsInitialObject : LeftKanExtensionIsInitialObjectAdapter → Core.Phase.Bool
 isFilledLeftKanExtensionIsInitialObject a = LeftKanExtensionIsInitialObjectAdapter.status a
 
 -- Categorical view for LeftKanExtensionIsInitialObject
@@ -6376,7 +6320,6 @@ leftKanExtensionIsInitialObjectCategorical : LeftKanExtensionIsInitialObjectAdap
   CategoricalAdapter {lzero} C1S3.LeftKanExtensionIsInitialObject
 leftKanExtensionIsInitialObjectCategorical adapt =
   mkCategoricalAdapter C1S3.LeftKanExtensionIsInitialObject (λ _ → LeftKanExtensionIsInitialObjectAdapter.decl adapt)
-
 
 -- Theorem: Right Kan extension is terminal object
 record RightKanExtensionIsTerminalObjectAdapter : Set₁ where
@@ -6386,7 +6329,7 @@ record RightKanExtensionIsTerminalObjectAdapter : Set₁ where
     expectedT : M.Identifier
     link1 : C1S3.RightKanExtensionIsTerminalObject.K decl ≡ expectedK
     link2 : C1S3.RightKanExtensionIsTerminalObject.T decl ≡ expectedT
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkRightKanExtensionIsTerminalObjectAdapter :
   (d : C1S3.RightKanExtensionIsTerminalObject) →
@@ -6396,9 +6339,9 @@ mkRightKanExtensionIsTerminalObjectAdapter :
   (p2 : C1S3.RightKanExtensionIsTerminalObject.T d ≡ et) →
   RightKanExtensionIsTerminalObjectAdapter
 mkRightKanExtensionIsTerminalObjectAdapter d ek et p1 p2 =
-  record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledRightKanExtensionIsTerminalObject : RightKanExtensionIsTerminalObjectAdapter → B.Bool
+isFilledRightKanExtensionIsTerminalObject : RightKanExtensionIsTerminalObjectAdapter → Core.Phase.Bool
 isFilledRightKanExtensionIsTerminalObject a = RightKanExtensionIsTerminalObjectAdapter.status a
 
 -- Categorical view for RightKanExtensionIsTerminalObject
@@ -6406,7 +6349,6 @@ rightKanExtensionIsTerminalObjectCategorical : RightKanExtensionIsTerminalObject
   CategoricalAdapter {lzero} C1S3.RightKanExtensionIsTerminalObject
 rightKanExtensionIsTerminalObjectCategorical adapt =
   mkCategoricalAdapter C1S3.RightKanExtensionIsTerminalObject (λ _ → RightKanExtensionIsTerminalObjectAdapter.decl adapt)
-
 
 -- Theorem: Pointwise Kan formula
 record PointwiseKanFormulaTheoremAdapter : Set₁ where
@@ -6416,7 +6358,7 @@ record PointwiseKanFormulaTheoremAdapter : Set₁ where
     expectedT : M.Identifier
     link1 : C1S3.PointwiseKanFormulaTheorem.K decl ≡ expectedK
     link2 : C1S3.PointwiseKanFormulaTheorem.T decl ≡ expectedT
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPointwiseKanFormulaTheoremAdapter :
   (d : C1S3.PointwiseKanFormulaTheorem) →
@@ -6426,9 +6368,9 @@ mkPointwiseKanFormulaTheoremAdapter :
   (p2 : C1S3.PointwiseKanFormulaTheorem.T d ≡ et) →
   PointwiseKanFormulaTheoremAdapter
 mkPointwiseKanFormulaTheoremAdapter d ek et p1 p2 =
-  record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledPointwiseKanFormulaTheorem : PointwiseKanFormulaTheoremAdapter → B.Bool
+isFilledPointwiseKanFormulaTheorem : PointwiseKanFormulaTheoremAdapter → Core.Phase.Bool
 isFilledPointwiseKanFormulaTheorem a = PointwiseKanFormulaTheoremAdapter.status a
 
 -- Categorical view for PointwiseKanFormulaTheorem
@@ -6436,7 +6378,6 @@ pointwiseKanFormulaTheoremCategorical : PointwiseKanFormulaTheoremAdapter →
   CategoricalAdapter {lzero} C1S3.PointwiseKanFormulaTheorem
 pointwiseKanFormulaTheoremCategorical adapt =
   mkCategoricalAdapter C1S3.PointwiseKanFormulaTheorem (λ _ → PointwiseKanFormulaTheoremAdapter.decl adapt)
-
 
 -- Theorem: Adjoints as Kan extensions
 record AdjointsAsKanExtensionsAdapter : Set₁ where
@@ -6446,7 +6387,7 @@ record AdjointsAsKanExtensionsAdapter : Set₁ where
     expectedG : M.Identifier
     link1 : C1S3.AdjointsAsKanExtensions.F decl ≡ expectedF
     link2 : C1S3.AdjointsAsKanExtensions.G decl ≡ expectedG
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAdjointsAsKanExtensionsAdapter :
   (d : C1S3.AdjointsAsKanExtensions) →
@@ -6456,9 +6397,9 @@ mkAdjointsAsKanExtensionsAdapter :
   (p2 : C1S3.AdjointsAsKanExtensions.G d ≡ eg) →
   AdjointsAsKanExtensionsAdapter
 mkAdjointsAsKanExtensionsAdapter d ef eg p1 p2 =
-  record { decl = d ; expectedF = ef ; expectedG = eg ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedF = ef ; expectedG = eg ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledAdjointsAsKanExtensions : AdjointsAsKanExtensionsAdapter → B.Bool
+isFilledAdjointsAsKanExtensions : AdjointsAsKanExtensionsAdapter → Core.Phase.Bool
 isFilledAdjointsAsKanExtensions a = AdjointsAsKanExtensionsAdapter.status a
 
 -- Categorical view for AdjointsAsKanExtensions
@@ -6466,7 +6407,6 @@ adjointsAsKanExtensionsCategorical : AdjointsAsKanExtensionsAdapter →
   CategoricalAdapter {lzero} C1S3.AdjointsAsKanExtensions
 adjointsAsKanExtensionsCategorical adapt =
   mkCategoricalAdapter C1S3.AdjointsAsKanExtensions (λ _ → AdjointsAsKanExtensionsAdapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Adjoint Functor Theorems (Chapter1.Level1sub3)
@@ -6476,15 +6416,15 @@ adjointsAsKanExtensionsCategorical adapt =
 record AdjointFunctorTheoremRightAdapter : Set₁ where
   field
     decl : C1S3.AdjointFunctorTheoremRight
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAdjointFunctorTheoremRightAdapter :
   (d : C1S3.AdjointFunctorTheoremRight) →
   AdjointFunctorTheoremRightAdapter
 mkAdjointFunctorTheoremRightAdapter d =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
-isFilledAdjointFunctorTheoremRight : AdjointFunctorTheoremRightAdapter → B.Bool
+isFilledAdjointFunctorTheoremRight : AdjointFunctorTheoremRightAdapter → Core.Phase.Bool
 isFilledAdjointFunctorTheoremRight a = AdjointFunctorTheoremRightAdapter.status a
 
 -- Categorical view for AdjointFunctorTheoremRight
@@ -6492,7 +6432,6 @@ adjointFunctorTheoremRightCategorical : AdjointFunctorTheoremRightAdapter →
   CategoricalAdapter {lzero} C1S3.AdjointFunctorTheoremRight
 adjointFunctorTheoremRightCategorical adapt =
   mkCategoricalAdapter C1S3.AdjointFunctorTheoremRight (λ _ → AdjointFunctorTheoremRightAdapter.decl adapt)
-
 
 ------------------------------------------------------------------------
 -- Grothendieck Fibrations (Chapter2.Level2sub8)
@@ -6504,7 +6443,7 @@ record FibrationDeclarationAdapter : Set₁ where
     decl : C2S8.FibrationDeclaration
     expectedProjection : M.Identifier
     link : C2S8.FibrationProjectionFunctor.projectionFunctor (C2S8.FibrationDeclaration.projectionFunctor decl) ≡ expectedProjection
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFibrationDeclarationAdapter :
   (d : C2S8.FibrationDeclaration) →
@@ -6513,12 +6452,12 @@ mkFibrationDeclarationAdapter :
   (f : ⊤ → C2S8.FibrationDeclaration) →
   FibrationDeclarationAdapter
 mkFibrationDeclarationAdapter d ep p f =
-  record { decl = d ; expectedProjection = ep ; link = p ; status = B.true }
+  record { decl = d ; expectedProjection = ep ; link = p ; status = true }
 
 fibrationDeclarationCategorical : FibrationDeclarationAdapter → CategoricalAdapter {lsuc lzero} C2S8.FibrationDeclaration
 fibrationDeclarationCategorical adapt = mkCategoricalAdapter C2S8.FibrationDeclaration (λ _ → FibrationDeclarationAdapter.decl adapt)
 
-isFilledFibrationDeclaration : FibrationDeclarationAdapter → B.Bool
+isFilledFibrationDeclaration : FibrationDeclarationAdapter → Core.Phase.Bool
 isFilledFibrationDeclaration a = FibrationDeclarationAdapter.status a
 
 -- Cartesian arrow (universal lifting property)
@@ -6527,7 +6466,7 @@ record CartesianArrowAdapter : Set₁ where
     decl : C2S8.CartesianArrow
     expectedArrow : M.Identifier
     link : C2S8.CartesianArrow.arrow decl ≡ expectedArrow
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCartesianArrowAdapter :
   (d : C2S8.CartesianArrow) →
@@ -6536,12 +6475,12 @@ mkCartesianArrowAdapter :
   (f : ⊤ → C2S8.CartesianArrow) →
   CartesianArrowAdapter
 mkCartesianArrowAdapter d ea p f =
-  record { decl = d ; expectedArrow = ea ; link = p ; status = B.true }
+  record { decl = d ; expectedArrow = ea ; link = p ; status = true }
 
 cartesianArrowCategorical : CartesianArrowAdapter → CategoricalAdapter {lsuc lzero} C2S8.CartesianArrow
 cartesianArrowCategorical adapt = mkCategoricalAdapter C2S8.CartesianArrow (λ _ → CartesianArrowAdapter.decl adapt)
 
-isFilledCartesianArrow : CartesianArrowAdapter → B.Bool
+isFilledCartesianArrow : CartesianArrowAdapter → Core.Phase.Bool
 isFilledCartesianArrow a = CartesianArrowAdapter.status a
 
 -- Cartesian functor between fibrations
@@ -6550,7 +6489,7 @@ record CartesianFunctorDeclarationAdapter : Set₁ where
     decl : C2S8.CartesianFunctorDeclaration
     expectedFunctor : M.Identifier
     link : C2S8.CartesianFunctorDeclaration.underlyingFunctor decl ≡ expectedFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCartesianFunctorDeclarationAdapter :
   (d : C2S8.CartesianFunctorDeclaration) →
@@ -6559,12 +6498,12 @@ mkCartesianFunctorDeclarationAdapter :
   (f : ⊤ → C2S8.CartesianFunctorDeclaration) →
   CartesianFunctorDeclarationAdapter
 mkCartesianFunctorDeclarationAdapter d ef p f =
-  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
 cartesianFunctorDeclarationCategorical : CartesianFunctorDeclarationAdapter → CategoricalAdapter {lsuc lzero} C2S8.CartesianFunctorDeclaration
 cartesianFunctorDeclarationCategorical adapt = mkCategoricalAdapter C2S8.CartesianFunctorDeclaration (λ _ → CartesianFunctorDeclarationAdapter.decl adapt)
 
-isFilledCartesianFunctorDeclaration : CartesianFunctorDeclarationAdapter → B.Bool
+isFilledCartesianFunctorDeclaration : CartesianFunctorDeclarationAdapter → Core.Phase.Bool
 isFilledCartesianFunctorDeclaration a = CartesianFunctorDeclarationAdapter.status a
 
 -- Category of fibrations over a base
@@ -6573,7 +6512,7 @@ record CategoryOfFibrationsAdapter : Set₁ where
     decl : C2S8.CategoryOfFibrations
     expectedBase : C1S3.CategoryDeclaration
     link : C2S8.CategoryOfFibrations.baseCategory decl ≡ expectedBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCategoryOfFibrationsAdapter :
   (d : C2S8.CategoryOfFibrations) →
@@ -6582,31 +6521,31 @@ mkCategoryOfFibrationsAdapter :
   (f : ⊤ → C2S8.CategoryOfFibrations) →
   CategoryOfFibrationsAdapter
 mkCategoryOfFibrationsAdapter d eb p f =
-  record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+  record { decl = d ; expectedBase = eb ; link = p ; status = true }
 
 categoryOfFibrationsCategorical : CategoryOfFibrationsAdapter → CategoricalAdapter {lsuc lzero} C2S8.CategoryOfFibrations
 categoryOfFibrationsCategorical adapt = mkCategoricalAdapter C2S8.CategoryOfFibrations (λ _ → CategoryOfFibrationsAdapter.decl adapt)
 
-isFilledCategoryOfFibrations : CategoryOfFibrationsAdapter → B.Bool
+isFilledCategoryOfFibrations : CategoryOfFibrationsAdapter → Core.Phase.Bool
 isFilledCategoryOfFibrations a = CategoryOfFibrationsAdapter.status a
 
 -- Pseudofunctor from fibration (unpacking)
 record PseudofunctorFromFibrationAdapter : Set₁ where
   field
     decl : C2S8.PseudofunctorFromFibration
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkPseudofunctorFromFibrationAdapter :
   (d : C2S8.PseudofunctorFromFibration) →
   (f : ⊤ → C2S8.PseudofunctorFromFibration) →
   PseudofunctorFromFibrationAdapter
 mkPseudofunctorFromFibrationAdapter d f =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
 pseudofunctorFromFibrationCategorical : PseudofunctorFromFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.PseudofunctorFromFibration
 pseudofunctorFromFibrationCategorical adapt = mkCategoricalAdapter C2S8.PseudofunctorFromFibration (λ _ → PseudofunctorFromFibrationAdapter.decl adapt)
 
-isFilledPseudofunctorFromFibration : PseudofunctorFromFibrationAdapter → B.Bool
+isFilledPseudofunctorFromFibration : PseudofunctorFromFibrationAdapter → Core.Phase.Bool
 isFilledPseudofunctorFromFibration a = PseudofunctorFromFibrationAdapter.status a
 
 -- Grothendieck construction (category of elements)
@@ -6615,7 +6554,7 @@ record GrothendieckConstructionAdapter : Set₁ where
     decl : C2S8.GrothendieckConstruction
     expectedTotal : C1S3.CategoryDeclaration
     link : C2S8.GrothendieckConstruction.totalCategory decl ≡ expectedTotal
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkGrothendieckConstructionAdapter :
   (d : C2S8.GrothendieckConstruction) →
@@ -6624,12 +6563,12 @@ mkGrothendieckConstructionAdapter :
   (f : ⊤ → C2S8.GrothendieckConstruction) →
   GrothendieckConstructionAdapter
 mkGrothendieckConstructionAdapter d et p f =
-  record { decl = d ; expectedTotal = et ; link = p ; status = B.true }
+  record { decl = d ; expectedTotal = et ; link = p ; status = true }
 
 grothendieckConstructionCategorical : GrothendieckConstructionAdapter → CategoricalAdapter {lsuc lzero} C2S8.GrothendieckConstruction
 grothendieckConstructionCategorical adapt = mkCategoricalAdapter C2S8.GrothendieckConstruction (λ _ → GrothendieckConstructionAdapter.decl adapt)
 
-isFilledGrothendieckConstruction : GrothendieckConstructionAdapter → B.Bool
+isFilledGrothendieckConstruction : GrothendieckConstructionAdapter → Core.Phase.Bool
 isFilledGrothendieckConstruction a = GrothendieckConstructionAdapter.status a
 
 -- Grothendieck equivalence theorem (2-equivalence)
@@ -6638,7 +6577,7 @@ record GrothendieckEquivalenceTheoremAdapter : Set₁ where
     decl : C2S8.GrothendieckEquivalenceTheorem
     expectedBase : C1S3.CategoryDeclaration
     link : C2S8.GrothendieckEquivalenceTheorem.baseCategory decl ≡ expectedBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkGrothendieckEquivalenceTheoremAdapter :
   (d : C2S8.GrothendieckEquivalenceTheorem) →
@@ -6647,12 +6586,12 @@ mkGrothendieckEquivalenceTheoremAdapter :
   (f : ⊤ → C2S8.GrothendieckEquivalenceTheorem) →
   GrothendieckEquivalenceTheoremAdapter
 mkGrothendieckEquivalenceTheoremAdapter d eb p f =
-  record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+  record { decl = d ; expectedBase = eb ; link = p ; status = true }
 
 grothendieckEquivalenceTheoremCategorical : GrothendieckEquivalenceTheoremAdapter → CategoricalAdapter {lsuc lzero} C2S8.GrothendieckEquivalenceTheorem
 grothendieckEquivalenceTheoremCategorical adapt = mkCategoricalAdapter C2S8.GrothendieckEquivalenceTheorem (λ _ → GrothendieckEquivalenceTheoremAdapter.decl adapt)
 
-isFilledGrothendieckEquivalenceTheorem : GrothendieckEquivalenceTheoremAdapter → B.Bool
+isFilledGrothendieckEquivalenceTheorem : GrothendieckEquivalenceTheoremAdapter → Core.Phase.Bool
 isFilledGrothendieckEquivalenceTheorem a = GrothendieckEquivalenceTheoremAdapter.status a
 
 -- Fibred adjunction (pointwise on fibres)
@@ -6663,7 +6602,7 @@ record FibredAdjunctionDeclarationAdapter : Set₁ where
     expectedRight : C2S8.CartesianFunctorDeclaration
     link1 : C2S8.FibredAdjunctionDeclaration.leftAdjoint decl ≡ expectedLeft
     link2 : C2S8.FibredAdjunctionDeclaration.rightAdjoint decl ≡ expectedRight
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFibredAdjunctionDeclarationAdapter :
   (d : C2S8.FibredAdjunctionDeclaration) →
@@ -6674,69 +6613,69 @@ mkFibredAdjunctionDeclarationAdapter :
   (f : ⊤ → C2S8.FibredAdjunctionDeclaration) →
   FibredAdjunctionDeclarationAdapter
 mkFibredAdjunctionDeclarationAdapter d el er p1 p2 f =
-  record { decl = d ; expectedLeft = el ; expectedRight = er ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedLeft = el ; expectedRight = er ; link1 = p1 ; link2 = p2 ; status = true }
 
 fibredAdjunctionDeclarationCategorical : FibredAdjunctionDeclarationAdapter → CategoricalAdapter {lsuc lzero} C2S8.FibredAdjunctionDeclaration
 fibredAdjunctionDeclarationCategorical adapt = mkCategoricalAdapter C2S8.FibredAdjunctionDeclaration (λ _ → FibredAdjunctionDeclarationAdapter.decl adapt)
 
-isFilledFibredAdjunctionDeclaration : FibredAdjunctionDeclarationAdapter → B.Bool
+isFilledFibredAdjunctionDeclaration : FibredAdjunctionDeclarationAdapter → Core.Phase.Bool
 isFilledFibredAdjunctionDeclaration a = FibredAdjunctionDeclarationAdapter.status a
 
 -- Beck-Chevalley condition (coherence for fibred adjunctions)
 record BeckChevalleyConditionAdapter : Set₁ where
   field
     decl : C2S8.BeckChevalleyCondition
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkBeckChevalleyConditionAdapter :
   (d : C2S8.BeckChevalleyCondition) →
   (f : ⊤ → C2S8.BeckChevalleyCondition) →
   BeckChevalleyConditionAdapter
 mkBeckChevalleyConditionAdapter d f =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
 beckChevalleyConditionCategorical : BeckChevalleyConditionAdapter → CategoricalAdapter {lsuc lzero} C2S8.BeckChevalleyCondition
 beckChevalleyConditionCategorical adapt = mkCategoricalAdapter C2S8.BeckChevalleyCondition (λ _ → BeckChevalleyConditionAdapter.decl adapt)
 
-isFilledBeckChevalleyCondition : BeckChevalleyConditionAdapter → B.Bool
+isFilledBeckChevalleyCondition : BeckChevalleyConditionAdapter → Core.Phase.Bool
 isFilledBeckChevalleyCondition a = BeckChevalleyConditionAdapter.status a
 
 -- Fibration completeness criterion theorem
 record FibrationCompletenessCriterionTheoremAdapter : Set₁ where
   field
     decl : C2S8.FibrationCompletenessCriterionTheorem
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFibrationCompletenessCriterionTheoremAdapter :
   (d : C2S8.FibrationCompletenessCriterionTheorem) →
   (f : ⊤ → C2S8.FibrationCompletenessCriterionTheorem) →
   FibrationCompletenessCriterionTheoremAdapter
 mkFibrationCompletenessCriterionTheoremAdapter d f =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
 fibrationCompletenessCriterionTheoremCategorical : FibrationCompletenessCriterionTheoremAdapter → CategoricalAdapter {lsuc lzero} C2S8.FibrationCompletenessCriterionTheorem
 fibrationCompletenessCriterionTheoremCategorical adapt = mkCategoricalAdapter C2S8.FibrationCompletenessCriterionTheorem (λ _ → FibrationCompletenessCriterionTheoremAdapter.decl adapt)
 
-isFilledFibrationCompletenessCriterionTheorem : FibrationCompletenessCriterionTheoremAdapter → B.Bool
+isFilledFibrationCompletenessCriterionTheorem : FibrationCompletenessCriterionTheoremAdapter → Core.Phase.Bool
 isFilledFibrationCompletenessCriterionTheorem a = FibrationCompletenessCriterionTheoremAdapter.status a
 
 -- Locally small fibration
 record LocallySmallFibrationAdapter : Set₁ where
   field
     decl : C2S8.LocallySmallFibration
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkLocallySmallFibrationAdapter :
   (d : C2S8.LocallySmallFibration) →
   (f : ⊤ → C2S8.LocallySmallFibration) →
   LocallySmallFibrationAdapter
 mkLocallySmallFibrationAdapter d f =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
 locallySmallFibrationCategorical : LocallySmallFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.LocallySmallFibration
 locallySmallFibrationCategorical adapt = mkCategoricalAdapter C2S8.LocallySmallFibration (λ _ → LocallySmallFibrationAdapter.decl adapt)
 
-isFilledLocallySmallFibration : LocallySmallFibrationAdapter → B.Bool
+isFilledLocallySmallFibration : LocallySmallFibrationAdapter → Core.Phase.Bool
 isFilledLocallySmallFibration a = LocallySmallFibrationAdapter.status a
 
 -- Refined Grothendieck equivalence (for locally small fibrations)
@@ -6745,7 +6684,7 @@ record RefinedGrothendieckEquivalenceTheoremAdapter : Set₁ where
     decl : C2S8.RefinedGrothendieckEquivalenceTheorem
     expectedBase : C1S3.CategoryDeclaration
     link : C2S8.RefinedGrothendieckEquivalenceTheorem.baseCategory decl ≡ expectedBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkRefinedGrothendieckEquivalenceTheoremAdapter :
   (d : C2S8.RefinedGrothendieckEquivalenceTheorem) →
@@ -6754,12 +6693,12 @@ mkRefinedGrothendieckEquivalenceTheoremAdapter :
   (f : ⊤ → C2S8.RefinedGrothendieckEquivalenceTheorem) →
   RefinedGrothendieckEquivalenceTheoremAdapter
 mkRefinedGrothendieckEquivalenceTheoremAdapter d eb p f =
-  record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+  record { decl = d ; expectedBase = eb ; link = p ; status = true }
 
 refinedGrothendieckEquivalenceTheoremCategorical : RefinedGrothendieckEquivalenceTheoremAdapter → CategoricalAdapter {lsuc lzero} C2S8.RefinedGrothendieckEquivalenceTheorem
 refinedGrothendieckEquivalenceTheoremCategorical adapt = mkCategoricalAdapter C2S8.RefinedGrothendieckEquivalenceTheorem (λ _ → RefinedGrothendieckEquivalenceTheoremAdapter.decl adapt)
 
-isFilledRefinedGrothendieckEquivalenceTheorem : RefinedGrothendieckEquivalenceTheoremAdapter → B.Bool
+isFilledRefinedGrothendieckEquivalenceTheorem : RefinedGrothendieckEquivalenceTheoremAdapter → Core.Phase.Bool
 isFilledRefinedGrothendieckEquivalenceTheorem a = RefinedGrothendieckEquivalenceTheoremAdapter.status a
 
 -- Codomain fibration (canonical example)
@@ -6768,7 +6707,7 @@ record CodomainFibrationAdapter : Set₁ where
     decl : C2S8.CodomainFibration
     expectedBase : C1S3.CategoryDeclaration
     link : C2S8.CodomainFibration.baseCategory decl ≡ expectedBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCodomainFibrationAdapter :
   (d : C2S8.CodomainFibration) →
@@ -6777,31 +6716,31 @@ mkCodomainFibrationAdapter :
   (f : ⊤ → C2S8.CodomainFibration) →
   CodomainFibrationAdapter
 mkCodomainFibrationAdapter d eb p f =
-  record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+  record { decl = d ; expectedBase = eb ; link = p ; status = true }
 
 codomainFibrationCategorical : CodomainFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.CodomainFibration
 codomainFibrationCategorical adapt = mkCategoricalAdapter C2S8.CodomainFibration (λ _ → CodomainFibrationAdapter.decl adapt)
 
-isFilledCodomainFibration : CodomainFibrationAdapter → B.Bool
+isFilledCodomainFibration : CodomainFibrationAdapter → Core.Phase.Bool
 isFilledCodomainFibration a = CodomainFibrationAdapter.status a
 
 -- Lindenbaum-Tarski fibration (logic connection)
 record LindenbaumTarskiFibrationAdapter : Set₁ where
   field
     decl : C2S8.LindenbaumTarskiFibration
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkLindenbaumTarskiFibrationAdapter :
   (d : C2S8.LindenbaumTarskiFibration) →
   (f : ⊤ → C2S8.LindenbaumTarskiFibration) →
   LindenbaumTarskiFibrationAdapter
 mkLindenbaumTarskiFibrationAdapter d f =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
 lindenbaumTarskiFibrationCategorical : LindenbaumTarskiFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.LindenbaumTarskiFibration
 lindenbaumTarskiFibrationCategorical adapt = mkCategoricalAdapter C2S8.LindenbaumTarskiFibration (λ _ → LindenbaumTarskiFibrationAdapter.decl adapt)
 
-isFilledLindenbaumTarskiFibration : LindenbaumTarskiFibrationAdapter → B.Bool
+isFilledLindenbaumTarskiFibration : LindenbaumTarskiFibrationAdapter → Core.Phase.Bool
 isFilledLindenbaumTarskiFibration a = LindenbaumTarskiFibrationAdapter.status a
 
 -- Families fibration (indexed sets)
@@ -6810,7 +6749,7 @@ record FamiliesFibrationAdapter : Set₁ where
     decl : C2S8.FamiliesFibration
     expectedBase : C1S3.CategoryDeclaration
     link : C2S8.FamiliesFibration.baseCategory decl ≡ expectedBase
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFamiliesFibrationAdapter :
   (d : C2S8.FamiliesFibration) →
@@ -6819,14 +6758,13 @@ mkFamiliesFibrationAdapter :
   (f : ⊤ → C2S8.FamiliesFibration) →
   FamiliesFibrationAdapter
 mkFamiliesFibrationAdapter d eb p f =
-  record { decl = d ; expectedBase = eb ; link = p ; status = B.true }
+  record { decl = d ; expectedBase = eb ; link = p ; status = true }
 
 familiesFibrationCategorical : FamiliesFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.FamiliesFibration
 familiesFibrationCategorical adapt = mkCategoricalAdapter C2S8.FamiliesFibration (λ _ → FamiliesFibrationAdapter.decl adapt)
 
-isFilledFamiliesFibration : FamiliesFibrationAdapter → B.Bool
+isFilledFamiliesFibration : FamiliesFibrationAdapter → Core.Phase.Bool
 isFilledFamiliesFibration a = FamiliesFibrationAdapter.status a
-
 
 ------------------------------------------------------------------------
 -- Abelian Categories (Chapter2.Level2sub1)
@@ -6840,7 +6778,7 @@ record HasZeroObjectPropertyAdapter : Set₁ where
     expectedZero : M.Identifier
     link1 : C2S1.HasZeroObjectProperty.category decl ≡ expectedCategory
     link2 : C2S1.HasZeroObjectProperty.zeroObj decl ≡ expectedZero
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkHasZeroObjectPropertyAdapter :
   (d : C2S1.HasZeroObjectProperty) →
@@ -6850,9 +6788,9 @@ mkHasZeroObjectPropertyAdapter :
   (p2 : C2S1.HasZeroObjectProperty.zeroObj d ≡ ez) →
   HasZeroObjectPropertyAdapter
 mkHasZeroObjectPropertyAdapter d ec ez p1 p2 =
-  record { decl = d ; expectedCategory = ec ; expectedZero = ez ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedCategory = ec ; expectedZero = ez ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledHasZeroObjectProperty : HasZeroObjectPropertyAdapter → B.Bool
+isFilledHasZeroObjectProperty : HasZeroObjectPropertyAdapter → Core.Phase.Bool
 isFilledHasZeroObjectProperty a = HasZeroObjectPropertyAdapter.status a
 
 -- Kernel as equalizer definition
@@ -6863,7 +6801,7 @@ record KernelAsEqualizerDefinitionAdapter : Set₁ where
     expectedKernel : M.Identifier
     link1 : C2S1.KernelAsEqualizerDefinition.morphism decl ≡ expectedMorphism
     link2 : C2S1.KernelAsEqualizerDefinition.equalizerObject decl ≡ expectedKernel
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkKernelAsEqualizerDefinitionAdapter :
   (d : C2S1.KernelAsEqualizerDefinition) →
@@ -6873,9 +6811,9 @@ mkKernelAsEqualizerDefinitionAdapter :
   (p2 : C2S1.KernelAsEqualizerDefinition.equalizerObject d ≡ ek) →
   KernelAsEqualizerDefinitionAdapter
 mkKernelAsEqualizerDefinitionAdapter d em ek p1 p2 =
-  record { decl = d ; expectedMorphism = em ; expectedKernel = ek ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedMorphism = em ; expectedKernel = ek ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledKernelAsEqualizerDefinition : KernelAsEqualizerDefinitionAdapter → B.Bool
+isFilledKernelAsEqualizerDefinition : KernelAsEqualizerDefinitionAdapter → Core.Phase.Bool
 isFilledKernelAsEqualizerDefinition a = KernelAsEqualizerDefinitionAdapter.status a
 
 -- Biproduct object (simultaneous product and coproduct)
@@ -6888,7 +6826,7 @@ record BiproductObjectAdapter : Set₁ where
     link1 : C2S1.BiproductObject.left decl ≡ expectedLeft
     link2 : C2S1.BiproductObject.right decl ≡ expectedRight
     link3 : C2S1.BiproductObject.object decl ≡ expectedObject
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkBiproductObjectAdapter :
   (d : C2S1.BiproductObject) →
@@ -6900,9 +6838,9 @@ mkBiproductObjectAdapter :
   (p3 : C2S1.BiproductObject.object d ≡ eo) →
   BiproductObjectAdapter
 mkBiproductObjectAdapter d el er eo p1 p2 p3 =
-  record { decl = d ; expectedLeft = el ; expectedRight = er ; expectedObject = eo ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = B.true }
+  record { decl = d ; expectedLeft = el ; expectedRight = er ; expectedObject = eo ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = true }
 
-isFilledBiproductObject : BiproductObjectAdapter → B.Bool
+isFilledBiproductObject : BiproductObjectAdapter → Core.Phase.Bool
 isFilledBiproductObject a = BiproductObjectAdapter.status a
 
 -- Additive category declaration
@@ -6911,7 +6849,7 @@ record AdditiveCategoryDeclarationAdapter : Set₁ where
     decl : C2S1.AdditiveCategoryDeclaration
     expectedCategory : M.Identifier
     link : C2S1.AdditiveCategoryDeclaration.category decl ≡ expectedCategory
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAdditiveCategoryDeclarationAdapter :
   (d : C2S1.AdditiveCategoryDeclaration) →
@@ -6919,9 +6857,9 @@ mkAdditiveCategoryDeclarationAdapter :
   (p : C2S1.AdditiveCategoryDeclaration.category d ≡ ec) →
   AdditiveCategoryDeclarationAdapter
 mkAdditiveCategoryDeclarationAdapter d ec p =
-  record { decl = d ; expectedCategory = ec ; link = p ; status = B.true }
+  record { decl = d ; expectedCategory = ec ; link = p ; status = true }
 
-isFilledAdditiveCategoryDeclaration : AdditiveCategoryDeclarationAdapter → B.Bool
+isFilledAdditiveCategoryDeclaration : AdditiveCategoryDeclarationAdapter → Core.Phase.Bool
 isFilledAdditiveCategoryDeclaration a = AdditiveCategoryDeclarationAdapter.status a
 
 -- Abelian category declaration (main definition)
@@ -6930,7 +6868,7 @@ record AbelianCategoryDeclarationAdapter : Set₁ where
     decl : C2S1.AbelianCategoryDeclaration
     expectedCategory : M.Identifier
     link : C2S1.AbelianCategoryDeclaration.category decl ≡ expectedCategory
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAbelianCategoryDeclarationAdapter :
   (d : C2S1.AbelianCategoryDeclaration) →
@@ -6938,9 +6876,9 @@ mkAbelianCategoryDeclarationAdapter :
   (p : C2S1.AbelianCategoryDeclaration.category d ≡ ec) →
   AbelianCategoryDeclarationAdapter
 mkAbelianCategoryDeclarationAdapter d ec p =
-  record { decl = d ; expectedCategory = ec ; link = p ; status = B.true }
+  record { decl = d ; expectedCategory = ec ; link = p ; status = true }
 
-isFilledAbelianCategoryDeclaration : AbelianCategoryDeclarationAdapter → B.Bool
+isFilledAbelianCategoryDeclaration : AbelianCategoryDeclarationAdapter → Core.Phase.Bool
 isFilledAbelianCategoryDeclaration a = AbelianCategoryDeclarationAdapter.status a
 
 -- First isomorphism theorem for abelian categories
@@ -6951,7 +6889,7 @@ record FirstIsomorphismForAbelianCategoriesTheoremAdapter : Set₁ where
     expectedMorphism : M.Identifier
     link1 : C2S1.FirstIsomorphismForAbelianCategoriesTheorem.category decl ≡ expectedCategory
     link2 : C2S1.FirstIsomorphismForAbelianCategoriesTheorem.morphism decl ≡ expectedMorphism
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFirstIsomorphismForAbelianCategoriesTheoremAdapter :
   (d : C2S1.FirstIsomorphismForAbelianCategoriesTheorem) →
@@ -6961,9 +6899,9 @@ mkFirstIsomorphismForAbelianCategoriesTheoremAdapter :
   (p2 : C2S1.FirstIsomorphismForAbelianCategoriesTheorem.morphism d ≡ em) →
   FirstIsomorphismForAbelianCategoriesTheoremAdapter
 mkFirstIsomorphismForAbelianCategoriesTheoremAdapter d ec em p1 p2 =
-  record { decl = d ; expectedCategory = ec ; expectedMorphism = em ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedCategory = ec ; expectedMorphism = em ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledFirstIsomorphismForAbelianCategoriesTheorem : FirstIsomorphismForAbelianCategoriesTheoremAdapter → B.Bool
+isFilledFirstIsomorphismForAbelianCategoriesTheorem : FirstIsomorphismForAbelianCategoriesTheoremAdapter → Core.Phase.Bool
 isFilledFirstIsomorphismForAbelianCategoriesTheorem a = FirstIsomorphismForAbelianCategoriesTheoremAdapter.status a
 
 -- Normal monomorphism property
@@ -6972,7 +6910,7 @@ record NormalMonomorphismPropertyAdapter : Set₁ where
     decl : C2S1.NormalMonomorphismProperty
     expectedMono : M.Identifier
     link : C2S1.NormalMonomorphismProperty.mono decl ≡ expectedMono
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkNormalMonomorphismPropertyAdapter :
   (d : C2S1.NormalMonomorphismProperty) →
@@ -6980,24 +6918,24 @@ mkNormalMonomorphismPropertyAdapter :
   (p : C2S1.NormalMonomorphismProperty.mono d ≡ em) →
   NormalMonomorphismPropertyAdapter
 mkNormalMonomorphismPropertyAdapter d em p =
-  record { decl = d ; expectedMono = em ; link = p ; status = B.true }
+  record { decl = d ; expectedMono = em ; link = p ; status = true }
 
-isFilledNormalMonomorphismProperty : NormalMonomorphismPropertyAdapter → B.Bool
+isFilledNormalMonomorphismProperty : NormalMonomorphismPropertyAdapter → Core.Phase.Bool
 isFilledNormalMonomorphismProperty a = NormalMonomorphismPropertyAdapter.status a
 
 -- Abelian category example: Ab
 record AbelianCategoryExampleAbAdapter : Set₁ where
   field
     decl : C2S1.AbelianCategoryExampleAb
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAbelianCategoryExampleAbAdapter :
   (d : C2S1.AbelianCategoryExampleAb) →
   AbelianCategoryExampleAbAdapter
 mkAbelianCategoryExampleAbAdapter d =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
-isFilledAbelianCategoryExampleAb : AbelianCategoryExampleAbAdapter → B.Bool
+isFilledAbelianCategoryExampleAb : AbelianCategoryExampleAbAdapter → Core.Phase.Bool
 isFilledAbelianCategoryExampleAb a = AbelianCategoryExampleAbAdapter.status a
 
 -- Abelian category example: R-Mod
@@ -7006,7 +6944,7 @@ record AbelianCategoryExampleRModAdapter : Set₁ where
     decl : C2S1.AbelianCategoryExampleRMod
     expectedRing : M.Identifier
     link : C2S1.AbelianCategoryExampleRMod.ring decl ≡ expectedRing
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAbelianCategoryExampleRModAdapter :
   (d : C2S1.AbelianCategoryExampleRMod) →
@@ -7014,9 +6952,9 @@ mkAbelianCategoryExampleRModAdapter :
   (p : C2S1.AbelianCategoryExampleRMod.ring d ≡ er) →
   AbelianCategoryExampleRModAdapter
 mkAbelianCategoryExampleRModAdapter d er p =
-  record { decl = d ; expectedRing = er ; link = p ; status = B.true }
+  record { decl = d ; expectedRing = er ; link = p ; status = true }
 
-isFilledAbelianCategoryExampleRMod : AbelianCategoryExampleRModAdapter → B.Bool
+isFilledAbelianCategoryExampleRMod : AbelianCategoryExampleRModAdapter → Core.Phase.Bool
 isFilledAbelianCategoryExampleRMod a = AbelianCategoryExampleRModAdapter.status a
 
 -- Functor additive property
@@ -7025,7 +6963,7 @@ record FunctorAdditivePropertyAdapter : Set₁ where
     decl : C2S1.FunctorAdditiveProperty
     expectedFunctor : M.Identifier
     link : C2S1.FunctorAdditiveProperty.functor decl ≡ expectedFunctor
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkFunctorAdditivePropertyAdapter :
   (d : C2S1.FunctorAdditiveProperty) →
@@ -7033,9 +6971,9 @@ mkFunctorAdditivePropertyAdapter :
   (p : C2S1.FunctorAdditiveProperty.functor d ≡ ef) →
   FunctorAdditivePropertyAdapter
 mkFunctorAdditivePropertyAdapter d ef p =
-  record { decl = d ; expectedFunctor = ef ; link = p ; status = B.true }
+  record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
-isFilledFunctorAdditiveProperty : FunctorAdditivePropertyAdapter → B.Bool
+isFilledFunctorAdditiveProperty : FunctorAdditivePropertyAdapter → Core.Phase.Bool
 isFilledFunctorAdditiveProperty a = FunctorAdditivePropertyAdapter.status a
 
 -- Additivity via biproduct coincidence theorem
@@ -7044,7 +6982,7 @@ record AdditivityViaBiproductCoincidenceTheoremAdapter : Set₁ where
     decl : C2S1.AdditivityViaBiproductCoincidenceTheorem
     expectedCategory : M.Identifier
     link : C2S1.AdditivityViaBiproductCoincidenceTheorem.category decl ≡ expectedCategory
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkAdditivityViaBiproductCoincidenceTheoremAdapter :
   (d : C2S1.AdditivityViaBiproductCoincidenceTheorem) →
@@ -7052,11 +6990,10 @@ mkAdditivityViaBiproductCoincidenceTheoremAdapter :
   (p : C2S1.AdditivityViaBiproductCoincidenceTheorem.category d ≡ ec) →
   AdditivityViaBiproductCoincidenceTheoremAdapter
 mkAdditivityViaBiproductCoincidenceTheoremAdapter d ec p =
-  record { decl = d ; expectedCategory = ec ; link = p ; status = B.true }
+  record { decl = d ; expectedCategory = ec ; link = p ; status = true }
 
-isFilledAdditivityViaBiproductCoincidenceTheorem : AdditivityViaBiproductCoincidenceTheoremAdapter → B.Bool
+isFilledAdditivityViaBiproductCoincidenceTheorem : AdditivityViaBiproductCoincidenceTheoremAdapter → Core.Phase.Bool
 isFilledAdditivityViaBiproductCoincidenceTheorem a = AdditivityViaBiproductCoincidenceTheoremAdapter.status a
-
 
 ------------------------------------------------------------------------
 -- Subobject Theory (Chapter1.Level1sub4)
@@ -7068,7 +7005,7 @@ record SubobjectLatticeAdapter : Set₁ where
     decl : C1S4.SubobjectLattice
     expectedX : M.Identifier
     link : C1S4.SubobjectLattice.X decl ≡ expectedX
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSubobjectLatticeAdapter :
   (d : C1S4.SubobjectLattice) →
@@ -7076,9 +7013,9 @@ mkSubobjectLatticeAdapter :
   (p : C1S4.SubobjectLattice.X d ≡ ex) →
   SubobjectLatticeAdapter
 mkSubobjectLatticeAdapter d ex p =
-  record { decl = d ; expectedX = ex ; link = p ; status = B.true }
+  record { decl = d ; expectedX = ex ; link = p ; status = true }
 
-isFilledSubobjectLattice : SubobjectLatticeAdapter → B.Bool
+isFilledSubobjectLattice : SubobjectLatticeAdapter → Core.Phase.Bool
 isFilledSubobjectLattice a = SubobjectLatticeAdapter.status a
 
 -- Well-powered category
@@ -7087,7 +7024,7 @@ record WellPoweredCategoryAdapter : Set₁ where
     decl : C1S4.WellPoweredCategory
     expectedC : M.Identifier
     link : C1S4.WellPoweredCategory.C decl ≡ expectedC
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkWellPoweredCategoryAdapter :
   (d : C1S4.WellPoweredCategory) →
@@ -7095,24 +7032,24 @@ mkWellPoweredCategoryAdapter :
   (p : C1S4.WellPoweredCategory.C d ≡ ec) →
   WellPoweredCategoryAdapter
 mkWellPoweredCategoryAdapter d ec p =
-  record { decl = d ; expectedC = ec ; link = p ; status = B.true }
+  record { decl = d ; expectedC = ec ; link = p ; status = true }
 
-isFilledWellPoweredCategory : WellPoweredCategoryAdapter → B.Bool
+isFilledWellPoweredCategory : WellPoweredCategoryAdapter → Core.Phase.Bool
 isFilledWellPoweredCategory a = WellPoweredCategoryAdapter.status a
 
 -- Subobject lattice is complete theorem
 record SubobjectLatticeIsCompleteAdapter : Set₁ where
   field
     decl : C1S4.SubobjectLatticeIsComplete
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkSubobjectLatticeIsCompleteAdapter :
   (d : C1S4.SubobjectLatticeIsComplete) →
   SubobjectLatticeIsCompleteAdapter
 mkSubobjectLatticeIsCompleteAdapter d =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
-isFilledSubobjectLatticeIsComplete : SubobjectLatticeIsCompleteAdapter → B.Bool
+isFilledSubobjectLatticeIsComplete : SubobjectLatticeIsCompleteAdapter → Core.Phase.Bool
 isFilledSubobjectLatticeIsComplete a = SubobjectLatticeIsCompleteAdapter.status a
 
 -- Strong epimorphism (orthogonal to monomorphisms)
@@ -7121,7 +7058,7 @@ record StrongEpimorphismAdapter : Set₁ where
     decl : C1S4.StrongEpimorphism
     expectedE : M.Identifier
     link : C1S4.StrongEpimorphism.e decl ≡ expectedE
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkStrongEpimorphismAdapter :
   (d : C1S4.StrongEpimorphism) →
@@ -7129,24 +7066,24 @@ mkStrongEpimorphismAdapter :
   (p : C1S4.StrongEpimorphism.e d ≡ ee) →
   StrongEpimorphismAdapter
 mkStrongEpimorphismAdapter d ee p =
-  record { decl = d ; expectedE = ee ; link = p ; status = B.true }
+  record { decl = d ; expectedE = ee ; link = p ; status = true }
 
-isFilledStrongEpimorphism : StrongEpimorphismAdapter → B.Bool
+isFilledStrongEpimorphism : StrongEpimorphismAdapter → Core.Phase.Bool
 isFilledStrongEpimorphism a = StrongEpimorphismAdapter.status a
 
 -- Canonical factorization system theorem
 record CanonicalFactorizationSystemAdapter : Set₁ where
   field
     decl : C1S4.CanonicalFactorizationSystem
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkCanonicalFactorizationSystemAdapter :
   (d : C1S4.CanonicalFactorizationSystem) →
   CanonicalFactorizationSystemAdapter
 mkCanonicalFactorizationSystemAdapter d =
-  record { decl = d ; status = B.true }
+  record { decl = d ; status = true }
 
-isFilledCanonicalFactorizationSystem : CanonicalFactorizationSystemAdapter → B.Bool
+isFilledCanonicalFactorizationSystem : CanonicalFactorizationSystemAdapter → Core.Phase.Bool
 isFilledCanonicalFactorizationSystem a = CanonicalFactorizationSystemAdapter.status a
 
 -- Morphism factorization (epi-mono)
@@ -7159,7 +7096,7 @@ record MorphismFactorizationAdapter : Set₁ where
     link1 : C1S4.MorphismFactorization.f decl ≡ expectedF
     link2 : C1S4.MorphismFactorization.e decl ≡ expectedE
     link3 : C1S4.MorphismFactorization.m decl ≡ expectedM
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkMorphismFactorizationAdapter :
   (d : C1S4.MorphismFactorization) →
@@ -7171,9 +7108,9 @@ mkMorphismFactorizationAdapter :
   (p3 : C1S4.MorphismFactorization.m d ≡ em) →
   MorphismFactorizationAdapter
 mkMorphismFactorizationAdapter d ef ee em p1 p2 p3 =
-  record { decl = d ; expectedF = ef ; expectedE = ee ; expectedM = em ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = B.true }
+  record { decl = d ; expectedF = ef ; expectedE = ee ; expectedM = em ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = true }
 
-isFilledMorphismFactorization : MorphismFactorizationAdapter → B.Bool
+isFilledMorphismFactorization : MorphismFactorizationAdapter → Core.Phase.Bool
 isFilledMorphismFactorization a = MorphismFactorizationAdapter.status a
 
 -- Has generator object
@@ -7184,7 +7121,7 @@ record HasGeneratorObjectAdapter : Set₁ where
     expectedG : M.Identifier
     link1 : C1S4.HasGeneratorObject.C decl ≡ expectedC
     link2 : C1S4.HasGeneratorObject.G decl ≡ expectedG
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkHasGeneratorObjectAdapter :
   (d : C1S4.HasGeneratorObject) →
@@ -7194,9 +7131,9 @@ mkHasGeneratorObjectAdapter :
   (p2 : C1S4.HasGeneratorObject.G d ≡ eg) →
   HasGeneratorObjectAdapter
 mkHasGeneratorObjectAdapter d ec eg p1 p2 =
-  record { decl = d ; expectedC = ec ; expectedG = eg ; link1 = p1 ; link2 = p2 ; status = B.true }
+  record { decl = d ; expectedC = ec ; expectedG = eg ; link1 = p1 ; link2 = p2 ; status = true }
 
-isFilledHasGeneratorObject : HasGeneratorObjectAdapter → B.Bool
+isFilledHasGeneratorObject : HasGeneratorObjectAdapter → Core.Phase.Bool
 isFilledHasGeneratorObject a = HasGeneratorObjectAdapter.status a
 
 -- Projective object
@@ -7205,7 +7142,7 @@ record ProjectiveObjectAdapter : Set₁ where
     decl : C1S4.ProjectiveObject
     expectedP : M.Identifier
     link : C1S4.ProjectiveObject.P decl ≡ expectedP
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkProjectiveObjectAdapter :
   (d : C1S4.ProjectiveObject) →
@@ -7213,9 +7150,9 @@ mkProjectiveObjectAdapter :
   (p : C1S4.ProjectiveObject.P d ≡ ep) →
   ProjectiveObjectAdapter
 mkProjectiveObjectAdapter d ep p =
-  record { decl = d ; expectedP = ep ; link = p ; status = B.true }
+  record { decl = d ; expectedP = ep ; link = p ; status = true }
 
-isFilledProjectiveObject : ProjectiveObjectAdapter → B.Bool
+isFilledProjectiveObject : ProjectiveObjectAdapter → Core.Phase.Bool
 isFilledProjectiveObject a = ProjectiveObjectAdapter.status a
 
 -- Injective object (dual to projective)
@@ -7224,7 +7161,7 @@ record InjectiveObjectAdapter : Set₁ where
     decl : C1S4.InjectiveObject
     expectedI : M.Identifier
     link : C1S4.InjectiveObject.I decl ≡ expectedI
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkInjectiveObjectAdapter :
   (d : C1S4.InjectiveObject) →
@@ -7232,9 +7169,9 @@ mkInjectiveObjectAdapter :
   (p : C1S4.InjectiveObject.I d ≡ ei) →
   InjectiveObjectAdapter
 mkInjectiveObjectAdapter d ei p =
-  record { decl = d ; expectedI = ei ; link = p ; status = B.true }
+  record { decl = d ; expectedI = ei ; link = p ; status = true }
 
-isFilledInjectiveObject : InjectiveObjectAdapter → B.Bool
+isFilledInjectiveObject : InjectiveObjectAdapter → Core.Phase.Bool
 isFilledInjectiveObject a = InjectiveObjectAdapter.status a
 
 -- Has enough projectives
@@ -7243,7 +7180,7 @@ record HasEnoughProjectivesAdapter : Set₁ where
     decl : C1S4.HasEnoughProjectives
     expectedC : M.Identifier
     link : C1S4.HasEnoughProjectives.C decl ≡ expectedC
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkHasEnoughProjectivesAdapter :
   (d : C1S4.HasEnoughProjectives) →
@@ -7251,9 +7188,9 @@ mkHasEnoughProjectivesAdapter :
   (p : C1S4.HasEnoughProjectives.C d ≡ ec) →
   HasEnoughProjectivesAdapter
 mkHasEnoughProjectivesAdapter d ec p =
-  record { decl = d ; expectedC = ec ; link = p ; status = B.true }
+  record { decl = d ; expectedC = ec ; link = p ; status = true }
 
-isFilledHasEnoughProjectives : HasEnoughProjectivesAdapter → B.Bool
+isFilledHasEnoughProjectives : HasEnoughProjectivesAdapter → Core.Phase.Bool
 isFilledHasEnoughProjectives a = HasEnoughProjectivesAdapter.status a
 
 -- Has enough injectives
@@ -7262,7 +7199,7 @@ record HasEnoughInjectivesAdapter : Set₁ where
     decl : C1S4.HasEnoughInjectives
     expectedC : M.Identifier
     link : C1S4.HasEnoughInjectives.C decl ≡ expectedC
-    status : B.Bool
+    status : Core.Phase.Bool
 
 mkHasEnoughInjectivesAdapter :
   (d : C1S4.HasEnoughInjectives) →
@@ -7270,7 +7207,7 @@ mkHasEnoughInjectivesAdapter :
   (p : C1S4.HasEnoughInjectives.C d ≡ ec) →
   HasEnoughInjectivesAdapter
 mkHasEnoughInjectivesAdapter d ec p =
-  record { decl = d ; expectedC = ec ; link = p ; status = B.true }
+  record { decl = d ; expectedC = ec ; link = p ; status = true }
 
-isFilledHasEnoughInjectives : HasEnoughInjectivesAdapter → B.Bool
+isFilledHasEnoughInjectives : HasEnoughInjectivesAdapter → Core.Phase.Bool
 isFilledHasEnoughInjectives a = HasEnoughInjectivesAdapter.status a

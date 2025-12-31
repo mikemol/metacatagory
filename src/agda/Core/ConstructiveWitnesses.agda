@@ -1,8 +1,14 @@
+{-# OPTIONS --without-K #-}
+module Core.ConstructiveWitnesses where
+
 -- Core.ConstructiveWitnesses: Constructive witness builders with computational content
 -- Unlike Core.Witnesses (which uses M.mkId placeholders), this module provides
 -- witnesses with explicit algorithms, data structures, and correctness proofs.
+open import Agda.Primitive using (Level; lsuc)
 
-module Core.ConstructiveWitnesses where
+-- Infrastructure imports for universe polymorphism and equality
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
 
 open import Core
 open import Core.Phase
@@ -17,12 +23,8 @@ open import Algebra.Groups.Basic
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
-import Agda.Builtin.Bool as B
-open B using () renaming (Bool to Boolean; true to tt; false to ff)
--- Helper to convert builtin Bool to our renamed Boolean
-toBoolean : B.Bool → Boolean
-toBoolean B.true  = tt
-toBoolean B.false = ff
+-- Removed unnecessary Agda.Builtin.Bool import
+open import Core.Phase using (Bool; true; false)
 open import Core.PolynomialsF2 as F2
 
 -- ============================================================================
@@ -31,13 +33,13 @@ open import Core.PolynomialsF2 as F2
 
 record Flag : Set where
   field
-    value   : Boolean
+    value   : Bool
     warning : M.Identifier
 
-mkPlaceholderFlag : Boolean → M.Identifier → Flag
+mkPlaceholderFlag : Bool → M.Identifier → Flag
 mkPlaceholderFlag v w = record { value = v ; warning = w }
 
-flagValue : Flag → Boolean
+flagValue : Flag → Bool
 flagValue f = Flag.value f
 
 flagWarning : Flag → M.Identifier
@@ -52,13 +54,13 @@ record ComputationalEvidence (A : Set₁) : Set₁ where
   field
     algorithm : A
     witnessData : M.Identifier  -- Placeholder for actual computation results
-    isComputed : Boolean
+    isComputed : Bool
 
 -- Witness validation predicate
 record WitnessValidation (W : Set₁) : Set₁ where
   field
     witness : W
-    isValid : Boolean
+    isValid : Bool
     validationTrace : M.Identifier
 
 -- Correctness proof for a constructive witness
@@ -359,7 +361,7 @@ liftToConstructive :
 liftToConstructive w builder = record
   { algorithm = builder w
   ; witnessData = M.mkId "computed"
-  ; isComputed = tt
+  ; isComputed = true
   }
 
 -- Validate a constructive witness
@@ -369,7 +371,7 @@ validateConstructiveWitness :
   WitnessValidation W
 validateConstructiveWitness w = record
   { witness = w
-  ; isValid = tt
+  ; isValid = true
   ; validationTrace = M.mkId "validation-trace"
   }
 
@@ -444,19 +446,20 @@ record MinpolyDividesEvidence (F E : FieldDeclaration) (α : M.Identifier) : Set
 
 -- Build evidence by threading through MinimalPolynomialProperty.divides
 mkMinpolyDividesEvidence :
+  {ℓ : Level} →
   (F E : FieldDeclaration) →
   (α : M.Identifier) →
-  MinimalPolynomialProperty F E α →
+  MinimalPolynomialProperty {ℓ} F E α →
   (p : M.Identifier) →
   (vanishes monic : M.Identifier) →
   MinpolyDividesEvidence F E α
-mkMinpolyDividesEvidence F E α ump p vanishes monic = record
+mkMinpolyDividesEvidence {ℓ} F E α ump p vanishes monic = record
   { minPoly = MinimalPolynomialProperty.minPoly ump
   ; forPolynomial = p
   ; quotient = M.mkId "q"
   ; remainder = M.mkId "r"
   ; dividesWitness = MinimalPolynomialProperty.divides ump p vanishes monic
-  ; remainderZeroFlag = mkPlaceholderFlag tt (M.mkId "WARNING: remainderZeroFlag placeholder (division correctness deferral)")
+  ; remainderZeroFlag = mkPlaceholderFlag true (M.mkId "WARNING: remainderZeroFlag placeholder (division correctness deferral)")
   }
 
 -- =========================================================================
@@ -499,7 +502,7 @@ dividePolynomials divisor dividend = record
   ; divisor = divisor
   ; quotient = M.mkId "quotient-placeholder"
   ; remainder = M.mkId "remainder-placeholder"
-  ; remainderZeroFlag = mkPlaceholderFlag ff (M.mkId "WARNING: generic division remainderZeroFlag unknown")
+  ; remainderZeroFlag = mkPlaceholderFlag false (M.mkId "WARNING: generic division remainderZeroFlag unknown")
   }
 
 -- Bridge division directly from existing divides evidence (Phase II 2.2 refinement)
@@ -510,22 +513,22 @@ dividePolynomialsFromEvidence ev = toDivisionScaffold ev
 
 -- UMP-based helper: divide a polynomial by the minimal polynomial using UMP evidence
 divideByMinimalPolynomial :
-  {F E : FieldDeclaration} → {α : M.Identifier} →
-  (ump : MinimalPolynomialProperty F E α) →
+  {ℓ : Level} → {F E : FieldDeclaration} → {α : M.Identifier} →
+  (ump : MinimalPolynomialProperty {ℓ} F E α) →
   (p vanishes monic : M.Identifier) →
   DivisionScaffold
-divideByMinimalPolynomial {F} {E} {α} ump p vanishes monic =
-  toDivisionScaffold (mkMinpolyDividesEvidence F E α ump p vanishes monic)
+divideByMinimalPolynomial {ℓ} {F} {E} {α} ump p vanishes monic =
+  toDivisionScaffold (mkMinpolyDividesEvidence {ℓ} F E α ump p vanishes monic)
 
 -- Refinement: replace a generic division result with UMP-derived evidence
 refineDivisionByUMP :
-  {F E : FieldDeclaration} → {α : M.Identifier} →
-  (ump : MinimalPolynomialProperty F E α) →
+  {ℓ : Level} → {F E : FieldDeclaration} → {α : M.Identifier} →
+  (ump : MinimalPolynomialProperty {ℓ} F E α) →
   (p vanishes monic : M.Identifier) →
   (base : DivisionScaffold) →
   DivisionScaffold
-refineDivisionByUMP {F} {E} {α} ump p vanishes monic base =
-  divideByMinimalPolynomial {F} {E} {α} ump p vanishes monic
+refineDivisionByUMP {ℓ} {F} {E} {α} ump p vanishes monic base =
+  divideByMinimalPolynomial {ℓ} {F} {E} {α} ump p vanishes monic
 
 -- Refinement: replace a generic division result with explicit evidence
 refineDivisionWithEvidence :
@@ -548,7 +551,7 @@ dividePolynomialsF2 dvr dvsr =
     ; divisor = M.mkId "f2-divisor"
     ; quotient = M.mkId "f2-quotient"
     ; remainder = M.mkId "f2-remainder"
-    ; remainderZeroFlag = mkPlaceholderFlag (toBoolean (F2.remainderZero? dr)) (M.mkId "INFO: F2 division remainder computed")
+    ; remainderZeroFlag = mkPlaceholderFlag (F2.remainderZero? dr) (M.mkId "INFO: F2 division remainder computed")
     }
 
 -- ============================================================================
@@ -567,7 +570,7 @@ record ConstructiveExtensionBundle (F E : FieldDeclaration) : Set₁ where
     normalClosure : ConstructiveNormalClosure F E
     
     -- Validation
-    allWitnessesValid : Boolean
+    allWitnessesValid : Bool
     consistencyProof : M.Identifier  -- All witnesses agree
 
 -- Build complete bundle from algorithms
@@ -584,7 +587,7 @@ mkConstructiveBundle F E minpolyAlg splitAlg galoisAlg normalAlg = record
   ; extensionDegree = mkConstructiveExtensionDegree F E (mkExtensionDegree F E)
   ; galoisGroup = mkConstructiveGaloisGroup F E galoisAlg
   ; normalClosure = mkConstructiveNormalClosure F E E normalAlg
-  ; allWitnessesValid = tt
+  ; allWitnessesValid = true
   ; consistencyProof = M.mkId "consistent"
   }
 

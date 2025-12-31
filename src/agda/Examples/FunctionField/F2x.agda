@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- Example: Function field over F₂, symbolic demo of registry dispatch
 -- Demonstrates classification-based, lazy instance, and fully automatic dispatch
 
