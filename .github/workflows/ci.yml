@@ -45,20 +45,15 @@ jobs:
         if: github.event_name == 'push'
         run: |
           set -e
-          if [ -d build/md ]; then
-            mkdir -p docs
-            rsync -a build/md/ docs/
-            if [ -n "$(git status --porcelain docs)" ]; then
-              git config user.name "github-actions[bot]"
-              git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-              git add docs
-              git commit -m "docs: update Markdown docs [skip ci]"
-              git push
-            else
-              echo "No changes in docs/ to commit."
-            fi
+          make docs-publish
+          if [ -n "$(git status --porcelain docs)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add docs
+            git commit -m "docs: update Markdown docs [skip ci]"
+            git push
           else
-            echo "build/md missing; skipping docs publish"
+            echo "No changes in docs/ to commit."
           fi
 
   deferred-items-check:

@@ -438,7 +438,7 @@ But lacks **compositional operators** (sequential, parallel, dependent).
 ### ✅ **Core Implemented Concepts**
 
 | **Concept** | **Compendium** | **Codebase** | **Roadmap** | **Status** |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | **Universal Properties** | Sections VI-VII | `Core/UniversalProperties.agda` | Implicit foundation | ✅ Implemented |
 | **Algorithm Universality** | Section VII | `Core/AlgorithmUniversality.agda` | Bridge layer | ✅ Implemented |
 | **Phase Category** | Sections IX, IX-alt | `Core/Phase.agda`, `Core/PhaseCategory.agda` | Foundation for all tasks | ✅ Implemented |
@@ -602,7 +602,7 @@ But lacks **compositional operators** (sequential, parallel, dependent).
 ### Symmetric Difference Score
 
 | **Category** | **Compendium Only** | **Roadmap Only** | **Overlap** |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **Theoretical Concepts** | 10 | 10 | 8 |
 | **Implementation Tasks** | 0 | 10 | 0 |
 | **Code Modules (Agda)** | 5 (implied) | 8 (planned) | 12 (existing) |
