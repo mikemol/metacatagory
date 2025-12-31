@@ -18,6 +18,8 @@
 | `node-deps` | Install Node.js dependencies |
 | `deferred-items` | Scan for TODOs and FIXMEs (Agda FFI binary) |
 | `roadmap-index` | Compile Roadmap Index |
+| `planning-index-json` | Export planning index to JSON |
+| `planning-kernel` | Compile Planning Kernel |
 | `roadmap-sync` | Sync roadmap with external tracker |
 | `roadmap-sppf` | Compile Roadmap SPPF |
 | `validate-constructive` | Run all constructive build targets |

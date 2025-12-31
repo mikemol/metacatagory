@@ -11,6 +11,7 @@ open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 open import Agda.Builtin.Bool using (Bool; true; false)
 
 open import Plan.CIM.RoadmapIndex using (RoadmapItem; RoadmapAdapter; unifiedIndex)
+open import Plan.CIM.PlanningKernel using (planningAdapters)
 
 ------------------------------------------------------------------------
 -- SPPF schema for roadmap nodes
@@ -116,6 +117,10 @@ SPPFGraph.nodes (toSPPF adapters) = mapItems (unifiedIndex adapters)
     mapItems [] = []
     mapItems (x ∷ xs) = fromItemPacked x ++ˡ mapItems xs
 
+-- | Default SPPF graph derived from the planning kernel’s adapters.
+planningSPPF : SPPFGraph
+planningSPPF = toSPPF planningAdapters
+
 ------------------------------------------------------------------------
 -- Composition / Decomposition helpers
 ------------------------------------------------------------------------
@@ -137,4 +142,3 @@ decompose n with SPPFNode.parent1 n | SPPFNode.parent2 n
 ... | just p | nothing = p ∷ []
 ... | nothing | just q = q ∷ []
 ... | just p | just q = p ∷ q ∷ []
-

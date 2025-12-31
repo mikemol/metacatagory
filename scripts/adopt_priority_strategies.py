@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -21,13 +22,38 @@ CATEGORY_NORMALIZATION: Dict[str, float] = {
     "deviation": 500.0,
 }
 
+def default_profiles() -> Dict[str, Any]:
+    """Minimal fallback profile set when Agda output is unavailable/invalid."""
+    baseline = {k: CATEGORY_NORMALIZATION[k] for k in CATEGORY_NORMALIZATION}
+    return {
+        "active": "default",
+        "strategies": {
+            "default": {"weights": baseline},
+        },
+    }
+
 def load_agda_output(path: Path) -> Dict[str, Any]:
     """Load Agda-generated strategy profiles."""
     if not path.exists():
         raise FileNotFoundError(f"Agda priority output not found: {path}")
 
-    with path.open() as handle:
-        data = json.load(handle)
+    text = path.read_text()
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError:
+        # Fallback: Agda export sometimes emits a placeholder; use a minimal default.
+        print(
+            f"⚠️  Agda priority output is not valid JSON ({path}); using default profiles.",
+            file=sys.stderr,
+        )
+        return default_profiles()
+
+    if isinstance(data, str) and "placeholder" in data.lower():
+        print(
+            f"⚠️  Agda priority output contained a placeholder string ({path}); using default profiles.",
+            file=sys.stderr,
+        )
+        return default_profiles()
 
     if not isinstance(data, dict):
         raise ValueError("Agda output must be a JSON object")
