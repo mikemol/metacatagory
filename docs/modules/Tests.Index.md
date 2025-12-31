@@ -1,0 +1,112 @@
+---
+module: Tests.Index
+kind: per-module
+imports:
+  - Tests.DispatchBehaviorTests
+  - Tests.UniversalPropertyTests
+  - Tests.WitnessConstructionTests
+  - Tests.ErrorHandlingTests
+  - Tests.PropertyRegistryTests
+  - Tests.PhaseExamples
+  - Tests.AdvancedPhaseExamples
+  - Tests.AlgorithmCompositionTests
+  - Tests.SerializationTests
+  - Tests.PerformanceBoundaryTests
+  - Tests.ConstructiveWitnessTests
+  - Tests.PhaseCategoryExamplesRunner
+  - Tests.RealWorldAlgorithmsTests
+  - Tests.Chapters
+  - Tests.ChapterObligationsSmoke
+  - Tests.Chapter1Checklist
+  - Tests.Chapter2Checklist
+  - Tests.Chapter3Checklist
+  - Tests.AlgebraChecklist
+  - Tests.CoreUniversalPropertiesChecklist
+  - Tests.ModulesChecklist
+  - Tests.AdvancedFieldsChecklist
+  - Tests.FieldsBasicChecklist
+  - Tests.RingsBasicChecklist
+  - Tests.GroupsFreeChecklist
+  - Tests.GroupsStructureChecklist
+  - Tests.GroupsAbelianChecklist
+  - Tests.TensorProductChecklist
+  - Tests.VectorSpaceChecklist
+  - Tests.PolynomialExtensionsChecklist
+  - Tests.ModuleStructureChecklist
+  - Tests.ModuleTheoryChecklist
+  - Tests.PolynomialFieldExtensionsChecklist
+  - Tests.EnrichmentChecklist
+  - Tests.AlgebraicCompletionChecklist
+  - Tests.MonadAdjunctionChecklist
+  - Tests.LimitsColimitsChecklist
+  - Tests.RegularCategoriesChecklist
+  - Tests.AdvancedMonadTheoryChecklist
+  - Tests.FunctorPropertiesChecklist
+  - Tests.YonedaChecklist
+  - Tests.KanExtensionsChecklist
+  - Tests.GrothendieckFibrationsChecklist
+  - Tests.AbelianCategoriesChecklist
+  - Tests.SubobjectTheoryChecklist
+  - Tests.ToposTheoryChecklist
+  - Tests.GodelBoundaryTests
+  - Core.PathAggregator
+  - Tests.PathAggregatorTests
+  - Tests.ProofObligationStatus
+---
+
+# Module: Tests.Index
+
+**Source:** `src/agda/Tests/Index.agda`
+
+## Dependencies
+
+- Tests.DispatchBehaviorTests
+- Tests.UniversalPropertyTests
+- Tests.WitnessConstructionTests
+- Tests.ErrorHandlingTests
+- Tests.PropertyRegistryTests
+- Tests.PhaseExamples
+- Tests.AdvancedPhaseExamples
+- Tests.AlgorithmCompositionTests
+- Tests.SerializationTests
+- Tests.PerformanceBoundaryTests
+- Tests.ConstructiveWitnessTests
+- Tests.PhaseCategoryExamplesRunner
+- Tests.RealWorldAlgorithmsTests
+- Tests.Chapters
+- Tests.ChapterObligationsSmoke
+- Tests.Chapter1Checklist
+- Tests.Chapter2Checklist
+- Tests.Chapter3Checklist
+- Tests.AlgebraChecklist
+- Tests.CoreUniversalPropertiesChecklist
+- Tests.ModulesChecklist
+- Tests.AdvancedFieldsChecklist
+- Tests.FieldsBasicChecklist
+- Tests.RingsBasicChecklist
+- Tests.GroupsFreeChecklist
+- Tests.GroupsStructureChecklist
+- Tests.GroupsAbelianChecklist
+- Tests.TensorProductChecklist
+- Tests.VectorSpaceChecklist
+- Tests.PolynomialExtensionsChecklist
+- Tests.ModuleStructureChecklist
+- Tests.ModuleTheoryChecklist
+- Tests.PolynomialFieldExtensionsChecklist
+- Tests.EnrichmentChecklist
+- Tests.AlgebraicCompletionChecklist
+- Tests.MonadAdjunctionChecklist
+- Tests.LimitsColimitsChecklist
+- Tests.RegularCategoriesChecklist
+- Tests.AdvancedMonadTheoryChecklist
+- Tests.FunctorPropertiesChecklist
+- Tests.YonedaChecklist
+- Tests.KanExtensionsChecklist
+- Tests.GrothendieckFibrationsChecklist
+- Tests.AbelianCategoriesChecklist
+- Tests.SubobjectTheoryChecklist
+- Tests.ToposTheoryChecklist
+- Tests.GodelBoundaryTests
+- Core.PathAggregator
+- Tests.PathAggregatorTests
+- Tests.ProofObligationStatus
