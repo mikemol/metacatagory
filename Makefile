@@ -10,11 +10,11 @@ regen-makefile: build/diagrams/agda-deps-full.dot
 	cp Makefile.generated Makefile
 # Lint all markdown files (fail on error)
 md-lint: 
-    mkdir -p build/reports
-    npx markdownlint-cli2 "**/*.md" "!node_modules" "!build" "!intake/meta-index.d/meta-index.md" > build/reports/md-lint.txt 2>&1
+	mkdir -p build/reports
+	npx markdownlint-cli2 "**/*.md" "!node_modules" "!build" "!intake/meta-index.d/meta-index.md" > build/reports/md-lint.txt 2>&1
 # Auto-fix markdown lint errors
 md-fix: 
-    npx markdownlint-cli2 --fix "**/*.md" "!node_modules" "!build"
+	npx markdownlint-cli2 --fix "**/*.md" "!node_modules" "!build"
 # Lint intake files specifically
 intake-lint: 
 	npx markdownlint-cli2 "intake/**/*.md" > build/reports/intake-md-lint.txt 2>&1
