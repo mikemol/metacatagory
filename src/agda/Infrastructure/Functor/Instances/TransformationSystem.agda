@@ -11,6 +11,9 @@ open import Agda.Builtin.Equality using (_≡_; refl)
 open import Plan.CIM.Utility using (TransformationSystem; Path; refl-path; trans-step)
 open import Infrastructure.Functor.Interface using (CategoryLike; FunctorInstance)
 open import Infrastructure.Functor.Instances.Trivial
+open import Infrastructure.Axiom.Adequacy using (PathAlgebra)
+open import Infrastructure.Axiom.Instance using (AxiomInstance; FramedFace)
+open import Infrastructure.Axiom.Face using (Face)
 
 record One {ℓ} : Set ℓ where
   constructor tt
@@ -58,3 +61,33 @@ pathIdentity : ∀ {ℓ A B} (Sys : TransformationSystem {ℓ} A B) →
 pathIdentity Sys = identity
   where
     open IdentityFunctor (pathCategory Sys)
+
+------------------------------------------------------------------------
+-- Optional adequacy kit for the transformation path functor
+------------------------------------------------------------------------
+
+module TransformationPathAdequacy {ℓ} {A B : Set ℓ} (Sys : TransformationSystem {ℓ} A B) where
+  open Infrastructure.Functor.Interface
+  open import Infrastructure.Axiom.Adequacy
+  open import Infrastructure.Axiom.Instance
+
+  pathAlgebra : PathAlgebra {ℓV = ℓ} {ℓP = ℓ} (One {ℓ})
+  PathAlgebra.Path pathAlgebra _ _ = Path Sys
+  PathAlgebra._++_ pathAlgebra = _⊕_
+  PathAlgebra.++-assoc pathAlgebra = λ p q r → ⊕-assoc p q r
+  PathAlgebra.id pathAlgebra = refl-path
+  PathAlgebra.id-left pathAlgebra = ⊕-id-left
+  PathAlgebra.id-right pathAlgebra = ⊕-id-right
+
+  record PathKit : Set ℓ where
+    field p : Path Sys
+
+  pathFace : PathKit → FramedFace pathAlgebra
+  FramedFace.a    (pathFace k) = tt
+  FramedFace.b    (pathFace k) = tt
+  FramedFace.face (pathFace k) = record { lhs = PathKit.p k ; rhs = PathKit.p k }
+
+  pathAxiomInstance : AxiomInstance pathAlgebra
+  AxiomInstance.Kit   pathAxiomInstance = PathKit
+  AxiomInstance.face  pathAxiomInstance = pathFace
+  AxiomInstance.solve pathAxiomInstance _ = refl
