@@ -51,6 +51,7 @@ module FunctionPathAdequacy {ℓ} where
   PathAlgebra.id-left functionPathAlgebra p = refl
   PathAlgebra.id-right functionPathAlgebra p = refl
 
+  -- | Kit packaging a single lifted function for adequacy.
   record FunctionPathKit : Set (lsuc ℓ) where
     field
       A B : Set ℓ

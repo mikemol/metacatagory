@@ -10,10 +10,12 @@ open import Agda.Builtin.Equality using (_≡_; refl)
 open import Infrastructure.Functor.Interface
 open import Infrastructure.Functor.Instances.Trivial
 
+-- | Lift wrapper to adjust universe levels for homs.
 record Lift {ℓ ℓ'} (A : Set ℓ) : Set (ℓ ⊔ ℓ') where
   constructor lift
   field lower : A
 
+-- | Category of sets and functions with pointwise equality on arrows.
 FunctionCategory : ∀ {ℓ} → CategoryLike (Set ℓ)
 CategoryLike.Hom      (FunctionCategory {ℓ}) A B = Lift {ℓ = ℓ} {ℓ' = lsuc ℓ} (A → B)
 CategoryLike.id       (FunctionCategory {ℓ}) = lift (λ x → x)

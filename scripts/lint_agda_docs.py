@@ -54,12 +54,13 @@ def main() -> int:
     missing_decls = {}
 
     for path in agda_files:
+        rel = path.relative_to(ROOT)
         lines = read_lines(path)
         if not has_module_doc(lines):
-            missing_module.append(path)
+            missing_module.append(rel)
         bad = decls_missing_docs(lines)
         if bad:
-            missing_decls[path] = bad
+            missing_decls[str(rel)] = bad
 
     ok = True
     report = {

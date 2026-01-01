@@ -15,6 +15,7 @@ open import Infrastructure.Axiom.Adequacy using (PathAlgebra)
 open import Infrastructure.Axiom.Instance using (AxiomInstance; FramedFace)
 open import Infrastructure.Axiom.Face using (Face)
 
+-- | Singleton carrier used to package transformation paths as morphisms.
 record One {ℓ} : Set ℓ where
   constructor tt
 
@@ -79,6 +80,7 @@ module TransformationPathAdequacy {ℓ} {A B : Set ℓ} (Sys : TransformationSys
   PathAlgebra.id-left pathAlgebra = ⊕-id-left
   PathAlgebra.id-right pathAlgebra = ⊕-id-right
 
+  -- | Kit holding a single path for adequacy.
   record PathKit : Set ℓ where
     field p : Path Sys
 
