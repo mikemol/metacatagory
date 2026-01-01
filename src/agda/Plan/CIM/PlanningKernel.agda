@@ -73,6 +73,32 @@ definitionRoadmapItems =
     }
   ∷
   record
+    { id         = "LOCAL-GENERIC-FUNCTOR-INTERFACE-CONVENIENCE-LAWS"
+    ; title      = "Add convenience lemmas for map-id/compose congruence"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Interface.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Interface" ∷ "Law" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-INTERFACE-DOCUMENTATION"
+    ; title      = "Document interface laws and usage in code comments"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Interface.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Documentation" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = ("LOCAL-GENERIC-FUNCTOR-DOCS" ∷ [])
+    }
+  ∷
+  record
     { id         = "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
     ; title      = "Normalize existing functor instances onto shared interface"
     ; status     = "not-started"
@@ -91,6 +117,84 @@ definitionRoadmapItems =
     }
   ∷
   record
+    { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCTION"
+    ; title      = "Normalize FunctionCategory functor instance"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Refactor" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCPATH"
+    ; title      = "Normalize FunctionPathCategory functor instance"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Refactor" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-TRANSFORMATION"
+    ; title      = "Normalize TransformationSystem functor instance"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Refactor" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-PATHALGEBRA"
+    ; title      = "Normalize PathAlgebra functor instance"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Refactor" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-PHASE"
+    ; title      = "Normalize PhaseCategory functor instance"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Refactor" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-AMBIGUITY"
+    ; title      = "Normalize Ambiguity functor instance"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/Ambiguity.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Refactor" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
     { id         = "LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY"
     ; title      = "Ensure adequacy kits follow standardized pattern"
     ; status     = "not-started"
@@ -101,6 +205,45 @@ definitionRoadmapItems =
     ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
     ; provenance = ("intake/codex_handoff.md" ∷ [])
     ; related    = ("LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION" ∷ [])
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-ADEQUACY-FUNCPATH"
+    ; title      = "Confirm FunctionPath adequacy follows shared kit pattern"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Adequacy" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-ADEQUACY-TRANSFORMATION"
+    ; title      = "Confirm TransformationSystem adequacy follows shared kit pattern"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Adequacy" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-ADEQUACY-AMBIGUITY"
+    ; title      = "Confirm Ambiguity adequacy follows shared kit pattern"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/Ambiguity.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Adequacy" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
     }
   ∷
   record
@@ -116,6 +259,32 @@ definitionRoadmapItems =
     ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
     ; provenance = ("intake/codex_handoff.md" ∷ [])
     ; related    = ("LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION" ∷ [])
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-INTEROP-COMPOSE"
+    ; title      = "Refine compose helper proofs for reuse"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Compose.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Interop" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-INTEROP-PHASE-WRAPPER"
+    ; title      = "Ensure PhaseCategoryWrapper matches interface helpers"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Core/PhaseCategoryWrapper.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Interop" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
     }
   ∷
   record
