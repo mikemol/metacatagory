@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Meta-index schema for documentation aggregation.
 module Docs.MetaIndex where
 
 open import Agda.Builtin.IO using (IO)
