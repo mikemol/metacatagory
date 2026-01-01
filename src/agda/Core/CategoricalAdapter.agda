@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Universal categorical interface for adapters.
 module Core.CategoricalAdapter where
 
 -- Core.CategoricalAdapter: Universal categorical interface for adapters

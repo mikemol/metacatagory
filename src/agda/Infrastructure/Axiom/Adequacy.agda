@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Adequacy layer: axioms as solvable parameters with path algebra scaffolding.
 module Infrastructure.Axiom.Adequacy where
 
 open import Agda.Primitive using (Level; _⊔_; lsuc)

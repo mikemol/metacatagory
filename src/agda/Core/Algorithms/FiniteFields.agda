@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Algorithms over finite fields (construction, operations, witnesses).
 module Core.Algorithms.FiniteFields where
 
 open import Core
