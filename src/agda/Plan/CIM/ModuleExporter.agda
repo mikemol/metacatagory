@@ -56,9 +56,23 @@ extractImports content =
       importLines = filter isImport ls
   in nub $ map (stripText . T.drop 7 . T.dropWhile (/= 'i')) importLines
 
+-- Extract leading doc comment block (lines starting with -- or -- |)
+extractDocBlock :: T.Text -> T.Text
+extractDocBlock content =
+  let ls = T.lines content
+      dropWhileEnd p t = T.reverse (T.dropWhile p (T.reverse t))
+      stripText t = T.dropWhile isSpace (dropWhileEnd isSpace t)
+      cleaned = dropWhile (T.all isSpace) ls
+      isDocLine l = let s = stripText l in T.isPrefixOf (T.pack "--") s
+      docLines = takeWhile isDocLine cleaned
+      stripDoc l =
+        let s = stripText l
+        in T.dropWhile isSpace (T.drop 2 s) -- drop leading "--"
+  in T.unlines (map stripDoc docLines)
+
 -- Generate markdown with YAML frontmatter
-generateModuleMarkdown :: T.Text -> [T.Text] -> T.Text
-generateModuleMarkdown modName imports =
+generateModuleMarkdown :: T.Text -> [T.Text] -> T.Text -> T.Text
+generateModuleMarkdown modName imports docBlock =
   let frontmatter = T.unlines $
         [ T.pack "---"
         , T.pack "module: " `T.append` modName
@@ -66,11 +80,19 @@ generateModuleMarkdown modName imports =
         , T.pack "imports:"
         ] ++ map (\imp -> T.pack "  - " `T.append` imp) imports ++
         [ T.pack "---" ]
+      overview = if T.null (T.strip docBlock)
+        then T.pack "*No overview provided.*\n"
+        else docBlock `T.append` T.pack "\n"
       content = T.unlines
         [ T.pack ""
         , T.pack "# Module: " `T.append` modName
         , T.pack ""
         , T.pack "**Source:** `src/agda/" `T.append` T.replace (T.pack ".") (T.pack "/") modName `T.append` T.pack ".agda`"
+        , T.pack ""
+        , T.pack "## Overview"
+        , T.pack ""
+        , overview
+        , T.pack "## Dependencies"
         , T.pack ""
         , T.pack "## Dependencies"
         , T.pack ""
@@ -96,7 +118,8 @@ processAllAgdaFiles (filepath:rest) = do
   content <- TIO.readFile filepath `catch` \(_ :: SomeException) -> return (T.pack "")
   let modName = extractModuleName filepath
       imports = extractImports content
-      markdown = generateModuleMarkdown modName imports
+      docBlock = extractDocBlock content
+      markdown = generateModuleMarkdown modName imports docBlock
   writeModuleMarkdown modName markdown
   processAllAgdaFiles rest
 
