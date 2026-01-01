@@ -1,10 +1,7 @@
 {-# OPTIONS --without-K #-}
 
+-- | Core group-theory types exported for parameterized modules.
 module Algebra.Groups.Types where
-
--- Algebra.Groups.Types: Type definitions for group theory
--- This module exports all record types used in Algebra.Groups, allowing
--- these types to be used in parameter signatures for parameterized modules.
 
 open import Core
 open import Algebra.Foundation

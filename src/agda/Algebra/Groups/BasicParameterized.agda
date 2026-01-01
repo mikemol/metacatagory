@@ -1,15 +1,12 @@
 {-# OPTIONS --without-K #-}
 
+-- | Group theory with explicit theorem parameters (no implicit postulates).
 open import Core
 open import Chapter1.Level1Index
 open import Algebra.Foundation
 open import PropertyRegistry
 open import Metamodel as M
 open import Algebra.Groups.Types
-
--- Algebra.Groups.BasicParameterized: Group theory with explicit theorem parameters
--- Instead of postulating theorems, they are passed as module parameters.
--- This forces all consumers to explicitly provide or derive proofs, preventing
 -- hidden assumptions of "well-known" theorems without rigorous justification.
 
 module Algebra.Groups.BasicParameterized

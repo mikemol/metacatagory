@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Module-theory types (modules, submodules, bases) used across algebra.
 module Algebra.Modules.Types where
 
 open import Core
