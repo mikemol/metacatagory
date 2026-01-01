@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Core metamodel definitions used across the project.
 module Metamodel where
 
 -- Minimal builtins to avoid external stdlib dependencies

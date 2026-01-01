@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Registry of stable identifiers for common properties/classes/operations.
 module PropertyRegistry where
 
 open import Metamodel as M

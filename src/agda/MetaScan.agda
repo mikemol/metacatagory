@@ -1,5 +1,6 @@
 {-# OPTIONS --allow-unsolved-metas --without-K #-}
 
+-- | Meta-programming scanner utilities using Agda reflection.
 module MetaScan where
 
 open import Agda.Primitive

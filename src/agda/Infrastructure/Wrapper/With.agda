@@ -1,3 +1,4 @@
+-- | Simple wrapper to pair a base value with an annotation.
 module Infrastructure.Wrapper.With where
 
 open import Agda.Primitive using (Level; _⊔_)
