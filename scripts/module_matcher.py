@@ -163,16 +163,35 @@ class ModuleMatcher:
         self,
         metadata_file: str = "build/ingested_metadata.json"
     ) -> Dict[str, ModuleMapping]:
-        """Match each roadmap step to relevant modules."""
+        """Match each roadmap step to relevant modules.
+
+        Fallback: if metadata_file is missing, use build/planning_index.json
+        (generated from PlanningKernel) to keep prioritization running.
+        """
         print("\n🔗 Matching roadmap steps to modules...")
         
-        # Load roadmap metadata
+        files = {}
         metadata_path = Path(self.workspace_root) / metadata_file
-        with open(metadata_path, 'r') as f:
-            data = json.load(f)
-        
-        # Extract files dictionary
-        files = data.get('files', {})
+        if metadata_path.exists():
+            with open(metadata_path, 'r') as f:
+                data = json.load(f)
+            files = data.get('files', {})
+        else:
+            fallback_path = Path(self.workspace_root) / "build" / "planning_index.json"
+            try:
+                with open(fallback_path, 'r') as f:
+                    index_items = json.load(f)
+            except json.JSONDecodeError:
+                text = fallback_path.read_text()
+                text = text.replace('\\', '\\\\')
+                index_items = json.loads(text)
+            for item in index_items:
+                files[item['id']] = {
+                    'title': item.get('title', ''),
+                    'summary': item.get('category', ''),
+                    'keywords': item.get('tags', []),
+                }
+            print(f"   ⚠️  {metadata_file} not found; using planning_index.json fallback with {len(files)} items.")
         
         mappings = {}
         
@@ -194,7 +213,8 @@ class ModuleMatcher:
         keywords = set(item.get('keywords', []))
         
         # Extract category from step_id (e.g., GP700 -> analysis phase)
-        gp_number = int(re.search(r'\d+', step_id).group())
+        match = re.search(r'\d+', step_id)
+        gp_number = int(match.group()) if match else 0
         step_category = self._categorize_gp_number(gp_number)
         
         # Score all modules
