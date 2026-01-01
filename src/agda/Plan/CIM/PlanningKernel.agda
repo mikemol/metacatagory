@@ -316,7 +316,7 @@ definitionRoadmapItems =
   record
     { id         = "DOCS-AGDA-DOCCOMMENT-PIPELINE"
     ; title      = "Extend module exporter to surface Agda doc comments"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "Documentation"
     ; files      = ("src/agda/Plan/CIM/ModuleExporter.agda" ∷ "docs/automation" ∷ [])
@@ -355,7 +355,7 @@ definitionRoadmapItems =
   record
     { id         = "DOCS-AGDA-LINT"
     ; title      = "Add lint to enforce module-level docstrings"
-    ; status     = "not-started"
+    ; status     = "in-progress"
     ; category   = "Infrastructure"
     ; source     = "Documentation"
     ; files      = ("scripts" ∷ "docs/automation" ∷ [])
