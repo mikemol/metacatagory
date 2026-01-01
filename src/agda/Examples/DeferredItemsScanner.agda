@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Example: scan files for deferred items (TODO/FIXME/etc.).
 module Examples.DeferredItemsScanner where
 
 open import Agda.Builtin.IO using (IO)
