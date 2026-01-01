@@ -10,7 +10,9 @@ module Infrastructure.Definitions.Dictionary where
 
 open import Agda.Primitive using (Level; lzero)
 open import Agda.Builtin.List using (List; []; _∷_)
-open import Agda.Builtin.String using (String)
+open import Agda.Builtin.String using (String; primStringEquality)
+open import Agda.Builtin.Maybe using (Maybe; just; nothing)
+open import Agda.Builtin.Bool using (Bool; true; false)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤; tt)
 
@@ -34,6 +36,16 @@ record DefinitionFacet : Set where
     description : String
     related     : List String
 
+------------------------------------------------------------------------
+-- Lookup and faces
+------------------------------------------------------------------------
+
+lookupDefinition : String → List DefinitionEntry → Maybe DefinitionEntry
+lookupDefinition _ [] = nothing
+lookupDefinition t (d ∷ ds) with primStringEquality t (DefinitionEntry.term d)
+... | true  = just d
+... | false = lookupDefinition t ds
+
 -- | Trivial path algebra: every pair of terms has a unique unit path.
 definitionAlgebra : PathAlgebra {ℓV = lzero} {ℓP = lzero} String
 PathAlgebra.Path definitionAlgebra _ _ = ⊤
@@ -48,6 +60,10 @@ entryFace : DefinitionEntry → FramedFace definitionAlgebra
 FramedFace.a    (entryFace e) = DefinitionEntry.term e
 FramedFace.b    (entryFace e) = DefinitionEntry.term e
 FramedFace.face (entryFace e) = record { lhs = tt ; rhs = tt }
+
+faces : List DefinitionEntry → List (FramedFace definitionAlgebra)
+faces [] = []
+faces (d ∷ ds) = entryFace d ∷ faces ds
 
 -- | Axiom instance witnessing that each definition entry is solvable.
 definitionInstance : AxiomInstance definitionAlgebra
