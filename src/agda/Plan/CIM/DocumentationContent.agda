@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical-compatible #-}
 
+-- | Content schemas for synthesized documentation.
 module Plan.CIM.DocumentationContent where
 
 open import Agda.Builtin.List using (List; []; _∷_)

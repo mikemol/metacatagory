@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Utilities for expanding polytopes/ambiguities used in CIM analyses.
 module Plan.CIM.PolytopeExpansion where
 
 open import Agda.Builtin.Nat

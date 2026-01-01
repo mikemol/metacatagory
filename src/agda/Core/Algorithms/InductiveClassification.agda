@@ -1,8 +1,6 @@
 {-# OPTIONS --without-K --guardedness #-}
 
--- Experimental: Can we resolve circular dependencies with inductive/coinductive types?
--- This explores whether mutual recursion or well-founded induction can break the cycle
-
+-- | Experimental inductive/coinductive classification to break dependency cycles.
 module Core.Algorithms.InductiveClassification where
 
 open import Core
