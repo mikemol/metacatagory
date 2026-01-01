@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical --guardedness #-}
 
+-- | CHIP conformance checks and scaffolding.
 module Plan.CIM.CHIPConformance where
 
 open import Agda.Builtin.String

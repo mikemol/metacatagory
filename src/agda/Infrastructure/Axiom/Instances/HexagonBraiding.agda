@@ -1,3 +1,4 @@
+-- | Axiom instance for hexagon braiding coherence.
 module Infrastructure.Axiom.Instances.HexagonBraiding where
 
 open import Agda.Primitive using (Level; _⊔_)

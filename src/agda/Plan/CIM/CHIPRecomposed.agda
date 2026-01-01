@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical --guardedness #-}
 
+-- | Recomposed CHIP document generator using transformation systems.
 module Plan.CIM.CHIPRecomposed where
 
 open import Agda.Primitive using (Level)

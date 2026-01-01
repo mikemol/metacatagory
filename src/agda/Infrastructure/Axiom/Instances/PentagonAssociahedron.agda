@@ -1,3 +1,4 @@
+-- | Axiom instance for pentagon/associahedron coherence.
 module Infrastructure.Axiom.Instances.PentagonAssociahedron where
 
 open import Agda.Primitive using (Level; _⊔_)
