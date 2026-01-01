@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Growth metrics over algebraic structures and algorithms.
 module Core.GrowthMetrics where
 
 -- Core.GrowthMetrics: Solution space growth rate instrumentation

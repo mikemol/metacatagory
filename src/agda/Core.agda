@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Core re-exports: stable surface for metamodel + proof layer.
 module Core where
 
 -- Core re-exports: a stable surface for downstream modules

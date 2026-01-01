@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Composite HoTT path aggregation for global closure.
 module Core.PathAggregator where
 
 -- Core.PathAggregator: Composite HoTT path aggregation for global closure

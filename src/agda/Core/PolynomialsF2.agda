@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Polynomial utilities over GF(2) used in cryptographic and coding examples.
 module Core.PolynomialsF2 where
 
 -- Core.PolynomialsF2: Minimal stdlib-free F2 polynomials and division

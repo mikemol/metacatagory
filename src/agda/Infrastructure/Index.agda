@@ -1,3 +1,4 @@
+-- | Central index of infrastructure modules for convenient imports.
 module Infrastructure.Index where
 
 open import Infrastructure.Universe public

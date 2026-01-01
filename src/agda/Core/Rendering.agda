@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Rendering helpers for CIM/Core types (strings, blocks, inline content).
 module Core.Rendering where
 
 open import Agda.Builtin.String using (String)
