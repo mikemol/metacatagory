@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Example FFI: scan repo for Agda files.
 module Examples.AgdaFileScanFFI where
 
 open import Agda.Builtin.List using (List; [])

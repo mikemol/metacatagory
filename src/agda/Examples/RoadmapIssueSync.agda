@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Example: sync roadmap items with external issue trackers.
 module Examples.RoadmapIssueSync where
 
 open import Agda.Builtin.List using (List; []; _∷_)

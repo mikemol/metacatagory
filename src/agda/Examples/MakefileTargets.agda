@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Example: simple makefile target emission from Agda lists.
 module Examples.MakefileTargets where
 
 open import Agda.Builtin.List using (List; []; _∷_)

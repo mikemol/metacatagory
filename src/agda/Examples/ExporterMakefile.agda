@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Example: generate makefile snippets from Agda metadata.
 module Examples.ExporterMakefile where
 
 {-# FOREIGN GHC
