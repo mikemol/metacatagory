@@ -119,7 +119,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCTION"
     ; title      = "Normalize FunctionCategory functor instance"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda" ∷ [])
@@ -132,7 +132,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCPATH"
     ; title      = "Normalize FunctionPathCategory functor instance"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda" ∷ [])
@@ -145,7 +145,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-TRANSFORMATION"
     ; title      = "Normalize TransformationSystem functor instance"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda" ∷ [])
@@ -158,7 +158,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-PATHALGEBRA"
     ; title      = "Normalize PathAlgebra functor instance"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda" ∷ [])
@@ -171,7 +171,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-PHASE"
     ; title      = "Normalize PhaseCategory functor instance"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda" ∷ [])
@@ -184,7 +184,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-AMBIGUITY"
     ; title      = "Normalize Ambiguity functor instance"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/Ambiguity.agda" ∷ [])
@@ -210,7 +210,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-ADEQUACY-FUNCPATH"
     ; title      = "Confirm FunctionPath adequacy follows shared kit pattern"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda" ∷ [])
@@ -223,7 +223,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-ADEQUACY-TRANSFORMATION"
     ; title      = "Confirm TransformationSystem adequacy follows shared kit pattern"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda" ∷ [])
@@ -236,7 +236,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-ADEQUACY-AMBIGUITY"
     ; title      = "Confirm Ambiguity adequacy follows shared kit pattern"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/Ambiguity.agda" ∷ [])
