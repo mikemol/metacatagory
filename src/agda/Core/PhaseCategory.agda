@@ -1,45 +1,37 @@
 {-# OPTIONS --without-K #-}
 module Core.PhaseCategory where
 
--- Core.PhaseCategory: Formalization of the Category of Phases (minimal)
+open import Agda.Primitive using (Level; _⊔_; lsuc)
 
-
--- Infrastructure imports for universe polymorphism and equality
-open import Infrastructure.Universe using (Setℓ)
-open import Infrastructure.Coherence.Path2 using (_≡_; refl; whisker; _∙₂_)
-
-open import Agda.Primitive using (Level; lsuc; _⊔_)
+record Lift {α β : Level} (A : Set α) : Set (α ⊔ β) where
+  constructor lift
+  field lower : A
 open import Agda.Builtin.Equality using (_≡_; refl)
+
+open import Infrastructure.Universe using (Setℓ)
+open import Infrastructure.Functor.Interface using (CategoryLike; FunctorInstance)
 open import Core.Phase using (Phase; _⟫_; idPhase; _$ₚ_; mkPhase; _×_; _,_; fst; snd; _⊗_)
 
--- Simple category structure specialized to Phases
-record PhaseCategory (ℓ : Level) : Set (lsuc ℓ) where
-  field
-    -- Identity morphism for any type A : Set ℓ
-    id  : ∀ {A : Set ℓ} → Phase A A
+------------------------------------------------------------------------
+-- Category of phases re-expressed with CategoryLike
+------------------------------------------------------------------------
 
-    -- Composition of morphisms (categorical order)
-    _∘_ : ∀ {A B C : Set ℓ} → Phase B C → Phase A B → Phase A C
+phaseCategory : ∀ {ℓ} → CategoryLike {lsuc ℓ} (Setℓ ℓ)
+phaseCategory {ℓ} = record
+  { Hom      = λ A B → Lift {α = ℓ} {β = lsuc ℓ} (Phase A B)
+  ; id       = lift idPhase
+  ; _∘_      = λ g f → lift (Lift.lower f ⟫ Lift.lower g)
+  ; id-left  = λ f → refl
+  ; id-right = λ f → refl
+  ; assoc    = λ h g f → refl
+  }
 
-    -- Left identity (pointwise)
-    left-id  : ∀ {A B : Set ℓ} (f : Phase A B) (a : A) → (id ∘ f) $ₚ a ≡ f $ₚ a
-
-    -- Right identity (pointwise)
-    right-id : ∀ {A B : Set ℓ} (f : Phase A B) (a : A) → (f ∘ id) $ₚ a ≡ f $ₚ a
-
-    -- Associativity (pointwise)
-    assoc    : ∀ {A B C D : Set ℓ}
-               (f : Phase A B) (g : Phase B C) (h : Phase C D) (a : A) →
-               ((h ∘ g) ∘ f) $ₚ a ≡ (h ∘ (g ∘ f)) $ₚ a
-
--- Concrete instance: objects are types (Set ℓ), morphisms are phases
-phaseCategory : (ℓ : Level) → PhaseCategory ℓ
-phaseCategory ℓ = record
-  { id  = idPhase
-  ; _∘_ = λ {A} {B} {C} g f → f ⟫ g
-  ; left-id  = λ f a → refl
-  ; right-id = λ f a → refl
-  ; assoc    = λ f g h a → refl
+phaseIdentity : ∀ {ℓ} → FunctorInstance (phaseCategory {ℓ}) (phaseCategory {ℓ})
+phaseIdentity = record
+  { objMap      = λ A → A
+  ; map         = λ f → f
+  ; map-id      = refl
+  ; map-compose = λ _ _ → refl
   }
 
 -- ============================================================================
