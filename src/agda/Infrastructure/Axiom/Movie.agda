@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | 2-cell “movie” proofs: explicit equality witnesses between paths.
 module Infrastructure.Axiom.Movie where
 
 open import Agda.Primitive using (Level; _⊔_; lsuc)

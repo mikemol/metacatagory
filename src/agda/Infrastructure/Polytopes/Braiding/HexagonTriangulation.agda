@@ -1,4 +1,6 @@
 {-# OPTIONS --allow-unsolved-metas #-}
+
+-- | Hexagon triangulations for braiding coherence.
 module Infrastructure.Polytopes.Braiding.HexagonTriangulation where
 
 open import Agda.Primitive using (Level; lsuc; _⊔_)
