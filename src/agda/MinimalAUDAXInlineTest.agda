@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Minimal AUDAX inline test harness.
 module MinimalAUDAXInlineTest where
 
 open import Agda.Builtin.String using (String)
