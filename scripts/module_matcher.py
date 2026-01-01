@@ -190,6 +190,7 @@ class ModuleMatcher:
                     'title': item.get('title', ''),
                     'summary': item.get('category', ''),
                     'keywords': item.get('tags', []),
+                    'files': item.get('files', []),
                 }
             print(f"   ⚠️  {metadata_file} not found; using planning_index.json fallback with {len(files)} items.")
         
@@ -198,7 +199,20 @@ class ModuleMatcher:
         for step_id, item_data in files.items():
             # Add step_id to item data
             item = {'id': step_id, **item_data}
-            mapping = self._match_single_step(item)
+            # Prefer explicit file mapping when present (e.g., planning_index.json entries)
+            file_modules = [f for f in item_data.get('files', []) if f.startswith("src/agda/")]
+            if file_modules:
+                primary_module = file_modules[0].replace("src/agda/", "").replace(".agda", "").replace("/", ".")
+                mapping = ModuleMapping(
+                    step_id=step_id,
+                    title=item.get('title', ''),
+                    primary_module=primary_module,
+                    related_modules=[],
+                    confidence=1.0,
+                    rationale="Derived from explicit file path"
+                )
+            else:
+                mapping = self._match_single_step(item)
             mappings[step_id] = mapping
         
         print(f"   ✓ Matched {len(mappings)} roadmap steps")
