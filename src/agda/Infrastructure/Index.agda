@@ -25,5 +25,8 @@ open import Infrastructure.Functor.Instances.Trivial public
 open import Infrastructure.Functor.Instances.PathAlgebra public
 open import Infrastructure.Functor.Instances.PhaseCategory public
 open import Infrastructure.Functor.Instances.FunctionCategory public
+open import Infrastructure.Functor.Instances.FunctionPathCategory public
+open import Infrastructure.Functor.Instances.Ambiguity public
+open import Infrastructure.Functor.Adapters.Funext public
 open import Infrastructure.Functor.Compose public
 open import Core.PhaseCategoryWrapper public

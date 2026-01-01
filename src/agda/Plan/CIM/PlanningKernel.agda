@@ -47,7 +47,9 @@ definitionRoadmapItems =
     ; files      = ("src/agda/Infrastructure/Functor/Interface.agda"
                     ∷ "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda"
                     ∷ "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda"
+                    ∷ "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda"
                     ∷ "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda"
+                    ∷ "src/agda/Infrastructure/Functor/Instances/Ambiguity.agda"
                     ∷ "src/agda/Infrastructure/Functor/Compose.agda"
                     ∷ "src/agda/Core/PhaseCategoryWrapper.agda"
                     ∷ [])
