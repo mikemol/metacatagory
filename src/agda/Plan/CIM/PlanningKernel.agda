@@ -329,7 +329,7 @@ definitionRoadmapItems =
   record
     { id         = "DOCS-AGDA-DECL-DOCS"
     ; title      = "Export declaration docstrings (records/data) into docs"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "Documentation"
     ; files      = ("src/agda/Plan/CIM/ModuleExporter.agda" ∷ "docs/automation" ∷ [])

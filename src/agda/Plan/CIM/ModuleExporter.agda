@@ -18,6 +18,7 @@ import           Data.List (isPrefixOf, nub, sortBy, isSuffixOf)
 import           Data.Ord (comparing)
 import           Data.Char (isSpace)
 import           Control.Exception (catch, SomeException)
+import           Data.Maybe (catMaybes)
 
 -- Extract module name from file path: src/agda/Core/Utils.agda -> Core.Utils
 extractModuleName :: FilePath -> T.Text
@@ -70,9 +71,39 @@ extractDocBlock content =
         in T.dropWhile isSpace (T.drop 2 s) -- drop leading "--"
   in T.unlines (map stripDoc docLines)
 
+-- Extract docstrings attached to declarations (record/data/postulate).
+extractDeclDocs :: [T.Text] -> [(T.Text, T.Text)]
+extractDeclDocs ls = catMaybes (zipWith collect [0..] ls)
+  where
+    stripText t = T.dropWhile isSpace (dropWhileEnd isSpace t)
+    dropWhileEnd p t = T.reverse (T.dropWhile p (T.reverse t))
+    isDecl l = let s = stripText l in
+      any (`T.isPrefixOf` s)
+        [ T.pack "record "
+        , T.pack "data "
+        , T.pack "postulate "
+        ]
+    declName l =
+      case T.words (stripText l) of
+        (_ : name : _) -> name
+        _              -> T.pack "(unknown)"
+    isDocLine l =
+      let s = stripText l in T.isPrefixOf (T.pack "--") s
+    stripDoc l =
+      let s = stripText l in T.dropWhile isSpace (T.drop 2 s)
+    collect :: Int -> T.Text -> Maybe (T.Text, T.Text)
+    collect idx l
+      | not (isDecl l) = Nothing
+      | otherwise =
+          let prefix = take idx ls
+              revDoc = takeWhile isDocLine (reverse prefix)
+              docLines = reverse revDoc
+              doc = T.unlines (map stripDoc docLines)
+          in Just (declName l, doc)
+
 -- Generate markdown with YAML frontmatter
-generateModuleMarkdown :: T.Text -> [T.Text] -> T.Text -> T.Text
-generateModuleMarkdown modName imports docBlock =
+generateModuleMarkdown :: T.Text -> [T.Text] -> T.Text -> [(T.Text, T.Text)] -> T.Text
+generateModuleMarkdown modName imports docBlock declDocs =
   let frontmatter = T.unlines $
         [ T.pack "---"
         , T.pack "module: " `T.append` modName
@@ -94,13 +125,23 @@ generateModuleMarkdown modName imports docBlock =
         , overview
         , T.pack "## Dependencies"
         , T.pack ""
-        , T.pack "## Dependencies"
+        , T.pack "## Declarations"
         , T.pack ""
         ]
       importSection = if null imports
         then T.pack "*No imports*\n\n"
         else T.unlines $ map (\imp -> T.pack "* " `T.append` imp) imports
-  in T.concat [frontmatter, content, importSection]
+      declSection = if null declDocs
+        then T.pack "*No documented declarations*\n\n"
+        else T.unlines $
+             map (\(n,d) ->
+                    T.unlines
+                      [ T.pack "* " `T.append` n
+                      , if T.null (T.strip d)
+                          then T.pack "  - (no doc)"
+                          else T.pack "  - " `T.append` d
+                      ]) declDocs
+  in T.concat [frontmatter, content, importSection, declSection]
 
 -- Write module markdown to build/md/modules/
 writeModuleMarkdown :: T.Text -> T.Text -> IO ()
@@ -119,7 +160,8 @@ processAllAgdaFiles (filepath:rest) = do
   let modName = extractModuleName filepath
       imports = extractImports content
       docBlock = extractDocBlock content
-      markdown = generateModuleMarkdown modName imports docBlock
+      declDocs = extractDeclDocs (T.lines content)
+      markdown = generateModuleMarkdown modName imports docBlock declDocs
   writeModuleMarkdown modName markdown
   processAllAgdaFiles rest
 
