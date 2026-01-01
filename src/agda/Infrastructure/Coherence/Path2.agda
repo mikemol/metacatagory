@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Minimal 2-cell calculus: equality + whiskering.
 module Infrastructure.Coherence.Path2 where
 
 open import Agda.Primitive using (Level)

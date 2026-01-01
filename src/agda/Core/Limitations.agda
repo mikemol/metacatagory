@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Notes and formalizations of system/logic limitations.
 module Core.Limitations where
 
 -- Infrastructure imports for universe polymorphism and equality

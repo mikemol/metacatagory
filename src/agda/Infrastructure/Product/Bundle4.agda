@@ -1,3 +1,4 @@
+-- | Product bundle of four components.
 module Infrastructure.Product.Bundle4
   {ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Agda.Primitive.Level}
   (A : Set ℓ₁) (B : Set ℓ₂) (C : Set ℓ₃) (D : Set ℓ₄)
