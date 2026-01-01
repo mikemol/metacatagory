@@ -10,6 +10,7 @@ open import Agda.Primitive using (Level)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Plan.CIM.Utility using (TransformationSystem; Path; refl-path; trans-step)
 open import Infrastructure.Functor.Interface using (CategoryLike; FunctorInstance)
+open import Infrastructure.Functor.Instances.Trivial
 
 record One {ℓ} : Set ℓ where
   constructor tt
@@ -54,9 +55,6 @@ pathCategory Sys = record
 
 pathIdentity : ∀ {ℓ A B} (Sys : TransformationSystem {ℓ} A B) →
                FunctorInstance (pathCategory Sys) (pathCategory Sys)
-pathIdentity Sys = record
-  { objMap      = λ _ → tt
-  ; map         = λ f → f
-  ; map-id      = refl
-  ; map-compose = λ _ _ → refl
-  }
+pathIdentity Sys = identity
+  where
+    open IdentityFunctor (pathCategory Sys)

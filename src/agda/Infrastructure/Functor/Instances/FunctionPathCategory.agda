@@ -9,6 +9,7 @@ open import Agda.Primitive using (Level; _⊔_; lsuc)
 open import Agda.Builtin.Equality using (_≡_; refl)
 
 open import Infrastructure.Functor.Interface
+open import Infrastructure.Functor.Instances.Trivial
 
 -- Simple lift to adjust universe for Hom
 record Lift {ℓ ℓ'} (A : Set ℓ) : Set (ℓ ⊔ ℓ') where
@@ -26,3 +27,8 @@ CategoryLike._∘_      (FunctionPathCategory {ℓ}) f g = lift (comp (Lift.lowe
 CategoryLike.id-left  (FunctionPathCategory {ℓ}) f = refl
 CategoryLike.id-right (FunctionPathCategory {ℓ}) f = refl
 CategoryLike.assoc    (FunctionPathCategory {ℓ}) h g f = refl
+
+-- Identity functor via the generic IdentityFunctor
+module FunctionPathIdentity {ℓ} where
+  open IdentityFunctor (FunctionPathCategory {ℓ}) public
+    using () renaming (identity to functionPathIdentityFunctor)
