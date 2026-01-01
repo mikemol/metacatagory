@@ -98,7 +98,8 @@ extractDeclDocs ls = catMaybes (zipWith collect [0..] ls)
           let prefix = take idx ls
               revDoc = takeWhile isDocLine (reverse prefix)
               docLines = reverse revDoc
-              doc = T.unlines (map stripDoc docLines)
+              suffixDocs = takeWhile isDocLine (drop (idx + 1) ls)
+              doc = T.unlines (map stripDoc (docLines ++ suffixDocs))
           in Just (declName l, doc)
 
 -- Generate markdown with YAML frontmatter
