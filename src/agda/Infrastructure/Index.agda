@@ -20,3 +20,4 @@ open import Infrastructure.Axiom.Instance public
 open import Infrastructure.Axiom.Instances.PentagonAssociahedron public
 open import Infrastructure.Axiom.Instances.HexagonBraiding public
 open import Infrastructure.Definitions.Dictionary public
+open import Infrastructure.Functor.Interface public

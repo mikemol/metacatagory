@@ -41,10 +41,10 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR"
     ; title      = "Introduce generic functor interface for protocol bundles"
-    ; status     = "not-started"
+    ; status     = "in-progress"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
-    ; files      = []
+    ; files      = ("src/agda/Infrastructure/Functor/Interface.agda" ∷ [])
     ; tags       = ("Functor" ∷ "Interface" ∷ [])
     ; dependsOn  = ("LOCAL-DEF-DICT" ∷ [])
     ; provenance = ("intake/codex_handoff.md" ∷ [])

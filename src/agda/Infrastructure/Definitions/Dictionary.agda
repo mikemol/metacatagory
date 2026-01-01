@@ -28,6 +28,12 @@ record DefinitionEntry : Set where
     summary    : String
     provenance : List String
 
+record DefinitionFacet : Set where
+  field
+    name        : String
+    description : String
+    related     : List String
+
 -- | Trivial path algebra: every pair of terms has a unique unit path.
 definitionAlgebra : PathAlgebra {ℓV = lzero} {ℓP = lzero} String
 PathAlgebra.Path definitionAlgebra _ _ = ⊤
@@ -66,6 +72,18 @@ definitions =
     { term       = "TriangulationKit"
     ; summary    = "Required coherence data for new parsers; supplies pentagon/hexagon fillers."
     ; provenance = ("intake/codex_handoff.md" ∷ [])
+    }
+  ∷
+  record
+    { term       = "FunctorInterface"
+    ; summary    = "Generic functor interface to enforce identity and composition laws across protocol bundles."
+    ; provenance = ("src/agda/Infrastructure/Functor/Interface.agda" ∷ [])
+    }
+  ∷
+  record
+    { term       = "SolverAdequacy"
+    ; summary    = "Every axiomatic boundary must be backed by a generator kit and solver rather than postulated."
+    ; provenance = ("intake/codex_handoff.md" ∷ "src/agda/Infrastructure/Axiom/Instance.agda" ∷ [])
     }
   ∷
   []
