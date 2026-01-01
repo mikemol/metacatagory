@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Lightweight equality helpers kept separate to avoid pulling the stdlib.
 module Infrastructure.Equality where
 
 open import Agda.Primitive using (Level)

@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Minimal IO interface wrapper to keep effects abstracted from builtin IO.
 module Core.IO
   (String : Set)
   (⊤ : Set)

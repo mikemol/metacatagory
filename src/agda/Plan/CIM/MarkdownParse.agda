@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical --guardedness #-}
 
+-- | Tiny markdown parser targeting the internal PandocAST used by CIM tooling.
 module Plan.CIM.MarkdownParse where
 
 open import Agda.Builtin.Bool using (Bool; true; false)

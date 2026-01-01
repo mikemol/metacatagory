@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical-compatible #-}
 
+-- | Shared utility functions and lightweight types for CIM tooling.
 module Plan.CIM.Utility where
 
 open import Agda.Primitive using (Level; lsuc)

@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical-compatible #-}
 
+-- | Render roadmap content into Markdown/JSON outputs for publication.
 module Plan.CIM.RoadmapExporter where
 
 open import Agda.Builtin.String using (String; primStringAppend)

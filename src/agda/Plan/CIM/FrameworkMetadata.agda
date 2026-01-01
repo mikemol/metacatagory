@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical-compatible --safe #-}
 
+-- | Structured metadata describing frameworks and their key modules.
 module Plan.CIM.FrameworkMetadata where
 
 open import Agda.Builtin.String using (String)

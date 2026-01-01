@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Export Agda module metadata (docs, declarations) for downstream tooling.
 module Plan.CIM.ModuleExporter where
 
 open import Agda.Builtin.IO using (IO)
