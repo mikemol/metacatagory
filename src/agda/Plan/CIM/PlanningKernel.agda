@@ -88,7 +88,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-AMBIGUITY-ADEQUACY"
     ; title      = "Add adequacy hook for Ambiguity functor"
-    ; status     = "not-started"
+    ; status     = "in-progress"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/Ambiguity.agda" ∷ [])
