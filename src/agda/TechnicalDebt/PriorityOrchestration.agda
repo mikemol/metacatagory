@@ -20,7 +20,7 @@ open _×_
 -- |
 -- | Uses module parameterization for I/O operations (not postulates)
 
-open import Agda.Builtin.String
+open import Agda.Builtin.String using (String; primStringAppend)
 open import Agda.Builtin.Unit
 open import Agda.Builtin.IO using (IO)
 open import Agda.Builtin.Int using (Int)
@@ -60,6 +60,57 @@ import TechnicalDebt.PriorityFormatting
 open module PriorityFormatting = TechnicalDebt.PriorityFormatting intToString
 open import TechnicalDebt.DeferredItemsFormatting
 
+------------------------------------------------------------------------
+-- Minimal JSON rendering (pure string concatenation)
+------------------------------------------------------------------------
+
+infixr 5 _⊕_
+_⊕_ : String → String → String
+_⊕_ = primStringAppend
+
+quoteStr : String → String
+quoteStr s = "\"" ⊕ s ⊕ "\""
+
+renderWeights : CategoryWeights → String
+renderWeights w =
+  "{" ⊕
+  "\"postulate\":" ⊕ intToString (CategoryWeights.postulateWeight w) ⊕ "," ⊕
+  "\"todo\":" ⊕ intToString (CategoryWeights.todoWeight w) ⊕ "," ⊕
+  "\"fixme\":" ⊕ intToString (CategoryWeights.fixmeWeight w) ⊕ "," ⊕
+  "\"deviation\":" ⊕ intToString (CategoryWeights.deviationWeight w) ⊕
+  "}"
+
+renderStrategyEntry : (String × PriorityStrategy) → String
+renderStrategyEntry pair =
+  let name  = _×_.fst pair
+      strat = _×_.snd pair
+  in quoteStr name ⊕ ":{\"weights\":" ⊕ renderWeights (strategyToWeights strat) ⊕ "}"
+
+renderCommaList : List String → String
+renderCommaList [] = ""
+renderCommaList (x ∷ []) = x
+renderCommaList (x ∷ xs) = x ⊕ "," ⊕ renderCommaList xs
+
+renderStrategyMap : List (String × PriorityStrategy) → String
+renderStrategyMap [] = "{}"
+renderStrategyMap xs = "{" ⊕ renderCommaList (map renderStrategyEntry xs) ⊕ "}"
+
+renderRoot : String → List (String × PriorityStrategy) → String
+renderRoot active strategies =
+  "{" ⊕
+  "\"active\":" ⊕ quoteStr active ⊕ "," ⊕
+  "\"strategies\":" ⊕ renderStrategyMap strategies ⊕
+  "}"
+
+strategyEntries : List (String × PriorityStrategy)
+strategyEntries =
+  (Core.Phase._,_ "default" defaultStrategy)
+  ∷ (Core.Phase._,_ "ffiSafety" ffiSafetyStrategy)
+  ∷ (Core.Phase._,_ "proofCompleteness" proofCompletenessStrategy)
+  ∷ (Core.Phase._,_ "rapidDevelopment" rapidDevelopmentStrategy)
+  ∷ (Core.Phase._,_ "production" productionStrategy)
+  ∷ []
+
 exportAllStrategiesAUDAXMarkdown : IO ⊤
 exportAllStrategiesAUDAXMarkdown = do
   let audaxDoc = PriorityFormatting.formatAllStrategiesAUDAXDoc ((Core.Phase._,_ "default" defaultStrategy)
@@ -86,7 +137,7 @@ generateReferenceConfig = do
   putStrLn "  ✓ ORCHESTRATION LAYER (Agda): TechnicalDebt.PriorityOrchestration"
   putStrLn ""
   putStrLn "Generating strategy profiles..."
-  let jsonOutput = "[JSON serialization placeholder]"
+  let jsonOutput = renderRoot "default" strategyEntries
   writeFile "build/priority_strategy_profiles.json" jsonOutput
   putStrLn "✓ Generated: build/priority_strategy_profiles.json"
   putStrLn ""
@@ -97,11 +148,9 @@ generateReferenceConfig = do
 
 exportStrategyProfile : String → PriorityStrategy → IO ⊤
 exportStrategyProfile strategyName strategy = do
-  let weights = strategyToWeights strategy
   let filename = PriorityFormatting.concatStr (PriorityFormatting.concatStr "build/strategy_" strategyName) ".json"
   putStrLn (PriorityFormatting.concatStr (PriorityFormatting.concatStr "Exporting " strategyName) " strategy...")
-  let audaxDoc = PriorityFormatting.formatPriorityAUDAXDoc strategyName strategy
-  let jsonStr = TechnicalDebt.DeferredItemsFormatting.audaxDocToMarkdown audaxDoc
+  let jsonStr = "{" ⊕ "\"name\":" ⊕ quoteStr strategyName ⊕ ",\"weights\":" ⊕ renderWeights (strategyToWeights strategy) ⊕ "}"
   writeFile filename jsonStr
   putStrLn (PriorityFormatting.concatStr "✓ Generated: " filename)
 
@@ -121,8 +170,10 @@ displayStrategyWeights : String → PriorityStrategy → IO ⊤
 displayStrategyWeights strategyName strategy = do
   let weights = strategyToWeights strategy
   putStrLn (PriorityFormatting.concatStr "Strategy: " strategyName)
-  -- Note: Would need intToString implementation to display actual weights
-  putStrLn "  Weights computed from Agda logic layer"
+  putStrLn (PriorityFormatting.concatStr "  postulate: " (intToString (CategoryWeights.postulateWeight weights)))
+  putStrLn (PriorityFormatting.concatStr "  todo: " (intToString (CategoryWeights.todoWeight weights)))
+  putStrLn (PriorityFormatting.concatStr "  fixme: " (intToString (CategoryWeights.fixmeWeight weights)))
+  putStrLn (PriorityFormatting.concatStr "  deviation: " (intToString (CategoryWeights.deviationWeight weights)))
   putStrLn ""
 
 validateConfiguration : IO ⊤
