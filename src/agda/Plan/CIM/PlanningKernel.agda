@@ -121,10 +121,10 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-EXAMPLES"
     ; title      = "Add regression examples exercising functor identity/compose"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
-    ; files      = ("src/agda/Examples" ∷ [])
+    ; files      = ("src/agda/Examples/FunctorComposition.agda" ∷ [])
     ; tags       = ("Functor" ∷ "Example" ∷ [])
     ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
     ; provenance = ("intake/codex_handoff.md" ∷ [])
