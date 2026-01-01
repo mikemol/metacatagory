@@ -264,7 +264,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-INTEROP-COMPOSE"
     ; title      = "Refine compose helper proofs for reuse"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Compose.agda" ∷ [])
@@ -277,7 +277,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-INTEROP-PHASE-WRAPPER"
     ; title      = "Ensure PhaseCategoryWrapper matches interface helpers"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Core/PhaseCategoryWrapper.agda" ∷ [])
