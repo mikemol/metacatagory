@@ -193,6 +193,8 @@ discoveredTargets =
     ("mkdir -p build" ∷ "$(AGDA) $(AGDA_FLAGS) --compile src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda" ∷ "./src/agda/PriorityOrchestrationFFI" ∷ [])
   ∷ generatorToTarget "priority-badge-weights" "Normalize Agda strategy profiles into badge weights" ("priority-strategy-profiles" ∷ []) 
     ("python3 scripts/adopt_priority_strategies.py --input build/priority_strategy_profiles.json --output .github/badges/weights.json" ∷ [])
+  ∷ generatorToTarget "priority-refresh" "Re-run priority pipeline and refresh roadmap/badge outputs" ("planning-index-json" ∷ "roadmap-export-json" ∷ "priority-badge-weights" ∷ "badges" ∷ [])
+    ("@echo \"priority pipeline refreshed (planning index, tasks, badge weights, roadmap badges)\"" ∷ [])
   ∷ generatorToTarget "docs-modules" "Generate per-module markdown documentation" ("src/agda/Plan/CIM/ModuleExporter.agdai" ∷ [])
     ("$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/ModuleExporter.agda && ./src/agda/Plan/CIM/ModuleExporter" ∷ [])
   ∷ generatorToTarget "docs-all" "Generate documentation (markdown only)" ("docs-generate" ∷ "docs-modules" ∷ [])
