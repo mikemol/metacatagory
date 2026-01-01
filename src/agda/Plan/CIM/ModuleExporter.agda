@@ -88,7 +88,7 @@ extractDeclDocs ls = catMaybes (zipWith collect [0..] ls)
         (_ : name : _) -> name
         _              -> T.pack "(unknown)"
     isDocLine l =
-      let s = stripText l in T.isPrefixOf (T.pack "--") s
+      let s = stripText l in T.isPrefixOf (T.pack "-- ^") s || T.isPrefixOf (T.pack "-- |") s || T.isPrefixOf (T.pack "--") s
     stripDoc l =
       let s = stripText l in T.dropWhile isSpace (T.drop 2 s)
     collect :: Int -> T.Text -> Maybe (T.Text, T.Text)
