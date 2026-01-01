@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Infrastructure.Axiom.Adequacy where
 
 open import Agda.Primitive using (Level; _⊔_; lsuc)
@@ -17,6 +19,9 @@ record PathAlgebra {ℓV ℓP : Level} (V : Set ℓV) : Set (lsuc (ℓV ⊔ ℓP
     ++-assoc : ∀ {a b c d}
       (p : Path a b) (q : Path b c) (r : Path c d) →
       (p ++ q) ++ r ≡ p ++ (q ++ r)
+    id     : ∀ {a} → Path a a
+    id-left  : ∀ {a b} (p : Path a b) → _++_ id p ≡ p
+    id-right : ∀ {a b} (p : Path a b) → _++_ p id ≡ p
 
 -- A 2-cell is equality of two parallel paths.
 Cell₂ : ∀ {ℓV ℓP : Level} {V : Set ℓV} → (PA : PathAlgebra {ℓV} {ℓP} V) →

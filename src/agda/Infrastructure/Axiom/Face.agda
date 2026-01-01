@@ -1,3 +1,4 @@
+{-# OPTIONS --without-K #-}
 module Infrastructure.Axiom.Face where
 
 -- Re-export Face from Adequacy to avoid duplicate definitions.

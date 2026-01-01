@@ -13,11 +13,16 @@
 | `badges` | Generate status badges |
 | `priority-strategy-profiles` | Compile and run Agda priority orchestration (generate strategy profiles) |
 | `priority-badge-weights` | Normalize Agda strategy profiles into badge weights |
+| `priority-profile-json` | Export structured priority profile (lazy; derived from planning index) |
+| `dependency-graph-json` | Export dependency graph JSON via Agda (from agda-deps-full.dot) |
+| `priority-refresh` | Re-run priority pipeline and refresh roadmap/badge outputs |
 | `docs-modules` | Generate per-module markdown documentation |
 | `docs-all` | Generate documentation (markdown only) |
 | `node-deps` | Install Node.js dependencies |
 | `deferred-items` | Scan for TODOs and FIXMEs (Agda FFI binary) |
 | `roadmap-index` | Compile Roadmap Index |
+| `planning-index-json` | Export planning index to JSON |
+| `planning-kernel` | Compile Planning Kernel |
 | `roadmap-sync` | Sync roadmap with external tracker |
 | `roadmap-sppf` | Compile Roadmap SPPF |
 | `validate-constructive` | Run all constructive build targets |

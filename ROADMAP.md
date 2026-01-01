@@ -30,7 +30,7 @@ This document is a projection from the canonical Agda index. To update:
 
 ```yaml
 id: GP-Gp400
-title: 'GP400: The \'
+title: 'GP400: The "Elasticity" of Meaning'
 status: not-started
 category: IngestedGP
 tags:
@@ -39,7 +39,7 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP400: The \** — Plan/CIM/IngestedRoadmaps/Corrections.agda [status: not-started]
+* **GP400: The "Elasticity" of Meaning** — Plan/CIM/IngestedRoadmaps/Corrections.agda [status: not-started]
   Target: `src/agda/Plan/CIM/Implementation.agda`
   Tags: GP
 
@@ -150,7 +150,7 @@ files:
 
 ```yaml
 id: GP-Gp805
-title: 'GP805: The Discovery of \'
+title: 'GP805: The Discovery of "Dark Matter"'
 status: not-started
 category: IngestedGP
 tags:
@@ -159,7 +159,7 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP805: The Discovery of \** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
+* **GP805: The Discovery of "Dark Matter"** — Plan/CIM/IngestedRoadmaps/Analysis.agda [status: not-started]
   Target: `src/agda/Plan/CIM/Implementation.agda`
   Tags: GP
 
@@ -1020,7 +1020,7 @@ files:
 
 ```yaml
 id: GP-Gp105
-title: 'GP105: The \'
+title: 'GP105: The "Fast Clock" Paradox'
 status: not-started
 category: IngestedGP
 tags:
@@ -1029,7 +1029,7 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP105: The \** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+* **GP105: The "Fast Clock" Paradox** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
   Target: `src/agda/Plan/CIM/Implementation.agda`
   Tags: GP
 
@@ -1065,7 +1065,7 @@ files:
 
 ```yaml
 id: GP-Gp108
-title: 'GP108: The \'
+title: 'GP108: The "Homological Defect"'
 status: not-started
 category: IngestedGP
 tags:
@@ -1074,7 +1074,7 @@ files:
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-* **GP108: The \** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
+* **GP108: The "Homological Defect"** — Plan/CIM/IngestedRoadmaps/Foundation.agda [status: not-started]
   Target: `src/agda/Plan/CIM/Implementation.agda`
   Tags: GP
 

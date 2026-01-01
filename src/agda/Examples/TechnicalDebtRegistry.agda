@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical --two-level #-}
+{-# OPTIONS --without-K #-}
 
 module Examples.TechnicalDebtRegistry where
 

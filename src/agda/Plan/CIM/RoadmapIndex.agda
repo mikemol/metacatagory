@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical #-}
+{-# OPTIONS --without-K #-}
 
 -- | RoadmapIndex: canonical, machine-actionable consolidation of roadmap items
 -- Architecture: pure core with parameterized adapters; FFI at the edge.

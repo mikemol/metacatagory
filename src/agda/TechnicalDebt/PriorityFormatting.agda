@@ -12,7 +12,6 @@ open import Agda.Builtin.List using (List; []; _∷_)
 open import TechnicalDebt.Priorities using (PriorityStrategy)
 open import Agda.Primitive using (Level; _⊔_)
 open import Core.Phase using (_×_; Σ; _,_)
-infixr 2 _×_
 
 
 map : ∀ {ℓ ℓ'} {A : Set ℓ} {B : Set ℓ'} → (A → B) → List A → List B

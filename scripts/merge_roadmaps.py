@@ -116,21 +116,39 @@ def parse_ingested_agda(base_path: Path) -> List[Dict]:
         
         # Pattern: roadmapGpXXX : RoadmapStep
         # Extract: provenance, step, status, targetModule
-        pattern = r'roadmap(Gp\d+) : RoadmapStep\s+roadmap\1 = record\s+\{[^}]+provenance\s+=\s+"([^"]+)"[^}]+step\s+=\s+"([^"]+)"[^}]+status\s+=\s+"([^"]+)"[^}]+targetModule\s+=\s+"([^"]+)"'
+        # Capture string literals that may contain escaped quotes.
+        str_lit = r'"((?:[^"\\\\]|\\\\.)+)"'
+        pattern = (
+            rf'roadmap(Gp\d+) : RoadmapStep\s+roadmap\1 = record\s+\{{[^}}]+'
+            rf'provenance\s+=\s+{str_lit}[^}}]+'
+            rf'step\s+=\s+{str_lit}[^}}]+'
+            rf'status\s+=\s+{str_lit}[^}}]+'
+            rf'targetModule\s+=\s+{str_lit}'
+        )
         
         matches = re.finditer(pattern, content, re.DOTALL)
 
+        def unescape(s: str) -> str:
+            try:
+                return bytes(s, "utf-8").decode("unicode_escape")
+            except Exception:
+                return s
+
         for match in matches:
             gp_id, provenance, step, status, target = match.groups()
+            provenance = unescape(provenance.strip())
+            step = unescape(step.strip())
+            status = unescape(status.strip())
+            target = unescape(target.strip())
 
             item = {
                 "id": f"GP-{gp_id}",
-                "title": provenance.strip(),
-                "description": step.strip(),
-                "status": status.strip(),
+                "title": provenance,
+                "description": step,
+                "status": status,
                 "category": "IngestedGP",
                 "source": f"Plan/CIM/IngestedRoadmaps/{agda_file.name}",
-                "files": [target.strip()],
+                "files": [target],
                 "tags": ["GP"],
                 "dependsOn": [],
                 "related": [],

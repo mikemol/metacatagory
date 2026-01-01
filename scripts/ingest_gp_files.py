@@ -9,6 +9,8 @@ import json
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+ROOT = Path(__file__).resolve().parent.parent
+
 def extract_metadata_from_md(filepath: str) -> Dict:
     """Extract title, summary, and key concepts from a markdown file."""
     with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
@@ -122,7 +124,7 @@ open import Plan.CIM.Utility (RoadmapStep)
 
 def main():
     """Main execution."""
-    intake_dir = '/home/mikemol/github/metacatagory/intake'
+    intake_dir = str(ROOT / 'intake')
     
     print("=" * 70)
     print("GP File Ingestion Script")
@@ -137,7 +139,7 @@ def main():
     agda_module = generate_agda_module(records)
     
     # Save to file
-    output_path = '/home/mikemol/github/metacatagory/src/agda/Plan/CIM/IngestedRoadmaps.agda'
+    output_path = str(ROOT / 'src/agda/Plan/CIM/IngestedRoadmaps.agda')
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
     with open(output_path, 'w') as f:
@@ -146,7 +148,7 @@ def main():
     print(f"\n✓ Saved Agda module to: {output_path}")
     
     # Save metadata for reference
-    metadata_path = '/home/mikemol/github/metacatagory/build/ingested_metadata.json'
+    metadata_path = str(ROOT / 'build/ingested_metadata.json')
     os.makedirs(os.path.dirname(metadata_path), exist_ok=True)
     
     with open(metadata_path, 'w') as f:

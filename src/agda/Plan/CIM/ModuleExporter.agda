@@ -18,6 +18,7 @@ import           Data.List (isPrefixOf, nub, sortBy, isSuffixOf)
 import           Data.Ord (comparing)
 import           Data.Char (isSpace)
 import           Control.Exception (catch, SomeException)
+import           Data.Maybe (catMaybes)
 
 -- Extract module name from file path: src/agda/Core/Utils.agda -> Core.Utils
 extractModuleName :: FilePath -> T.Text
@@ -56,9 +57,54 @@ extractImports content =
       importLines = filter isImport ls
   in nub $ map (stripText . T.drop 7 . T.dropWhile (/= 'i')) importLines
 
+-- Extract leading doc comment block (lines starting with -- or -- |)
+extractDocBlock :: T.Text -> T.Text
+extractDocBlock content =
+  let ls = T.lines content
+      dropWhileEnd p t = T.reverse (T.dropWhile p (T.reverse t))
+      stripText t = T.dropWhile isSpace (dropWhileEnd isSpace t)
+      cleaned = dropWhile (T.all isSpace) ls
+      isDocLine l = let s = stripText l in T.isPrefixOf (T.pack "--") s
+      docLines = takeWhile isDocLine cleaned
+      stripDoc l =
+        let s = stripText l
+        in T.dropWhile isSpace (T.drop 2 s) -- drop leading "--"
+  in T.unlines (map stripDoc docLines)
+
+-- Extract docstrings attached to declarations (record/data/postulate).
+extractDeclDocs :: [T.Text] -> [(T.Text, T.Text)]
+extractDeclDocs ls = catMaybes (zipWith collect [0..] ls)
+  where
+    stripText t = T.dropWhile isSpace (dropWhileEnd isSpace t)
+    dropWhileEnd p t = T.reverse (T.dropWhile p (T.reverse t))
+    isDecl l = let s = stripText l in
+      any (`T.isPrefixOf` s)
+        [ T.pack "record "
+        , T.pack "data "
+        , T.pack "postulate "
+        ]
+    declName l =
+      case T.words (stripText l) of
+        (_ : name : _) -> name
+        _              -> T.pack "(unknown)"
+    isDocLine l =
+      let s = stripText l in T.isPrefixOf (T.pack "-- ^") s || T.isPrefixOf (T.pack "-- |") s || T.isPrefixOf (T.pack "--") s
+    stripDoc l =
+      let s = stripText l in T.dropWhile isSpace (T.drop 2 s)
+    collect :: Int -> T.Text -> Maybe (T.Text, T.Text)
+    collect idx l
+      | not (isDecl l) = Nothing
+      | otherwise =
+          let prefix = take idx ls
+              revDoc = takeWhile isDocLine (reverse prefix)
+              docLines = reverse revDoc
+              suffixDocs = takeWhile isDocLine (drop (idx + 1) ls)
+              doc = T.unlines (map stripDoc (docLines ++ suffixDocs))
+          in Just (declName l, doc)
+
 -- Generate markdown with YAML frontmatter
-generateModuleMarkdown :: T.Text -> [T.Text] -> T.Text
-generateModuleMarkdown modName imports =
+generateModuleMarkdown :: T.Text -> [T.Text] -> T.Text -> [(T.Text, T.Text)] -> T.Text
+generateModuleMarkdown modName imports docBlock declDocs =
   let frontmatter = T.unlines $
         [ T.pack "---"
         , T.pack "module: " `T.append` modName
@@ -66,19 +112,37 @@ generateModuleMarkdown modName imports =
         , T.pack "imports:"
         ] ++ map (\imp -> T.pack "  - " `T.append` imp) imports ++
         [ T.pack "---" ]
+      overview = if T.null (T.strip docBlock)
+        then T.pack "*No overview provided.*\n"
+        else docBlock `T.append` T.pack "\n"
       content = T.unlines
         [ T.pack ""
         , T.pack "# Module: " `T.append` modName
         , T.pack ""
         , T.pack "**Source:** `src/agda/" `T.append` T.replace (T.pack ".") (T.pack "/") modName `T.append` T.pack ".agda`"
         , T.pack ""
+        , T.pack "## Overview"
+        , T.pack ""
+        , overview
         , T.pack "## Dependencies"
+        , T.pack ""
+        , T.pack "## Declarations"
         , T.pack ""
         ]
       importSection = if null imports
         then T.pack "*No imports*\n\n"
         else T.unlines $ map (\imp -> T.pack "* " `T.append` imp) imports
-  in T.concat [frontmatter, content, importSection]
+      declSection = if null declDocs
+        then T.pack "*No documented declarations*\n\n"
+        else T.unlines $
+             map (\(n,d) ->
+                    T.unlines
+                      [ T.pack "* " `T.append` n
+                      , if T.null (T.strip d)
+                          then T.pack "  - (no doc)"
+                          else T.pack "  - " `T.append` d
+                      ]) declDocs
+  in T.concat [frontmatter, content, importSection, declSection]
 
 -- Write module markdown to build/md/modules/
 writeModuleMarkdown :: T.Text -> T.Text -> IO ()
@@ -96,7 +160,9 @@ processAllAgdaFiles (filepath:rest) = do
   content <- TIO.readFile filepath `catch` \(_ :: SomeException) -> return (T.pack "")
   let modName = extractModuleName filepath
       imports = extractImports content
-      markdown = generateModuleMarkdown modName imports
+      docBlock = extractDocBlock content
+      declDocs = extractDeclDocs (T.lines content)
+      markdown = generateModuleMarkdown modName imports docBlock declDocs
   writeModuleMarkdown modName markdown
   processAllAgdaFiles rest
 

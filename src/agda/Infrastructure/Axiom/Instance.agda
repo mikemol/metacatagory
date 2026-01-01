@@ -1,3 +1,4 @@
+{-# OPTIONS --without-K #-}
 module Infrastructure.Axiom.Instance where
 
 open import Agda.Primitive using (Level; _⊔_; lsuc)

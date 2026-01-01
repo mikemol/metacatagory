@@ -27,19 +27,20 @@ renderMetaIndex : MetaIndex → String
 renderMetaIndex mi =
   "# " ++ MetaIndex.title mi ++ "\n\n" ++ renderSections (MetaIndex.sections mi)
   where
+    infixr 20 _++_
     _++_ = primStringAppend
-
-    renderSections : List Section → String
-    renderSections [] = ""
-    renderSections (s ∷ ss) = renderSection s ++ renderSections ss
-
-    renderSection : Section → String
-    renderSection s =
-      "## " ++ Section.name s ++ "\n\n" ++ renderBullets (Section.bullets s) ++ "\n"
 
     renderBullets : List String → String
     renderBullets [] = ""
     renderBullets (b ∷ bs) = "* " ++ b ++ "\n" ++ renderBullets bs
+
+    renderSection : Section → String
+    renderSection s =
+      ("## " ++ Section.name s ++ "\n\n" ++ renderBullets (Section.bullets s)) ++ "\n"
+
+    renderSections : List Section → String
+    renderSections [] = ""
+    renderSections (s ∷ ss) = renderSection s ++ renderSections ss
 
 ------------------------------------------------------------------------
 -- IO helpers
@@ -58,4 +59,3 @@ writeFile path content = TIO.writeFile (T.unpack path) content
 
 writeMetaIndex : MetaIndex → String → IO ⊤
 writeMetaIndex mi path = writeFile path (renderMetaIndex mi)
-

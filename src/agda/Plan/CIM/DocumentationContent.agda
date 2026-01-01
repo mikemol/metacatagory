@@ -90,6 +90,7 @@ readmeDoc = record
       p (text "* Example: It proves that an Algebra.Modules.Basic.KernelOfModuleHomomorphism satisfies the Chapter2.KernelAsEqualizerDefinition." ∷ []) ∷
       p (text "* Mechanism: It uses Indexed Adapters to carry the proof that status ≡ true, ensuring that every algebraic feature is categorically sound." ∷ []) ∷
       h 2 (text "4. Development Roadmaps" ∷ []) ∷
+      p (text "Each roadmap item carries a checklist. Beyond functional completion, every task must preserve cohomological coverage: ensure new capabilities are exemplified in src/agda/Examples so they remain anchored and discoverable by orchestration." ∷ []) ∷
       []
   ; meta = ""
   }
@@ -114,6 +115,7 @@ contributingDoc = record
       p (text "* Python scripts should be formatted with black and linted with flake8." ∷ []) ∷
       p (text "* Markdown should be auto-formatted and linted using make md-fix and make md-lint." ∷ []) ∷
       p (text "* Commit messages should be clear and reference relevant issues or roadmap items." ∷ []) ∷
+      p (text "* Cohomology: when adding or refactoring capabilities, update src/agda/Examples to keep usage paths explicit and prevent capability drift." ∷ []) ∷
       h 2 (text "Adding Tests & Checklists" ∷ []) ∷
       p (text "* Place new checklists in src/agda/Tests/ and update the relevant README." ∷ []) ∷
       p (text "* Use the checklist/test philosophy described in src/agda/Tests/README.md." ∷ []) ∷

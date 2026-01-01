@@ -7,7 +7,7 @@ open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Nat using (Nat; _+_)
 
-open import Plan.CIM.Utility using (Ambiguity; TransformationSystem; CoherenceWitness; EmergentMetric; Path; refl-path; trans-step; map; _++_)
+open import Plan.CIM.Utility using (TransformationSystem; CoherenceWitness; EmergentMetric; Path; refl-path; trans-step; map; _++_)
 open import Plan.CIM.PandocAST
 open import Plan.CIM.PandocToMarkdown using (BraidStep; BraidTrace; transformInline; transformBlock)
 open import Plan.CIM.PandocProtocols using (blockAmb; blockTransSys; docAmb; docTransSys)

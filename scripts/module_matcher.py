@@ -45,7 +45,7 @@ class ModuleMapping:
 class ModuleMatcher:
     """Matches roadmap steps to Agda modules."""
     
-    def __init__(self, workspace_root: str = "/home/mikemol/github/metacatagory"):
+    def __init__(self, workspace_root: str = str(Path(__file__).resolve().parent.parent)):
         self.workspace_root = workspace_root
         self.agda_modules: Dict[str, AgdaModule] = {}
         self.category_keywords = self._define_category_keywords()
@@ -163,23 +163,56 @@ class ModuleMatcher:
         self,
         metadata_file: str = "build/ingested_metadata.json"
     ) -> Dict[str, ModuleMapping]:
-        """Match each roadmap step to relevant modules."""
+        """Match each roadmap step to relevant modules.
+
+        Fallback: if metadata_file is missing, use build/planning_index.json
+        (generated from PlanningKernel) to keep prioritization running.
+        """
         print("\n🔗 Matching roadmap steps to modules...")
         
-        # Load roadmap metadata
+        files = {}
         metadata_path = Path(self.workspace_root) / metadata_file
-        with open(metadata_path, 'r') as f:
-            data = json.load(f)
-        
-        # Extract files dictionary
-        files = data.get('files', {})
+        if metadata_path.exists():
+            with open(metadata_path, 'r') as f:
+                data = json.load(f)
+            files = data.get('files', {})
+        else:
+            fallback_path = Path(self.workspace_root) / "build" / "planning_index.json"
+            try:
+                with open(fallback_path, 'r') as f:
+                    index_items = json.load(f)
+            except json.JSONDecodeError:
+                text = fallback_path.read_text()
+                text = text.replace('\\', '\\\\')
+                index_items = json.loads(text)
+            for item in index_items:
+                files[item['id']] = {
+                    'title': item.get('title', ''),
+                    'summary': item.get('category', ''),
+                    'keywords': item.get('tags', []),
+                    'files': item.get('files', []),
+                }
+            print(f"   ⚠️  {metadata_file} not found; using planning_index.json fallback with {len(files)} items.")
         
         mappings = {}
         
         for step_id, item_data in files.items():
             # Add step_id to item data
             item = {'id': step_id, **item_data}
-            mapping = self._match_single_step(item)
+            # Prefer explicit file mapping when present (e.g., planning_index.json entries)
+            file_modules = [f for f in item_data.get('files', []) if f.startswith("src/agda/")]
+            if file_modules:
+                primary_module = file_modules[0].replace("src/agda/", "").replace(".agda", "").replace("/", ".")
+                mapping = ModuleMapping(
+                    step_id=step_id,
+                    title=item.get('title', ''),
+                    primary_module=primary_module,
+                    related_modules=[],
+                    confidence=1.0,
+                    rationale="Derived from explicit file path"
+                )
+            else:
+                mapping = self._match_single_step(item)
             mappings[step_id] = mapping
         
         print(f"   ✓ Matched {len(mappings)} roadmap steps")
@@ -194,7 +227,8 @@ class ModuleMatcher:
         keywords = set(item.get('keywords', []))
         
         # Extract category from step_id (e.g., GP700 -> analysis phase)
-        gp_number = int(re.search(r'\d+', step_id).group())
+        match = re.search(r'\d+', step_id)
+        gp_number = int(match.group()) if match else 0
         step_category = self._categorize_gp_number(gp_number)
         
         # Score all modules

@@ -13,6 +13,8 @@ from typing import Dict, List, Set, Tuple
 from dataclasses import dataclass, field
 from collections import defaultdict
 
+ROOT = Path(__file__).resolve().parent.parent
+
 @dataclass
 class ImpactAssessment:
     """Assessment of impact for a roadmap step."""
@@ -38,7 +40,7 @@ class ImpactAssessment:
 class ImpactAnalyzer:
     """Analyzes impact of roadmap changes on module dependencies."""
     
-    def __init__(self, workspace_root: str = "/home/mikemol/github/metacatagory"):
+    def __init__(self, workspace_root: str = str(ROOT)):
         self.workspace_root = workspace_root
         self.module_mappings = {}
         self.dependency_graph = {}

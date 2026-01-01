@@ -1,0 +1,2239 @@
+{
+  "metadata": {
+    "total_steps": 104,
+    "high_impact_steps": 8,
+    "foundational_steps": 89,
+    "critical_path_steps": 4,
+    "timestamp": "2025-12-31T21:10:22.011701"
+  },
+  "assessments": [
+    {
+      "step_id": "PHASE-I.1",
+      "title": "Static coordinate assignment for all declarations",
+      "primary_module": "Metamodel",
+      "modules_modified": [
+        "Metamodel"
+      ],
+      "modules_affected": [
+        "Plan.CIM.ModuleExporter",
+        "Core.Utils",
+        "Chapter1.Level1sub7",
+        "Tests.ModulesChecklist",
+        "Tests.FunctorPropertiesChecklist",
+        "Tests.KanExtensionsChecklist",
+        "Tests.ErrorHandlingTests",
+        "Tests.ConstructiveWitnessTests",
+        "Tests.SpecificationValidation",
+        "Algebra.Rings.BasicWithTheorems",
+        "Examples.ExporterMakefile",
+        "Tests.GroupsStructureChecklist",
+        "Tests.YonedaChecklist",
+        "Core.Witnesses",
+        "Core.UniversalProperties",
+        "Algebra.Groups.Basic",
+        "Core.Algorithms.NumberFields",
+        "GrowthAnalysis",
+        "Tests.FieldsBasicChecklist",
+        "Algebra.Modules.ClassicalInstance"
+      ],
+      "affected_count": 159,
+      "dependencies": [
+        "Infrastructure.Universe",
+        "Core.Phase",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "dependency_count": 3,
+      "impact_score": 317.5,
+      "priority_rank": 1
+    },
+    {
+      "step_id": "INGEST-Ch3-Ideals-Lattice",
+      "title": "Ideal lattice ingestion (prime/primary metadata)",
+      "primary_module": "Algebra.Rings.Basic",
+      "modules_modified": [
+        "Algebra.Rings.Basic"
+      ],
+      "modules_affected": [
+        "Tests.ModulesChecklist",
+        "Tests.FunctorPropertiesChecklist",
+        "Tests.KanExtensionsChecklist",
+        "Tests.ConstructiveWitnessTests",
+        "Tests.ErrorHandlingTests",
+        "Tests.SpecificationValidation",
+        "Tests.GroupsStructureChecklist",
+        "Tests.YonedaChecklist",
+        "Core.UniversalProperties",
+        "Core.Witnesses",
+        "Core.Algorithms.NumberFields",
+        "Tests.FieldsBasicChecklist",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Algebra.Index",
+        "Algorithms.Basic",
+        "Core.Algorithms.External",
+        "Tests.PerformanceBoundaryTests",
+        "Core.ConstructiveWitnesses",
+        "Examples.InstrumentedAlgorithmDemo",
+        "Core.Algorithms.Bundle"
+      ],
+      "affected_count": 85,
+      "dependencies": [
+        "Chapter1.Level1sub5",
+        "Chapter1.Level1sub7",
+        "Chapter1.Level1Index",
+        "Core.Phase",
+        "Core",
+        "PropertyRegistry",
+        "Chapter2.Level2sub3",
+        "Infrastructure.Universe",
+        "Chapter1.Level1sub4",
+        "Chapter1.Level1sub2",
+        "Infrastructure.Coherence.Path2",
+        "Chapter1.Level1",
+        "Algebra.Rings.Types",
+        "Chapter1.Level1sub8",
+        "Chapter1.Level1sub6",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Chapter1.Level1sub3",
+        "Algebra.Groups.Types"
+      ],
+      "dependency_count": 19,
+      "impact_score": 161.5,
+      "priority_rank": 2
+    },
+    {
+      "step_id": "INGEST-Ch1-Groups-Cyclic",
+      "title": "Ingest Cyclic Groups (generator witness abstraction)",
+      "primary_module": "Algebra.Groups.Basic",
+      "modules_modified": [
+        "Algebra.Groups.Basic"
+      ],
+      "modules_affected": [
+        "Tests.ModulesChecklist",
+        "Tests.FunctorPropertiesChecklist",
+        "Tests.KanExtensionsChecklist",
+        "Tests.ErrorHandlingTests",
+        "Tests.ConstructiveWitnessTests",
+        "Tests.SpecificationValidation",
+        "Algebra.Rings.BasicWithTheorems",
+        "Tests.GroupsStructureChecklist",
+        "Tests.YonedaChecklist",
+        "Core.Algorithms.NumberFields",
+        "Tests.FieldsBasicChecklist",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Algebra.Index",
+        "Algorithms.Basic",
+        "Core.Algorithms.External",
+        "Tests.PerformanceBoundaryTests",
+        "Core.ConstructiveWitnesses",
+        "Examples.InstrumentedAlgorithmDemo",
+        "Core.Algorithms.Bundle",
+        "Tests.MonadAdjunctionChecklist"
+      ],
+      "affected_count": 82,
+      "dependencies": [
+        "Chapter1.Level1sub4",
+        "Chapter1.Level1sub5",
+        "Chapter1.Level1sub2",
+        "Core",
+        "PropertyRegistry",
+        "Chapter1.Level1sub7",
+        "Chapter1.Level1Index",
+        "Chapter1.Level1sub3",
+        "Infrastructure.Coherence.Path2",
+        "Chapter1.Level1",
+        "Chapter1.Level1sub6",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Infrastructure.Universe",
+        "Chapter1.Level1sub8",
+        "Algebra.Groups.Types"
+      ],
+      "dependency_count": 17,
+      "impact_score": 156.5,
+      "priority_rank": 3
+    },
+    {
+      "step_id": "PHASE-III.2",
+      "title": "Error-as-Specification integration (AlgorithmResult, LimitationEvidence)",
+      "primary_module": "Core.Limitations",
+      "modules_modified": [
+        "Core.Limitations"
+      ],
+      "modules_affected": [
+        "Examples.LazyHybridDemo",
+        "Core.Algorithms.FunctionFields",
+        "Examples.FiniteField.GF8",
+        "Tests.WitnessConstructionTests",
+        "Tests.ConstructiveWitnessTests",
+        "Tests.ErrorHandlingTests",
+        "Examples.AlgorithmCorrectnessExamples",
+        "Examples.ConstructiveWitnessExamples",
+        "Examples.TechnicalDebtChecklist",
+        "Tests.DispatchBehaviorTests",
+        "Tests.AlgorithmSmokeTests",
+        "Examples.RealWorldAlgorithms",
+        "Tests.AlgorithmCompositionTests",
+        "Tests.WarningAggregatorsTest",
+        "Tests.UniversalPropertyTests",
+        "Core.Algorithms.AutomaticEvidence",
+        "Core.Algorithms.NumberFields",
+        "Algorithms.Instrumented",
+        "Tests.ProofObligationStatus",
+        "Tests.AlgorithmCompositionTestsMinimal"
+      ],
+      "affected_count": 44,
+      "dependencies": [
+        "Infrastructure.Universe",
+        "Core.Phase",
+        "Metamodel",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "dependency_count": 4,
+      "impact_score": 87.0,
+      "priority_rank": 4
+    },
+    {
+      "step_id": "PHASE-IV.0",
+      "title": "Algorithmic foundations (replace field arithmetic stubs)",
+      "primary_module": "Core.Algorithms.FiniteFields",
+      "modules_modified": [
+        "Core.Algorithms.FiniteFields"
+      ],
+      "modules_affected": [
+        "Examples.FiniteField.GF8",
+        "Tests.ErrorHandlingTests",
+        "Examples.TechnicalDebtChecklist",
+        "Tests.DispatchBehaviorTests",
+        "Tests.AlgorithmCompositionTests",
+        "Core.Algorithms.AutomaticEvidence",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Tests.AdvancedPhaseExamples",
+        "Algebra.Index",
+        "Examples.FunctionField.F2x",
+        "Examples.NumberField.Sqrt2",
+        "Tests.PerformanceBoundaryTests",
+        "Examples.AutomaticEvidenceDemo",
+        "Examples.InstrumentedAlgorithmDemo",
+        "Core.Algorithms.Registry",
+        "Core.Algorithms.InductiveClassification",
+        "Tests.PhaseExamples",
+        "Tests.Index",
+        "Examples.LazyHybridDemo"
+      ],
+      "affected_count": 19,
+      "dependencies": [
+        "Chapter1.Level1sub5",
+        "Chapter1.Level1sub7",
+        "Chapter1.Level1Index",
+        "Core.Phase",
+        "Algebra.Groups.Abelian",
+        "Core",
+        "Core.Limitations",
+        "PropertyRegistry",
+        "Core.Witnesses",
+        "Chapter2.Level2sub3",
+        "Algebra.Groups.Basic",
+        "Infrastructure.Universe",
+        "Algebra.Fields.Advanced",
+        "Algebra.Enrichment",
+        "Chapter1.Level1sub4",
+        "Chapter1.Level1sub2",
+        "Infrastructure.Coherence.Path2",
+        "Algorithms.Basic",
+        "Chapter2.Level2sub6",
+        "Chapter1.Level1"
+      ],
+      "dependency_count": 34,
+      "impact_score": 22.0,
+      "priority_rank": 5
+    },
+    {
+      "step_id": "LOCAL-GENERIC-FUNCTOR",
+      "title": "Introduce generic functor interface for protocol bundles",
+      "primary_module": "Infrastructure.Functor.Interface",
+      "modules_modified": [
+        "Infrastructure.Functor.Interface"
+      ],
+      "modules_affected": [
+        "Infrastructure.Functor.Instances.FunctionPathCategory",
+        "Core.PhaseCategoryWrapper",
+        "Infrastructure.Functor.Instances.PathAlgebra",
+        "Infrastructure.Functor.Instances.FunctionCategory",
+        "Infrastructure.Functor.Compose",
+        "Infrastructure.Functor.Instances.PhaseCategory",
+        "Infrastructure.Functor.Instances.Ambiguity",
+        "Infrastructure.Functor.Instances.Trivial",
+        "Infrastructure.Index"
+      ],
+      "affected_count": 9,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 19.0,
+      "priority_rank": 6
+    },
+    {
+      "step_id": "PHASE-V.2",
+      "title": "Solution space growth rate instrumentation",
+      "primary_module": "Core.GrowthMetrics",
+      "modules_modified": [
+        "Core.GrowthMetrics"
+      ],
+      "modules_affected": [
+        "Examples.InstrumentedAlgorithmDemo",
+        "Tests.PathAggregatorTests",
+        "Tests.Index",
+        "GrowthAnalysis",
+        "Core.PathAggregator",
+        "Algorithms.Instrumented",
+        "Tests.PerformanceBoundaryTests"
+      ],
+      "affected_count": 7,
+      "dependencies": [
+        "Core.Utils",
+        "PropertyRegistry",
+        "Infrastructure.Coherence.Path2",
+        "Chapter1.Level1",
+        "Core.Phase",
+        "Metamodel",
+        "Infrastructure.Universe",
+        "Core"
+      ],
+      "dependency_count": 8,
+      "impact_score": 11.0,
+      "priority_rank": 7
+    },
+    {
+      "step_id": "ROADMAP-MD-1",
+      "title": "Provide algebraic structures for representing and manipulating ambiguity in parse spaces.",
+      "primary_module": "Plan.CIM.Ambiguity",
+      "modules_modified": [
+        "Plan.CIM.Ambiguity"
+      ],
+      "modules_affected": [
+        "Infrastructure.Functor.Instances.Ambiguity",
+        "Infrastructure.Index"
+      ],
+      "affected_count": 2,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 5.0,
+      "priority_rank": 8
+    },
+    {
+      "step_id": "LOCAL-DEF-DICT",
+      "title": "Implement Definition Dictionary adequacy module",
+      "primary_module": "Infrastructure.Definitions.Dictionary",
+      "modules_modified": [
+        "Infrastructure.Definitions.Dictionary"
+      ],
+      "modules_affected": [
+        "Infrastructure.Index"
+      ],
+      "affected_count": 1,
+      "dependencies": [
+        "Infrastructure.Axiom.Adequacy",
+        "Infrastructure.Axiom.Face",
+        "Infrastructure.Axiom.Instance"
+      ],
+      "dependency_count": 3,
+      "impact_score": 1.5,
+      "priority_rank": 9
+    },
+    {
+      "step_id": "ROADMAP-MD-2",
+      "title": "Establish metric structures on semantic spaces for distance/similarity calculations.",
+      "primary_module": "Plan.CIM.Metricization",
+      "modules_modified": [
+        "Plan.CIM.Metricization"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 10
+    },
+    {
+      "step_id": "ROADMAP-MD-3",
+      "title": "Define compositional transformation operations on semantic objects.",
+      "primary_module": "Plan.CIM.TransformationSystem",
+      "modules_modified": [
+        "Plan.CIM.TransformationSystem"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 11
+    },
+    {
+      "step_id": "ROADMAP-MD-4",
+      "title": "Implement functorial mappings between semantic and computational spaces.",
+      "primary_module": "Plan.CIM.FunctorialConstructs",
+      "modules_modified": [
+        "Plan.CIM.FunctorialConstructs"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 12
+    },
+    {
+      "step_id": "ROADMAP-MD-5",
+      "title": "Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs.",
+      "primary_module": "Plan.CIM.Elasticity",
+      "modules_modified": [
+        "Plan.CIM.Elasticity"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 13
+    },
+    {
+      "step_id": "ROADMAP-MD-6",
+      "title": "Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension.",
+      "primary_module": "Plan.CIM.PolytopeExpansion",
+      "modules_modified": [
+        "Plan.CIM.PolytopeExpansion"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 14
+    },
+    {
+      "step_id": "ROADMAP-MD-7",
+      "title": "Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed.",
+      "primary_module": "Plan.CIM.PolytopeExpansion",
+      "modules_modified": [
+        "Plan.CIM.PolytopeExpansion"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 15
+    },
+    {
+      "step_id": "ROADMAP-MD-8",
+      "title": "Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition.",
+      "primary_module": "Plan.CIM.RotationalTransport",
+      "modules_modified": [
+        "Plan.CIM.RotationalTransport"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 16
+    },
+    {
+      "step_id": "GP-Gp400",
+      "title": "GP400: The \\",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 17
+    },
+    {
+      "step_id": "GP-Gp500",
+      "title": "GP500: Dimensional Relief",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 18
+    },
+    {
+      "step_id": "GP-Gp501",
+      "title": "GP501: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 19
+    },
+    {
+      "step_id": "GP-Gp800",
+      "title": "GP800: The Missing Morphisms",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 20
+    },
+    {
+      "step_id": "GP-Gp801",
+      "title": "GP801: The Exterior Algebra of Meaning",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 21
+    },
+    {
+      "step_id": "GP-Gp802",
+      "title": "GP802: The Fundamental Group of the Grammar",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 22
+    },
+    {
+      "step_id": "GP-Gp803",
+      "title": "GP803: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 23
+    },
+    {
+      "step_id": "GP-Gp804",
+      "title": "GP804: The Missing Algebraic Topology",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 24
+    },
+    {
+      "step_id": "GP-Gp805",
+      "title": "GP805: The Discovery of \\\\\\",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 25
+    },
+    {
+      "step_id": "GP-Gp806",
+      "title": "GP806: The Geometry of Inference",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 26
+    },
+    {
+      "step_id": "GP-Gp807",
+      "title": "GP807: The Logic of Exclusion",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 27
+    },
+    {
+      "step_id": "GP-Gp808",
+      "title": "GP808: The Arithmetic Foundation",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 28
+    },
+    {
+      "step_id": "GP-Gp809",
+      "title": "GP809: The Logarithmic Isomorphism",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 29
+    },
+    {
+      "step_id": "GP-Gp810",
+      "title": "GP810: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 30
+    },
+    {
+      "step_id": "GP-Gp811",
+      "title": "GP811: The Free Energy Principle",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 31
+    },
+    {
+      "step_id": "GP-Gp812",
+      "title": "GP812: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 32
+    },
+    {
+      "step_id": "GP-Gp813",
+      "title": "GP813: The Missing Cohomology",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 33
+    },
+    {
+      "step_id": "GP-Gp814",
+      "title": "GP814: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 34
+    },
+    {
+      "step_id": "GP-Gp815",
+      "title": "GP815: The Isomorphism of Process",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 35
+    },
+    {
+      "step_id": "GP-Gp816",
+      "title": "GP816: The Homotopy of Morphology",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 36
+    },
+    {
+      "step_id": "GP-Gp817",
+      "title": "GP817: The Local-to-Global Principle",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 37
+    },
+    {
+      "step_id": "GP-Gp818",
+      "title": "GP818: The Abelian Sheaf",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 38
+    },
+    {
+      "step_id": "GP-Gp819",
+      "title": "GP819: The Plus Construction",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 39
+    },
+    {
+      "step_id": "GP-Gp820",
+      "title": "GP820: The Fractal Sheaf",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 40
+    },
+    {
+      "step_id": "GP-Gp821",
+      "title": "GP821: Recursive Self-Substitution",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 41
+    },
+    {
+      "step_id": "GP-Gp822",
+      "title": "GP822: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 42
+    },
+    {
+      "step_id": "GP-Gp823",
+      "title": "GP823: The Descent to the Boolean Layer",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 43
+    },
+    {
+      "step_id": "GP-Gp824",
+      "title": "GP824: The Quantum Manifold",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 44
+    },
+    {
+      "step_id": "GP-Gp825",
+      "title": "GP825: Dynamic Gauge Symmetry",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 45
+    },
+    {
+      "step_id": "GP-Gp826",
+      "title": "GP826: The Self-Defining Manifold",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 46
+    },
+    {
+      "step_id": "GP-Gp827",
+      "title": "GP827: The Cost of Gauge Coherence",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 47
+    },
+    {
+      "step_id": "GP-Gp828",
+      "title": "GP828: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 48
+    },
+    {
+      "step_id": "GP-Gp829",
+      "title": "GP829: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 49
+    },
+    {
+      "step_id": "GP-Gp830",
+      "title": "GP830: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 50
+    },
+    {
+      "step_id": "GP-Gp831",
+      "title": "GP831: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 51
+    },
+    {
+      "step_id": "GP-Gp832",
+      "title": "GP832: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 52
+    },
+    {
+      "step_id": "GP-Gp699",
+      "title": "GP699: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 53
+    },
+    {
+      "step_id": "GP-Gp700",
+      "title": "GP700: The Simplex vs. The Associahedron",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 54
+    },
+    {
+      "step_id": "GP-Gp701",
+      "title": "GP701: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 55
+    },
+    {
+      "step_id": "GP-Gp702",
+      "title": "GP702: The Loday Realization",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 56
+    },
+    {
+      "step_id": "GP-Gp703",
+      "title": "GP703: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 57
+    },
+    {
+      "step_id": "GP-Gp704",
+      "title": "GP704: The Geometry of Choice",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 58
+    },
+    {
+      "step_id": "GP-Gp705",
+      "title": "GP705: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 59
+    },
+    {
+      "step_id": "GP-Gp706",
+      "title": "GP706: The Operational Velocity",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 60
+    },
+    {
+      "step_id": "GP-Gp707",
+      "title": "GP707: The Knight's Move (Topological Surgery)",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 61
+    },
+    {
+      "step_id": "GP-Gp708",
+      "title": "GP708: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 62
+    },
+    {
+      "step_id": "GP-Gp709",
+      "title": "GP709: The Operadic Tiling",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 63
+    },
+    {
+      "step_id": "GP-Gp710",
+      "title": "GP710: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 64
+    },
+    {
+      "step_id": "GP-Gp711",
+      "title": "GP711: The Stable Interface Principle",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 65
+    },
+    {
+      "step_id": "GP-Gp712",
+      "title": "GP712: The Prediction of Topology",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 66
+    },
+    {
+      "step_id": "GP-Gp713",
+      "title": "GP713: The Vacuum State",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 67
+    },
+    {
+      "step_id": "GP-Gp714",
+      "title": "GP714: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 68
+    },
+    {
+      "step_id": "GP-Gp01",
+      "title": "GP01: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 69
+    },
+    {
+      "step_id": "GP-Gp010",
+      "title": "GP010: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 70
+    },
+    {
+      "step_id": "GP-Gp02",
+      "title": "GP02: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 71
+    },
+    {
+      "step_id": "GP-Gp03",
+      "title": "GP03: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 72
+    },
+    {
+      "step_id": "GP-Gp04",
+      "title": "GP04: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 73
+    },
+    {
+      "step_id": "GP-Gp05",
+      "title": "GP05: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 74
+    },
+    {
+      "step_id": "GP-Gp06",
+      "title": "GP06: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 75
+    },
+    {
+      "step_id": "GP-Gp07",
+      "title": "GP07: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 76
+    },
+    {
+      "step_id": "GP-Gp09",
+      "title": "GP09: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 77
+    },
+    {
+      "step_id": "GP-Gp100",
+      "title": "GP100: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 78
+    },
+    {
+      "step_id": "GP-Gp101",
+      "title": "GP101: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 79
+    },
+    {
+      "step_id": "GP-Gp102",
+      "title": "GP102: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 80
+    },
+    {
+      "step_id": "GP-Gp103",
+      "title": "GP103: The Type-Theoretic Gate",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 81
+    },
+    {
+      "step_id": "GP-Gp104",
+      "title": "GP104: The Algebraic Structure of Ambiguity",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 82
+    },
+    {
+      "step_id": "GP-Gp105",
+      "title": "GP105: The \\",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 83
+    },
+    {
+      "step_id": "GP-Gp106",
+      "title": "GP106: The Persistence of Potentiality",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 84
+    },
+    {
+      "step_id": "GP-Gp107",
+      "title": "GP107: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 85
+    },
+    {
+      "step_id": "GP-Gp108",
+      "title": "GP108: The \\",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 86
+    },
+    {
+      "step_id": "GP-Gp109",
+      "title": "GP109: The Hebbian Drift",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 87
+    },
+    {
+      "step_id": "GP-Gp110",
+      "title": "GP110: The Control Plane",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 88
+    },
+    {
+      "step_id": "GP-Gp111",
+      "title": "GP111: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 89
+    },
+    {
+      "step_id": "GP-Gp200",
+      "title": "GP200: The Geometry of Associativity",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 90
+    },
+    {
+      "step_id": "GP-Gp201",
+      "title": "GP201: The Non-Abelian Manifold",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 91
+    },
+    {
+      "step_id": "GP-Gp300",
+      "title": "GP300: The Fiber Bundle Architecture",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 92
+    },
+    {
+      "step_id": "GP-Gp302",
+      "title": "GP302: The Operationalized Adjunction",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 93
+    },
+    {
+      "step_id": "GP-Gp303",
+      "title": "GP303: Unknown Title",
+      "primary_module": "Plan.CIM.Implementation",
+      "modules_modified": [
+        "Plan.CIM.Implementation"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [],
+      "dependency_count": 0,
+      "impact_score": 1.0,
+      "priority_rank": 94
+    },
+    {
+      "step_id": "PHASE-III.5",
+      "title": "ToposTheoryChecklist alignment (constructor arities)",
+      "primary_module": "Tests.ToposTheoryChecklist",
+      "modules_modified": [
+        "Tests.ToposTheoryChecklist"
+      ],
+      "modules_affected": [
+        "Tests.Index"
+      ],
+      "affected_count": 1,
+      "dependencies": [
+        "Chapter1.Level1sub4",
+        "Chapter1.Level1sub5",
+        "Chapter1.Level1sub2",
+        "Chapter1.Level1sub8",
+        "Chapter3.Level3sub2",
+        "Core.CategoricalAdapter",
+        "Tests.ToposObligationAdapters",
+        "Chapter1.Level1sub7",
+        "PropertyRegistry",
+        "Chapter1.Level1Index",
+        "Infrastructure.Coherence.Path2",
+        "Chapter1.Level1",
+        "Core.Phase",
+        "Chapter1.Level1sub6",
+        "Metamodel",
+        "Infrastructure.Universe",
+        "Chapter1.Level1sub3",
+        "Core"
+      ],
+      "dependency_count": 18,
+      "impact_score": 0.0,
+      "priority_rank": 95
+    },
+    {
+      "step_id": "PHASE-0.1",
+      "title": "Replace product postulate with constructive mediating cone proof",
+      "primary_module": "Tests.UniversalPropertyTests",
+      "modules_modified": [
+        "Tests.UniversalPropertyTests"
+      ],
+      "modules_affected": [
+        "Tests.Index_PhaseII",
+        "Tests.Index"
+      ],
+      "affected_count": 2,
+      "dependencies": [
+        "Chapter1.Level1sub5",
+        "Chapter1.Level1sub7",
+        "Chapter1.Level1Index",
+        "Core.Phase",
+        "Algebra.Groups.Abelian",
+        "Core",
+        "Core.Limitations",
+        "PropertyRegistry",
+        "Core.UniversalProperties",
+        "Chapter2.Level2sub3",
+        "Algebra.Groups.Basic",
+        "Infrastructure.Universe",
+        "Algebra.Fields.Advanced",
+        "Algebra.Enrichment",
+        "Chapter1.Level1sub4",
+        "Chapter1.Level1sub2",
+        "Infrastructure.Coherence.Path2",
+        "Chapter2.Level2sub6",
+        "Chapter1.Level1",
+        "Algebra.Rings.Types"
+      ],
+      "dependency_count": 34,
+      "impact_score": 0.0,
+      "priority_rank": 96
+    },
+    {
+      "step_id": "PHASE-0.2",
+      "title": "Replace coproduct postulate with constructive mediating cocone proof",
+      "primary_module": "Tests.UniversalPropertyTests",
+      "modules_modified": [
+        "Tests.UniversalPropertyTests"
+      ],
+      "modules_affected": [
+        "Tests.Index_PhaseII",
+        "Tests.Index"
+      ],
+      "affected_count": 2,
+      "dependencies": [
+        "Chapter1.Level1sub5",
+        "Chapter1.Level1sub7",
+        "Chapter1.Level1Index",
+        "Core.Phase",
+        "Algebra.Groups.Abelian",
+        "Core",
+        "Core.Limitations",
+        "PropertyRegistry",
+        "Core.UniversalProperties",
+        "Chapter2.Level2sub3",
+        "Algebra.Groups.Basic",
+        "Infrastructure.Universe",
+        "Algebra.Fields.Advanced",
+        "Algebra.Enrichment",
+        "Chapter1.Level1sub4",
+        "Chapter1.Level1sub2",
+        "Infrastructure.Coherence.Path2",
+        "Chapter2.Level2sub6",
+        "Chapter1.Level1",
+        "Algebra.Rings.Types"
+      ],
+      "dependency_count": 34,
+      "impact_score": 0.0,
+      "priority_rank": 97
+    },
+    {
+      "step_id": "PHASE-IV.1",
+      "title": "Adjunction coherence (free/forgetful)",
+      "primary_module": "Tests.UniversalPropertyTests",
+      "modules_modified": [
+        "Tests.UniversalPropertyTests"
+      ],
+      "modules_affected": [
+        "Tests.Index_PhaseII",
+        "Tests.Index"
+      ],
+      "affected_count": 2,
+      "dependencies": [
+        "Chapter1.Level1sub5",
+        "Chapter1.Level1sub7",
+        "Chapter1.Level1Index",
+        "Core.Phase",
+        "Algebra.Groups.Abelian",
+        "Core",
+        "Core.Limitations",
+        "PropertyRegistry",
+        "Core.UniversalProperties",
+        "Chapter2.Level2sub3",
+        "Algebra.Groups.Basic",
+        "Infrastructure.Universe",
+        "Algebra.Fields.Advanced",
+        "Algebra.Enrichment",
+        "Chapter1.Level1sub4",
+        "Chapter1.Level1sub2",
+        "Infrastructure.Coherence.Path2",
+        "Chapter2.Level2sub6",
+        "Chapter1.Level1",
+        "Algebra.Rings.Types"
+      ],
+      "dependency_count": 34,
+      "impact_score": 0.0,
+      "priority_rank": 98
+    },
+    {
+      "step_id": "PHASE-III.4",
+      "title": "Serialization roundtrip HoTT Path isomorphism",
+      "primary_module": "Tests.SerializationTests",
+      "modules_modified": [
+        "Tests.SerializationTests"
+      ],
+      "modules_affected": [
+        "Tests.Index"
+      ],
+      "affected_count": 1,
+      "dependencies": [
+        "Chapter1.Level1sub5",
+        "Core.Utils",
+        "Chapter1.Level1sub7",
+        "Chapter1.Level1Index",
+        "Core.Phase",
+        "Algebra.Groups.Abelian",
+        "Core",
+        "Core.Limitations",
+        "PropertyRegistry",
+        "Chapter2.Level2sub3",
+        "Algebra.Groups.Basic",
+        "Infrastructure.Universe",
+        "Algebra.Fields.Advanced",
+        "Algebra.Enrichment",
+        "Chapter1.Level1sub4",
+        "Chapter1.Level1sub2",
+        "Infrastructure.Coherence.Path2",
+        "Chapter2.Level2sub6",
+        "Chapter1.Level1",
+        "Algebra.Rings.Types"
+      ],
+      "dependency_count": 35,
+      "impact_score": 0.0,
+      "priority_rank": 99
+    },
+    {
+      "step_id": "PHASE-IV.2",
+      "title": "Yoneda lemma constructive instance",
+      "primary_module": "Tests.YonedaChecklist",
+      "modules_modified": [
+        "Tests.YonedaChecklist"
+      ],
+      "modules_affected": [
+        "Tests.Index"
+      ],
+      "affected_count": 1,
+      "dependencies": [
+        "Chapter1.Level1sub5",
+        "Core.CategoricalAdapter",
+        "Chapter1.Level1sub7",
+        "Chapter1.Level1Index",
+        "Core.Phase",
+        "Algebra.Groups.Abelian",
+        "Core",
+        "Chapter3.Level3sub2",
+        "PropertyRegistry",
+        "Core.UniversalProperties",
+        "Chapter2.Level2sub3",
+        "Algebra.Groups.Basic",
+        "Chapter2.Level2sub2",
+        "Chapter2.Level2sub7",
+        "Algebra.Fields.Advanced",
+        "Infrastructure.Universe",
+        "Algebra.Enrichment",
+        "Chapter1.Level1sub4",
+        "Algebra.Groups.Structure",
+        "Chapter1.Level1sub2"
+      ],
+      "dependency_count": 43,
+      "impact_score": 0.0,
+      "priority_rank": 100
+    },
+    {
+      "step_id": "PHASE-IV.3",
+      "title": "Grothendieck fibration Beck-Chevalley proof",
+      "primary_module": "Tests.GrothendieckFibrationsChecklist",
+      "modules_modified": [
+        "Tests.GrothendieckFibrationsChecklist"
+      ],
+      "modules_affected": [
+        "Tests.SpecificationValidation",
+        "Tests.Index"
+      ],
+      "affected_count": 2,
+      "dependencies": [
+        "Chapter1.Level1sub5",
+        "Core.CategoricalAdapter",
+        "Chapter1.Level1sub7",
+        "Chapter1.Level1Index",
+        "Core.Phase",
+        "Algebra.Groups.Abelian",
+        "Core",
+        "Chapter3.Level3sub2",
+        "PropertyRegistry",
+        "Core.UniversalProperties",
+        "Chapter2.Level2sub3",
+        "Algebra.Groups.Basic",
+        "Chapter2.Level2sub2",
+        "Algebra.Rings.Basic",
+        "Core.GrothendieckFibrations",
+        "Chapter2.Level2sub7",
+        "Algebra.Fields.Advanced",
+        "Infrastructure.Universe",
+        "Algebra.Enrichment",
+        "Chapter1.Level1sub4"
+      ],
+      "dependency_count": 43,
+      "impact_score": 0.0,
+      "priority_rank": 101
+    },
+    {
+      "step_id": "PHASE-II.2.5",
+      "title": "Global logical closure (no metas)",
+      "primary_module": "Tests.Index",
+      "modules_modified": [
+        "Tests.Index"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [
+        "Core.Utils",
+        "Chapter1.Level1sub7",
+        "Tests.ModulesChecklist",
+        "Tests.FunctorPropertiesChecklist",
+        "Tests.KanExtensionsChecklist",
+        "Core.Phase",
+        "Tests.ErrorHandlingTests",
+        "Tests.ConstructiveWitnessTests",
+        "Tests.GroupsStructureChecklist",
+        "Tests.YonedaChecklist",
+        "Core.UniversalProperties",
+        "Core.Witnesses",
+        "Algebra.Groups.Basic",
+        "Core.Algorithms.NumberFields",
+        "GrowthAnalysis",
+        "Tests.FieldsBasicChecklist",
+        "Chapter2.Level2sub7",
+        "Infrastructure.Universe",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Chapter1.Level1sub2"
+      ],
+      "dependency_count": 123,
+      "impact_score": 0.0,
+      "priority_rank": 102
+    },
+    {
+      "step_id": "PHASE-V.1",
+      "title": "Reification of limit object (G\u00f6del boundary)",
+      "primary_module": "Tests.Index",
+      "modules_modified": [
+        "Tests.Index"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [
+        "Core.Utils",
+        "Chapter1.Level1sub7",
+        "Tests.ModulesChecklist",
+        "Tests.FunctorPropertiesChecklist",
+        "Tests.KanExtensionsChecklist",
+        "Core.Phase",
+        "Tests.ErrorHandlingTests",
+        "Tests.ConstructiveWitnessTests",
+        "Tests.GroupsStructureChecklist",
+        "Tests.YonedaChecklist",
+        "Core.UniversalProperties",
+        "Core.Witnesses",
+        "Algebra.Groups.Basic",
+        "Core.Algorithms.NumberFields",
+        "GrowthAnalysis",
+        "Tests.FieldsBasicChecklist",
+        "Chapter2.Level2sub7",
+        "Infrastructure.Universe",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Chapter1.Level1sub2"
+      ],
+      "dependency_count": 123,
+      "impact_score": 0.0,
+      "priority_rank": 103
+    },
+    {
+      "step_id": "PHASE-V.3",
+      "title": "Composite HoTT path aggregator (global closure)",
+      "primary_module": "Tests.Index",
+      "modules_modified": [
+        "Tests.Index"
+      ],
+      "modules_affected": [],
+      "affected_count": 0,
+      "dependencies": [
+        "Core.Utils",
+        "Chapter1.Level1sub7",
+        "Tests.ModulesChecklist",
+        "Tests.FunctorPropertiesChecklist",
+        "Tests.KanExtensionsChecklist",
+        "Core.Phase",
+        "Tests.ErrorHandlingTests",
+        "Tests.ConstructiveWitnessTests",
+        "Tests.GroupsStructureChecklist",
+        "Tests.YonedaChecklist",
+        "Core.UniversalProperties",
+        "Core.Witnesses",
+        "Algebra.Groups.Basic",
+        "Core.Algorithms.NumberFields",
+        "GrowthAnalysis",
+        "Tests.FieldsBasicChecklist",
+        "Chapter2.Level2sub7",
+        "Infrastructure.Universe",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Chapter1.Level1sub2"
+      ],
+      "dependency_count": 123,
+      "impact_score": 0.0,
+      "priority_rank": 104
+    }
+  ],
+  "high_impact_steps": [
+    {
+      "step_id": "PHASE-I.1",
+      "title": "Static coordinate assignment for all declarations",
+      "impact_score": 317.5,
+      "affected_count": 159
+    },
+    {
+      "step_id": "INGEST-Ch3-Ideals-Lattice",
+      "title": "Ideal lattice ingestion (prime/primary metadata)",
+      "impact_score": 161.5,
+      "affected_count": 85
+    },
+    {
+      "step_id": "INGEST-Ch1-Groups-Cyclic",
+      "title": "Ingest Cyclic Groups (generator witness abstraction)",
+      "impact_score": 156.5,
+      "affected_count": 82
+    },
+    {
+      "step_id": "PHASE-III.2",
+      "title": "Error-as-Specification integration (AlgorithmResult, LimitationEvidence)",
+      "impact_score": 87.0,
+      "affected_count": 44
+    },
+    {
+      "step_id": "PHASE-IV.0",
+      "title": "Algorithmic foundations (replace field arithmetic stubs)",
+      "impact_score": 22.0,
+      "affected_count": 19
+    },
+    {
+      "step_id": "LOCAL-GENERIC-FUNCTOR",
+      "title": "Introduce generic functor interface for protocol bundles",
+      "impact_score": 19.0,
+      "affected_count": 9
+    },
+    {
+      "step_id": "PHASE-V.2",
+      "title": "Solution space growth rate instrumentation",
+      "impact_score": 11.0,
+      "affected_count": 7
+    },
+    {
+      "step_id": "ROADMAP-MD-1",
+      "title": "Provide algebraic structures for representing and manipulating ambiguity in parse spaces.",
+      "impact_score": 5.0,
+      "affected_count": 2
+    }
+  ],
+  "foundational_steps": [
+    {
+      "step_id": "LOCAL-GENERIC-FUNCTOR",
+      "title": "Introduce generic functor interface for protocol bundles",
+      "dependency_count": 0,
+      "impact_score": 19.0
+    },
+    {
+      "step_id": "ROADMAP-MD-1",
+      "title": "Provide algebraic structures for representing and manipulating ambiguity in parse spaces.",
+      "dependency_count": 0,
+      "impact_score": 5.0
+    },
+    {
+      "step_id": "ROADMAP-MD-2",
+      "title": "Establish metric structures on semantic spaces for distance/similarity calculations.",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "ROADMAP-MD-3",
+      "title": "Define compositional transformation operations on semantic objects.",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "ROADMAP-MD-4",
+      "title": "Implement functorial mappings between semantic and computational spaces.",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "ROADMAP-MD-5",
+      "title": "Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs.",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "ROADMAP-MD-6",
+      "title": "Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension.",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "ROADMAP-MD-7",
+      "title": "Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed.",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "ROADMAP-MD-8",
+      "title": "Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition.",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "GP-Gp400",
+      "title": "GP400: The \\",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "GP-Gp500",
+      "title": "GP500: Dimensional Relief",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "GP-Gp501",
+      "title": "GP501: Unknown Title",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "GP-Gp800",
+      "title": "GP800: The Missing Morphisms",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "GP-Gp801",
+      "title": "GP801: The Exterior Algebra of Meaning",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "GP-Gp802",
+      "title": "GP802: The Fundamental Group of the Grammar",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "GP-Gp803",
+      "title": "GP803: Unknown Title",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "GP-Gp804",
+      "title": "GP804: The Missing Algebraic Topology",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "GP-Gp805",
+      "title": "GP805: The Discovery of \\\\\\",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "GP-Gp806",
+      "title": "GP806: The Geometry of Inference",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    },
+    {
+      "step_id": "GP-Gp807",
+      "title": "GP807: The Logic of Exclusion",
+      "dependency_count": 0,
+      "impact_score": 1.0
+    }
+  ],
+  "critical_path_steps": [
+    {
+      "step_id": "PHASE-I.1",
+      "title": "Static coordinate assignment for all declarations",
+      "primary_module": "Metamodel",
+      "priority_rank": 1
+    },
+    {
+      "step_id": "PHASE-II.2.5",
+      "title": "Global logical closure (no metas)",
+      "primary_module": "Tests.Index",
+      "priority_rank": 102
+    },
+    {
+      "step_id": "PHASE-V.1",
+      "title": "Reification of limit object (G\u00f6del boundary)",
+      "primary_module": "Tests.Index",
+      "priority_rank": 103
+    },
+    {
+      "step_id": "PHASE-V.3",
+      "title": "Composite HoTT path aggregator (global closure)",
+      "primary_module": "Tests.Index",
+      "priority_rank": 104
+    }
+  ],
+  "execution_recommendation": {
+    "phases": [
+      {
+        "phase": 1,
+        "name": "Foundational Items",
+        "rationale": "Low dependencies, can execute immediately",
+        "count": 30,
+        "items": [
+          "GP-Gp400",
+          "GP-Gp500",
+          "GP-Gp501",
+          "GP-Gp800",
+          "GP-Gp801",
+          "GP-Gp802",
+          "GP-Gp803",
+          "GP-Gp804",
+          "GP-Gp805",
+          "GP-Gp806",
+          "GP-Gp807",
+          "GP-Gp808",
+          "GP-Gp809",
+          "GP-Gp810",
+          "GP-Gp811",
+          "GP-Gp812",
+          "GP-Gp813",
+          "GP-Gp814",
+          "GP-Gp815",
+          "GP-Gp816",
+          "GP-Gp817",
+          "LOCAL-GENERIC-FUNCTOR",
+          "ROADMAP-MD-1",
+          "ROADMAP-MD-2",
+          "ROADMAP-MD-3",
+          "ROADMAP-MD-4",
+          "ROADMAP-MD-5",
+          "ROADMAP-MD-6",
+          "ROADMAP-MD-7",
+          "ROADMAP-MD-8"
+        ]
+      },
+      {
+        "phase": 2,
+        "name": "High Impact Items",
+        "rationale": "Affect many modules, do early to minimize rework",
+        "count": 6,
+        "items": [
+          "INGEST-Ch1-Groups-Cyclic",
+          "INGEST-Ch3-Ideals-Lattice",
+          "PHASE-I.1",
+          "PHASE-III.2",
+          "PHASE-IV.0",
+          "PHASE-V.2"
+        ]
+      },
+      {
+        "phase": 3,
+        "name": "Critical Path Items",
+        "rationale": "On dependency critical path",
+        "count": 3,
+        "items": [
+          "PHASE-II.2.5",
+          "PHASE-V.1",
+          "PHASE-V.3"
+        ]
+      },
+      {
+        "phase": 4,
+        "name": "Remaining Items",
+        "rationale": "Lower priority items",
+        "count": 65,
+        "items": [
+          "GP-Gp01",
+          "GP-Gp010",
+          "GP-Gp02",
+          "GP-Gp03",
+          "GP-Gp04",
+          "GP-Gp05",
+          "GP-Gp06",
+          "GP-Gp07",
+          "GP-Gp09",
+          "GP-Gp100",
+          "GP-Gp101",
+          "GP-Gp102",
+          "GP-Gp103",
+          "GP-Gp104",
+          "GP-Gp105",
+          "GP-Gp106",
+          "GP-Gp107",
+          "GP-Gp108",
+          "GP-Gp109",
+          "GP-Gp110",
+          "GP-Gp111",
+          "GP-Gp200",
+          "GP-Gp201",
+          "GP-Gp300",
+          "GP-Gp302",
+          "GP-Gp303",
+          "GP-Gp699",
+          "GP-Gp700",
+          "GP-Gp701",
+          "GP-Gp702",
+          "GP-Gp703",
+          "GP-Gp704",
+          "GP-Gp705",
+          "GP-Gp706",
+          "GP-Gp707",
+          "GP-Gp708",
+          "GP-Gp709",
+          "GP-Gp710",
+          "GP-Gp711",
+          "GP-Gp712",
+          "GP-Gp713",
+          "GP-Gp714",
+          "GP-Gp818",
+          "GP-Gp819",
+          "GP-Gp820",
+          "GP-Gp821",
+          "GP-Gp822",
+          "GP-Gp823",
+          "GP-Gp824",
+          "GP-Gp825",
+          "GP-Gp826",
+          "GP-Gp827",
+          "GP-Gp828",
+          "GP-Gp829",
+          "GP-Gp830",
+          "GP-Gp831",
+          "GP-Gp832",
+          "LOCAL-DEF-DICT",
+          "PHASE-0.1",
+          "PHASE-0.2",
+          "PHASE-III.4",
+          "PHASE-III.5",
+          "PHASE-IV.1",
+          "PHASE-IV.2",
+          "PHASE-IV.3"
+        ]
+      }
+    ]
+  }
+}

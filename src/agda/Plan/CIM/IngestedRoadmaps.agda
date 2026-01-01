@@ -10,6 +10,7 @@ open import Plan.CIM.IngestedRoadmaps.Polytopes renaming (roadmapsV2 to roadmaps
 open import Plan.CIM.IngestedRoadmaps.Analysis renaming (roadmapsV2 to roadmapsAnalysis) public
 
 open import Agda.Builtin.List using (List; []; _∷_)
+open import Agda.Builtin.String using (String)
 open import Plan.CIM.Utility using (RoadmapStepV2)
 
 infixr 5 _++ˡ_
@@ -24,3 +25,13 @@ allRoadmapsV2 = roadmapsFoundation
                ++ˡ roadmapsCorrections
                ++ˡ roadmapsPolytopes
                ++ˡ roadmapsAnalysis
+
+------------------------------------------------------------------------
+-- Cohomology / example-preservation checklist hook
+------------------------------------------------------------------------
+
+-- Roadmaps should capture explicit example coverage to prevent capability drift.
+-- This sentinel can be queried/extended by downstream exporters/pipelines.
+cohomologyChecklistNote : String
+cohomologyChecklistNote =
+  "Each roadmap task must preserve cohomological coverage: add or update an explicit example in src/agda/Examples for every new capability or refactor that changes usage patterns."

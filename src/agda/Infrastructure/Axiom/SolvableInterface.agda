@@ -2,8 +2,13 @@
 module Infrastructure.Axiom.SolvableInterface where
 
 open import Agda.Primitive using (Level; _⊔_; lsuc)
-open import Agda.Builtin.Equality using (_≡_; refl; cong)
-open import Agda.Builtin.Sum using (_⊎_; inj₁; inj₂)
+open import Agda.Builtin.Equality using (_≡_; refl)
+
+open import Infrastructure.Equality using (cong) public
+
+data _⊎_ {ℓ₁ ℓ₂} (A : Set ℓ₁) (B : Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
+  inj₁ : A → A ⊎ B
+  inj₂ : B → A ⊎ B
 
 ------------------------------------------------------------------------
 -- Path algebra with explicit identities (kept minimal and reusable)
@@ -27,8 +32,7 @@ open PathAlg public
 
 record Face {ℓV ℓP : Level} {V : Set ℓV} (PA : PathAlg {ℓV} {ℓP} V)
             (a b : V) : Set (ℓV ⊔ ℓP) where
-  open PathAlg PA
-  field lhs rhs : Path a b
+  field lhs rhs : PathAlg.Path PA a b
 
 record FramedFace {ℓV ℓP : Level} {V : Set ℓV} (PA : PathAlg {ℓV} {ℓP} V)
   : Set (lsuc (ℓV ⊔ ℓP)) where

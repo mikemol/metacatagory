@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Analyze suggested dependencies and optionally promote them to canonical.
+Analyze suggested dependencies and optionally promote them to the planning index.
 
 Shows which tasks have import-based dependency suggestions,
 and provides a tool to promote them to explicit dependsOn in the canonical roadmap.
@@ -12,7 +12,7 @@ from typing import List, Dict
 
 REPO_ROOT = Path(__file__).parent.parent
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
-CANONICAL_JSON = REPO_ROOT / "build" / "canonical_roadmap.json"
+CANONICAL_JSON = REPO_ROOT / "build" / "planning_index.json"
 
 def analyze_suggestions() -> None:
     """Analyze suggested dependencies."""
