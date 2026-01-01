@@ -1,5 +1,6 @@
 {-# OPTIONS --allow-unsolved-metas --without-K #-}
 
+-- | Checklist for enrichment obligations.
 module Tests.EnrichmentChecklist where
 
 open import Agda.Builtin.Equality using (_≡_; refl)

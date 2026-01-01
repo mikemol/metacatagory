@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Group structure utilities (decompositions, fundamental theorems).
 module Algebra.Groups.Structure where
 
 open import Core

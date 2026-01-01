@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Checklist of obligations for abelian categories.
 module Tests.AbelianCategoriesChecklist where
 
 open import Tests.ObligationAdapters as A

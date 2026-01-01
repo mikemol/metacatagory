@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --allow-unsolved-metas #-}
 
+-- | Minimal smoke tests for algorithm composition primitives.
 module Tests.AlgorithmCompositionTestsMinimal where
 
   open import Metamodel as M

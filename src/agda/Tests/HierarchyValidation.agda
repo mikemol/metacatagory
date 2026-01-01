@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Validate algebraic hierarchy composition ordering.
 module Tests.HierarchyValidation where
 
 -- Phase I.1.3: Hierarchy Composition Validation (P5 DAG)

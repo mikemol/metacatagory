@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Checklist for Grothendieck fibrations obligations.
 module Tests.GrothendieckFibrationsChecklist where
 
 open import Tests.ObligationAdapters as A
