@@ -6,6 +6,7 @@ open import Agda.Builtin.Nat using (Nat; zero; suc; _+_)
 open import Agda.Builtin.Equality using (_≡_; refl)
 
 open import Plan.CIM.Utility using (TransformationSystem; Path; refl-path; trans-step)
+open import Infrastructure.Functor.Interface using (FunctorInstance)
 open import Infrastructure.Functor.Instances.TransformationSystem
 
 -- A tiny transformation system over Nat with unit-cost steps.
@@ -23,6 +24,6 @@ stepB = trans-step 2 (trans-step 3 refl-path)
 concatExample : _⊕_ {Sys = NatSteps} stepA stepB ≡ trans-step 1 (trans-step 2 (trans-step 3 refl-path))
 concatExample = refl
 
--- The path functor identity preserves any morphism in the path category.
-pathIdentityExample : pathIdentity NatSteps .FunctorInstance.map stepB ≡ stepB
+-- The path identity functor is pointwise identity.
+pathIdentityExample : FunctorInstance.map (pathIdentity NatSteps) stepB ≡ stepB
 pathIdentityExample = refl

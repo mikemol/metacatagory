@@ -13,5 +13,5 @@ congExample f = refl
 symExample : ∀ {ℓ} {A : Set ℓ} {x y : A} (p : x ≡ y) → sym (sym p) ≡ p
 symExample refl = refl
 
-transExample : ∀ {ℓ} {A : Set ℓ} {x y z : A} (p : x ≡ y) (q : y ≡ z) → trans p q ≡ refl → x ≡ z
-transExample refl refl _ = refl
+transExample : ∀ {ℓ} {A : Set ℓ} {x y : A} (p : x ≡ y) → trans p refl ≡ p
+transExample refl = refl
