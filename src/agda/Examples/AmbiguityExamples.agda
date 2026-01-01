@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Examples exercising Ambiguity functor and weighted options.
 module Examples.AmbiguityExamples where
 
 open import Agda.Primitive using (Level; lzero)

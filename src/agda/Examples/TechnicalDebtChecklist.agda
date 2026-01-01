@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Example checklist for technical debt items.
 module Examples.TechnicalDebtChecklist where
 
 open import Metamodel as M

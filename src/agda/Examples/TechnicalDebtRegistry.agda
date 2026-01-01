@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Example registry mapping technical debt to roadmap SPPF nodes.
 module Examples.TechnicalDebtRegistry where
 
 open import Plan.CIM.RoadmapSPPF using (SPPFNode; SPPFGraph)

@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Examples over transformation systems and their path categories.
 module Examples.TransformationSystemExamples where
 
 open import Agda.Primitive using (Level; lzero)
