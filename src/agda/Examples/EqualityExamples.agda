@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Examples demonstrating equality combinators.
 module Examples.EqualityExamples where
 
 open import Agda.Primitive using (Level)
