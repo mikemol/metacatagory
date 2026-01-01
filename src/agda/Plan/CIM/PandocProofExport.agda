@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical --guardedness #-}
 
+-- | Export proofs rendered into Pandoc AST to downstream formats.
 module Plan.CIM.PandocProofExport where
 
 open import Agda.Builtin.List using (List; []; _∷_)
