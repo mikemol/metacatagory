@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical --guardedness #-}
 
+-- | Protocol definitions for moving between Pandoc AST and CIM structures.
 module Plan.CIM.PandocProtocols where
 
 open import Plan.CIM.PandocAST

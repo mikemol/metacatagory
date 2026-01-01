@@ -3,6 +3,8 @@ open import Agda.Builtin.Nat using (Nat; _<_; zero; suc; _-_)
 open import Plan.CIM.PandocShowBlock using (showNat)
 open import Agda.Builtin.List using (List; _∷_; [])
 open import Agda.Builtin.Bool using (Bool; true; false)
+
+-- | Show/pretty-print Markdown-specific block nodes.
 module Plan.CIM.PandocShowMdBlock where
 
 open import Agda.Builtin.String

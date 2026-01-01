@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | PhaseCategory: category over phases with lifted morphisms.
 module Core.PhaseCategory where
 
 open import Agda.Primitive using (Level; _⊔_; lsuc)

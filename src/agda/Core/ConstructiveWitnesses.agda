@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Constructive witness builders with computational content.
 module Core.ConstructiveWitnesses where
 
 -- Core.ConstructiveWitnesses: Constructive witness builders with computational content

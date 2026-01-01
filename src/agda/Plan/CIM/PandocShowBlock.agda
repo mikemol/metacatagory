@@ -1,5 +1,7 @@
 
 {-# OPTIONS --without-K --cubical-compatible #-}
+
+-- | Show/pretty-print block-level Pandoc AST nodes.
 module Plan.CIM.PandocShowBlock where
 
 open import Agda.Builtin.List using (List; _∷_; [])
