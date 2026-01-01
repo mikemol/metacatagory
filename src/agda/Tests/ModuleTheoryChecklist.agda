@@ -1,9 +1,6 @@
 {-# OPTIONS --without-K #-}
 
--- Tests.ModuleTheoryChecklist
--- Minimal instances for additional module-theory adapters
--- (Hom functors, duality, tensor products, free modules)
-
+-- | Checklist for module-theory adapters (hom, duals, tensors, free).
 module Tests.ModuleTheoryChecklist where
 
 open import Agda.Builtin.Equality

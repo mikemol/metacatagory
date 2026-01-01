@@ -1,12 +1,6 @@
 {-# OPTIONS --without-K #-}
 
--- Tests.CoverageReport: Type-safe test coverage metadata
--- Provides structured data for external tooling without regex parsing
---
--- Strategy: Rather than trying to introspect Agda at runtime (which is complex),
--- we maintain a single source of truth that both Agda and external tools can use.
--- The Agda type system ensures this data stays synchronized with actual code.
-
+-- | Type-safe test coverage metadata for external tooling.
 module Tests.CoverageReport where
 
 open import Agda.Builtin.List using (List; []; _∷_)

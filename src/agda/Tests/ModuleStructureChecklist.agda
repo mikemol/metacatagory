@@ -1,8 +1,6 @@
 {-# OPTIONS --without-K #-}
 
--- Tests.ModuleStructureChecklist
--- Minimal instances for module structure theorem and classification adapters
-
+-- | Minimal instances for module structure theorem and classification adapters.
 module Tests.ModuleStructureChecklist where
 
 open import Agda.Builtin.Equality

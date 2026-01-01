@@ -1,5 +1,6 @@
 {-# OPTIONS --allow-unsolved-metas --without-K #-}
 
+-- | Checklist for subobject theory obligations.
 module Tests.SubobjectTheoryChecklist where
 
 open import Tests.ObligationAdapters as A
