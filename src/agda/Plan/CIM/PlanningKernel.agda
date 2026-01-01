@@ -59,6 +59,58 @@ definitionRoadmapItems =
     ; related    = []
     }
   ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-FUNCPATH-ADEQUACY"
+    ; title      = "Add adequacy kit for FunctionPathCategory"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Adequacy" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-TRANSFORMATION-ADEQUACY"
+    ; title      = "Add adequacy hook for TransformationSystem functor"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Adequacy" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-AMBIGUITY-ADEQUACY"
+    ; title      = "Add adequacy hook for Ambiguity functor"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/Ambiguity.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Adequacy" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-DEF-DICT-EXAMPLE"
+    ; title      = "Add DefinitionDictionary adequacy example"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Examples" ∷ [])
+    ; tags       = ("Definition" ∷ "Example" ∷ [])
+    ; dependsOn  = ("LOCAL-DEF-DICT" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
+    }
+  ∷
   []
 
 definitionAdapter : RoadmapAdapter
