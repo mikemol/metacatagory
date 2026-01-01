@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Reconstruct all remaining corrupted intake files with proper markdown tables
 
-cd /home/mikemol/github/metacatagory
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
 # __(2).md
 cp intake/__\(2\).md intake/__\(2\).md.backup.2

@@ -45,7 +45,7 @@ class ModuleMapping:
 class ModuleMatcher:
     """Matches roadmap steps to Agda modules."""
     
-    def __init__(self, workspace_root: str = "/home/mikemol/github/metacatagory"):
+    def __init__(self, workspace_root: str = str(Path(__file__).resolve().parent.parent)):
         self.workspace_root = workspace_root
         self.agda_modules: Dict[str, AgdaModule] = {}
         self.category_keywords = self._define_category_keywords()

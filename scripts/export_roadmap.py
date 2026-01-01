@@ -8,6 +8,8 @@ import os
 from pathlib import Path
 from typing import Dict, List
 
+ROOT = Path(__file__).resolve().parent.parent
+
 def load_metadata(metadata_path: str) -> Dict:
     """Load the ingested metadata."""
     with open(metadata_path, 'r') as f:
@@ -67,8 +69,8 @@ def generate_markdown_section(metadata: Dict) -> str:
 
 def main():
     """Main execution."""
-    metadata_path = '/home/mikemol/github/metacatagory/build/ingested_metadata.json'
-    roadmap_path = '/home/mikemol/github/metacatagory/ROADMAP.md'
+    metadata_path = str(ROOT / 'build/ingested_metadata.json')
+    roadmap_path = str(ROOT / 'ROADMAP.md')
     
     print("Generating Markdown roadmap from ingested metadata...")
     

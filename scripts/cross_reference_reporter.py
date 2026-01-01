@@ -13,10 +13,12 @@ from pathlib import Path
 from typing import Dict, List
 from datetime import datetime
 
+ROOT = Path(__file__).resolve().parent.parent
+
 class CrossReferenceReporter:
     """Generates comprehensive cross-reference report."""
     
-    def __init__(self, workspace_root: str = "/home/mikemol/github/metacatagory"):
+    def __init__(self, workspace_root: str = str(ROOT)):
         self.workspace_root = workspace_root
         
     def load_all_data(self) -> Dict:

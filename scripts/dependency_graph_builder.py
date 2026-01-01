@@ -14,6 +14,8 @@ from typing import Dict, List, Set, Tuple
 from dataclasses import dataclass, field
 from collections import defaultdict, deque
 
+ROOT = Path(__file__).resolve().parent.parent
+
 @dataclass
 class DependencyNode:
     """Represents a node in the dependency graph."""
@@ -28,7 +30,7 @@ class DependencyNode:
 class DependencyGraphBuilder:
     """Builds and analyzes module dependency graphs."""
     
-    def __init__(self, workspace_root: str = "/home/mikemol/github/metacatagory"):
+    def __init__(self, workspace_root: str = str(ROOT)):
         self.workspace_root = workspace_root
         self.nodes: Dict[str, DependencyNode] = {}
         self.graph: Dict[str, Set[str]] = defaultdict(set)
