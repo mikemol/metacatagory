@@ -46,6 +46,7 @@ definitionRoadmapItems =
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Interface.agda"
                     ∷ "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda"
+                    ∷ "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda"
                     ∷ "src/agda/Core/PhaseCategoryWrapper.agda"
                     ∷ [])
     ; tags       = ("Functor" ∷ "Interface" ∷ [])

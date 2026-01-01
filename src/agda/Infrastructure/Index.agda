@@ -23,4 +23,5 @@ open import Infrastructure.Definitions.Dictionary public
 open import Infrastructure.Functor.Interface public
 open import Infrastructure.Functor.Instances.Trivial public
 open import Infrastructure.Functor.Instances.PathAlgebra public
+open import Infrastructure.Functor.Instances.PhaseCategory public
 open import Core.PhaseCategoryWrapper public
