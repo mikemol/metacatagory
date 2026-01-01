@@ -60,9 +60,94 @@ definitionRoadmapItems =
     }
   ∷
   record
+    { id         = "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
+    ; title      = "Complete generic functor interface laws and helpers"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Interface.agda" ∷ [])
+    ; tags       = ("Functor" ∷ "Interface" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+    ; title      = "Normalize existing functor instances onto shared interface"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda"
+                    ∷ "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda"
+                    ∷ "src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda"
+                    ∷ "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda"
+                    ∷ "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda"
+                    ∷ [])
+    ; tags       = ("Functor" ∷ "Refactor" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = ("LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS" ∷ [])
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY"
+    ; title      = "Ensure adequacy kits follow standardized pattern"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Instances" ∷ [])
+    ; tags       = ("Functor" ∷ "Adequacy" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = ("LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION" ∷ [])
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS"
+    ; title      = "Align functor composition adapters with interface"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Infrastructure/Functor/Compose.agda"
+                    ∷ "src/agda/Core/PhaseCategoryWrapper.agda"
+                    ∷ [])
+    ; tags       = ("Functor" ∷ "Interop" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = ("LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION" ∷ [])
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-EXAMPLES"
+    ; title      = "Add regression examples exercising functor identity/compose"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("src/agda/Examples" ∷ [])
+    ; tags       = ("Functor" ∷ "Example" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = ("LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS" ∷ [])
+    }
+  ∷
+  record
+    { id         = "LOCAL-GENERIC-FUNCTOR-DOCS"
+    ; title      = "Document generic functor interface and upgrade guide"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "DefinitionDictionary"
+    ; files      = ("ROADMAP.md" ∷ "docs/process" ∷ [])
+    ; tags       = ("Functor" ∷ "Documentation" ∷ [])
+    ; dependsOn  = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = ("LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION" ∷ [])
+    }
+  ∷
+  record
     { id         = "LOCAL-GENERIC-FUNCTOR-FUNCPATH-ADEQUACY"
     ; title      = "Add adequacy kit for FunctionPathCategory"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda" ∷ [])
@@ -75,7 +160,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-TRANSFORMATION-ADEQUACY"
     ; title      = "Add adequacy hook for TransformationSystem functor"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda" ∷ [])
@@ -88,7 +173,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-AMBIGUITY-ADEQUACY"
     ; title      = "Add adequacy hook for Ambiguity functor"
-    ; status     = "in-progress"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Instances/Ambiguity.agda" ∷ [])
