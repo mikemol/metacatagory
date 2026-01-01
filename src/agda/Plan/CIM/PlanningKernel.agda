@@ -75,7 +75,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-INTERFACE-CONVENIENCE-LAWS"
     ; title      = "Add convenience lemmas for map-id/compose congruence"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Interface.agda" ∷ [])

@@ -60,3 +60,24 @@ map-cong :
     f ≡ g → FunctorInstance.map F f ≡ FunctorInstance.map F g
 map-cong F {A} {B} {f} {g} p =
   cong (FunctorInstance.map F {A = A} {B = B}) p
+
+map-id-on :
+  ∀ {ℓ₁ ℓ₂}
+    {Obj₁ : Set ℓ₁} {Obj₂ : Set ℓ₂}
+    {C : CategoryLike Obj₁} {D : CategoryLike Obj₂}
+    (F : FunctorInstance C D) {A : Obj₁} →
+    FunctorInstance.map F (CategoryLike.id C {A = A})
+      ≡ CategoryLike.id D {A = FunctorInstance.objMap F A}
+map-id-on F = FunctorInstance.map-id F
+
+map-compose-on :
+  ∀ {ℓ₁ ℓ₂}
+    {Obj₁ : Set ℓ₁} {Obj₂ : Set ℓ₂}
+    {C : CategoryLike Obj₁} {D : CategoryLike Obj₂}
+    (F : FunctorInstance C D)
+    {A B C₁ : Obj₁}
+    (g : CategoryLike.Hom C B C₁)
+    (f : CategoryLike.Hom C A B) →
+    FunctorInstance.map F (CategoryLike._∘_ C g f)
+      ≡ CategoryLike._∘_ D (FunctorInstance.map F g) (FunctorInstance.map F f)
+map-compose-on F g f = FunctorInstance.map-compose F g f
