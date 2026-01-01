@@ -62,7 +62,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
     ; title      = "Complete generic functor interface laws and helpers"
-    ; status     = "not-started"
+    ; status     = "in-progress"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Functor/Interface.agda" ∷ [])

@@ -9,6 +9,7 @@ module Infrastructure.Functor.Interface where
 
 open import Agda.Primitive using (Level; _⊔_; lsuc)
 open import Agda.Builtin.Equality using (_≡_)
+open import Infrastructure.Equality using (cong)
 
 ------------------------------------------------------------------------
 -- Category-like structure (lightweight to avoid pulling a full library)
@@ -45,3 +46,17 @@ record FunctorInstance
     map-id      : ∀ {A} → map C.id₁ ≡ D.id₂ {objMap A}
     map-compose : ∀ {A B C} (g : C.Hom₁ B C) (f : C.Hom₁ A B) →
                     map (C._∘₁_ g f) ≡ D._∘₂_ (map g) (map f)
+
+------------------------------------------------------------------------
+-- Helpers
+------------------------------------------------------------------------
+
+map-cong :
+  ∀ {ℓ₁ ℓ₂}
+    {Obj₁ : Set ℓ₁} {Obj₂ : Set ℓ₂}
+    {C : CategoryLike Obj₁} {D : CategoryLike Obj₂}
+    (F : FunctorInstance C D)
+    {A B : Obj₁} {f g : CategoryLike.Hom C A B} →
+    f ≡ g → FunctorInstance.map F f ≡ FunctorInstance.map F g
+map-cong F {A} {B} {f} {g} p =
+  cong (FunctorInstance.map F {A = A} {B = B}) p
