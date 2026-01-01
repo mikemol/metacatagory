@@ -1,7 +1,7 @@
 [
     {
         "id": "GP-Gp400",
-        "title": "GP400: The \\",
+        "title": "GP400: The \"Elasticity\" of Meaning",
         "description": "Introduces the concept of 'Elasticity of Meaning' by separating internal tension (creativity) from external resonance (relevance) in parsing, enabling a 2D decision logic for semantic acceptance or pruning.",
         "status": "not-started",
         "category": "IngestedGP",
@@ -161,7 +161,7 @@
     },
     {
         "id": "GP-Gp805",
-        "title": "GP805: The Discovery of \\",
+        "title": "GP805: The Discovery of \"Dark Matter\"",
         "description": "Describes the discovery of 'dark matter' in the semantic manifold via abductive reasoning, using homology to predict missing concepts and synthesize hypothetical vectors for knowledge gaps.",
         "status": "not-started",
         "category": "IngestedGP",
@@ -1321,8 +1321,8 @@
     },
     {
         "id": "GP-Gp105",
-        "title": "GP105: The \\",
-        "description": "GP105: The \\",
+        "title": "GP105: The \"Fast Clock\" Paradox",
+        "description": "GP105: The \"Fast Clock\" Paradox",
         "status": "not-started",
         "category": "IngestedGP",
         "source": "Plan/CIM/IngestedRoadmaps/Foundation.agda",
@@ -1381,8 +1381,8 @@
     },
     {
         "id": "GP-Gp108",
-        "title": "GP108: The \\",
-        "description": "GP108: The \\",
+        "title": "GP108: The \"Homological Defect\"",
+        "description": "GP108: The \"Homological Defect\"",
         "status": "not-started",
         "category": "IngestedGP",
         "source": "Plan/CIM/IngestedRoadmaps/Foundation.agda",

@@ -4,7 +4,8 @@
 
 module Plan.CIM.PlanningExport where
 
-open import Agda.Builtin.String using (String; primStringAppend)
+open import Agda.Builtin.String using (String; primStringAppend; primStringFromList; primStringToList)
+open import Agda.Builtin.Char using (Char)
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.IO using (IO)
 open import Agda.Builtin.Unit using (⊤; tt)
@@ -24,8 +25,28 @@ postulate
 _++_ : String → String → String
 _++_ = primStringAppend
 
+_++ˡ_ : ∀ {A : Set} → List A → List A → List A
+[] ++ˡ ys = ys
+(x ∷ xs) ++ˡ ys = x ∷ (xs ++ˡ ys)
+
+escapeChar : Char → List Char
+escapeChar c with c
+... | '"'  = '\\' ∷ '"'  ∷ []
+... | '\\' = '\\' ∷ '\\' ∷ []
+... | '\n' = '\\' ∷ 'n'  ∷ []
+... | '\r' = '\\' ∷ 'r'  ∷ []
+... | '\t' = '\\' ∷ 't'  ∷ []
+... | _    = c ∷ []
+
+escapeChars : List Char → List Char
+escapeChars [] = []
+escapeChars (c ∷ cs) = escapeChar c ++ˡ escapeChars cs
+
+escapeString : String → String
+escapeString s = primStringFromList (escapeChars (primStringToList s))
+
 quoteString : String → String
-quoteString s = _++_ "\"" (_++_ s "\"")
+quoteString s = _++_ "\"" (_++_ (escapeString s) "\"")
 
 renderStringList : List String → String
 renderStringList [] = "[]"

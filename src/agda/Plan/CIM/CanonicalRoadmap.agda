@@ -15,327 +15,15 @@ open import Agda.Builtin.List using (List; []; _∷_)
 canonicalItems : List RoadmapItem
 canonicalItems =
   record {
-    id = "PHASE-0.1"
-    ; title = "Replace product postulate with constructive mediating cone proof"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "testing.md"
-    ; files = ("src/agda/Tests/UniversalPropertyTests.agda" ∷ [])
-    ; tags = ("P3" ∷ "UniversalProperty" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-0.1|testing.md" ∷ "ROADMAP-MD-81|ROADMAP.md" ∷ "ROADMAP-MD-175|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-0.2"
-    ; title = "Replace coproduct postulate with constructive mediating cocone proof"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "testing.md"
-    ; files = ("src/agda/Tests/UniversalPropertyTests.agda" ∷ [])
-    ; tags = ("P3" ∷ "UniversalProperty" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-0.2|testing.md" ∷ "ROADMAP-MD-82|ROADMAP.md" ∷ "ROADMAP-MD-176|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-I.1"
-    ; title = "Static coordinate assignment for all declarations"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "testing.md"
-    ; files = ("src/agda/Metamodel.agda" ∷ [])
-    ; tags = ("Indexing" ∷ "WellFounded" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-I.1|testing.md" ∷ "ROADMAP-MD-83|ROADMAP.md" ∷ "ROADMAP-MD-177|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-II.2.5"
-    ; title = "Global logical closure (no metas)"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "testing.md"
-    ; files = ("src/agda/Tests/Index.agda" ∷ [])
-    ; tags = ("Symmetry" ∷ "Index" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-II.2.5|testing.md" ∷ "ROADMAP-MD-84|ROADMAP.md" ∷ "ROADMAP-MD-178|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-III.2"
-    ; title = "Error-as-Specification integration (AlgorithmResult, LimitationEvidence)"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "Core/Limitations.agda"
-    ; files = ("src/agda/Core/Limitations.agda" ∷ "src/agda/Tests/ErrorAsSpecificationTests.agda" ∷ [])
-    ; tags = ("PhaseIII" ∷ "ErrorHandling" ∷ "Specification" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-III.2|Core/Limitations.agda" ∷ "ROADMAP-MD-85|ROADMAP.md" ∷ "ROADMAP-MD-179|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-III.4"
-    ; title = "Serialization roundtrip HoTT Path isomorphism"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "Tests/SerializationTests.agda"
-    ; files = ("src/agda/Tests/SerializationTests.agda" ∷ [])
-    ; tags = ("Serialization" ∷ "HoTT" ∷ "Coordinates" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-III.4|Tests/SerializationTests.agda" ∷ "ROADMAP-MD-86|ROADMAP.md" ∷ "ROADMAP-MD-180|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-III.5"
-    ; title = "ToposTheoryChecklist alignment (constructor arities)"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "testing.md"
-    ; files = ("src/agda/Tests/ToposTheoryChecklist.agda" ∷ [])
-    ; tags = ("Topos" ∷ "Validation" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-III.5|testing.md" ∷ "ROADMAP-MD-87|ROADMAP.md" ∷ "ROADMAP-MD-181|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-IV.1"
-    ; title = "Adjunction coherence (free/forgetful)"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "testing.md"
-    ; files = ("src/agda/Tests/UniversalPropertyTests.agda" ∷ "src/agda/Core/UniversalProperties.agda" ∷ [])
-    ; tags = ("Adjunction" ∷ "PhaseIV" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-IV.1|testing.md" ∷ "ROADMAP-MD-88|ROADMAP.md" ∷ "ROADMAP-MD-182|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-IV.2"
-    ; title = "Yoneda lemma constructive instance"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "testing.md"
-    ; files = ("src/agda/Tests/YonedaChecklist.agda" ∷ "src/agda/Core/Yoneda.agda" ∷ [])
-    ; tags = ("Yoneda" ∷ "PhaseIV" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-IV.2|testing.md" ∷ "ROADMAP-MD-89|ROADMAP.md" ∷ "ROADMAP-MD-183|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-IV.3"
-    ; title = "Grothendieck fibration Beck-Chevalley proof"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "testing.md"
-    ; files = ("src/agda/Tests/GrothendieckFibrationsChecklist.agda" ∷ "src/agda/Core/GrothendieckFibrations.agda" ∷ [])
-    ; tags = ("Fibration" ∷ "PhaseIV" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-IV.3|testing.md" ∷ "ROADMAP-MD-90|ROADMAP.md" ∷ "ROADMAP-MD-184|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-IV.0"
-    ; title = "Algorithmic foundations (replace field arithmetic stubs)"
-    ; status = "deferred"
-    ; category = "Phase"
-    ; source = "testing.md"
-    ; files = ("src/agda/Core/Algorithms/FiniteFields.agda" ∷ "src/agda/Core/Algorithms/NumberFields.agda" ∷ [])
-    ; tags = ("Arithmetic" ∷ "Algorithms" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-IV.0|testing.md" ∷ "ROADMAP-MD-91|ROADMAP.md" ∷ "ROADMAP-MD-185|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-V.1"
-    ; title = "Reification of limit object (Gödel boundary)"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "testing.md"
-    ; files = ("src/agda/Tests/Index.agda" ∷ "src/agda/Tests/GodelBoundaryTests.agda" ∷ "src/agda/Core/GodelBoundary.agda" ∷ [])
-    ; tags = ("Godel" ∷ "Limit" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-V.1|testing.md" ∷ "ROADMAP-MD-92|ROADMAP.md" ∷ "ROADMAP-MD-186|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-V.2"
-    ; title = "Solution space growth rate instrumentation"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "testing.md"
-    ; files = ("src/agda/Core/GrowthMetrics.agda" ∷ "src/agda/Tests/PerformanceBoundaryTests.agda" ∷ [])
-    ; tags = ("Metrics" ∷ "Growth" ∷ "PhaseV" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-V.2|testing.md" ∷ "ROADMAP-MD-93|ROADMAP.md" ∷ "ROADMAP-MD-187|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "PHASE-V.3"
-    ; title = "Composite HoTT path aggregator (global closure)"
-    ; status = "completed"
-    ; category = "Phase"
-    ; source = "testing.md"
-    ; files = ("src/agda/Tests/Index.agda" ∷ "src/agda/Core/PathAggregator.agda" ∷ [])
-    ; tags = ("HoTT" ∷ "Closure" ∷ "PhaseV" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("PHASE-V.3|testing.md" ∷ "ROADMAP-MD-94|ROADMAP.md" ∷ "ROADMAP-MD-188|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "INGEST-Ch1-Groups-Cyclic"
-    ; title = "Ingest Cyclic Groups (generator witness abstraction)"
-    ; status = "planned"
-    ; category = "Ingestion"
-    ; source = "ingest.md"
-    ; files = ("src/agda/Algebra/Groups/Basic.agda" ∷ [])
-    ; tags = ("Groups" ∷ "Cyclic" ∷ "Ingestion" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("INGEST-Ch1-Groups-Cyclic|ingest.md" ∷ "ROADMAP-MD-79|ROADMAP.md" ∷ "ROADMAP-MD-173|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "INGEST-Ch3-Ideals-Lattice"
-    ; title = "Ideal lattice ingestion (prime/primary metadata)"
-    ; status = "planned"
-    ; category = "Ingestion"
-    ; source = "ingest.md"
-    ; files = ("src/agda/Algebra/Rings/Basic.agda" ∷ [])
-    ; tags = ("Rings" ∷ "Ideals" ∷ "Lattice" ∷ [])
-    ; dependsOn = []
-    ; provenance = ("INGEST-Ch3-Ideals-Lattice|ingest.md" ∷ "ROADMAP-MD-80|ROADMAP.md" ∷ "ROADMAP-MD-174|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "ROADMAP-MD-1"
-    ; title = "Provide algebraic structures for representing and manipulating ambiguity in parse spaces."
-    ; status = "in-progress"
-    ; category = "Roadmap"
-    ; source = "ROADMAP.md"
-    ; files = ("src/agda/Plan/CIM/Ambiguity.agda" ∷ [])
-    ; tags = []
-    ; dependsOn = []
-    ; provenance = ("ROADMAP-MD-1|ROADMAP.md" ∷ "ROADMAP-MD-95|ROADMAP.md" ∷ "ROADMAP-MD-189|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "ROADMAP-MD-2"
-    ; title = "Establish metric structures on semantic spaces for distance/similarity calculations."
-    ; status = "not-started"
-    ; category = "Roadmap"
-    ; source = "ROADMAP.md"
-    ; files = ("src/agda/Plan/CIM/Metricization.agda" ∷ [])
-    ; tags = []
-    ; dependsOn = []
-    ; provenance = ("ROADMAP-MD-2|ROADMAP.md" ∷ "ROADMAP-MD-96|ROADMAP.md" ∷ "ROADMAP-MD-190|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "ROADMAP-MD-3"
-    ; title = "Define compositional transformation operations on semantic objects."
-    ; status = "not-started"
-    ; category = "Roadmap"
-    ; source = "ROADMAP.md"
-    ; files = ("src/agda/Plan/CIM/TransformationSystem.agda" ∷ [])
-    ; tags = []
-    ; dependsOn = []
-    ; provenance = ("ROADMAP-MD-3|ROADMAP.md" ∷ "ROADMAP-MD-97|ROADMAP.md" ∷ "ROADMAP-MD-191|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "ROADMAP-MD-4"
-    ; title = "Implement functorial mappings between semantic and computational spaces."
-    ; status = "not-started"
-    ; category = "Roadmap"
-    ; source = "ROADMAP.md"
-    ; files = ("src/agda/Plan/CIM/FunctorialConstructs.agda" ∷ [])
-    ; tags = []
-    ; dependsOn = []
-    ; provenance = ("ROADMAP-MD-4|ROADMAP.md" ∷ "ROADMAP-MD-98|ROADMAP.md" ∷ "ROADMAP-MD-192|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "ROADMAP-MD-5"
-    ; title = "Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs."
-    ; status = "in-progress"
-    ; category = "Roadmap"
-    ; source = "ROADMAP.md"
-    ; files = ("src/agda/Plan/CIM/Elasticity.agda" ∷ "parser.py" ∷ "dashboard.py" ∷ "src/agda/Plan/CIM/Ambiguity.agda" ∷ "src/agda/Plan/CIM/Metricization.agda" ∷ "src/agda/Plan/CIM/TransformationSystem.agda" ∷ "src/agda/Plan/CIM/FunctorialConstructs.agda" ∷ [])
-    ; tags = []
-    ; dependsOn = []
-    ; provenance = ("ROADMAP-MD-5|ROADMAP.md" ∷ "ROADMAP-MD-99|ROADMAP.md" ∷ "ROADMAP-MD-193|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "ROADMAP-MD-6"
-    ; title = "Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension."
-    ; status = "in-progress"
-    ; category = "Roadmap"
-    ; source = "ROADMAP.md"
-    ; files = ("src/agda/Plan/CIM/PolytopeExpansion.agda" ∷ "nedge_topology/mitosis.py" ∷ [])
-    ; tags = []
-    ; dependsOn = []
-    ; provenance = ("ROADMAP-MD-6|ROADMAP.md" ∷ "ROADMAP-MD-100|ROADMAP.md" ∷ "ROADMAP-MD-194|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "ROADMAP-MD-7"
-    ; title = "Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed."
-    ; status = "in-progress"
-    ; category = "Roadmap"
-    ; source = "ROADMAP.md"
-    ; files = ("nedge_topology/mitosis.py" ∷ "nedge_topology/parser.py" ∷ "dashboard.py" ∷ "src/agda/Plan/CIM/PolytopeExpansion.agda" ∷ [])
-    ; tags = []
-    ; dependsOn = []
-    ; provenance = ("ROADMAP-MD-7|ROADMAP.md" ∷ "ROADMAP-MD-101|ROADMAP.md" ∷ "ROADMAP-MD-195|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
-    id = "ROADMAP-MD-8"
-    ; title = "Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition."
-    ; status = "not-started"
-    ; category = "Roadmap"
-    ; source = "ROADMAP.md"
-    ; files = ("nedge_topology/parser.py" ∷ "nedge_topology/train.py" ∷ "nedge_topology/mitosis.py" ∷ "nedge_topology/search.py" ∷ "dashboard.py" ∷ "src/agda/Plan/CIM/RotationalTransport.agda" ∷ "src/agda/Plan/CIM/TopologicalGating.agda" ∷ "src/agda/Plan/CIM/TopologicalSuperposition.agda" ∷ [])
-    ; tags = []
-    ; dependsOn = []
-    ; provenance = ("ROADMAP-MD-8|ROADMAP.md" ∷ "ROADMAP-MD-102|ROADMAP.md" ∷ "ROADMAP-MD-196|ROADMAP.md" ∷ [])
-    ; related = []
-  }
-  ∷
-  record {
     id = "GP-Gp400"
-    ; title = "GP400: The \\"
+    ; title = "GP400: The \"Elasticity\" of Meaning"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Corrections.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp400|Plan/CIM/IngestedRoadmaps/Corrections.agda" ∷ [])
+    ; provenance = ("GP-Gp400|Plan/CIM/IngestedRoadmaps/Corrections.agda" ∷ "ROADMAP-MD-1|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -348,20 +36,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp500|Plan/CIM/IngestedRoadmaps/Corrections.agda" ∷ [])
+    ; provenance = ("GP-Gp500|Plan/CIM/IngestedRoadmaps/Corrections.agda" ∷ "ROADMAP-MD-2|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp501"
-    ; title = "GP501: Unknown Title"
+    ; title = "GP501: The Topological Diagram (II)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Corrections.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp501|Plan/CIM/IngestedRoadmaps/Corrections.agda" ∷ [])
+    ; provenance = ("GP-Gp501|Plan/CIM/IngestedRoadmaps/Corrections.agda" ∷ "ROADMAP-MD-3|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -374,7 +62,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp800|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ [])
+    ; provenance = ("GP-Gp800|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-4|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -387,7 +75,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp801|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ [])
+    ; provenance = ("GP-Gp801|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-5|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -400,20 +88,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp802|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ [])
+    ; provenance = ("GP-Gp802|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-6|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp803"
-    ; title = "GP803: Unknown Title"
+    ; title = "GP803: The Holographic Manifest (v11.0)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Analysis.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp803|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ [])
+    ; provenance = ("GP-Gp803|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-7|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -426,20 +114,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp804|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ [])
+    ; provenance = ("GP-Gp804|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-8|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp805"
-    ; title = "GP805: The Discovery of \\\\\\"
+    ; title = "GP805: The Discovery of \"Dark Matter\""
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Analysis.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp805|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-9|ROADMAP.md" ∷ "ROADMAP-MD-103|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp805|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-9|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -452,7 +140,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp806|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-10|ROADMAP.md" ∷ "ROADMAP-MD-104|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp806|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-10|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -465,7 +153,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp807|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-11|ROADMAP.md" ∷ "ROADMAP-MD-105|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp807|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-11|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -478,7 +166,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp808|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-12|ROADMAP.md" ∷ "ROADMAP-MD-106|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp808|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-12|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -491,20 +179,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp809|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-13|ROADMAP.md" ∷ "ROADMAP-MD-107|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp809|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-13|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp810"
-    ; title = "GP810: Unknown Title"
+    ; title = "GP810: The Spectral Manifest (v16.0)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Analysis.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp810|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-14|ROADMAP.md" ∷ "ROADMAP-MD-108|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp810|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-14|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -517,20 +205,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp811|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-15|ROADMAP.md" ∷ "ROADMAP-MD-109|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp811|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-15|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp812"
-    ; title = "GP812: Unknown Title"
+    ; title = "GP812: The Unified Manifest (v17.0)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Analysis.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp812|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-16|ROADMAP.md" ∷ "ROADMAP-MD-110|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp812|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-16|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -543,20 +231,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp813|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-17|ROADMAP.md" ∷ "ROADMAP-MD-111|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp813|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-17|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp814"
-    ; title = "GP814: Unknown Title"
+    ; title = "GP814: The Cohomological Manifest (v18.0)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Analysis.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp814|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-18|ROADMAP.md" ∷ "ROADMAP-MD-112|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp814|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-18|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -569,7 +257,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp815|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-19|ROADMAP.md" ∷ "ROADMAP-MD-113|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp815|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-19|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -582,7 +270,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp816|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-20|ROADMAP.md" ∷ "ROADMAP-MD-114|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp816|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-20|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -595,7 +283,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp817|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-21|ROADMAP.md" ∷ "ROADMAP-MD-115|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp817|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-21|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -608,7 +296,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp818|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-22|ROADMAP.md" ∷ "ROADMAP-MD-116|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp818|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-22|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -621,7 +309,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp819|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-23|ROADMAP.md" ∷ "ROADMAP-MD-117|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp819|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-23|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -634,7 +322,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp820|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-24|ROADMAP.md" ∷ "ROADMAP-MD-118|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp820|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-24|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -647,20 +335,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp821|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-25|ROADMAP.md" ∷ "ROADMAP-MD-119|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp821|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-25|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp822"
-    ; title = "GP822: Unknown Title"
+    ; title = "GP822: The Fractal Manifest (v22.0)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Analysis.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp822|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-26|ROADMAP.md" ∷ "ROADMAP-MD-120|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp822|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-26|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -673,7 +361,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp823|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-27|ROADMAP.md" ∷ "ROADMAP-MD-121|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp823|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-27|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -686,7 +374,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp824|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-28|ROADMAP.md" ∷ "ROADMAP-MD-122|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp824|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-28|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -699,7 +387,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp825|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-29|ROADMAP.md" ∷ "ROADMAP-MD-123|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp825|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-29|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -712,7 +400,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp826|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-30|ROADMAP.md" ∷ "ROADMAP-MD-124|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp826|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-30|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -725,85 +413,85 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp827|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-31|ROADMAP.md" ∷ "ROADMAP-MD-125|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp827|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-31|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp828"
-    ; title = "GP828: Unknown Title"
+    ; title = "GP828: The Recursive Clifford Lift"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Analysis.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp828|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-32|ROADMAP.md" ∷ "ROADMAP-MD-126|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp828|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-32|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp829"
-    ; title = "GP829: Unknown Title"
+    ; title = "GP829: The Fuzzy Boundary"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Analysis.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp829|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-33|ROADMAP.md" ∷ "ROADMAP-MD-127|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp829|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-33|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp830"
-    ; title = "GP830: Unknown Title"
+    ; title = "GP830: The Latent Dynamic SPPF"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Analysis.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp830|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-34|ROADMAP.md" ∷ "ROADMAP-MD-128|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp830|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-34|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp831"
-    ; title = "GP831: Unknown Title"
+    ; title = "GP831: The Causal Dimension"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Analysis.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp831|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-35|ROADMAP.md" ∷ "ROADMAP-MD-129|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp831|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-35|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp832"
-    ; title = "GP832: Unknown Title"
+    ; title = "GP832: The Self-Defining Manifest (v26.0)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Analysis.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp832|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-36|ROADMAP.md" ∷ "ROADMAP-MD-130|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp832|Plan/CIM/IngestedRoadmaps/Analysis.agda" ∷ "ROADMAP-MD-36|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp699"
-    ; title = "GP699: Unknown Title"
+    ; title = "GP699: The Unified Topological Parser"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Polytopes.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp699|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-37|ROADMAP.md" ∷ "ROADMAP-MD-131|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp699|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-37|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -816,20 +504,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp700|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-38|ROADMAP.md" ∷ "ROADMAP-MD-132|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp700|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-38|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp701"
-    ; title = "GP701: Unknown Title"
+    ; title = "GP701: The Polytope Visualization"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Polytopes.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp701|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-39|ROADMAP.md" ∷ "ROADMAP-MD-133|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp701|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-39|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -842,20 +530,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp702|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-40|ROADMAP.md" ∷ "ROADMAP-MD-134|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp702|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-40|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp703"
-    ; title = "GP703: Unknown Title"
+    ; title = "GP703: The Loday-Stasheff Manifest (v6.0)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Polytopes.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp703|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-41|ROADMAP.md" ∷ "ROADMAP-MD-135|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp703|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-41|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -868,20 +556,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp704|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-42|ROADMAP.md" ∷ "ROADMAP-MD-136|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp704|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-42|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp705"
-    ; title = "GP705: Unknown Title"
+    ; title = "GP705: The Polytope Storage"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Polytopes.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp705|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-43|ROADMAP.md" ∷ "ROADMAP-MD-137|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp705|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-43|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -894,7 +582,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp706|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-44|ROADMAP.md" ∷ "ROADMAP-MD-138|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp706|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-44|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -907,20 +595,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp707|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-45|ROADMAP.md" ∷ "ROADMAP-MD-139|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp707|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-45|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp708"
-    ; title = "GP708: Unknown Title"
+    ; title = "GP708: The Knight's Move Manifest (v8.0)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Polytopes.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp708|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-46|ROADMAP.md" ∷ "ROADMAP-MD-140|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp708|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-46|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -933,20 +621,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp709|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-47|ROADMAP.md" ∷ "ROADMAP-MD-141|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp709|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-47|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp710"
-    ; title = "GP710: Unknown Title"
+    ; title = "GP710: The Operadic Manifest (v9.0)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Polytopes.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp710|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-48|ROADMAP.md" ∷ "ROADMAP-MD-142|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp710|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-48|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -959,7 +647,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp711|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-49|ROADMAP.md" ∷ "ROADMAP-MD-143|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp711|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-49|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -972,7 +660,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp712|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-50|ROADMAP.md" ∷ "ROADMAP-MD-144|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp712|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-50|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -985,176 +673,176 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp713|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-51|ROADMAP.md" ∷ "ROADMAP-MD-145|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp713|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-51|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp714"
-    ; title = "GP714: Unknown Title"
+    ; title = "GP714: The Self-Defining Manifest (v26.0)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Polytopes.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp714|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-52|ROADMAP.md" ∷ "ROADMAP-MD-146|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp714|Plan/CIM/IngestedRoadmaps/Polytopes.agda" ∷ "ROADMAP-MD-52|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp01"
-    ; title = "GP01: Unknown Title"
+    ; title = "GP01: The RotationalTransport Property"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp01|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-53|ROADMAP.md" ∷ "ROADMAP-MD-147|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp01|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-53|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp010"
-    ; title = "GP010: Unknown Title"
+    ; title = "GP010: The Deployment Substrate"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp010|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-54|ROADMAP.md" ∷ "ROADMAP-MD-148|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp010|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-54|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp02"
-    ; title = "GP02: Unknown Title"
+    ; title = "GP02: The Geometric Alignment"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp02|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-55|ROADMAP.md" ∷ "ROADMAP-MD-149|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp02|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-55|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp03"
-    ; title = "GP03: Unknown Title"
+    ; title = "GP03: The PackedNode Aggregation Logic"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp03|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-56|ROADMAP.md" ∷ "ROADMAP-MD-150|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp03|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-56|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp04"
-    ; title = "GP04: Unknown Title"
+    ; title = "GP04: The Topological Diagram (I)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp04|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-57|ROADMAP.md" ∷ "ROADMAP-MD-151|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp04|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-57|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp05"
-    ; title = "GP05: Unknown Title"
+    ; title = "GP05: The Vectorized Earley Item"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp05|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-58|ROADMAP.md" ∷ "ROADMAP-MD-152|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp05|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-58|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp06"
-    ; title = "GP06: Unknown Title"
+    ; title = "GP06: The Visualization Module"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp06|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-59|ROADMAP.md" ∷ "ROADMAP-MD-153|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp06|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-59|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp07"
-    ; title = "GP07: Unknown Title"
+    ; title = "GP07: The Visual Semantics"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp07|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-60|ROADMAP.md" ∷ "ROADMAP-MD-154|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp07|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-60|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp09"
-    ; title = "GP09: Unknown Title"
+    ; title = "GP09: The Active Observer"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp09|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-61|ROADMAP.md" ∷ "ROADMAP-MD-155|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp09|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-61|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp100"
-    ; title = "GP100: Unknown Title"
+    ; title = "GP100: The Semantic Gating (I)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp100|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-62|ROADMAP.md" ∷ "ROADMAP-MD-156|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp100|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-62|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp101"
-    ; title = "GP101: Unknown Title"
+    ; title = "GP101: The Semantic Gating (II)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp101|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-63|ROADMAP.md" ∷ "ROADMAP-MD-157|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp101|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-63|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp102"
-    ; title = "GP102: Unknown Title"
+    ; title = "GP102: The Operational Integration"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp102|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-64|ROADMAP.md" ∷ "ROADMAP-MD-158|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp102|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-64|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -1167,7 +855,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp103|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-65|ROADMAP.md" ∷ "ROADMAP-MD-159|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp103|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-65|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -1180,20 +868,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp104|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-66|ROADMAP.md" ∷ "ROADMAP-MD-160|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp104|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-66|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp105"
-    ; title = "GP105: The \\"
+    ; title = "GP105: The \"Fast Clock\" Paradox"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp105|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-67|ROADMAP.md" ∷ "ROADMAP-MD-161|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp105|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-67|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -1206,33 +894,33 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp106|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-68|ROADMAP.md" ∷ "ROADMAP-MD-162|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp106|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-68|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp107"
-    ; title = "GP107: Unknown Title"
+    ; title = "GP107: The Gödelian Manifest"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp107|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-69|ROADMAP.md" ∷ "ROADMAP-MD-163|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp107|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-69|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp108"
-    ; title = "GP108: The \\"
+    ; title = "GP108: The \"Homological Defect\""
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp108|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-70|ROADMAP.md" ∷ "ROADMAP-MD-164|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp108|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-70|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -1245,7 +933,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp109|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-71|ROADMAP.md" ∷ "ROADMAP-MD-165|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp109|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-71|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -1258,20 +946,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp110|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-72|ROADMAP.md" ∷ "ROADMAP-MD-166|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp110|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-72|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp111"
-    ; title = "GP111: Unknown Title"
+    ; title = "GP111: The Unified Manifest (v2.0)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Foundation.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp111|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-73|ROADMAP.md" ∷ "ROADMAP-MD-167|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp111|Plan/CIM/IngestedRoadmaps/Foundation.agda" ∷ "ROADMAP-MD-73|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -1284,7 +972,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp200|Plan/CIM/IngestedRoadmaps/Geometry.agda" ∷ "ROADMAP-MD-74|ROADMAP.md" ∷ "ROADMAP-MD-168|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp200|Plan/CIM/IngestedRoadmaps/Geometry.agda" ∷ "ROADMAP-MD-74|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -1297,7 +985,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp201|Plan/CIM/IngestedRoadmaps/Geometry.agda" ∷ "ROADMAP-MD-75|ROADMAP.md" ∷ "ROADMAP-MD-169|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp201|Plan/CIM/IngestedRoadmaps/Geometry.agda" ∷ "ROADMAP-MD-75|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -1310,7 +998,7 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp300|Plan/CIM/IngestedRoadmaps/Geometry.agda" ∷ "ROADMAP-MD-76|ROADMAP.md" ∷ "ROADMAP-MD-170|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp300|Plan/CIM/IngestedRoadmaps/Geometry.agda" ∷ "ROADMAP-MD-76|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
@@ -1323,23 +1011,20 @@ canonicalItems =
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp302|Plan/CIM/IngestedRoadmaps/Geometry.agda" ∷ "ROADMAP-MD-77|ROADMAP.md" ∷ "ROADMAP-MD-171|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp302|Plan/CIM/IngestedRoadmaps/Geometry.agda" ∷ "ROADMAP-MD-77|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷
   record {
     id = "GP-Gp303"
-    ; title = "GP303: Unknown Title"
+    ; title = "GP303: The Adjoint Manifest (v3.0)"
     ; status = "not-started"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Geometry.agda"
     ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
-    ; provenance = ("GP-Gp303|Plan/CIM/IngestedRoadmaps/Geometry.agda" ∷ "ROADMAP-MD-78|ROADMAP.md" ∷ "ROADMAP-MD-172|ROADMAP.md" ∷ [])
+    ; provenance = ("GP-Gp303|Plan/CIM/IngestedRoadmaps/Geometry.agda" ∷ "ROADMAP-MD-78|ROADMAP.md" ∷ [])
     ; related = []
   }
   ∷ []
--- Provide the CanonicalRoadmap instance
-theCanonicalRoadmap : CanonicalRoadmap
-CanonicalRoadmap.items theCanonicalRoadmap = canonicalItems
