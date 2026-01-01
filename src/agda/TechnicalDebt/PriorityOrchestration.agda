@@ -1,15 +1,11 @@
 {-# OPTIONS --guardedness #-}
 
 -- | Orchestration layer for priority strategies; ties logic/formatting to I/O.
+module TechnicalDebt.PriorityOrchestration where
+
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Core.Phase using (_×_; Σ)
 open _×_
--- |   ORCHESTRATION:      This module (I/O coordination)
--- |
--- | This module handles:
--- |   • File I/O operations (writing generated JSON)
--- |   • Status reporting and validation
--- |   • Build artifact coordination
 -- |   • Integration with downstream systems
 -- |
 -- | Uses module parameterization for I/O operations (not postulates)

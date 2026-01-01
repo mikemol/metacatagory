@@ -2,7 +2,6 @@
 
 -- | DependencyGraphExport: consume Agda --dependency-graph DOT output and emit JSON.
 -- This replaces the Python dependency_graph.json generator with a pure Agda version.
-
 module Plan.CIM.DependencyGraphExport where
 
 open import Agda.Builtin.String using (String; primStringAppend; primStringFromList; primStringToList; primStringEquality)

@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K #-}
 
--- Core/Algorithms/NumberFields.agda
+-- | Algorithms and witnesses over number fields.
 module Core.Algorithms.NumberFields where
 
 open import Core
