@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
+import json
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src" / "agda"
@@ -61,6 +62,12 @@ def main() -> int:
             missing_decls[path] = bad
 
     ok = True
+    report = {
+        "checked": len(agda_files),
+        "missing_module": sorted(str(p) for p in missing_module),
+        "missing_decls": {str(p): locs for p, locs in missing_decls.items()},
+    }
+
     if missing_module:
         ok = False
         print("Missing module doc comment (-- ...) in:")
@@ -75,9 +82,16 @@ def main() -> int:
             print(f"  - {p}: lines {locs}")
 
     if not ok:
+        # write report to build/reports if available
+        reports_dir = ROOT / "build" / "reports"
+        reports_dir.mkdir(parents=True, exist_ok=True)
+        (reports_dir / "docs-lint.json").write_text(json.dumps(report, indent=2))
         return 1
 
     print(f"✓ Doc lint passed ({len(agda_files)} files checked)")
+    reports_dir = ROOT / "build" / "reports"
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    (reports_dir / "docs-lint.json").write_text(json.dumps(report, indent=2))
     return 0
 
 

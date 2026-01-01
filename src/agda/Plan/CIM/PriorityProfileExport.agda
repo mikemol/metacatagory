@@ -222,6 +222,43 @@ impactImportedBy : List Edge → RoadmapItem → Nat
 impactImportedBy es i = maxNat (map (λ f → countImportedBy (pathToModule f) es) (RoadmapItem.files i))
 
 ------------------------------------------------------------------------
+-- Doc lint ingestion (parse the lint report as a raw string)
+------------------------------------------------------------------------
+
+stringToChars : String → List Char
+stringToChars = primStringToList
+
+charsToString : List Char → String
+charsToString = primStringFromList
+
+-- naive substring check
+startsWithChars : List Char → List Char → Bool
+startsWithChars [] _ = true
+startsWithChars (_ ∷ _) [] = false
+startsWithChars (a ∷ as) (b ∷ bs) with primStringEquality (charsToString (a ∷ [])) (charsToString (b ∷ []))
+... | true  = startsWithChars as bs
+... | false = false
+
+containsChars : List Char → List Char → Bool
+containsChars [] _ = true
+containsChars _ [] = false
+containsChars needle (h ∷ hs) with startsWithChars needle (h ∷ hs)
+... | true  = true
+... | false = containsChars needle hs
+
+containsString : String → String → Bool
+containsString needle hay = containsChars (stringToChars needle) (stringToChars hay)
+
+docIssuesFor : String → RoadmapItem → Nat
+docIssuesFor report item = countMissing (RoadmapItem.files item)
+  where
+    countMissing : List String → Nat
+    countMissing [] = zero
+    countMissing (f ∷ fs) with containsString f report
+    ... | true  = suc (countMissing fs)
+    ... | false = countMissing fs
+
+------------------------------------------------------------------------
 -- Filtering and naive scoring for ordering (status-aware)
 ------------------------------------------------------------------------
 
@@ -330,8 +367,8 @@ activeSorted es = sortByScore es (filterActive planningIndex)
     ... | true  = r ∷ filterActive rs
     ... | false = filterActive rs
 
-renderItem : List Edge → RoadmapItem → String
-renderItem es i =
+renderItem : String → List Edge → RoadmapItem → String
+renderItem report es i =
   concatStrings
     ( "{" ∷
       "\"id\":"          ∷ quoteString (RoadmapItem.id i)          ∷ "," ∷
@@ -349,7 +386,8 @@ renderItem es i =
         "\"filesCount\":"     ∷ natToString (len (RoadmapItem.files i))     ∷ "," ∷
         "\"tagsCount\":"      ∷ natToString (len (RoadmapItem.tags i))      ∷ "," ∷
         "\"imports\":"        ∷ natToString (impactImports es i)           ∷ "," ∷
-        "\"importedBy\":"     ∷ natToString (impactImportedBy es i)        ∷
+        "\"importedBy\":"     ∷ natToString (impactImportedBy es i)        ∷ "," ∷
+        "\"docIssues\":"      ∷ natToString (docIssuesFor report i)        ∷
       "}" ∷
       "}" ∷ [] )
 
@@ -362,13 +400,13 @@ renderWeights w =
   "\"deviation\":" ++ intToString (CategoryWeights.deviationWeight w) ++
   "}"
 
-renderItems : List Edge → List RoadmapItem → ChunkStream
-renderItems es [] = mkStream "[]" nothing
-renderItems es (x ∷ xs) = mkStream "[" (just (renderItemChunk x xs))
+renderItems : String → List Edge → List RoadmapItem → ChunkStream
+renderItems report es [] = mkStream "[]" nothing
+renderItems report es (x ∷ xs) = mkStream "[" (just (renderItemChunk x xs))
   where
     renderItemChunk : RoadmapItem → List RoadmapItem → ChunkStream
-    renderItemChunk i [] = mkStream (renderItem es i ++ "]") nothing
-    renderItemChunk i (y ∷ ys) = mkStream (renderItem es i ++ ",") (just (renderItemChunk y ys))
+    renderItemChunk i [] = mkStream (renderItem report es i ++ "]") nothing
+    renderItemChunk i (y ∷ ys) = mkStream (renderItem report es i ++ ",") (just (renderItemChunk y ys))
 
 defaultPath : String
 defaultPath = "build/priority_profile.json"
@@ -376,11 +414,12 @@ defaultPath = "build/priority_profile.json"
 main : IO ⊤
 main = do
   dot ← readFile "build/diagrams/agda-deps-full.dot"
+  lint ← readFile "build/reports/docs-lint.json"
   let edges = parseLines (primStringToList dot)
   let weights = strategyToWeights defaultStrategy
   let tasks = activeSorted edges
   let stream = mkStream "{"
                  (just (mkStream ("\"strategyWeights\":" ++ renderWeights weights ++ ",")
-                     (just (mkStream "\"tasks\":" (just (renderItems edges tasks))))))
+                     (just (mkStream "\"tasks\":" (just (renderItems lint edges tasks))))))
   -- reset file then stream append lazily
   writeFile defaultPath "" >>= λ _ → writeStream defaultPath stream
