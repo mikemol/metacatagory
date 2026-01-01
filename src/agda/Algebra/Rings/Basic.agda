@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Ring theory (Hungerford Ch III), parameterized over classical theorems.
 open import Core
 open import Chapter1.Level1Index
 open import Chapter2.Level2sub3
@@ -8,11 +9,6 @@ open import Algebra.Groups.Types
 open import Algebra.Rings.Types
 open import PropertyRegistry
 open import Metamodel as M
-
--- Algebra.Rings.Basic: Ring theory (Hungerford Ch III)
--- 
--- PARAMETERIZED VERSION: All 18 classical ring theorems are module parameters
--- rather than postulated locally. This enforces explicit dependency declaration.
 
 module Algebra.Rings.Basic
   (ringFirstIsomorphismTheorem : ∀ (f : Set₁) → Set₁)
