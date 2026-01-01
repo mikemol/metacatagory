@@ -39,6 +39,9 @@ definitionAlgebra : PathAlgebra {ℓV = lzero} {ℓP = lzero} String
 PathAlgebra.Path definitionAlgebra _ _ = ⊤
 PathAlgebra._++_ definitionAlgebra _ _ = tt
 PathAlgebra.++-assoc definitionAlgebra _ _ _ = refl
+PathAlgebra.id definitionAlgebra {a = _} = tt
+PathAlgebra.id-left definitionAlgebra {a = _} {b = _} p = refl
+PathAlgebra.id-right definitionAlgebra {a = _} {b = _} p = refl
 
 -- | Package an entry as a framed face with identical endpoints and unit paths.
 entryFace : DefinitionEntry → FramedFace definitionAlgebra

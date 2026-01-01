@@ -9,6 +9,7 @@ open import Agda.Primitive using (Level; _⊔_; lsuc)
 open import Agda.Builtin.Equality using (_≡_; refl)
 
 open import Infrastructure.Functor.Interface
+open import Infrastructure.Equality using (cong; trans)
 
 composeFunctor : ∀ {ℓ₁ ℓ₂ ℓ₃}
   {Obj₁ : Set ℓ₁} {Obj₂ : Set ℓ₂} {Obj₃ : Set ℓ₃} →
@@ -24,8 +25,3 @@ composeFunctor C D E F G = record
       trans (cong (FunctorInstance.map G) (FunctorInstance.map-compose F g f))
             (FunctorInstance.map-compose G (FunctorInstance.map F g) (FunctorInstance.map F f))
   }
-  where
-    cong : ∀ {ℓ₁ ℓ₂} {A : Set ℓ₁} {B : Set ℓ₂} {x y : A} (f : A → B) → x ≡ y → f x ≡ f y
-    cong f refl = refl
-    trans : ∀ {ℓ} {A : Set ℓ} {x y z : A} → x ≡ y → y ≡ z → x ≡ z
-    trans refl refl = refl

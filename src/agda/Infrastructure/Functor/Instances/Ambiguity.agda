@@ -11,12 +11,8 @@ open import Agda.Builtin.List using (List; []; _∷_)
 open import Infrastructure.Functor.Interface
 open import Infrastructure.Functor.Instances.FunctionCategory using (FunctionCategory; Lift; lift)
 open import Infrastructure.Functor.Adapters.Funext
+open import Infrastructure.Equality using (cong; sym)
 open import Plan.CIM.Ambiguity using (Ambiguity; mapAmbiguity; mapOption; WeightedOption; determinate; superposition; conflict)
-
-cong : ∀ {ℓ₁ ℓ₂} {A : Set ℓ₁} {B : Set ℓ₂} {x y : A} (f : A → B) → x ≡ y → f x ≡ f y
-cong f refl = refl
-sym : ∀ {ℓ} {A : Set ℓ} {x y : A} → x ≡ y → y ≡ x
-sym refl = refl
 
 mapOption-id : ∀ {ℓ} {A : Set ℓ} (xs : List (WeightedOption A)) → mapOption (λ y → y) xs ≡ xs
 mapOption-id [] = refl

@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical #-}
+{-# OPTIONS --without-K #-}
 
 -- | RoadmapSPPF: Horizontal SPPF composition/decomposition over roadmap data
 -- Supports >2 parents by synthesizing packed nodes to maintain the SPPF ≤2-parent invariant.

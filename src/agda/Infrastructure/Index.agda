@@ -3,6 +3,7 @@ module Infrastructure.Index where
 open import Infrastructure.Universe public
 open import Infrastructure.Coherence.Path2 public
 
+open import Infrastructure.Equality public
 open import Infrastructure.Product.Bundle4 public
 open import Infrastructure.Wrapper.With public
 open import Infrastructure.Iso.Structural public
@@ -22,10 +23,10 @@ open import Infrastructure.Axiom.Instances.HexagonBraiding public
 open import Infrastructure.Definitions.Dictionary public
 open import Infrastructure.Functor.Interface public
 open import Infrastructure.Functor.Instances.Trivial public
-open import Infrastructure.Functor.Instances.PathAlgebra public
+open import Infrastructure.Functor.Instances.PathAlgebra public hiding (Lift)
 open import Infrastructure.Functor.Instances.PhaseCategory public
-open import Infrastructure.Functor.Instances.FunctionCategory public
-open import Infrastructure.Functor.Instances.FunctionPathCategory public
+open import Infrastructure.Functor.Instances.FunctionCategory public hiding (Lift)
+open import Infrastructure.Functor.Instances.FunctionPathCategory public hiding (Lift)
 open import Infrastructure.Functor.Instances.Ambiguity public
 open import Infrastructure.Functor.Instances.TransformationSystem public
 open import Infrastructure.Functor.Adapters.Funext public
