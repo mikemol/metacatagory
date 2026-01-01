@@ -314,6 +314,58 @@ definitionRoadmapItems =
     }
   ∷
   record
+    { id         = "DOCS-AGDA-DOCCOMMENT-PIPELINE"
+    ; title      = "Extend module exporter to surface Agda doc comments"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "Documentation"
+    ; files      = ("src/agda/Plan/CIM/ModuleExporter.agda" ∷ "docs/automation" ∷ [])
+    ; tags       = ("Documentation" ∷ "Pipeline" ∷ "Agda" ∷ [])
+    ; dependsOn  = []
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "DOCS-AGDA-DECL-DOCS"
+    ; title      = "Export declaration docstrings (records/data) into docs"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "Documentation"
+    ; files      = ("src/agda/Plan/CIM/ModuleExporter.agda" ∷ "docs/automation" ∷ [])
+    ; tags       = ("Documentation" ∷ "Pipeline" ∷ "Agda" ∷ [])
+    ; dependsOn  = ("DOCS-AGDA-DOCCOMMENT-PIPELINE" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "DOCS-AGDA-FIELD-DOCS"
+    ; title      = "Export field/argument docstrings into docs"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "Documentation"
+    ; files      = ("src/agda/Plan/CIM/ModuleExporter.agda" ∷ "docs/automation" ∷ [])
+    ; tags       = ("Documentation" ∷ "Pipeline" ∷ "Agda" ∷ [])
+    ; dependsOn  = ("DOCS-AGDA-DECL-DOCS" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "DOCS-AGDA-LINT"
+    ; title      = "Add lint to enforce module-level docstrings"
+    ; status     = "not-started"
+    ; category   = "Infrastructure"
+    ; source     = "Documentation"
+    ; files      = ("scripts" ∷ "docs/automation" ∷ [])
+    ; tags       = ("Documentation" ∷ "Lint" ∷ "Agda" ∷ [])
+    ; dependsOn  = ("DOCS-AGDA-DOCCOMMENT-PIPELINE" ∷ [])
+    ; provenance = ("intake/codex_handoff.md" ∷ [])
+    ; related    = ("DOCS-AGDA-DECL-DOCS" ∷ "DOCS-AGDA-FIELD-DOCS" ∷ [])
+    }
+  ∷
+  record
     { id         = "LOCAL-GENERIC-FUNCTOR-FUNCPATH-ADEQUACY"
     ; title      = "Add adequacy kit for FunctionPathCategory"
     ; status     = "done"
