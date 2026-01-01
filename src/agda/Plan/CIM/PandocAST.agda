@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical-compatible --safe #-}
 
+-- | Minimal Pandoc-inspired AST shared by CIM Markdown tooling.
 module Plan.CIM.PandocAST where
 
 open import Agda.Builtin.String

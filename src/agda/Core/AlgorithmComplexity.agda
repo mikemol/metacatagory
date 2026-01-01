@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Complexity classification scaffolding for algorithmic operations.
 module Core.AlgorithmComplexity where
 
 -- Core.AlgorithmComplexity: Complexity classification for algorithmic operations

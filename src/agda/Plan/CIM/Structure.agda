@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical --guardedness #-}
 
+-- | Core document structures used by CIM synthesis and rendering.
 module Plan.CIM.Structure where
 
 open import Agda.Builtin.List using (List; []; _∷_)

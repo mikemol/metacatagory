@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Registry of algorithm composition components for reuse in TD reports.
 module TechnicalDebt.AlgorithmCompositionRegistry where
 
 open import Core.TechnicalDebt
