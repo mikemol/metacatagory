@@ -48,3 +48,13 @@ associativityExample : ∀ {A B C D : Set ℓ}
                       (a : A)
                     → ((f ⟫ g) ⟫ h) $ₚ a ≡ (f ⟫ (g ⟫ h)) $ₚ a
 associativityExample f g h a = refl
+
+-- ---------------------------------------------------------------------------
+-- Parallel composition examples
+-- ---------------------------------------------------------------------------
+
+-- Running two phases in parallel over a product; both results are preserved.
+parallelExample : ∀ {A B C D : Set ℓ}
+                (f : Phase A B) (g : Phase C D) (a : A) (c : C)
+              → (f ⊗ g) $ₚ (a , c) ≡ (f $ₚ a , g $ₚ c)
+parallelExample f g a c = refl
