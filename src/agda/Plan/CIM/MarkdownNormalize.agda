@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical --guardedness #-}
 
+-- | Normalize markdown text for consistent downstream processing.
 module Plan.CIM.MarkdownNormalize where
 
 open import Agda.Builtin.String using (String; primStringAppend; primStringToList; primStringFromList)
