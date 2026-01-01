@@ -1,6 +1,10 @@
 {
   "_comment": "Generated from Agda TechnicalDebt.PriorityOrchestrationFFI (normalized for badges)",
   "active": "default",
+  "postulate": 1.5,
+  "todo": 0.5,
+  "fixme": 2.0,
+  "deviation": 1.0,
   "profiles": {
     "default": {
       "postulate": 1.5,

@@ -381,10 +381,10 @@ def scan_repository_for_deferred(
 
     total = postulates + todo + fixme + deviation_log
     weighted_total = (
-        postulates * weights["postulate"]
-        + todo * weights["todo"]
-        + fixme * weights["fixme"]
-        + deviation_log * weights["deviation"]
+        postulates * weights.get("postulate", 1.0)
+        + todo * weights.get("todo", 1.0)
+        + fixme * weights.get("fixme", 1.0)
+        + deviation_log * weights.get("deviation", 1.0)
     )
     return {
         "total": total,
