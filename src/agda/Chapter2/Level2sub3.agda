@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Chapter 2 subsection 3 material.
 module Chapter2.Level2sub3 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

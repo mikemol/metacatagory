@@ -1,10 +1,6 @@
 {-# OPTIONS --without-K #-}
 
--- Level3_1: Locales (Chapter 3, Section 1)
--- This module encodes the structural content of Section 1 (Locales and Frames).
--- It covers intuitionistic propositional calculus, Heyting algebras, locales, frames,
--- nuclei, open and etale morphisms, compactness, and regularity.
-
+-- | Locales and frames (Chapter 3, Section 1).
 module Chapter3.Level3sub1 where
 
 open import Core

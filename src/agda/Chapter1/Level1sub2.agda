@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Chapter 1 subsection 2 examples and constructions.
 module Chapter1.Level1sub2 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

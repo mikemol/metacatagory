@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Chapter 1 base material and examples.
 module Chapter1.Level1 where
 
 open import Agda.Builtin.List using (List; []; _∷_)
