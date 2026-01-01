@@ -28,7 +28,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-DEF-DICT"
     ; title      = "Implement Definition Dictionary adequacy module"
-    ; status     = "in-progress"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
     ; files      = ("src/agda/Infrastructure/Definitions/Dictionary.agda" ∷ [])
@@ -101,10 +101,10 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-DEF-DICT-EXAMPLE"
     ; title      = "Add DefinitionDictionary adequacy example"
-    ; status     = "not-started"
+    ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
-    ; files      = ("src/agda/Examples" ∷ [])
+    ; files      = ("src/agda/Examples/DefinitionDictionaryAdequacy.agda" ∷ [])
     ; tags       = ("Definition" ∷ "Example" ∷ [])
     ; dependsOn  = ("LOCAL-DEF-DICT" ∷ [])
     ; provenance = ("intake/codex_handoff.md" ∷ [])
