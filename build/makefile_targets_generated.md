@@ -13,6 +13,7 @@
 | `badges` | Generate status badges |
 | `priority-strategy-profiles` | Compile and run Agda priority orchestration (generate strategy profiles) |
 | `priority-badge-weights` | Normalize Agda strategy profiles into badge weights |
+| `priority-profile-json` | Export structured priority profile (lazy; derived from planning index) |
 | `priority-refresh` | Re-run priority pipeline and refresh roadmap/badge outputs |
 | `docs-modules` | Generate per-module markdown documentation |
 | `docs-all` | Generate documentation (markdown only) |
