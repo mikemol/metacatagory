@@ -1,3 +1,4 @@
+-- | Structural isomorphisms with explicit inverses.
 module Infrastructure.Iso.Structural where
 
 open import Agda.Primitive using (Level; _⊔_)
