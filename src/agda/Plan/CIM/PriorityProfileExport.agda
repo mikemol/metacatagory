@@ -236,11 +236,36 @@ isActive i with RoadmapItem.status i
 ... | _    | _     | true  = true
 ... | _    | _     | _     = false
 
+statusWeight : String → Nat
+statusWeight s with eqString s "in-progress" | eqString s "planned" | eqString s "not-started"
+... | true  | _     | _     = suc (suc zero)   -- 2
+... | _     | true  | _     = suc zero         -- 1
+... | _     | _     | true  = zero             -- 0
+... | _     | _     | _     = zero
+
+dependentCount : List RoadmapItem → RoadmapItem → Nat
+dependentCount rs target = count rs
+  where
+    tid = RoadmapItem.id target
+
+    dependsOnId : List String → Bool
+    dependsOnId [] = false
+    dependsOnId (d ∷ ds) with eqString d tid
+    ... | true  = true
+    ... | false = dependsOnId ds
+
+    count : List RoadmapItem → Nat
+    count [] = zero
+    count (r ∷ rs) with dependsOnId (RoadmapItem.dependsOn r)
+    ... | true  = suc (count rs)
+    ... | false = count rs
+
 score : List Edge → RoadmapItem → Nat
 score es i =
-  add (len (RoadmapItem.dependsOn i))
-      (add (impactImports es i)
-           (add (impactImportedBy es i) (len (RoadmapItem.tags i))))
+  add (dependentCount planningIndex i)
+      (add (statusWeight (RoadmapItem.status i))
+           (add (impactImports es i)
+                (add (impactImportedBy es i) (len (RoadmapItem.tags i)))))
 
 reverse : ∀ {A : Set} → List A → List A
 reverse [] = []
@@ -288,7 +313,7 @@ parseLines cs = go [] cs
 insertByScore : List Edge → RoadmapItem → List RoadmapItem → List RoadmapItem
 insertByScore es x [] = x ∷ []
 insertByScore es x (y ∷ ys) with score es x | score es y
-... | sx | sy with leq sx sy
+... | sx | sy with leq sy sx   -- place higher scores first
 ... | true  = x ∷ y ∷ ys
 ... | false = y ∷ insertByScore es x ys
 
