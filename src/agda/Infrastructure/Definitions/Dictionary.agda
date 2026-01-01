@@ -24,12 +24,14 @@ open import Infrastructure.Axiom.Instance using (AxiomInstance; FramedFace)
 -- Definition entries
 ------------------------------------------------------------------------
 
+-- | Single dictionary entry pairing a term with summary and provenance.
 record DefinitionEntry : Set where
   field
     term       : String
     summary    : String
     provenance : List String
 
+-- | Facet metadata for grouping related definitions.
 record DefinitionFacet : Set where
   field
     name        : String

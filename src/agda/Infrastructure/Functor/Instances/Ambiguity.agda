@@ -46,6 +46,7 @@ mapAmbiguity-comp-pt g f (determinate _)    = refl
 mapAmbiguity-comp-pt g f (superposition xs) = cong superposition (sym (mapOption-compose g f xs))
 mapAmbiguity-comp-pt g f (conflict _)       = refl
 
+-- | Functor instance for Ambiguity lifted through FunctionCategory.
 AmbiguityFunctor : (∀ {ℓ} {A B : Set ℓ} → Funext (Ambiguity A) (Ambiguity B)) →
   ∀ {ℓ} → FunctorInstance (FunctionCategory {ℓ}) (FunctionCategory {ℓ})
 FunctorInstance.objMap (AmbiguityFunctor fe) A = Ambiguity A
@@ -73,6 +74,7 @@ module AmbiguityAdequacy {ℓ} (fe : ∀ {A B : Set ℓ} → Funext (Ambiguity A
   PathAlgebra.id-left ambiguityPathAlgebra p = refl
   PathAlgebra.id-right ambiguityPathAlgebra p = refl
 
+  -- | Kit describing a lifted ambiguity morphism between two sets.
   record AmbiguityKit : Set (lsuc ℓ) where
     field
       A B : Set ℓ
