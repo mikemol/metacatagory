@@ -1,8 +1,9 @@
 {-# OPTIONS --without-K --cubical-compatible #-}
-open import Agda.Builtin.List using (List; _∷_; [])
 
 -- | Show/pretty-print inline Pandoc AST nodes.
 module Plan.CIM.PandocShowInline where
+
+open import Agda.Builtin.List using (List; _∷_; [])
 
 open import Agda.Builtin.String
 open import Plan.CIM.PandocAST using (Inline; MdInline)

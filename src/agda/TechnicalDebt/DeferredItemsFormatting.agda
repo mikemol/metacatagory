@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Formatting helpers for deferred item summaries.
 module TechnicalDebt.DeferredItemsFormatting where
 
 open import Agda.Builtin.String using (String; primShowNat; primStringAppend)

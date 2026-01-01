@@ -1,5 +1,6 @@
-
 {-# OPTIONS --without-K #-}
+
+-- | FFI helpers to orchestrate deferred-item detection via external tools.
 module TechnicalDebt.DeferredItemsOrchestrationFFI where
 
 {-# FOREIGN GHC import qualified Data.Text as T #-}

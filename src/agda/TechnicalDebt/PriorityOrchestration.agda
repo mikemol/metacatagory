@@ -1,15 +1,9 @@
-
 {-# OPTIONS --guardedness #-}
+
+-- | Orchestration layer for priority strategies; ties logic/formatting to I/O.
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Core.Phase using (_×_; Σ)
 open _×_
-
--- | Orchestration layer for priority strategy system
--- | Coordinates logic and formatting layers with I/O operations
--- | 
--- | Architecture:
--- |   LOGIC LAYER:        TechnicalDebt.PriorityMapping (pure computation)
--- |   FORMAT LAYER:       TechnicalDebt.PriorityFormatting (JSON generation)
 -- |   ORCHESTRATION:      This module (I/O coordination)
 -- |
 -- | This module handles:
