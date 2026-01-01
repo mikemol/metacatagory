@@ -1,9 +1,8 @@
 
 {-# OPTIONS --without-K #-}
 
--- Core.AlgebraicAlgorithms: Generic interfaces for computational algebraic algorithms
--- These records provide extensible, type-safe infrastructure for algebraic computation in Agda.
-
+-- | Generic interfaces for computational algebraic algorithms.
+--   Records provide extensible, type-safe infrastructure for algebraic computation.
 module Core.AlgebraicAlgorithms where
 
 -- Infrastructure imports for universe polymorphism and equality

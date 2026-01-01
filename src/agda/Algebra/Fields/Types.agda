@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Core field-theory types (extensions, closures, automorphisms).
 module Algebra.Fields.Types where
 
 open import Core

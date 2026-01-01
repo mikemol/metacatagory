@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Field theory and Galois theory (parameterized over classic theorems).
 open import Core
 open import Chapter1.Level1Index
 open import Algebra.Foundation
@@ -7,11 +8,6 @@ open import Algebra.Rings.Types
 open import Algebra.Fields.Types
 open import PropertyRegistry
 open import Metamodel as M
-
--- Algebra.Fields.Basic: Field theory and Galois theory (Hungerford Ch V-VI)
--- 
--- PARAMETERIZED VERSION: All 7 classical field theorems are module parameters
--- rather than postulated locally.
 
 module Algebra.Fields.Basic
   (degreeOfExtensionFormula : ∀ (F K E : Set₁) → Set₁)
