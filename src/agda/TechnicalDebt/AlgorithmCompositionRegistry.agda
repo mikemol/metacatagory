@@ -7,6 +7,7 @@ open import Core.TechnicalDebt
 open import Metamodel as M
 open import Agda.Builtin.List using (List; []; _∷_)
 
+-- | Identifier for test fixture package used in composition registry.
 postulate TestFixturesPackage : M.Identifier
 
 TestFixturesPackageDebt : DebtAnnotation
