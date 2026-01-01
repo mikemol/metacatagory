@@ -8,6 +8,7 @@ open import Agda.Builtin.Equality using (_≡_; refl)
 
 open import Infrastructure.Equality using (cong) public
 
+-- | Disjoint sum used for partial solver results.
 data _⊎_ {ℓ₁ ℓ₂} (A : Set ℓ₁) (B : Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
   inj₁ : A → A ⊎ B
   inj₂ : B → A ⊎ B
@@ -59,11 +60,15 @@ record Solver {ℓV ℓP ℓK : Level} {V : Set ℓV}
     boundary : Kit → FramedFace PA
     solve    : (k : Kit) →
                let ff = boundary k in
-               Face.lhs (FramedFace.face ff) ≡ Face.rhs (FramedFace.face ff)
+              Face.lhs (FramedFace.face ff) ≡ Face.rhs (FramedFace.face ff)
 
+-- | Outstanding boundary obligations not yet solved.
 data Obligation : Set where
+  -- | Missing coherence proof for a triangular boundary.
   MissingTriangle : Obligation
+  -- | Missing whiskering coherence.
   MissingWhisker  : Obligation
+  -- | Missing diagonal filler.
   MissingDiagonal : Obligation
 
 -- | Partial solver that may return outstanding obligations instead of a proof.

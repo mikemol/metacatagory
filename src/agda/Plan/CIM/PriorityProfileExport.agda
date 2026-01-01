@@ -42,6 +42,7 @@ minus m zero = m
 minus zero (suc _) = zero
 minus (suc m) (suc n) = minus m n
 
+-- | Minimal pair record (avoids stdlib dependency).
 record _×_ (A B : Set) : Set where
   constructor _,_
   field fst : A
@@ -135,6 +136,7 @@ writeStream path cs =
 -- Dependency graph summary helpers (imports graph)
 ------------------------------------------------------------------------
 
+-- | Simple directed edge parsed from the DOT dependency graph.
 record Edge : Set where
   constructor mkEdge
   field src dst : String

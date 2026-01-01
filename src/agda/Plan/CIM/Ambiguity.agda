@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Ambiguity type and helpers for weighted alternative sets with conflicts.
 module Plan.CIM.Ambiguity where
 
 open import Agda.Builtin.Nat
@@ -11,6 +12,7 @@ open import Agda.Builtin.Equality
 -- Definition moved inside (or we could parameterize the type itself, 
 -- but the type definition is usually static).
 
+-- | Weighted option carrying value, weight, and provenance.
 record WeightedOption {ℓ} (A : Set ℓ) : Set ℓ where
   field
     value : A
@@ -20,6 +22,7 @@ record WeightedOption {ℓ} (A : Set ℓ) : Set ℓ where
 -- Helpers for parameter signature matching
 Record = WeightedOption
 
+-- | Ambiguity over A: determinate, superposition, or conflicting cause.
 data Ambiguity {ℓ} (A : Set ℓ) : Set ℓ where
   determinate : A → Ambiguity A
   superposition : List (WeightedOption A) → Ambiguity A
