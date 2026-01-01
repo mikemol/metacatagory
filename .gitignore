@@ -18,6 +18,7 @@ src/agda/ExporterMakefile
 src/agda/PriorityOrchestrationFFI
 src/agda/PlanningExport
 src/agda/PriorityProfileExport
+src/agda/DependencyGraphExport
 src/agda/Examples/ExporterMakefile
 src/agda/RoadmapIssueSync
 src/agda/MarkdownNormalize
