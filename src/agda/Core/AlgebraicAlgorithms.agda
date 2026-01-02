@@ -242,8 +242,8 @@ record SubfieldEnumerationAlgorithm (F E : FieldDeclaration) : Set₁ where
     -- Enumerate all intermediate fields F ⊆ K ⊆ E
     subfields : List (Subfield E)
 
+-- | Procedure that lists subgroups of the Galois group Gal(E/F).
 record SubgroupEnumerationAlgorithm (F E : FieldDeclaration) : Set₁ where
-  -- | Procedure that lists subgroups of the Galois group Gal(E/F).
   field
     -- Enumerate all subgroups of Gal(E/F)
     subgroups : List (GroupDeclaration)
@@ -281,8 +281,8 @@ record NormalityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
     -- Decide if E/F is normal
     isNormal : Dec (NormalExtension F E)
 
+-- | Decide separability and detect purely inseparable cases.
 record SeparabilityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
-  -- | Decide separability and detect purely inseparable cases.
   field
     -- Decide if E/F is separable
     isSeparable : Dec (SeparableExtension F E)
