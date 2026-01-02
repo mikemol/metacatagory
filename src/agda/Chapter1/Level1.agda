@@ -1,6 +1,8 @@
 {-# OPTIONS --without-K #-}
 
--- | Chapter 1 base material and examples.
+-- | Chapter 1 backbone: canonical axiom/subject identifiers that all
+--   subchapters reuse when staging categorical proofs (products,
+--   coproducts, adjunctions, exactness, torsion theory, etc.).
 module Chapter1.Level1 where
 
 open import Agda.Builtin.List using (List; []; _∷_)

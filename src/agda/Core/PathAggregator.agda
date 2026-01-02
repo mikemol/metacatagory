@@ -160,6 +160,7 @@ record GlobalClosureWitness : Set₁ where
 -- Path Snapshot: Capturing current system state
 -- ============================================================================
 
+-- | Snapshot of the aggregation state with witness and metrics.
 record PathSnapshot : Set₁ where
   constructor mkPathSnapshot
   field

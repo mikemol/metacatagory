@@ -237,11 +237,13 @@ record FieldExtensionDegreeAlgorithm (F E : FieldDeclaration) : Set₁ where
 -- ============================================================================
 
 record SubfieldEnumerationAlgorithm (F E : FieldDeclaration) : Set₁ where
+  -- | Procedure that lists intermediate fields F ⊆ K ⊆ E.
   field
     -- Enumerate all intermediate fields F ⊆ K ⊆ E
     subfields : List (Subfield E)
 
 record SubgroupEnumerationAlgorithm (F E : FieldDeclaration) : Set₁ where
+  -- | Procedure that lists subgroups of the Galois group Gal(E/F).
   field
     -- Enumerate all subgroups of Gal(E/F)
     subgroups : List (GroupDeclaration)
@@ -262,6 +264,7 @@ record AlgebraicityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
 -- ==========================================================================
 
 record PrimitiveElementAlgorithm (F E : FieldDeclaration) : Set₁ where
+  -- | Algorithm to exhibit α with E = F(α) plus its simple-extension witness.
   field
     -- Produce a primitive element α such that E = F(α)
     primitiveElement : M.Identifier
@@ -272,11 +275,13 @@ record PrimitiveElementAlgorithm (F E : FieldDeclaration) : Set₁ where
 -- ==========================================================================
 
 record NormalityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
+  -- | Decide whether the extension is normal.
   field
     -- Decide if E/F is normal
     isNormal : Dec (NormalExtension F E)
 
 record SeparabilityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
+  -- | Decide separability and detect purely inseparable cases.
   field
     -- Decide if E/F is separable
     isSeparable : Dec (SeparableExtension F E)

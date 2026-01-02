@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K #-}
 
--- | Chapter 2 subsection 1 material.
+-- | Chapter 2 §1: abelian entry point—zero objects, zero morphisms, kernels,
+--   cokernels, and exactness predicates that refine the additive toolkit.
 module Chapter2.Level2sub1 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

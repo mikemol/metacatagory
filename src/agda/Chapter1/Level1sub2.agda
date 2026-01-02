@@ -1,6 +1,8 @@
 {-# OPTIONS --without-K #-}
 
--- | Chapter 1 subsection 2 examples and constructions.
+-- | Chapter 1 §2: product/coproduct universal property scaffolding—declarations,
+--   axioms, and proof hooks that refine the Level1 identifiers into concrete
+--   limit/colimit witnesses.
 module Chapter1.Level1sub2 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

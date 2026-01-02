@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K #-}
 
--- | Chapter 2 subsection 2 material.
+-- | Chapter 2 §2: regular/exact category scaffolding—finite limits, regular
+--   epis, pullback stability, and factorization-system witnesses.
 module Chapter2.Level2sub2 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

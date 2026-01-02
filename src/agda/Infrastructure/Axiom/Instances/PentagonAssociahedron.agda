@@ -30,6 +30,7 @@ PA-Assoc {ℓ} {A} {n} = record
 PentagonInstance
   : ∀ {ℓ : Level} {A : Set ℓ} {n : Nat}
   → AxiomInstance (PA-Assoc {A = A} {n = n})
+-- | Build the pentagon coherence instance using associahedron triangulations.
 PentagonInstance {ℓ} {A} {n} = record
   { Kit  = PentagonFan {ℓV = ℓ} {ℓP = ℓ} (Path {ℓ = ℓ} {A = A} {n = n}) _++_
   ; face = λ K →

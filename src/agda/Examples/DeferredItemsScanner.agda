@@ -124,6 +124,7 @@ data DeferredCategory : Set where
   PlannedCat : DeferredCategory
   FixmeCat : DeferredCategory
 
+-- | Captured scan results for a single deferred category (pattern, label, hits).
 record CategoryScan : Set where
   field
     category : DeferredCategory
@@ -132,6 +133,7 @@ record CategoryScan : Set where
     results : List String
     count : Nat
 
+-- | Aggregated counts across all deferred categories with timestamp.
 record DeferredSummary : Set where
   field
     deviationLog : Nat

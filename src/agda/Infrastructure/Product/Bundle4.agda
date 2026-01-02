@@ -6,6 +6,7 @@ module Infrastructure.Product.Bundle4
 
 open import Agda.Primitive using (_⊔_)
 
+-- | Simple 4-tuple carrier bundling four components with constructor ⟨_,_,_,_⟩.
 record Bundle₄ : Set (ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃ ⊔ ℓ₄) where
   constructor ⟨_,_,_,_⟩
   field

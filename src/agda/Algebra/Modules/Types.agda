@@ -15,6 +15,7 @@ open import Metamodel as M
 -- ============================================================================
 
 -- Left R-module
+-- | Structure of a left module over a ring R.
 record LeftModule (R : RingDeclaration) : Set₁ where
   field
     ring : RingDeclaration
@@ -26,6 +27,7 @@ record LeftModule (R : RingDeclaration) : Set₁ where
     unitalAction : M.Identifier
 
 -- Right R-module
+-- | Structure of a right module over a ring R.
 record RightModule (R : RingDeclaration) : Set₁ where
   field
     ring : RingDeclaration

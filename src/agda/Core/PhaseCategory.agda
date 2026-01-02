@@ -5,6 +5,7 @@ module Core.PhaseCategory where
 
 open import Agda.Primitive using (Level; _⊔_; lsuc)
 
+-- | Wrapper that lifts a phase morphism into a higher universe.
 record PhaseLift {α β : Level} (A : Set α) : Set (α ⊔ β) where
   constructor lift
   field lower : A

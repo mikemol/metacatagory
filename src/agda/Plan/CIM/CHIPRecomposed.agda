@@ -19,6 +19,7 @@ open import Plan.CIM.GrammarBridge using (GrammarExpr; blockToGrammar; inlineToG
 ------------------------------------------------------------------------
 
 -- Aggregate coherence witness from a single block transformation
+-- | Recompose a block-level CHIP witness into a single coherence proof path.
 recomposeBlockCoherence : (b : Block) → (mb : MdBlock) → CoherenceWitness blockAmb blockTransSys
 recomposeBlockCoherence b mb = record
   { proofPath = refl-path
@@ -26,6 +27,7 @@ recomposeBlockCoherence b mb = record
   }
 
 -- Build braid trace from list of block transformations
+-- | Summarize block-to-markdown transformations as a braid trace.
 composeBraidTraces : (blocks : List Block) → (mblocks : List MdBlock) → BraidTrace
 composeBraidTraces blocks mblocks = record
   { steps = buildSteps blocks mblocks

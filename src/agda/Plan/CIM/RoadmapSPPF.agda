@@ -16,6 +16,7 @@ open import Plan.CIM.PlanningKernel using (planningAdapters)
 ------------------------------------------------------------------------
 
 record SPPFNode : Set where
+  -- | Single roadmap node in SPPF form with up to two parents.
   field
     nodeId     : String
     title      : String
@@ -28,10 +29,12 @@ record SPPFNode : Set where
     parent2    : Maybe String
 
 record SPPFGraph : Set where
+  -- | Entire packed SPPF graph.
   field
     nodes : List SPPFNode
 
 record PackResult : Set where
+  -- | Accumulator carrying packed nodes plus parent pointers.
   field
     packedNodes : List SPPFNode
     p1          : Maybe String

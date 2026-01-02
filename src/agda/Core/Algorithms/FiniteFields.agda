@@ -23,7 +23,7 @@ open Algorithms.Basic.Defaults
 postulate _++_ : String → String → String
 infixr 5 _++_
 
--- Finite field predicate
+-- | Predicate stating that a field declaration is finite.
 postulate
   IsFiniteField : FieldDeclaration → Set
 
@@ -31,6 +31,7 @@ postulate
 cyclicId : (n : Nat) → String → M.Identifier
 cyclicId n suffix = M.mkId ("Cyclic" ++ showNat n ++ "-" ++ suffix)
   where
+    -- | Render a natural number as a string (placeholder).
     postulate showNat : Nat → String
 
 -- Construct a concrete Cyclic Group of order n

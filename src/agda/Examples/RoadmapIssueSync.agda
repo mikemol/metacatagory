@@ -178,6 +178,7 @@ postulate
 {-# COMPILE GHC issueNumberToNat = toInteger #-}
 
 record GitHubIssue : Set where
+  -- | Minimal GitHub issue payload exposed to Agda/FFI.
   field
     number : IssueNumber
     title : String
@@ -185,6 +186,7 @@ record GitHubIssue : Set where
 {-# COMPILE GHC GitHubIssue = data Issue (Issue) #-}
 
 record RoadmapTask : Set where
+  -- | Subset of roadmap task fields used for syncing.
   field
     id : String
     title : String

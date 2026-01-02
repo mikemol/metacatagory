@@ -18,6 +18,7 @@ _++_ = primStringAppend
 -- ==========================================================
 
 -- File patterns for matching
+-- | Describe a file glob to search (extension, directory, recursion flag).
 record FilePattern : Set where
   constructor mkPattern
   field
@@ -26,11 +27,13 @@ record FilePattern : Set where
     recursive : Bool       -- search subdirectories?
 
 -- Source and output specifications
+-- | Source type for a transformation pipeline.
 data SourcePattern : Set where
   agdaSource : FilePattern → SourcePattern
   markdownSource : FilePattern → SourcePattern
   anySource : FilePattern → SourcePattern
 
+-- | Output artifact category produced by a pipeline.
 data OutputPattern : Set where
   agdaInterface : String → OutputPattern    -- .agdai files
   htmlDoc : String → OutputPattern          -- HTML documentation
@@ -38,6 +41,7 @@ data OutputPattern : Set where
   artifact : String → OutputPattern         -- Generated files (badges, etc.)
 
 -- External data sources
+-- | Side inputs that may be pulled during target execution.
 data DataSource : Set where
   fileMetadata : String → DataSource        -- Read from files
   gitInfo : DataSource                      -- Git repository state
@@ -45,11 +49,13 @@ data DataSource : Set where
   apiQuery : String → DataSource            -- External API
 
 -- API endpoints for synchronization
+-- | Remote APIs we sync with.
 data RemoteAPI : Set where
   githubIssues : String → String → RemoteAPI  -- owner/repo
   githubProjects : String → String → RemoteAPI
 
 -- Environment requirements
+-- | Environment prerequisites before running a target.
 data Requirement : Set where
   nodeModules : Requirement
   pythonVenv : Requirement
@@ -59,6 +65,7 @@ data Requirement : Set where
 -- Target Categories: Typed Transformations
 -- ==========================================================
 
+-- | Typed shape of a target (transform, validate, generate, sync, setup).
 data TargetCategory : Set where
   FileTransform : SourcePattern → OutputPattern → List String → TargetCategory
   Validator : FilePattern → String → TargetCategory
@@ -70,6 +77,7 @@ data TargetCategory : Set where
 -- Makefile Target Representation
 -- ==========================================================
 
+-- | Concrete make target descriptor with dependencies and recipe lines.
 record MakefileTarget : Set where
   constructor mkTarget
   field

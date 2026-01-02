@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K #-}
 
--- | Chapter 1 subsection 3 examples and constructions.
+-- | Chapter 1 §3: adjunction machinery—dual definitions (hom-set vs
+--   unit–counit), triangle identities, and worked free/forgetful examples.
 module Chapter1.Level1sub3 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

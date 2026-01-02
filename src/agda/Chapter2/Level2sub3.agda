@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K #-}
 
--- | Chapter 2 subsection 3 material.
+-- | Chapter 2 §3: relational calculus in a regular category—declarations for
+--   relations, composition via pullback+image, converse, identity, and poset laws.
 module Chapter2.Level2sub3 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

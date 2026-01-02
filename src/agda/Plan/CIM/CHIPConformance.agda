@@ -15,6 +15,7 @@ open import Agda.Builtin.Sigma using (Σ; _,_)
 open import Plan.CIM.Utility using (PhaseAmbiguity; TransformationSystem; EmergentMetric; Path; CoherenceWitness; BraidedInheritanceFunctor; BraidedSPPF; map; _×_; packed-node)
 
 record GradedVectorSpace (n : Nat) : Set₁ where
+  -- | Graded vector space with per-grade dimensions and an emergent metric.
   field
     dimensions : List String
     metric : EmergentMetric

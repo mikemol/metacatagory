@@ -20,12 +20,14 @@ open import Agda.Builtin.Equality using (_≡_; refl)
 --   - hom-set: Set of all morphisms ⊤ → T (i.e., T itself)
 
 record CategoricalAdapter {ℓ : Level} (T : Set ℓ) : Set (lsuc ℓ) where
+  -- | Package any carrier as a trivial category with a chosen morphism.
   field
     object : Set ℓ
     morphism : ⊤ → T
     homSet : Set ℓ
     isomorphism : homSet ≡ T
 
+-- | Build the trivial adapter given a carrier and chosen inhabitant.
 mkCategoricalAdapter : ∀ {ℓ} (T : Set ℓ) → (f : ⊤ → T) → CategoricalAdapter T
 mkCategoricalAdapter T f =
   record { object = T

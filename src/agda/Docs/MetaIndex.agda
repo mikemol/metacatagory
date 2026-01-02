@@ -15,6 +15,7 @@ record Section : Set where
     name    : String
     bullets : List String
 
+-- | Top-level meta index capturing title and section list.
 record MetaIndex : Set where
   constructor mkMetaIndex
   field

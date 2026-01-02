@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K #-}
 
--- | Chapter 1 subsection 7 examples and constructions.
+-- | Chapter 1 §7: 2-categorical scaffolding—hom-categories, 2-categories,
+--   2-functors, and coherence data captured as declaration records.
 module Chapter1.Level1sub7 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

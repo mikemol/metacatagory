@@ -20,22 +20,26 @@ open import Core.Strings using (_++_; intercalate; natToString; quoteJSON; mapWi
 -- ==========================================================
 
 record MarkdownSection : Set where
+  -- | A single markdown heading with paragraph lines.
   field
     heading : String
     content : List String
 
 record MarkdownDocument : Set where
+  -- | Entire markdown document with metadata and ordered sections.
   field
     title : String
     metadata : List String  -- e.g., timestamp, author
     sections : List MarkdownSection
 
 -- Render markdown section
+-- | Pretty-print a markdown section with heading and paragraphs.
 renderMarkdownSection : MarkdownSection → String
 renderMarkdownSection section =
   "## " ++ (MarkdownSection.heading section ++ ("\n\n" ++ intercalate "\n" (MarkdownSection.content section)))
 
 -- Render markdown document
+-- | Render an entire markdown document with metadata and sections.
 renderMarkdownDocument : MarkdownDocument → String
 renderMarkdownDocument doc =
   let header = "# " ++ (MarkdownDocument.title doc ++ "\n")
@@ -119,10 +123,12 @@ jsonNumberField key val = record { key = key ; value = natToString val }
 -- Table Rendering
 -- ==========================================================
 
+-- | Simple row of cell strings.
 record TableRow : Set where
   field
     cells : List String
 
+-- | Markdown-like table with headers and body rows.
 record Table : Set where
   field
     headers : List String

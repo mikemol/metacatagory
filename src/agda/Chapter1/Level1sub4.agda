@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K #-}
 
--- | Chapter 1 subsection 4 examples and constructions.
+-- | Chapter 1 §4: subobject calculus—equivalence of monos, lattices,
+--   (co)well-poweredness, and lattice operations such as intersection/union.
 module Chapter1.Level1sub4 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
