@@ -171,12 +171,15 @@ ensureRoadmapLabelAdapter token repo apiRoot = do
 
 -- Core data types (declare before FFI usage)
 postulate
+  -- | Issue identifier (opaque on the Agda side).
   IssueNumber : Set
+  -- | Convert issue number to Nat for logging/ordering.
   issueNumberToNat : IssueNumber → Nat
 
 {-# COMPILE GHC IssueNumber = type Int #-}
 {-# COMPILE GHC issueNumberToNat = toInteger #-}
 
+-- | Minimal GitHub issue payload exposed to Agda/FFI.
 record GitHubIssue : Set where
   -- | Minimal GitHub issue payload exposed to Agda/FFI.
   field
@@ -185,8 +188,8 @@ record GitHubIssue : Set where
 
 {-# COMPILE GHC GitHubIssue = data Issue (Issue) #-}
 
+-- | Subset of roadmap task fields used for syncing.
 record RoadmapTask : Set where
-  -- | Subset of roadmap task fields used for syncing.
   field
     id : String
     title : String
