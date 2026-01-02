@@ -81,7 +81,7 @@ integralDomainDecl = record
   ; noZeroDivisors = M.mkId "no-zero-div"
   }
 
--- UFD
+-- | Unique factorization domain.
 ufdDecl : AR.UFD
 ufdDecl = record
   { domain = integralDomainDecl
