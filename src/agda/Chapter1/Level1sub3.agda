@@ -13,7 +13,7 @@ open import Agda.Builtin.Equality using (_≡_)
 open import Metamodel as M
 open import Core      as C
 
--- Lightweight expression placeholder for formulæ in CATEGORY prose
+-- | Lightweight expression placeholder for formulæ in CATEGORY prose.
 AdjExpr : Set
 AdjExpr = String
 
@@ -21,7 +21,7 @@ AdjExpr = String
 -- Part 1: Two core definitions of adjunction
 ------------------------------------------------------------------------
 
--- Hom-set style declaration F ⊣ G : (C, D)
+-- | Hom-set style declaration F ⊣ G : (C, D).
 record AdjunctionHomDecl : Set where
   constructor ADJUNCTION_HOM_on
   field F G C D : M.Identifier
@@ -134,7 +134,7 @@ record HasCogenerator : Set where
   constructor _has_COGENERATOR
   field D : M.Identifier
 
--- GAFT / SAFT (left adjoints)
+-- | Left adjoint existence witnesses: GAFT and SAFT.
 data AdjointFunctorTheoremLeft : Set where
   GAFT : M.Identifier -> AdjointFunctorTheoremLeft  -- parameterize by G id
   SAFT : M.Identifier -> AdjointFunctorTheoremLeft
@@ -371,6 +371,7 @@ record C_BalancedMapDeclaration : Set where
   constructor C_BALANCED_MAP_TO
   field β F G S : M.Identifier
 
+-- | Universal property theorem for the tensor construction.
 record TensorUniversalPropertyTheorem : Set where
   constructor THEOREM_TensorUP
   field F G S : M.Identifier
@@ -380,7 +381,7 @@ record TensorUniversalPropertyTheorem : Set where
 ------------------------------------------------------------------------
 
 postulate
-  -- Triangle identities proof bridge
+  -- | Bridge proof for triangle identities.
   triangleIdentitiesProof
     : (adjDecl : AdjunctionHomDecl)  -- or UnitCounitPair with metadata
     -> (ax : TriangleIdentitiesAxiom)
@@ -390,7 +391,7 @@ postulate
                                (AdjunctionHomDecl.D adjDecl))
                C.TriangleIdentitiesName
 
-  -- Right adjoint preserves limits
+  -- | Bridge proof that a right adjoint preserves limits.
   rightAdjPreservesLimitsProof
     : (adjDecl : AdjunctionHomDecl)
     -> (thm : RightAdjointsPreserveLimits)
@@ -400,7 +401,7 @@ postulate
                                (AdjunctionHomDecl.D adjDecl))
                C.RightAdjPreservesLimitsName
 
-  -- Left adjoint preserves colimits (dual)
+  -- | Bridge proof that a left adjoint preserves colimits (dual).
   leftAdjPreservesColimitsProof
     : (adjDecl : AdjunctionHomDecl)
     -> (thm : LeftAdjointsPreserveColimits)
