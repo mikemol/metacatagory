@@ -207,10 +207,15 @@ data Maybe (A : Set) : Set where
 
 -- Postulated FFI functions (after types are in scope)
 postulate
+  -- | Read roadmap tasks from JSON file.
   readTasks : String → IO (List RoadmapTask)
+  -- | Look up an environment variable.
   getEnv : String → IO (Maybe String)
+  -- | Ensure a GitHub label exists.
   ensureRoadmapLabel : String → String → String → IO ⊤
+  -- | Fetch issues from GitHub matching roadmap labels.
   fetchExistingIssues : String → String → String → IO (List GitHubIssue)
+  -- | Create or update a GitHub issue corresponding to a roadmap task.
   createOrUpdateIssue : String → String → String → RoadmapTask → Maybe IssueNumber → IO ⊤
 
 {-# COMPILE GHC readTasks = readTasksAdapter #-}
