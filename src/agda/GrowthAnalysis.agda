@@ -41,47 +41,49 @@ module Analysis
   (history : List CoordinateAllocation)
   where
 
-  -- Helper: Extract unique phase numbers from history
-  -- Simplified: just list all phases (may have duplicates for analysis purposes)
+  -- | Extract phase indices (not deduped) from the allocation history.
+  --   Simplified helper: duplicates are allowed for downstream analyses.
   allPhases : List CoordinateAllocation → List Nat
   allPhases [] = []
   allPhases (a ∷ as) = M.Coordinate.x (CoordinateAllocation.coordinate a) ∷ allPhases as
 
-  -- Overall growth snapshot
+  -- | Overall growth snapshot for the supplied history.
   growthSnapshot : GrowthSnapshot
   growthSnapshot = captureGrowthSnapshot (length history) history
 
-  -- Growth rate metrics
+  -- | Growth rate metrics derived from the history.
   growthRate : GrowthRate
   growthRate = computeGrowthRate history
 
-  -- Expansion pattern classification
+  -- | Expansion pattern classification for the computed rate.
   expansionPattern : ExpansionPattern
   expansionPattern = classifyExpansionPattern growthRate
 
-  -- Per-phase density analysis
+  -- | Per-phase density analysis given a list of phase indices.
   phaseDensities : List Nat → List PhaseDensity
   phaseDensities phases = map (λ phase → calculatePhaseDensity phase history) phases
 
-  -- Per-phase Y-coordinate distribution
+  -- | Per-phase Y-coordinate distribution given a list of phases.
   yDistributions : List Nat → List YCoordinateDistribution
   yDistributions phases = map (λ phase → analyzeYDistribution phase history) phases
 
-  -- All active phases in history
+  -- | All phase indices present in the history (non-deduplicated).
   activePhases : List Nat
   activePhases = allPhases history
 
-  -- Comprehensive phase analysis
+  -- | Phase density for every phase observed in the history.
   allPhaseDensities : List PhaseDensity
   allPhaseDensities = phaseDensities activePhases
 
+  -- | Y-distribution for every phase observed in the history.
   allYDistributions : List YCoordinateDistribution
   allYDistributions = yDistributions activePhases
 
-  -- Query specific phase
+  -- | Density for canonical example phase 13.
   phase13Density : PhaseDensity
   phase13Density = calculatePhaseDensity 13 history
 
+  -- | Y-distribution for canonical example phase 13.
   phase13YDistribution : YCoordinateDistribution
   phase13YDistribution = analyzeYDistribution 13 history
 
