@@ -15,10 +15,11 @@ import Tests.ObligationAdapters as A
 import Core.CategoricalAdapter
 import Chapter1.Level1 as C1L
 
--- Minimal ring declaration (modern API)
+-- | Minimal ring declaration (modern API).
 ringDecl : AR.RingDeclaration
 ringDecl =
   let
+    -- Addition semigroup
     plusSemigroup : AF.SemigroupDeclaration
     plusSemigroup = record
       { underlyingMagma = record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
@@ -26,6 +27,7 @@ ringDecl =
       ; index = AF.semigroupIndex
       }
 
+    -- Addition monoid
     plusMonoid : AF.MonoidDeclaration
     plusMonoid = record
       { underlyingSemigroup = plusSemigroup
@@ -34,6 +36,7 @@ ringDecl =
       ; index = AF.monoidIndex
       }
 
+    -- Addition group
     plusGroup : AF.GroupDeclaration
     plusGroup = record
       { underlyingMonoid = plusMonoid
@@ -46,6 +49,7 @@ ringDecl =
       ; index = AF.groupIndex
       }
 
+    -- Abelian additive group
     addAbelian : AF.AbelianGroupDeclaration
     addAbelian = record
       { underlyingGroup = plusGroup
@@ -62,7 +66,7 @@ ringDecl =
     ; rightDistributive = M.mkId "right-dist"
     }
 
--- Commutative ring (modern API)
+-- | Commutative ring (modern API).
 commRingDecl : AR.CommutativeRingDeclaration
 commRingDecl =
   let
@@ -76,24 +80,25 @@ commRingDecl =
   in
   record { underlyingRing = unitalRing ; commutativity = M.mkId "*-comm" }
 
--- Integral domain (modern API)
+-- | Integral domain (modern API).
 integralDomainDecl : AR.IntegralDomain
 integralDomainDecl = record
   { underlyingRing = commRingDecl
   ; noZeroDivisors = M.mkId "no-zero-div"
   }
 
--- PID (modern API)
+-- | Principal ideal domain (modern API).
 pidDecl : AR.PrincipalIdealDomain
 pidDecl = record
   { domain = integralDomainDecl
   ; allIdealsPrincipal = M.mkId "principal"
   }
 
--- Minimal left module (modern API)
+-- | Minimal left module (modern API).
 leftModuleDecl : AM.LeftModule ringDecl
 leftModuleDecl =
   let
+    -- Module addition semigroup
     mSemigroup : AF.SemigroupDeclaration
     mSemigroup = record
       { underlyingMagma = record { underlyingSet = M.mkId "M" ; binaryOp = M.mkId "+M" ; index = AF.magmaIndex }
@@ -101,6 +106,7 @@ leftModuleDecl =
       ; index = AF.semigroupIndex
       }
 
+    -- Module addition monoid
     mMonoid : AF.MonoidDeclaration
     mMonoid = record
       { underlyingSemigroup = mSemigroup
@@ -109,6 +115,7 @@ leftModuleDecl =
       ; index = AF.monoidIndex
       }
 
+    -- Module addition group
     mGroup : AF.GroupDeclaration
     mGroup = record
       { underlyingMonoid = mMonoid
