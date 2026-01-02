@@ -89,8 +89,8 @@ record InstrumentedMinimalPolynomialAlgorithm (F E : FieldDeclaration) : Set₁ 
         _ = appendAllocation logger alloc
     in result
 
+-- | Galois group algorithm augmented with allocation/phase logging.
 record InstrumentedGaloisGroupAlgorithm (F E : FieldDeclaration) : Set₁ where
-  -- | Galois group algorithm augmented with allocation/phase logging.
   field
     base : GaloisGroupAlgorithm F E
     phase : Nat

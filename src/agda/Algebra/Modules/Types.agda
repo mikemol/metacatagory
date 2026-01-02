@@ -66,6 +66,7 @@ record QuotientModule (R : RingDeclaration) (M : LeftModule R) (N : Submodule R 
     canonicalProjection : M.Identifier
 
 -- Kernel and Image of homomorphism
+-- | Kernel of a module homomorphism f.
 record KernelOfModuleHomomorphism (R : RingDeclaration) (f : M.Identifier) : Set₁ where
   field
     ring : RingDeclaration
@@ -73,6 +74,7 @@ record KernelOfModuleHomomorphism (R : RingDeclaration) (f : M.Identifier) : Set
     targetModule : LeftModule ring
     kernel : Submodule ring sourceModule
 
+-- | Image of a module homomorphism f.
 record ImageOfModuleHomomorphism (R : RingDeclaration) (f : M.Identifier) : Set₁ where
   field
     ring : RingDeclaration
@@ -81,6 +83,7 @@ record ImageOfModuleHomomorphism (R : RingDeclaration) (f : M.Identifier) : Set�
     image : Submodule ring targetModule
 
 -- Cokernel
+-- | Cokernel of a module homomorphism f.
 record CokernelOfModuleHomomorphism (R : RingDeclaration) (f : M.Identifier) : Set₁ where
   field
     ring : RingDeclaration

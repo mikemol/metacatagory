@@ -25,8 +25,8 @@ record MarkdownSection : Set where
     heading : String
     content : List String
 
+-- | Entire markdown document with metadata and ordered sections.
 record MarkdownDocument : Set where
-  -- | Entire markdown document with metadata and ordered sections.
   field
     title : String
     metadata : List String  -- e.g., timestamp, author
@@ -123,6 +123,7 @@ jsonNumberField key val = record { key = key ; value = natToString val }
 -- Table Rendering
 -- ==========================================================
 
+-- | Simple row of cell strings.
 -- | Simple row of cell strings.
 record TableRow : Set where
   field

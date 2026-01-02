@@ -19,8 +19,9 @@ open import Agda.Builtin.Equality using (_≡_; refl)
 --   - morphism: ⊤ → T (inhabitant)
 --   - hom-set: Set of all morphisms ⊤ → T (i.e., T itself)
 
+-- | Package any carrier as a trivial category with a chosen morphism.
 record CategoricalAdapter {ℓ : Level} (T : Set ℓ) : Set (lsuc ℓ) where
-  -- | Package any carrier as a trivial category with a chosen morphism.
+  -- | Object/morphism view of the carrier.
   field
     object : Set ℓ
     morphism : ⊤ → T

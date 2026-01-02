@@ -198,6 +198,7 @@ record RoadmapTask : Set where
 {-# COMPILE GHC RoadmapTask = data Task (Task) #-}
 
 -- Maybe type (needed before FFI signatures using Maybe)
+-- | Option type exposed for FFI interop.
 data Maybe (A : Set) : Set where
   nothing : Maybe A
   just : A → Maybe A
