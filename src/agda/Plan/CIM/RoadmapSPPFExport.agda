@@ -15,6 +15,7 @@ import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Lazy as BSL
 import qualified Data.List as L
 
+-- Haskell-side item record mirroring roadmap tasks.
 data Item = Item
   { iId       :: T.Text
   , iTitle    :: T.Text

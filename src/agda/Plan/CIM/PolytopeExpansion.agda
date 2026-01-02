@@ -57,6 +57,7 @@ inflate p tension = record
   ; radius = tension
   }
 
+-- | Outcome of expanding a polytope: unchanged or inflated.
 data MitosisResult : Set where
   stable : Polytope → MitosisResult
   expanded : Polytope → MitosisResult
