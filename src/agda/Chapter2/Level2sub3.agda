@@ -286,6 +286,7 @@ record TheoryOfRModulesIsCommutativeInstance : Set where
     theoryRMod : LawvereTheoryDeclaration
     proof      : M.Identifier
 
+-- | Witness that the Lawvere theory of groups is not commutative.
 record TheoryOfGroupsIsNotCommutativeInstance : Set where
   constructor INSTANCE_TheoryOfGroupsIsNotCommutative
   field
@@ -325,6 +326,7 @@ record TensorProductOfTheories : Set where
     constructionWitness : M.Identifier -- ops/axioms + interchange
 
 -- Theorem: Mod(T1 ⊗ T2, Set) ≅ Bialg(T1,T2)
+-- | Theorem: Mod(T1 ⊗ T2, Set) ≅ Bialg(T1,T2).
 record TensorProductModelsAreBialgebrasTheorem : Set where
   constructor THEOREM_TensorProductModelsAreBialgebras
   field
