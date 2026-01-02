@@ -169,6 +169,7 @@ mkConstructiveSplittingField F poly alg E = record
 -- ============================================================================
 
 -- Automorphism with explicit field map
+-- | Concrete automorphism witness with map and base-field fixpoint proof.
 record ConstructiveAutomorphism (F E : FieldDeclaration) : Set where
   field
     fieldMap : M.Identifier  -- Explicit mapping function

@@ -236,6 +236,7 @@ verifyGrowthSnapshot snapshot = verifyGrowthRate (GrowthSnapshot.growthRate snap
 -- Concrete Growth Tracking Instances
 -- ============================================================================
 
+-- | Hand-authored timeline of notable allocations for the project.
 metacatagoryGrowthHistory : List CoordinateAllocation
 metacatagoryGrowthHistory =
   record { coordinate = M.mkCoord 0 0 ; timestamp = 0 ; context = "dispatch-root" } ∷
@@ -249,12 +250,15 @@ metacatagoryGrowthHistory =
   record { coordinate = M.mkCoord 13 2 ; timestamp = 8 ; context = "incompleteness-second" } ∷
   []
 
+-- | Snapshot derived from the authored history.
 metacatagoryGrowthSnapshot : GrowthSnapshot
 metacatagoryGrowthSnapshot = captureGrowthSnapshot 9 metacatagoryGrowthHistory
 
+-- | Density summary for phase 13.
 phase13Density : PhaseDensity
 phase13Density = calculatePhaseDensity 13 metacatagoryGrowthHistory
 
+-- | Y-distribution for phase 13.
 phase13YDistribution : YCoordinateDistribution
 phase13YDistribution = analyzeYDistribution 13 metacatagoryGrowthHistory
 

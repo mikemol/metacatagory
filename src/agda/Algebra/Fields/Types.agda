@@ -98,6 +98,7 @@ record NormalExtension (F E : FieldDeclaration) : Set₁ where
     extensionField : FieldDeclaration
     isNormal : M.Identifier
 
+-- | Extension E/F that is separable (all elements have distinct conjugates).
 record SeparableExtension (F E : FieldDeclaration) : Set₁ where
   field
     baseField : FieldDeclaration
