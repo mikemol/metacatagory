@@ -162,6 +162,7 @@ mkConstructiveSplittingField F poly alg E = record
   ; fieldStructure = M.mkId "field-ops"
   }
   where
+    -- | Recover a field declaration from its identifier (placeholder hook).
     postulate fieldFromId : M.Identifier → FieldDeclaration
 
 -- ============================================================================

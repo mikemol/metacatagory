@@ -226,9 +226,11 @@ verifyGrowthRate rate =
       phases = GrowthRate.phasesUsed rate
   in (ltNat zero total) && (ltNat zero phases)
 
+-- | Ensure a phase density counts at least one object.
 verifyPhaseDensity : PhaseDensity → Bool
 verifyPhaseDensity density = ltNat zero (PhaseDensity.objectCount density)
 
+-- | Validate a growth snapshot by rechecking its rate.
 verifyGrowthSnapshot : GrowthSnapshot → Bool
 verifyGrowthSnapshot snapshot = verifyGrowthRate (GrowthSnapshot.growthRate snapshot)
 
