@@ -263,6 +263,7 @@ record CommutativityAxiom : Set where
     interchangeWitness : M.Identifier -- Path1 == Path2
 
 -- Commutative Lawvere theory: every pair of ops satisfies interchange
+-- | Lawvere theory where every pair of operations satisfies interchange.
 record CommutativeLawvereTheory : Set where
   constructor COMMUTATIVE_
   field
@@ -270,6 +271,7 @@ record CommutativeLawvereTheory : Set where
     globalInterchangeProof : M.Identifier
 
 -- Theorem: Mod(T,Set) is symmetric monoidal when T is commutative
+-- | Theorem: Mod(T,Set) is symmetric monoidal when T is commutative.
 record CommutativeTheoriesYieldMonoidalCategoriesTheorem : Set where
   constructor THEOREM_CommutativeTheoriesYieldMonoidalCategories
   field
