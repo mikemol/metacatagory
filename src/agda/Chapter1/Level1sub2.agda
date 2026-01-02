@@ -471,14 +471,17 @@ record CategoryIsFinite : Set where
   constructor _is_FINITE
   field J : M.Identifier
 
+-- | Theorem: filtered colimits commute with finite limits in Set.
 record FilteredColimitsCommuteWithFiniteLimitsInSet : Set where
   constructor THEOREM_FilteredColimitsCommuteWithFiniteLimitsInSet
   field I J : M.Identifier
 
+-- | Duality mapping between filtered categories and cofiltered limits.
 record DualityMapping_Filtered_Cofiltered : Set where
   constructor DUALITY_MAPPING_FILTERED_COFILTERED
   field unit : ⊤
 
+-- | Dual theorem: cofiltered limits commute with finite colimits.
 record CofilteredLimitsCommuteWithFiniteColimits : Set where
   constructor INFER_DUAL_THEOREM_CofilteredLimitsCommuteWithFiniteColimits
   field unit : ⊤
