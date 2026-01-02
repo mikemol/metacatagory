@@ -66,11 +66,13 @@ renderMarkdownDocument doc =
 -- JSON Rendering
 -- ==========================================================
 
+-- | Key/value pair already rendered as strings.
 record JSONField : Set where
   field
     key : String
     value : String  -- Pre-formatted value (number, string, etc.)
 
+-- | Object composed of ordered fields.
 record JSONObject : Set where
   field
     fields : List JSONField
