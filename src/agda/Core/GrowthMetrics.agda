@@ -243,14 +243,23 @@ verifyGrowthSnapshot snapshot = verifyGrowthRate (GrowthSnapshot.growthRate snap
 -- | Hand-authored timeline of notable allocations for the project.
 metacatagoryGrowthHistory : List CoordinateAllocation
 metacatagoryGrowthHistory =
+  -- seed dispatch root
   record { coordinate = M.mkCoord 0 0 ; timestamp = 0 ; context = "dispatch-root" } ∷
+  -- early algebra steps
   record { coordinate = M.mkCoord 1 0 ; timestamp = 1 ; context = "field-basic" } ∷
+  -- extension step
   record { coordinate = M.mkCoord 1 1 ; timestamp = 2 ; context = "field-extension" } ∷
+  -- galois branch
   record { coordinate = M.mkCoord 2 0 ; timestamp = 3 ; context = "galois-group" } ∷
+  -- yoneda developments
   record { coordinate = M.mkCoord 4 0 ; timestamp = 4 ; context = "yoneda-embedding" } ∷
+  -- yoneda isomorphism
   record { coordinate = M.mkCoord 4 1 ; timestamp = 5 ; context = "yoneda-iso" } ∷
+  -- incompleteness branch
   record { coordinate = M.mkCoord 13 0 ; timestamp = 6 ; context = "godel-sentence" } ∷
+  -- first incompleteness
   record { coordinate = M.mkCoord 13 1 ; timestamp = 7 ; context = "incompleteness-first" } ∷
+  -- second incompleteness
   record { coordinate = M.mkCoord 13 2 ; timestamp = 8 ; context = "incompleteness-second" } ∷
   []
 

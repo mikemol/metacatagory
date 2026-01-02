@@ -359,6 +359,7 @@ rootPathSnapshot = mkPathSnapshot 0 metacatagoryGlobalClosure 3 2 true
 -- | Minimal growth allocation seed for the root snapshot.
 rootGrowthAllocations : List GM.CoordinateAllocation
 rootGrowthAllocations =
+  -- seed allocation for root snapshot
   record { coordinate = M.mkCoord 0 0
          ; timestamp = 0
          ; context = "root-initial" } ∷ []
