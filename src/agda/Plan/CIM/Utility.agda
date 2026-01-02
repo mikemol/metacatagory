@@ -61,6 +61,7 @@ record Polytope : Set where
 ------------------------------------------------------------------------
 -- Recursive RoadmapStep Record
 ------------------------------------------------------------------------
+-- | Recursive roadmap node with provenance and next steps.
 record RoadmapStep : Set₁ where
     inductive
     field
@@ -73,6 +74,7 @@ record RoadmapStep : Set₁ where
         next         : List RoadmapStep
 
 -- Enriched roadmap record (proposed schema from restructuring doc)
+-- | Enriched roadmap node (v2) carrying GP/tag metadata and links.
 record RoadmapStepV2 : Set₁ where
     inductive
     field

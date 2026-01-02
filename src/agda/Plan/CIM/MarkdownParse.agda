@@ -106,6 +106,7 @@ joinWithNewline [] = ""
 joinWithNewline (x ∷ []) = x
 joinWithNewline (x ∷ xs) = primStringAppend x (primStringAppend "\n" (joinWithNewline xs))
 
+-- | Tokenized line categories for lightweight parsing.
 data Token : Set where
   THeading   : Nat → String → Token
   TBullet    : String → Token
@@ -149,6 +150,7 @@ trimQuotePrefix s =
   else if startsWith ">" s then primStringFromList (drop 1 (primStringToList s))
   else s
 
+-- | Result of consuming a quote block: captured lines and remainder.
 record QuoteSplit : Set where
   field lines : List String
         remaining : List String
@@ -174,6 +176,7 @@ tokenizeLine s with null (primStringToList s)
 ...     | true  = THRule
 ...     | false = TPara s
 
+-- | Result of consuming a fenced code block.
 record FenceSplit : Set where
   field code : List String
         remaining : List String
