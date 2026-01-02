@@ -115,18 +115,15 @@ record PhaseAmbiguity {ℓ} (A B : Set ℓ) : Set ℓ where
         valA : A
         valB : B
         phase : ℕ 
-
 -- | System describing steps and costs between phases.
 record TransformationSystem {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
     field
         Step : Set ℓ
         cost : Step → ℕ
-
 -- | Simple metric wrapper for coherence costs.
 record EmergentMetric : Set where
     field
         magnitude : ℕ
-
 -- | Path of transformation steps.
 data Path {ℓ} {A B : Set ℓ} (Sys : TransformationSystem {ℓ} A B) : Set ℓ where
     refl-path : Path Sys
@@ -137,7 +134,6 @@ record CoherenceWitness {ℓ} {A B : Set ℓ} (amb : PhaseAmbiguity {ℓ} A B) (
     field
         proofPath : Path Sys
         metric    : EmergentMetric
-
 -- | Braided inheritance functor with swap and cost.
 record BraidedInheritanceFunctor {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
     field
@@ -146,7 +142,6 @@ record BraidedInheritanceFunctor {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
         fromValue : A
         toValue   : B
         description : String
-
 -- | Packed SPPF node carrying left/right paths and a braid resolution.
 record BraidedSPPF {ℓ} (A B : Set ℓ) (Sys : TransformationSystem A B) : Set (lsuc ℓ) where
     constructor packed-node
