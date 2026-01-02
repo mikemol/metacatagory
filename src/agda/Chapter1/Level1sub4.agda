@@ -59,26 +59,32 @@ record WidePullbackDiagram : Set where
   constructor DIAGRAM_for_Intersection
   field subobjects : List M.Identifier
 
+-- | Construct intersection via wide pullback.
 record IntersectionConstructor : Set where
   constructor LIMIT_OF
   field diagram : WidePullbackDiagram
 
+-- | Binary intersection of subobjects.
 record BinaryIntersection : Set where
   constructor _∩_
   field s1 s2 : M.Identifier
 
+-- | Construct union via image of coproduct map.
 record UnionConstructor : Set where
   constructor Image_of_UniversalCoproductMap
   field subobjects : List M.Identifier
 
+-- | Binary union of subobjects.
 record BinaryUnion : Set where
   constructor _∪_
   field s1 s2 : M.Identifier
 
+-- | Property: poset P is a complete lattice.
 record LatticePropertyDefinition : Set where
   constructor _is_COMPLETE_LATTICE
   field P : M.Identifier
 
+-- | Theorem: subobject lattice is complete.
 record SubobjectLatticeIsComplete : Set where
   constructor THEOREM_SubobjectLatticeIsComplete
   field unit : ⊤
@@ -87,27 +93,31 @@ record SubobjectLatticeIsComplete : Set where
 -- Part 3: Strong epimorphisms and orthogonality
 ------------------------------------------------------------------------
 
+-- | Square used to test orthogonality (epi/mono).
 record CommutativeSquareForOrthogonalityTest : Set where
   constructor ORTHOGONALITY_SQUARE_VIA
   field e m f g : M.Identifier
 
+-- | Unique diagonal filler property.
 record DiagonalFillerProperty : Set where
   constructor HasUniqueDiagonalFiller
   field sq : M.Identifier
 
+-- | Strong epimorphism declaration.
 record StrongEpimorphism : Set where
   constructor _is_STRONG_EPIMORPHISM
   field e : M.Identifier
 
+-- | Theorem: canonical (strong epi, mono) factorization system.
 record CanonicalFactorizationSystem : Set where
   constructor THEOREM_CanonicalFactorizationSystem
   field unit : ⊤
 
+-- | Strong monomorphism declaration.
 record StrongMonomorphism : Set where
   constructor _is_STRONG_MONOMORPHISM
   field m : M.Identifier
 
-record DualFactorizationSystem : Set where
   constructor INFER_DUAL_THEOREM_DualFactorizationSystem
   field unit : ⊤
 
