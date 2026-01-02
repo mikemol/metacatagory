@@ -75,6 +75,7 @@ commRingDecl =
   record { underlyingRing = unitalRing ; commutativity = M.mkId "*-comm" }
 
 -- Integral domain (for UFD-dependent constructs)
+-- | Integral domain used for UFD-dependent constructs.
 integralDomainDecl : AR.IntegralDomain
 integralDomainDecl = record
   { underlyingRing = commRingDecl
