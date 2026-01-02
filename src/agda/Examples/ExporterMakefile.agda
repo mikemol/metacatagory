@@ -301,7 +301,20 @@ buildArtifact agdaFiles graphEdges =
       allTargets = regenMakefileTarget ∷ discoveredTargets +++ agdaiTargets +++ aggregateTargets
       phonyTargets = filter (λ t → MakefileTarget.phony t) allTargets
       phonyNames = map MakefileTarget.name phonyTargets
-      headerSection = record { id = "header"; content = ("# Use local Agda 2.8.0 if available, otherwise system agda" ∷ "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)" ∷ "" ∷ "# Common Agda compilation flags" ∷ "AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type" ∷ []) }
+      headerSection = record
+        { id = "header"
+        ; content =
+            ( "# Use local Agda 2.8.0 if available, otherwise system agda"
+            ∷ "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)"
+            ∷ ""
+            ∷ "# Default parallelism scales with available cores unless user overrides MAKEFLAGS."
+            ∷ "CORES ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)"
+            ∷ "MAKEFLAGS += -j$(CORES)"
+            ∷ ""
+            ∷ "# Common Agda compilation flags"
+            ∷ "AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type"
+            ∷ [])
+        }
       phonySection = record { id = "phony" 
                 ; content = (".PHONY: " ++ intercalate " " phonyNames) ∷ [] }
   in record { sections = headerSection ∷ phonySection ∷ map targetToSection allTargets }
