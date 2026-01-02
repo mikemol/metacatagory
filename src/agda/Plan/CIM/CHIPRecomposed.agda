@@ -53,7 +53,7 @@ composeBraidTraces blocks mblocks = record
 -- Recompose Document-Level CHIP Witnesses
 ------------------------------------------------------------------------
 
--- Aggregate coherence witnesses from entire document transformation
+-- | Aggregate coherence witnesses from entire document transformation.
 recomposeDocCoherence : (doc : PandocDoc) → (mdoc : MarkdownDoc) → CoherenceWitness docAmb docTransSys
 recomposeDocCoherence doc mdoc = record
   { proofPath = refl-path
