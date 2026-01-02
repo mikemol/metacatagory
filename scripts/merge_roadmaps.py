@@ -318,7 +318,7 @@ def export_to_agda(items: List[Dict], output_path: Path):
     
     for i, item in enumerate(items):
         is_last = (i == len(items) - 1)
-        
+
         # Escape strings for Agda
         def agda_str(s):
             return '"' + s.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n') + '"'
@@ -327,7 +327,9 @@ def export_to_agda(items: List[Dict], output_path: Path):
             if not lst:
                 return "[]"
             return "(" + " ∷ ".join(agda_str(x) for x in lst) + " ∷ [])"
-        
+
+        # Meaningful doc line for doc-lint: ID + title + status
+        lines.append(f"  -- | {item['id']}: {item['title']} [status: {item['status']}]")
         lines.append("  record {")
         lines.append(f"    id = {agda_str(item['id'])}")
         lines.append(f"    ; title = {agda_str(item['title'])}")
