@@ -14,6 +14,7 @@ open import Metamodel as M
 open import PropertyRegistry as P
 open import Core.Phase using (_×_; _,_) public
 
+-- | Canonical registry of axiom identifiers reused across Chapter 1.
 data AxiomName : Set where
   IdentityAxiomName         : AxiomName
   AssociativityAxiomName    : AxiomName
@@ -102,7 +103,7 @@ data AxiomName : Set where
   ReflectsPropertyName  : AxiomName
   CreatesPropertyName   : AxiomName
 
--- Subjects about which axioms speak (captures kind-specific payload)
+-- | Subjects about which axioms speak (captures kind-specific payload).
 data Subject : Set where
   PreCategoryS : (G : M.Identifier) -> Subject
   FunctorMapS  : (F : M.Identifier) (C : M.Identifier) (D : M.Identifier) -> Subject
@@ -584,15 +585,18 @@ record IdentityAxiom : Set where
   field over : M.Identifier
 -- CATEGORY: Identities act as two-sided units.
 
+-- | Functor F preserves composition.
 record FunctorPreservesCompositionAxiom : Set where
   constructor AXIOM_PreservesComposition
   field forF : M.Identifier
 
+-- | Functor F preserves identities.
 record FunctorPreservesIdentityAxiom : Set where
   constructor AXIOM_PreservesIdentity
   field forF : M.Identifier
 
 -- CategoryPromotion and FunctorPromotion (used in smart constructors below)
+-- | Package identity + associativity proofs to promote G to a Category.
 record CategoryPromotion : Set where
   constructor PROMOTE_to_CATEGORY
   field
@@ -600,6 +604,7 @@ record CategoryPromotion : Set where
     hasIdentity      : Proof (PreCategoryS G) IdentityAxiomName
     hasAssociativity : Proof (PreCategoryS G) AssociativityAxiomName
 
+-- | Package preservation proofs to promote F to a Functor between C and D.
 record FunctorPromotion : Set where
   constructor PROMOTE_to_FUNCTOR
   field
