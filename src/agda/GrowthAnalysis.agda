@@ -89,7 +89,7 @@ module Analysis
 -- Concrete Growth Histories
 -- ============================================================================
 
--- Main metacategory development history
+-- | Main metacategory development history.
 -- (Previously hardcoded in Core.GrowthMetrics)
 metacatagoryHistory : List CoordinateAllocation
 metacatagoryHistory =
@@ -104,7 +104,7 @@ metacatagoryHistory =
   record { coordinate = M.mkCoord 13 2 ; timestamp = 8 ; context = "incompleteness-second" } ∷
   []
 
--- Categorical development branch (focuses on categorical structures)
+-- | Categorical development branch (focuses on categorical structures).
 categoricalBranchHistory : List CoordinateAllocation
 categoricalBranchHistory =
   record { coordinate = M.mkCoord 0 0 ; timestamp = 0 ; context = "category-init" } ∷
@@ -117,7 +117,7 @@ categoricalBranchHistory =
   record { coordinate = M.mkCoord 6 1 ; timestamp = 7 ; context = "colimits" } ∷
   []
 
--- Classical algebra branch (focuses on concrete structures)
+-- | Classical algebra branch (focuses on concrete structures).
 classicalBranchHistory : List CoordinateAllocation
 classicalBranchHistory =
   record { coordinate = M.mkCoord 0 0 ; timestamp = 0 ; context = "algebra-init" } ∷
