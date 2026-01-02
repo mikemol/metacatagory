@@ -225,6 +225,7 @@ record ChecklistModule : Set where
 -- | All checklist modules with their assertion counts and adapter types.
 allChecklists : List ChecklistModule
 allChecklists =
+  -- | Grothendieck fibrations coverage checklist (15 assertions).
   record { moduleName = "Tests.GrothendieckFibrationsChecklist"
          ; assertionCount = 15
          ; adapterTypes = FibrationDeclarationAdapter ∷ CartesianArrowAdapter ∷
@@ -236,6 +237,7 @@ allChecklists =
                          CodomainFibrationAdapter ∷ LindenbaumTarskiFibrationAdapter ∷
                          FamiliesFibrationAdapter ∷ []
          } ∷
+  -- | Abelian categories coverage checklist (11 assertions).
   record { moduleName = "Tests.AbelianCategoriesChecklist"
          ; assertionCount = 11
          ; adapterTypes = HasZeroObjectPropertyAdapter ∷ KernelAsEqualizerDefinitionAdapter ∷
@@ -245,6 +247,7 @@ allChecklists =
                          AbelianCategoryExampleRModAdapter ∷ FunctorAdditivePropertyAdapter ∷
                          AdditivityViaBiproductCoincidenceTheoremAdapter ∷ []
          } ∷
+  -- | Subobject theory coverage checklist (11 assertions).
   record { moduleName = "Tests.SubobjectTheoryChecklist"
          ; assertionCount = 11
          ; adapterTypes = SubobjectLatticeAdapter ∷ WellPoweredCategoryAdapter ∷
@@ -254,6 +257,7 @@ allChecklists =
                          InjectiveObjectAdapter ∷ HasEnoughProjectivesAdapter ∷
                          HasEnoughInjectivesAdapter ∷ []
          } ∷
+  -- | Topos theory coverage checklist (25 assertions).
   record { moduleName = "Tests.ToposTheoryChecklist"
          ; assertionCount = 25
          ; adapterTypes = PresheafOnLocaleAdapter ∷ SheafGluingAxiomAdapter ∷

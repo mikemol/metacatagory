@@ -78,6 +78,7 @@ commRingDecl =
       ; rightIdentity = M.mkId "*-right-id"
       }
   in
+  -- | Commutative ring (modern API) built from the unital ring.
   record { underlyingRing = unitalRing ; commutativity = M.mkId "*-comm" }
 
 -- | Module M (modern API).

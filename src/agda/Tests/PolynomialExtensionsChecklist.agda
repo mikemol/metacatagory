@@ -72,6 +72,7 @@ commRingDecl =
       ; rightIdentity = M.mkId "*-right-id"
       }
   in
+  -- | Base commutative ring declaration for polynomial extensions.
   record { underlyingRing = unitalRing ; commutativity = M.mkId "*-comm" }
 
 -- Integral domain (for UFD-dependent constructs)

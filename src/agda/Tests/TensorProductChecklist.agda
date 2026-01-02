@@ -17,19 +17,21 @@ import Tests.ObligationAdapters as A
 import Core.CategoricalAdapter
 
 -- Minimal abelian groups for tensor product
+-- | Minimal abelian group declaration for factor A.
 abelianGroupDeclA : AF.AbelianGroupDeclaration
 abelianGroupDeclA = record
-  { underlyingGroup =
-      record
-        { underlyingMonoid =
-            record
-              { underlyingSemigroup =
-                  record
-                    { underlyingMagma =
-                        record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
-                    ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-A")
-                    ; index = AF.semigroupIndex
-                    }
+      { underlyingGroup =
+          record
+            { underlyingMonoid =
+                record
+                  { underlyingSemigroup =
+                      record
+                        { underlyingMagma =
+                            -- | Magma for abelian group A.
+                            record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
+                        ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-A")
+                        ; index = AF.semigroupIndex
+                        }
               ; identityElement = M.mkId "0"
               ; identityAxiom = C1L.AXIOM_Identity (M.mkId "id-A")
               ; index = AF.monoidIndex
@@ -41,6 +43,7 @@ abelianGroupDeclA = record
                     { underlyingSemigroup =
                         record
                           { underlyingMagma =
+                              -- | Magma for inverse operation of A.
                               record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
                           ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-A")
                           ; index = AF.semigroupIndex
@@ -58,30 +61,32 @@ abelianGroupDeclA = record
       record
         { forGroup =
             record
-              { underlyingMonoid =
-                  record
-                    { underlyingSemigroup =
-                        record
-                          { underlyingMagma =
-                              record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
-                          ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-A")
-                          ; index = AF.semigroupIndex
-                          }
+            { underlyingMonoid =
+                record
+                  { underlyingSemigroup =
+                      record
+                        { underlyingMagma =
+                            -- | Magma for commutativity proof of A.
+                            record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
+                        ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-A")
+                        ; index = AF.semigroupIndex
+                        }
                     ; identityElement = M.mkId "0"
                     ; identityAxiom = C1L.AXIOM_Identity (M.mkId "id-A")
                     ; index = AF.monoidIndex
                     }
               ; inverseOperation =
                   record
-                    { forMonoid =
+              { forMonoid =
+                  record
+                    { underlyingSemigroup =
                         record
-                          { underlyingSemigroup =
-                              record
-                                { underlyingMagma =
-                                    record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
-                                ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-A")
-                                ; index = AF.semigroupIndex
-                                }
+                          { underlyingMagma =
+                              -- | Magma for inverse operation in commutativity proof of A.
+                              record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
+                          ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-A")
+                          ; index = AF.semigroupIndex
+                          }
                           ; identityElement = M.mkId "0"
                           ; identityAxiom = C1L.AXIOM_Identity (M.mkId "id-A")
                           ; index = AF.monoidIndex
@@ -96,6 +101,7 @@ abelianGroupDeclA = record
   ; index = AF.abelianGroupIndex
   }
 
+-- | Minimal abelian group declaration for factor B.
 abelianGroupDeclB : AF.AbelianGroupDeclaration
 abelianGroupDeclB = record
   { underlyingGroup =
@@ -105,6 +111,7 @@ abelianGroupDeclB = record
               { underlyingSemigroup =
                   record
                     { underlyingMagma =
+                        -- | Magma for abelian group B.
                         record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
                     ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-B")
                     ; index = AF.semigroupIndex
@@ -115,15 +122,16 @@ abelianGroupDeclB = record
               }
         ; inverseOperation =
             record
-              { forMonoid =
-                  record
-                    { underlyingSemigroup =
-                        record
-                          { underlyingMagma =
-                              record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
-                          ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-B")
-                          ; index = AF.semigroupIndex
-                          }
+          { forMonoid =
+              record
+                { underlyingSemigroup =
+                    record
+                      { underlyingMagma =
+                          -- | Magma for inverse operation of B.
+                          record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
+                      ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-B")
+                      ; index = AF.semigroupIndex
+                      }
                     ; identityElement = M.mkId "0"
                     ; identityAxiom = C1L.AXIOM_Identity (M.mkId "id-B")
                     ; index = AF.monoidIndex
@@ -137,30 +145,32 @@ abelianGroupDeclB = record
       record
         { forGroup =
             record
-              { underlyingMonoid =
+        { underlyingMonoid =
+            record
+              { underlyingSemigroup =
                   record
-                    { underlyingSemigroup =
-                        record
-                          { underlyingMagma =
-                              record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
-                          ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-B")
-                          ; index = AF.semigroupIndex
-                          }
+                    { underlyingMagma =
+                        -- | Magma for commutativity proof of B.
+                        record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
+                    ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-B")
+                    ; index = AF.semigroupIndex
+                    }
                     ; identityElement = M.mkId "0"
                     ; identityAxiom = C1L.AXIOM_Identity (M.mkId "id-B")
                     ; index = AF.monoidIndex
                     }
               ; inverseOperation =
                   record
-                    { forMonoid =
-                        record
-                          { underlyingSemigroup =
-                              record
-                                { underlyingMagma =
-                                    record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
-                                ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-B")
-                                ; index = AF.semigroupIndex
-                                }
+            { forMonoid =
+                record
+                { underlyingSemigroup =
+                    record
+                      { underlyingMagma =
+                          -- | Magma for inverse operation in commutativity proof of B.
+                          record { underlyingSet = M.mkId "Z" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
+                        ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-B")
+                        ; index = AF.semigroupIndex
+                        }
                           ; identityElement = M.mkId "0"
                           ; identityAxiom = C1L.AXIOM_Identity (M.mkId "id-B")
                           ; index = AF.monoidIndex
@@ -176,6 +186,7 @@ abelianGroupDeclB = record
   }
 
 -- Tensor product result (another abelian group)
+-- | Abelian group structure on the tensor product Z⊗Z used in tests.
 tensorProductDecl : AF.AbelianGroupDeclaration
 tensorProductDecl = record
   { underlyingGroup =
@@ -185,6 +196,7 @@ tensorProductDecl = record
               { underlyingSemigroup =
                   record
                     { underlyingMagma =
+                        -- | Magma for the tensor product abelian group.
                         record { underlyingSet = M.mkId "Z⊗Z" ; binaryOp = M.mkId "+⊗" ; index = AF.magmaIndex }
                     ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-tensor")
                     ; index = AF.semigroupIndex
@@ -195,15 +207,16 @@ tensorProductDecl = record
               }
         ; inverseOperation =
             record
-              { forMonoid =
-                  record
-                    { underlyingSemigroup =
-                        record
-                          { underlyingMagma =
-                              record { underlyingSet = M.mkId "Z⊗Z" ; binaryOp = M.mkId "+⊗" ; index = AF.magmaIndex }
-                          ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-tensor")
-                          ; index = AF.semigroupIndex
-                          }
+          { forMonoid =
+              record
+                { underlyingSemigroup =
+                    record
+                      { underlyingMagma =
+                          -- | Magma for inverse operation on the tensor product.
+                          record { underlyingSet = M.mkId "Z⊗Z" ; binaryOp = M.mkId "+⊗" ; index = AF.magmaIndex }
+                      ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-tensor")
+                      ; index = AF.semigroupIndex
+                      }
                     ; identityElement = M.mkId "0⊗"
                     ; identityAxiom = C1L.AXIOM_Identity (M.mkId "id-tensor")
                     ; index = AF.monoidIndex
@@ -217,30 +230,32 @@ tensorProductDecl = record
       record
         { forGroup =
             record
-              { underlyingMonoid =
+        { underlyingMonoid =
+            record
+              { underlyingSemigroup =
                   record
-                    { underlyingSemigroup =
-                        record
-                          { underlyingMagma =
-                              record { underlyingSet = M.mkId "Z⊗Z" ; binaryOp = M.mkId "+⊗" ; index = AF.magmaIndex }
-                          ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-tensor")
-                          ; index = AF.semigroupIndex
-                          }
+                    { underlyingMagma =
+                        -- | Magma for the commutativity witness of the tensor product.
+                        record { underlyingSet = M.mkId "Z⊗Z" ; binaryOp = M.mkId "+⊗" ; index = AF.magmaIndex }
+                    ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-tensor")
+                    ; index = AF.semigroupIndex
+                    }
                     ; identityElement = M.mkId "0⊗"
                     ; identityAxiom = C1L.AXIOM_Identity (M.mkId "id-tensor")
                     ; index = AF.monoidIndex
                     }
               ; inverseOperation =
                   record
-                    { forMonoid =
-                        record
-                          { underlyingSemigroup =
-                              record
-                                { underlyingMagma =
-                                    record { underlyingSet = M.mkId "Z⊗Z" ; binaryOp = M.mkId "+⊗" ; index = AF.magmaIndex }
-                                ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-tensor")
-                                ; index = AF.semigroupIndex
-                                }
+            { forMonoid =
+                record
+                { underlyingSemigroup =
+                    record
+                      { underlyingMagma =
+                          -- | Magma for inverse operation in tensor-product commutativity proof.
+                          record { underlyingSet = M.mkId "Z⊗Z" ; binaryOp = M.mkId "+⊗" ; index = AF.magmaIndex }
+                        ; associativity = C1L.AXIOM_Associativity (M.mkId "assoc-tensor")
+                        ; index = AF.semigroupIndex
+                        }
                           ; identityElement = M.mkId "0⊗"
                           ; identityAxiom = C1L.AXIOM_Identity (M.mkId "id-tensor")
                           ; index = AF.monoidIndex
@@ -256,6 +271,7 @@ tensorProductDecl = record
   }
 
 -- Tensor product declaration
+-- | Declares the tensor product object and its universal property witness.
 tensorProdAbDecl : AGA.TensorProductAb abelianGroupDeclA abelianGroupDeclB
 tensorProdAbDecl = record
   { underlyingSet = M.mkId "A⊗B-underlying"
@@ -264,6 +280,7 @@ tensorProdAbDecl = record
   }
 
 -- Adapter instance
+-- | Adapter instance wiring the tensor product declaration into the obligation framework.
 tensorProdAbAdapt : A.TensorProductAbAdapter
 tensorProdAbAdapt = A.mkTensorProductAbAdapter abelianGroupDeclA abelianGroupDeclB tensorProdAbDecl tensorProductDecl refl
 

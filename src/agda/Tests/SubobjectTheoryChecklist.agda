@@ -11,18 +11,21 @@ import Metamodel as M
 -- Subobject Theory coverage assertions
 -- Total: 11 adapters for subobject lattices, factorization, generators, projectives/injectives
 
--- Placeholder adapter (status = false). Assertion now reflects reality.
--- TODO: Replace with constructor-based adapter via mkSubobjectLatticeAdapter once a concrete lattice example is added.
+-- | Placeholder adapter (status = false). Assertion now reflects reality.
+--   TODO: Replace with constructor-based adapter via mkSubobjectLatticeAdapter once a concrete lattice example is added.
 emptySubobjectLatticeAdapter : A.SubobjectLatticeAdapter
 emptySubobjectLatticeAdapter =
+  -- | Empty subobject lattice witness.
   record { decl = record { X = M.mkId "" } ; expectedX = M.mkId "" ; link = refl ; status = false }
 
 _ : A.isFilledSubobjectLattice emptySubobjectLatticeAdapter ≡ false
 _ = refl
 
--- TODO: Provide real well-powered category (e.g., Set) and switch to mkWellPoweredCategoryAdapter.
+-- | Placeholder for a well-powered category (status = false).
+--   TODO: Provide real well-powered category (e.g., Set) and switch to mkWellPoweredCategoryAdapter.
 emptyWellPoweredCategoryAdapter : A.WellPoweredCategoryAdapter
 emptyWellPoweredCategoryAdapter =
+  -- | Empty well-powered category witness.
   record { decl = record { C = M.mkId "" } ; expectedC = M.mkId "" ; link = refl ; status = false }
 
 _ : A.isFilledWellPoweredCategory emptyWellPoweredCategoryAdapter ≡ false
