@@ -62,10 +62,12 @@ record IsKernelOfPredicate : Set where
 -- CATEGORY: mono represents the kernel subobject of f.
 
 -- Duality mapping axioms (KERNEL <-> COKERNEL, Equalizer <-> Coequalizer)
+-- | Duality mapping identifying kernels with cokernels.
 record DualityMappingKernelCokernel : Set where
   constructor DUALITY_MAPPING_FOR_KERNEL_IS_COKERNEL
   field unit : ⊤
 
+-- | Duality mapping identifying equalizers with coequalizers.
 record DualityMappingEqualizerCoequalizer : Set where
   constructor DUALITY_MAPPING_FOR_Equalizer_IS_Coequalizer
   field unit : ⊤
@@ -84,6 +86,7 @@ record CokernelAsCoequalizerInference : Set where
 ------------------------------------------------------------------------
 
 -- Enrichment property: C is ENRICHED_OVER M
+-- | Enrichment property: C is enriched over a monoidal category.
 record EnrichedOverProperty : Set where
   constructor _is_ENRICHED_OVER_
   field
@@ -92,6 +95,7 @@ record EnrichedOverProperty : Set where
 -- CATEGORY: Hom-objects live in monoidal and composition is a morphism there.
 
 -- Biproduct object A ⊕ B
+-- | Biproduct object A ⊕ B with projections and injections.
 record BiproductObject : Set where
   constructor _⊕_
   field
@@ -105,6 +109,7 @@ record BiproductObject : Set where
 -- CATEGORY: Simultaneously product and coproduct with standard identities.
 
 -- Additive category declaration
+-- | Additive category: zero object, Ab-enrichment, and binary biproducts.
 record AdditiveCategoryDeclaration : Set where
   constructor ADDITIVE_CATEGORY
   field
