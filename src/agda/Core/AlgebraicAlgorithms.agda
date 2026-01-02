@@ -252,6 +252,7 @@ record SubgroupEnumerationAlgorithm (F E : FieldDeclaration) : Set₁ where
 -- Algebraicity and Transcendence Decision
 -- ============================================================================
 
+-- | Decide algebraic vs transcendental elements in an extension.
 record AlgebraicityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
   field
     -- Decide if α ∈ E is algebraic over F
@@ -289,6 +290,7 @@ record SeparabilityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
     isPurelyInseparable : M.Identifier
 
 -- Normal closure construction
+-- | Construct the normal closure of an extension E/F.
 record NormalClosureAlgorithm (F E : FieldDeclaration) : Set₁ where
   field
     -- Construct the normal closure of E/F

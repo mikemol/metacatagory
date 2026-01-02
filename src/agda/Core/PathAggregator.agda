@@ -369,14 +369,14 @@ rootGrowthSnapshot = GM.captureGrowthSnapshot 0 rootGrowthAllocations
 rootEvolution : PathGrowthEvolution
 rootEvolution = mkEvolution rootPathSnapshot rootGrowthSnapshot refl
 
--- Timeline combining root, aligned, and current snapshots
+-- | Timeline combining root, aligned, and current snapshots.
 evolutionTimeline : EvolutionTimeline
 evolutionTimeline = mkEvolutionTimeline
   (rootEvolution ∷ metacatagoryEvolution ∷ [])
   2
   true
 
--- Verify timeline validity via validator
+-- | Verified timeline validity via validator.
 _ : validateTimeline evolutionTimeline ≡ true
 _ = refl
 
