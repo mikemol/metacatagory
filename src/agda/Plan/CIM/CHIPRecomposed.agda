@@ -39,6 +39,7 @@ composeBraidTraces blocks mblocks = record
     buildSteps [] (_ ∷ _) = []
     buildSteps (_ ∷ _) [] = []
     buildSteps (b ∷ bs) (mb ∷ mbs) = 
+      -- Single braid step pairing a Pandoc block with its markdown image.
       record { fromBlock = b ; toBlock = mb ; description = "block recomposition" } ∷
       buildSteps bs mbs
     

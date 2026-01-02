@@ -35,6 +35,7 @@ PentagonInstance {ℓ} {A} {n} = record
   { Kit  = PentagonFan {ℓV = ℓ} {ℓP = ℓ} (Path {ℓ = ℓ} {A = A} {n = n}) _++_
   ; face = λ K →
       let open PentagonFan K in
+      -- Pentagon face assembled from the fan vertices.
       record { a = v0 ; b = v3 ; face = record { lhs = pShort ; rhs = pLong } }
   ; solve = λ K → pentagon-from-fan (++-assoc) K
   }

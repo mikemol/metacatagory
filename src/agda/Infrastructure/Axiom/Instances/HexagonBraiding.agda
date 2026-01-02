@@ -16,6 +16,7 @@ HexagonInstance {ℓ} PA =
     { Kit  = HexagonFan {ℓV = ℓ} {ℓP = ℓ} Path _++_
     ; face = λ K →
         let open HexagonFan K in
+        -- Hexagon face assembled from the fan vertices.
         record { a = v0 ; b = v3 ; face = record { lhs = pLeft ; rhs = pRight } }
     ; solve = λ K → hexagon-from-fan (++-assoc) K
     }
