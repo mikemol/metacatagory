@@ -118,6 +118,8 @@ record StrongMonomorphism : Set where
   constructor _is_STRONG_MONOMORPHISM
   field m : M.Identifier
 
+-- | Dual factorization system theorem (via duality).
+record DualFactorizationSystemTheorem : Set where
   constructor INFER_DUAL_THEOREM_DualFactorizationSystem
   field unit : ⊤
 

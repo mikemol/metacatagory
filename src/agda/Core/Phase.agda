@@ -12,9 +12,6 @@ module Core.Phase where
 -- This formalizes the testing strategy's notion of phase boundaries
 -- as first-class values in the type system.
 
-
-module Core.Phase where
-
 -- Explicitly import foundational universe and equality from Infrastructure
 open import Infrastructure.Universe using (Setℓ)
 open import Agda.Primitive using (Level; _⊔_)

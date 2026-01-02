@@ -102,6 +102,19 @@ def parse_roadmap_md(path: Path) -> List[Dict]:
     
     return items
 
+
+def load_doclint_json(base_path: Path) -> List[Dict]:
+    """Load doclint results (already shaped as RoadmapItems)."""
+    path = base_path / "build" / "doclint_roadmap.json"
+    if not path.exists():
+        return []
+    with open(path) as f:
+        items = json.load(f)
+    for item in items:
+        item.setdefault("category", "Quality/DocLint")
+        ensure_provenance(item)
+    return items
+
 def parse_ingested_agda(base_path: Path) -> List[Dict]:
     """Extract roadmap steps from IngestedRoadmaps/*.agda modules."""
     items = []
@@ -288,6 +301,9 @@ def merge_all_sources(base_path: Path) -> List[Dict]:
     
     print("Parsing legacy roadmap-*.agda...")
     all_items.extend(parse_legacy_agda(base_path))
+
+    print("Loading doclint roadmap...")
+    all_items.extend(load_doclint_json(base_path))
     
     print(f"Total items before deduplication: {len(all_items)}")
     

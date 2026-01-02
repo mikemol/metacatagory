@@ -167,12 +167,12 @@ tokenizeLine : String → Token
 tokenizeLine s with null (primStringToList s)
 ... | true  = TBlank
 ... | false with isHeadingLine s
-    ... | true  = THeading (headingLevel s) (trimHeadingMarker (headingLevel s) s)
-... | false with isBulletLine s
-...   | true  = TBullet (trimBulletMarker s)
-...   | false with isHRuleLine s
-...     | true  = THRule
-    ...     | false = TPara s
+...   | true  = THeading (headingLevel s) (trimHeadingMarker (headingLevel s) s)
+...   | false with isBulletLine s
+...     | true  = TBullet (trimBulletMarker s)
+...     | false with isHRuleLine s
+...       | true  = THRule
+...       | false = TPara s
 -- | Result of consuming a fenced code block.
 record FenceSplit : Set where
   field code : List String

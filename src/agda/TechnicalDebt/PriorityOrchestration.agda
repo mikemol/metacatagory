@@ -1,21 +1,16 @@
 {-# OPTIONS --guardedness #-}
 
--- | Orchestration layer for priority strategies; ties logic/formatting to I/O.
-module TechnicalDebt.PriorityOrchestration where
-
-open import Agda.Builtin.List using (List; []; _∷_)
-open import Core.Phase using (_×_; Σ)
-open _×_
--- |   • Integration with downstream systems
--- |
--- | Uses module parameterization for I/O operations (not postulates)
-
 open import Agda.Builtin.String using (String; primStringAppend)
 open import Agda.Builtin.Unit
 open import Agda.Builtin.IO using (IO)
 open import Agda.Builtin.Int using (Int)
+open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Primitive using (Level)
+open import Core.Phase using (_×_; Σ)
+open _×_
 
+-- | Orchestration layer for priority strategies; ties logic/formatting to I/O.
+--   Uses module parameterization for I/O operations (not postulates).
 module TechnicalDebt.PriorityOrchestration
   -- I/O Operations (to be provided by FFI implementation)
   (writeFile : String → String → IO ⊤)
