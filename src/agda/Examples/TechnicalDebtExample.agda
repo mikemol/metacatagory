@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Example demonstrating technical debt record construction.
 module Examples.TechnicalDebtExample where
 
 open import Metamodel as M

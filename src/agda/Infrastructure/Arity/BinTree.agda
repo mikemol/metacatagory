@@ -1,3 +1,4 @@
+-- | Binary tree arity utilities.
 module Infrastructure.Arity.BinTree where
 
 open import Agda.Primitive using (Level)

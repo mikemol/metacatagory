@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Miscellaneous core utilities shared across proofs and exporters.
 module Core.Utils where
 
 -- Infrastructure imports for universe polymorphism and equality

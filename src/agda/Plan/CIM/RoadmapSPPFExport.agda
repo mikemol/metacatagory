@@ -1,8 +1,6 @@
 {-# OPTIONS --without-K #-}
 
--- | RoadmapSPPFExport: runnable edge module that reads tasks.json and writes SPPF JSON
--- Implemented entirely via GHC FFI to avoid cubical infectivity for compilation.
-
+-- | Read tasks.json and emit SPPF JSON (FFI-only to avoid cubical infectivity).
 module Plan.CIM.RoadmapSPPFExport where
 
 open import Agda.Builtin.String using (String)
@@ -17,6 +15,7 @@ import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Lazy as BSL
 import qualified Data.List as L
 
+-- Haskell-side item record mirroring roadmap tasks.
 data Item = Item
   { iId       :: T.Text
   , iTitle    :: T.Text
@@ -74,6 +73,7 @@ exportSPPF inPath outPath = do
 #-}
 
 postulate
+  -- | FFI bridge for exporting an SPPF JSON.
   exportAdapter : String → String → IO ⊤
 
 {-# COMPILE GHC exportAdapter = exportSPPF #-}

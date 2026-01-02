@@ -1,5 +1,7 @@
 {-# OPTIONS --without-K #-}
 
+-- | Chapter 1 §8: internal category theory—internalized categories/functors
+--   (monoid-in-Set example), and the surrounding axioms for associativity/unit.
 module Chapter1.Level1sub8 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

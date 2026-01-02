@@ -1,3 +1,4 @@
+-- | Associahedron paths and composition helpers.
 module Infrastructure.Polytopes.Associahedron where
 
 open import Agda.Primitive using (Level)

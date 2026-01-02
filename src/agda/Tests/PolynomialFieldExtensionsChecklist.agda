@@ -1,5 +1,7 @@
 {-# OPTIONS --allow-unsolved-metas --without-K #-}
 
+-- | Checklist of field-extension examples used by polynomial/function field tests
+--   (base field, algebraic extension ℚ(√2), and transcendental rational function field).
 module Tests.PolynomialFieldExtensionsChecklist where
 
 open import Agda.Builtin.Equality using (_≡_; refl)

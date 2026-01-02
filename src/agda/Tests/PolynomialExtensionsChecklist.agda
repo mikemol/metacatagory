@@ -72,16 +72,18 @@ commRingDecl =
       ; rightIdentity = M.mkId "*-right-id"
       }
   in
+  -- | Base commutative ring declaration for polynomial extensions.
   record { underlyingRing = unitalRing ; commutativity = M.mkId "*-comm" }
 
 -- Integral domain (for UFD-dependent constructs)
+-- | Integral domain used for UFD-dependent constructs.
 integralDomainDecl : AR.IntegralDomain
 integralDomainDecl = record
   { underlyingRing = commRingDecl
   ; noZeroDivisors = M.mkId "no-zero-div"
   }
 
--- UFD
+-- | Unique factorization domain.
 ufdDecl : AR.UFD
 ufdDecl = record
   { domain = integralDomainDecl

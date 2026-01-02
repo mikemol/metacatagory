@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical --guardedness #-}
 
+-- | Tiny markdown parser targeting the internal PandocAST used by CIM tooling.
 module Plan.CIM.MarkdownParse where
 
 open import Agda.Builtin.Bool using (Bool; true; false)
@@ -14,6 +15,7 @@ if_then_else_ : ∀ {ℓ} {A : Set ℓ} → Bool → A → A → A
 if_then_else_ true  x _ = x
 if_then_else_ false _ y = y
 
+-- | Boolean disjunction.
 _||_ : Bool → Bool → Bool
 true  || _ = true
 false || b = b
@@ -45,6 +47,7 @@ _+_ : Nat → Nat → Nat
 zero + n = n
 suc m + n = suc (m + n)
 
+-- | Check if list is empty.
 null : ∀ {ℓ} {A : Set ℓ} → List A → Bool
 null [] = true
 null (_ ∷ _) = false
@@ -102,7 +105,7 @@ joinWithNewline : List String → String
 joinWithNewline [] = ""
 joinWithNewline (x ∷ []) = x
 joinWithNewline (x ∷ xs) = primStringAppend x (primStringAppend "\n" (joinWithNewline xs))
-
+-- | Tokenized line categories for lightweight parsing.
 data Token : Set where
   THeading   : Nat → String → Token
   TBullet    : String → Token
@@ -145,7 +148,7 @@ trimQuotePrefix s =
   if startsWith "> " s then primStringFromList (drop 2 (primStringToList s))
   else if startsWith ">" s then primStringFromList (drop 1 (primStringToList s))
   else s
-
+-- | Result of consuming a quote block: captured lines and remainder.
 record QuoteSplit : Set where
   field lines : List String
         remaining : List String
@@ -164,13 +167,13 @@ tokenizeLine : String → Token
 tokenizeLine s with null (primStringToList s)
 ... | true  = TBlank
 ... | false with isHeadingLine s
-... | true  = THeading (headingLevel s) (trimHeadingMarker (headingLevel s) s)
-... | false with isBulletLine s
-...   | true  = TBullet (trimBulletMarker s)
-...   | false with isHRuleLine s
-...     | true  = THRule
-...     | false = TPara s
-
+...   | true  = THeading (headingLevel s) (trimHeadingMarker (headingLevel s) s)
+...   | false with isBulletLine s
+...     | true  = TBullet (trimBulletMarker s)
+...     | false with isHRuleLine s
+...       | true  = THRule
+...       | false = TPara s
+-- | Result of consuming a fenced code block.
 record FenceSplit : Set where
   field code : List String
         remaining : List String

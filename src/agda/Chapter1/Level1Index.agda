@@ -1,8 +1,7 @@
 {-# OPTIONS --without-K #-}
 
+-- | Aggregates chapter 1 Agda modules for convenient downstream imports.
 module Chapter1.Level1Index where
-
--- Aggregates chapter 1 Agda modules for convenient downstream imports
 
 open import Chapter1.Level1 public
 open import Chapter1.Level1sub2 public

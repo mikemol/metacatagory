@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Utilities for expanding polytopes/ambiguities used in CIM analyses.
 module Plan.CIM.PolytopeExpansion where
 
 open import Agda.Builtin.Nat
@@ -13,12 +14,14 @@ open import Agda.Builtin.Bool
 -- or redefine locally if strictly decoupled.
 -- For now, we assume WeightedOption is available or redefined.
 
+-- | Option tagged with a numeric weight and provenance marker.
 record WeightedOption {ℓ} (A : Set ℓ) : Set ℓ where
   field
     value : A
     weight : Nat
     provenance : String
 
+-- | Semantic point with coordinates in ℕ^n.
 record SemanticPoint : Set where
   field
     id : String
@@ -27,6 +30,7 @@ record SemanticPoint : Set where
 -- Helper
 Point = SemanticPoint
 
+-- | Polytope carved out by vertices, center, and radius.
 record Polytope : Set where
   field
     vertices : List SemanticPoint
@@ -53,6 +57,7 @@ inflate p tension = record
   ; radius = tension
   }
 
+-- | Outcome of expanding a polytope: unchanged or inflated.
 data MitosisResult : Set where
   stable : Polytope → MitosisResult
   expanded : Polytope → MitosisResult

@@ -29,7 +29,11 @@ def has_module_doc(lines: list[str]) -> bool:
     for line in lines:
         if line.strip() == "":
             continue
-        return line.strip().startswith("--")
+        stripped = line.strip()
+        # Ignore pragmas/options at the top.
+        if stripped.startswith("{-#"):
+            continue
+        return stripped.startswith("--")
     return False
 
 

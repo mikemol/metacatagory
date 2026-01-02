@@ -1,8 +1,10 @@
+-- | Structural isomorphisms with explicit inverses.
 module Infrastructure.Iso.Structural where
 
 open import Agda.Primitive using (Level; _⊔_)
 open import Agda.Builtin.Equality using (_≡_)
 
+-- | Bidirectional equivalence with explicit inverses and triangle laws.
 record Iso {ℓA ℓB : Level} (A : Set ℓA) (B : Set ℓB) : Set (ℓA ⊔ ℓB) where
   field
     to       : A → B

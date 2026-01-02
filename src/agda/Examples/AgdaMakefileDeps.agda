@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Example: compute makefile dependencies from Agda module graph.
 module Examples.AgdaMakefileDeps where
 
 open import Agda.Builtin.List using (List; []; _∷_)

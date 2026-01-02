@@ -1,18 +1,12 @@
 {-# OPTIONS --without-K #-}
 
+-- | Fundamental group theory (parameterized over classic theorems).
 open import Core
 open import Chapter1.Level1Index
 open import Algebra.Foundation
 open import PropertyRegistry
 open import Metamodel as M
 open import Algebra.Groups.Types
-
--- Algebra.Groups.Basic: Fundamental group theory (Hungerford Ch I, sections 1-6)
--- This module covers semigroups through symmetric groups, grounded in category theory.
---
--- PARAMETERIZED VERSION: All 10 classical theorems are module parameters
--- rather than postulated locally. This enforces explicit dependency declaration and
--- enables multiple proof packages (Classical, Categorical, Constructive).
 
 module Algebra.Groups.Basic
   (cyclicGroupClassification : ∀ (G : CyclicGroup) → M.Identifier)

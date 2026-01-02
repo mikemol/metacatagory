@@ -1,5 +1,7 @@
 {-# OPTIONS --without-K #-}
 
+-- | Chapter 1 §5: graph → path-category construction plus calculus-of-fractions
+--   scaffolding (localization declarations, ore conditions, adjunction witness).
 module Chapter1.Level1sub5 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

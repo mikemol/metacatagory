@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Derive pentagon coherence from triangle fillers.
 module Infrastructure.Axiom.PentagonFromTriangles where
 
 open import Agda.Primitive using (Level; _⊔_)

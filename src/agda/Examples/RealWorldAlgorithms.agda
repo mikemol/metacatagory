@@ -79,6 +79,7 @@ six = suc five
 seven = suc six
 eight = suc seven
 
+-- | Pair a list with a head/tail split (placeholder wrapper, unused).
 data _×list_ {ℓ} (A : Set ℓ) : Set ℓ where
   wrap : List A → A × List A → _×list_ A  -- placeholder wrapper (not used)
 

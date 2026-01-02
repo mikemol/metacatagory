@@ -1,9 +1,6 @@
 {-# OPTIONS --without-K #-}
 
--- Tests.ModuleTheoryChecklist
--- Minimal instances for additional module-theory adapters
--- (Hom functors, duality, tensor products, free modules)
-
+-- | Checklist for module-theory adapters (hom, duals, tensors, free).
 module Tests.ModuleTheoryChecklist where
 
 open import Agda.Builtin.Equality
@@ -18,10 +15,11 @@ import Tests.ObligationAdapters as A
 import Core.CategoricalAdapter
 import Chapter1.Level1 as C1L
 
--- Minimal ring declaration (modern API)
+-- | Minimal ring declaration (modern API).
 ringDecl : AR.RingDeclaration
 ringDecl =
   let
+    -- Addition semigroup
     plusSemigroup : AF.SemigroupDeclaration
     plusSemigroup = record
       { underlyingMagma = record { underlyingSet = M.mkId "R" ; binaryOp = M.mkId "+" ; index = AF.magmaIndex }
@@ -29,6 +27,7 @@ ringDecl =
       ; index = AF.semigroupIndex
       }
 
+    -- Addition monoid
     plusMonoid : AF.MonoidDeclaration
     plusMonoid = record
       { underlyingSemigroup = plusSemigroup
@@ -37,6 +36,7 @@ ringDecl =
       ; index = AF.monoidIndex
       }
 
+    -- Addition group
     plusGroup : AF.GroupDeclaration
     plusGroup = record
       { underlyingMonoid = plusMonoid
@@ -49,6 +49,7 @@ ringDecl =
       ; index = AF.groupIndex
       }
 
+    -- Abelian additive group
     addAbelian : AF.AbelianGroupDeclaration
     addAbelian = record
       { underlyingGroup = plusGroup
@@ -77,12 +78,14 @@ commRingDecl =
       ; rightIdentity = M.mkId "*-right-id"
       }
   in
+  -- | Commutative ring (modern API) built from the unital ring.
   record { underlyingRing = unitalRing ; commutativity = M.mkId "*-comm" }
 
--- Module M (modern API)
+-- | Module M (modern API).
 leftModuleDecl : AM.LeftModule ringDecl
 leftModuleDecl =
   let
+    -- Module addition semigroup
     mSemigroup : AF.SemigroupDeclaration
     mSemigroup = record
       { underlyingMagma = record { underlyingSet = M.mkId "M" ; binaryOp = M.mkId "+M" ; index = AF.magmaIndex }
@@ -90,6 +93,7 @@ leftModuleDecl =
       ; index = AF.semigroupIndex
       }
 
+    -- Module addition monoid
     mMonoid : AF.MonoidDeclaration
     mMonoid = record
       { underlyingSemigroup = mSemigroup
@@ -98,6 +102,7 @@ leftModuleDecl =
       ; index = AF.monoidIndex
       }
 
+    -- Module addition group
     mGroup : AF.GroupDeclaration
     mGroup = record
       { underlyingMonoid = mMonoid

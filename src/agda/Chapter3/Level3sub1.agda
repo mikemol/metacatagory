@@ -1,10 +1,6 @@
 {-# OPTIONS --without-K #-}
 
--- Level3_1: Locales (Chapter 3, Section 1)
--- This module encodes the structural content of Section 1 (Locales and Frames).
--- It covers intuitionistic propositional calculus, Heyting algebras, locales, frames,
--- nuclei, open and etale morphisms, compactness, and regularity.
-
+-- | Locales and frames (Chapter 3, Section 1).
 module Chapter3.Level3sub1 where
 
 open import Core
@@ -16,12 +12,14 @@ open import Metamodel as M
 -- ============================================================================
 
 -- Intuitionistic propositions (syntax)
+-- | Abstract syntax for IPC propositions.
 record IntuitionisticProposition : Set₁ where
   field
     -- Top, bottom, variables, conjunction, disjunction, implication
     propositionData : Set
 
 -- Deduction sequent (Γ ⊢ p)
+-- | Sequents with context and conclusion.
 record DeductionSequent : Set₁ where
   field
     context : Set  -- Set of assumptions
@@ -30,39 +28,46 @@ record DeductionSequent : Set₁ where
 
 -- Inference rules
 
+-- | Sequent derived by assuming a proposition in the context.
 record AssumptionRule : Set₁ where
   field
     sequent : DeductionSequent
     assumption : IntuitionisticProposition
     -- Projection morphism from context to assumption
 
+-- | Intro rule for ∧.
 record ConjunctionIntroductionRule : Set₁ where
   field
     sequentLeft : DeductionSequent
     sequentRight : DeductionSequent
     -- Universal morphism into product
 
+-- | Elimination rule for ∧.
 record ConjunctionEliminationRule : Set₁ where
   field
     sequentConjunction : DeductionSequent
     -- Projection from product
 
+-- | Intro rule for → (currying).
 record ImplicationIntroductionRule : Set₁ where
   field
     sequentWithAssumption : DeductionSequent
     -- Currying morphism into exponential
 
+-- | Elimination rule for → (modus ponens).
 record ImplicationEliminationRule : Set₁ where
   field
     sequentAntecedent : DeductionSequent
     sequentImplication : DeductionSequent
     -- Modus ponens: evaluation morphism
 
+-- | Intro rule for ⊤ (unique morphism to terminal).
 record TruthIntroductionRule : Set₁ where
   field
     -- Unique morphism to terminal object
     trivialProof : Set
 
+-- | Ex falso elimination (⊥).
 record FalsityEliminationRule : Set₁ where
   field
     sequentFalse : DeductionSequent
@@ -76,6 +81,7 @@ record FalsityEliminationRule : Set₁ where
 -- Part 1: Definition and Core Adjunction
 
 -- Heyting algebra declaration
+-- | Heyting algebra with implication and adjointness axiom.
 record HeytingAlgebraDeclaration : Set₁ where
   field
     underlyingLattice : Set  -- BoundedLatticeDeclaration
@@ -86,6 +92,7 @@ record HeytingAlgebraDeclaration : Set₁ where
 -- Part 2: Structure-Preserving Maps
 
 -- Heyting algebra homomorphism
+-- | Structure-preserving map between Heyting algebras.
 record HeytingAlgebraHomomorphism : Set₁ where
   field
     sourceAlgebra : HeytingAlgebraDeclaration

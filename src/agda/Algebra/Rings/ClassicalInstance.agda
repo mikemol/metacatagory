@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Instantiate ring theory parameters with classical theorems.
 module Algebra.Rings.ClassicalInstance where
 
 open import Algebra.Rings.Theorems.Classical as Classical

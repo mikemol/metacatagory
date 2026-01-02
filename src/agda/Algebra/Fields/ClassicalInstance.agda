@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Instantiate field theory parameters with classical theorems.
 module Algebra.Fields.ClassicalInstance where
 
 open import Algebra.Fields.Theorems.Classical as Classical

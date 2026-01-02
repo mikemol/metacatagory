@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Constructive witness builders with computational content.
 module Core.ConstructiveWitnesses where
 
 -- Core.ConstructiveWitnesses: Constructive witness builders with computational content
@@ -160,6 +162,7 @@ mkConstructiveSplittingField F poly alg E = record
   ; fieldStructure = M.mkId "field-ops"
   }
   where
+    -- | Recover a field declaration from its identifier (placeholder hook).
     postulate fieldFromId : M.Identifier → FieldDeclaration
 
 -- ============================================================================
@@ -167,6 +170,7 @@ mkConstructiveSplittingField F poly alg E = record
 -- ============================================================================
 
 -- Automorphism with explicit field map
+-- | Concrete automorphism witness with map and base-field fixpoint proof.
 record ConstructiveAutomorphism (F E : FieldDeclaration) : Set where
   field
     fieldMap : M.Identifier  -- Explicit mapping function

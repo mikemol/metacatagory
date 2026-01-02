@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Export normalized markdown proof fragments to files/strings.
 module Markdown.ExportProof where
 
 open import Agda.Builtin.List using (List; []; _∷_)

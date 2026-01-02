@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Minimal string helpers (concatenation, nat→string) used across the repo.
 module Core.Strings where
 
 open import Agda.Builtin.Nat using (Nat; zero; suc)

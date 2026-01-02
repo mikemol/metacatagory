@@ -2,7 +2,6 @@
 
 -- | DependencyGraphExport: consume Agda --dependency-graph DOT output and emit JSON.
 -- This replaces the Python dependency_graph.json generator with a pure Agda version.
-
 module Plan.CIM.DependencyGraphExport where
 
 open import Agda.Builtin.String using (String; primStringAppend; primStringFromList; primStringToList; primStringEquality)
@@ -87,6 +86,7 @@ reverse (x ∷ xs) = reverse xs ++ˡ (x ∷ [])
 add : Nat → Nat → Nat
 add m n = _+_ m n
 
+-- | Simple pair used in parsing/encoding edges.
 record _×_ (A B : Set) : Set where
   constructor _,_
   field fst : A
@@ -98,6 +98,7 @@ open _×_ public
 -- Parse minimal DOT edge lines: "A" -> "B";
 ------------------------------------------------------------------------
 
+-- | Directed edge (src → dst) extracted from DOT.
 record Edge : Set where
   constructor mkEdge
   field src dst : String

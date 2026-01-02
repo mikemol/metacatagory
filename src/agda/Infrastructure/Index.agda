@@ -1,3 +1,4 @@
+-- | Central index of infrastructure modules for convenient imports.
 module Infrastructure.Index where
 
 open import Infrastructure.Universe public
@@ -31,4 +32,4 @@ open import Infrastructure.Functor.Instances.Ambiguity public
 open import Infrastructure.Functor.Instances.TransformationSystem public
 open import Infrastructure.Functor.Adapters.Funext public
 open import Infrastructure.Functor.Compose public
-open import Core.PhaseCategoryWrapper public
+open import Core.PhaseCategoryWrapper public using (PhaseCategoryLike; PhaseLiftW)

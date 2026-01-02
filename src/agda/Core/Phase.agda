@@ -1,18 +1,16 @@
 {-# OPTIONS --without-K #-}
 
--- Core.Phase: Formal abstraction for behavioral phase boundaries
---
+-- | Formal abstraction for behavioral phase boundaries and pipelines.
+module Core.Phase where
+
 -- A Phase represents a transformation between system states with:
 -- - A transform function from input to output type
 -- - Invariant preservation: properties maintained across the boundary
 -- - Composition: phases can be sequenced into pipelines
 -- - Identity: no-op transformations exist
---
+
 -- This formalizes the testing strategy's notion of phase boundaries
 -- as first-class values in the type system.
-
-
-module Core.Phase where
 
 -- Explicitly import foundational universe and equality from Infrastructure
 open import Infrastructure.Universe using (Setℓ)
@@ -65,6 +63,7 @@ p₁ ⟫ p₂ = mkPhase (λ a → p₂ $ₚ (p₁ $ₚ a))
 
 infixr 8 _⟫_
 
+-- | Cartesian product pair used within phase morphisms.
 record _×_ {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
   constructor _,_
   field
@@ -77,6 +76,7 @@ infixr 4 _×_
 infixr 5 _,_
 
 -- Dependent pair (Sigma type)
+-- | Σ-type for dependent pairing in phase expressions.
 record Σ {ℓ₁ ℓ₂ : Level} (A : Set ℓ₁) (B : A → Set ℓ₂) : Set (ℓ₁ ⊔ ℓ₂) where
   constructor _,ₛ_
   field

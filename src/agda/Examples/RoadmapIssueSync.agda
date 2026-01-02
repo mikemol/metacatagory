@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Example: sync roadmap items with external issue trackers.
 module Examples.RoadmapIssueSync where
 
 open import Agda.Builtin.List using (List; []; _∷_)
@@ -170,19 +171,24 @@ ensureRoadmapLabelAdapter token repo apiRoot = do
 
 -- Core data types (declare before FFI usage)
 postulate
+  -- | Issue identifier (opaque on the Agda side).
   IssueNumber : Set
+  -- | Convert issue number to Nat for logging/ordering.
   issueNumberToNat : IssueNumber → Nat
 
 {-# COMPILE GHC IssueNumber = type Int #-}
 {-# COMPILE GHC issueNumberToNat = toInteger #-}
 
+-- | Minimal GitHub issue payload exposed to Agda/FFI.
 record GitHubIssue : Set where
+  -- | Minimal GitHub issue payload exposed to Agda/FFI.
   field
     number : IssueNumber
     title : String
 
 {-# COMPILE GHC GitHubIssue = data Issue (Issue) #-}
 
+-- | Subset of roadmap task fields used for syncing.
 record RoadmapTask : Set where
   field
     id : String
@@ -195,6 +201,7 @@ record RoadmapTask : Set where
 {-# COMPILE GHC RoadmapTask = data Task (Task) #-}
 
 -- Maybe type (needed before FFI signatures using Maybe)
+-- | Option type exposed for FFI interop.
 data Maybe (A : Set) : Set where
   nothing : Maybe A
   just : A → Maybe A
@@ -203,10 +210,15 @@ data Maybe (A : Set) : Set where
 
 -- Postulated FFI functions (after types are in scope)
 postulate
+  -- | Read roadmap tasks from JSON file.
   readTasks : String → IO (List RoadmapTask)
+  -- | Look up an environment variable.
   getEnv : String → IO (Maybe String)
+  -- | Ensure a GitHub label exists.
   ensureRoadmapLabel : String → String → String → IO ⊤
+  -- | Fetch issues from GitHub matching roadmap labels.
   fetchExistingIssues : String → String → String → IO (List GitHubIssue)
+  -- | Create or update a GitHub issue corresponding to a roadmap task.
   createOrUpdateIssue : String → String → String → RoadmapTask → Maybe IssueNumber → IO ⊤
 
 {-# COMPILE GHC readTasks = readTasksAdapter #-}

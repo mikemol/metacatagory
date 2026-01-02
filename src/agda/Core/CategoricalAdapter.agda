@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Universal categorical interface for adapters.
 module Core.CategoricalAdapter where
 
 -- Core.CategoricalAdapter: Universal categorical interface for adapters
@@ -17,19 +19,24 @@ open import Agda.Builtin.Equality using (_≡_; refl)
 --   - morphism: ⊤ → T (inhabitant)
 --   - hom-set: Set of all morphisms ⊤ → T (i.e., T itself)
 
+-- | Package any carrier as a trivial category with a chosen morphism.
 record CategoricalAdapter {ℓ : Level} (T : Set ℓ) : Set (lsuc ℓ) where
+  -- | Object/morphism view of the carrier.
   field
     object : Set ℓ
     morphism : ⊤ → T
     homSet : Set ℓ
     isomorphism : homSet ≡ T
 
+-- | Build the trivial adapter given a carrier and chosen inhabitant.
+--   Useful when wrapping plain sets into CategoryLike slots.
 mkCategoricalAdapter : ∀ {ℓ} (T : Set ℓ) → (f : ⊤ → T) → CategoricalAdapter T
-mkCategoricalAdapter T f =
-  record { object = T
-         ; morphism = f
-         ; homSet = T
-         ; isomorphism = refl }
+mkCategoricalAdapter T f = record
+  { object = T
+  ; morphism = f
+  ; homSet = T
+  ; isomorphism = refl
+  }
 
 -- Example usage:
 -- For Bool:

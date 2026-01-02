@@ -1,8 +1,6 @@
 {-# OPTIONS --without-K --guardedness #-}
 
--- Experimental: Can we resolve circular dependencies with inductive/coinductive types?
--- This explores whether mutual recursion or well-founded induction can break the cycle
-
+-- | Experimental inductive/coinductive classification to break dependency cycles.
 module Core.Algorithms.InductiveClassification where
 
 open import Core
@@ -20,6 +18,7 @@ open import Metamodel as M
 
 mutual
   -- A field type with its evidence (dependent pair)
+  -- | Classification of a field declaration via available evidence.
   data FieldClass : FieldDeclaration → Set₁ where
     FiniteField   : {F : FieldDeclaration} → IsFiniteField* F → FieldClass F
     NumberField   : {F : FieldDeclaration} → IsNumberField* F → FieldClass F
@@ -27,10 +26,12 @@ mutual
   
   -- Evidence types that might reference FieldClass
   -- (hypothetical - exploring if this pattern could work)
+  -- | Placeholder evidence for finiteness (to be refined with invariants).
   data IsFiniteField* (F : FieldDeclaration) : Set where
     finiteEvidence : M.Identifier → IsFiniteField* F  -- Placeholder
     -- TODO: replace placeholder with concrete invariants and proofs
   
+  -- | Placeholder evidence for number fields.
   data IsNumberField* (F : FieldDeclaration) : Set where
     numberEvidence : M.Identifier → IsNumberField* F  -- Placeholder
     -- TODO: replace placeholder with concrete invariants and proofs
@@ -66,6 +67,7 @@ postulate
 -- we could use coinduction
 
 {-# NO_POSITIVITY_CHECK #-}
+-- | Coinductive stream of evidence pieces (potentially infinite).
 record InfiniteEvidence (F : FieldDeclaration) : Set where
   coinductive
   field

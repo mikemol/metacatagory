@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Validate specification checklists against adapters/proofs.
 module Tests.SpecificationValidation where
 
 -- Phase I.1.4: Specification Validation (P1)

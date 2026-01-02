@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Core definitions for technical debt tracking and metrics.
 module Core.TechnicalDebt where
 
 -- Infrastructure imports for universe polymorphism and equality

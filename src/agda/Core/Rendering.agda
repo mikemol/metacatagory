@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Rendering helpers for CIM/Core types (strings, blocks, inline content).
 module Core.Rendering where
 
 open import Agda.Builtin.String using (String)
@@ -18,10 +20,12 @@ open import Core.Strings using (_++_; intercalate; natToString; quoteJSON; mapWi
 -- ==========================================================
 
 record MarkdownSection : Set where
+  -- | A single markdown heading with paragraph lines.
   field
     heading : String
     content : List String
 
+-- | Entire markdown document with metadata and ordered sections.
 record MarkdownDocument : Set where
   field
     title : String
@@ -29,11 +33,13 @@ record MarkdownDocument : Set where
     sections : List MarkdownSection
 
 -- Render markdown section
+-- | Pretty-print a markdown section with heading and paragraphs.
 renderMarkdownSection : MarkdownSection → String
 renderMarkdownSection section =
   "## " ++ (MarkdownSection.heading section ++ ("\n\n" ++ intercalate "\n" (MarkdownSection.content section)))
 
 -- Render markdown document
+-- | Render an entire markdown document with metadata and sections.
 renderMarkdownDocument : MarkdownDocument → String
 renderMarkdownDocument doc =
   let header = "# " ++ (MarkdownDocument.title doc ++ "\n")
@@ -60,11 +66,13 @@ renderMarkdownDocument doc =
 -- JSON Rendering
 -- ==========================================================
 
+-- | Key/value pair already rendered as strings.
 record JSONField : Set where
   field
     key : String
     value : String  -- Pre-formatted value (number, string, etc.)
 
+-- | Object composed of ordered fields.
 record JSONObject : Set where
   field
     fields : List JSONField
@@ -117,10 +125,13 @@ jsonNumberField key val = record { key = key ; value = natToString val }
 -- Table Rendering
 -- ==========================================================
 
+-- | Simple row of cell strings.
+-- | Simple row of cell strings.
 record TableRow : Set where
   field
     cells : List String
 
+-- | Markdown-like table with headers and body rows.
 record Table : Set where
   field
     headers : List String

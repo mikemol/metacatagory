@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical --guardedness #-}
 
+-- | Bridge between grammar representations and CIM roadmap tooling.
 module Plan.CIM.GrammarBridge where
 
 open import Agda.Builtin.List using (List; []; _∷_)

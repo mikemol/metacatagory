@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | AUDAX-flavored formatting for deferred item reports.
 module TechnicalDebt.DeferredItemsFormatting_AUDAX where
 
 open import Agda.Builtin.String using (String; primShowNat)

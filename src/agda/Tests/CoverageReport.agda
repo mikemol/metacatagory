@@ -1,12 +1,6 @@
 {-# OPTIONS --without-K #-}
 
--- Tests.CoverageReport: Type-safe test coverage metadata
--- Provides structured data for external tooling without regex parsing
---
--- Strategy: Rather than trying to introspect Agda at runtime (which is complex),
--- we maintain a single source of truth that both Agda and external tools can use.
--- The Agda type system ensures this data stays synchronized with actual code.
-
+-- | Type-safe test coverage metadata for external tooling.
 module Tests.CoverageReport where
 
 open import Agda.Builtin.List using (List; []; _∷_)
@@ -221,16 +215,17 @@ adapterIndex SheafOfRingsAdapter = mkIndex 20 17
 adapterIndex SheafOfOModulesAdapter = mkIndex 20 18
 adapterIndex CategoryOfOModulesIsAbelianCorollaryAdapter = mkIndex 20 19
 
--- Checklist module registry
+-- | Checklist module registry entry with assertion counts and adapters.
 record ChecklistModule : Set where
   field
     moduleName : String
     assertionCount : Nat
     adapterTypes : List AdapterType
 
--- All checklist modules with their assertion counts
+-- | All checklist modules with their assertion counts and adapter types.
 allChecklists : List ChecklistModule
 allChecklists =
+  -- | Grothendieck fibrations coverage checklist (15 assertions).
   record { moduleName = "Tests.GrothendieckFibrationsChecklist"
          ; assertionCount = 15
          ; adapterTypes = FibrationDeclarationAdapter ∷ CartesianArrowAdapter ∷
@@ -242,6 +237,7 @@ allChecklists =
                          CodomainFibrationAdapter ∷ LindenbaumTarskiFibrationAdapter ∷
                          FamiliesFibrationAdapter ∷ []
          } ∷
+  -- | Abelian categories coverage checklist (11 assertions).
   record { moduleName = "Tests.AbelianCategoriesChecklist"
          ; assertionCount = 11
          ; adapterTypes = HasZeroObjectPropertyAdapter ∷ KernelAsEqualizerDefinitionAdapter ∷
@@ -251,6 +247,7 @@ allChecklists =
                          AbelianCategoryExampleRModAdapter ∷ FunctorAdditivePropertyAdapter ∷
                          AdditivityViaBiproductCoincidenceTheoremAdapter ∷ []
          } ∷
+  -- | Subobject theory coverage checklist (11 assertions).
   record { moduleName = "Tests.SubobjectTheoryChecklist"
          ; assertionCount = 11
          ; adapterTypes = SubobjectLatticeAdapter ∷ WellPoweredCategoryAdapter ∷
@@ -260,6 +257,7 @@ allChecklists =
                          InjectiveObjectAdapter ∷ HasEnoughProjectivesAdapter ∷
                          HasEnoughInjectivesAdapter ∷ []
          } ∷
+  -- | Topos theory coverage checklist (25 assertions).
   record { moduleName = "Tests.ToposTheoryChecklist"
          ; assertionCount = 25
          ; adapterTypes = PresheafOnLocaleAdapter ∷ SheafGluingAxiomAdapter ∷
@@ -275,7 +273,7 @@ allChecklists =
          } ∷
   []  -- Add more as needed
 
--- Total assertion count (computed from the list)
+-- | Total assertion count (computed from the list).
 totalAssertions : Nat
 totalAssertions = sumAssertions allChecklists
   where

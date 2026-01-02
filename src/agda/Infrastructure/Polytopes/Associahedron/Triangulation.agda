@@ -1,3 +1,4 @@
+-- | Triangulations of the associahedron (fans, rotations, witnesses).
 module Infrastructure.Polytopes.Associahedron.Triangulation where
 
 open import Agda.Primitive using (Level; lsuc; _⊔_)

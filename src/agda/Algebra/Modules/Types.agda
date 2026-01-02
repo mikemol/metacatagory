@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Module-theory types (modules, submodules, bases) used across algebra.
 module Algebra.Modules.Types where
 
 open import Core
@@ -14,6 +15,7 @@ open import Metamodel as M
 -- ============================================================================
 
 -- Left R-module
+-- | Structure of a left module over a ring R.
 record LeftModule (R : RingDeclaration) : Set₁ where
   field
     ring : RingDeclaration
@@ -25,6 +27,7 @@ record LeftModule (R : RingDeclaration) : Set₁ where
     unitalAction : M.Identifier
 
 -- Right R-module
+-- | Structure of a right module over a ring R.
 record RightModule (R : RingDeclaration) : Set₁ where
   field
     ring : RingDeclaration
@@ -63,6 +66,7 @@ record QuotientModule (R : RingDeclaration) (M : LeftModule R) (N : Submodule R 
     canonicalProjection : M.Identifier
 
 -- Kernel and Image of homomorphism
+-- | Kernel of a module homomorphism f.
 record KernelOfModuleHomomorphism (R : RingDeclaration) (f : M.Identifier) : Set₁ where
   field
     ring : RingDeclaration
@@ -70,6 +74,7 @@ record KernelOfModuleHomomorphism (R : RingDeclaration) (f : M.Identifier) : Set
     targetModule : LeftModule ring
     kernel : Submodule ring sourceModule
 
+-- | Image of a module homomorphism f.
 record ImageOfModuleHomomorphism (R : RingDeclaration) (f : M.Identifier) : Set₁ where
   field
     ring : RingDeclaration
@@ -78,6 +83,7 @@ record ImageOfModuleHomomorphism (R : RingDeclaration) (f : M.Identifier) : Set�
     image : Submodule ring targetModule
 
 -- Cokernel
+-- | Cokernel of a module homomorphism f.
 record CokernelOfModuleHomomorphism (R : RingDeclaration) (f : M.Identifier) : Set₁ where
   field
     ring : RingDeclaration

@@ -1,6 +1,7 @@
 
 {-# OPTIONS --without-K #-}
 
+-- | ABNF utilities and parsers for core grammar handling.
 module Core.ABNF where
 
 -- Infrastructure imports for universe polymorphism and equality

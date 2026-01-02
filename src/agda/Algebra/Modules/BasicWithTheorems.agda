@@ -23,11 +23,15 @@ open import Algebra.Modules.Theorems.Classical
 
 -- Concrete Examples (for testing and verification)
 module ConcreteExamples where
+  -- | Integers viewed as a ℤ-module over itself.
   ZAsZModule : M.Identifier
   ZAsZModule = M.mkId "ℤ-as-ℤ-module"
   
+  -- | ℤ/nℤ as a module over ℤ, parameterized by n.
   postulate ZnZAsZModule : M.Identifier → M.Identifier
+  -- | R^n module constructor.
   postulate RPowerN : M.Identifier → M.Identifier → M.Identifier
+  -- | F as a vector space over itself.
   postulate FAsFVectorspace : M.Identifier → M.Identifier
 
 open ConcreteExamples public

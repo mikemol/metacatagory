@@ -1,5 +1,6 @@
 {-# OPTIONS --guardedness #-}
 
+-- | FFI-backed I/O for priority orchestration (reading/writing reports).
 module TechnicalDebt.PriorityOrchestrationFFI where
 
 open import Agda.Builtin.String

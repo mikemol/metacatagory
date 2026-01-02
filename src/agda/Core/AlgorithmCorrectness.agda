@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Properties and witnesses for algorithm correctness.
 module Core.AlgorithmCorrectness where
 
 -- Core.AlgorithmCorrectness: Formal correctness specifications for algebraic algorithms

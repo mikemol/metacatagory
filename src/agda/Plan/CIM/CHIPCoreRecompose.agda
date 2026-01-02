@@ -1,8 +1,6 @@
 {-# OPTIONS --without-K --cubical --guardedness #-}
 
+-- | Recomposition scaffolding for CHIP core (placeholder).
 module Plan.CIM.CHIPCoreRecompose where
-
--- Placeholder for Plan.CIM.CHIPCoreRecompose
--- Implementation deferred
 
 open import Plan.CIM.Utility

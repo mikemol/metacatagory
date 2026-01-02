@@ -1,7 +1,11 @@
-open import Agda.Builtin.Int using (Int)
-open import Agda.Builtin.String using (String; primStringAppend)
+-- | Render priority summaries using supplied int→string conversion.
+open import Agda.Builtin.Int
+open import Agda.Builtin.String
 
 module TechnicalDebt.PriorityFormatting (intToString : Int → String) where
+
+open import Agda.Builtin.Int using (Int)
+open import Agda.Builtin.String using (String; primStringAppend)
 
 concatStr : String → String → String
 concatStr = primStringAppend

@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Example checklist for technical debt items.
 module Examples.TechnicalDebtChecklist where
 
 open import Metamodel as M
@@ -12,8 +13,10 @@ open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.Sigma using (Σ; _,_)
 open import Core.Utils using (map)
 
+-- | Empty type used for contradiction in non-empty proofs.
 data ⊥ : Set where
 
+-- | Cartesian product as a Σ-specialization (for simple pairing).
 _×_ : Set → Set → Set
 A × B = Σ A (λ _ → B)
 

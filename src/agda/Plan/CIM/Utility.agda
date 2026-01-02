@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical-compatible #-}
 
+-- | Shared utility functions and lightweight types for CIM tooling.
 module Plan.CIM.Utility where
 
 open import Agda.Primitive using (Level; lsuc)
@@ -30,26 +31,27 @@ map f (x ∷ xs) = f x ∷ map f xs
 -- Shared Data Types (Lifted for Module Parameterization)
 ------------------------------------------------------------------------
 
--- [MOVED] From Plan.CIM.Ambiguity
+-- | Option annotated with weight and provenance (shared).
 record WeightedOption {ℓ} (A : Set ℓ) : Set ℓ where
   field
     value : A
     weight : Nat
     provenance : String
 
--- [MOVED] From Plan.CIM.YonedaProfiler
+-- | Simple morphism record (source/target/kind).
 record Morphism : Set where
   field
     source : String
     target : String
     kind   : String
 
--- [MOVED] From Plan.CIM.PolytopeExpansion
+-- | Semantic point with coordinates in ℕ^n.
 record SemanticPoint : Set where
   field
     id : String
     coordinates : List Nat
 
+-- | Basic polytope with vertices, center, and radius.
 record Polytope : Set where
   field
     vertices : List SemanticPoint
@@ -59,6 +61,7 @@ record Polytope : Set where
 ------------------------------------------------------------------------
 -- Recursive RoadmapStep Record
 ------------------------------------------------------------------------
+-- | Recursive roadmap node with provenance and next steps.
 record RoadmapStep : Set₁ where
     inductive
     field
@@ -71,6 +74,7 @@ record RoadmapStep : Set₁ where
         next         : List RoadmapStep
 
 -- Enriched roadmap record (proposed schema from restructuring doc)
+-- | Enriched roadmap node (v2) carrying GP/tag metadata and links.
 record RoadmapStepV2 : Set₁ where
     inductive
     field
@@ -105,30 +109,32 @@ upgradeStep s = record
 -- Core CIM Framework Types
 ------------------------------------------------------------------------
 
+-- | Pair of values with an associated phase indicating ambiguity.
 record PhaseAmbiguity {ℓ} (A B : Set ℓ) : Set ℓ where
     field
         valA : A
         valB : B
         phase : ℕ 
-
+-- | System describing steps and costs between phases.
 record TransformationSystem {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
     field
         Step : Set ℓ
         cost : Step → ℕ
-
+-- | Simple metric wrapper for coherence costs.
 record EmergentMetric : Set where
     field
         magnitude : ℕ
-
+-- | Path of transformation steps.
 data Path {ℓ} {A B : Set ℓ} (Sys : TransformationSystem {ℓ} A B) : Set ℓ where
     refl-path : Path Sys
     trans-step : (s : TransformationSystem.Step Sys) → (rest : Path Sys) → Path Sys
 
+-- | Witness of coherence with an explicit proof path and metric.
 record CoherenceWitness {ℓ} {A B : Set ℓ} (amb : PhaseAmbiguity {ℓ} A B) (Sys : TransformationSystem {ℓ} A B) : Set (lsuc ℓ) where
     field
         proofPath : Path Sys
         metric    : EmergentMetric
-
+-- | Braided inheritance functor with swap and cost.
 record BraidedInheritanceFunctor {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
     field
         inheritanceBraid : (A × B) → (B × A)
@@ -136,7 +142,7 @@ record BraidedInheritanceFunctor {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
         fromValue : A
         toValue   : B
         description : String
-
+-- | Packed SPPF node carrying left/right paths and a braid resolution.
 record BraidedSPPF {ℓ} (A B : Set ℓ) (Sys : TransformationSystem A B) : Set (lsuc ℓ) where
     constructor packed-node
     field
@@ -144,17 +150,20 @@ record BraidedSPPF {ℓ} (A B : Set ℓ) (Sys : TransformationSystem A B) : Set 
         rightPath  : Path Sys
         resolution : BraidedInheritanceFunctor A B
 
+-- | Cost function with a minimality predicate.
 record CostFunction : Set where
     field
         cost : ℕ → ℕ
         minimal : ℕ → Bool
 
+-- | Generic witness pairing a source, target, and evidence string.
 record Witness {ℓ} (A B : Set ℓ) : Set ℓ where
     field
         source : A
         target : B
         evidence : String
 
+-- | Compact normal form protocol combining ambiguity, system, and coherence.
 record CNFProtocol (A B : Set) : Set₁ where
     field
         ambiguity : PhaseAmbiguity A B
@@ -167,11 +176,13 @@ record CNFProtocol (A B : Set) : Set₁ where
 ------------------------------------------------------------------------
 
 module ASTDependent (Block MdBlock BraidStep : Set) where
+  -- | Trace of braid steps with summary.
   record BraidTrace : Set where
     field
         steps : List BraidStep
         summary : String
 
+  -- | Protocol specialized to block-level transformations.
   record BlockProtocol : Set₁ where
     field
         ambiguity : PhaseAmbiguity Block MdBlock
@@ -179,6 +190,7 @@ module ASTDependent (Block MdBlock BraidStep : Set) where
         coherence : CoherenceWitness ambiguity transSys
         metric    : EmergentMetric
 
+  -- | Protocol specialized to document-level transformations.
   record DocProtocol : Set₁ where
     field
         ambiguity : PhaseAmbiguity String String

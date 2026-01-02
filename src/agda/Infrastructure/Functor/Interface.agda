@@ -15,6 +15,7 @@ open import Infrastructure.Equality using (cong)
 -- Category-like structure (lightweight to avoid pulling a full library)
 ------------------------------------------------------------------------
 
+-- | Minimal category signature: objects, morphisms, identities, and composition laws.
 record CategoryLike {ℓ : Level} (Obj : Set ℓ) : Set (lsuc ℓ) where
   field
     Hom      : Obj → Obj → Set ℓ
@@ -31,6 +32,7 @@ open CategoryLike public
 -- Functor specification
 ------------------------------------------------------------------------
 
+-- | Structure-preserving mapping between two CategoryLike bundles.
 record FunctorInstance
   {ℓ₁ ℓ₂ : Level}
   {Obj₁ : Set ℓ₁} {Obj₂ : Set ℓ₂}

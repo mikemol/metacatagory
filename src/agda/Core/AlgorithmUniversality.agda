@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Sketches of universality results tying algorithms to completeness properties.
 module Core.AlgorithmUniversality where
 
 -- Core.AlgorithmUniversality: Linking algorithms to universal properties

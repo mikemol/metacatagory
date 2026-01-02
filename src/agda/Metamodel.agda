@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Core metamodel definitions used across the project.
 module Metamodel where
 
 -- Minimal builtins to avoid external stdlib dependencies
@@ -16,6 +17,8 @@ open import Agda.Builtin.List     using (List; []; _∷_)
 ------------------------------------------------------------------------
 
 -- Utilities
+
+-- | Non-empty list wrapper with exposed head/tail.
 record NonEmpty (A : Set) : Set where
   constructor ne
   field
@@ -35,6 +38,7 @@ record Coordinate : Set where
     x : Nat  -- horizontal position (e.g., dependency depth)
     y : Nat  -- vertical position (e.g., declaration order)
 
+-- | Identifier with a stable name and coordinate for ordering.
 record Identifier : Set where
   constructor mkIdWithCoord
   field

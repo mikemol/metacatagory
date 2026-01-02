@@ -1,5 +1,7 @@
 {-# OPTIONS --without-K #-}
 
+-- | Chapter 1 §6: exactness toolkit—finite limits, (left/right) exact functors,
+--   duality bridges, and homological lemmas captured as structured declarations.
 module Chapter1.Level1sub6 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)

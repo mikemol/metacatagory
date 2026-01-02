@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Universal property helpers and witnesses.
 module Core.UniversalProperties where
 -------------------------------------------------------------------------
 -- Meta-Index: Universe-Polymorphic Upgrade (2025-12-29)

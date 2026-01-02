@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical-compatible --safe #-}
 
+-- | Structured metadata describing frameworks and their key modules.
 module Plan.CIM.FrameworkMetadata where
 
 open import Agda.Builtin.String using (String)
@@ -10,6 +11,7 @@ open import Agda.Builtin.Nat using (Nat)
 -- Framework Metadata: Structured Description of Frameworks
 ------------------------------------------------------------------------
 
+-- | High-level description of a framework and its purpose.
 record Framework : Set where
   field
     name           : String
@@ -20,6 +22,7 @@ record Framework : Set where
     primaryGoal    : String
     description    : String
 
+-- | Boundary between two frameworks and how they interface.
 record InterfaceBoundary : Set where
   field
     name           : String
@@ -29,6 +32,7 @@ record InterfaceBoundary : Set where
     mechanismStart : String
     mechanismEnd   : String
 
+-- | Variation point within a framework with alternatives and rationale.
 record FlexibilityPoint : Set where
   field
     name           : String
@@ -41,6 +45,7 @@ record FlexibilityPoint : Set where
 -- Gap Analysis: Theory-vs-Implementation Comparison
 ------------------------------------------------------------------------
 
+-- | Theory artifact and its implementation gap.
 record TheoreticalConcept : Set where
   field
     name           : String
@@ -49,6 +54,7 @@ record TheoreticalConcept : Set where
     implementationGap : String
     recommendation : String
 
+-- | Planned feature tying roadmap items to theoretical gaps.
 record PlannedFeature : Set where
   field
     name           : String
@@ -61,6 +67,7 @@ record PlannedFeature : Set where
 -- Quality Framework: The Six Mandates
 ------------------------------------------------------------------------
 
+-- | One of the quality mandates with examples.
 record QualityMandate : Set where
   field
     name           : String
@@ -68,6 +75,7 @@ record QualityMandate : Set where
     description    : String
     examples       : List String
 
+-- | A12 protocol violation description and remediation.
 record A12ProtocolViolation : Set where
   field
     violationType  : String
@@ -79,6 +87,7 @@ record A12ProtocolViolation : Set where
 -- Composition Pattern: How frameworks interact
 ------------------------------------------------------------------------
 
+-- | Pattern for combining frameworks with benefits and examples.
 record CompositionPattern : Set where
   field
     name           : String

@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Lightweight witnesses using identifiers/placeholders (non-constructive).
 module Core.Witnesses where
 
 -- Core.Witnesses: Generic witness construction utilities

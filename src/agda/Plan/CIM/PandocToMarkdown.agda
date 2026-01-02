@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical --guardedness #-}
 
+-- | Convert Pandoc AST to markdown strings for export.
 module Plan.CIM.PandocToMarkdown where
 
 open import Agda.Builtin.List using (List; []; _∷_)
@@ -102,4 +103,3 @@ makeBraidTrace blocks mblocks = record
     zipWith' _ [] _ _ = []
     zipWith' _ _ [] _ = []
     zipWith' f (a ∷ as) (b ∷ bs) desc = f a b desc ∷ zipWith' f as bs desc
-

@@ -1,5 +1,7 @@
 {-# OPTIONS --without-K #-}
 
+-- | Chapter 2 §3: relational calculus in a regular category—declarations for
+--   relations, composition via pullback+image, converse, identity, and poset laws.
 module Chapter2.Level2sub3 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
@@ -261,6 +263,7 @@ record CommutativityAxiom : Set where
     interchangeWitness : M.Identifier -- Path1 == Path2
 
 -- Commutative Lawvere theory: every pair of ops satisfies interchange
+-- | Lawvere theory where every pair of operations satisfies interchange.
 record CommutativeLawvereTheory : Set where
   constructor COMMUTATIVE_
   field
@@ -268,6 +271,7 @@ record CommutativeLawvereTheory : Set where
     globalInterchangeProof : M.Identifier
 
 -- Theorem: Mod(T,Set) is symmetric monoidal when T is commutative
+-- | Theorem: Mod(T,Set) is symmetric monoidal when T is commutative.
 record CommutativeTheoriesYieldMonoidalCategoriesTheorem : Set where
   constructor THEOREM_CommutativeTheoriesYieldMonoidalCategories
   field
@@ -282,6 +286,7 @@ record TheoryOfRModulesIsCommutativeInstance : Set where
     theoryRMod : LawvereTheoryDeclaration
     proof      : M.Identifier
 
+-- | Witness that the Lawvere theory of groups is not commutative.
 record TheoryOfGroupsIsNotCommutativeInstance : Set where
   constructor INSTANCE_TheoryOfGroupsIsNotCommutative
   field
@@ -321,6 +326,7 @@ record TensorProductOfTheories : Set where
     constructionWitness : M.Identifier -- ops/axioms + interchange
 
 -- Theorem: Mod(T1 ⊗ T2, Set) ≅ Bialg(T1,T2)
+-- | Theorem: Mod(T1 ⊗ T2, Set) ≅ Bialg(T1,T2).
 record TensorProductModelsAreBialgebrasTheorem : Set where
   constructor THEOREM_TensorProductModelsAreBialgebras
   field
@@ -360,6 +366,7 @@ record ProgeneratorModule : Set where
     generatorWitness         : M.Identifier
 
 -- Functors built from a bimodule P: - ⊗_R P and Hom_S(P,-)
+-- | Functor - ⊗_R P built from an (S,R)-bimodule P.
 record MoritaEquivalenceFunctor_Tensor : Set where
   constructor _⊗_R_
   field
@@ -367,6 +374,7 @@ record MoritaEquivalenceFunctor_Tensor : Set where
     P        : M.Identifier -- (S,R)-bimodule identifier
     functor  : M.Identifier -- - ⊗_R P : R-Mod → S-Mod
 
+-- | Functor Hom_S(P,-) built from an (S,R)-bimodule P.
 record MoritaEquivalenceFunctor_Hom : Set where
   constructor Hom_FUN
   field

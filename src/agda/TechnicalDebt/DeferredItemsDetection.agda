@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Detect deferred items (TODO/FIXME/etc.) across the codebase.
 module TechnicalDebt.DeferredItemsDetection where
 
 open import Agda.Builtin.Nat using (Nat; zero; suc; _+_)

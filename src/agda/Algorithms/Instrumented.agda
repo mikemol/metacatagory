@@ -71,6 +71,7 @@ postulate
 -- Each algorithm invocation logs a coordinate allocation event
 -- Phase assignment maps algorithm categories to phase numbers
 
+-- | Minimal-polynomial algorithm augmented with phase+allocation logging.
 record InstrumentedMinimalPolynomialAlgorithm (F E : FieldDeclaration) : Set₁ where
   field
     base : MinimalPolynomialAlgorithm F E
@@ -88,6 +89,7 @@ record InstrumentedMinimalPolynomialAlgorithm (F E : FieldDeclaration) : Set₁ 
         _ = appendAllocation logger alloc
     in result
 
+-- | Galois group algorithm augmented with allocation/phase logging.
 record InstrumentedGaloisGroupAlgorithm (F E : FieldDeclaration) : Set₁ where
   field
     base : GaloisGroupAlgorithm F E

@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Core ring-theory types (ideals, homs, structures).
 module Algebra.Rings.Types where
 
 open import Core

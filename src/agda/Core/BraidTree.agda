@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Placeholder scaffolding for braid tree structures.
 module Core.BraidTree where
 
 -- Infrastructure imports for universe polymorphism and equality

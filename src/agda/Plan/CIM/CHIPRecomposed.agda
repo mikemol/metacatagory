@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical --guardedness #-}
 
+-- | Recomposed CHIP document generator using transformation systems.
 module Plan.CIM.CHIPRecomposed where
 
 open import Agda.Primitive using (Level)
@@ -18,6 +19,7 @@ open import Plan.CIM.GrammarBridge using (GrammarExpr; blockToGrammar; inlineToG
 ------------------------------------------------------------------------
 
 -- Aggregate coherence witness from a single block transformation
+-- | Recompose a block-level CHIP witness into a single coherence proof path.
 recomposeBlockCoherence : (b : Block) → (mb : MdBlock) → CoherenceWitness blockAmb blockTransSys
 recomposeBlockCoherence b mb = record
   { proofPath = refl-path
@@ -25,6 +27,7 @@ recomposeBlockCoherence b mb = record
   }
 
 -- Build braid trace from list of block transformations
+-- | Summarize block-to-markdown transformations as a braid trace.
 composeBraidTraces : (blocks : List Block) → (mblocks : List MdBlock) → BraidTrace
 composeBraidTraces blocks mblocks = record
   { steps = buildSteps blocks mblocks
@@ -36,6 +39,7 @@ composeBraidTraces blocks mblocks = record
     buildSteps [] (_ ∷ _) = []
     buildSteps (_ ∷ _) [] = []
     buildSteps (b ∷ bs) (mb ∷ mbs) = 
+      -- Single braid step pairing a Pandoc block with its markdown image.
       record { fromBlock = b ; toBlock = mb ; description = "block recomposition" } ∷
       buildSteps bs mbs
     
@@ -50,7 +54,7 @@ composeBraidTraces blocks mblocks = record
 -- Recompose Document-Level CHIP Witnesses
 ------------------------------------------------------------------------
 
--- Aggregate coherence witnesses from entire document transformation
+-- | Aggregate coherence witnesses from entire document transformation.
 recomposeDocCoherence : (doc : PandocDoc) → (mdoc : MarkdownDoc) → CoherenceWitness docAmb docTransSys
 recomposeDocCoherence doc mdoc = record
   { proofPath = refl-path

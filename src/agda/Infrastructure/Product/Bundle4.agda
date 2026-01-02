@@ -1,3 +1,4 @@
+-- | Product bundle of four components.
 module Infrastructure.Product.Bundle4
   {ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Agda.Primitive.Level}
   (A : Set ℓ₁) (B : Set ℓ₂) (C : Set ℓ₃) (D : Set ℓ₄)
@@ -5,6 +6,7 @@ module Infrastructure.Product.Bundle4
 
 open import Agda.Primitive using (_⊔_)
 
+-- | Simple 4-tuple carrier bundling four components with constructor ⟨_,_,_,_⟩.
 record Bundle₄ : Set (ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃ ⊔ ℓ₄) where
   constructor ⟨_,_,_,_⟩
   field

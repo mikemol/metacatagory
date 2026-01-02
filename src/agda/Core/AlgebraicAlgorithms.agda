@@ -1,9 +1,8 @@
 
 {-# OPTIONS --without-K #-}
 
--- Core.AlgebraicAlgorithms: Generic interfaces for computational algebraic algorithms
--- These records provide extensible, type-safe infrastructure for algebraic computation in Agda.
-
+-- | Generic interfaces for computational algebraic algorithms.
+--   Records provide extensible, type-safe infrastructure for algebraic computation.
 module Core.AlgebraicAlgorithms where
 
 -- Infrastructure imports for universe polymorphism and equality
@@ -238,10 +237,12 @@ record FieldExtensionDegreeAlgorithm (F E : FieldDeclaration) : Set₁ where
 -- ============================================================================
 
 record SubfieldEnumerationAlgorithm (F E : FieldDeclaration) : Set₁ where
+  -- | Procedure that lists intermediate fields F ⊆ K ⊆ E.
   field
     -- Enumerate all intermediate fields F ⊆ K ⊆ E
     subfields : List (Subfield E)
 
+-- | Procedure that lists subgroups of the Galois group Gal(E/F).
 record SubgroupEnumerationAlgorithm (F E : FieldDeclaration) : Set₁ where
   field
     -- Enumerate all subgroups of Gal(E/F)
@@ -251,6 +252,7 @@ record SubgroupEnumerationAlgorithm (F E : FieldDeclaration) : Set₁ where
 -- Algebraicity and Transcendence Decision
 -- ============================================================================
 
+-- | Decide algebraic vs transcendental elements in an extension.
 record AlgebraicityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
   field
     -- Decide if α ∈ E is algebraic over F
@@ -263,6 +265,7 @@ record AlgebraicityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
 -- ==========================================================================
 
 record PrimitiveElementAlgorithm (F E : FieldDeclaration) : Set₁ where
+  -- | Algorithm to exhibit α with E = F(α) plus its simple-extension witness.
   field
     -- Produce a primitive element α such that E = F(α)
     primitiveElement : M.Identifier
@@ -273,10 +276,12 @@ record PrimitiveElementAlgorithm (F E : FieldDeclaration) : Set₁ where
 -- ==========================================================================
 
 record NormalityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
+  -- | Decide whether the extension is normal.
   field
     -- Decide if E/F is normal
     isNormal : Dec (NormalExtension F E)
 
+-- | Decide separability and detect purely inseparable cases.
 record SeparabilityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
   field
     -- Decide if E/F is separable
@@ -285,6 +290,7 @@ record SeparabilityDecisionAlgorithm (F E : FieldDeclaration) : Set₁ where
     isPurelyInseparable : M.Identifier
 
 -- Normal closure construction
+-- | Construct the normal closure of an extension E/F.
 record NormalClosureAlgorithm (F E : FieldDeclaration) : Set₁ where
   field
     -- Construct the normal closure of E/F

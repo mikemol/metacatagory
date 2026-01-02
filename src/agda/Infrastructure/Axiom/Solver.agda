@@ -1,3 +1,4 @@
+-- | Generic theorem generator: fills faces supplied by a kit within a path algebra.
 module Infrastructure.Axiom.Solver where
 
 open import Agda.Primitive using (Level; _⊔_; lsuc)

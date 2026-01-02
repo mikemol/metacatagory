@@ -1,5 +1,7 @@
 {-# OPTIONS --without-K #-}
 
+-- | Chapter 1 §4: subobject calculus—equivalence of monos, lattices,
+--   (co)well-poweredness, and lattice operations such as intersection/union.
 module Chapter1.Level1sub4 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
@@ -57,26 +59,32 @@ record WidePullbackDiagram : Set where
   constructor DIAGRAM_for_Intersection
   field subobjects : List M.Identifier
 
+-- | Construct intersection via wide pullback.
 record IntersectionConstructor : Set where
   constructor LIMIT_OF
   field diagram : WidePullbackDiagram
 
+-- | Binary intersection of subobjects.
 record BinaryIntersection : Set where
   constructor _∩_
   field s1 s2 : M.Identifier
 
+-- | Construct union via image of coproduct map.
 record UnionConstructor : Set where
   constructor Image_of_UniversalCoproductMap
   field subobjects : List M.Identifier
 
+-- | Binary union of subobjects.
 record BinaryUnion : Set where
   constructor _∪_
   field s1 s2 : M.Identifier
 
+-- | Property: poset P is a complete lattice.
 record LatticePropertyDefinition : Set where
   constructor _is_COMPLETE_LATTICE
   field P : M.Identifier
 
+-- | Theorem: subobject lattice is complete.
 record SubobjectLatticeIsComplete : Set where
   constructor THEOREM_SubobjectLatticeIsComplete
   field unit : ⊤
@@ -85,27 +93,33 @@ record SubobjectLatticeIsComplete : Set where
 -- Part 3: Strong epimorphisms and orthogonality
 ------------------------------------------------------------------------
 
+-- | Square used to test orthogonality (epi/mono).
 record CommutativeSquareForOrthogonalityTest : Set where
   constructor ORTHOGONALITY_SQUARE_VIA
   field e m f g : M.Identifier
 
+-- | Unique diagonal filler property.
 record DiagonalFillerProperty : Set where
   constructor HasUniqueDiagonalFiller
   field sq : M.Identifier
 
+-- | Strong epimorphism declaration.
 record StrongEpimorphism : Set where
   constructor _is_STRONG_EPIMORPHISM
   field e : M.Identifier
 
+-- | Theorem: canonical (strong epi, mono) factorization system.
 record CanonicalFactorizationSystem : Set where
   constructor THEOREM_CanonicalFactorizationSystem
   field unit : ⊤
 
+-- | Strong monomorphism declaration.
 record StrongMonomorphism : Set where
   constructor _is_STRONG_MONOMORPHISM
   field m : M.Identifier
 
-record DualFactorizationSystem : Set where
+-- | Dual factorization system theorem (via duality).
+record DualFactorizationSystemTheorem : Set where
   constructor INFER_DUAL_THEOREM_DualFactorizationSystem
   field unit : ⊤
 
@@ -113,30 +127,37 @@ record DualFactorizationSystem : Set where
 -- Part 4: Epi-mono factorizations
 ------------------------------------------------------------------------
 
+-- | Factorization data f = m ∘ e via an object I.
 record MorphismFactorization : Set where
   constructor Factorization_of_is_via
   field f e m I : M.Identifier
 
+-- | Axiom: morphism factorizations are unique up to isomorphism.
 record FactorizationUniquenessAxiom : Set where
   constructor AXIOM_FactorizationIsUniqueUpToIsomorphism
   field unit : ⊤
 
+-- | Declaration that C admits a chosen (E,M) factorization system.
 record HasFactorizationSystem : Set where
   constructor _has_FACTORIZATION_SYSTEM
   field C E M : M.Identifier
 
+-- | Image of a morphism f.
 record ImageOfMorphism : Set where
   constructor Image
   field f : M.Identifier
 
+-- | Coimage of a morphism f.
 record CoimageOfMorphism : Set where
   constructor Coimage
   field f : M.Identifier
 
+-- | Standard epi–mono factorization system for a category C.
 record StandardFactorizationSystem : Set where
   constructor THEOREM_StandardFactorizationSystem
   field C : M.Identifier
 
+-- | Dual factorization system (monic–epic).
 record AlternateFactorizationSystem : Set where
   constructor INFER_DUAL_THEOREM_AlternateFactorizationSystem
   field unit : ⊤
@@ -154,30 +175,37 @@ record HasGeneratorObject : Set where
 -- Part 6: Projectives
 ------------------------------------------------------------------------
 
+-- | Lifting problem against an epimorphism e.
 record ProjectiveLiftingProblem : Set where
   constructor LIFTING_PROBLEM_against_epi
   field f e : M.Identifier
 
+-- | Existence of a lift for a given problem.
 record HasLiftSolution : Set where
   constructor HAS_LIFT
   field problem : M.Identifier
 
+-- | Projective object declaration.
 record ProjectiveObject : Set where
   constructor _is_PROJECTIVE
   field P : M.Identifier
 
+-- | Functorial equivalence characterization of projectives.
 record ProjectiveFunctorialEquivalence : Set where
   constructor THEOREM_ProjectiveFunctorialEquivalence
   field P : M.Identifier
 
+-- | Free objects are projective (canonical theorem).
 record FreeObjectsAreProjective : Set where
   constructor THEOREM_FreeObjectsAreProjective
   field unit : ⊤
 
+-- | Category has enough projectives.
 record HasEnoughProjectives : Set where
   constructor _has_ENOUGH_PROJECTIVES
   field C : M.Identifier
 
+-- | Dual injective theory inferred from projective theory.
 record InferDualTheory_Injective : Set where
   constructor INFER_DUAL_THEORY_InjectiveTheory
   field unit : ⊤
@@ -186,22 +214,27 @@ record InferDualTheory_Injective : Set where
 -- Part 7: Injectives and cogenerators
 ------------------------------------------------------------------------
 
+-- | Injective object declaration.
 record InjectiveObject : Set where
   constructor _is_INJECTIVE
   field I : M.Identifier
 
+-- | Extension problem along a monomorphism.
 record InjectiveExtensionProblem : Set where
   constructor EXTENSION_PROBLEM_from_mono_WITH_map
   field m f : M.Identifier
 
+-- | Lifting equivalence for injective objects.
 record InjectiveLiftingEquivalence : Set where
   constructor THEOREM_InjectiveLiftingEquivalence
   field I : M.Identifier
 
+-- | Cogenerator object declaration.
 record CogeneratorObject : Set where
   constructor _is_COGENERATOR
   field C : M.Identifier
 
+-- | Category has enough injectives.
 record HasEnoughInjectives : Set where
   constructor _has_ENOUGH_INJECTIVES
   field C : M.Identifier

@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Gödel boundary exploration: relating provability and expressiveness.
 module Core.GodelBoundary where
 
 -- Core.GodelBoundary: Formalization of incompleteness and theoretical limits

@@ -1,5 +1,7 @@
 {-# OPTIONS --without-K #-}
 
+-- | Chapter 2 §1: abelian entry point—zero objects, zero morphisms, kernels,
+--   cokernels, and exactness predicates that refine the additive toolkit.
 module Chapter2.Level2sub1 where
 
 open import Agda.Builtin.Unit     using (⊤; tt)
@@ -60,10 +62,12 @@ record IsKernelOfPredicate : Set where
 -- CATEGORY: mono represents the kernel subobject of f.
 
 -- Duality mapping axioms (KERNEL <-> COKERNEL, Equalizer <-> Coequalizer)
+-- | Duality mapping identifying kernels with cokernels.
 record DualityMappingKernelCokernel : Set where
   constructor DUALITY_MAPPING_FOR_KERNEL_IS_COKERNEL
   field unit : ⊤
 
+-- | Duality mapping identifying equalizers with coequalizers.
 record DualityMappingEqualizerCoequalizer : Set where
   constructor DUALITY_MAPPING_FOR_Equalizer_IS_Coequalizer
   field unit : ⊤
@@ -82,6 +86,7 @@ record CokernelAsCoequalizerInference : Set where
 ------------------------------------------------------------------------
 
 -- Enrichment property: C is ENRICHED_OVER M
+-- | Enrichment property: C is enriched over a monoidal category.
 record EnrichedOverProperty : Set where
   constructor _is_ENRICHED_OVER_
   field
@@ -90,6 +95,7 @@ record EnrichedOverProperty : Set where
 -- CATEGORY: Hom-objects live in monoidal and composition is a morphism there.
 
 -- Biproduct object A ⊕ B
+-- | Biproduct object A ⊕ B with projections and injections.
 record BiproductObject : Set where
   constructor _⊕_
   field
@@ -103,6 +109,7 @@ record BiproductObject : Set where
 -- CATEGORY: Simultaneously product and coproduct with standard identities.
 
 -- Additive category declaration
+-- | Additive category: zero object, Ab-enrichment, and binary biproducts.
 record AdditiveCategoryDeclaration : Set where
   constructor ADDITIVE_CATEGORY
   field
@@ -189,12 +196,14 @@ record AbelianCategoryDeclaration : Set where
 -- CATEGORY: Additive + all kernels/cokernels + normality of monos/epis.
 
 -- Coimage and Image constructs
+-- | Coimage of a morphism f, given by coker(ker f).
 record CoimageOfMorphism : Set where
   constructor Coim
   field
     morphism : M.Identifier
     quotientObject : M.Identifier -- coker(ker(f))
 
+-- | Image of a morphism f, given by ker(coker f).
 record ImageOfMorphism : Set where
   constructor Im
   field
@@ -211,10 +220,12 @@ record FirstIsomorphismTheoremForCategories : Set where
 -- CATEGORY: Coim(f) ≅ Im(f) encapsulating exactness.
 
 -- Canonical examples: Ab, R-Mod
+-- | Canonical example: category Ab is abelian.
 record AbelianCategoryExampleAb : Set where
   constructor ABELIAN_CATEGORY_Ab
   field unit : ⊤
 
+-- | Canonical example: category of R-modules is abelian.
 record AbelianCategoryExampleRMod : Set where
   constructor ABELIAN_CATEGORY_RMod
   field ring : M.Identifier
@@ -225,15 +236,17 @@ record AbelianCategoryExampleRMod : Set where
 ------------------------------------------------------------------------
 
 -- Re-declared Coim/Im constructors (exactness focus)
+-- | Constructor form of coimage with domain/codomain carried explicitly.
 record CoimConstructor : Set where
   constructor Coim'
   field morphism : M.Identifier; domain : M.Identifier; codomain : M.Identifier
 
+-- | Constructor form of image with domain/codomain carried explicitly.
 record ImConstructor : Set where
   constructor Im'
   field morphism : M.Identifier; domain : M.Identifier; codomain : M.Identifier
 
--- Canonical morphism f_bar : Coim(f) -> Im(f)
+-- | Canonical morphism f̄ : Coim(f) → Im(f).
 record CanonicalMorphism_f_bar : Set where
   constructor f_bar
   field
@@ -242,6 +255,7 @@ record CanonicalMorphism_f_bar : Set where
     targetImage   : M.Identifier
     factorizationWitness : M.Identifier
 
+-- | First isomorphism theorem specialized to abelian categories.
 record FirstIsomorphismForAbelianCategoriesTheorem : Set where
   constructor THEOREM_FirstIsomorphismForAbelianCategories
   field
@@ -251,6 +265,7 @@ record FirstIsomorphismForAbelianCategoriesTheorem : Set where
 -- CATEGORY: f_bar(f) iso for all f.
 
 -- Canonical map from coproduct to product
+-- | Canonical map from coproduct to product in an additive context.
 record CanonicalMapCoproductToProduct : Set where
   constructor canonical_map
   field
@@ -258,6 +273,7 @@ record CanonicalMapCoproductToProduct : Set where
     productObj   : M.Identifier
     map          : M.Identifier
 
+-- | Additivity characterized by biproduct comparison map being an isomorphism.
 record AdditivityViaBiproductCoincidenceTheorem : Set where
   constructor THEOREM_AdditivityViaBiproductCoincidence
   field
@@ -273,6 +289,7 @@ record AdditivityViaBiproductCoincidenceTheorem : Set where
 ------------------------------------------------------------------------
 
 -- Join (union) of subobjects
+-- | Join (union) of subobjects via coproduct map.
 record UnionOfSubobjects : Set where
   constructor Join
   field
@@ -283,6 +300,7 @@ record UnionOfSubobjects : Set where
 -- CATEGORY: Image of universal coproduct map.
 
 -- Meet (intersection) of subobjects
+-- | Meet (intersection) of subobjects via pullback.
 record IntersectionOfSubobjects : Set where
   constructor Meet
   field
@@ -292,10 +310,12 @@ record IntersectionOfSubobjects : Set where
 -- CATEGORY: Wide pullback of monomorphisms.
 
 -- Modular lattice property
+-- | Modular lattice law witness for Sub(X).
 record ModularLatticeProperty : Set where
   constructor _is_MODULAR_LATTICE
   field lattice : M.Identifier; modularLawWitness : M.Identifier
 
+-- | Theorem: subobject lattice of X in an abelian category is modular.
 record SubobjectLatticeModularityTheorem : Set where
   constructor THEOREM_SubobjectLatticeInAbelianIsModular
   field
@@ -333,10 +353,12 @@ record ShortExactSequenceDeclaration : Set where
     exactAtC  : Bool
 
 -- Split mono / split epi properties
+-- | Split mono: mono with a chosen retraction.
 record HasRetractionProperty : Set where
   constructor _has_retraction
   field mono : M.Identifier; retraction : M.Identifier
 
+-- | Split epi: epi with a chosen section.
 record HasSectionProperty : Set where
   constructor _has_section
   field epi : M.Identifier; section : M.Identifier
@@ -352,6 +374,7 @@ record SplittingLemmaForSESTheorem : Set where
 -- CATEGORY: Conditions equivalent to splitting.
 
 -- Long exact sequence declaration
+-- | Long exact sequence with positional exactness flags.
 record LongExactSequenceDeclaration : Set where
   constructor LONG_EXACT_SEQUENCE
   field
@@ -363,11 +386,12 @@ record LongExactSequenceDeclaration : Set where
 ------------------------------------------------------------------------
 
 -- Proof by diagram chase technique
+-- | Diagram chase proof technique descriptor.
 record ProofByDiagramChaseTechnique : Set where
   constructor PROOF_by_DIAGRAM_CHASE
   field justification : M.Identifier
 
--- Diagrammatic assertion (premises container)
+-- | Diagrammatic assertion (premises container).
 record DiagrammaticAssertion : Set where
   constructor DIAGRAMMATIC_ASSERTION
   field
@@ -375,7 +399,7 @@ record DiagrammaticAssertion : Set where
     diagramId : M.Identifier
     premises  : List M.Identifier
 
--- Generic theorem from diagram chase
+-- | Generic theorem derived via diagram chase.
 record DiagramChaseTheorem : Set where
   constructor THEOREM_from_DIAGRAM_CHASE
   field
@@ -384,6 +408,7 @@ record DiagramChaseTheorem : Set where
     proofTechnique : ProofByDiagramChaseTechnique
 
 -- Concrete lemmas
+-- | Five lemma for long exact sequences.
 record FiveLemmaTheorem : Set where
   constructor THEOREM_TheFiveLemma
   field
@@ -391,6 +416,7 @@ record FiveLemmaTheorem : Set where
     conclusionIso : M.Identifier
     proof : ProofByDiagramChaseTechnique
 
+-- | Snake lemma for exact sequences.
 record SnakeLemmaTheorem : Set where
   constructor THEOREM_TheSnakeLemma
   field
@@ -399,6 +425,7 @@ record SnakeLemmaTheorem : Set where
     exactnessWitness : M.Identifier
     proof : ProofByDiagramChaseTechnique
 
+-- | 3×3 lemma for exact sequences.
 record ThreeByThreeLemmaTheorem : Set where
   constructor THEOREM_The3x3Lemma
   field

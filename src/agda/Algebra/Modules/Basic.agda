@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Module theory (Hungerford Ch IV), parameterized over classical theorems.
 open import Core
 open import Chapter1.Level1Index
 open import Chapter2.Level2sub1
@@ -10,11 +11,6 @@ open import Algebra.Rings.Types
 open import Algebra.Modules.Types
 open import PropertyRegistry
 open import Metamodel as M
-
--- Algebra.Modules.Basic: Module theory (Hungerford Ch IV)
--- 
--- PARAMETERIZED VERSION: All 11 classical module theorems are module parameters
--- rather than postulated locally.
 
 module Algebra.Modules.Basic
   (rModCategoricalProperties : ∀ (R : Set₁) → Set₁)

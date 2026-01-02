@@ -102,6 +102,19 @@ def parse_roadmap_md(path: Path) -> List[Dict]:
     
     return items
 
+
+def load_doclint_json(base_path: Path) -> List[Dict]:
+    """Load doclint results (already shaped as RoadmapItems)."""
+    path = base_path / "build" / "doclint_roadmap.json"
+    if not path.exists():
+        return []
+    with open(path) as f:
+        items = json.load(f)
+    for item in items:
+        item.setdefault("category", "Quality/DocLint")
+        ensure_provenance(item)
+    return items
+
 def parse_ingested_agda(base_path: Path) -> List[Dict]:
     """Extract roadmap steps from IngestedRoadmaps/*.agda modules."""
     items = []
@@ -288,6 +301,9 @@ def merge_all_sources(base_path: Path) -> List[Dict]:
     
     print("Parsing legacy roadmap-*.agda...")
     all_items.extend(parse_legacy_agda(base_path))
+
+    print("Loading doclint roadmap...")
+    all_items.extend(load_doclint_json(base_path))
     
     print(f"Total items before deduplication: {len(all_items)}")
     
@@ -318,7 +334,7 @@ def export_to_agda(items: List[Dict], output_path: Path):
     
     for i, item in enumerate(items):
         is_last = (i == len(items) - 1)
-        
+
         # Escape strings for Agda
         def agda_str(s):
             return '"' + s.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n') + '"'
@@ -327,7 +343,9 @@ def export_to_agda(items: List[Dict], output_path: Path):
             if not lst:
                 return "[]"
             return "(" + " ∷ ".join(agda_str(x) for x in lst) + " ∷ [])"
-        
+
+        # Meaningful doc line for doc-lint: ID + title + status
+        lines.append(f"  -- | {item['id']}: {item['title']} [status: {item['status']}]")
         lines.append("  record {")
         lines.append(f"    id = {agda_str(item['id'])}")
         lines.append(f"    ; title = {agda_str(item['title'])}")

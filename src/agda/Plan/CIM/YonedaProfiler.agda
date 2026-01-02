@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Instrumentation hooks around Yoneda profiling/oracles for CIM planning.
 module Plan.CIM.YonedaProfiler where
 
 open import Agda.Builtin.String

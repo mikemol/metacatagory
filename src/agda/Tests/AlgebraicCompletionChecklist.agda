@@ -1,5 +1,6 @@
 {-# OPTIONS --allow-unsolved-metas --without-K #-}
 
+-- | Checklist for algebraic completion obligations.
 module Tests.AlgebraicCompletionChecklist where
 
 open import Core.Phase using (Bool; true; false)

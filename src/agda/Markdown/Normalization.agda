@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Normalize simplified Markdown/Pandoc blocks for exports.
 module Markdown.Normalization where
 
 open import Agda.Builtin.Nat using (Nat)

@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical-compatible --safe #-}
 
+-- | Minimal Pandoc-inspired AST shared by CIM Markdown tooling.
 module Plan.CIM.PandocAST where
 
 open import Agda.Builtin.String
@@ -11,6 +12,7 @@ open import Agda.Builtin.Unit
 -- Pandoc AST (source normalization)
 ------------------------------------------------------------------------
 
+-- | Minimal inline constructor set mirroring Pandoc.
 data Inline : Set where
   Str        : String → Inline
   Emph       : List Inline → Inline
@@ -25,6 +27,7 @@ data Inline : Set where
   Image      : List Inline → String → Inline
   Note       : List Inline → Inline
 
+-- | Minimal block constructor set mirroring Pandoc.
 data Block : Set where
   Para        : List Inline → Block
   Plain       : List Inline → Block
@@ -40,6 +43,7 @@ data Block : Set where
 
 -- Pandoc document
 
+-- | Normalized Pandoc document with blocks and metadata.
 record PandocDoc : Set where
   field
     blocks : List Block
@@ -49,6 +53,7 @@ record PandocDoc : Set where
 -- Markdown AST (target normalization)
 ------------------------------------------------------------------------
 
+-- | Target inline AST used after normalization.
 data MdInline : Set where
   MdStr        : String → MdInline
   MdEmph       : List MdInline → MdInline
@@ -60,6 +65,7 @@ data MdInline : Set where
   MdLink       : List MdInline → String → MdInline
   MdImage      : List MdInline → String → MdInline
 
+-- | Target block AST used after normalization.
 data MdBlock : Set where
   MdPara        : List MdInline → MdBlock
   MdHeader      : Nat → List MdInline → MdBlock
@@ -73,6 +79,7 @@ data MdBlock : Set where
   MdEOB         : MdBlock  -- End of Block
   MdSBB         : MdBlock  -- Separator Between Blocks
 
+-- | Normalized markdown document.
 record MarkdownDoc : Set where
   field
     blocks : List MdBlock

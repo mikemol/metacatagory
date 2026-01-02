@@ -1,8 +1,6 @@
 {-# OPTIONS --without-K #-}
 
--- | RoadmapSPPF: Horizontal SPPF composition/decomposition over roadmap data
--- Supports >2 parents by synthesizing packed nodes to maintain the SPPF ≤2-parent invariant.
-
+-- | RoadmapSPPF: compose/decompose roadmap data into an SPPF (≤2-parent invariant).
 module Plan.CIM.RoadmapSPPF where
 
 open import Agda.Builtin.String using (String; primStringAppend)
@@ -18,6 +16,7 @@ open import Plan.CIM.PlanningKernel using (planningAdapters)
 ------------------------------------------------------------------------
 
 record SPPFNode : Set where
+  -- | Single roadmap node in SPPF form with up to two parents.
   field
     nodeId     : String
     title      : String
@@ -29,10 +28,12 @@ record SPPFNode : Set where
     parent1    : Maybe String
     parent2    : Maybe String
 
+-- | Entire packed SPPF graph.
 record SPPFGraph : Set where
   field
     nodes : List SPPFNode
 
+-- | Accumulator carrying packed nodes plus parent pointers.
 record PackResult : Set where
   field
     packedNodes : List SPPFNode

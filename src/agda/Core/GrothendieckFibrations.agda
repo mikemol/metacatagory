@@ -1,4 +1,6 @@
 {-# OPTIONS --without-K #-}
+
+-- | Grothendieck fibrations with Beck-Chevalley coherence.
 module Core.GrothendieckFibrations where
 
 -- Core.GrothendieckFibrations: Grothendieck fibrations with Beck-Chevalley condition

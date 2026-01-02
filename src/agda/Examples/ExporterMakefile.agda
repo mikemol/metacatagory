@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Example: generate makefile snippets from Agda metadata.
 module Examples.ExporterMakefile where
 
 {-# FOREIGN GHC
@@ -87,15 +88,19 @@ postulate
 {-# COMPILE GHC writeFile = writeFileAdapter #-}
 
 -- Section: Makefile Artifact Types
+
+-- | A logical section of the generated makefile (e.g., variables or a phony block).
 record MakefileSection : Set where
   field
     id : String
     content : List String
 
+-- | Aggregate makefile made of multiple sections.
 record MakefileArtifact : Set where
   field
     sections : List MakefileSection
 
+-- | Renderer turns a section into text; enables alternative formatting strategies.
 record MakefileRenderer : Set where
   field
     renderSection : MakefileSection → String

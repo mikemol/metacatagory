@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Instantiate module theory with classical theorems.
 module Algebra.Modules.ClassicalInstance where
 
 open import Algebra.Modules.Theorems.Classical as Classical

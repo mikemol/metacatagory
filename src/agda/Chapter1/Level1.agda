@@ -1,5 +1,8 @@
 {-# OPTIONS --without-K #-}
 
+-- | Chapter 1 backbone: canonical axiom/subject identifiers that all
+--   subchapters reuse when staging categorical proofs (products,
+--   coproducts, adjunctions, exactness, torsion theory, etc.).
 module Chapter1.Level1 where
 
 open import Agda.Builtin.List using (List; []; _∷_)
@@ -11,6 +14,7 @@ open import Metamodel as M
 open import PropertyRegistry as P
 open import Core.Phase using (_×_; _,_) public
 
+-- | Canonical registry of axiom identifiers reused across Chapter 1.
 data AxiomName : Set where
   IdentityAxiomName         : AxiomName
   AssociativityAxiomName    : AxiomName
@@ -99,7 +103,7 @@ data AxiomName : Set where
   ReflectsPropertyName  : AxiomName
   CreatesPropertyName   : AxiomName
 
--- Subjects about which axioms speak (captures kind-specific payload)
+-- | Subjects about which axioms speak (captures kind-specific payload).
 data Subject : Set where
   PreCategoryS : (G : M.Identifier) -> Subject
   FunctorMapS  : (F : M.Identifier) (C : M.Identifier) (D : M.Identifier) -> Subject
@@ -581,15 +585,18 @@ record IdentityAxiom : Set where
   field over : M.Identifier
 -- CATEGORY: Identities act as two-sided units.
 
+-- | Functor F preserves composition.
 record FunctorPreservesCompositionAxiom : Set where
   constructor AXIOM_PreservesComposition
   field forF : M.Identifier
 
+-- | Functor F preserves identities.
 record FunctorPreservesIdentityAxiom : Set where
   constructor AXIOM_PreservesIdentity
   field forF : M.Identifier
 
 -- CategoryPromotion and FunctorPromotion (used in smart constructors below)
+-- | Package identity + associativity proofs to promote G to a Category.
 record CategoryPromotion : Set where
   constructor PROMOTE_to_CATEGORY
   field
@@ -597,6 +604,7 @@ record CategoryPromotion : Set where
     hasIdentity      : Proof (PreCategoryS G) IdentityAxiomName
     hasAssociativity : Proof (PreCategoryS G) AssociativityAxiomName
 
+-- | Package preservation proofs to promote F to a Functor between C and D.
 record FunctorPromotion : Set where
   constructor PROMOTE_to_FUNCTOR
   field
@@ -689,6 +697,7 @@ record ObjectMapping : Set where
         dst : M.Identifier
 open ObjectMapping public
 
+-- | Mapping of a morphism name under a functor.
 record MorphismMapping : Set where
   constructor mor↦
   field src : M.Identifier
@@ -770,10 +779,12 @@ record ContravariantMap : Set where
   field F : M.Identifier
         f : M.Identifier
 
+-- | Contravariant functor preserves identities.
 record ContravariantIdentityAxiom : Set where
   constructor AXIOM_contravariant_identity
   field F A : M.Identifier
 
+-- | Contravariant functor preserves composition (with reversal).
 record ContravariantCompositionAxiom : Set where
   constructor AXIOM_contravariant_composition
   field F f g : M.Identifier
@@ -799,24 +810,28 @@ record CommaMorphismCommutativityAxiom : Set where
   field h h' f g : M.Identifier
 
 -- Identity and constant functors
+-- | Identity functor constructor on C.
 record IdentityFunctorConstructor : Set where
   constructor Id
   field C : M.Identifier
 
+-- | Constant functor constructor Δ_X.
 record ConstantFunctorConstructor : Set where
   constructor Δ_  -- pronounced "Delta sub X"
   field X : M.Identifier
 
 -- Slice and coslice categories
+-- | Slice category C/X.
 record SliceCategory : Set where
   constructor _/_
   field C X : M.Identifier
 
+-- | Coslice category X\C.
 record CosliceCategory : Set where
   constructor _\\_  -- backslash escaped
   field X C : M.Identifier
 
--- Inverse morphism
+-- | Inverse morphism placeholder.
 record InverseMorphism : Set where
   constructor inverse
   field f : M.Identifier
@@ -833,6 +848,7 @@ data MorphismProperty : Set where
   SPLIT_MONOMORPHISM : MorphismProperty
   SPLIT_EPIMORPHISM  : MorphismProperty
 
+-- | Assertion that a morphism satisfies a morphism property.
 record MorphismPropertyAssertion : Set where
   constructor _is_
   field f : M.Identifier

@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --cubical-compatible #-}
 
+-- | Assemble framework metadata and content into synthesized documents.
 module Plan.CIM.DocumentSynthesis where
 
 open import Agda.Builtin.String using (String; primStringAppend; primStringEquality)
