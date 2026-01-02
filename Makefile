@@ -1,6 +1,10 @@
 # Use local Agda 2.8.0 if available, otherwise system agda
 AGDA := $(if $(wildcard .local/agda),.local/agda,agda)
 
+# Default parallelism scales with available cores unless user overrides MAKEFLAGS.
+CORES ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
+MAKEFLAGS += -j$(CORES)
+
 # Common Agda compilation flags
 AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type
 .PHONY: regen-makefile md-lint md-fix intake-lint build/canonical_roadmap.json intake-scan md-normalize makefile-validate all check badges priority-strategy-profiles priority-badge-weights priority-profile-json dependency-graph-json priority-refresh docs-modules docs-all node-deps deferred-items roadmap-index planning-index-json planning-kernel roadmap-sync roadmap-sppf validate-constructive roadmap-merge build/diagrams/agda-deps-full.dot roadmap-deps-graph build/canonical_enriched.json roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched docs-generate docs-validate agda-all
