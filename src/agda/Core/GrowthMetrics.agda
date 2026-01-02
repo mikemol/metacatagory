@@ -19,22 +19,22 @@ open import Agda.Builtin.String using (String)
 -- Phase 14: Solution Space Growth Instrumentation
 -- ============================================================================
 
--- Coordinate allocation event
+-- | Event recording allocation of a coordinate at a timestamp with context.
 record CoordinateAllocation : Set where
   field
     coordinate : M.Coordinate
     timestamp : Nat
     context : String
-    
--- Phase density
+
+-- | Density summary for a single phase index.
 record PhaseDensity : Set where
   field
     phaseNumber : Nat
     objectCount : Nat
     firstAllocation : Maybe Nat
     lastAllocation : Maybe Nat
-    
--- Y-coordinate distribution
+
+-- | Distribution of Y coordinates within a phase.
 record YCoordinateDistribution : Set where
   field
     phaseNumber : Nat
@@ -42,8 +42,8 @@ record YCoordinateDistribution : Set where
     maxY : Nat
     distinctYValues : Nat
     yValueGaps : List Nat
-
--- Growth rate metrics
+    
+-- | Aggregate growth rate metrics across phases.
 record GrowthRate : Set where
   field
     totalAllocations : Nat
@@ -53,15 +53,15 @@ record GrowthRate : Set where
     maxDensityCount : Nat
     sparsestPhase : Nat
     sparsestCount : Nat
-
--- Expansion pattern
+    
+-- | High-level classification of expansion behavior.
 data ExpansionPattern : Set where
   HorizontalGrowth : ExpansionPattern
   VerticalGrowth : ExpansionPattern
   BalancedGrowth : ExpansionPattern
   SparseGrowth : ExpansionPattern
 
--- Phase saturation
+-- | Saturation status of a single phase.
 record PhaseSaturation : Set where
   field
     phaseNumber : Nat
@@ -70,7 +70,7 @@ record PhaseSaturation : Set where
     saturationPercentage : Nat
     isSaturated : Bool
 
--- Growth snapshot
+-- | Snapshot capturing current growth metrics and derived summaries.
 record GrowthSnapshot : Set where
   field
     snapshotTimestamp : Nat
@@ -84,7 +84,7 @@ record GrowthSnapshot : Set where
 -- Growth Metric Computation
 -- ============================================================================
 
--- Calculate density for a specific phase
+-- | Calculate density statistics for a specific phase.
 calculatePhaseDensity : Nat → List CoordinateAllocation → PhaseDensity
 calculatePhaseDensity phase allocations = record
   { phaseNumber = phase
@@ -120,7 +120,7 @@ calculatePhaseDensity phase allocations = record
              then findLastHelper p as (just (CoordinateAllocation.timestamp a)) 
              else findLastHelper p as acc
 
--- Analyze Y-coordinate distribution
+-- | Analyze Y-coordinate distribution for a given phase.
 analyzeYDistribution : Nat → List CoordinateAllocation → YCoordinateDistribution
 analyzeYDistribution phase allocations = record
   { phaseNumber = phase
@@ -161,6 +161,7 @@ analyzeYDistribution phase allocations = record
 
 -- Compute overall growth rate
 -- Uses divNat from Core.Utils (no termination pragma needed)
+-- | Derive aggregate growth rate over all recorded allocations.
 computeGrowthRate : List CoordinateAllocation → GrowthRate
 computeGrowthRate allocations = record
   { totalAllocations = countAllocations allocations
@@ -184,7 +185,7 @@ computeGrowthRate allocations = record
           let phase = M.Coordinate.x (CoordinateAllocation.coordinate a)
           in if member phase seen then countHelper as seen else countHelper as (phase ∷ seen)
 
--- Classify expansion pattern
+-- | Classify high-level expansion pattern from a growth rate.
 classifyExpansionPattern : GrowthRate → ExpansionPattern
 classifyExpansionPattern rate =
   let avgPerPhase = GrowthRate.averageObjectsPerPhase rate
@@ -193,7 +194,7 @@ classifyExpansionPattern rate =
      else if ltNat phaseCount 5 then VerticalGrowth
      else if ltNat 10 avgPerPhase then VerticalGrowth else HorizontalGrowth
 
--- Check if a phase is approaching saturation
+-- | Check if a phase is approaching saturation.
 checkPhaseSaturation : PhaseDensity → PhaseSaturation
 checkPhaseSaturation density = record
   { phaseNumber = PhaseDensity.phaseNumber density
@@ -203,7 +204,7 @@ checkPhaseSaturation density = record
   ; isSaturated = false
   }
 
--- Create a growth snapshot
+-- | Capture a growth snapshot at a timestamp from allocation history.
 captureGrowthSnapshot : Nat → List CoordinateAllocation → GrowthSnapshot
 captureGrowthSnapshot timestamp allocations =
   let rate = computeGrowthRate allocations
@@ -220,6 +221,7 @@ captureGrowthSnapshot timestamp allocations =
 -- Verification Helpers
 -- ============================================================================
 
+-- | Validate that a growth rate accounts for at least one allocation and phase.
 verifyGrowthRate : GrowthRate → Bool
 verifyGrowthRate rate =
   let total = GrowthRate.totalAllocations rate
@@ -264,8 +266,10 @@ phase13Density = calculatePhaseDensity 13 metacatagoryGrowthHistory
 phase13YDistribution : YCoordinateDistribution
 phase13YDistribution = analyzeYDistribution 13 metacatagoryGrowthHistory
 
+-- | Growth rate computed from the authored history.
 metacatagoryGrowthRate : GrowthRate
 metacatagoryGrowthRate = computeGrowthRate metacatagoryGrowthHistory
 
+-- | Expansion pattern classified from the computed growth rate.
 metacatagoryExpansionPattern : ExpansionPattern
 metacatagoryExpansionPattern = classifyExpansionPattern metacatagoryGrowthRate
