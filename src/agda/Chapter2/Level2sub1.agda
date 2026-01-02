@@ -315,6 +315,7 @@ record ModularLatticeProperty : Set where
   constructor _is_MODULAR_LATTICE
   field lattice : M.Identifier; modularLawWitness : M.Identifier
 
+-- | Theorem: subobject lattice of X in an abelian category is modular.
 record SubobjectLatticeModularityTheorem : Set where
   constructor THEOREM_SubobjectLatticeInAbelianIsModular
   field
@@ -371,6 +372,7 @@ record SplittingLemmaForSESTheorem : Set where
 -- CATEGORY: Conditions equivalent to splitting.
 
 -- Long exact sequence declaration
+-- | Long exact sequence with positional exactness flags.
 record LongExactSequenceDeclaration : Set where
   constructor LONG_EXACT_SEQUENCE
   field
