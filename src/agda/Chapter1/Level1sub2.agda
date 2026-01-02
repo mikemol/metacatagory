@@ -30,13 +30,16 @@ record ProductObjectDeclaration : Set where
         parts : List M.Identifier
 -- CATEGORY: P is the apex of a limit cone over the discrete diagram {A_i}.
 
+-- | Named projection morphisms out of a product.
 data ProjectionMorphism : Set where
   proj_ : M.Identifier -> ProjectionMorphism
 
+-- | Universal mediating morphism into a product.
 record UniversalProductMorphism : Set where
   constructor ⟨_⟩
   field components : M.NonEmpty Expr
 
+-- | Axiom: existence of a universal morphism into a product.
 record UMP_ProductExistenceAxiom : Set where
   constructor AXIOM_ProductCommutativity
   field P : M.Identifier
@@ -44,6 +47,7 @@ record UMP_ProductExistenceAxiom : Set where
         legs : List M.Identifier
 -- CATEGORY: The universal morphism u makes each triangle commute: proj Ai ∘ u = f_i.
 
+-- | Axiom: uniqueness of the universal morphism into a product.
 record UMP_ProductUniquenessAxiom : Set where
   constructor AXIOM_ProductUniqueness
   field u′ : Expr
@@ -66,10 +70,12 @@ postulate
                             (ProductObjectDeclaration.parts decl))
                C.ProductUniquenessName
 
+-- | Binary product declaration wrapper.
 record BinaryProduct : Set where
   constructor BINARY_PRODUCT
   field A B : M.Identifier
 
+-- | Nullary product equals the terminal object.
 record NullaryProductIsTerminalAxiom : Set where
   constructor AXIOM_NullaryProductIsTerminal
   field unit : ⊤
