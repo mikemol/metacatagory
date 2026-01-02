@@ -6,11 +6,11 @@ open import Infrastructure.Axiom.Adequacy using (PathAlgebra)
 open import Infrastructure.Axiom.Instance using (AxiomInstance; FramedFace)
 open import Infrastructure.Polytopes.Braiding.HexagonTriangulation using (HexagonFan; hexagon-from-fan)
 
+-- | Build the hexagon coherence instance from a PathAlgebra braiding.
 HexagonInstance
   : ∀ {ℓ : Level} {V : Set ℓ}
     (PA : PathAlgebra {ℓ} {ℓ} V)
   → AxiomInstance PA
--- | Build the hexagon coherence instance from a PathAlgebra braiding.
 HexagonInstance {ℓ} PA =
   let open PathAlgebra PA in
   record
