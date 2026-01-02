@@ -353,10 +353,12 @@ record ShortExactSequenceDeclaration : Set where
     exactAtC  : Bool
 
 -- Split mono / split epi properties
+-- | Split mono: mono with a chosen retraction.
 record HasRetractionProperty : Set where
   constructor _has_retraction
   field mono : M.Identifier; retraction : M.Identifier
 
+-- | Split epi: epi with a chosen section.
 record HasSectionProperty : Set where
   constructor _has_section
   field epi : M.Identifier; section : M.Identifier
@@ -406,6 +408,7 @@ record DiagramChaseTheorem : Set where
     proofTechnique : ProofByDiagramChaseTechnique
 
 -- Concrete lemmas
+-- | Five lemma for long exact sequences.
 record FiveLemmaTheorem : Set where
   constructor THEOREM_TheFiveLemma
   field
@@ -413,6 +416,7 @@ record FiveLemmaTheorem : Set where
     conclusionIso : M.Identifier
     proof : ProofByDiagramChaseTechnique
 
+-- | Snake lemma for exact sequences.
 record SnakeLemmaTheorem : Set where
   constructor THEOREM_TheSnakeLemma
   field
@@ -421,6 +425,7 @@ record SnakeLemmaTheorem : Set where
     exactnessWitness : M.Identifier
     proof : ProofByDiagramChaseTechnique
 
+-- | 3×3 lemma for exact sequences.
 record ThreeByThreeLemmaTheorem : Set where
   constructor THEOREM_The3x3Lemma
   field
