@@ -778,10 +778,12 @@ record ContravariantMap : Set where
   field F : M.Identifier
         f : M.Identifier
 
+-- | Contravariant functor preserves identities.
 record ContravariantIdentityAxiom : Set where
   constructor AXIOM_contravariant_identity
   field F A : M.Identifier
 
+-- | Contravariant functor preserves composition (with reversal).
 record ContravariantCompositionAxiom : Set where
   constructor AXIOM_contravariant_composition
   field F f g : M.Identifier
@@ -807,24 +809,28 @@ record CommaMorphismCommutativityAxiom : Set where
   field h h' f g : M.Identifier
 
 -- Identity and constant functors
+-- | Identity functor constructor on C.
 record IdentityFunctorConstructor : Set where
   constructor Id
   field C : M.Identifier
 
+-- | Constant functor constructor Δ_X.
 record ConstantFunctorConstructor : Set where
   constructor Δ_  -- pronounced "Delta sub X"
   field X : M.Identifier
 
 -- Slice and coslice categories
+-- | Slice category C/X.
 record SliceCategory : Set where
   constructor _/_
   field C X : M.Identifier
 
+-- | Coslice category X\C.
 record CosliceCategory : Set where
   constructor _\\_  -- backslash escaped
   field X C : M.Identifier
 
--- Inverse morphism
+-- | Inverse morphism placeholder.
 record InverseMorphism : Set where
   constructor inverse
   field f : M.Identifier
