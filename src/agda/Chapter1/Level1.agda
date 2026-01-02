@@ -697,6 +697,7 @@ record ObjectMapping : Set where
         dst : M.Identifier
 open ObjectMapping public
 
+-- | Mapping of a morphism name under a functor.
 record MorphismMapping : Set where
   constructor mor↦
   field src : M.Identifier
@@ -847,6 +848,7 @@ data MorphismProperty : Set where
   SPLIT_MONOMORPHISM : MorphismProperty
   SPLIT_EPIMORPHISM  : MorphismProperty
 
+-- | Assertion that a morphism satisfies a morphism property.
 record MorphismPropertyAssertion : Set where
   constructor _is_
   field f : M.Identifier
