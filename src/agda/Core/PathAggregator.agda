@@ -50,7 +50,7 @@ record PathEvidence (A : Set) : Set where
     -- Evidence that coordinates are preserved
     coordPreservation : sourceCoord ≡ targetCoord
 
--- Path evidence for identifier roundtrips
+-- | Path evidence specialized to identifiers.
 PathEvidenceIdentifier : Set
 PathEvidenceIdentifier = PathEvidence M.Identifier
 
@@ -58,20 +58,20 @@ PathEvidenceIdentifier = PathEvidence M.Identifier
 -- Path Composition: Building composite paths from components
 -- ============================================================================
 
--- Transitivity of equality paths
+-- | Transitivity of equality paths.
 ≡-trans : {A : Set} {x y z : A} → x ≡ y → y ≡ z → x ≡ z
 ≡-trans refl refl = refl
 
--- Symmetry of equality paths
+-- | Symmetry of equality paths.
 ≡-sym : {A : Set} {x y : A} → x ≡ y → y ≡ x
 ≡-sym refl = refl
 
--- Compose two path evidences (for reflexive roundtrip paths)
+-- | Compose two path evidences (reflexive roundtrips).
 -- In our system, all paths are roundtrips where source ≡ target
 composePaths : {A : Set} → PathEvidence A → PathEvidence A → PathEvidence A
 composePaths {A} p₁ p₂ = p₁  -- For reflexive paths, composition is trivial
 
--- Identity path
+-- | Identity path evidence at coordinate c.
 identityPath : {A : Set} → (a : A) → (c : M.Coordinate) → PathEvidence A
 identityPath a c = mkPathEvidence a a refl c c refl
 
@@ -79,14 +79,14 @@ identityPath a c = mkPathEvidence a a refl c c refl
 -- Path Collections: Aggregating multiple paths
 -- ============================================================================
 
--- A collection of path evidences
+-- | Collection of path evidences with cached count.
 record PathCollection (A : Set) : Set where
   constructor mkPathCollection
   field
     paths : List (PathEvidence A)
     pathCount : Nat
 
--- Check if all paths in a collection are valid
+-- | Check that all path evidences are valid (trivial in this encoding).
 allPathsValid : {A : Set} → PathCollection A → Bool
 allPathsValid {A} collection = checkPaths (PathCollection.paths collection)
   where
@@ -94,7 +94,7 @@ allPathsValid {A} collection = checkPaths (PathCollection.paths collection)
     checkPaths [] = true
     checkPaths (p ∷ ps) = checkPaths ps  -- Always valid by construction
 
--- Compose all paths in a collection into a single composite path
+-- | Compose all paths in a collection into a single composite path.
 aggregatePaths : {A : Set} → PathCollection A → (a : A) → (c : M.Coordinate) → PathEvidence A
 aggregatePaths {A} collection a c = foldPaths (PathCollection.paths collection) (identityPath a c)
   where
@@ -106,7 +106,7 @@ aggregatePaths {A} collection a c = foldPaths (PathCollection.paths collection) 
 -- Coordinate Ordering Preservation
 -- ============================================================================
 
--- Evidence that coordinate ordering is preserved across a path
+-- | Evidence that coordinate ordering is preserved across a path.
 record OrderingPreservation : Set where
   constructor mkOrderingPreservation
   field
@@ -115,14 +115,14 @@ record OrderingPreservation : Set where
     transformedOrdering : Bool  -- id₁' <ⁱ id₂'
     orderingPreserved : originalOrdering ≡ transformedOrdering
 
--- Collection of ordering preservation evidences
+-- | Collection of ordering preservation evidences with cached count.
 record OrderingPreservationCollection : Set where
   constructor mkOrderingPreservationCollection
   field
     evidences : List OrderingPreservation
     evidenceCount : Nat
 
--- Verify all ordering evidences are valid
+-- | Verify ordering preservation witnesses (trivial under current encoding).
 allOrderingsPreserved : OrderingPreservationCollection → Bool
 allOrderingsPreserved collection = checkOrderings (OrderingPreservationCollection.evidences collection)
   where
@@ -135,7 +135,7 @@ allOrderingsPreserved collection = checkOrderings (OrderingPreservationCollectio
 -- ============================================================================
 
 -- The global closure witness aggregates all subsystem paths into a single
--- proof that the entire system maintains coordinate preservation
+-- proof that the entire system maintains coordinate preservation.
 record GlobalClosureWitness : Set₁ where
   constructor mkGlobalClosureWitness
   field
@@ -177,7 +177,7 @@ record PathSnapshot : Set₁ where
     -- Validation
     snapshotValid : Bool
 
--- Verify path snapshot is well-formed
+-- | Verify path snapshot is well-formed using stored validity flags.
 verifyPathSnapshot : PathSnapshot → Bool
 verifyPathSnapshot snapshot =
   andBool
