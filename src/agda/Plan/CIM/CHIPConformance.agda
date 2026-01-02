@@ -45,5 +45,6 @@ makeSPPFNode : ∀ {ℓ} {N : Set ℓ} {Sys : TransformationSystem N N}
 makeSPPFNode p bif = packed-node p p bif
 
 record CoherenceMapUniversalProperty {ℓ} (F : Set ℓ → Set ℓ) (G : Set ℓ → Set ℓ) : Set (lsuc ℓ) where
+  -- | Abstract adjunction-like coherence between two endofunctors.
   field
     adjunction : (A : Set ℓ) → (F (G A)) ≡ (G (F A))

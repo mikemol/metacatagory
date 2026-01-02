@@ -28,13 +28,13 @@ record SPPFNode : Set where
     parent1    : Maybe String
     parent2    : Maybe String
 
+-- | Entire packed SPPF graph.
 record SPPFGraph : Set where
-  -- | Entire packed SPPF graph.
   field
     nodes : List SPPFNode
 
+-- | Accumulator carrying packed nodes plus parent pointers.
 record PackResult : Set where
-  -- | Accumulator carrying packed nodes plus parent pointers.
   field
     packedNodes : List SPPFNode
     p1          : Maybe String

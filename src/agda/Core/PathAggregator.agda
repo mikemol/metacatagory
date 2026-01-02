@@ -356,6 +356,7 @@ _ = refl
 rootPathSnapshot : PathSnapshot
 rootPathSnapshot = mkPathSnapshot 0 metacatagoryGlobalClosure 3 2 true
 
+-- | Minimal growth allocation seed for the root snapshot.
 rootGrowthAllocations : List GM.CoordinateAllocation
 rootGrowthAllocations =
   record { coordinate = M.mkCoord 0 0

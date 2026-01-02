@@ -13,8 +13,8 @@ open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.Sigma using (Σ; _,_)
 open import Core.Utils using (map)
 
-data ⊥ : Set where
 -- | Empty type used for contradiction in non-empty proofs.
+data ⊥ : Set where
 
 -- | Cartesian product as a Σ-specialization (for simple pairing).
 _×_ : Set → Set → Set
