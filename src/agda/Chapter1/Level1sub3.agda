@@ -208,27 +208,33 @@ record LeftAdjointFaithfulnessCriteria : Set where
 -- Part 5: Reflective subcategories
 ------------------------------------------------------------------------
 
+-- | Full subcategory declaration with explicit object list.
 record FullSubcategoryDeclaration : Set where
   constructor FULL_SUBCATEGORY_of_on
   field A B : M.Identifier
         objs : List M.Identifier
 
+-- | Inclusion functor A ↪ B.
 record InclusionFunctorDeclaration : Set where
   constructor INCLUSION_↪
   field I A B : M.Identifier
 
+-- | Declarative judgment that A is reflective in B.
 record ReflectiveSubcategoryDeclaration : Set where
   constructor _is_REFLECTIVE_IN_
   field A B : M.Identifier
 
+-- | Reflector functor (left adjoint to inclusion).
 record ReflectorFunctor : Set where
   constructor Reflector
   field A B : M.Identifier
 
+-- | Reflection arrow for an object b in B.
 record ReflectionArrow : Set where
   constructor reflection_of
   field b : M.Identifier
 
+-- | Reflection counit isomorphism theorem.
 record ReflectionCounitIsomorphism : Set where
   constructor THEOREM_ReflectionCounitIsomorphism
   field A B : M.Identifier
@@ -237,33 +243,40 @@ record ReflectionCounitIsomorphism : Set where
 -- Part 6: Epireflective subcategories and duals
 ------------------------------------------------------------------------
 
+-- | Declarative judgment that A is epireflective in B.
 record EpireflectiveSubcategoryDeclaration : Set where
   constructor _is_EPIREFLECTIVE_IN_
   field A B : M.Identifier
 
 -- Closedness properties
 
+-- | Kinds of closedness used in epireflective criteria.
 data ClosednessKind : Set where
   PRODUCTS   : ClosednessKind
   SUBOBJECTS : ClosednessKind
 
+-- | Category closedness assertion for a subcategory within an ambient one.
 record CategoryClosednessProperty : Set where
   constructor _is_closed_under_within_
   field A kind B : M.Identifier
 
+-- | Epireflective criterion (closedness + factorization).
 record EpireflectiveCriterion : Set where
   constructor THEOREM_EpireflectiveCriterion
   field A B : M.Identifier
 
+-- | Example: Grp is epireflective in Mon.
 record Example_Grp_within_Mon_Epireflective : Set where
   constructor THEOREM_Grp_is_EPIREFLECTIVE_IN_Mon
   field unit : ⊤
 
 -- Dual notions
+-- | Dual notion: monoreflective subcategory declaration.
 record MonoreflectiveSubcategoryDeclaration : Set where
   constructor _is_MONOREFLECTIVE_IN_
   field A B : M.Identifier
 
+-- | Criterion for monoreflective subcategories (dual of epireflective).
 record MonoreflectiveCriterion : Set where
   constructor INFER_DUAL_THEOREM_MonoreflectiveCriterion
   field unit : ⊤
@@ -272,35 +285,43 @@ record MonoreflectiveCriterion : Set where
 -- Part 7: Kan extensions
 ------------------------------------------------------------------------
 
+-- | Context for Kan extension along K of T in C.
 record KanExtensionContext : Set where
   constructor CONTEXT_KAN
   field K T : M.Identifier
         C A B : M.Identifier
 
+-- | Candidate data for a left Kan extension.
 record LeftKanCandidate : Set where
   constructor L_CANDIDATE
   field M β : M.Identifier
 
+-- | Candidate data for a right Kan extension.
 record RightKanCandidate : Set where
   constructor R_CANDIDATE
   field M δ : M.Identifier
 
+-- | Left Kan extension as an initial object in the comma category.
 record LeftKanExtensionIsInitialObject : Set where
   constructor LeftKanExtension_IS_INITIAL
   field K T : M.Identifier
 
+-- | Right Kan extension as a terminal object in the comma category.
 record RightKanExtensionIsTerminalObject : Set where
   constructor RightKanExtension_IS_TERMINAL
   field K T : M.Identifier
 
+-- | Kan extension computed pointwise as a limit.
 record PointwiseKanFormulaTheorem : Set where
   constructor THEOREM_KanExtensionAsLimit
   field K T : M.Identifier
 
+-- | Comma object a ↓ K.
 record CommaObjectUnderFunctor : Set where
   constructor _↓_
   field a K : M.Identifier
 
+-- | Adjoints expressed as Kan extensions.
 record AdjointsAsKanExtensions : Set where
   constructor THEOREM_AdjointsAsKanExtensions
   field F G : M.Identifier
@@ -309,35 +330,43 @@ record AdjointsAsKanExtensions : Set where
 -- Part 8: Tensor product of set-valued functors
 ------------------------------------------------------------------------
 
+-- | Presheaf declaration on a category C.
 record PresheafDeclaration : Set where
   constructor PRESHEAF_on
   field F C : M.Identifier
 
+-- | Copresheaf declaration on a category C.
 record CopresheafDeclaration : Set where
   constructor COPRESHEAF_on
   field G C : M.Identifier
 
+-- | Tensor of presheaf/copresheaf defined as a coequalizer.
 record TensorAsCoequalizer : Set where
   constructor DEFINE_⊗_as_Coequalizer
   field F G C α β : M.Identifier
 
+-- | Tensor summand over objects.
 record TensorSummand_Objects : Set where
   constructor SumOverObjects
   field F G : M.Identifier
 
+-- | Tensor summand over morphisms.
 record TensorSummand_Morphisms : Set where
   constructor SumOverMorphisms
   field F G : M.Identifier
 
+-- | Tensor parallel arrows axiom enforcing coequalization.
 record TensorParallelArrowsAxiom : Set where
   constructor AXIOM_TensorParallelArrows
   field alpha beta : M.Identifier
         S_mor S_obj : M.Identifier
 
+-- | Tensor–hom adjunction theorem.
 record TensorHomAdjunctionTheorem : Set where
   constructor THEOREM_TensorHomAdjunction
   field C G : M.Identifier
 
+-- | Balanced map β : F ⊗ G → S in C.
 record C_BalancedMapDeclaration : Set where
   constructor C_BALANCED_MAP_TO
   field β F G S : M.Identifier
