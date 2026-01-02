@@ -28,20 +28,24 @@ record AdjunctionHomDecl : Set where
 -- CATEGORY: F ⊣ G declared via hom-set natural isomorphism.
 
 -- Unit–counit data
+-- | Unit/counit pair for an adjunction.
 record UnitCounitPair : Set where
   constructor UNIT_COϵ
   field η ε : M.Identifier  -- natural transformations (by name)
 
+-- | Triangle identities axiom for an adjunction.
 record TriangleIdentitiesAxiom : Set where
   constructor AXIOM_TriangleIdentities
   field pair : UnitCounitPair
 
 -- Unit–counit style adjunction declaration
+-- | Adjunction declared via unit/counit data.
 record AdjunctionFromUnitCounit : Set where
   constructor ADJUNCTION_from
   field datum : UnitCounitPair
 
 -- Hom-set natural isomorphism witness
+-- | Natural isomorphism between hom-sets.
 record HomSetIsomorphism : Set where
   constructor Hom_≅Hom
   field
@@ -49,48 +53,59 @@ record HomSetIsomorphism : Set where
     F G : M.Identifier
 
 -- Equivalence of the two definitions
+-- | Equivalence between hom-set and unit/counit adjunction definitions.
 record EquivalenceOfAdjunctionDefinitions : Set where
   constructor THEOREM_AdjunctionEquivalence
   field F G C D : M.Identifier
 
 -- Example 1: Free–Forgetful
+-- | Category declaration placeholder.
 record CategoryDeclaration : Set where
   constructor CATEGORY
   field name : M.Identifier
 
+-- | Forgetful functor declaration.
 record ForgetfulFunctor : Set where
   constructor FORGET_from_to
   field U src dst : M.Identifier
 
+-- | Free functor declaration.
 record FreeFunctor : Set where
   constructor FREE_on_from_to
   field F on src dst : M.Identifier
 
+-- | Specialized adjunction FREE ⊣ FORGET.
 record SpecializedAdjunction_FreeForget : Set where
   constructor FREE_⊣_FORGET
   field F U : M.Identifier
 
+-- | Named unit component η_S.
 record UnitComponent : Set where
   constructor η_
   field S : M.Identifier
 
+-- | Named counit component ε_G.
 record CounitComponent : Set where
   constructor ε_
   field G : M.Identifier
 
 -- Example 2: Δ ⊣ Π
+-- | Product category placeholder.
 record ProductCategory : Set where
   constructor PRODUCT_CATEGORY
   field C1 C2 : M.Identifier
 
+-- | Diagonal functor declaration.
 record Functor_Delta : Set where
   constructor Δ
   field C : M.Identifier
 
+-- | Product functor Π declaration.
 record Functor_Pi : Set where
   constructor Π
   field C : M.Identifier
 
+-- | Adjunction Δ ⊣ Π.
 record Adjunction_Delta_Pi : Set where
   constructor Δ_⊣_Π
   field C : M.Identifier
@@ -99,18 +114,22 @@ record Adjunction_Delta_Pi : Set where
 -- Part 2: Adjoint Functor Theorems (left) and duals (right)
 ------------------------------------------------------------------------
 
+-- | Solution set condition for left adjoint existence.
 record SolutionSetCondition : Set where
   constructor _satisfies_SolutionSetCondition
   field G : M.Identifier
 
+-- | Category is well-powered.
 record WellPowered : Set where
   constructor _is_WELL_POWERED
   field C : M.Identifier
 
+-- | Functor is faithful.
 record FunctorProperty_Faithful : Set where
   constructor _is_FAITHFUL
   field F : M.Identifier
 
+-- | Category has a cogenerator.
 record HasCogenerator : Set where
   constructor _has_COGENERATOR
   field D : M.Identifier
