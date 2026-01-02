@@ -10,9 +10,9 @@ open import Agda.Builtin.Nat using (Nat; zero; suc; _-_)
 open import Agda.Builtin.Bool using (Bool; true; false)
 open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 open import Agda.Builtin.Sigma using (Σ; _,_)
-
-_×_ : ∀ {ℓ} → Set ℓ → Set ℓ → Set ℓ
-A × B = Σ A (λ _ → B)
+open import Plan.CIM.Metricization public
+open import Plan.CIM.TransformationSystem public
+open import Plan.CIM.FunctorialConstructs public
 
 ℕ : Set
 ℕ = Nat
@@ -109,101 +109,9 @@ upgradeStep s = record
 -- Core CIM Framework Types
 ------------------------------------------------------------------------
 
--- | Pair of values with an associated phase indicating ambiguity.
-record PhaseAmbiguity {ℓ} (A B : Set ℓ) : Set ℓ where
-    field
-        valA : A
-        valB : B
-        phase : ℕ 
--- | System describing steps and costs between phases.
-record TransformationSystem {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
-    field
-        Step : Set ℓ
-        cost : Step → ℕ
--- | Simple metric wrapper for coherence costs.
-record EmergentMetric : Set where
-    field
-        magnitude : ℕ
--- | Path of transformation steps.
-data Path {ℓ} {A B : Set ℓ} (Sys : TransformationSystem {ℓ} A B) : Set ℓ where
-    refl-path : Path Sys
-    trans-step : (s : TransformationSystem.Step Sys) → (rest : Path Sys) → Path Sys
-
--- | Witness of coherence with an explicit proof path and metric.
-record CoherenceWitness {ℓ} {A B : Set ℓ} (amb : PhaseAmbiguity {ℓ} A B) (Sys : TransformationSystem {ℓ} A B) : Set (lsuc ℓ) where
-    field
-        proofPath : Path Sys
-        metric    : EmergentMetric
--- | Braided inheritance functor with swap and cost.
-record BraidedInheritanceFunctor {ℓ} (A B : Set ℓ) : Set (lsuc ℓ) where
-    field
-        inheritanceBraid : (A × B) → (B × A)
-        coherenceCost    : EmergentMetric
-        fromValue : A
-        toValue   : B
-        description : String
--- | Packed SPPF node carrying left/right paths and a braid resolution.
-record BraidedSPPF {ℓ} (A B : Set ℓ) (Sys : TransformationSystem A B) : Set (lsuc ℓ) where
-    constructor packed-node
-    field
-        leftPath   : Path Sys
-        rightPath  : Path Sys
-        resolution : BraidedInheritanceFunctor A B
-
--- | Cost function with a minimality predicate.
-record CostFunction : Set where
-    field
-        cost : ℕ → ℕ
-        minimal : ℕ → Bool
-
--- | Generic witness pairing a source, target, and evidence string.
-record Witness {ℓ} (A B : Set ℓ) : Set ℓ where
-    field
-        source : A
-        target : B
-        evidence : String
-
--- | Compact normal form protocol combining ambiguity, system, and coherence.
-record CNFProtocol (A B : Set) : Set₁ where
-    field
-        ambiguity : PhaseAmbiguity A B
-        transSys  : TransformationSystem A B
-        coherence : CoherenceWitness ambiguity transSys
-        metric    : EmergentMetric
-
-------------------------------------------------------------------------
--- AST-Dependent Types
-------------------------------------------------------------------------
-
-module ASTDependent (Block MdBlock BraidStep : Set) where
-  -- | Trace of braid steps with summary.
-  record BraidTrace : Set where
-    field
-        steps : List BraidStep
-        summary : String
-
-  -- | Protocol specialized to block-level transformations.
-  record BlockProtocol : Set₁ where
-    field
-        ambiguity : PhaseAmbiguity Block MdBlock
-        transSys  : TransformationSystem Block MdBlock
-        coherence : CoherenceWitness ambiguity transSys
-        metric    : EmergentMetric
-
-  -- | Protocol specialized to document-level transformations.
-  record DocProtocol : Set₁ where
-    field
-        ambiguity : PhaseAmbiguity String String
-        transSys  : TransformationSystem String String
-        coherence : CoherenceWitness ambiguity transSys
-        metric    : EmergentMetric
-
 ------------------------------------------------------------------------
 -- Utility Functions
 ------------------------------------------------------------------------
-
-metricMinimality : CostFunction → ℕ → Bool
-metricMinimality cf m = CostFunction.minimal cf m
 
 index : ∀ {A : Set} → List A → ℕ → Maybe A
 index [] _ = nothing
