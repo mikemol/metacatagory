@@ -140,6 +140,7 @@ data AdjointFunctorTheoremLeft : Set where
   SAFT : M.Identifier -> AdjointFunctorTheoremLeft
 
 -- Dual inference to right adjoints
+-- | Dual adjoint functor theorem for right adjoints.
 record AdjointFunctorTheoremRight : Set where
   constructor INFER_DUAL_THEOREM_GAFT_SAFT
   field unit : ⊤
@@ -148,27 +149,33 @@ record AdjointFunctorTheoremRight : Set where
 -- Part 3: Properties of adjoint functors
 ------------------------------------------------------------------------
 
+-- | Right adjoints preserve limits.
 record RightAdjointsPreserveLimits : Set where
   constructor THEOREM_RightAdjointsPreserveLimits
   field G : M.Identifier
 
+-- | Left adjoints preserve colimits (dual inference).
 record LeftAdjointsPreserveColimits : Set where
   constructor INFER_DUAL_THEOREM_LeftAdjointsPreserveColimits
   field unit : ⊤
 
 -- Universal arrows via comma categories
+-- | Comma category X ↓ G for universal arrows.
 record UniversalArrowCategory_X↓G : Set where
   constructor _X_↓_G
   field X G : M.Identifier
 
+-- | Comma category F ↓ Y for universal arrows.
 record UniversalArrowCategory_F↓Y : Set where
   constructor _F_↓_Y
   field F Y : M.Identifier
 
+-- | Adjunctions characterized via universal arrows.
 record AdjunctionsViaUniversalArrows : Set where
   constructor THEOREM_AdjunctionsViaUniversalArrows
   field F G : M.Identifier
 
+-- | Uniqueness of adjoints up to isomorphism.
 record AdjointsAreUnique : Set where
   constructor THEOREM_AdjointsAreUnique
   field F F′ G : M.Identifier
@@ -177,18 +184,22 @@ record AdjointsAreUnique : Set where
 -- Part 4: Fully faithful adjoint functors
 ------------------------------------------------------------------------
 
+-- | Functor is full.
 record FunctorProperty_Full : Set where
   constructor _is_FULL
   field F : M.Identifier
 
+-- | Functor is fully faithful.
 record FunctorProperty_FullyFaithful : Set where
   constructor _is_FULLY_FAITHFUL
   field F : M.Identifier
 
+-- | Criteria ensuring a right adjoint is faithful.
 record RightAdjointFaithfulnessCriteria : Set where
   constructor THEOREM_RightAdjointFaithfulnessCriteria
   field F G : M.Identifier
 
+-- | Dual criteria ensuring a left adjoint is faithful.
 record LeftAdjointFaithfulnessCriteria : Set where
   constructor INFER_DUAL_THEOREM_LeftAdjointFaithfulnessCriteria
   field unit : ⊤
