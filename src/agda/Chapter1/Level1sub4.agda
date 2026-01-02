@@ -125,30 +125,37 @@ record StrongMonomorphism : Set where
 -- Part 4: Epi-mono factorizations
 ------------------------------------------------------------------------
 
+-- | Factorization data f = m ∘ e via an object I.
 record MorphismFactorization : Set where
   constructor Factorization_of_is_via
   field f e m I : M.Identifier
 
+-- | Axiom: morphism factorizations are unique up to isomorphism.
 record FactorizationUniquenessAxiom : Set where
   constructor AXIOM_FactorizationIsUniqueUpToIsomorphism
   field unit : ⊤
 
+-- | Declaration that C admits a chosen (E,M) factorization system.
 record HasFactorizationSystem : Set where
   constructor _has_FACTORIZATION_SYSTEM
   field C E M : M.Identifier
 
+-- | Image of a morphism f.
 record ImageOfMorphism : Set where
   constructor Image
   field f : M.Identifier
 
+-- | Coimage of a morphism f.
 record CoimageOfMorphism : Set where
   constructor Coimage
   field f : M.Identifier
 
+-- | Standard epi–mono factorization system for a category C.
 record StandardFactorizationSystem : Set where
   constructor THEOREM_StandardFactorizationSystem
   field C : M.Identifier
 
+-- | Dual factorization system (monic–epic).
 record AlternateFactorizationSystem : Set where
   constructor INFER_DUAL_THEOREM_AlternateFactorizationSystem
   field unit : ⊤
@@ -166,30 +173,37 @@ record HasGeneratorObject : Set where
 -- Part 6: Projectives
 ------------------------------------------------------------------------
 
+-- | Lifting problem against an epimorphism e.
 record ProjectiveLiftingProblem : Set where
   constructor LIFTING_PROBLEM_against_epi
   field f e : M.Identifier
 
+-- | Existence of a lift for a given problem.
 record HasLiftSolution : Set where
   constructor HAS_LIFT
   field problem : M.Identifier
 
+-- | Projective object declaration.
 record ProjectiveObject : Set where
   constructor _is_PROJECTIVE
   field P : M.Identifier
 
+-- | Functorial equivalence characterization of projectives.
 record ProjectiveFunctorialEquivalence : Set where
   constructor THEOREM_ProjectiveFunctorialEquivalence
   field P : M.Identifier
 
+-- | Free objects are projective (canonical theorem).
 record FreeObjectsAreProjective : Set where
   constructor THEOREM_FreeObjectsAreProjective
   field unit : ⊤
 
+-- | Category has enough projectives.
 record HasEnoughProjectives : Set where
   constructor _has_ENOUGH_PROJECTIVES
   field C : M.Identifier
 
+-- | Dual injective theory inferred from projective theory.
 record InferDualTheory_Injective : Set where
   constructor INFER_DUAL_THEORY_InjectiveTheory
   field unit : ⊤
@@ -198,22 +212,27 @@ record InferDualTheory_Injective : Set where
 -- Part 7: Injectives and cogenerators
 ------------------------------------------------------------------------
 
+-- | Injective object declaration.
 record InjectiveObject : Set where
   constructor _is_INJECTIVE
   field I : M.Identifier
 
+-- | Extension problem along a monomorphism.
 record InjectiveExtensionProblem : Set where
   constructor EXTENSION_PROBLEM_from_mono_WITH_map
   field m f : M.Identifier
 
+-- | Lifting equivalence for injective objects.
 record InjectiveLiftingEquivalence : Set where
   constructor THEOREM_InjectiveLiftingEquivalence
   field I : M.Identifier
 
+-- | Cogenerator object declaration.
 record CogeneratorObject : Set where
   constructor _is_COGENERATOR
   field C : M.Identifier
 
+-- | Category has enough injectives.
 record HasEnoughInjectives : Set where
   constructor _has_ENOUGH_INJECTIVES
   field C : M.Identifier
