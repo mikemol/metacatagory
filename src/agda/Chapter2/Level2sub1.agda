@@ -220,10 +220,12 @@ record FirstIsomorphismTheoremForCategories : Set where
 -- CATEGORY: Coim(f) ≅ Im(f) encapsulating exactness.
 
 -- Canonical examples: Ab, R-Mod
+-- | Canonical example: category Ab is abelian.
 record AbelianCategoryExampleAb : Set where
   constructor ABELIAN_CATEGORY_Ab
   field unit : ⊤
 
+-- | Canonical example: category of R-modules is abelian.
 record AbelianCategoryExampleRMod : Set where
   constructor ABELIAN_CATEGORY_RMod
   field ring : M.Identifier
@@ -253,6 +255,7 @@ record CanonicalMorphism_f_bar : Set where
     targetImage   : M.Identifier
     factorizationWitness : M.Identifier
 
+-- | First isomorphism theorem specialized to abelian categories.
 record FirstIsomorphismForAbelianCategoriesTheorem : Set where
   constructor THEOREM_FirstIsomorphismForAbelianCategories
   field
@@ -286,6 +289,7 @@ record AdditivityViaBiproductCoincidenceTheorem : Set where
 ------------------------------------------------------------------------
 
 -- Join (union) of subobjects
+-- | Join (union) of subobjects via coproduct map.
 record UnionOfSubobjects : Set where
   constructor Join
   field
@@ -296,6 +300,7 @@ record UnionOfSubobjects : Set where
 -- CATEGORY: Image of universal coproduct map.
 
 -- Meet (intersection) of subobjects
+-- | Meet (intersection) of subobjects via pullback.
 record IntersectionOfSubobjects : Set where
   constructor Meet
   field
@@ -305,6 +310,7 @@ record IntersectionOfSubobjects : Set where
 -- CATEGORY: Wide pullback of monomorphisms.
 
 -- Modular lattice property
+-- | Modular lattice law witness for Sub(X).
 record ModularLatticeProperty : Set where
   constructor _is_MODULAR_LATTICE
   field lattice : M.Identifier; modularLawWitness : M.Identifier
@@ -376,11 +382,12 @@ record LongExactSequenceDeclaration : Set where
 ------------------------------------------------------------------------
 
 -- Proof by diagram chase technique
+-- | Diagram chase proof technique descriptor.
 record ProofByDiagramChaseTechnique : Set where
   constructor PROOF_by_DIAGRAM_CHASE
   field justification : M.Identifier
 
--- Diagrammatic assertion (premises container)
+-- | Diagrammatic assertion (premises container).
 record DiagrammaticAssertion : Set where
   constructor DIAGRAMMATIC_ASSERTION
   field
@@ -388,7 +395,7 @@ record DiagrammaticAssertion : Set where
     diagramId : M.Identifier
     premises  : List M.Identifier
 
--- Generic theorem from diagram chase
+-- | Generic theorem derived via diagram chase.
 record DiagramChaseTheorem : Set where
   constructor THEOREM_from_DIAGRAM_CHASE
   field
