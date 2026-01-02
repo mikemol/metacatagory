@@ -134,6 +134,7 @@ data ObjectProperty : Set where
   INITIAL_OBJECT  : ObjectProperty
   TERMINAL_OBJECT : ObjectProperty
 
+-- | Declaration tagging an object as initial or terminal.
 record ObjectPropertyDeclaration : Set where
   constructor _is_
   field X : M.Identifier
@@ -455,14 +456,17 @@ record CategoryIsFiltered : Set where
   constructor _is_FILTERED
   field J : M.Identifier
 
+-- | Axiom: any pair of objects in J admits an upper bound.
 record CategoryAxiom_UpperBoundsForObjects : Set where
   constructor AXIOM_UpperBoundsForObjects_within
   field J : M.Identifier
 
+-- | Axiom: any parallel arrows in J can be equalized.
 record CategoryAxiom_EqualizingMorphisms : Set where
   constructor AXIOM_EqualizingMorphisms_within
   field J : M.Identifier
 
+-- | Declaration that J has finitely many objects/morphisms.
 record CategoryIsFinite : Set where
   constructor _is_FINITE
   field J : M.Identifier
@@ -487,22 +491,27 @@ record OverCommaCategory : Set where
   constructor _↓_
   field U k : M.Identifier
 
+-- | Functor U is final.
 record FunctorProperty_Final : Set where
   constructor _is_FINAL
   field U : M.Identifier
 
+-- | Functor U preserves colimits after precomposition.
 record FunctorBehavior_PreservesColimitsOnPrecomposition : Set where
   constructor _preserves_colimits_on_precomposition
   field U : M.Identifier
 
+-- | Finality equivalence theorem for U.
 record FinalityEquivalence : Set where
   constructor THEOREM_FinalityEquivalence
   field U : M.Identifier
 
+-- | Duality mapping between final and initial functors.
 record DualityMapping_Final_Initial : Set where
   constructor DUALITY_MAPPING_FINAL_INITIAL
   field unit : ⊤
 
+-- | Initiality equivalence (dual) for a functor.
 record InitialityEquivalence : Set where
   constructor INFER_DUAL_THEOREM_InitialityEquivalence
   field unit : ⊤
