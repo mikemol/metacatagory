@@ -5,12 +5,8 @@ module Plan.CIM.FunctorialConstructs where
 
 open import Agda.Primitive using (Level; lsuc)
 open import Agda.Builtin.String using (String)
-open import Agda.Builtin.Sigma using (Σ; _,_)
-open import Plan.CIM.Metricization using (EmergentMetric)
-open import Plan.CIM.TransformationSystem using (PhaseAmbiguity; TransformationSystem; Path)
-
-_×_ : ∀ {ℓ} → Set ℓ → Set ℓ → Set ℓ
-A × B = Σ A (λ _ → B)
+open import Plan.CIM.Metricization using (EmergentMetric) public
+open import Plan.CIM.TransformationSystem using (PhaseAmbiguity; TransformationSystem; Path; _×_) public
 
 -- | Witness of coherence with an explicit proof path and metric.
 record CoherenceWitness {ℓ} {A B : Set ℓ} (amb : PhaseAmbiguity {ℓ} A B) (Sys : TransformationSystem {ℓ} A B) : Set (lsuc ℓ) where

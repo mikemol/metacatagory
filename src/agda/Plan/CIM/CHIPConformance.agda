@@ -11,7 +11,6 @@ open import Agda.Builtin.Equality using (_≡_)
 open import Agda.Primitive using (Level; lzero; lsuc)
 open import Agda.Builtin.Sigma using (Σ; _,_)
 
--- [UPDATED] Imported PhaseAmbiguity and BraidedSPPF
 open import Plan.CIM.Utility using (PhaseAmbiguity; TransformationSystem; Path; map; _×_)
 open import Plan.CIM.FunctorialConstructs using (EmergentMetric; CoherenceWitness; BraidedInheritanceFunctor; BraidedSPPF; packed-node)
 

@@ -8,7 +8,8 @@ open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Nat using (Nat; _+_)
 
-open import Plan.CIM.Utility using (TransformationSystem; Path; refl-path; trans-step; map; _++)
+open import Plan.CIM.Utility using (TransformationSystem; Path; refl-path; trans-step; map; _++_)
+open import Plan.CIM.FunctorialConstructs using (CoherenceWitness; EmergentMetric)
 open import Plan.CIM.FunctorialConstructs using (CoherenceWitness; EmergentMetric)
 open import Plan.CIM.FunctorialConstructs using (CoherenceWitness; EmergentMetric)
 open import Plan.CIM.PandocAST

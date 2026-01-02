@@ -32,10 +32,6 @@ data Path {ℓ} {A B : Set ℓ} (Sys : TransformationSystem {ℓ} A B) : Set ℓ
     trans-step : (s : TransformationSystem.Step Sys) → (rest : Path Sys) → Path Sys
 
 -- | Witness of coherence with an explicit proof path and metric.
-record CoherenceWitness {ℓ} {A B : Set ℓ} (amb : PhaseAmbiguity {ℓ} A B) (Sys : TransformationSystem {ℓ} A B) : Set (lsuc ℓ) where
-    field
-        proofPath : Path Sys
-        metric    : EmergentMetric
 
 ------------------------------------------------------------------------
 -- AST-Dependent Types
@@ -53,7 +49,7 @@ module ASTDependent (Block MdBlock BraidStep : Set) where
     field
         ambiguity : PhaseAmbiguity Block MdBlock
         transSys  : TransformationSystem Block MdBlock
-        coherence : CoherenceWitness ambiguity transSys
+        coherence : Set
         metric    : EmergentMetric
 
   -- | Protocol specialized to document-level transformations.
@@ -61,5 +57,5 @@ module ASTDependent (Block MdBlock BraidStep : Set) where
     field
         ambiguity : PhaseAmbiguity String String
         transSys  : TransformationSystem String String
-        coherence : CoherenceWitness ambiguity transSys
+        coherence : Set
         metric    : EmergentMetric
