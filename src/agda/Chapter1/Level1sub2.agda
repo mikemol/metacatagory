@@ -82,25 +82,30 @@ record NullaryProductIsTerminalAxiom : Set where
 -- CATEGORY: PRODUCT of () equals TERMINAL_OBJECT.
 
 -- Coproduct via duality (derived theorems and axioms)
+-- | Coproduct object declaration (dual of product).
 record CoproductObjectDeclaration : Set where
   constructor _is_COPRODUCT_of_
   field Q : M.Identifier
         parts : List M.Identifier
 
+-- | Axiom: coproduct injections form a cocone making triangles commute.
 record CoproductCommutativityAxiom : Set where
   constructor AXIOM_CoproductCommutativity
   field cocone : M.Identifier
         injOf  : List M.Identifier
 
+-- | Axiom: mediating map into a coproduct is unique.
 record CoproductUniquenessAxiom : Set where
   constructor AXIOM_CoproductUniqueness
   field mediator′ : Expr
         mediator  : Expr
 
+-- | Binary coproduct declaration wrapper.
 record BinaryCoproduct : Set where
   constructor _+_
   field A B : M.Identifier
 
+-- | Nullary coproduct equals the initial object.
 record NullaryCoproductIsInitialAxiom : Set where
   constructor AXIOM_NullaryCoproductIsInitial
   field unit : ⊤
@@ -134,32 +139,39 @@ record ObjectPropertyDeclaration : Set where
   field X : M.Identifier
         P : ObjectProperty
 
+-- | Unique morphism from an initial object to any X.
 record UniversalInitialMorphism : Set where
   constructor unique_from_initial_to
   field X : M.Identifier
 
+-- | Axiom: any two arrows from initial object coincide.
 record InitialUniquenessAxiom : Set where
   constructor AXIOM_InitialUniqueness
   field f : M.Identifier
         X : M.Identifier
 
+-- | Unique morphism to a terminal object from any X.
 record UniversalTerminalMorphism : Set where
   constructor unique_to_terminal_from
   field X : M.Identifier
 
+-- | Axiom: any two arrows into terminal object coincide.
 record TerminalUniquenessAxiom : Set where
   constructor AXIOM_TerminalUniqueness
   field f : M.Identifier
         X : M.Identifier
 
+-- | Theorem: any two initial objects are isomorphic.
 record InitialObjectsAreIsomorphic : Set where
   constructor THEOREM_InitialObjectsAreIsomorphic
   field I J : M.Identifier
 
+-- | Theorem: terminal object is the nullary product.
 record TerminalIsNullaryProduct : Set where
   constructor THEOREM_TerminalIsNullaryProduct
   field T : M.Identifier
 
+-- | Theorem: initial object is the nullary coproduct.
 record InitialIsNullaryCoproduct : Set where
   constructor THEOREM_InitialIsNullaryCoproduct
   field I : M.Identifier
