@@ -12,6 +12,7 @@ open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 open import Agda.Builtin.Sigma using (Σ; _,_)
 open import Plan.CIM.Metricization public
 open import Plan.CIM.TransformationSystem public
+open import Plan.CIM.FunctorialConstructs public
 
 ℕ : Set
 ℕ = Nat

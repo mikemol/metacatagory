@@ -1,5 +1,6 @@
 {-# OPTIONS --guardedness #-}
 
+-- | Orchestration layer for priority strategies; ties logic/formatting to I/O with parameterized effects.
 open import Agda.Builtin.String using (String; primStringAppend)
 open import Agda.Builtin.Unit
 open import Agda.Builtin.IO using (IO)
