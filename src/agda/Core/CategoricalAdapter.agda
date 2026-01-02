@@ -31,11 +31,12 @@ record CategoricalAdapter {ℓ : Level} (T : Set ℓ) : Set (lsuc ℓ) where
 -- | Build the trivial adapter given a carrier and chosen inhabitant.
 --   Useful when wrapping plain sets into CategoryLike slots.
 mkCategoricalAdapter : ∀ {ℓ} (T : Set ℓ) → (f : ⊤ → T) → CategoricalAdapter T
-mkCategoricalAdapter T f =
-  record { object = T
-         ; morphism = f
-         ; homSet = T
-         ; isomorphism = refl }
+mkCategoricalAdapter T f = record
+  { object = T
+  ; morphism = f
+  ; homSet = T
+  ; isomorphism = refl
+  }
 
 -- Example usage:
 -- For Bool:

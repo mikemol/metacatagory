@@ -14,9 +14,9 @@ HexagonInstance
 HexagonInstance {ℓ} PA =
   let open PathAlgebra PA in
   record
-    { Kit  = HexagonFan {ℓV = ℓ} {ℓP = ℓ} Path _++_
-    ; face = λ K →
-        let open HexagonFan K in
-        record { a = v0 ; b = v3 ; face = record { lhs = pLeft ; rhs = pRight } }
-    ; solve = λ K → hexagon-from-fan (++-assoc) K
-    }
+      { Kit  = HexagonFan {ℓV = ℓ} {ℓP = ℓ} Path _++_
+      ; face = λ K →
+          let open HexagonFan K in
+          record { a = v0 ; b = v3 ; face = record { lhs = pLeft ; rhs = pRight } }
+      ; solve = λ K → hexagon-from-fan (++-assoc) K
+      }
