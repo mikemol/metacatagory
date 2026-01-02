@@ -366,6 +366,7 @@ record ProgeneratorModule : Set where
     generatorWitness         : M.Identifier
 
 -- Functors built from a bimodule P: - ⊗_R P and Hom_S(P,-)
+-- | Functor - ⊗_R P built from an (S,R)-bimodule P.
 record MoritaEquivalenceFunctor_Tensor : Set where
   constructor _⊗_R_
   field
@@ -373,6 +374,7 @@ record MoritaEquivalenceFunctor_Tensor : Set where
     P        : M.Identifier -- (S,R)-bimodule identifier
     functor  : M.Identifier -- - ⊗_R P : R-Mod → S-Mod
 
+-- | Functor Hom_S(P,-) built from an (S,R)-bimodule P.
 record MoritaEquivalenceFunctor_Hom : Set where
   constructor Hom_FUN
   field
