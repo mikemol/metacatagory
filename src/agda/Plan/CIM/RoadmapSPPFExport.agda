@@ -72,6 +72,7 @@ exportSPPF inPath outPath = do
 #-}
 
 postulate
+  -- | FFI bridge for exporting an SPPF JSON.
   exportAdapter : String → String → IO ⊤
 
 {-# COMPILE GHC exportAdapter = exportSPPF #-}

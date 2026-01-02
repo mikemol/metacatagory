@@ -15,6 +15,7 @@ if_then_else_ : ∀ {ℓ} {A : Set ℓ} → Bool → A → A → A
 if_then_else_ true  x _ = x
 if_then_else_ false _ y = y
 
+-- | Boolean disjunction.
 _||_ : Bool → Bool → Bool
 true  || _ = true
 false || b = b
@@ -46,6 +47,7 @@ _+_ : Nat → Nat → Nat
 zero + n = n
 suc m + n = suc (m + n)
 
+-- | Check if list is empty.
 null : ∀ {ℓ} {A : Set ℓ} → List A → Bool
 null [] = true
 null (_ ∷ _) = false

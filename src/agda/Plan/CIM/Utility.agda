@@ -31,26 +31,27 @@ map f (x ∷ xs) = f x ∷ map f xs
 -- Shared Data Types (Lifted for Module Parameterization)
 ------------------------------------------------------------------------
 
--- [MOVED] From Plan.CIM.Ambiguity
+-- | Option annotated with weight and provenance (shared).
 record WeightedOption {ℓ} (A : Set ℓ) : Set ℓ where
   field
     value : A
     weight : Nat
     provenance : String
 
--- [MOVED] From Plan.CIM.YonedaProfiler
+-- | Simple morphism record (source/target/kind).
 record Morphism : Set where
   field
     source : String
     target : String
     kind   : String
 
--- [MOVED] From Plan.CIM.PolytopeExpansion
+-- | Semantic point with coordinates in ℕ^n.
 record SemanticPoint : Set where
   field
     id : String
     coordinates : List Nat
 
+-- | Basic polytope with vertices, center, and radius.
 record Polytope : Set where
   field
     vertices : List SemanticPoint
