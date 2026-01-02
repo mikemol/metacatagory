@@ -215,14 +215,14 @@ adapterIndex SheafOfRingsAdapter = mkIndex 20 17
 adapterIndex SheafOfOModulesAdapter = mkIndex 20 18
 adapterIndex CategoryOfOModulesIsAbelianCorollaryAdapter = mkIndex 20 19
 
--- Checklist module registry
+-- | Checklist module registry entry with assertion counts and adapters.
 record ChecklistModule : Set where
   field
     moduleName : String
     assertionCount : Nat
     adapterTypes : List AdapterType
 
--- All checklist modules with their assertion counts
+-- | All checklist modules with their assertion counts and adapter types.
 allChecklists : List ChecklistModule
 allChecklists =
   record { moduleName = "Tests.GrothendieckFibrationsChecklist"
@@ -269,7 +269,7 @@ allChecklists =
          } ∷
   []  -- Add more as needed
 
--- Total assertion count (computed from the list)
+-- | Total assertion count (computed from the list).
 totalAssertions : Nat
 totalAssertions = sumAssertions allChecklists
   where
