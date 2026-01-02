@@ -196,12 +196,14 @@ record AbelianCategoryDeclaration : Set where
 -- CATEGORY: Additive + all kernels/cokernels + normality of monos/epis.
 
 -- Coimage and Image constructs
+-- | Coimage of a morphism f, given by coker(ker f).
 record CoimageOfMorphism : Set where
   constructor Coim
   field
     morphism : M.Identifier
     quotientObject : M.Identifier -- coker(ker(f))
 
+-- | Image of a morphism f, given by ker(coker f).
 record ImageOfMorphism : Set where
   constructor Im
   field
@@ -232,15 +234,17 @@ record AbelianCategoryExampleRMod : Set where
 ------------------------------------------------------------------------
 
 -- Re-declared Coim/Im constructors (exactness focus)
+-- | Constructor form of coimage with domain/codomain carried explicitly.
 record CoimConstructor : Set where
   constructor Coim'
   field morphism : M.Identifier; domain : M.Identifier; codomain : M.Identifier
 
+-- | Constructor form of image with domain/codomain carried explicitly.
 record ImConstructor : Set where
   constructor Im'
   field morphism : M.Identifier; domain : M.Identifier; codomain : M.Identifier
 
--- Canonical morphism f_bar : Coim(f) -> Im(f)
+-- | Canonical morphism f̄ : Coim(f) → Im(f).
 record CanonicalMorphism_f_bar : Set where
   constructor f_bar
   field
@@ -258,6 +262,7 @@ record FirstIsomorphismForAbelianCategoriesTheorem : Set where
 -- CATEGORY: f_bar(f) iso for all f.
 
 -- Canonical map from coproduct to product
+-- | Canonical map from coproduct to product in an additive context.
 record CanonicalMapCoproductToProduct : Set where
   constructor canonical_map
   field
@@ -265,6 +270,7 @@ record CanonicalMapCoproductToProduct : Set where
     productObj   : M.Identifier
     map          : M.Identifier
 
+-- | Additivity characterized by biproduct comparison map being an isomorphism.
 record AdditivityViaBiproductCoincidenceTheorem : Set where
   constructor THEOREM_AdditivityViaBiproductCoincidence
   field
