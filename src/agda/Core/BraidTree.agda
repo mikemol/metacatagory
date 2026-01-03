@@ -72,7 +72,7 @@ metricFromPath : DerivationPath → EmergentMetric
 metricFromPath path = mkMetric (pathLength path) (pathLength path)
 
 metricFromPaths : DerivationPath → DerivationPath → EmergentMetric
-metricFromPaths p q = mkMetric (pathLength p + pathLength q) (pathLength p + pathLength q)
+metricFromPaths p q = mkMetric (pathLength p) (pathLength q)
 
 swapPair : ∀ {A B : Set} → Σ A (λ _ → B) → Σ B (λ _ → A)
 swapPair pair = snd pair , fst pair
