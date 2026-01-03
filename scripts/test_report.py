@@ -36,7 +36,21 @@ import sys
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[1]
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT = SCRIPT_DIR.parent
+sys.path.insert(0, str(ROOT))
+
+from scripts.audax_doc import (
+    AUDAXDoc,
+    Field,
+    Header,
+    ListLike,
+    Para,
+    Raw,
+    Str,
+    Table,
+    render_doc,
+)
 TESTS_DIR = ROOT / "src" / "agda" / "Tests"
 OUT_DIR = ROOT / "build" / "reports"
 
@@ -81,30 +95,50 @@ def summarize(file_reports: list[dict[str, Any]]) -> dict[str, Any]:
         "adapter_type_counts": adapter_counts,
     }  # type: dict[str, Any]
 
+def build_test_report_doc(summary: dict[str, Any]) -> AUDAXDoc:
+    blocks: list[AUDAXBlock] = [
+        Header(1, ListLike([Str("MetaCategory Test Report")])),
+        Para(
+            ListLike(
+                [
+                    Str(
+                        f"Total status assertions: {summary['total_status_assertions']}"
+                    )
+                ]
+            )
+        ),
+        Header(2, ListLike([Str("Adapter counts by type")])),
+        Table(
+            header=["Adapter", "Count"],
+            rows=[
+                ListLike([Str(k), Str(str(v))])
+                for k, v in sorted(summary["adapter_type_counts"].items())
+            ],
+        ),
+        Header(2, ListLike([Str("Files")])),
+    ]
+
+    for fr in summary["files"]:
+        blocks.append(Header(3, ListLike([Str(fr["file"])])))
+        if fr.get("module"):
+            blocks.append(Field("Module", f"`{fr['module']}`"))
+        blocks.append(Field("Status assertions", str(fr["status_assertions"])))
+        if fr["adapters"]:
+            adapters_md = "\n".join(
+                f"- `{name}` : `{typ}`" for name, typ in fr["adapters"]
+            )
+            blocks.append(Field("Adapters", adapters_md))
+        blocks.append(Raw(""))
+
+    return AUDAXDoc(ListLike(blocks))
+
 def write_outputs(summary: dict[str, Any], out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "test-report.json").write_text(
         json.dumps(summary, indent=2), encoding="utf-8"
     )
-    # Markdown
-    lines = []
-    lines.append("# MetaCategory Test Report\n")
-    lines.append(f"Total status assertions: {summary['total_status_assertions']}\n")
-    lines.append("\n## Adapter counts by type\n")
-    for k, v in sorted(summary["adapter_type_counts"].items()):
-        lines.append(f"- {k}: {v}")
-    lines.append("\n## Files\n")
-    for fr in summary["files"]:
-        lines.append(f"### {fr['file']}")
-        if fr.get("module"):
-            lines.append(f"- module: `{fr['module']}`")
-        lines.append(f"- status assertions: {fr['status_assertions']}")
-        if fr["adapters"]:
-            lines.append("- adapters:")
-            for name, typ in fr["adapters"]:
-                lines.append(f"  - `{name}` : `{typ}`")
-        lines.append("")
-    (out_dir / "test-report.md").write_text("\n".join(lines), encoding="utf-8")
+    doc = build_test_report_doc(summary)
+    (out_dir / "test-report.md").write_text(render_doc(doc), encoding="utf-8")
 
 def main() -> int:
     parser = argparse.ArgumentParser()

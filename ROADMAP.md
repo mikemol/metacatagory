@@ -688,17 +688,18 @@ id: GP-Gp400
 title: 'GP400: The "Elasticity" of Meaning'
 description: 'GP400: The "Elasticity" of Meaning. Source: Plan/CIM/IngestedRoadmaps/Corrections.agda.
   Category: IngestedGP. Tags: GP. Affects: Implementation.agda'
-status: not-started
+status: done
 category: IngestedGP
 tags:
 - GP
 files:
+- src/agda/Plan/CIM/Elasticity.agda
 - src/agda/Plan/CIM/Implementation.agda
 ```
 
-- **GP400: The "Elasticity" of Meaning** — GP400: The "Elasticity" of Meaning. Source: Plan/CIM/IngestedRoadmaps/Corrections.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
+- **GP400: The "Elasticity" of Meaning** — GP400: The "Elasticity" of Meaning. Source: Plan/CIM/IngestedRoadmaps/Corrections.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: done]
   Source: Plan/CIM/IngestedRoadmaps/Corrections.agda
-  Target: `src/agda/Plan/CIM/Implementation.agda`
+  Target: `src/agda/Plan/CIM/Elasticity.agda`, `src/agda/Plan/CIM/Implementation.agda`
   Tags: GP
 
 ```yaml

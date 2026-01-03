@@ -445,15 +445,15 @@ canonicalItems =
     ; related = ("LOCAL-GENERIC-FUNCTOR" ∷ [])
   }
   ∷
-  -- | GP-Gp400: GP400: The "Elasticity" of Meaning [status: not-started]
+  -- | GP-Gp400: GP400: The "Elasticity" of Meaning [status: done]
   record {
     id = "GP-Gp400"
     ; title = "GP400: The \"Elasticity\" of Meaning"
     ; description = "GP400: The \"Elasticity\" of Meaning. Source: Plan/CIM/IngestedRoadmaps/Corrections.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
-    ; status = "not-started"
+    ; status = "done"
     ; category = "IngestedGP"
     ; source = "Plan/CIM/IngestedRoadmaps/Corrections.agda"
-    ; files = ("src/agda/Plan/CIM/Implementation.agda" ∷ [])
+    ; files = ("src/agda/Plan/CIM/Elasticity.agda" ∷ "src/agda/Plan/CIM/Implementation.agda" ∷ [])
     ; tags = ("GP" ∷ [])
     ; dependsOn = []
     ; provenance = ("GP-Gp400|Plan/CIM/IngestedRoadmaps/Corrections.agda" ∷ "ROADMAP-MD-1|ROADMAP.md" ∷ [])

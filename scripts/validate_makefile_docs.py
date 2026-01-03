@@ -13,9 +13,26 @@ import sys
 from pathlib import Path
 from typing import Dict, Set
 
-ROOT = Path(__file__).resolve().parent.parent
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT = SCRIPT_DIR.parent
+sys.path.insert(0, str(ROOT))
+
+from scripts.audax_doc import (
+    AUDAXBlock,
+    AUDAXDoc,
+    Field,
+    Header,
+    ListLike,
+    Para,
+    Raw,
+    Str,
+    Table,
+    render_doc,
+)
+
 GENERATED_DOC = ROOT / "build" / "makefile_targets_generated.md"
 CHECKED_IN_DOC = ROOT / "docs" / "automation" / "MAKEFILE-TARGETS.md"
+REPORT_DOC = ROOT / "build" / "reports" / "makefile-docs.md"
 
 def parse_markdown_table(text: str) -> Dict[str, str]:
     """Parse a Markdown table into a {Target: Description} dictionary."""
@@ -91,11 +108,68 @@ def main() -> int:
             print(f"    Doc: {checked}")
         valid = False
         
+    doc = build_validation_doc(
+        valid=valid,
+        total=len(gen_set),
+        missing=missing,
+        extra=extra,
+        mismatches=mismatches,
+    )
+    write_validation_doc(doc)
     if valid:
         print(f"✓ Documentation is isomorphic to Source of Truth ({len(gen_set)} targets verified)")
         return 0
     else:
         return 1
+
+
+def build_validation_doc(
+    *,
+    valid: bool,
+    total: int,
+    missing: Set[str],
+    extra: Set[str],
+    mismatches: list[tuple[str, str, str]],
+) -> AUDAXDoc:
+    blocks: list[AUDAXBlock] = [
+        Header(1, ListLike([Str("Makefile Documentation Triangle Identity")])),
+        Para(
+            ListLike(
+                [
+                    Str(
+                        f"Total targets described by the exporter: {total}. "
+                        + ("Validation succeeded." if valid else "Discrepancies found.")
+                    )
+                ]
+            )
+        ),
+    ]
+
+    if missing:
+        blocks.append(Header(2, ListLike([Str("Missing Targets")])))
+        table_rows = [ListLike([Str(target)]) for target in sorted(missing)]
+        blocks.append(Table(header=["Target"], rows=table_rows))
+
+    if extra:
+        blocks.append(Header(2, ListLike([Str("Undocumented/Extra Targets")])))
+        table_rows = [ListLike([Str(target)]) for target in sorted(extra)]
+        blocks.append(Table(header=["Target"], rows=table_rows))
+
+    if mismatches:
+        blocks.append(Header(2, ListLike([Str("Description Mismatches")])))
+        for target, gen_desc, doc_desc in mismatches:
+            blocks.append(Field("Target", f"`{target}`"))
+            blocks.append(Field("Generated description", gen_desc))
+            blocks.append(Field("Document description", doc_desc))
+
+    blocks.append(Raw("Validation log stored under build/reports/makefile-docs.md"))
+    return AUDAXDoc(ListLike(blocks))
+
+
+def write_validation_doc(doc: AUDAXDoc) -> None:
+    REPORT_DOC.parent.mkdir(parents=True, exist_ok=True)
+    REPORT_DOC.write_text(render_doc(doc), encoding="utf-8")
+    print(render_doc(doc))
 
 if __name__ == "__main__":
     raise SystemExit(main())
