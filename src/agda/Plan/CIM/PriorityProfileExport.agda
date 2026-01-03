@@ -260,6 +260,16 @@ docIssuesFor report item = countMissing (RoadmapItem.files item)
     ... | true  = suc (countMissing fs)
     ... | false = countMissing fs
 
+-- debt issues (postulates/deferrals) per file using deferred-files badge json
+debtIssuesFor : String → RoadmapItem → Nat
+debtIssuesFor deferred item = countTagged (RoadmapItem.files item)
+  where
+    countTagged : List String → Nat
+    countTagged [] = zero
+    countTagged (f ∷ fs) with containsString f deferred
+    ... | true  = suc (countTagged fs)
+    ... | false = countTagged fs
+
 ------------------------------------------------------------------------
 -- Filtering and naive scoring for ordering (status-aware)
 ------------------------------------------------------------------------
@@ -304,7 +314,9 @@ score es i =
   add (dependentCount planningIndex i)
       (add (statusWeight (RoadmapItem.status i))
            (add (impactImports es i)
-                (add (impactImportedBy es i) (len (RoadmapItem.tags i)))))
+                (add (impactImportedBy es i)
+                     (add (len (RoadmapItem.tags i))
+                          (add (docIssuesFor "" i) (debtIssuesFor "" i))))))
 
 reverse : ∀ {A : Set} → List A → List A
 reverse [] = []
@@ -389,7 +401,8 @@ renderItem report es i =
         "\"tagsCount\":"      ∷ natToString (len (RoadmapItem.tags i))      ∷ "," ∷
         "\"imports\":"        ∷ natToString (impactImports es i)           ∷ "," ∷
         "\"importedBy\":"     ∷ natToString (impactImportedBy es i)        ∷ "," ∷
-        "\"docIssues\":"      ∷ natToString (docIssuesFor report i)        ∷
+        "\"docIssues\":"      ∷ natToString (docIssuesFor report i)        ∷ "," ∷
+        "\"debtIssues\":"     ∷ natToString (debtIssuesFor report i)       ∷
       "}" ∷
       "}" ∷ [] )
 
@@ -410,6 +423,16 @@ renderItems report es (x ∷ xs) = mkStream "[" (just (renderItemChunk x xs))
     renderItemChunk i [] = mkStream (renderItem report es i ++ "]") nothing
     renderItemChunk i (y ∷ ys) = mkStream (renderItem report es i ++ ",") (just (renderItemChunk y ys))
 
+-- Ensure the top-level object closes after the tasks array.
+{-# TERMINATING #-}
+mutual
+  appendClosing : ChunkStream → ChunkStream
+  appendClosing cs = mkStream (ChunkStream.head cs) (appendTail (ChunkStream.tail cs))
+
+  appendTail : Maybe ChunkStream → Maybe ChunkStream
+  appendTail nothing = just (mkStream "}" nothing)
+  appendTail (just t) = just (appendClosing t)
+
 defaultPath : String
 defaultPath = "build/priority_profile.json"
 
@@ -417,11 +440,13 @@ main : IO ⊤
 main = do
   dot ← readFile "build/diagrams/agda-deps-full.dot"
   lint ← readFile "build/reports/docs-lint.json"
+  deferred ← readFile ".github/badges/deferred-files.json"
   let edges = parseLines (primStringToList dot)
   let weights = strategyToWeights defaultStrategy
   let tasks = activeSorted edges
   let stream = mkStream "{"
                  (just (mkStream ("\"strategyWeights\":" ++ renderWeights weights ++ ",")
-                     (just (mkStream "\"tasks\":" (just (renderItems lint edges tasks))))))
+                     (just (mkStream "\"tasks\":" (just (appendClosing (renderItems (lint ++ deferred) edges tasks))))))
+             )
   -- reset file then stream append lazily
   writeFile defaultPath "" >>= λ _ → writeStream defaultPath stream

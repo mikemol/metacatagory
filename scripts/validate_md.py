@@ -12,7 +12,7 @@ def extract_md_items(md_path):
         content = f.read()
     
     # Pattern for item titles (can use titles as proxy for IDs)
-    pattern = r'\* \*\*(.+?)\*\*'
+    pattern = r'[-*] \*\*(.+?)\*\*'
     titles = set(match.group(1).strip() for match in re.finditer(pattern, content))
     return titles
 

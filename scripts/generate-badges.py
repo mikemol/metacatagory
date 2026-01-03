@@ -7,6 +7,7 @@ Outputs badge data files that can be served via GitHub Pages or committed to the
 
 import json
 import sys
+import re
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, Iterable, List, Tuple
@@ -84,6 +85,13 @@ def load_weights(output_dir: Path) -> Dict[str, float]:
     if weights_file.exists():
         try:
             weights = load_json_file(weights_file)
+            # If the orchestration file contains profiles, pick the active one
+            if isinstance(weights, dict) and "profiles" in weights:
+                active = weights.get("active", "default")
+                prof = weights["profiles"].get(active)
+                if prof:
+                    print(f"Loaded weights profile '{active}' from {weights_file}")
+                    return prof
             if weights:
                 print(f"Loaded weights from {weights_file}")
                 return weights
@@ -294,6 +302,10 @@ def scan_repository_for_deferred(
     deviation_log = 0
     file_counts: Dict[str, Dict[str, float]] = {}
 
+    # Only count standalone TODO/FIXME tokens (not part of identifiers/constants)
+    todo_re = re.compile(r"(?<![A-Za-z0-9_])TODO(?![A-Za-z0-9_])")
+    fixme_re = re.compile(r"(?<![A-Za-z0-9_])FIXME(?![A-Za-z0-9_])")
+
     for path in repo_root.rglob("*"):
         if not path.is_file():
             continue
@@ -304,6 +316,9 @@ def scan_repository_for_deferred(
         if ext not in FILE_SCAN_EXTENSIONS:
             continue
         rel_file = str(path.relative_to(repo_root))
+        # Skip generated debt reports to avoid double-counting
+        if rel_file == "docs/status/deferred-items.md":
+            continue
         local_postulates = 0
         local_todo = 0
         local_fixme = 0
@@ -327,17 +342,16 @@ def scan_repository_for_deferred(
                                 local_postulates += c
 
                     # TODO/FIXME: look for comment-like patterns
-                    if "TODO" in line:
-                        # Exclude label strings in JSON/badges
+                    # TODO/FIXME: count only whole-word occurrences to avoid constants like TODO_THRESHOLDS
+                    if todo_re.search(line):
                         if '"TODO"' not in line and "'TODO'" not in line:
-                            c = line.count("TODO")
+                            c = len(todo_re.findall(line))
                             todo += c
                             local_todo += c
 
-                    if "FIXME" in line:
-                        # Exclude label strings in JSON/badges
+                    if fixme_re.search(line):
                         if '"FIXME"' not in line and "'FIXME'" not in line:
-                            c = line.count("FIXME")
+                            c = len(fixme_re.findall(line))
                             fixme += c
                             local_fixme += c
 
@@ -430,8 +444,8 @@ def main():
         tasks = []  # Handle empty or malformed file
 
     deferred = load_json_file(deferred_summary)
-    # If no deferred summary or empty, dynamically compute from source tree
-    if not deferred or deferred.get("total", 0) == 0:
+    # If no deferred summary, empty, or missing file details, dynamically compute from source tree
+    if not deferred or deferred.get("total", 0) == 0 or not deferred.get("files"):
         deferred = scan_repository_for_deferred(repo_root, weights)
 
     # History tracking for trend badge
@@ -518,6 +532,12 @@ def main():
     manifest_file = output_dir / 'manifest.json'
     with open(manifest_file, 'w') as f:
         json.dump(manifest, f, indent=2)
+
+    # Write per-file deferred counts for downstream tools (priority export, doc lint)
+    detailed_file = output_dir / "deferred-files.json"
+    with open(detailed_file, "w") as df:
+        json.dump(deferred.get("files", {}), df, indent=2)
+    print(f"Wrote detailed deferred file map: {detailed_file}")
     print(f"Generated: {manifest_file}")
     
     print(f"\n✅ Generated {len(all_badges)} badge JSON files in {output_dir}")

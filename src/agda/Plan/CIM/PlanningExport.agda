@@ -66,6 +66,7 @@ renderItem i =
     ( "{" ∷
       "\"id\":"          ∷ quoteString (RoadmapItem.id i)          ∷ "," ∷
       "\"title\":"       ∷ quoteString (RoadmapItem.title i)       ∷ "," ∷
+      "\"description\":" ∷ quoteString (RoadmapItem.description i) ∷ "," ∷
       "\"status\":"      ∷ quoteString (RoadmapItem.status i)      ∷ "," ∷
       "\"category\":"    ∷ quoteString (RoadmapItem.category i)    ∷ "," ∷
       "\"source\":"      ∷ quoteString (RoadmapItem.source i)      ∷ "," ∷

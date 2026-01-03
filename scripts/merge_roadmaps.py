@@ -280,10 +280,39 @@ def merge_by_title(items: List[Dict]) -> List[Dict]:
 def backfill_descriptions(items: List[Dict]) -> List[Dict]:
     """Ensure every item has a description; fall back to title if missing."""
     for item in items:
-        desc = item.get("description")
-        if not desc:
-            item["description"] = item.get("title", "")
+        desc = (item.get("description") or "").strip()
+        title = item.get("title", "").strip()
+        if not desc or desc == title:
+            item["description"] = build_description(item)
     return items
+
+
+def build_description(item: Dict) -> str:
+    """Synthesize a contextual description from available metadata."""
+    segments: List[str] = []
+    title = item.get("title", "").strip()
+    if title:
+        segments.append(title)
+
+    source = item.get("source", "").strip()
+    if source:
+        segments.append(f"Source: {source}")
+
+    category = item.get("category", "").strip()
+    if category:
+        segments.append(f"Category: {category}")
+
+    tags = item.get("tags", [])
+    if tags:
+        segments.append(f"Tags: {', '.join(tags)}")
+
+    files = item.get("files", [])
+    if files:
+        filenames = ", ".join([Path(f).name for f in files[:2]])
+        if filenames:
+            segments.append(f"Affects: {filenames}")
+
+    return ". ".join(segments) if segments else title
 
 def merge_all_sources(base_path: Path) -> List[Dict]:
     """Merge all roadmap sources into unified list."""
@@ -349,6 +378,7 @@ def export_to_agda(items: List[Dict], output_path: Path):
         lines.append("  record {")
         lines.append(f"    id = {agda_str(item['id'])}")
         lines.append(f"    ; title = {agda_str(item['title'])}")
+        lines.append(f"    ; description = {agda_str(item['description'])}")
         lines.append(f"    ; status = {agda_str(item['status'])}")
         lines.append(f"    ; category = {agda_str(item['category'])}")
         lines.append(f"    ; source = {agda_str(item['source'])}")

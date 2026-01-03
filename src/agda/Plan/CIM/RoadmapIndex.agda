@@ -19,6 +19,7 @@ record RoadmapItem : Set where
   field
     id          : String
     title       : String
+    description : String
     status      : String
     category    : String
     source      : String

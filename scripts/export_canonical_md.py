@@ -79,6 +79,7 @@ def export_markdown(source_path: Path, output_path: Path):
             frontmatter = {
                 'id': item['id'],
                 'title': item['title'],
+                'description': item['description'],
                 'status': item['status'],
                 'category': item['category']
             }
@@ -100,7 +101,10 @@ def export_markdown(source_path: Path, output_path: Path):
             lines.append("")
             
             # Format: * **Title** — Description [status: X]
-            lines.append(f"* **{item['title']}** — {item['source']} [status: {item['status']}]")
+            lines.append(f"- **{item['title']}** — {item['description']} [status: {item['status']}]")
+
+            if item['source']:
+                lines.append(f"  Source: {item['source']}")
             
             if item['files']:
                 files_str = ', '.join(f"`{f}`" for f in item['files'])

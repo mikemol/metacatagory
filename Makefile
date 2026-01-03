@@ -20,14 +20,19 @@ regen-makefile: build/diagrams/agda-deps-full.dot
 	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile
 	cp Makefile.generated Makefile
 # Lint all markdown files (fail on error)
+# Lint all markdown files (fail on error)
+# Lint all markdown files (fail on error)
 md-lint: 
-	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (mkdir -p build/reports && npx markdownlint-cli2 "**/*.md" "!node_modules" "!build" > build/reports/md-lint.txt 2>&1); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "md-lint" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (mkdir -p build/reports && npx markdownlint-cli2 --config .markdownlint.json "docs/modules/**/*.md" "docs/planning/ROADMAP.md" "src/agda/Plan/CIM/meta-index.d/*.md" > build/reports/md-lint.txt 2>&1); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "md-lint" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Auto-fix markdown lint errors
+# Auto-fix markdown lint errors
 # Auto-fix markdown lint errors
 md-fix: 
-	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (npx markdownlint-cli2 --fix "**/*.md" "!node_modules" "!build"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "md-fix" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (npx markdownlint-cli2 --config .markdownlint.json --fix "docs/modules/**/*.md" "docs/planning/ROADMAP.md" "src/agda/Plan/CIM/meta-index.d/*.md"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "md-fix" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Lint intake files specifically
 # Lint intake files specifically
 intake-lint: 
-	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (npx markdownlint-cli2 "intake/**/*.md" > build/reports/intake-md-lint.txt 2>&1); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "intake-lint" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (npx markdownlint-cli2 --config .markdownlint.json "intake/**/*.md" > build/reports/intake-md-lint.txt 2>&1); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "intake-lint" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Generate canonical roadmap JSON from intake
 build/canonical_roadmap.json: 
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/intake_scan.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "build/canonical_roadmap.json" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc

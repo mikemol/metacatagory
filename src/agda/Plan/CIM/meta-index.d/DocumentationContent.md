@@ -2,20 +2,20 @@
 
 ## Scope
 
-* Helpers for documentation content assembly and reuse.
+- Helpers for documentation content assembly and reuse.
 
 ## Key elements
 
-* Content helpers supporting document generation workflows.
+- Content helpers supporting document generation workflows.
 
 ## Dependencies
 
-* Document algebra modules and roadmap-driven docs.
+- Document algebra modules and roadmap-driven docs.
 
 ## Update triggers
 
-* Changes to documentation patterns or reusable snippets.
+- Changes to documentation patterns or reusable snippets.
 
 ## Technical debt / status
 
-* Track missing helpers or duplication in deferred-items.md and ROADMAP.md.
+- Track missing helpers or duplication in deferred-items.md and ROADMAP.md.

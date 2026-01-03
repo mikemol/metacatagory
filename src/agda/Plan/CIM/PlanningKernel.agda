@@ -28,6 +28,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-DEF-DICT"
     ; title      = "Implement Definition Dictionary adequacy module"
+    ; description = "Package the Definition Dictionary adequacy module so downstream proofs rely on a canonical definition space."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -41,6 +42,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR"
     ; title      = "Introduce generic functor interface for protocol bundles"
+    ; description = "Establish the generic functor interface for protocol bundles so adapters share a single abstraction."
     ; status     = "in-progress"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -62,6 +64,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
     ; title      = "Complete generic functor interface laws and helpers"
+    ; description = "Complete the generic functor interface laws and helpers to provide the coherence proofs downstream components expect."
     ; status     = "in-progress"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -75,6 +78,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-INTERFACE-CONVENIENCE-LAWS"
     ; title      = "Add convenience lemmas for map-id/compose congruence"
+    ; description = "Add map-id and compose convenience lemmas so reasoning about the interface stays manageable."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -88,6 +92,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-INTERFACE-DOCUMENTATION"
     ; title      = "Document interface laws and usage in code comments"
+    ; description = "Document the interface laws and usage so the new functor API stays discoverable."
     ; status     = "not-started"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -101,6 +106,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
     ; title      = "Normalize existing functor instances onto shared interface"
+    ; description = "Normalize existing functor instances onto the shared interface to keep implementations aligned."
     ; status     = "not-started"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -119,6 +125,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCTION"
     ; title      = "Normalize FunctionCategory functor instance"
+    ; description = "Align the FunctionCategory instance with the generic functor interface so generic algorithms see a consistent surface."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -132,6 +139,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCPATH"
     ; title      = "Normalize FunctionPathCategory functor instance"
+    ; description = "Normalize the FunctionPathCategory functor instance so path-based functors also obey the shared interface."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -145,6 +153,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-TRANSFORMATION"
     ; title      = "Normalize TransformationSystem functor instance"
+    ; description = "Normalize the TransformationSystem functor instance so rewriting follows the unified functor pattern."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -158,6 +167,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-PATHALGEBRA"
     ; title      = "Normalize PathAlgebra functor instance"
+    ; description = "Normalize the PathAlgebra functor instance so algebraic paths reuse the same categorical structure."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -171,6 +181,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-PHASE"
     ; title      = "Normalize PhaseCategory functor instance"
+    ; description = "Normalize the PhaseCategory functor instance so phases can be treated uniformly under the interface."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -184,6 +195,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-NORMALIZE-AMBIGUITY"
     ; title      = "Normalize Ambiguity functor instance"
+    ; description = "Normalize the Ambiguity functor instance so branching semantics align with the shared abstraction."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -197,6 +209,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY"
     ; title      = "Ensure adequacy kits follow standardized pattern"
+    ; description = "Ensure adequacy kits follow the standardized pattern so adequacy proofs stay consistent."
     ; status     = "not-started"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -210,6 +223,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-ADEQUACY-FUNCPATH"
     ; title      = "Confirm FunctionPath adequacy follows shared kit pattern"
+    ; description = "Confirm FunctionPath adequacy follows the shared kit pattern to keep path-level correctness continuous."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -223,6 +237,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-ADEQUACY-TRANSFORMATION"
     ; title      = "Confirm TransformationSystem adequacy follows shared kit pattern"
+    ; description = "Confirm the TransformationSystem adequacy follows the shared kit pattern so rewrites stay sound."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -236,6 +251,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-ADEQUACY-AMBIGUITY"
     ; title      = "Confirm Ambiguity adequacy follows shared kit pattern"
+    ; description = "Confirm Ambiguity adequacy follows the shared kit pattern so alternative parses remain justified."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -249,6 +265,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS"
     ; title      = "Align functor composition adapters with interface"
+    ; description = "Build adapters so existing structures interoperate through the new generic functor interface."
     ; status     = "not-started"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -264,6 +281,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-INTEROP-COMPOSE"
     ; title      = "Refine compose helper proofs for reuse"
+    ; description = "Verify compose helper proofs so adapters retain interoperability when chained."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -277,6 +295,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-INTEROP-PHASE-WRAPPER"
     ; title      = "Ensure PhaseCategoryWrapper matches interface helpers"
+    ; description = "Ensure the PhaseCategoryWrapper matches interface helpers so interoperable functors can be staged per phase."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -290,6 +309,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-EXAMPLES"
     ; title      = "Add regression examples exercising functor identity/compose"
+    ; description = "Add regression examples to demonstrate how the generic functor interface simplifies identity and compose reasoning."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -303,6 +323,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-DOCS"
     ; title      = "Document generic functor interface and upgrade guide"
+    ; description = "Document the generic functor interface and upgrade guide so contributors understand the migration path."
     ; status     = "not-started"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -316,6 +337,7 @@ definitionRoadmapItems =
   record
     { id         = "DOCS-AGDA-DOCCOMMENT-PIPELINE"
     ; title      = "Extend module exporter to surface Agda doc comments"
+    ; description = "Describe the doc-comment pipeline so Agda declarations stay annotated and downstream tools can export them."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "Documentation"
@@ -329,6 +351,7 @@ definitionRoadmapItems =
   record
     { id         = "DOCS-AGDA-DECL-DOCS"
     ; title      = "Export declaration docstrings (records/data) into docs"
+    ; description = "Export declaration docstrings so records and data constructors carry human-readable intent."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "Documentation"
@@ -342,6 +365,7 @@ definitionRoadmapItems =
   record
     { id         = "DOCS-AGDA-FIELD-DOCS"
     ; title      = "Export field/argument docstrings into docs"
+    ; description = "Export field and argument docstrings so data carriers are explained in generated docs."
     ; status     = "not-started"
     ; category   = "Infrastructure"
     ; source     = "Documentation"
@@ -355,6 +379,7 @@ definitionRoadmapItems =
   record
     { id         = "DOCS-AGDA-LINT"
     ; title      = "Add lint to enforce module-level docstrings"
+    ; description = "Add lint that enforces module-level docstrings to maintain documentation coverage."
     ; status     = "in-progress"
     ; category   = "Infrastructure"
     ; source     = "Documentation"
@@ -368,6 +393,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-FUNCPATH-ADEQUACY"
     ; title      = "Add adequacy kit for FunctionPathCategory"
+    ; description = "Add an adequacy kit for FunctionPathCategory so path-level operations retain their invariants."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -381,6 +407,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-TRANSFORMATION-ADEQUACY"
     ; title      = "Add adequacy hook for TransformationSystem functor"
+    ; description = "Add an adequacy hook for the TransformationSystem functor so rewrites have constructive guarantees."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -394,6 +421,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-GENERIC-FUNCTOR-AMBIGUITY-ADEQUACY"
     ; title      = "Add adequacy hook for Ambiguity functor"
+    ; description = "Add an adequacy hook for the Ambiguity functor so divergent parses stay justified."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"
@@ -407,6 +435,7 @@ definitionRoadmapItems =
   record
     { id         = "LOCAL-DEF-DICT-EXAMPLE"
     ; title      = "Add DefinitionDictionary adequacy example"
+    ; description = "Add a DefinitionDictionary adequacy example to document how adequacy proofs are structured."
     ; status     = "done"
     ; category   = "Infrastructure"
     ; source     = "DefinitionDictionary"

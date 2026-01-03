@@ -83,6 +83,7 @@ extractDeclDocs ls = catMaybes (zipWith collect [0..] ls)
         [ T.pack "record "
         , T.pack "data "
         , T.pack "postulate "
+        , T.pack "field "
         ]
     declName l =
       case T.words (stripText l) of

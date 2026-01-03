@@ -6,11 +6,11 @@ This roadmap is synthesized from tracked work items and structured roadmap steps
 
 ## Status Snapshot
 
-* Agda: 2.8.0 (project setting)
+- Agda: 2.8.0 (project setting)
 
-* Docs regenerated via make docs
+- Docs regenerated via make docs
 
-* Deferred items tracked in DEFERRED-TRACKING.md
+- Deferred items tracked in DEFERRED-TRACKING.md
 
 ## How to Regenerate
 
@@ -33,30 +33,30 @@ This document is a projection from the canonical Agda index. To update:
 
 ## Structured Roadmaps
 
-* **Provide algebraic structures...** — Enables formal treatment... [status: not-started]
+- **Provide algebraic structures...** — Enables formal treatment... [status: not-started]
 Target: `src/agda/Plan/CIM/Ambiguity.agda`
 
-* **Establish metric structures...** — Enables quantitative... [status: not-started]
+- **Establish metric structures...** — Enables quantitative... [status: not-started]
 Target: `src/agda/Plan/CIM/Metricization.agda`
 
-* **Define compositional...** — Enables systematic... [status: not-started]
+- **Define compositional...** — Enables systematic... [status: not-started]
 Target: `src/agda/Plan/CIM/TransformationSystem.agda`
 
-* **Implement functorial mappings...** — Enables formal... [status: not-started]
+- **Implement functorial mappings...** — Enables formal... [status: not-started]
 Target: `src/agda/Plan/CIM/FunctorialConstructs.agda`
 
-* **Integrate 2D gating logic...** — Enables composable phase space... [status: not-started]
+- **Integrate 2D gating logic...** — Enables composable phase space... [status: not-started]
 Target: `src/agda/Plan/CIM/Elasticity.agda`
 
-* **Implement topological inflation...** — Enables composable category expansion... [status: not-started]
+- **Implement topological inflation...** — Enables composable category expansion... [status: not-started]
 Target: `src/agda/Plan/CIM/PolytopeExpansion.agda`
 
-* **Implement Mitosis Engine...** — Enables dynamic... [status: not-started]
+- **Implement Mitosis Engine...** — Enables dynamic... [status: not-started]
 Target: `nedge_topology/mitosis.py`
 
-* **Integrate Earley parsing...** — Enables composable geometric... [status: not-started]
+- **Integrate Earley parsing...** — Enables composable geometric... [status: not-started]
 Target: `nedge_topology/parser.py`
 
 ## Deferred Snapshot
 
-* Run make deferred-items to regenerate flagged debt from source.
+- Run make deferred-items to regenerate flagged debt from source.

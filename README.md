@@ -26,35 +26,35 @@ The system is stratified into phases, representing the evolution from static def
 
 This layer defines the physics of the system.
 
-* Metamodel.agda: Defines Identifier, Coordinate, and the ordering relation <ᶜ. This is the syntactic bedrock.
+- Metamodel.agda: Defines Identifier, Coordinate, and the ordering relation <ᶜ. This is the syntactic bedrock.
 
-* Core.Phase: Reifies transformation as a first-class citizen. A Phase A B is a morphism in the Category of Phases, allowing for sequential and parallel composition of algorithmic steps.
+- Core.Phase: Reifies transformation as a first-class citizen. A Phase A B is a morphism in the Category of Phases, allowing for sequential and parallel composition of algorithmic steps.
 
-* Core.GodelBoundary: A formal acknowledgment of the system's limits. It constructs witnesses for self-referential paradoxes and reifies the gap between the system and its self-model.
+- Core.GodelBoundary: A formal acknowledgment of the system's limits. It constructs witnesses for self-referential paradoxes and reifies the gap between the system and its self-model.
 
-* Core.PathAggregator: Implements Homotopy Type Theory (HoTT) principles. It aggregates individual serialization roundtrips into a GlobalClosureWitness, proving that the system's coordinate geometry is invariant under transformation.
+- Core.PathAggregator: Implements Homotopy Type Theory (HoTT) principles. It aggregates individual serialization roundtrips into a GlobalClosureWitness, proving that the system's coordinate geometry is invariant under transformation.
 
 ### Layer II: The Algebraic Pillars (Algebra)
 
 This hierarchy builds the objects of the universe.
 
-* Hierarchy: Magma → Semigroup → Monoid → Group → Ring → Field.
+- Hierarchy: Magma → Semigroup → Monoid → Group → Ring → Field.
 
-* Modules & Algebras: Extends rings to LeftModule, VectorSpace, and RAlgebra.
+- Modules & Algebras: Extends rings to LeftModule, VectorSpace, and RAlgebra.
 
-* Feature: These are not just typeclasses; they are deeply nested records containing Constructive Witnesses. A FieldExtension carries proofs of its degree, basis, and separability.
+- Feature: These are not just typeclasses; they are deeply nested records containing Constructive Witnesses. A FieldExtension carries proofs of its degree, basis, and separability.
 
 ### Layer III: The Categorical Pillars (Chapter1, Chapter2, Chapter3)
 
 This hierarchy builds the laws of the universe.
 
-* Chapter1 (Fundamentals): Limits, Colimits, Adjunctions, Kan Extensions.
+- Chapter1 (Fundamentals): Limits, Colimits, Adjunctions, Kan Extensions.
 
-* Chapter2 (Structure): Abelian Categories, Regular Categories, Monads, Fibrations.
+- Chapter2 (Structure): Abelian Categories, Regular Categories, Monads, Fibrations.
 
-* Chapter3 (Topos Theory): Locales, Sheaves, Ω-sets.
+- Chapter3 (Topos Theory): Locales, Sheaves, Ω-sets.
 
-* Deep Integration: These modules define Universal Properties. For example, KernelAsEqualizer defines the algebraic kernel strictly as a categorical limit.
+- Deep Integration: These modules define Universal Properties. For example, KernelAsEqualizer defines the algebraic kernel strictly as a categorical limit.
 
 ## 3. The Unified Bridge: Taking the Product
 
@@ -68,36 +68,36 @@ This module provides a universal interface CategoricalAdapter T that wraps any a
 
 This is the proving ground. It systematically maps algebraic constructs to categorical requirements.
 
-* Example: It proves that an Algebra.Modules.Basic.KernelOfModuleHomomorphism satisfies the Chapter2.KernelAsEqualizerDefinition.
+- Example: It proves that an Algebra.Modules.Basic.KernelOfModuleHomomorphism satisfies the Chapter2.KernelAsEqualizerDefinition.
 
-* Mechanism: It uses Indexed Adapters to carry the proof that status ≡ true, ensuring that every algebraic feature is categorically sound.
+- Mechanism: It uses Indexed Adapters to carry the proof that status ≡ true, ensuring that every algebraic feature is categorically sound.
 
 ## 4. Development Roadmaps
 
 ## Development Roadmaps
 
-* **Provide algebraic structures...** — Enables formal treatment... [status: not-started]
+- **Provide algebraic structures...** — Enables formal treatment... [status: not-started]
 Target: `src/agda/Plan/CIM/Ambiguity.agda`
 
-* **Establish metric structures...** — Enables quantitative... [status: not-started]
+- **Establish metric structures...** — Enables quantitative... [status: not-started]
 Target: `src/agda/Plan/CIM/Metricization.agda`
 
-* **Define compositional...** — Enables systematic... [status: not-started]
+- **Define compositional...** — Enables systematic... [status: not-started]
 Target: `src/agda/Plan/CIM/TransformationSystem.agda`
 
-* **Implement functorial mappings...** — Enables formal... [status: not-started]
+- **Implement functorial mappings...** — Enables formal... [status: not-started]
 Target: `src/agda/Plan/CIM/FunctorialConstructs.agda`
 
-* **Integrate 2D gating logic...** — Enables composable phase space... [status: not-started]
+- **Integrate 2D gating logic...** — Enables composable phase space... [status: not-started]
 Target: `src/agda/Plan/CIM/Elasticity.agda`
 
-* **Implement topological inflation...** — Enables composable category expansion... [status: not-started]
+- **Implement topological inflation...** — Enables composable category expansion... [status: not-started]
 Target: `src/agda/Plan/CIM/PolytopeExpansion.agda`
 
-* **Implement Mitosis Engine...** — Enables dynamic... [status: not-started]
+- **Implement Mitosis Engine...** — Enables dynamic... [status: not-started]
 Target: `nedge_topology/mitosis.py`
 
-* **Integrate Earley parsing...** — Enables composable geometric... [status: not-started]
+- **Integrate Earley parsing...** — Enables composable geometric... [status: not-started]
 Target: `nedge_topology/parser.py`
 
 ## Building

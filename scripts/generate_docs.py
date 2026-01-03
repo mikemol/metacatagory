@@ -97,6 +97,16 @@ make docs-all
 make md-lint
 ```
 
+## Build Topology
+
+`make` is treated as the lazy evaluator for the roadmap automation. Use one
+of the entry-point gravity wells (`check`, `priority-refresh`, `docs-all`,
+`validate-constructive`) and let Make rebuild only the intermediates whose
+inputs changed. The intermediate nodes (`roadmap-*`, lint helpers, priority
+pipelines, etc.) are documented in [docs/process/BUILD-TOPOLOGY.md](docs/process/BUILD-TOPOLOGY.md)
+so tooling and contributors alike know which high-level commands drive the
+internal planning machinery.
+
 ## Navigation
 
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Detailed architectural documentation and design patterns
