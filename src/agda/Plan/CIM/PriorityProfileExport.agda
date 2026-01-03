@@ -410,6 +410,16 @@ renderItems report es (x ∷ xs) = mkStream "[" (just (renderItemChunk x xs))
     renderItemChunk i [] = mkStream (renderItem report es i ++ "]") nothing
     renderItemChunk i (y ∷ ys) = mkStream (renderItem report es i ++ ",") (just (renderItemChunk y ys))
 
+-- Ensure the top-level object closes after the tasks array.
+{-# TERMINATING #-}
+mutual
+  appendClosing : ChunkStream → ChunkStream
+  appendClosing cs = mkStream (ChunkStream.head cs) (appendTail (ChunkStream.tail cs))
+
+  appendTail : Maybe ChunkStream → Maybe ChunkStream
+  appendTail nothing = just (mkStream "}" nothing)
+  appendTail (just t) = just (appendClosing t)
+
 defaultPath : String
 defaultPath = "build/priority_profile.json"
 
@@ -422,6 +432,7 @@ main = do
   let tasks = activeSorted edges
   let stream = mkStream "{"
                  (just (mkStream ("\"strategyWeights\":" ++ renderWeights weights ++ ",")
-                     (just (mkStream "\"tasks\":" (just (renderItems lint edges tasks))))))
+                     (just (mkStream "\"tasks\":" (just (appendClosing (renderItems lint edges tasks))))))
+             )
   -- reset file then stream append lazily
   writeFile defaultPath "" >>= λ _ → writeStream defaultPath stream
