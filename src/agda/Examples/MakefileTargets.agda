@@ -4,14 +4,47 @@
 module Examples.MakefileTargets where
 
 open import Agda.Builtin.List using (List; []; _∷_)
-open import Agda.Builtin.String using (String; primStringAppend; primStringEquality)
+open import Agda.Builtin.String using (String; primStringAppend; primStringEquality; primStringToList; primStringFromList)
 open import Agda.Builtin.Bool using (Bool; true; false)
 open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 open import Agda.Builtin.IO using (IO)
+open import Agda.Builtin.Char using (Char)
 
 infixr 20 _++_
 _++_ : String → String → String
 _++_ = primStringAppend
+
+-- Minimal map (to avoid pulling stdlib).
+map : ∀ {A B : Set} → (A → B) → List A → List B
+map f [] = []
+map f (x ∷ xs) = f x ∷ map f xs
+
+-- Join a list of commands with separators (used to build timing wrappers).
+joinWith : String → List String → String
+joinWith sep [] = ""
+joinWith sep (x ∷ []) = x
+joinWith sep (x ∷ xs) = x ++ sep ++ joinWith sep xs
+
+-- Instrument a recipe to emit wall-clock timing for the target.
+-- Each wrapped recipe is executed in a single shell with `set -e` to preserve failure propagation.
+instrumentRecipe : String → List String → List String
+instrumentRecipe name [] =
+  ( "@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); "
+  ++ "printf '{\"target\":\"%s\",\"start_ns\":%s,\"end_ns\":%s,\"elapsed_ms\":%s,\"status\":\"%s\"}\\n' \""
+  ++ name ++ "\" $$start $$end $$elapsed_ms ok >> $(PROFILE_LOG)" ) ∷ []
+instrumentRecipe name cmds =
+  let scrubbed = map stripAt cmds
+      joined = joinWith " && " scrubbed in
+  ( "@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (" ++ joined ++ "); rc=$$?; end=$$(date +%s%N); "
+  ++ "elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); "
+  ++ "printf '{\"target\":\"%s\",\"start_ns\":%s,\"end_ns\":%s,\"elapsed_ms\":%s,\"status\":\"%s\"}\\n' \""
+  ++ name ++ "\" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc" ) ∷ []
+  where
+    stripAt : String → String
+    stripAt s with primStringToList s
+    ... | [] = s
+    ... | ('@' ∷ rest) = primStringFromList rest
+    ... | _ = s
 
 -- ==========================================================
 -- Domain Model: What Transformations Exist?
@@ -121,28 +154,28 @@ fileTransformToTarget sourcePath targetPath sourcePattern outputPattern extraDep
     targetPath 
     ("Compile " ++ sourcePath ++ " to " ++ targetPath)
     (sourcePath ∷ extraDeps)
-    (generateRecipe sourcePattern outputPattern sourcePath)
+    (instrumentRecipe targetPath (generateRecipe sourcePattern outputPattern sourcePath))
     false
 
 -- Convert Validator to target
 validatorToTarget : String → String → String → List String → MakefileTarget
 validatorToTarget name description outputFile recipe =
-  mkTarget name description [] recipe true
+  mkTarget name description [] (instrumentRecipe name recipe) true
 
 -- Convert Generator to target
 generatorToTarget : String → String → List String → List String → MakefileTarget
 generatorToTarget name description deps recipe =
-  mkTarget name description deps recipe true
+  mkTarget name description deps (instrumentRecipe name recipe) true
 
 -- Convert EnvironmentSetup to target
 environmentSetupToTarget : String → String → List String → MakefileTarget
 environmentSetupToTarget name description recipe =
-  mkTarget name description [] recipe true
+  mkTarget name description [] (instrumentRecipe name recipe) true
 
 -- Convert Synchronizer to target
 synchronizerToTarget : String → String → List String → List String → MakefileTarget
 synchronizerToTarget name description deps recipe =
-  mkTarget name description deps recipe true
+  mkTarget name description deps (instrumentRecipe name recipe) true
 
 -- ==========================================================
 -- Discovery and Generation
@@ -158,7 +191,7 @@ generateAgdaTargets [] = []
 generateAgdaTargets (path ∷ paths) =
   let target = agdaToAgdai path
       recipe = ("$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type " ++ path) ∷ []
-  in mkTarget target ("Compile " ++ path) (path ∷ []) recipe false ∷ generateAgdaTargets paths
+  in mkTarget target ("Compile " ++ path) (path ∷ []) (instrumentRecipe target recipe) false ∷ generateAgdaTargets paths
 
 -- Generate HTML documentation targets
 generateDocsTargets : List String → List MakefileTarget  
@@ -167,27 +200,19 @@ generateDocsTargets (path ∷ paths) =
   let htmlTarget = "build/html/" ++ path ++ ".html"
       agdaiDep = agdaToAgdai path
       recipe = ("$(AGDA) --html --html-dir=build/html -i src/agda " ++ path) ∷ []
-  in mkTarget htmlTarget ("Generate HTML for " ++ path) (agdaiDep ∷ []) recipe false ∷ generateDocsTargets paths
+  in mkTarget htmlTarget ("Generate HTML for " ++ path) (agdaiDep ∷ []) (instrumentRecipe htmlTarget recipe) false ∷ generateDocsTargets paths
 
 -- Aggregate target: build all .agdai files
 allAgdaiTarget : List String → MakefileTarget
 allAgdaiTarget agdaFiles =
   let agdaiFiles = map agdaToAgdai agdaFiles
-  in mkTarget "agda-all" "Compile all Agda modules" agdaiFiles [] true
-  where
-    map : (String → String) → List String → List String
-    map f [] = []
-    map f (x ∷ xs) = f x ∷ map f xs
+  in mkTarget "agda-all" "Compile all Agda modules" agdaiFiles (instrumentRecipe "agda-all" []) true
 
 -- Aggregate target: build all HTML docs
 allDocsTarget : List String → MakefileTarget
 allDocsTarget agdaFiles =
   let htmlFiles = map (\path → "build/html/" ++ path ++ ".html") agdaFiles
-  in mkTarget "docs-all" "Generate all HTML documentation" htmlFiles [] true
-  where
-    map : (String → String) → List String → List String
-    map f [] = []
-    map f (x ∷ xs) = f x ∷ map f xs
+  in mkTarget "docs-all" "Generate all HTML documentation" htmlFiles (instrumentRecipe "docs-all" []) true
 
 -- ==========================================================
 -- Discovery Functions

@@ -32,6 +32,20 @@ GENERATED_FILES = [
     "build/reports/test-report.md",
 ]
 
+def find_markdownlint() -> Path | None:
+    """
+    Locate markdownlint-cli2. Prefer local node_modules; fall back to PATH.
+
+    Returning None lets callers bail out with a clear message instead of
+    hanging on an interactive npx install prompt.
+    """
+    local_bin = REPO_ROOT / "node_modules" / ".bin" / "markdownlint-cli2"
+    if local_bin.exists():
+        return local_bin
+    from shutil import which
+    found = which("markdownlint-cli2")
+    return Path(found) if found else None
+
 def extract_frontmatter(content: str):
     """Parse all YAML code blocks and return list of dicts."""
     blocks = re.findall(r'```yaml\n(.*?)\n```', content, re.DOTALL)
@@ -62,10 +76,15 @@ def normalize_markdown(filepath: Path) -> bool:
     if any('__parse_error__' in fm for fm in fm_before):
         print(f"✗ Frontmatter parse error before lint in {filepath}")
         return False
-    
+
+    tool = find_markdownlint()
+    if tool is None:
+        print("✗ markdownlint-cli2 not found. Please run `make node-deps` first.")
+        return False
+
     try:
         result = subprocess.run(
-            ["npx", "markdownlint-cli2", "--fix", str(filepath)],
+            [str(tool), "--fix", str(filepath)],
             cwd=REPO_ROOT,
             capture_output=True,
             text=True,

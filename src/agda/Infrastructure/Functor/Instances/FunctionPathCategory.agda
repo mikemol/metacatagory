@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 -- | FunctionPathCategory: functions as morphisms with pointwise equality.
 -- Provides a CategoryLike instance and pointwise identity/compose proofs.
 

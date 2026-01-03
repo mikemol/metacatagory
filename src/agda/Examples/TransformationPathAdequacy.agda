@@ -10,6 +10,8 @@ open import Agda.Builtin.Equality using (_≡_; refl)
 
 open import Plan.CIM.Utility using (TransformationSystem; Path; refl-path; trans-step)
 open import Infrastructure.Functor.Instances.TransformationSystem
+open import Infrastructure.Axiom.Instance using (FramedFace; AxiomInstance)
+open import Infrastructure.Axiom.Face as Face using (Face)
 
 NatSteps : TransformationSystem {ℓ = lzero} Nat Nat
 TransformationSystem.Step NatSteps = Nat
