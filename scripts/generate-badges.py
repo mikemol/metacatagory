@@ -7,6 +7,7 @@ Outputs badge data files that can be served via GitHub Pages or committed to the
 
 import json
 import sys
+import re
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, Iterable, List, Tuple
@@ -301,6 +302,9 @@ def scan_repository_for_deferred(
     deviation_log = 0
     file_counts: Dict[str, Dict[str, float]] = {}
 
+    todo_re = re.compile(r"\bTODO\b")
+    fixme_re = re.compile(r"\bFIXME\b")
+
     for path in repo_root.rglob("*"):
         if not path.is_file():
             continue
@@ -334,17 +338,16 @@ def scan_repository_for_deferred(
                                 local_postulates += c
 
                     # TODO/FIXME: look for comment-like patterns
-                    if "TODO" in line:
-                        # Exclude label strings in JSON/badges
+                    # TODO/FIXME: count only whole-word occurrences to avoid constants like TODO_THRESHOLDS
+                    if todo_re.search(line):
                         if '"TODO"' not in line and "'TODO'" not in line:
-                            c = line.count("TODO")
+                            c = len(todo_re.findall(line))
                             todo += c
                             local_todo += c
 
-                    if "FIXME" in line:
-                        # Exclude label strings in JSON/badges
+                    if fixme_re.search(line):
                         if '"FIXME"' not in line and "'FIXME'" not in line:
-                            c = line.count("FIXME")
+                            c = len(fixme_re.findall(line))
                             fixme += c
                             local_fixme += c
 
