@@ -84,6 +84,13 @@ def load_weights(output_dir: Path) -> Dict[str, float]:
     if weights_file.exists():
         try:
             weights = load_json_file(weights_file)
+            # If the orchestration file contains profiles, pick the active one
+            if isinstance(weights, dict) and "profiles" in weights:
+                active = weights.get("active", "default")
+                prof = weights["profiles"].get(active)
+                if prof:
+                    print(f"Loaded weights profile '{active}' from {weights_file}")
+                    return prof
             if weights:
                 print(f"Loaded weights from {weights_file}")
                 return weights
@@ -430,8 +437,8 @@ def main():
         tasks = []  # Handle empty or malformed file
 
     deferred = load_json_file(deferred_summary)
-    # If no deferred summary or empty, dynamically compute from source tree
-    if not deferred or deferred.get("total", 0) == 0:
+    # If no deferred summary, empty, or missing file details, dynamically compute from source tree
+    if not deferred or deferred.get("total", 0) == 0 or not deferred.get("files"):
         deferred = scan_repository_for_deferred(repo_root, weights)
 
     # History tracking for trend badge
@@ -518,6 +525,12 @@ def main():
     manifest_file = output_dir / 'manifest.json'
     with open(manifest_file, 'w') as f:
         json.dump(manifest, f, indent=2)
+
+    # Write per-file deferred counts for downstream tools (priority export, doc lint)
+    detailed_file = output_dir / "deferred-files.json"
+    with open(detailed_file, "w") as df:
+        json.dump(deferred.get("files", {}), df, indent=2)
+    print(f"Wrote detailed deferred file map: {detailed_file}")
     print(f"Generated: {manifest_file}")
     
     print(f"\n✅ Generated {len(all_badges)} badge JSON files in {output_dir}")
