@@ -9,6 +9,8 @@ open import Agda.Builtin.Nat using (Nat; suc)
 open import Agda.Builtin.Equality using (_≡_; refl)
 
 open import Infrastructure.Functor.Instances.FunctionPathCategory
+open import Infrastructure.Axiom.Instance using (FramedFace; AxiomInstance)
+open import Infrastructure.Axiom.Face as Face using (Face)
 
 module FP = FunctionPathAdequacy {ℓ = lzero}
 

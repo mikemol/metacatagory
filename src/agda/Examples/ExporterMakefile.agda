@@ -81,7 +81,7 @@ open import Examples.AgdaMakefileDeps using (_++_; ModuleName; primStringEqualit
 open import Examples.MakefileTargets using (MakefileTarget; TargetCategory; allCategories; 
   validatorToTarget; generatorToTarget; nodeSetupCategory; badgeCategory; mdLintCategory;
   discoverAgdaFiles; generateAgdaTargets; generateDocsTargets; allAgdaiTarget; allDocsTarget;
-  environmentSetupToTarget; synchronizerToTarget; mkTarget)
+  environmentSetupToTarget; synchronizerToTarget; mkTarget; instrumentRecipe)
 
 postulate
   writeFile : String → String → IO ⊤
@@ -289,7 +289,7 @@ generateAgdaTargetFromGraph agdaPath depLabels =
       agdaiPath = agdaPath ++ "i"
       allDeps = agdaPath ∷ importPaths
       recipe = ("$(AGDA) $(AGDA_FLAGS) " ++ agdaPath) ∷ []
-  in mkTarget agdaiPath ("Compile " ++ agdaPath) allDeps recipe false
+  in mkTarget agdaiPath ("Compile " ++ agdaPath) allDeps (instrumentRecipe agdaiPath recipe) false
 
 -- Build complete artifact from discovered files and graph edges
 buildArtifact : List String → List String → MakefileArtifact
@@ -301,7 +301,27 @@ buildArtifact agdaFiles graphEdges =
       allTargets = regenMakefileTarget ∷ discoveredTargets +++ agdaiTargets +++ aggregateTargets
       phonyTargets = filter (λ t → MakefileTarget.phony t) allTargets
       phonyNames = map MakefileTarget.name phonyTargets
-      headerSection = record { id = "header"; content = ("# Use local Agda 2.8.0 if available, otherwise system agda" ∷ "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)" ∷ "" ∷ "# Common Agda compilation flags" ∷ "AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type" ∷ []) }
+      headerSection = record
+        { id = "header"
+        ; content =
+            ( "# Use local Agda 2.8.0 if available, otherwise system agda"
+            ∷ "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)"
+            ∷ ""
+            ∷ "# Default parallelism scales with available cores unless user overrides MAKEFLAGS."
+            ∷ "CORES ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)"
+            ∷ "MAKEFLAGS += -j$(CORES)"
+            ∷ ""
+            ∷ "# Profiling output (JSONL). New file per make invocation for history."
+            ∷ "PROFILE_DIR ?= build/profiles.d"
+            ∷ "ifndef PROFILE_RUN"
+            ∷ "PROFILE_RUN := $(shell sh -c \"echo $$(date +%Y%m%dT%H%M%S%z)-$$$$\")"
+            ∷ "endif"
+            ∷ "PROFILE_LOG ?= $(PROFILE_DIR)/profile-$(PROFILE_RUN).jsonl"
+            ∷ ""
+            ∷ "# Common Agda compilation flags"
+            ∷ "AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type"
+            ∷ [])
+        }
       phonySection = record { id = "phony" 
                 ; content = (".PHONY: " ++ intercalate " " phonyNames) ∷ [] }
   in record { sections = headerSection ∷ phonySection ∷ map targetToSection allTargets }

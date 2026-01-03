@@ -1,6 +1,17 @@
 # Use local Agda 2.8.0 if available, otherwise system agda
 AGDA := $(if $(wildcard .local/agda),.local/agda,agda)
 
+# Default parallelism scales with available cores unless user overrides MAKEFLAGS.
+CORES ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
+MAKEFLAGS += -j$(CORES)
+
+# Profiling output (JSONL). New file per make invocation for history.
+PROFILE_DIR ?= build/profiles.d
+ifndef PROFILE_RUN
+PROFILE_RUN := $(shell sh -c "echo $$(date +%Y%m%dT%H%M%S%z)-$$$$")
+endif
+PROFILE_LOG ?= $(PROFILE_DIR)/profile-$(PROFILE_RUN).jsonl
+
 # Common Agda compilation flags
 AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type
 .PHONY: regen-makefile md-lint md-fix intake-lint build/canonical_roadmap.json intake-scan md-normalize makefile-validate all check badges priority-strategy-profiles priority-badge-weights priority-profile-json dependency-graph-json priority-refresh docs-modules docs-all node-deps deferred-items roadmap-index planning-index-json planning-kernel roadmap-sync roadmap-sppf validate-constructive roadmap-merge build/diagrams/agda-deps-full.dot roadmap-deps-graph build/canonical_enriched.json roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched docs-generate docs-validate agda-all
@@ -10,925 +21,943 @@ regen-makefile: build/diagrams/agda-deps-full.dot
 	cp Makefile.generated Makefile
 # Lint all markdown files (fail on error)
 md-lint: 
-	mkdir -p build/reports
-	npx markdownlint-cli2 "**/*.md" "!node_modules" "!build" > build/reports/md-lint.txt 2>&1
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (mkdir -p build/reports && npx markdownlint-cli2 "**/*.md" "!node_modules" "!build" > build/reports/md-lint.txt 2>&1); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "md-lint" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Auto-fix markdown lint errors
 md-fix: 
-	npx markdownlint-cli2 --fix "**/*.md" "!node_modules" "!build"
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (npx markdownlint-cli2 --fix "**/*.md" "!node_modules" "!build"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "md-fix" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Lint intake files specifically
 intake-lint: 
-	npx markdownlint-cli2 "intake/**/*.md" > build/reports/intake-md-lint.txt 2>&1
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (npx markdownlint-cli2 "intake/**/*.md" > build/reports/intake-md-lint.txt 2>&1); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "intake-lint" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Generate canonical roadmap JSON from intake
 build/canonical_roadmap.json: 
-	python3 scripts/intake_scan.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/intake_scan.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "build/canonical_roadmap.json" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Scan intake directory for new files
 intake-scan: planning-index-json
-	@echo "intake scan complete"
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "intake scan complete"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "intake-scan" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Normalize markdown formatting
 md-normalize: 
-	python3 scripts/normalize_generated_markdown.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/normalize_generated_markdown.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "md-normalize" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Validate Makefile consistency
 makefile-validate: 
-	mkdir -p build/reports
-	python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt || (cat build/reports/makefile-validate.txt; exit 1)
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (mkdir -p build/reports && python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt || (cat build/reports/makefile-validate.txt; exit 1)); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "makefile-validate" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Build all code and documentation
 all: agda-all docs-all
-	@echo "all complete"
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "all complete"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "all" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Run all validation checks
 check: makefile-validate md-lint roadmap-validate-triangle docs-validate all
-	@echo "check complete"
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "check complete"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "check" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Generate status badges
 badges: priority-badge-weights
-	python3 scripts/generate-badges.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/generate-badges.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "badges" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile and run Agda priority orchestration (generate strategy profiles)
 priority-strategy-profiles: 
-	mkdir -p build
-	$(AGDA) $(AGDA_FLAGS) --compile src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda
-	./src/agda/PriorityOrchestrationFFI
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (mkdir -p build && $(AGDA) $(AGDA_FLAGS) --compile src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda && ./src/agda/PriorityOrchestrationFFI); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "priority-strategy-profiles" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Normalize Agda strategy profiles into badge weights
 priority-badge-weights: priority-strategy-profiles
-	python3 scripts/adopt_priority_strategies.py --input build/priority_strategy_profiles.json --output .github/badges/weights.json
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/adopt_priority_strategies.py --input build/priority_strategy_profiles.json --output .github/badges/weights.json); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "priority-badge-weights" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Export structured priority profile (lazy; derived from planning index)
 priority-profile-json: planning-index-json
-	mkdir -p build
-	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/PriorityProfileExport.agda && ./src/agda/PriorityProfileExport
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (mkdir -p build && $(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/PriorityProfileExport.agda && ./src/agda/PriorityProfileExport); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "priority-profile-json" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Export dependency graph JSON via Agda (from agda-deps-full.dot)
 dependency-graph-json: build/diagrams/agda-deps-full.dot
-	mkdir -p build
-	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/DependencyGraphExport.agda && ./src/agda/DependencyGraphExport
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (mkdir -p build && $(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/DependencyGraphExport.agda && ./src/agda/DependencyGraphExport); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "dependency-graph-json" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Re-run priority pipeline and refresh roadmap/badge outputs
 priority-refresh: planning-index-json roadmap-export-json priority-badge-weights badges
-	@echo "priority pipeline refreshed (planning index, tasks, badge weights, roadmap badges)"
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "priority pipeline refreshed (planning index, tasks, badge weights, roadmap badges)"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "priority-refresh" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Generate per-module markdown documentation
 docs-modules: src/agda/Plan/CIM/ModuleExporter.agdai
-	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/ModuleExporter.agda && ./src/agda/Plan/CIM/ModuleExporter
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/ModuleExporter.agda && ./src/agda/Plan/CIM/ModuleExporter); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "docs-modules" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Generate documentation (markdown only)
 docs-all: docs-generate docs-modules
-	@echo "docs (markdown) complete"
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "docs (markdown) complete"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "docs-all" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Install Node.js dependencies
 node-deps: 
-	npm install
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (npm install); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "node-deps" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Scan for TODOs and FIXMEs (Agda FFI binary)
 deferred-items: 
-	$(AGDA) $(AGDA_FLAGS) --compile src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda
-	./src/agda/DeferredItemsOrchestrationFFI
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) --compile src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda && ./src/agda/DeferredItemsOrchestrationFFI); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "deferred-items" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile Roadmap Index
 roadmap-index: src/agda/Plan/CIM/RoadmapIndex.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapIndex.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapIndex.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-index" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Export planning index to JSON
 planning-index-json: src/agda/Plan/CIM/PlanningExport.agdai
-	mkdir -p build
-	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/PlanningExport.agda && ./src/agda/PlanningExport
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (mkdir -p build && $(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/PlanningExport.agda && ./src/agda/PlanningExport); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "planning-index-json" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile Planning Kernel
 planning-kernel: src/agda/Plan/CIM/PlanningKernel.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PlanningKernel.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PlanningKernel.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "planning-kernel" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Sync roadmap with external tracker
 roadmap-sync: roadmap-export-json src/agda/Plan/CIM/RoadmapSync.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSync.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSync.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-sync" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile Roadmap SPPF
 roadmap-sppf: src/agda/Plan/CIM/RoadmapSPPF.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSPPF.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSPPF.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-sppf" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Run all constructive build targets
 validate-constructive: docs-all docs-generate docs-modules roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-deps-graph roadmap-enrich roadmap-all-enriched intake-scan md-normalize badges
-	@echo "✓ Constructive validation complete"
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "✓ Constructive validation complete"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "validate-constructive" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Merge ingestion streams
 roadmap-merge: 
-	python3 scripts/merge_roadmaps.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/merge_roadmaps.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-merge" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Generate dependency graph
 build/diagrams/agda-deps-full.dot: 
-	mkdir -p build/diagrams
-	$(AGDA) --dependency-graph=build/diagrams/agda-deps-full.dot $(AGDA_FLAGS) src/agda/Tests/Index.agda 2>&1 | grep -E "(Checking|Error)" | head -20
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (mkdir -p build/diagrams && $(AGDA) --dependency-graph=build/diagrams/agda-deps-full.dot $(AGDA_FLAGS) src/agda/Tests/Index.agda 2>&1 | grep -E "(Checking|Error)" | head -20); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "build/diagrams/agda-deps-full.dot" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Generate dependency graph
 roadmap-deps-graph: build/diagrams/agda-deps-full.dot
-	@echo "agda dependency graph generated"
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "agda dependency graph generated"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-deps-graph" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Enrich canonical roadmap
 build/canonical_enriched.json: planning-index-json build/diagrams/agda-deps-full.dot
-	python3 scripts/enrich_canonical.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/enrich_canonical.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "build/canonical_enriched.json" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Enrich roadmap with graph data
 roadmap-enrich: build/canonical_enriched.json
-	@echo "roadmap enrichment complete"
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "roadmap enrichment complete"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-enrich" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Export canonical roadmap to JSON
 roadmap-export-json: planning-index-json
-	python3 scripts/export_canonical_json.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/export_canonical_json.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-export-json" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Export canonical roadmap to Markdown
 roadmap-export-md: planning-index-json
-	python3 scripts/export_canonical_md.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/export_canonical_md.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-export-md" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Export enriched roadmap
 roadmap-export-enriched: build/canonical_enriched.json
-	python3 scripts/export_enriched_md.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/export_enriched_md.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-export-enriched" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Export roadmap dependency graph
 roadmap-export-deps: build/canonical_enriched.json
-	python3 scripts/export_dependency_graph.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/export_dependency_graph.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-export-deps" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Validate canonical JSON
 roadmap-validate-json: roadmap-export-json
-	python3 scripts/validate_json.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/validate_json.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-validate-json" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Validate canonical Markdown
 roadmap-validate-md: roadmap-export-md
-	python3 scripts/validate_md.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/validate_md.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-validate-md" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Verify Triangle Identity (Agda <-> JSON <-> MD)
 roadmap-validate-triangle: roadmap-validate-json roadmap-validate-md
-	@echo "✓ Triangle validation complete"
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "✓ Triangle validation complete"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-validate-triangle" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Export SPPF structure
 roadmap-sppf-export: planning-index-json
-	python3 scripts/export_roadmap_sppf.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/export_roadmap_sppf.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-sppf-export" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Build all enriched artifacts
 roadmap-all-enriched: roadmap-export-enriched roadmap-export-deps
-	@echo "roadmap all enriched complete"
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "roadmap all enriched complete"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-all-enriched" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile and run Roadmap Exporter
 docs-generate: src/agda/Plan/CIM/RoadmapExporter.agdai
-	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/RoadmapExporter.agda && ./src/agda/RoadmapExporter
-	python3 scripts/normalize_generated_markdown.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/RoadmapExporter.agda && ./src/agda/RoadmapExporter && python3 scripts/normalize_generated_markdown.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "docs-generate" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Validate documentation integrity
 docs-validate: 
-	python3 scripts/validate_triangle_identity.py
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/validate_triangle_identity.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "docs-validate" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/MetaScan.agda
 src/agda/MetaScan.agdai: src/agda/MetaScan.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/MetaScan.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/MetaScan.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/MetaScan.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Metamodel.agda
 src/agda/Metamodel.agdai: src/agda/Metamodel.agda src/agda/Core/Phase.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Metamodel.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Metamodel.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Metamodel.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/PropertyRegistryTests.agda
 src/agda/Tests/PropertyRegistryTests.agdai: src/agda/Tests/PropertyRegistryTests.agda src/agda/PropertyRegistry.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/PropertyRegistryTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/PropertyRegistryTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/PropertyRegistryTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/AbelianCategoriesChecklist.agda
 src/agda/Tests/AbelianCategoriesChecklist.agdai: src/agda/Tests/AbelianCategoriesChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/AbelianCategoriesChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/AbelianCategoriesChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/AbelianCategoriesChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/DispatchBehaviorTests.agda
 src/agda/Tests/DispatchBehaviorTests.agdai: src/agda/Tests/DispatchBehaviorTests.agda src/agda/Core/Algorithms/Registry.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/DispatchBehaviorTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/DispatchBehaviorTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/DispatchBehaviorTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/WitnessConstructionTests.agda
 src/agda/Tests/WitnessConstructionTests.agdai: src/agda/Tests/WitnessConstructionTests.agda src/agda/Core/Witnesses.agdai src/agda/Core/AlgebraicAlgorithms.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/WitnessConstructionTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/WitnessConstructionTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/WitnessConstructionTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/VectorSpaceChecklist.agda
 src/agda/Tests/VectorSpaceChecklist.agdai: src/agda/Tests/VectorSpaceChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/VectorSpaceChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/VectorSpaceChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/VectorSpaceChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/ProofObligationStatus.agda
 src/agda/Tests/ProofObligationStatus.agdai: src/agda/Tests/ProofObligationStatus.agda src/agda/Examples/AlgorithmCorrectnessExamples.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/ProofObligationStatus.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/ProofObligationStatus.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/ProofObligationStatus.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/SerializationTests.agda
 src/agda/Tests/SerializationTests.agdai: src/agda/Tests/SerializationTests.agda src/agda/Core/Algorithms/Bundle.agdai src/agda/Core/TechnicalDebt.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/SerializationTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/SerializationTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/SerializationTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/GodelBoundaryTests.agda
 src/agda/Tests/GodelBoundaryTests.agdai: src/agda/Tests/GodelBoundaryTests.agda src/agda/Core/GodelBoundary.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/GodelBoundaryTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/GodelBoundaryTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/GodelBoundaryTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/ModuleStructureChecklist.agda
 src/agda/Tests/ModuleStructureChecklist.agdai: src/agda/Tests/ModuleStructureChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/ModuleStructureChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/ModuleStructureChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/ModuleStructureChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/ToposTheoryChecklist.agda
 src/agda/Tests/ToposTheoryChecklist.agdai: src/agda/Tests/ToposTheoryChecklist.agda src/agda/Tests/ToposObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/ToposTheoryChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/ToposTheoryChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/ToposTheoryChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/GrothendieckFibrationsChecklist.agda
 src/agda/Tests/GrothendieckFibrationsChecklist.agdai: src/agda/Tests/GrothendieckFibrationsChecklist.agda src/agda/Tests/ObligationAdapters.agdai src/agda/Core/GrothendieckFibrations.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/GrothendieckFibrationsChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/GrothendieckFibrationsChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/GrothendieckFibrationsChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/TensorProductChecklist.agda
 src/agda/Tests/TensorProductChecklist.agdai: src/agda/Tests/TensorProductChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/TensorProductChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/TensorProductChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/TensorProductChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/Index_PhaseII.agda
 src/agda/Tests/Index_PhaseII.agdai: src/agda/Tests/Index_PhaseII.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/Index_PhaseII.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/Index_PhaseII.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/Index_PhaseII.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/HierarchyValidation.agda
 src/agda/Tests/HierarchyValidation.agdai: src/agda/Tests/HierarchyValidation.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/HierarchyValidation.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/HierarchyValidation.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/HierarchyValidation.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/PhaseExamples.agda
 src/agda/Tests/PhaseExamples.agdai: src/agda/Tests/PhaseExamples.agda src/agda/Core/Algorithms/Registry.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/PhaseExamples.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/PhaseExamples.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/PhaseExamples.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/RegularCategoriesChecklist.agda
 src/agda/Tests/RegularCategoriesChecklist.agdai: src/agda/Tests/RegularCategoriesChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/RegularCategoriesChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/RegularCategoriesChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/RegularCategoriesChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/AlgorithmCompositionTestsMinimal.agda
 src/agda/Tests/AlgorithmCompositionTestsMinimal.agdai: src/agda/Tests/AlgorithmCompositionTestsMinimal.agda src/agda/Core/Algorithms/Registry.agdai src/agda/Core/TechnicalDebt.agdai src/agda/Core/UniversalProperties.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/AlgorithmCompositionTestsMinimal.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/AlgorithmCompositionTestsMinimal.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/AlgorithmCompositionTestsMinimal.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/MonadAdjunctionChecklist.agda
 src/agda/Tests/MonadAdjunctionChecklist.agdai: src/agda/Tests/MonadAdjunctionChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/MonadAdjunctionChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/MonadAdjunctionChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/MonadAdjunctionChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/UniversalPropertyTests.agda
 src/agda/Tests/UniversalPropertyTests.agdai: src/agda/Tests/UniversalPropertyTests.agda src/agda/Core/AlgorithmUniversality.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/UniversalPropertyTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/UniversalPropertyTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/UniversalPropertyTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/EnrichmentChecklist.agda
 src/agda/Tests/EnrichmentChecklist.agdai: src/agda/Tests/EnrichmentChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/EnrichmentChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/EnrichmentChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/EnrichmentChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/AdvancedPhaseExamples.agda
 src/agda/Tests/AdvancedPhaseExamples.agdai: src/agda/Tests/AdvancedPhaseExamples.agda src/agda/Core/Algorithms/Registry.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/AdvancedPhaseExamples.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/AdvancedPhaseExamples.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/AdvancedPhaseExamples.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/ErrorAsSpecificationTests.agda
 src/agda/Tests/ErrorAsSpecificationTests.agdai: src/agda/Tests/ErrorAsSpecificationTests.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/ErrorAsSpecificationTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/ErrorAsSpecificationTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/ErrorAsSpecificationTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/RealWorldAlgorithmsTests.agda
 src/agda/Tests/RealWorldAlgorithmsTests.agdai: src/agda/Tests/RealWorldAlgorithmsTests.agda src/agda/Examples/RealWorldAlgorithms.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/RealWorldAlgorithmsTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/RealWorldAlgorithmsTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/RealWorldAlgorithmsTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/PolynomialExtensionsChecklist.agda
 src/agda/Tests/PolynomialExtensionsChecklist.agdai: src/agda/Tests/PolynomialExtensionsChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/PolynomialExtensionsChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/PolynomialExtensionsChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/PolynomialExtensionsChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/ModuleTheoryChecklist.agda
 src/agda/Tests/ModuleTheoryChecklist.agdai: src/agda/Tests/ModuleTheoryChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/ModuleTheoryChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/ModuleTheoryChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/ModuleTheoryChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/PhaseCategoryExamplesRunner.agda
 src/agda/Tests/PhaseCategoryExamplesRunner.agdai: src/agda/Tests/PhaseCategoryExamplesRunner.agda src/agda/Examples/PhaseCategoryExamples.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/PhaseCategoryExamplesRunner.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/PhaseCategoryExamplesRunner.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/PhaseCategoryExamplesRunner.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/PolynomialFieldExtensionsChecklist.agda
 src/agda/Tests/PolynomialFieldExtensionsChecklist.agdai: src/agda/Tests/PolynomialFieldExtensionsChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/PolynomialFieldExtensionsChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/PolynomialFieldExtensionsChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/PolynomialFieldExtensionsChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/AlgorithmCompositionTests.agda
 src/agda/Tests/AlgorithmCompositionTests.agdai: src/agda/Tests/AlgorithmCompositionTests.agda src/agda/Tests/AlgorithmCompositionTestsMinimal.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/AlgorithmCompositionTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/AlgorithmCompositionTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/AlgorithmCompositionTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/FieldsBasicChecklist.agda
 src/agda/Tests/FieldsBasicChecklist.agdai: src/agda/Tests/FieldsBasicChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/FieldsBasicChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/FieldsBasicChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/FieldsBasicChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/SpecificationValidation.agda
 src/agda/Tests/SpecificationValidation.agdai: src/agda/Tests/SpecificationValidation.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/SpecificationValidation.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/SpecificationValidation.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/SpecificationValidation.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/AlgorithmSmokeTests.agda
 src/agda/Tests/AlgorithmSmokeTests.agdai: src/agda/Tests/AlgorithmSmokeTests.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/AlgorithmSmokeTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/AlgorithmSmokeTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/AlgorithmSmokeTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/CoverageReport.agda
 src/agda/Tests/CoverageReport.agdai: src/agda/Tests/CoverageReport.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/CoverageReport.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/CoverageReport.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/CoverageReport.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/GroupsFreeChecklist.agda
 src/agda/Tests/GroupsFreeChecklist.agdai: src/agda/Tests/GroupsFreeChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/GroupsFreeChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/GroupsFreeChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/GroupsFreeChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/RingsBasicChecklist.agda
 src/agda/Tests/RingsBasicChecklist.agdai: src/agda/Tests/RingsBasicChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/RingsBasicChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/RingsBasicChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/RingsBasicChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/Chapter2Checklist.agda
 src/agda/Tests/Chapter2Checklist.agdai: src/agda/Tests/Chapter2Checklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/Chapter2Checklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/Chapter2Checklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/Chapter2Checklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/KanExtensionsChecklist.agda
 src/agda/Tests/KanExtensionsChecklist.agdai: src/agda/Tests/KanExtensionsChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/KanExtensionsChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/KanExtensionsChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/KanExtensionsChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/LimitsColimitsChecklist.agda
 src/agda/Tests/LimitsColimitsChecklist.agdai: src/agda/Tests/LimitsColimitsChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/LimitsColimitsChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/LimitsColimitsChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/LimitsColimitsChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/AdvancedMonadTheoryChecklist.agda
 src/agda/Tests/AdvancedMonadTheoryChecklist.agdai: src/agda/Tests/AdvancedMonadTheoryChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/AdvancedMonadTheoryChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/AdvancedMonadTheoryChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/AdvancedMonadTheoryChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/CoreUniversalPropertiesChecklist.agda
 src/agda/Tests/CoreUniversalPropertiesChecklist.agdai: src/agda/Tests/CoreUniversalPropertiesChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/CoreUniversalPropertiesChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/CoreUniversalPropertiesChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/CoreUniversalPropertiesChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/ChapterObligationsSmoke.agda
 src/agda/Tests/ChapterObligationsSmoke.agdai: src/agda/Tests/ChapterObligationsSmoke.agda src/agda/Chapter3/Level3sub2.agdai src/agda/Chapter2/Level2sub1.agdai src/agda/Chapter2/Level2sub2.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/ChapterObligationsSmoke.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/ChapterObligationsSmoke.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/ChapterObligationsSmoke.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/ConstructiveWitnessTests.agda
 src/agda/Tests/ConstructiveWitnessTests.agdai: src/agda/Tests/ConstructiveWitnessTests.agda src/agda/Core/ConstructiveWitnesses.agdai src/agda/Core/AlgorithmUniversality.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/ConstructiveWitnessTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/ConstructiveWitnessTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/ConstructiveWitnessTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/PerformanceBoundaryTests.agda
 src/agda/Tests/PerformanceBoundaryTests.agdai: src/agda/Tests/PerformanceBoundaryTests.agda src/agda/GrowthAnalysis.agdai src/agda/Core/AlgorithmComplexity.agdai src/agda/Core/Algorithms/Registry.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/PerformanceBoundaryTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/PerformanceBoundaryTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/PerformanceBoundaryTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/PathAggregatorTests.agda
 src/agda/Tests/PathAggregatorTests.agdai: src/agda/Tests/PathAggregatorTests.agda src/agda/Core/PathAggregator.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/PathAggregatorTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/PathAggregatorTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/PathAggregatorTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/GroupsAbelianChecklist.agda
 src/agda/Tests/GroupsAbelianChecklist.agdai: src/agda/Tests/GroupsAbelianChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/GroupsAbelianChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/GroupsAbelianChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/GroupsAbelianChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/Chapter1Checklist.agda
 src/agda/Tests/Chapter1Checklist.agdai: src/agda/Tests/Chapter1Checklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/Chapter1Checklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/Chapter1Checklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/Chapter1Checklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/AdvancedFieldsChecklist.agda
 src/agda/Tests/AdvancedFieldsChecklist.agdai: src/agda/Tests/AdvancedFieldsChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/AdvancedFieldsChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/AdvancedFieldsChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/AdvancedFieldsChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/WarningAggregatorsTest.agda
 src/agda/Tests/WarningAggregatorsTest.agdai: src/agda/Tests/WarningAggregatorsTest.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/WarningAggregatorsTest.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/WarningAggregatorsTest.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/WarningAggregatorsTest.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/Index.agda
 src/agda/Tests/Index.agdai: src/agda/Tests/Index.agda src/agda/Tests/PhaseExamples.agdai src/agda/Tests/Chapter2Checklist.agdai src/agda/Tests/PhaseCategoryExamplesRunner.agdai src/agda/Tests/RegularCategoriesChecklist.agdai src/agda/Tests/GodelBoundaryTests.agdai src/agda/Tests/UniversalPropertyTests.agdai src/agda/Tests/PolynomialExtensionsChecklist.agdai src/agda/Tests/ConstructiveWitnessTests.agdai src/agda/Tests/CoreUniversalPropertiesChecklist.agdai src/agda/Tests/Chapters.agdai src/agda/Tests/EnrichmentChecklist.agdai src/agda/Tests/DispatchBehaviorTests.agdai src/agda/Tests/AdvancedMonadTheoryChecklist.agdai src/agda/Tests/Chapter1Checklist.agdai src/agda/Tests/ModulesChecklist.agdai src/agda/Tests/ProofObligationStatus.agdai src/agda/Tests/ChapterObligationsSmoke.agdai src/agda/Tests/VectorSpaceChecklist.agdai src/agda/Tests/AlgebraChecklist.agdai src/agda/Tests/ErrorHandlingTests.agdai src/agda/Tests/GroupsStructureChecklist.agdai src/agda/Tests/PerformanceBoundaryTests.agdai src/agda/Tests/FieldsBasicChecklist.agdai src/agda/Tests/AlgorithmCompositionTests.agdai src/agda/Tests/FunctorPropertiesChecklist.agdai src/agda/Tests/SerializationTests.agdai src/agda/Tests/KanExtensionsChecklist.agdai src/agda/Tests/RingsBasicChecklist.agdai src/agda/Tests/ModuleStructureChecklist.agdai src/agda/Tests/AdvancedFieldsChecklist.agdai src/agda/Tests/PathAggregatorTests.agdai src/agda/Tests/YonedaChecklist.agdai src/agda/Tests/SubobjectTheoryChecklist.agdai src/agda/Tests/RealWorldAlgorithmsTests.agdai src/agda/Tests/LimitsColimitsChecklist.agdai src/agda/Tests/AlgebraicCompletionChecklist.agdai src/agda/Tests/ToposTheoryChecklist.agdai src/agda/Tests/TensorProductChecklist.agdai src/agda/Tests/Chapter3Checklist.agdai src/agda/Tests/AdvancedPhaseExamples.agdai src/agda/Tests/PropertyRegistryTests.agdai src/agda/Tests/MonadAdjunctionChecklist.agdai src/agda/Tests/ModuleTheoryChecklist.agdai src/agda/Tests/GroupsFreeChecklist.agdai src/agda/Tests/PolynomialFieldExtensionsChecklist.agdai src/agda/Tests/GrothendieckFibrationsChecklist.agdai src/agda/Tests/WitnessConstructionTests.agdai src/agda/Tests/AbelianCategoriesChecklist.agdai src/agda/Tests/GroupsAbelianChecklist.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/Index.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/Index.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/Index.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/ObligationAdapters.agda
 src/agda/Tests/ObligationAdapters.agdai: src/agda/Tests/ObligationAdapters.agda src/agda/Chapter2/Level2sub7.agdai src/agda/Chapter3/Level3sub2.agdai src/agda/Algebra/Groups/Structure.agdai src/agda/Chapter3/Level3sub1.agdai src/agda/Core/CategoricalAdapter.agdai src/agda/Chapter2/Level2sub5.agdai src/agda/Chapter2/Level2sub4.agdai src/agda/Core/UniversalProperties.agdai src/agda/Chapter2/Level2sub8.agdai src/agda/Algebra/Fields/Advanced.agdai src/agda/Chapter2/Level2sub2.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/ObligationAdapters.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/ObligationAdapters.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/ObligationAdapters.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/ToposObligationAdapters.agda
 src/agda/Tests/ToposObligationAdapters.agdai: src/agda/Tests/ToposObligationAdapters.agda src/agda/Chapter3/Level3sub2.agdai src/agda/Core/CategoricalAdapter.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/ToposObligationAdapters.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/ToposObligationAdapters.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/ToposObligationAdapters.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/Chapters.agda
 src/agda/Tests/Chapters.agdai: src/agda/Tests/Chapters.agda src/agda/Chapter3/Level3Index.agdai src/agda/Chapter2/Level2Index.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/Chapters.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/Chapters.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/Chapters.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/YonedaChecklist.agda
 src/agda/Tests/YonedaChecklist.agdai: src/agda/Tests/YonedaChecklist.agda src/agda/Tests/ObligationAdapters.agdai src/agda/Core/Yoneda.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/YonedaChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/YonedaChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/YonedaChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/AlgebraicCompletionChecklist.agda
 src/agda/Tests/AlgebraicCompletionChecklist.agdai: src/agda/Tests/AlgebraicCompletionChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/AlgebraicCompletionChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/AlgebraicCompletionChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/AlgebraicCompletionChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/FunctorPropertiesChecklist.agda
 src/agda/Tests/FunctorPropertiesChecklist.agdai: src/agda/Tests/FunctorPropertiesChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/FunctorPropertiesChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/FunctorPropertiesChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/FunctorPropertiesChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/AlgebraChecklist.agda
 src/agda/Tests/AlgebraChecklist.agdai: src/agda/Tests/AlgebraChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/AlgebraChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/AlgebraChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/AlgebraChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/ErrorHandlingTests.agda
 src/agda/Tests/ErrorHandlingTests.agdai: src/agda/Tests/ErrorHandlingTests.agda src/agda/Core/Algorithms/Registry.agdai src/agda/Core/UniversalProperties.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/ErrorHandlingTests.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/ErrorHandlingTests.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/ErrorHandlingTests.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/GroupsStructureChecklist.agda
 src/agda/Tests/GroupsStructureChecklist.agdai: src/agda/Tests/GroupsStructureChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/GroupsStructureChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/GroupsStructureChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/GroupsStructureChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/ModulesChecklist.agda
 src/agda/Tests/ModulesChecklist.agdai: src/agda/Tests/ModulesChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/ModulesChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/ModulesChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/ModulesChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/Chapter3Checklist.agda
 src/agda/Tests/Chapter3Checklist.agdai: src/agda/Tests/Chapter3Checklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/Chapter3Checklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/Chapter3Checklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/Chapter3Checklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Tests/SubobjectTheoryChecklist.agda
 src/agda/Tests/SubobjectTheoryChecklist.agdai: src/agda/Tests/SubobjectTheoryChecklist.agda src/agda/Tests/ObligationAdapters.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Tests/SubobjectTheoryChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Tests/SubobjectTheoryChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Tests/SubobjectTheoryChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter2/Level2sub3.agda
 src/agda/Chapter2/Level2sub3.agdai: src/agda/Chapter2/Level2sub3.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub3.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub3.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter2/Level2sub3.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter2/Level2sub6.agda
 src/agda/Chapter2/Level2sub6.agdai: src/agda/Chapter2/Level2sub6.agda src/agda/Chapter1/Level1Index.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub6.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub6.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter2/Level2sub6.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter2/Level2sub5.agda
 src/agda/Chapter2/Level2sub5.agdai: src/agda/Chapter2/Level2sub5.agda src/agda/Chapter1/Level1Index.agdai src/agda/Chapter2/Level2sub3.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub5.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub5.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter2/Level2sub5.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter2/Level2sub8.agda
 src/agda/Chapter2/Level2sub8.agdai: src/agda/Chapter2/Level2sub8.agda src/agda/Chapter1/Level1Index.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub8.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub8.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter2/Level2sub8.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter2/Level2sub7.agda
 src/agda/Chapter2/Level2sub7.agdai: src/agda/Chapter2/Level2sub7.agda src/agda/Chapter1/Level1Index.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub7.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub7.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter2/Level2sub7.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter2/Level2sub2.agda
 src/agda/Chapter2/Level2sub2.agdai: src/agda/Chapter2/Level2sub2.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub2.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub2.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter2/Level2sub2.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter2/Level2sub1.agda
 src/agda/Chapter2/Level2sub1.agdai: src/agda/Chapter2/Level2sub1.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub1.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub1.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter2/Level2sub1.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter2/Level2sub4.agda
 src/agda/Chapter2/Level2sub4.agdai: src/agda/Chapter2/Level2sub4.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub4.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2sub4.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter2/Level2sub4.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter2/Level2Index.agda
 src/agda/Chapter2/Level2Index.agdai: src/agda/Chapter2/Level2Index.agda src/agda/Chapter2/Level2sub7.agdai src/agda/Chapter2/Level2sub1.agdai src/agda/Chapter2/Level2sub5.agdai src/agda/Chapter2/Level2sub4.agdai src/agda/Chapter2/Level2sub6.agdai src/agda/Chapter2/Level2sub8.agdai src/agda/Chapter2/Level2sub2.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2Index.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter2/Level2Index.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter2/Level2Index.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter3/Level3sub1.agda
 src/agda/Chapter3/Level3sub1.agdai: src/agda/Chapter3/Level3sub1.agda src/agda/Chapter1/Level1Index.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter3/Level3sub1.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter3/Level3sub1.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter3/Level3sub1.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter3/Level3sub2.agda
 src/agda/Chapter3/Level3sub2.agdai: src/agda/Chapter3/Level3sub2.agda src/agda/Chapter1/Level1Index.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter3/Level3sub2.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter3/Level3sub2.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter3/Level3sub2.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter3/Level3Index.agda
 src/agda/Chapter3/Level3Index.agdai: src/agda/Chapter3/Level3Index.agda src/agda/Chapter3/Level3sub2.agdai src/agda/Chapter3/Level3sub1.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter3/Level3Index.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter3/Level3Index.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter3/Level3Index.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Arity/BinTree.agda
 src/agda/Infrastructure/Arity/BinTree.agdai: src/agda/Infrastructure/Arity/BinTree.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Arity/BinTree.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Arity/BinTree.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Arity/BinTree.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Universe.agda
 src/agda/Infrastructure/Universe.agdai: src/agda/Infrastructure/Universe.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Universe.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Universe.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Universe.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Iso/Structural.agda
 src/agda/Infrastructure/Iso/Structural.agdai: src/agda/Infrastructure/Iso/Structural.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Iso/Structural.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Iso/Structural.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Iso/Structural.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Functor/Compose.agda
 src/agda/Infrastructure/Functor/Compose.agdai: src/agda/Infrastructure/Functor/Compose.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Compose.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Compose.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Functor/Compose.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Functor/Interface.agda
-src/agda/Infrastructure/Functor/Interface.agdai: src/agda/Infrastructure/Functor/Interface.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Interface.agda
+src/agda/Infrastructure/Functor/Interface.agdai: src/agda/Infrastructure/Functor/Interface.agda src/agda/Infrastructure/Equality.agdai
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Interface.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Functor/Interface.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Functor/Adapters/Funext.agda
 src/agda/Infrastructure/Functor/Adapters/Funext.agdai: src/agda/Infrastructure/Functor/Adapters/Funext.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Adapters/Funext.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Adapters/Funext.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Functor/Adapters/Funext.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda
 src/agda/Infrastructure/Functor/Instances/TransformationSystem.agdai: src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Functor/Instances/TransformationSystem.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Functor/Instances/Trivial.agda
 src/agda/Infrastructure/Functor/Instances/Trivial.agdai: src/agda/Infrastructure/Functor/Instances/Trivial.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/Trivial.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/Trivial.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Functor/Instances/Trivial.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda
 src/agda/Infrastructure/Functor/Instances/PhaseCategory.agdai: src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda
 src/agda/Infrastructure/Functor/Instances/PathAlgebra.agdai: src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda
 src/agda/Infrastructure/Functor/Instances/FunctionCategory.agdai: src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Functor/Instances/Ambiguity.agda
 src/agda/Infrastructure/Functor/Instances/Ambiguity.agdai: src/agda/Infrastructure/Functor/Instances/Ambiguity.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/Ambiguity.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/Ambiguity.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Functor/Instances/Ambiguity.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda
 src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agdai: src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Coherence/Path2.agda
 src/agda/Infrastructure/Coherence/Path2.agdai: src/agda/Infrastructure/Coherence/Path2.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Coherence/Path2.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Coherence/Path2.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Coherence/Path2.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Equality.agda
 src/agda/Infrastructure/Equality.agdai: src/agda/Infrastructure/Equality.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Equality.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Equality.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Equality.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Polytopes/Braiding/HexagonTriangulation.agda
 src/agda/Infrastructure/Polytopes/Braiding/HexagonTriangulation.agdai: src/agda/Infrastructure/Polytopes/Braiding/HexagonTriangulation.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Polytopes/Braiding/HexagonTriangulation.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Polytopes/Braiding/HexagonTriangulation.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Polytopes/Braiding/HexagonTriangulation.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Polytopes/Associahedron/Triangulation.agda
 src/agda/Infrastructure/Polytopes/Associahedron/Triangulation.agdai: src/agda/Infrastructure/Polytopes/Associahedron/Triangulation.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Polytopes/Associahedron/Triangulation.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Polytopes/Associahedron/Triangulation.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Polytopes/Associahedron/Triangulation.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Polytopes/Associahedron.agda
 src/agda/Infrastructure/Polytopes/Associahedron.agdai: src/agda/Infrastructure/Polytopes/Associahedron.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Polytopes/Associahedron.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Polytopes/Associahedron.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Polytopes/Associahedron.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Definitions/Dictionary.agda
 src/agda/Infrastructure/Definitions/Dictionary.agdai: src/agda/Infrastructure/Definitions/Dictionary.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Definitions/Dictionary.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Definitions/Dictionary.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Definitions/Dictionary.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Product/Bundle4.agda
 src/agda/Infrastructure/Product/Bundle4.agdai: src/agda/Infrastructure/Product/Bundle4.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Product/Bundle4.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Product/Bundle4.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Product/Bundle4.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Index.agda
 src/agda/Infrastructure/Index.agdai: src/agda/Infrastructure/Index.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Index.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Index.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Index.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Axiom/Movie.agda
 src/agda/Infrastructure/Axiom/Movie.agdai: src/agda/Infrastructure/Axiom/Movie.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Movie.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Movie.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Axiom/Movie.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Axiom/PentagonFromTriangles.agda
 src/agda/Infrastructure/Axiom/PentagonFromTriangles.agdai: src/agda/Infrastructure/Axiom/PentagonFromTriangles.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/PentagonFromTriangles.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/PentagonFromTriangles.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Axiom/PentagonFromTriangles.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Axiom/Adequacy.agda
 src/agda/Infrastructure/Axiom/Adequacy.agdai: src/agda/Infrastructure/Axiom/Adequacy.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Adequacy.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Adequacy.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Axiom/Adequacy.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Axiom/Solver.agda
 src/agda/Infrastructure/Axiom/Solver.agdai: src/agda/Infrastructure/Axiom/Solver.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Solver.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Solver.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Axiom/Solver.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Axiom/Face.agda
 src/agda/Infrastructure/Axiom/Face.agdai: src/agda/Infrastructure/Axiom/Face.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Face.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Face.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Axiom/Face.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Axiom/SolvableInterface.agda
 src/agda/Infrastructure/Axiom/SolvableInterface.agdai: src/agda/Infrastructure/Axiom/SolvableInterface.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/SolvableInterface.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/SolvableInterface.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Axiom/SolvableInterface.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Axiom/Instances/HexagonBraiding.agda
 src/agda/Infrastructure/Axiom/Instances/HexagonBraiding.agdai: src/agda/Infrastructure/Axiom/Instances/HexagonBraiding.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Instances/HexagonBraiding.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Instances/HexagonBraiding.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Axiom/Instances/HexagonBraiding.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Axiom/Instances/PentagonAssociahedron.agda
 src/agda/Infrastructure/Axiom/Instances/PentagonAssociahedron.agdai: src/agda/Infrastructure/Axiom/Instances/PentagonAssociahedron.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Instances/PentagonAssociahedron.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Instances/PentagonAssociahedron.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Axiom/Instances/PentagonAssociahedron.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Axiom/Instance.agda
 src/agda/Infrastructure/Axiom/Instance.agdai: src/agda/Infrastructure/Axiom/Instance.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Instance.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Axiom/Instance.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Axiom/Instance.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Infrastructure/Wrapper/With.agda
 src/agda/Infrastructure/Wrapper/With.agdai: src/agda/Infrastructure/Wrapper/With.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Wrapper/With.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Infrastructure/Wrapper/With.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Infrastructure/Wrapper/With.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algorithms/Instrumented.agda
 src/agda/Algorithms/Instrumented.agdai: src/agda/Algorithms/Instrumented.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algorithms/Instrumented.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algorithms/Instrumented.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algorithms/Instrumented.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algorithms/Basic.agda
 src/agda/Algorithms/Basic.agdai: src/agda/Algorithms/Basic.agda src/agda/Core/AlgebraicAlgorithms.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algorithms/Basic.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algorithms/Basic.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algorithms/Basic.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algorithms/Adapters/BundleAdapter.agda
 src/agda/Algorithms/Adapters/BundleAdapter.agdai: src/agda/Algorithms/Adapters/BundleAdapter.agda src/agda/Core/Algorithms/Bundle.agdai src/agda/Algorithms/Basic.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algorithms/Adapters/BundleAdapter.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algorithms/Adapters/BundleAdapter.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algorithms/Adapters/BundleAdapter.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algorithms/TestInstances.agda
 src/agda/Algorithms/TestInstances.agdai: src/agda/Algorithms/TestInstances.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algorithms/TestInstances.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algorithms/TestInstances.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algorithms/TestInstances.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/MinimalAUDAXInlineTest.agda
 src/agda/MinimalAUDAXInlineTest.agdai: src/agda/MinimalAUDAXInlineTest.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/MinimalAUDAXInlineTest.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/MinimalAUDAXInlineTest.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/MinimalAUDAXInlineTest.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core.agda
 src/agda/Core.agdai: src/agda/Core.agda src/agda/Chapter1/Level1.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/TechnicalDebt/PriorityMapping.agda
 src/agda/TechnicalDebt/PriorityMapping.agdai: src/agda/TechnicalDebt/PriorityMapping.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/PriorityMapping.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/PriorityMapping.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/TechnicalDebt/PriorityMapping.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda
 src/agda/TechnicalDebt/PriorityOrchestrationFFI.agdai: src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/TechnicalDebt/PriorityOrchestrationFFI.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/TechnicalDebt/PriorityFormatting.agda
 src/agda/TechnicalDebt/PriorityFormatting.agdai: src/agda/TechnicalDebt/PriorityFormatting.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/PriorityFormatting.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/PriorityFormatting.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/TechnicalDebt/PriorityFormatting.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda
 src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agdai: src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/TechnicalDebt/DeferredItemsDetection.agda
 src/agda/TechnicalDebt/DeferredItemsDetection.agdai: src/agda/TechnicalDebt/DeferredItemsDetection.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/DeferredItemsDetection.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/DeferredItemsDetection.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/TechnicalDebt/DeferredItemsDetection.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/TechnicalDebt/AlgorithmCompositionRegistry.agda
 src/agda/TechnicalDebt/AlgorithmCompositionRegistry.agdai: src/agda/TechnicalDebt/AlgorithmCompositionRegistry.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/AlgorithmCompositionRegistry.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/AlgorithmCompositionRegistry.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/TechnicalDebt/AlgorithmCompositionRegistry.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/TechnicalDebt/PriorityOrchestration.agda
 src/agda/TechnicalDebt/PriorityOrchestration.agdai: src/agda/TechnicalDebt/PriorityOrchestration.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/PriorityOrchestration.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/PriorityOrchestration.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/TechnicalDebt/PriorityOrchestration.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/TechnicalDebt/DeferredItemsFormatting.agda
 src/agda/TechnicalDebt/DeferredItemsFormatting.agdai: src/agda/TechnicalDebt/DeferredItemsFormatting.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/DeferredItemsFormatting.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/DeferredItemsFormatting.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/TechnicalDebt/DeferredItemsFormatting.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/TechnicalDebt/DeferredItemsFormatting_AUDAX.agda
 src/agda/TechnicalDebt/DeferredItemsFormatting_AUDAX.agdai: src/agda/TechnicalDebt/DeferredItemsFormatting_AUDAX.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/DeferredItemsFormatting_AUDAX.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/DeferredItemsFormatting_AUDAX.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/TechnicalDebt/DeferredItemsFormatting_AUDAX.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/TechnicalDebt/Priorities.agda
 src/agda/TechnicalDebt/Priorities.agdai: src/agda/TechnicalDebt/Priorities.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/Priorities.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/TechnicalDebt/Priorities.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/TechnicalDebt/Priorities.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/RealWorldAlgorithms.agda
 src/agda/Examples/RealWorldAlgorithms.agdai: src/agda/Examples/RealWorldAlgorithms.agda src/agda/Core/AlgorithmCorrectness.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/RealWorldAlgorithms.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/RealWorldAlgorithms.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/RealWorldAlgorithms.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/TechnicalDebtExample.agda
 src/agda/Examples/TechnicalDebtExample.agdai: src/agda/Examples/TechnicalDebtExample.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/TechnicalDebtExample.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/TechnicalDebtExample.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/TechnicalDebtExample.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Compile src/agda/Examples/TransformationPathAdequacy.agda
+src/agda/Examples/TransformationPathAdequacy.agdai: src/agda/Examples/TransformationPathAdequacy.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/TransformationPathAdequacy.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/TransformationPathAdequacy.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/AmbiguityExamples.agda
 src/agda/Examples/AmbiguityExamples.agdai: src/agda/Examples/AmbiguityExamples.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/AmbiguityExamples.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/AmbiguityExamples.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/AmbiguityExamples.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/FunctionField/F2x.agda
 src/agda/Examples/FunctionField/F2x.agdai: src/agda/Examples/FunctionField/F2x.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/FunctionField/F2x.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/FunctionField/F2x.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/FunctionField/F2x.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/AlgorithmCorrectnessExamples.agda
 src/agda/Examples/AlgorithmCorrectnessExamples.agdai: src/agda/Examples/AlgorithmCorrectnessExamples.agda src/agda/Core/AlgorithmCorrectness.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/AlgorithmCorrectnessExamples.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/AlgorithmCorrectnessExamples.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/AlgorithmCorrectnessExamples.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Compile src/agda/Examples/FunctionPathAdequacy.agda
+src/agda/Examples/FunctionPathAdequacy.agdai: src/agda/Examples/FunctionPathAdequacy.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/FunctionPathAdequacy.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/FunctionPathAdequacy.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Compile src/agda/Examples/FunctionCategoryAdequacy.agda
+src/agda/Examples/FunctionCategoryAdequacy.agdai: src/agda/Examples/FunctionCategoryAdequacy.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/FunctionCategoryAdequacy.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/FunctionCategoryAdequacy.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/NumberField/Sqrt2.agda
 src/agda/Examples/NumberField/Sqrt2.agdai: src/agda/Examples/NumberField/Sqrt2.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/NumberField/Sqrt2.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/NumberField/Sqrt2.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/NumberField/Sqrt2.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/FiniteField/GF8.agda
 src/agda/Examples/FiniteField/GF8.agdai: src/agda/Examples/FiniteField/GF8.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/FiniteField/GF8.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/FiniteField/GF8.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/FiniteField/GF8.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/InstrumentedAlgorithmDemo.agda
 src/agda/Examples/InstrumentedAlgorithmDemo.agdai: src/agda/Examples/InstrumentedAlgorithmDemo.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/InstrumentedAlgorithmDemo.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/InstrumentedAlgorithmDemo.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/InstrumentedAlgorithmDemo.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/DeferredItemsScanner.agda
 src/agda/Examples/DeferredItemsScanner.agdai: src/agda/Examples/DeferredItemsScanner.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/DeferredItemsScanner.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/DeferredItemsScanner.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/DeferredItemsScanner.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Compile src/agda/Examples/DefinitionDictionaryAdequacy.agda
+src/agda/Examples/DefinitionDictionaryAdequacy.agdai: src/agda/Examples/DefinitionDictionaryAdequacy.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/DefinitionDictionaryAdequacy.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/DefinitionDictionaryAdequacy.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/TransformationSystemExamples.agda
 src/agda/Examples/TransformationSystemExamples.agdai: src/agda/Examples/TransformationSystemExamples.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/TransformationSystemExamples.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/TransformationSystemExamples.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/TransformationSystemExamples.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/AutomaticEvidenceDemo.agda
 src/agda/Examples/AutomaticEvidenceDemo.agdai: src/agda/Examples/AutomaticEvidenceDemo.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/AutomaticEvidenceDemo.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/AutomaticEvidenceDemo.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/AutomaticEvidenceDemo.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/ConstructiveWitnessExamples.agda
 src/agda/Examples/ConstructiveWitnessExamples.agdai: src/agda/Examples/ConstructiveWitnessExamples.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/ConstructiveWitnessExamples.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/ConstructiveWitnessExamples.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/ConstructiveWitnessExamples.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/AgdaMakefileDeps.agda
 src/agda/Examples/AgdaMakefileDeps.agdai: src/agda/Examples/AgdaMakefileDeps.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/AgdaMakefileDeps.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/AgdaMakefileDeps.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/AgdaMakefileDeps.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/LazyHybridDemo.agda
 src/agda/Examples/LazyHybridDemo.agdai: src/agda/Examples/LazyHybridDemo.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/LazyHybridDemo.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/LazyHybridDemo.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/LazyHybridDemo.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/TechnicalDebtRegistry.agda
 src/agda/Examples/TechnicalDebtRegistry.agdai: src/agda/Examples/TechnicalDebtRegistry.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/TechnicalDebtRegistry.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/TechnicalDebtRegistry.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/TechnicalDebtRegistry.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/RoadmapIssueSync.agda
 src/agda/Examples/RoadmapIssueSync.agdai: src/agda/Examples/RoadmapIssueSync.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/RoadmapIssueSync.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/RoadmapIssueSync.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/RoadmapIssueSync.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/MakefileTargets.agda
 src/agda/Examples/MakefileTargets.agdai: src/agda/Examples/MakefileTargets.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/MakefileTargets.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/MakefileTargets.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/MakefileTargets.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Compile src/agda/Examples/FunctorComposition.agda
+src/agda/Examples/FunctorComposition.agdai: src/agda/Examples/FunctorComposition.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/FunctorComposition.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/FunctorComposition.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/PhaseCategoryExamples.agda
 src/agda/Examples/PhaseCategoryExamples.agdai: src/agda/Examples/PhaseCategoryExamples.agda src/agda/Core/PhaseCategory.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/PhaseCategoryExamples.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/PhaseCategoryExamples.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/PhaseCategoryExamples.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/EqualityExamples.agda
 src/agda/Examples/EqualityExamples.agdai: src/agda/Examples/EqualityExamples.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/EqualityExamples.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/EqualityExamples.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/EqualityExamples.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/TechnicalDebtChecklist.agda
 src/agda/Examples/TechnicalDebtChecklist.agdai: src/agda/Examples/TechnicalDebtChecklist.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/TechnicalDebtChecklist.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/TechnicalDebtChecklist.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/TechnicalDebtChecklist.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Compile src/agda/Examples/AmbiguityAdequacy.agda
+src/agda/Examples/AmbiguityAdequacy.agdai: src/agda/Examples/AmbiguityAdequacy.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/AmbiguityAdequacy.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/AmbiguityAdequacy.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/AgdaFileScanFFI.agda
 src/agda/Examples/AgdaFileScanFFI.agdai: src/agda/Examples/AgdaFileScanFFI.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/AgdaFileScanFFI.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/AgdaFileScanFFI.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/AgdaFileScanFFI.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Examples/ExporterMakefile.agda
 src/agda/Examples/ExporterMakefile.agdai: src/agda/Examples/ExporterMakefile.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Examples/ExporterMakefile.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Examples/ExporterMakefile.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Examples/ExporterMakefile.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Markdown/ExportProof.agda
 src/agda/Markdown/ExportProof.agdai: src/agda/Markdown/ExportProof.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Markdown/ExportProof.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Markdown/ExportProof.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Markdown/ExportProof.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Markdown/Normalization.agda
 src/agda/Markdown/Normalization.agdai: src/agda/Markdown/Normalization.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Markdown/Normalization.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Markdown/Normalization.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Markdown/Normalization.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Docs/MetaIndex.agda
 src/agda/Docs/MetaIndex.agdai: src/agda/Docs/MetaIndex.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Docs/MetaIndex.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Docs/MetaIndex.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Docs/MetaIndex.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/GrowthAnalysis.agda
 src/agda/GrowthAnalysis.agdai: src/agda/GrowthAnalysis.agda src/agda/Core/GrowthMetrics.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/GrowthAnalysis.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/GrowthAnalysis.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/GrowthAnalysis.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Compile src/agda/Plan/CIM/TransformationSystem.agda
+src/agda/Plan/CIM/TransformationSystem.agdai: src/agda/Plan/CIM/TransformationSystem.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/TransformationSystem.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/TransformationSystem.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/PolytopeExpansion.agda
 src/agda/Plan/CIM/PolytopeExpansion.agdai: src/agda/Plan/CIM/PolytopeExpansion.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PolytopeExpansion.agda
-# Compile src/agda/Plan/CIM/Elasticity.agda
-src/agda/Plan/CIM/Elasticity.agdai: src/agda/Plan/CIM/Elasticity.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/Elasticity.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PolytopeExpansion.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/PolytopeExpansion.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/PlanningKernel.agda
 src/agda/Plan/CIM/PlanningKernel.agdai: src/agda/Plan/CIM/PlanningKernel.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PlanningKernel.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PlanningKernel.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/PlanningKernel.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/PandocProofExample.agda
 src/agda/Plan/CIM/PandocProofExample.agdai: src/agda/Plan/CIM/PandocProofExample.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocProofExample.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocProofExample.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/PandocProofExample.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/PandocProtocols.agda
 src/agda/Plan/CIM/PandocProtocols.agdai: src/agda/Plan/CIM/PandocProtocols.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocProtocols.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocProtocols.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/PandocProtocols.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/PandocShowBlock.agda
 src/agda/Plan/CIM/PandocShowBlock.agdai: src/agda/Plan/CIM/PandocShowBlock.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocShowBlock.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocShowBlock.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/PandocShowBlock.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/CHIPCoreRecompose.agda
 src/agda/Plan/CIM/CHIPCoreRecompose.agdai: src/agda/Plan/CIM/CHIPCoreRecompose.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/CHIPCoreRecompose.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/CHIPCoreRecompose.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/CHIPCoreRecompose.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/PandocProofExport.agda
 src/agda/Plan/CIM/PandocProofExport.agdai: src/agda/Plan/CIM/PandocProofExport.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocProofExport.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocProofExport.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/PandocProofExport.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/Utility.agda
 src/agda/Plan/CIM/Utility.agdai: src/agda/Plan/CIM/Utility.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/Utility.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/Utility.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/Utility.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/IngestedRoadmaps.agda
 src/agda/Plan/CIM/IngestedRoadmaps.agdai: src/agda/Plan/CIM/IngestedRoadmaps.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/IngestedRoadmaps.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/IngestedRoadmaps.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/IngestedRoadmaps.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Compile src/agda/Plan/CIM/Elasticity.agda
+src/agda/Plan/CIM/Elasticity.agdai: src/agda/Plan/CIM/Elasticity.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/Elasticity.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/Elasticity.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/Structure.agda
 src/agda/Plan/CIM/Structure.agdai: src/agda/Plan/CIM/Structure.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/Structure.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/Structure.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/Structure.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/DocumentSynthesis.agda
 src/agda/Plan/CIM/DocumentSynthesis.agdai: src/agda/Plan/CIM/DocumentSynthesis.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/DocumentSynthesis.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/DocumentSynthesis.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/DocumentSynthesis.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Compile src/agda/Plan/CIM/Metricization.agda
+src/agda/Plan/CIM/Metricization.agdai: src/agda/Plan/CIM/Metricization.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/Metricization.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/Metricization.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/CHIPRecomposed.agda
 src/agda/Plan/CIM/CHIPRecomposed.agdai: src/agda/Plan/CIM/CHIPRecomposed.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/CHIPRecomposed.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/CHIPRecomposed.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/CHIPRecomposed.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/PandocShowMdBlock.agda
 src/agda/Plan/CIM/PandocShowMdBlock.agdai: src/agda/Plan/CIM/PandocShowMdBlock.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocShowMdBlock.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocShowMdBlock.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/PandocShowMdBlock.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agda
 src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agdai: src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agda
 src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agdai: src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda
 src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agdai: src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agda
 src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agdai: src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agda
 src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agdai: src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/PriorityProfileExport.agda
 src/agda/Plan/CIM/PriorityProfileExport.agdai: src/agda/Plan/CIM/PriorityProfileExport.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PriorityProfileExport.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PriorityProfileExport.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/PriorityProfileExport.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/PlanningExport.agda
 src/agda/Plan/CIM/PlanningExport.agdai: src/agda/Plan/CIM/PlanningExport.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PlanningExport.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PlanningExport.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/PlanningExport.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/RoadmapExporter.agda
 src/agda/Plan/CIM/RoadmapExporter.agdai: src/agda/Plan/CIM/RoadmapExporter.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapExporter.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapExporter.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/RoadmapExporter.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/CanonicalRoadmap.agda
 src/agda/Plan/CIM/CanonicalRoadmap.agdai: src/agda/Plan/CIM/CanonicalRoadmap.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/CanonicalRoadmap.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/CanonicalRoadmap.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/CanonicalRoadmap.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/CHIPConformance.agda
 src/agda/Plan/CIM/CHIPConformance.agdai: src/agda/Plan/CIM/CHIPConformance.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/CHIPConformance.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/CHIPConformance.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/CHIPConformance.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/FrameworkMetadata.agda
 src/agda/Plan/CIM/FrameworkMetadata.agdai: src/agda/Plan/CIM/FrameworkMetadata.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/FrameworkMetadata.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/FrameworkMetadata.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/FrameworkMetadata.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/DependencyGraphExport.agda
 src/agda/Plan/CIM/DependencyGraphExport.agdai: src/agda/Plan/CIM/DependencyGraphExport.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/DependencyGraphExport.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/DependencyGraphExport.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/DependencyGraphExport.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/ModuleExporter.agda
 src/agda/Plan/CIM/ModuleExporter.agdai: src/agda/Plan/CIM/ModuleExporter.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/ModuleExporter.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/ModuleExporter.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/ModuleExporter.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/RoadmapIndex.agda
 src/agda/Plan/CIM/RoadmapIndex.agdai: src/agda/Plan/CIM/RoadmapIndex.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapIndex.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapIndex.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/RoadmapIndex.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/RoadmapSync.agda
 src/agda/Plan/CIM/RoadmapSync.agdai: src/agda/Plan/CIM/RoadmapSync.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSync.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSync.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/RoadmapSync.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/PandocToMarkdown.agda
 src/agda/Plan/CIM/PandocToMarkdown.agdai: src/agda/Plan/CIM/PandocToMarkdown.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocToMarkdown.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocToMarkdown.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/PandocToMarkdown.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/DocumentationContent.agda
 src/agda/Plan/CIM/DocumentationContent.agdai: src/agda/Plan/CIM/DocumentationContent.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/DocumentationContent.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/DocumentationContent.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/DocumentationContent.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/YonedaProfiler.agda
 src/agda/Plan/CIM/YonedaProfiler.agdai: src/agda/Plan/CIM/YonedaProfiler.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/YonedaProfiler.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/YonedaProfiler.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/YonedaProfiler.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/RoadmapSPPF.agda
 src/agda/Plan/CIM/RoadmapSPPF.agdai: src/agda/Plan/CIM/RoadmapSPPF.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSPPF.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSPPF.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/RoadmapSPPF.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/Ambiguity.agda
 src/agda/Plan/CIM/Ambiguity.agdai: src/agda/Plan/CIM/Ambiguity.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/Ambiguity.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/Ambiguity.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/Ambiguity.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/PandocShowInline.agda
 src/agda/Plan/CIM/PandocShowInline.agdai: src/agda/Plan/CIM/PandocShowInline.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocShowInline.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocShowInline.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/PandocShowInline.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/RoadmapSPPFExport.agda
 src/agda/Plan/CIM/RoadmapSPPFExport.agdai: src/agda/Plan/CIM/RoadmapSPPFExport.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSPPFExport.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSPPFExport.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/RoadmapSPPFExport.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Compile src/agda/Plan/CIM/FunctorialConstructs.agda
+src/agda/Plan/CIM/FunctorialConstructs.agdai: src/agda/Plan/CIM/FunctorialConstructs.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/FunctorialConstructs.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/FunctorialConstructs.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/GPNarrativeDAG.agda
 src/agda/Plan/CIM/GPNarrativeDAG.agdai: src/agda/Plan/CIM/GPNarrativeDAG.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/GPNarrativeDAG.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/GPNarrativeDAG.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/GPNarrativeDAG.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/MarkdownNormalize.agda
 src/agda/Plan/CIM/MarkdownNormalize.agdai: src/agda/Plan/CIM/MarkdownNormalize.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/MarkdownNormalize.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/MarkdownNormalize.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/MarkdownNormalize.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/PandocAST.agda
 src/agda/Plan/CIM/PandocAST.agdai: src/agda/Plan/CIM/PandocAST.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocAST.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PandocAST.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/PandocAST.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/GrammarBridge.agda
 src/agda/Plan/CIM/GrammarBridge.agdai: src/agda/Plan/CIM/GrammarBridge.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/GrammarBridge.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/GrammarBridge.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/GrammarBridge.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Plan/CIM/MarkdownParse.agda
 src/agda/Plan/CIM/MarkdownParse.agdai: src/agda/Plan/CIM/MarkdownParse.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/MarkdownParse.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/MarkdownParse.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Plan/CIM/MarkdownParse.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Groups/Basic.agda
 src/agda/Algebra/Groups/Basic.agdai: src/agda/Algebra/Groups/Basic.agda src/agda/Algebra/Groups/Types.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/Basic.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/Basic.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Groups/Basic.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Groups/Theorems/Classical.agda
 src/agda/Algebra/Groups/Theorems/Classical.agdai: src/agda/Algebra/Groups/Theorems/Classical.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/Theorems/Classical.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/Theorems/Classical.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Groups/Theorems/Classical.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Groups/ClassicalInstance.agda
 src/agda/Algebra/Groups/ClassicalInstance.agdai: src/agda/Algebra/Groups/ClassicalInstance.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/ClassicalInstance.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/ClassicalInstance.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Groups/ClassicalInstance.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Groups/Structure.agda
 src/agda/Algebra/Groups/Structure.agdai: src/agda/Algebra/Groups/Structure.agda src/agda/Algebra/Groups/Free.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/Structure.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/Structure.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Groups/Structure.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Groups/BasicWithTheorems.agda
 src/agda/Algebra/Groups/BasicWithTheorems.agdai: src/agda/Algebra/Groups/BasicWithTheorems.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/BasicWithTheorems.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/BasicWithTheorems.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Groups/BasicWithTheorems.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Groups/BasicParameterized.agda
 src/agda/Algebra/Groups/BasicParameterized.agdai: src/agda/Algebra/Groups/BasicParameterized.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/BasicParameterized.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/BasicParameterized.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Groups/BasicParameterized.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Groups/Abelian.agda
 src/agda/Algebra/Groups/Abelian.agdai: src/agda/Algebra/Groups/Abelian.agda src/agda/Chapter2/Level2sub1.agdai src/agda/Algebra/Enrichment.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/Abelian.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/Abelian.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Groups/Abelian.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Groups/Types.agda
 src/agda/Algebra/Groups/Types.agdai: src/agda/Algebra/Groups/Types.agda src/agda/Algebra/Foundation.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/Types.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/Types.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Groups/Types.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Groups/Free.agda
 src/agda/Algebra/Groups/Free.agdai: src/agda/Algebra/Groups/Free.agda src/agda/Algebra/Groups/Basic.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/Free.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Groups/Free.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Groups/Free.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Enrichment.agda
 src/agda/Algebra/Enrichment.agdai: src/agda/Algebra/Enrichment.agda src/agda/Algebra/Foundation.agdai src/agda/Chapter2/Level2sub6.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Enrichment.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Enrichment.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Enrichment.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Rings/Basic.agda
 src/agda/Algebra/Rings/Basic.agdai: src/agda/Algebra/Rings/Basic.agda src/agda/Algebra/Rings/Types.agdai src/agda/Chapter2/Level2sub3.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Rings/Basic.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Rings/Basic.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Rings/Basic.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Rings/Theorems/Classical.agda
 src/agda/Algebra/Rings/Theorems/Classical.agdai: src/agda/Algebra/Rings/Theorems/Classical.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Rings/Theorems/Classical.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Rings/Theorems/Classical.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Rings/Theorems/Classical.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Rings/ClassicalInstance.agda
 src/agda/Algebra/Rings/ClassicalInstance.agdai: src/agda/Algebra/Rings/ClassicalInstance.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Rings/ClassicalInstance.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Rings/ClassicalInstance.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Rings/ClassicalInstance.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Rings/BasicWithTheorems.agda
 src/agda/Algebra/Rings/BasicWithTheorems.agdai: src/agda/Algebra/Rings/BasicWithTheorems.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Rings/BasicWithTheorems.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Rings/BasicWithTheorems.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Rings/BasicWithTheorems.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Rings/Types.agda
 src/agda/Algebra/Rings/Types.agdai: src/agda/Algebra/Rings/Types.agda src/agda/Algebra/Groups/Types.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Rings/Types.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Rings/Types.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Rings/Types.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Modules/Basic.agda
 src/agda/Algebra/Modules/Basic.agdai: src/agda/Algebra/Modules/Basic.agda src/agda/Algebra/Groups/Abelian.agdai src/agda/Algebra/Modules/Types.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Modules/Basic.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Modules/Basic.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Modules/Basic.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Modules/Theorems/Classical.agda
 src/agda/Algebra/Modules/Theorems/Classical.agdai: src/agda/Algebra/Modules/Theorems/Classical.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Modules/Theorems/Classical.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Modules/Theorems/Classical.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Modules/Theorems/Classical.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Modules/ClassicalInstance.agda
 src/agda/Algebra/Modules/ClassicalInstance.agdai: src/agda/Algebra/Modules/ClassicalInstance.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Modules/ClassicalInstance.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Modules/ClassicalInstance.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Modules/ClassicalInstance.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Modules/BasicWithTheorems.agda
 src/agda/Algebra/Modules/BasicWithTheorems.agdai: src/agda/Algebra/Modules/BasicWithTheorems.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Modules/BasicWithTheorems.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Modules/BasicWithTheorems.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Modules/BasicWithTheorems.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Modules/Types.agda
 src/agda/Algebra/Modules/Types.agdai: src/agda/Algebra/Modules/Types.agda src/agda/Algebra/Fields/Types.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Modules/Types.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Modules/Types.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Modules/Types.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Foundation.agda
 src/agda/Algebra/Foundation.agdai: src/agda/Algebra/Foundation.agda src/agda/Chapter1/Level1Index.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Foundation.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Foundation.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Foundation.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Fields/Basic.agda
 src/agda/Algebra/Fields/Basic.agdai: src/agda/Algebra/Fields/Basic.agda src/agda/Algebra/Modules/Basic.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Fields/Basic.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Fields/Basic.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Fields/Basic.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Fields/Advanced.agda
 src/agda/Algebra/Fields/Advanced.agdai: src/agda/Algebra/Fields/Advanced.agda src/agda/Algebra/Rings/Basic.agdai src/agda/Algebra/Fields/Basic.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Fields/Advanced.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Fields/Advanced.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Fields/Advanced.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Fields/Theorems/Classical.agda
 src/agda/Algebra/Fields/Theorems/Classical.agdai: src/agda/Algebra/Fields/Theorems/Classical.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Fields/Theorems/Classical.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Fields/Theorems/Classical.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Fields/Theorems/Classical.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Fields/ClassicalInstance.agda
 src/agda/Algebra/Fields/ClassicalInstance.agdai: src/agda/Algebra/Fields/ClassicalInstance.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Fields/ClassicalInstance.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Fields/ClassicalInstance.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Fields/ClassicalInstance.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Fields/BasicWithTheorems.agda
 src/agda/Algebra/Fields/BasicWithTheorems.agdai: src/agda/Algebra/Fields/BasicWithTheorems.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Fields/BasicWithTheorems.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Fields/BasicWithTheorems.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Fields/BasicWithTheorems.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Fields/Types.agda
 src/agda/Algebra/Fields/Types.agdai: src/agda/Algebra/Fields/Types.agda src/agda/Algebra/Rings/Types.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Fields/Types.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Fields/Types.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Fields/Types.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Algebra/Index.agda
 src/agda/Algebra/Index.agdai: src/agda/Algebra/Index.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Index.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Algebra/Index.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Algebra/Index.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter1/Level1.agda
 src/agda/Chapter1/Level1.agdai: src/agda/Chapter1/Level1.agda src/agda/PropertyRegistry.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter1/Level1.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter1/Level1sub8.agda
 src/agda/Chapter1/Level1sub8.agdai: src/agda/Chapter1/Level1sub8.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub8.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub8.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter1/Level1sub8.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter1/Level1sub7.agda
 src/agda/Chapter1/Level1sub7.agdai: src/agda/Chapter1/Level1sub7.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub7.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub7.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter1/Level1sub7.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter1/Level1sub3.agda
 src/agda/Chapter1/Level1sub3.agdai: src/agda/Chapter1/Level1sub3.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub3.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub3.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter1/Level1sub3.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter1/Level1Index.agda
 src/agda/Chapter1/Level1Index.agdai: src/agda/Chapter1/Level1Index.agda src/agda/Chapter1/Level1sub2.agdai src/agda/Chapter1/Level1sub5.agdai src/agda/Chapter1/Level1sub4.agdai src/agda/Chapter1/Level1sub7.agdai src/agda/Chapter1/Level1sub6.agdai src/agda/Chapter1/Level1sub3.agdai src/agda/Chapter1/Level1sub8.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1Index.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1Index.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter1/Level1Index.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter1/Level1sub2.agda
 src/agda/Chapter1/Level1sub2.agdai: src/agda/Chapter1/Level1sub2.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub2.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub2.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter1/Level1sub2.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter1/Level1sub4.agda
 src/agda/Chapter1/Level1sub4.agdai: src/agda/Chapter1/Level1sub4.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub4.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub4.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter1/Level1sub4.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter1/Level1sub5.agda
 src/agda/Chapter1/Level1sub5.agdai: src/agda/Chapter1/Level1sub5.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub5.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub5.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter1/Level1sub5.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Chapter1/Level1sub6.agda
 src/agda/Chapter1/Level1sub6.agdai: src/agda/Chapter1/Level1sub6.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub6.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Chapter1/Level1sub6.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Chapter1/Level1sub6.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/PropertyRegistry.agda
 src/agda/PropertyRegistry.agdai: src/agda/PropertyRegistry.agda src/agda/Metamodel.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/PropertyRegistry.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/PropertyRegistry.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/PropertyRegistry.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/ExporterMakefile.agda
 src/agda/ExporterMakefile.agdai: src/agda/ExporterMakefile.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/ExporterMakefile.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/ExporterMakefile.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/ExporterMakefile.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/AlgorithmComplexity.agda
 src/agda/Core/AlgorithmComplexity.agdai: src/agda/Core/AlgorithmComplexity.agda src/agda/Metamodel.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/AlgorithmComplexity.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/AlgorithmComplexity.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/AlgorithmComplexity.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/ABNF.agda
 src/agda/Core/ABNF.agdai: src/agda/Core/ABNF.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/ABNF.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/ABNF.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/ABNF.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/TechnicalDebt.agda
 src/agda/Core/TechnicalDebt.agdai: src/agda/Core/TechnicalDebt.agda src/agda/Core/Utils.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/TechnicalDebt.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/TechnicalDebt.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/TechnicalDebt.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Witnesses.agda
 src/agda/Core/Witnesses.agdai: src/agda/Core/Witnesses.agda src/agda/Algebra/Fields/Advanced.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Witnesses.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Witnesses.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Witnesses.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/BraidTree.agda
 src/agda/Core/BraidTree.agdai: src/agda/Core/BraidTree.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/BraidTree.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/BraidTree.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/BraidTree.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Limitations.agda
 src/agda/Core/Limitations.agdai: src/agda/Core/Limitations.agda src/agda/Metamodel.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Limitations.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Limitations.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Limitations.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/AlgorithmCorrectness.agda
 src/agda/Core/AlgorithmCorrectness.agdai: src/agda/Core/AlgorithmCorrectness.agda src/agda/Core/ConstructiveWitnesses.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/AlgorithmCorrectness.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/AlgorithmCorrectness.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/AlgorithmCorrectness.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/GrothendieckFibrations.agda
 src/agda/Core/GrothendieckFibrations.agdai: src/agda/Core/GrothendieckFibrations.agda src/agda/Algebra/Foundation.agdai src/agda/Chapter2/Level2sub8.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/GrothendieckFibrations.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/GrothendieckFibrations.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/GrothendieckFibrations.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/AlgorithmUniversality.agda
 src/agda/Core/AlgorithmUniversality.agdai: src/agda/Core/AlgorithmUniversality.agda src/agda/Core/UniversalProperties.agdai src/agda/Core/AlgebraicAlgorithms.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/AlgorithmUniversality.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/AlgorithmUniversality.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/AlgorithmUniversality.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/AdapterReflection.agda
 src/agda/Core/AdapterReflection.agdai: src/agda/Core/AdapterReflection.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/AdapterReflection.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/AdapterReflection.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/AdapterReflection.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Phase.agda
 src/agda/Core/Phase.agdai: src/agda/Core/Phase.agda src/agda/Infrastructure/Universe.agdai src/agda/Infrastructure/Coherence/Path2.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Phase.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Phase.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Phase.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/AdapterAutomation.agda
 src/agda/Core/AdapterAutomation.agdai: src/agda/Core/AdapterAutomation.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/AdapterAutomation.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/AdapterAutomation.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/AdapterAutomation.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Utils.agda
 src/agda/Core/Utils.agdai: src/agda/Core/Utils.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Utils.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Utils.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Utils.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/PhaseCategoryWrapper.agda
 src/agda/Core/PhaseCategoryWrapper.agdai: src/agda/Core/PhaseCategoryWrapper.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/PhaseCategoryWrapper.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/PhaseCategoryWrapper.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/PhaseCategoryWrapper.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Algorithms/Registry.agda
 src/agda/Core/Algorithms/Registry.agdai: src/agda/Core/Algorithms/Registry.agda src/agda/Core/Algorithms/FunctionFields.agdai src/agda/Core/Algorithms/NumberFields.agdai src/agda/Core/Algorithms/FiniteFields.agdai src/agda/Algorithms/Adapters/BundleAdapter.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/Registry.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/Registry.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Algorithms/Registry.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Algorithms/FunctionFields.agda
 src/agda/Core/Algorithms/FunctionFields.agdai: src/agda/Core/Algorithms/FunctionFields.agda src/agda/Core/Algorithms/Bundle.agdai src/agda/Core/Witnesses.agdai src/agda/Algorithms/Basic.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/FunctionFields.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/FunctionFields.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Algorithms/FunctionFields.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Algorithms/External.agda
 src/agda/Core/Algorithms/External.agdai: src/agda/Core/Algorithms/External.agda src/agda/Core/Algorithms/Bundle.agdai src/agda/Core/Witnesses.agdai src/agda/Algorithms/Basic.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/External.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/External.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Algorithms/External.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Algorithms/FiniteFields.agda
 src/agda/Core/Algorithms/FiniteFields.agdai: src/agda/Core/Algorithms/FiniteFields.agda src/agda/Core/Witnesses.agdai src/agda/Algorithms/Basic.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/FiniteFields.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/FiniteFields.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Algorithms/FiniteFields.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Algorithms/AutomaticEvidence.agda
 src/agda/Core/Algorithms/AutomaticEvidence.agdai: src/agda/Core/Algorithms/AutomaticEvidence.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/AutomaticEvidence.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/AutomaticEvidence.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Algorithms/AutomaticEvidence.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Algorithms/NumberFields.agda
 src/agda/Core/Algorithms/NumberFields.agdai: src/agda/Core/Algorithms/NumberFields.agda src/agda/Core/Algorithms/External.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/NumberFields.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/NumberFields.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Algorithms/NumberFields.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Algorithms/Bundle.agda
 src/agda/Core/Algorithms/Bundle.agdai: src/agda/Core/Algorithms/Bundle.agda src/agda/Core/AlgebraicAlgorithms.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/Bundle.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/Bundle.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Algorithms/Bundle.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Algorithms/InductiveClassification.agda
 src/agda/Core/Algorithms/InductiveClassification.agdai: src/agda/Core/Algorithms/InductiveClassification.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/InductiveClassification.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Algorithms/InductiveClassification.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Algorithms/InductiveClassification.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/PhaseCategory.agda
 src/agda/Core/PhaseCategory.agdai: src/agda/Core/PhaseCategory.agda src/agda/Core/Phase.agdai src/agda/Infrastructure/Functor/Interface.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/PhaseCategory.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/PhaseCategory.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/PhaseCategory.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Rendering.agda
 src/agda/Core/Rendering.agdai: src/agda/Core/Rendering.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Rendering.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Rendering.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Rendering.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/ConstructiveWitnesses.agda
 src/agda/Core/ConstructiveWitnesses.agdai: src/agda/Core/ConstructiveWitnesses.agda src/agda/Core/PolynomialsF2.agdai src/agda/Core/Witnesses.agdai src/agda/Core/UniversalProperties.agdai src/agda/Core/AlgebraicAlgorithms.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/ConstructiveWitnesses.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/ConstructiveWitnesses.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/ConstructiveWitnesses.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/UniversalProperties.agda
 src/agda/Core/UniversalProperties.agdai: src/agda/Core/UniversalProperties.agda src/agda/Algebra/Rings/Basic.agdai src/agda/Algebra/Fields/Basic.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/UniversalProperties.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/UniversalProperties.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/UniversalProperties.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/IO.agda
 src/agda/Core/IO.agdai: src/agda/Core/IO.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/IO.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/IO.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/IO.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/GrowthMetrics.agda
 src/agda/Core/GrowthMetrics.agdai: src/agda/Core/GrowthMetrics.agda src/agda/Core/Utils.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/GrowthMetrics.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/GrowthMetrics.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/GrowthMetrics.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/AlgebraicAlgorithms.agda
 src/agda/Core/AlgebraicAlgorithms.agdai: src/agda/Core/AlgebraicAlgorithms.agda src/agda/Algebra/Groups/Basic.agdai src/agda/Core/Limitations.agdai src/agda/Algebra/Fields/Advanced.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/AlgebraicAlgorithms.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/AlgebraicAlgorithms.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/AlgebraicAlgorithms.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Yoneda.agda
 src/agda/Core/Yoneda.agdai: src/agda/Core/Yoneda.agda src/agda/Algebra/Rings/Basic.agdai src/agda/Algebra/Fields/Basic.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Yoneda.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Yoneda.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Yoneda.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/GodelBoundary.agda
 src/agda/Core/GodelBoundary.agdai: src/agda/Core/GodelBoundary.agda src/agda/Core.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/GodelBoundary.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/GodelBoundary.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/GodelBoundary.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/Strings.agda
 src/agda/Core/Strings.agdai: src/agda/Core/Strings.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/Strings.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/Strings.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/Strings.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/PathAggregator.agda
 src/agda/Core/PathAggregator.agdai: src/agda/Core/PathAggregator.agda src/agda/Core/GrowthMetrics.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/PathAggregator.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/PathAggregator.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/PathAggregator.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/PolynomialsF2.agda
 src/agda/Core/PolynomialsF2.agdai: src/agda/Core/PolynomialsF2.agda src/agda/Core/Phase.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/PolynomialsF2.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/PolynomialsF2.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/PolynomialsF2.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/Core/CategoricalAdapter.agda
 src/agda/Core/CategoricalAdapter.agdai: src/agda/Core/CategoricalAdapter.agda src/agda/Infrastructure/Universe.agdai src/agda/Infrastructure/Coherence/Path2.agdai
-	$(AGDA) $(AGDA_FLAGS) src/agda/Core/CategoricalAdapter.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Core/CategoricalAdapter.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/Core/CategoricalAdapter.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/MinimalTest.agda
 src/agda/MinimalTest.agdai: src/agda/MinimalTest.agda
-	$(AGDA) $(AGDA_FLAGS) src/agda/MinimalTest.agda
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/MinimalTest.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/MinimalTest.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile all Agda modules
-agda-all: src/agda/MetaScan.agdai src/agda/Metamodel.agdai src/agda/Tests/PropertyRegistryTests.agdai src/agda/Tests/AbelianCategoriesChecklist.agdai src/agda/Tests/DispatchBehaviorTests.agdai src/agda/Tests/WitnessConstructionTests.agdai src/agda/Tests/VectorSpaceChecklist.agdai src/agda/Tests/ProofObligationStatus.agdai src/agda/Tests/SerializationTests.agdai src/agda/Tests/GodelBoundaryTests.agdai src/agda/Tests/ModuleStructureChecklist.agdai src/agda/Tests/ToposTheoryChecklist.agdai src/agda/Tests/GrothendieckFibrationsChecklist.agdai src/agda/Tests/TensorProductChecklist.agdai src/agda/Tests/Index_PhaseII.agdai src/agda/Tests/HierarchyValidation.agdai src/agda/Tests/PhaseExamples.agdai src/agda/Tests/RegularCategoriesChecklist.agdai src/agda/Tests/AlgorithmCompositionTestsMinimal.agdai src/agda/Tests/MonadAdjunctionChecklist.agdai src/agda/Tests/UniversalPropertyTests.agdai src/agda/Tests/EnrichmentChecklist.agdai src/agda/Tests/AdvancedPhaseExamples.agdai src/agda/Tests/ErrorAsSpecificationTests.agdai src/agda/Tests/RealWorldAlgorithmsTests.agdai src/agda/Tests/PolynomialExtensionsChecklist.agdai src/agda/Tests/ModuleTheoryChecklist.agdai src/agda/Tests/PhaseCategoryExamplesRunner.agdai src/agda/Tests/PolynomialFieldExtensionsChecklist.agdai src/agda/Tests/AlgorithmCompositionTests.agdai src/agda/Tests/FieldsBasicChecklist.agdai src/agda/Tests/SpecificationValidation.agdai src/agda/Tests/AlgorithmSmokeTests.agdai src/agda/Tests/CoverageReport.agdai src/agda/Tests/GroupsFreeChecklist.agdai src/agda/Tests/RingsBasicChecklist.agdai src/agda/Tests/Chapter2Checklist.agdai src/agda/Tests/KanExtensionsChecklist.agdai src/agda/Tests/LimitsColimitsChecklist.agdai src/agda/Tests/AdvancedMonadTheoryChecklist.agdai src/agda/Tests/CoreUniversalPropertiesChecklist.agdai src/agda/Tests/ChapterObligationsSmoke.agdai src/agda/Tests/ConstructiveWitnessTests.agdai src/agda/Tests/PerformanceBoundaryTests.agdai src/agda/Tests/PathAggregatorTests.agdai src/agda/Tests/GroupsAbelianChecklist.agdai src/agda/Tests/Chapter1Checklist.agdai src/agda/Tests/AdvancedFieldsChecklist.agdai src/agda/Tests/WarningAggregatorsTest.agdai src/agda/Tests/Index.agdai src/agda/Tests/ObligationAdapters.agdai src/agda/Tests/ToposObligationAdapters.agdai src/agda/Tests/Chapters.agdai src/agda/Tests/YonedaChecklist.agdai src/agda/Tests/AlgebraicCompletionChecklist.agdai src/agda/Tests/FunctorPropertiesChecklist.agdai src/agda/Tests/AlgebraChecklist.agdai src/agda/Tests/ErrorHandlingTests.agdai src/agda/Tests/GroupsStructureChecklist.agdai src/agda/Tests/ModulesChecklist.agdai src/agda/Tests/Chapter3Checklist.agdai src/agda/Tests/SubobjectTheoryChecklist.agdai src/agda/Chapter2/Level2sub3.agdai src/agda/Chapter2/Level2sub6.agdai src/agda/Chapter2/Level2sub5.agdai src/agda/Chapter2/Level2sub8.agdai src/agda/Chapter2/Level2sub7.agdai src/agda/Chapter2/Level2sub2.agdai src/agda/Chapter2/Level2sub1.agdai src/agda/Chapter2/Level2sub4.agdai src/agda/Chapter2/Level2Index.agdai src/agda/Chapter3/Level3sub1.agdai src/agda/Chapter3/Level3sub2.agdai src/agda/Chapter3/Level3Index.agdai src/agda/Infrastructure/Arity/BinTree.agdai src/agda/Infrastructure/Universe.agdai src/agda/Infrastructure/Iso/Structural.agdai src/agda/Infrastructure/Functor/Compose.agdai src/agda/Infrastructure/Functor/Interface.agdai src/agda/Infrastructure/Functor/Adapters/Funext.agdai src/agda/Infrastructure/Functor/Instances/TransformationSystem.agdai src/agda/Infrastructure/Functor/Instances/Trivial.agdai src/agda/Infrastructure/Functor/Instances/PhaseCategory.agdai src/agda/Infrastructure/Functor/Instances/PathAlgebra.agdai src/agda/Infrastructure/Functor/Instances/FunctionCategory.agdai src/agda/Infrastructure/Functor/Instances/Ambiguity.agdai src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agdai src/agda/Infrastructure/Coherence/Path2.agdai src/agda/Infrastructure/Equality.agdai src/agda/Infrastructure/Polytopes/Braiding/HexagonTriangulation.agdai src/agda/Infrastructure/Polytopes/Associahedron/Triangulation.agdai src/agda/Infrastructure/Polytopes/Associahedron.agdai src/agda/Infrastructure/Definitions/Dictionary.agdai src/agda/Infrastructure/Product/Bundle4.agdai src/agda/Infrastructure/Index.agdai src/agda/Infrastructure/Axiom/Movie.agdai src/agda/Infrastructure/Axiom/PentagonFromTriangles.agdai src/agda/Infrastructure/Axiom/Adequacy.agdai src/agda/Infrastructure/Axiom/Solver.agdai src/agda/Infrastructure/Axiom/Face.agdai src/agda/Infrastructure/Axiom/SolvableInterface.agdai src/agda/Infrastructure/Axiom/Instances/HexagonBraiding.agdai src/agda/Infrastructure/Axiom/Instances/PentagonAssociahedron.agdai src/agda/Infrastructure/Axiom/Instance.agdai src/agda/Infrastructure/Wrapper/With.agdai src/agda/Algorithms/Instrumented.agdai src/agda/Algorithms/Basic.agdai src/agda/Algorithms/Adapters/BundleAdapter.agdai src/agda/Algorithms/TestInstances.agdai src/agda/MinimalAUDAXInlineTest.agdai src/agda/Core.agdai src/agda/TechnicalDebt/PriorityMapping.agdai src/agda/TechnicalDebt/PriorityOrchestrationFFI.agdai src/agda/TechnicalDebt/PriorityFormatting.agdai src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agdai src/agda/TechnicalDebt/DeferredItemsDetection.agdai src/agda/TechnicalDebt/AlgorithmCompositionRegistry.agdai src/agda/TechnicalDebt/PriorityOrchestration.agdai src/agda/TechnicalDebt/DeferredItemsFormatting.agdai src/agda/TechnicalDebt/DeferredItemsFormatting_AUDAX.agdai src/agda/TechnicalDebt/Priorities.agdai src/agda/Examples/RealWorldAlgorithms.agdai src/agda/Examples/TechnicalDebtExample.agdai src/agda/Examples/AmbiguityExamples.agdai src/agda/Examples/FunctionField/F2x.agdai src/agda/Examples/AlgorithmCorrectnessExamples.agdai src/agda/Examples/NumberField/Sqrt2.agdai src/agda/Examples/FiniteField/GF8.agdai src/agda/Examples/InstrumentedAlgorithmDemo.agdai src/agda/Examples/DeferredItemsScanner.agdai src/agda/Examples/TransformationSystemExamples.agdai src/agda/Examples/AutomaticEvidenceDemo.agdai src/agda/Examples/ConstructiveWitnessExamples.agdai src/agda/Examples/AgdaMakefileDeps.agdai src/agda/Examples/LazyHybridDemo.agdai src/agda/Examples/TechnicalDebtRegistry.agdai src/agda/Examples/RoadmapIssueSync.agdai src/agda/Examples/MakefileTargets.agdai src/agda/Examples/PhaseCategoryExamples.agdai src/agda/Examples/EqualityExamples.agdai src/agda/Examples/TechnicalDebtChecklist.agdai src/agda/Examples/AgdaFileScanFFI.agdai src/agda/Examples/ExporterMakefile.agdai src/agda/Markdown/ExportProof.agdai src/agda/Markdown/Normalization.agdai src/agda/Docs/MetaIndex.agdai src/agda/GrowthAnalysis.agdai src/agda/Plan/CIM/PolytopeExpansion.agdai src/agda/Plan/CIM/Elasticity.agdai src/agda/Plan/CIM/PlanningKernel.agdai src/agda/Plan/CIM/PandocProofExample.agdai src/agda/Plan/CIM/PandocProtocols.agdai src/agda/Plan/CIM/PandocShowBlock.agdai src/agda/Plan/CIM/CHIPCoreRecompose.agdai src/agda/Plan/CIM/PandocProofExport.agdai src/agda/Plan/CIM/Utility.agdai src/agda/Plan/CIM/IngestedRoadmaps.agdai src/agda/Plan/CIM/Structure.agdai src/agda/Plan/CIM/DocumentSynthesis.agdai src/agda/Plan/CIM/CHIPRecomposed.agdai src/agda/Plan/CIM/PandocShowMdBlock.agdai src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agdai src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agdai src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agdai src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agdai src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agdai src/agda/Plan/CIM/PriorityProfileExport.agdai src/agda/Plan/CIM/PlanningExport.agdai src/agda/Plan/CIM/RoadmapExporter.agdai src/agda/Plan/CIM/CanonicalRoadmap.agdai src/agda/Plan/CIM/CHIPConformance.agdai src/agda/Plan/CIM/FrameworkMetadata.agdai src/agda/Plan/CIM/DependencyGraphExport.agdai src/agda/Plan/CIM/ModuleExporter.agdai src/agda/Plan/CIM/RoadmapIndex.agdai src/agda/Plan/CIM/RoadmapSync.agdai src/agda/Plan/CIM/PandocToMarkdown.agdai src/agda/Plan/CIM/DocumentationContent.agdai src/agda/Plan/CIM/YonedaProfiler.agdai src/agda/Plan/CIM/RoadmapSPPF.agdai src/agda/Plan/CIM/Ambiguity.agdai src/agda/Plan/CIM/PandocShowInline.agdai src/agda/Plan/CIM/RoadmapSPPFExport.agdai src/agda/Plan/CIM/GPNarrativeDAG.agdai src/agda/Plan/CIM/MarkdownNormalize.agdai src/agda/Plan/CIM/PandocAST.agdai src/agda/Plan/CIM/GrammarBridge.agdai src/agda/Plan/CIM/MarkdownParse.agdai src/agda/Algebra/Groups/Basic.agdai src/agda/Algebra/Groups/Theorems/Classical.agdai src/agda/Algebra/Groups/ClassicalInstance.agdai src/agda/Algebra/Groups/Structure.agdai src/agda/Algebra/Groups/BasicWithTheorems.agdai src/agda/Algebra/Groups/BasicParameterized.agdai src/agda/Algebra/Groups/Abelian.agdai src/agda/Algebra/Groups/Types.agdai src/agda/Algebra/Groups/Free.agdai src/agda/Algebra/Enrichment.agdai src/agda/Algebra/Rings/Basic.agdai src/agda/Algebra/Rings/Theorems/Classical.agdai src/agda/Algebra/Rings/ClassicalInstance.agdai src/agda/Algebra/Rings/BasicWithTheorems.agdai src/agda/Algebra/Rings/Types.agdai src/agda/Algebra/Modules/Basic.agdai src/agda/Algebra/Modules/Theorems/Classical.agdai src/agda/Algebra/Modules/ClassicalInstance.agdai src/agda/Algebra/Modules/BasicWithTheorems.agdai src/agda/Algebra/Modules/Types.agdai src/agda/Algebra/Foundation.agdai src/agda/Algebra/Fields/Basic.agdai src/agda/Algebra/Fields/Advanced.agdai src/agda/Algebra/Fields/Theorems/Classical.agdai src/agda/Algebra/Fields/ClassicalInstance.agdai src/agda/Algebra/Fields/BasicWithTheorems.agdai src/agda/Algebra/Fields/Types.agdai src/agda/Algebra/Index.agdai src/agda/Chapter1/Level1.agdai src/agda/Chapter1/Level1sub8.agdai src/agda/Chapter1/Level1sub7.agdai src/agda/Chapter1/Level1sub3.agdai src/agda/Chapter1/Level1Index.agdai src/agda/Chapter1/Level1sub2.agdai src/agda/Chapter1/Level1sub4.agdai src/agda/Chapter1/Level1sub5.agdai src/agda/Chapter1/Level1sub6.agdai src/agda/PropertyRegistry.agdai src/agda/ExporterMakefile.agdai src/agda/Core/AlgorithmComplexity.agdai src/agda/Core/ABNF.agdai src/agda/Core/TechnicalDebt.agdai src/agda/Core/Witnesses.agdai src/agda/Core/BraidTree.agdai src/agda/Core/Limitations.agdai src/agda/Core/AlgorithmCorrectness.agdai src/agda/Core/GrothendieckFibrations.agdai src/agda/Core/AlgorithmUniversality.agdai src/agda/Core/AdapterReflection.agdai src/agda/Core/Phase.agdai src/agda/Core/AdapterAutomation.agdai src/agda/Core/Utils.agdai src/agda/Core/PhaseCategoryWrapper.agdai src/agda/Core/Algorithms/Registry.agdai src/agda/Core/Algorithms/FunctionFields.agdai src/agda/Core/Algorithms/External.agdai src/agda/Core/Algorithms/FiniteFields.agdai src/agda/Core/Algorithms/AutomaticEvidence.agdai src/agda/Core/Algorithms/NumberFields.agdai src/agda/Core/Algorithms/Bundle.agdai src/agda/Core/Algorithms/InductiveClassification.agdai src/agda/Core/PhaseCategory.agdai src/agda/Core/Rendering.agdai src/agda/Core/ConstructiveWitnesses.agdai src/agda/Core/UniversalProperties.agdai src/agda/Core/IO.agdai src/agda/Core/GrowthMetrics.agdai src/agda/Core/AlgebraicAlgorithms.agdai src/agda/Core/Yoneda.agdai src/agda/Core/GodelBoundary.agdai src/agda/Core/Strings.agdai src/agda/Core/PathAggregator.agdai src/agda/Core/PolynomialsF2.agdai src/agda/Core/CategoricalAdapter.agdai src/agda/MinimalTest.agdai
+agda-all: src/agda/MetaScan.agdai src/agda/Metamodel.agdai src/agda/Tests/PropertyRegistryTests.agdai src/agda/Tests/AbelianCategoriesChecklist.agdai src/agda/Tests/DispatchBehaviorTests.agdai src/agda/Tests/WitnessConstructionTests.agdai src/agda/Tests/VectorSpaceChecklist.agdai src/agda/Tests/ProofObligationStatus.agdai src/agda/Tests/SerializationTests.agdai src/agda/Tests/GodelBoundaryTests.agdai src/agda/Tests/ModuleStructureChecklist.agdai src/agda/Tests/ToposTheoryChecklist.agdai src/agda/Tests/GrothendieckFibrationsChecklist.agdai src/agda/Tests/TensorProductChecklist.agdai src/agda/Tests/Index_PhaseII.agdai src/agda/Tests/HierarchyValidation.agdai src/agda/Tests/PhaseExamples.agdai src/agda/Tests/RegularCategoriesChecklist.agdai src/agda/Tests/AlgorithmCompositionTestsMinimal.agdai src/agda/Tests/MonadAdjunctionChecklist.agdai src/agda/Tests/UniversalPropertyTests.agdai src/agda/Tests/EnrichmentChecklist.agdai src/agda/Tests/AdvancedPhaseExamples.agdai src/agda/Tests/ErrorAsSpecificationTests.agdai src/agda/Tests/RealWorldAlgorithmsTests.agdai src/agda/Tests/PolynomialExtensionsChecklist.agdai src/agda/Tests/ModuleTheoryChecklist.agdai src/agda/Tests/PhaseCategoryExamplesRunner.agdai src/agda/Tests/PolynomialFieldExtensionsChecklist.agdai src/agda/Tests/AlgorithmCompositionTests.agdai src/agda/Tests/FieldsBasicChecklist.agdai src/agda/Tests/SpecificationValidation.agdai src/agda/Tests/AlgorithmSmokeTests.agdai src/agda/Tests/CoverageReport.agdai src/agda/Tests/GroupsFreeChecklist.agdai src/agda/Tests/RingsBasicChecklist.agdai src/agda/Tests/Chapter2Checklist.agdai src/agda/Tests/KanExtensionsChecklist.agdai src/agda/Tests/LimitsColimitsChecklist.agdai src/agda/Tests/AdvancedMonadTheoryChecklist.agdai src/agda/Tests/CoreUniversalPropertiesChecklist.agdai src/agda/Tests/ChapterObligationsSmoke.agdai src/agda/Tests/ConstructiveWitnessTests.agdai src/agda/Tests/PerformanceBoundaryTests.agdai src/agda/Tests/PathAggregatorTests.agdai src/agda/Tests/GroupsAbelianChecklist.agdai src/agda/Tests/Chapter1Checklist.agdai src/agda/Tests/AdvancedFieldsChecklist.agdai src/agda/Tests/WarningAggregatorsTest.agdai src/agda/Tests/Index.agdai src/agda/Tests/ObligationAdapters.agdai src/agda/Tests/ToposObligationAdapters.agdai src/agda/Tests/Chapters.agdai src/agda/Tests/YonedaChecklist.agdai src/agda/Tests/AlgebraicCompletionChecklist.agdai src/agda/Tests/FunctorPropertiesChecklist.agdai src/agda/Tests/AlgebraChecklist.agdai src/agda/Tests/ErrorHandlingTests.agdai src/agda/Tests/GroupsStructureChecklist.agdai src/agda/Tests/ModulesChecklist.agdai src/agda/Tests/Chapter3Checklist.agdai src/agda/Tests/SubobjectTheoryChecklist.agdai src/agda/Chapter2/Level2sub3.agdai src/agda/Chapter2/Level2sub6.agdai src/agda/Chapter2/Level2sub5.agdai src/agda/Chapter2/Level2sub8.agdai src/agda/Chapter2/Level2sub7.agdai src/agda/Chapter2/Level2sub2.agdai src/agda/Chapter2/Level2sub1.agdai src/agda/Chapter2/Level2sub4.agdai src/agda/Chapter2/Level2Index.agdai src/agda/Chapter3/Level3sub1.agdai src/agda/Chapter3/Level3sub2.agdai src/agda/Chapter3/Level3Index.agdai src/agda/Infrastructure/Arity/BinTree.agdai src/agda/Infrastructure/Universe.agdai src/agda/Infrastructure/Iso/Structural.agdai src/agda/Infrastructure/Functor/Compose.agdai src/agda/Infrastructure/Functor/Interface.agdai src/agda/Infrastructure/Functor/Adapters/Funext.agdai src/agda/Infrastructure/Functor/Instances/TransformationSystem.agdai src/agda/Infrastructure/Functor/Instances/Trivial.agdai src/agda/Infrastructure/Functor/Instances/PhaseCategory.agdai src/agda/Infrastructure/Functor/Instances/PathAlgebra.agdai src/agda/Infrastructure/Functor/Instances/FunctionCategory.agdai src/agda/Infrastructure/Functor/Instances/Ambiguity.agdai src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agdai src/agda/Infrastructure/Coherence/Path2.agdai src/agda/Infrastructure/Equality.agdai src/agda/Infrastructure/Polytopes/Braiding/HexagonTriangulation.agdai src/agda/Infrastructure/Polytopes/Associahedron/Triangulation.agdai src/agda/Infrastructure/Polytopes/Associahedron.agdai src/agda/Infrastructure/Definitions/Dictionary.agdai src/agda/Infrastructure/Product/Bundle4.agdai src/agda/Infrastructure/Index.agdai src/agda/Infrastructure/Axiom/Movie.agdai src/agda/Infrastructure/Axiom/PentagonFromTriangles.agdai src/agda/Infrastructure/Axiom/Adequacy.agdai src/agda/Infrastructure/Axiom/Solver.agdai src/agda/Infrastructure/Axiom/Face.agdai src/agda/Infrastructure/Axiom/SolvableInterface.agdai src/agda/Infrastructure/Axiom/Instances/HexagonBraiding.agdai src/agda/Infrastructure/Axiom/Instances/PentagonAssociahedron.agdai src/agda/Infrastructure/Axiom/Instance.agdai src/agda/Infrastructure/Wrapper/With.agdai src/agda/Algorithms/Instrumented.agdai src/agda/Algorithms/Basic.agdai src/agda/Algorithms/Adapters/BundleAdapter.agdai src/agda/Algorithms/TestInstances.agdai src/agda/MinimalAUDAXInlineTest.agdai src/agda/Core.agdai src/agda/TechnicalDebt/PriorityMapping.agdai src/agda/TechnicalDebt/PriorityOrchestrationFFI.agdai src/agda/TechnicalDebt/PriorityFormatting.agdai src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agdai src/agda/TechnicalDebt/DeferredItemsDetection.agdai src/agda/TechnicalDebt/AlgorithmCompositionRegistry.agdai src/agda/TechnicalDebt/PriorityOrchestration.agdai src/agda/TechnicalDebt/DeferredItemsFormatting.agdai src/agda/TechnicalDebt/DeferredItemsFormatting_AUDAX.agdai src/agda/TechnicalDebt/Priorities.agdai src/agda/Examples/RealWorldAlgorithms.agdai src/agda/Examples/TechnicalDebtExample.agdai src/agda/Examples/TransformationPathAdequacy.agdai src/agda/Examples/AmbiguityExamples.agdai src/agda/Examples/FunctionField/F2x.agdai src/agda/Examples/AlgorithmCorrectnessExamples.agdai src/agda/Examples/FunctionPathAdequacy.agdai src/agda/Examples/FunctionCategoryAdequacy.agdai src/agda/Examples/NumberField/Sqrt2.agdai src/agda/Examples/FiniteField/GF8.agdai src/agda/Examples/InstrumentedAlgorithmDemo.agdai src/agda/Examples/DeferredItemsScanner.agdai src/agda/Examples/DefinitionDictionaryAdequacy.agdai src/agda/Examples/TransformationSystemExamples.agdai src/agda/Examples/AutomaticEvidenceDemo.agdai src/agda/Examples/ConstructiveWitnessExamples.agdai src/agda/Examples/AgdaMakefileDeps.agdai src/agda/Examples/LazyHybridDemo.agdai src/agda/Examples/TechnicalDebtRegistry.agdai src/agda/Examples/RoadmapIssueSync.agdai src/agda/Examples/MakefileTargets.agdai src/agda/Examples/FunctorComposition.agdai src/agda/Examples/PhaseCategoryExamples.agdai src/agda/Examples/EqualityExamples.agdai src/agda/Examples/TechnicalDebtChecklist.agdai src/agda/Examples/AmbiguityAdequacy.agdai src/agda/Examples/AgdaFileScanFFI.agdai src/agda/Examples/ExporterMakefile.agdai src/agda/Markdown/ExportProof.agdai src/agda/Markdown/Normalization.agdai src/agda/Docs/MetaIndex.agdai src/agda/GrowthAnalysis.agdai src/agda/Plan/CIM/TransformationSystem.agdai src/agda/Plan/CIM/PolytopeExpansion.agdai src/agda/Plan/CIM/PlanningKernel.agdai src/agda/Plan/CIM/PandocProofExample.agdai src/agda/Plan/CIM/PandocProtocols.agdai src/agda/Plan/CIM/PandocShowBlock.agdai src/agda/Plan/CIM/CHIPCoreRecompose.agdai src/agda/Plan/CIM/PandocProofExport.agdai src/agda/Plan/CIM/Utility.agdai src/agda/Plan/CIM/IngestedRoadmaps.agdai src/agda/Plan/CIM/Elasticity.agdai src/agda/Plan/CIM/Structure.agdai src/agda/Plan/CIM/DocumentSynthesis.agdai src/agda/Plan/CIM/Metricization.agdai src/agda/Plan/CIM/CHIPRecomposed.agdai src/agda/Plan/CIM/PandocShowMdBlock.agdai src/agda/Plan/CIM/IngestedRoadmaps/Corrections.agdai src/agda/Plan/CIM/IngestedRoadmaps/Analysis.agdai src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agdai src/agda/Plan/CIM/IngestedRoadmaps/Foundation.agdai src/agda/Plan/CIM/IngestedRoadmaps/Geometry.agdai src/agda/Plan/CIM/PriorityProfileExport.agdai src/agda/Plan/CIM/PlanningExport.agdai src/agda/Plan/CIM/RoadmapExporter.agdai src/agda/Plan/CIM/CanonicalRoadmap.agdai src/agda/Plan/CIM/CHIPConformance.agdai src/agda/Plan/CIM/FrameworkMetadata.agdai src/agda/Plan/CIM/DependencyGraphExport.agdai src/agda/Plan/CIM/ModuleExporter.agdai src/agda/Plan/CIM/RoadmapIndex.agdai src/agda/Plan/CIM/RoadmapSync.agdai src/agda/Plan/CIM/PandocToMarkdown.agdai src/agda/Plan/CIM/DocumentationContent.agdai src/agda/Plan/CIM/YonedaProfiler.agdai src/agda/Plan/CIM/RoadmapSPPF.agdai src/agda/Plan/CIM/Ambiguity.agdai src/agda/Plan/CIM/PandocShowInline.agdai src/agda/Plan/CIM/RoadmapSPPFExport.agdai src/agda/Plan/CIM/FunctorialConstructs.agdai src/agda/Plan/CIM/GPNarrativeDAG.agdai src/agda/Plan/CIM/MarkdownNormalize.agdai src/agda/Plan/CIM/PandocAST.agdai src/agda/Plan/CIM/GrammarBridge.agdai src/agda/Plan/CIM/MarkdownParse.agdai src/agda/Algebra/Groups/Basic.agdai src/agda/Algebra/Groups/Theorems/Classical.agdai src/agda/Algebra/Groups/ClassicalInstance.agdai src/agda/Algebra/Groups/Structure.agdai src/agda/Algebra/Groups/BasicWithTheorems.agdai src/agda/Algebra/Groups/BasicParameterized.agdai src/agda/Algebra/Groups/Abelian.agdai src/agda/Algebra/Groups/Types.agdai src/agda/Algebra/Groups/Free.agdai src/agda/Algebra/Enrichment.agdai src/agda/Algebra/Rings/Basic.agdai src/agda/Algebra/Rings/Theorems/Classical.agdai src/agda/Algebra/Rings/ClassicalInstance.agdai src/agda/Algebra/Rings/BasicWithTheorems.agdai src/agda/Algebra/Rings/Types.agdai src/agda/Algebra/Modules/Basic.agdai src/agda/Algebra/Modules/Theorems/Classical.agdai src/agda/Algebra/Modules/ClassicalInstance.agdai src/agda/Algebra/Modules/BasicWithTheorems.agdai src/agda/Algebra/Modules/Types.agdai src/agda/Algebra/Foundation.agdai src/agda/Algebra/Fields/Basic.agdai src/agda/Algebra/Fields/Advanced.agdai src/agda/Algebra/Fields/Theorems/Classical.agdai src/agda/Algebra/Fields/ClassicalInstance.agdai src/agda/Algebra/Fields/BasicWithTheorems.agdai src/agda/Algebra/Fields/Types.agdai src/agda/Algebra/Index.agdai src/agda/Chapter1/Level1.agdai src/agda/Chapter1/Level1sub8.agdai src/agda/Chapter1/Level1sub7.agdai src/agda/Chapter1/Level1sub3.agdai src/agda/Chapter1/Level1Index.agdai src/agda/Chapter1/Level1sub2.agdai src/agda/Chapter1/Level1sub4.agdai src/agda/Chapter1/Level1sub5.agdai src/agda/Chapter1/Level1sub6.agdai src/agda/PropertyRegistry.agdai src/agda/ExporterMakefile.agdai src/agda/Core/AlgorithmComplexity.agdai src/agda/Core/ABNF.agdai src/agda/Core/TechnicalDebt.agdai src/agda/Core/Witnesses.agdai src/agda/Core/BraidTree.agdai src/agda/Core/Limitations.agdai src/agda/Core/AlgorithmCorrectness.agdai src/agda/Core/GrothendieckFibrations.agdai src/agda/Core/AlgorithmUniversality.agdai src/agda/Core/AdapterReflection.agdai src/agda/Core/Phase.agdai src/agda/Core/AdapterAutomation.agdai src/agda/Core/Utils.agdai src/agda/Core/PhaseCategoryWrapper.agdai src/agda/Core/Algorithms/Registry.agdai src/agda/Core/Algorithms/FunctionFields.agdai src/agda/Core/Algorithms/External.agdai src/agda/Core/Algorithms/FiniteFields.agdai src/agda/Core/Algorithms/AutomaticEvidence.agdai src/agda/Core/Algorithms/NumberFields.agdai src/agda/Core/Algorithms/Bundle.agdai src/agda/Core/Algorithms/InductiveClassification.agdai src/agda/Core/PhaseCategory.agdai src/agda/Core/Rendering.agdai src/agda/Core/ConstructiveWitnesses.agdai src/agda/Core/UniversalProperties.agdai src/agda/Core/IO.agdai src/agda/Core/GrowthMetrics.agdai src/agda/Core/AlgebraicAlgorithms.agdai src/agda/Core/Yoneda.agdai src/agda/Core/GodelBoundary.agdai src/agda/Core/Strings.agdai src/agda/Core/PathAggregator.agdai src/agda/Core/PolynomialsF2.agdai src/agda/Core/CategoricalAdapter.agdai src/agda/MinimalTest.agdai
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "agda-all" $$start $$end $$elapsed_ms ok >> $(PROFILE_LOG)

@@ -11,6 +11,8 @@ open import Agda.Builtin.Nat using (Nat; suc; _+_)
 open import Agda.Builtin.Equality using (_≡_; refl)
 
 open import Infrastructure.Functor.Instances.FunctionCategory
+open import Infrastructure.Axiom.Instance using (FramedFace; AxiomInstance)
+open import Infrastructure.Axiom.Face as Face using (Face)
 
 -- Instantiate the adequacy module at the base universe.
 module FC = FunctionCategoryAdequacy {ℓ = lzero}

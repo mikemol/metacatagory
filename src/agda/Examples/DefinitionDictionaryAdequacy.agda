@@ -5,10 +5,11 @@
 
 module Examples.DefinitionDictionaryAdequacy where
 
-open import Agda.Builtin.Equality using (_≡_)
+open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Unit using (⊤; tt)
 open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 open import Agda.Builtin.String using (String)
+open import Agda.Builtin.List using (_∷_; [])
 
 open import Infrastructure.Definitions.Dictionary
 open import Infrastructure.Axiom.Instance using (AxiomInstance; FramedFace)
