@@ -104,7 +104,7 @@ import Chapter3.Level3sub2 as C3S2
 import Chapter3.Level3sub1 as C3S1
 import Chapter1.Level1sub3 as C1S3
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record LocalHomeomorphismAdapter : Set₁ where
   field
     decl     : C3S2.MorphismPropertyAssertionLocalHomeomorphism
@@ -127,7 +127,7 @@ localHomeomorphismCategorical : LocalHomeomorphismAdapter → CategoricalAdapter
 localHomeomorphismCategorical adapt =
   mkCategoricalAdapter C3S2.MorphismPropertyAssertionLocalHomeomorphism (λ _ → LocalHomeomorphismAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record EtaleSpaceAdapter : Set₁ where
   field
     decl              : C3S2.EtaleSpaceOver
@@ -203,7 +203,7 @@ mkAdjunctionHomAdapter :
   (pd : C1S3.AdjunctionHomDecl.D d ≡ d') →
   AdjunctionHomAdapter
 mkAdjunctionHomAdapter d f g c d' pf pg pc pd =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expF = f ; expG = g ; expC = c ; expD = d'
          ; linkF = pf ; linkG = pg ; linkC = pc ; linkD = pd ; status = true }
 
@@ -286,7 +286,7 @@ mkReflectiveLocalizationAdapter :
   (f : ⊤ → C1S5.ReflectiveSubcategoryAsLocalizationTheorem) →
   ReflectiveLocalizationAdapter
 mkReflectiveLocalizationAdapter d r c l pr pc pl f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expR = r ; expC = c ; expL = l ; linkR = pr ; linkC = pc ; linkL = pl ; status = true }
 
 reflectiveLocalizationCategorical : ReflectiveLocalizationAdapter → CategoricalAdapter {lzero} C1S5.ReflectiveSubcategoryAsLocalizationTheorem
@@ -322,7 +322,7 @@ mkKernelPairAdapter :
   (f : ⊤ → C2S2.KernelPairDeclaration) →
   KernelPairAdapter
 mkKernelPairAdapter d m k1 k2 pb pm pk1 pk2 ppb f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
     record { decl = d ; expM = m ; expK1 = k1 ; expK2 = k2 ; expPB = pb
       ; linkM = pm ; linkK1 = pk1 ; linkK2 = pk2 ; linkPB = ppb ; status = true }
 
@@ -381,7 +381,7 @@ mkInternalEquivalenceRelationAdapter :
   (f : ⊤ → C2S2.InternalEquivalenceRelationDeclaration) →
   InternalEquivalenceRelationAdapter
 mkInternalEquivalenceRelationAdapter d r1 r2 mono pr1 pr2 pmono f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
     record { decl = d ; expR1 = r1 ; expR2 = r2 ; expMono = mono
       ; linkR1 = pr1 ; linkR2 = pr2 ; linkMono = pmono ; status = true }
 
@@ -412,7 +412,7 @@ mkRegularExactSequenceAdapter :
   (f : ⊤ → C2S2.RegularExactSequenceDeclaration) →
   RegularExactSequenceAdapter
 mkRegularExactSequenceAdapter d k q pk pq f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
     record { decl = d ; expKernelMorphism = k ; expQuotientMorphism = q
       ; linkKernel = pk ; linkQuotient = pq ; status = true }
 
@@ -444,7 +444,7 @@ mkAdditiveCategoryAdapter :
   (f : ⊤ → C2S1.AdditiveCategoryDeclaration) →
   AdditiveCategoryAdapter
 mkAdditiveCategoryAdapter d cat zero pcat pzero f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
     record { decl = d ; expCategory = cat ; expZero = zero
       ; linkCat = pcat ; linkZero = pzero ; status = true }
 
@@ -454,7 +454,7 @@ additiveCategoryCategorical adapt = mkCategoricalAdapter C2S1.AdditiveCategoryDe
 isFilledAdditive : AdditiveCategoryAdapter → Bool
 isFilledAdditive a = AdditiveCategoryAdapter.status a
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record AbelianCategoryAdapter : Set₁ where
   field
     decl : C2S1.AbelianCategoryDeclaration
@@ -473,7 +473,7 @@ mkAbelianCategoryAdapter :
   (f : ⊤ → C2S1.AbelianCategoryDeclaration) →
   AbelianCategoryAdapter
 mkAbelianCategoryAdapter d cat add pcat padd f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCategory = cat ; expAdditive = add
          ; linkCat = pcat ; linkAdd = padd ; status = true }
 
@@ -483,7 +483,7 @@ abelianCategoryCategorical adapt = mkCategoricalAdapter C2S1.AbelianCategoryDecl
 isFilledAbelian : AbelianCategoryAdapter → Bool
 isFilledAbelian a = AbelianCategoryAdapter.status a
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record BiproductAdapter : Set₁ where
   field
     decl : C2S1.BiproductObject
@@ -504,7 +504,7 @@ mkBiproductAdapter :
   (f : ⊤ → C2S1.BiproductObject) →
   BiproductAdapter
 mkBiproductAdapter d l r obj pl pr pobj f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expLeft = l ; expRight = r ; expObject = obj
          ; linkLeft = pl ; linkRight = pr ; linkObject = pobj ; status = true }
 
@@ -535,7 +535,7 @@ mkLawvereTheoryAdapter :
   (morph : ⊤ → C2S3.LawvereTheoryDeclaration) →
   LawvereTheoryAdapter
 mkLawvereTheoryAdapter d th base pth pbase morph =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expTheory = th ; expBase = base
          ; linkTheory = pth ; linkBase = pbase ; status = true }
 
@@ -545,7 +545,7 @@ isFilledLawvereTheory a = LawvereTheoryAdapter.status a
 lawvereTheoryCategorical : LawvereTheoryAdapter → CategoricalAdapter {lzero} C2S3.LawvereTheoryDeclaration
 lawvereTheoryCategorical adapt = mkCategoricalAdapter C2S3.LawvereTheoryDeclaration (λ _ → LawvereTheoryAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record AlgebraicCategoryAdapter : Set₁ where
   field
     decl : C2S3.AlgebraicCategoryDeclaration
@@ -564,7 +564,7 @@ mkAlgebraicCategoryAdapter :
   (morph : ⊤ → C2S3.AlgebraicCategoryDeclaration) →
   AlgebraicCategoryAdapter
 mkAlgebraicCategoryAdapter d cat th pcat pth morph =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCategory = cat ; expTheory = th
          ; linkCat = pcat ; linkTheory = pth ; status = true }
 
@@ -595,7 +595,7 @@ mkMonadAdapter :
   (pdat : C2S4.MonadDeclaration.datum d ≡ dat) →
   MonadAdapter
 mkMonadAdapter d n dat pn pdat =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expName = n ; expDatum = dat
          ; linkName = pn ; linkDatum = pdat ; status = true }
 
@@ -608,7 +608,7 @@ monadCategorical : MonadAdapter →
 monadCategorical adapt =
   mkCategoricalAdapter C2S4.MonadDeclaration (λ _ → MonadAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record TAlgebraAdapter : Set₁ where
   field
     decl : C2S4.TAlgebraData
@@ -626,7 +626,7 @@ mkTAlgebraAdapter :
   (pm : C2S4.TAlgebraData.monad d ≡ m) →
   TAlgebraAdapter
 mkTAlgebraAdapter d c m pc pm =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCarrier = c ; monad = m
          ; linkCarrier = pc ; linkMonad = pm ; status = true }
 
@@ -660,7 +660,7 @@ mkLocallyPresentableAdapter :
   (prk : C2S5.LocallyPresentableCategoryDeclaration.rank d ≡ rk) →
   LocallyPresentableAdapter
 mkLocallyPresentableAdapter d cat rk pcat prk =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCat = cat ; expRank = rk
          ; linkCat = pcat ; linkRank = prk ; status = true }
 
@@ -693,7 +693,7 @@ mkMonoidalCategoryAdapter :
   (passoc : S6.MonoidalCategoryDeclaration.associator d ≡ assoc) →
   MonoidalCategoryAdapter
 mkMonoidalCategoryAdapter d dat assoc pdat passoc =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expDatum = dat ; expAssociator = assoc
          ; linkDatum = pdat ; linkAssoc = passoc ; status = true }
 
@@ -705,7 +705,7 @@ monoidalCategoryCategorical : MonoidalCategoryAdapter →
 monoidalCategoryCategorical adapt =
   mkCategoricalAdapter S6.MonoidalCategoryDeclaration (λ _ → MonoidalCategoryAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record SymmetricMonoidalAdapter : Set₁ where
   field
     decl : S6.SymmetricMonoidalCategoryDeclaration
@@ -723,7 +723,7 @@ mkSymmetricMonoidalAdapter :
   (pbr : S6.SymmetricMonoidalCategoryDeclaration.braiding d ≡ br) →
   SymmetricMonoidalAdapter
 mkSymmetricMonoidalAdapter d mon br pmon pbr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expMonoidal = mon ; expBraiding = br
          ; linkMonoidal = pmon ; linkBraiding = pbr ; status = true }
 
@@ -735,7 +735,7 @@ symmetricMonoidalCategoryCategorical : SymmetricMonoidalAdapter →
 symmetricMonoidalCategoryCategorical adapt =
   mkCategoricalAdapter S6.SymmetricMonoidalCategoryDeclaration (λ _ → SymmetricMonoidalAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record InternalHomAdapter : Set₁ where
   field
     decl : S6.InternalHomObjectDeclaration
@@ -756,7 +756,7 @@ mkInternalHomAdapter :
   (ptgt : S6.InternalHomObjectDeclaration.targetObject d ≡ tgt) →
   InternalHomAdapter
 mkInternalHomAdapter d cat src tgt pcat psrc ptgt =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCat = cat ; expSource = src ; expTarget = tgt
          ; linkCat = pcat ; linkSource = psrc ; linkTarget = ptgt ; status = true }
 
@@ -789,7 +789,7 @@ mkCGWH_CategoryAdapter :
   (pcat : C2S7.CGWH_CategoryDeclaration.underlyingCategory d ≡ cat) →
   CGWH_CategoryAdapter
 mkCGWH_CategoryAdapter d topcat cat ptop pcat =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expTopCat = topcat ; expUnderlyingCat = cat
          ; linkTopCat = ptop ; linkUnderlyingCat = pcat ; status = true }
 
@@ -801,7 +801,7 @@ cgwhCategoryCategorical : CGWH_CategoryAdapter →
 cgwhCategoryCategorical adapt =
   mkCategoricalAdapter C2S7.CGWH_CategoryDeclaration (λ _ → CGWH_CategoryAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record TopologicalFunctorAdapter : Set₁ where
   field
     decl : C2S7.TopologicalFunctorProperty
@@ -815,7 +815,7 @@ mkTopologicalFunctorAdapter :
   (pf : C2S7.TopologicalFunctorProperty.functor d ≡ f) →
   TopologicalFunctorAdapter
 mkTopologicalFunctorAdapter d f pf =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expFunctor = f
          ; linkFunctor = pf ; status = true }
 
@@ -845,7 +845,7 @@ mkFibrationAdapter :
   (f : ⊤ → C2S8.FibrationDeclaration) →
   FibrationAdapter
 mkFibrationAdapter d proj pproj f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
     record { decl = d ; expProjection = proj
       ; linkProjection = pproj ; status = true }
 
@@ -855,7 +855,7 @@ fibrationCategorical adapt = mkCategoricalAdapter C2S8.FibrationDeclaration (λ 
 isFilledFibration : FibrationAdapter → Core.Phase.Bool
 isFilledFibration a = FibrationAdapter.status a
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record OpfibrationAdapter : Set₁ where
   field
     decl : C2S8.OpfibrationDeclaration
@@ -870,7 +870,7 @@ mkOpfibrationAdapter :
   (f : ⊤ → C2S8.OpfibrationDeclaration) →
   OpfibrationAdapter
 mkOpfibrationAdapter d proj pproj f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expProjection = proj
          ; linkProjection = pproj ; status = true }
 
@@ -903,7 +903,7 @@ mkShortExactSequenceAdapter :
   (pc : C2S1.ShortExactSequenceDeclaration.C d ≡ c) →
   ShortExactSequenceAdapter
 mkShortExactSequenceAdapter d a b c pa pb pc =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expA = a ; expB = b ; expC = c
          ; linkA = pa ; linkB = pb ; linkC = pc ; status = true }
 
@@ -915,7 +915,7 @@ shortExactSequenceCategorical : ShortExactSequenceAdapter →
 shortExactSequenceCategorical adapt =
   mkCategoricalAdapter C2S1.ShortExactSequenceDeclaration (λ _ → ShortExactSequenceAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record ZeroMorphismAdapter : Set₁ where
   field
     decl : C2S1.ZeroMorphismDeclaration
@@ -935,7 +935,7 @@ mkZeroMorphismAdapter :
   (pvia : C2S1.ZeroMorphismDeclaration.viaZeroObject d ≡ via) →
   ZeroMorphismAdapter
 mkZeroMorphismAdapter d from to via pfrom pto pvia =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expFrom = from ; expTo = to ; expViaZero = via
          ; linkFrom = pfrom ; linkTo = pto ; linkViaZero = pvia ; status = true }
 
@@ -947,7 +947,7 @@ zeroMorphismCategorical : ZeroMorphismAdapter →
 zeroMorphismCategorical adapt =
   mkCategoricalAdapter C2S1.ZeroMorphismDeclaration (λ _ → ZeroMorphismAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record TorsionTheoryAdapter : Set₁ where
   field
     decl : C2S1.TorsionTheoryDeclaration
@@ -967,7 +967,7 @@ mkTorsionTheoryAdapter :
   (ptf : C2S1.TorsionTheoryDeclaration.torsionFreeClass d ≡ tfclass) →
   TorsionTheoryAdapter
 mkTorsionTheoryAdapter d cat tclass tfclass pcat pt ptf =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCategory = cat ; expTorsionClass = tclass ; expTorsionFreeClass = tfclass
          ; linkCat = pcat ; linkTorsion = pt ; linkTorsionFree = ptf ; status = true }
 
@@ -1002,7 +1002,7 @@ mkBialgebraAdapter :
   (pm2 : C2S3.BialgebraDeclaration.model2 d ≡ m2) →
   BialgebraAdapter
 mkBialgebraAdapter d car m1 m2 pcar pm1 pm2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCarrier = car ; expModel1 = m1 ; expModel2 = m2
          ; linkCarrier = pcar ; linkModel1 = pm1 ; linkModel2 = pm2 ; status = true }
 
@@ -1035,7 +1035,7 @@ mkComonadAdapter :
   (pdat : C2S4.ComonadDeclaration.datum d ≡ dat) →
   ComonadAdapter
 mkComonadAdapter d n dat pn pdat =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expName = n ; expDatum = dat
          ; linkName = pn ; linkDatum = pdat ; status = true }
 
@@ -1068,7 +1068,7 @@ mkAccessibleCategoryAdapter :
   (prk : C2S5.AccessibleCategoryDeclaration.rank d ≡ rk) →
   AccessibleCategoryAdapter
 mkAccessibleCategoryAdapter d cat rk pcat prk =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCat = cat ; expRank = rk
          ; linkCat = pcat ; linkRank = prk ; status = true }
 
@@ -1080,7 +1080,7 @@ accessibleCategoryCategorical : AccessibleCategoryAdapter →
 accessibleCategoryCategorical adapt =
   mkCategoricalAdapter C2S5.AccessibleCategoryDeclaration (λ _ → AccessibleCategoryAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record SketchAdapter : Set₁ where
   field
     decl : C2S5.SketchDeclaration
@@ -1094,7 +1094,7 @@ mkSketchAdapter :
   (pcat : C2S5.SketchDeclaration.underlyingCategory d ≡ cat) →
   SketchAdapter
 mkSketchAdapter d cat pcat =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expUnderlyingCat = cat
          ; linkUnderlyingCat = pcat ; status = true }
 
@@ -1119,7 +1119,7 @@ mkHeytingAlgebraAdapter :
   (d : C3S1.HeytingAlgebraDeclaration) →
   HeytingAlgebraAdapter
 mkHeytingAlgebraAdapter d =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 isFilledHeytingAlgebra : HeytingAlgebraAdapter → Bool
@@ -1129,7 +1129,7 @@ isFilledHeytingAlgebra a = HeytingAlgebraAdapter.status a
 heytingAlgebraCategorical : HeytingAlgebraAdapter → CategoricalAdapter {lsuc lzero} C3S1.HeytingAlgebraDeclaration
 heytingAlgebraCategorical adapt = mkCategoricalAdapter C3S1.HeytingAlgebraDeclaration (λ _ → HeytingAlgebraAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record FrameAdapter : Set₁ where
   field
     decl : C3S1.FrameDeclaration
@@ -1143,7 +1143,7 @@ mkFrameAdapter :
   (ph : C3S1.FrameDeclaration.underlyingHeytingAlgebra d ≡ h) →
   FrameAdapter
 mkFrameAdapter d h ph =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expHeyting = h
          ; linkHeyting = ph ; status = true }
 
@@ -1154,7 +1154,7 @@ isFilledFrame a = FrameAdapter.status a
 frameCategorical : FrameAdapter → CategoricalAdapter {lsuc lzero} C3S1.FrameDeclaration
 frameCategorical adapt = mkCategoricalAdapter C3S1.FrameDeclaration (λ _ → FrameAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record LocaleAdapter : Set₁ where
   field
     decl : C3S1.LocaleDeclaration
@@ -1168,7 +1168,7 @@ mkLocaleAdapter :
   (pf : C3S1.LocaleDeclaration.associatedFrame d ≡ f) →
   LocaleAdapter
 mkLocaleAdapter d f pf =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expFrame = f
          ; linkFrame = pf ; status = true }
 
@@ -1179,7 +1179,7 @@ isFilledLocale a = LocaleAdapter.status a
 localeCategorical : LocaleAdapter → CategoricalAdapter {lsuc lzero} C3S1.LocaleDeclaration
 localeCategorical adapt = mkCategoricalAdapter C3S1.LocaleDeclaration (λ _ → LocaleAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record LocaleMorphismAdapter : Set₁ where
   field
     decl : C3S1.LocaleMorphismDeclaration
@@ -1196,7 +1196,7 @@ mkLocaleMorphismAdapter :
   (ptgt : C3S1.LocaleMorphismDeclaration.targetLocale d ≡ tgt) →
   LocaleMorphismAdapter
 mkLocaleMorphismAdapter d src tgt psrc ptgt =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expSource = src ; expTarget = tgt
          ; linkSource = psrc ; linkTarget = ptgt ; status = true }
 
@@ -1207,7 +1207,7 @@ isFilledLocaleMorphism a = LocaleMorphismAdapter.status a
 localeMorphismCategorical : LocaleMorphismAdapter → CategoricalAdapter {lsuc lzero} C3S1.LocaleMorphismDeclaration
 localeMorphismCategorical adapt = mkCategoricalAdapter C3S1.LocaleMorphismDeclaration (λ _ → LocaleMorphismAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record NucleusAdapter : Set₁ where
   field
     decl : C3S1.NucleusDeclaration
@@ -1221,7 +1221,7 @@ mkNucleusAdapter :
   (pf : C3S1.NucleusDeclaration.frame d ≡ f) →
   NucleusAdapter
 mkNucleusAdapter d f pf =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expFrame = f
          ; linkFrame = pf ; status = true }
 
@@ -1232,7 +1232,7 @@ isFilledNucleus a = NucleusAdapter.status a
 nucleusCategorical : NucleusAdapter → CategoricalAdapter {lsuc lzero} C3S1.NucleusDeclaration
 nucleusCategorical adapt = mkCategoricalAdapter C3S1.NucleusDeclaration (λ _ → NucleusAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record SublocaleAdapter : Set₁ where
   field
     decl : C3S1.SublocaleDeclaration
@@ -1250,7 +1250,7 @@ mkSublocaleAdapter :
   (ppar : C3S1.SublocaleDeclaration.parentLocale d ≡ par) →
   SublocaleAdapter
 mkSublocaleAdapter d sub par psub ppar =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expSublocale = sub ; expParent = par
          ; linkSublocale = psub ; linkParent = ppar ; status = true }
 
@@ -1261,7 +1261,7 @@ isFilledSublocale a = SublocaleAdapter.status a
 sublocaleCategorical : SublocaleAdapter → CategoricalAdapter {lsuc lzero} C3S1.SublocaleDeclaration
 sublocaleCategorical adapt = mkCategoricalAdapter C3S1.SublocaleDeclaration (λ _ → SublocaleAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record OpenLocaleMorphismAdapter : Set₁ where
   field
     decl : C3S1.OpenLocaleMorphismDeclaration
@@ -1275,7 +1275,7 @@ mkOpenLocaleMorphismAdapter :
   (pm : C3S1.OpenLocaleMorphismDeclaration.localeMorphism d ≡ m) →
   OpenLocaleMorphismAdapter
 mkOpenLocaleMorphismAdapter d m pm =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expMorphism = m
          ; linkMorphism = pm ; status = true }
 
@@ -1286,7 +1286,7 @@ isFilledOpenLocaleMorphism a = OpenLocaleMorphismAdapter.status a
 openLocaleMorphismCategorical : OpenLocaleMorphismAdapter → CategoricalAdapter {lsuc lzero} C3S1.OpenLocaleMorphismDeclaration
 openLocaleMorphismCategorical adapt = mkCategoricalAdapter C3S1.OpenLocaleMorphismDeclaration (λ _ → OpenLocaleMorphismAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record SoberSpaceAdapter : Set₁ where
   field
     decl : C3S1.SoberSpaceDeclaration
@@ -1296,7 +1296,7 @@ mkSoberSpaceAdapter :
   (d : C3S1.SoberSpaceDeclaration) →
   SoberSpaceAdapter
 mkSoberSpaceAdapter d =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 isFilledSoberSpace : SoberSpaceAdapter → Core.Phase.Bool
@@ -1306,7 +1306,7 @@ isFilledSoberSpace a = SoberSpaceAdapter.status a
 soberSpaceCategorical : SoberSpaceAdapter → CategoricalAdapter {lsuc lzero} C3S1.SoberSpaceDeclaration
 soberSpaceCategorical adapt = mkCategoricalAdapter C3S1.SoberSpaceDeclaration (λ _ → SoberSpaceAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record SpatialLocaleAdapter : Set₁ where
   field
     decl : C3S1.SpatialLocaleDeclaration
@@ -1320,7 +1320,7 @@ mkSpatialLocaleAdapter :
   (ploc : C3S1.SpatialLocaleDeclaration.locale d ≡ loc) →
   SpatialLocaleAdapter
 mkSpatialLocaleAdapter d loc ploc =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expLocale = loc
          ; linkLocale = ploc ; status = true }
 
@@ -1348,7 +1348,7 @@ mkSheafOnLocaleAdapter :
   (ppsh : C3S2.SheafOnLocaleDeclaration.underlyingPresheaf d ≡ psh) →
   SheafOnLocaleAdapter
 mkSheafOnLocaleAdapter d psh ppsh =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expPresheaf = psh
          ; linkPresheaf = ppsh ; status = true }
 
@@ -1359,7 +1359,7 @@ isFilledSheafOnLocale a = SheafOnLocaleAdapter.status a
 sheafOnLocaleCategorical : SheafOnLocaleAdapter → CategoricalAdapter {lsuc lzero} C3S2.SheafOnLocaleDeclaration
 sheafOnLocaleCategorical adapt = mkCategoricalAdapter C3S2.SheafOnLocaleDeclaration (λ _ → SheafOnLocaleAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record GrothendieckToposAdapter : Set₁ where
   field
     decl : C3S2.GrothendieckToposDeclaration
@@ -1373,7 +1373,7 @@ mkGrothendieckToposAdapter :
   (pcat : C3S2.GrothendieckToposDeclaration.category d ≡ cat) →
   GrothendieckToposAdapter
 mkGrothendieckToposAdapter d cat pcat =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCategory = cat
          ; linkCategory = pcat ; status = true }
 
@@ -1384,7 +1384,7 @@ isFilledGrothendieckTopos a = GrothendieckToposAdapter.status a
 grothendieckToposCategorical : GrothendieckToposAdapter → CategoricalAdapter {lsuc lzero} C3S2.GrothendieckToposDeclaration
 grothendieckToposCategorical adapt = mkCategoricalAdapter C3S2.GrothendieckToposDeclaration (λ _ → GrothendieckToposAdapter.decl adapt)
 
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
 record OmegaSetAdapter : Set₁ where
   field
     decl : C3S2.OmegaSetDeclarationVerified
@@ -1398,7 +1398,7 @@ mkOmegaSetAdapter :
   (pdata : C3S2.OmegaSetDeclarationVerified.dataOmegaSet d ≡ data') →
   OmegaSetAdapter
 mkOmegaSetAdapter d data' pdata =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expData = data'
          ; linkData = pdata ; status = true }
 
@@ -1435,7 +1435,7 @@ mkSheafGluingAxiomAdapter :
   (ppsh : C3S2.SheafGluingAxiom.presheaf d ≡ psh) →
   SheafGluingAxiomAdapter
 mkSheafGluingAxiomAdapter d psh ppsh =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = true }
 
 isFilledSheafGluingAxiom : SheafGluingAxiomAdapter → Core.Phase.Bool
@@ -1455,7 +1455,7 @@ mkCategoryOfSheavesAdapter :
   (pcat : C3S2.CategoryOfSheaves.underlyingCategory d ≡ cat) →
   CategoryOfSheavesAdapter
 mkCategoryOfSheavesAdapter d cat pcat =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCategory = cat ; linkCategory = pcat ; status = true }
 
 isFilledCategoryOfSheaves : CategoryOfSheavesAdapter → Core.Phase.Bool
@@ -1479,7 +1479,7 @@ mkCategoryOfSheavesIsAToposTheoremAdapter :
   (ptp : C3S2.CategoryOfSheavesIsAToposTheorem.isGrothendieckTopos d ≡ tp) →
   CategoryOfSheavesIsAToposTheoremAdapter
 mkCategoryOfSheavesIsAToposTheoremAdapter d sc tp psc ptp =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expSheafCat = sc ; expTopos = tp
          ; linkSheafCat = psc ; linkTopos = ptp ; status = true }
 
@@ -1504,7 +1504,7 @@ mkExponentialObjectSheafAdapter :
   (pe : C3S2.ExponentialObjectSheaf.exponentSheaf d ≡ e) →
   ExponentialObjectSheafAdapter
 mkExponentialObjectSheafAdapter d b e pb pe =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expBase = b ; expExponent = e
          ; linkBase = pb ; linkExponent = pe ; status = true }
 
@@ -1525,7 +1525,7 @@ mkSubobjectClassifierAxiomAdapter :
   (pcm : C3S2.SubobjectClassifierAxiom.characteristicMap d ≡ cm) →
   SubobjectClassifierAxiomAdapter
 mkSubobjectClassifierAxiomAdapter d cm pcm =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCharMap = cm ; linkCharMap = pcm ; status = true }
 
 isFilledSubobjectClassifierAxiom : SubobjectClassifierAxiomAdapter → Core.Phase.Bool
@@ -1545,7 +1545,7 @@ mkEtaleSpaceOverAdapter :
   (pp : C3S2.EtaleSpaceOver.projection d ≡ p) →
   EtaleSpaceOverAdapter
 mkEtaleSpaceOverAdapter d p pp =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expProj = p ; linkProj = pp ; status = true }
 
 isFilledEtaleSpaceOver : EtaleSpaceOverAdapter → Core.Phase.Bool
@@ -1565,7 +1565,7 @@ mkCategoryOfEtaleSpacesAdapter :
   (pcat : C3S2.CategoryOfEtaleSpaces.categoryStructure d ≡ cat) →
   CategoryOfEtaleSpacesAdapter
 mkCategoryOfEtaleSpacesAdapter d cat pcat =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCategory = cat ; linkCategory = pcat ; status = true }
 
 isFilledCategoryOfEtaleSpaces : CategoryOfEtaleSpacesAdapter → Core.Phase.Bool
@@ -1585,7 +1585,7 @@ mkStalkConstructorAdapter :
   (ppsh : C3S2.StalkConstructor.presheaf d ≡ psh) →
   StalkConstructorAdapter
 mkStalkConstructorAdapter d psh ppsh =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = true }
 
 isFilledStalkConstructor : StalkConstructorAdapter → Core.Phase.Bool
@@ -1605,7 +1605,7 @@ mkTotalSpaceOfStalksAdapter :
   (ppsh : C3S2.TotalSpaceOfStalks.presheaf d ≡ psh) →
   TotalSpaceOfStalksAdapter
 mkTotalSpaceOfStalksAdapter d psh ppsh =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expPresheaf = psh ; linkPresheaf = ppsh ; status = true }
 
 isFilledTotalSpaceOfStalks : TotalSpaceOfStalksAdapter → Core.Phase.Bool
@@ -1629,7 +1629,7 @@ mkSheafOfSectionsFunctorAdapter :
   (psh : C3S2.SheafOfSectionsFunctor.isSheaf d ≡ sh) →
   SheafOfSectionsFunctorAdapter
 mkSheafOfSectionsFunctorAdapter d et sh pet psh =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expEtale = et ; expSheaf = sh
          ; linkEtale = pet ; linkSheaf = psh ; status = true }
 
@@ -1662,7 +1662,7 @@ mkSheafEtaleEquivalenceTheoremAdapter :
   (ptf : C3S2.SheafEtaleEquivalenceTheorem.sectionsToSheafFunctor d ≡ tf) →
   SheafEtaleEquivalenceTheoremAdapter
 mkSheafEtaleEquivalenceTheoremAdapter d sc ec sf tf psc pec psf ptf =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expSheafCat = sc ; expEtaleCat = ec
          ; expStalksF = sf ; expSectionsF = tf
          ; linkSheafCat = psc ; linkEtaleCat = pec
@@ -1685,7 +1685,7 @@ mkDirectImageFunctorLocaleAdapter :
   (pf : C3S2.DirectImageFunctorLocale.underlyingFunctor d ≡ f) →
   DirectImageFunctorLocaleAdapter
 mkDirectImageFunctorLocaleAdapter d f pf =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expFunctor = f ; linkFunctor = pf ; status = true }
 
 isFilledDirectImageFunctorLocale : DirectImageFunctorLocaleAdapter → Core.Phase.Bool
@@ -1705,7 +1705,7 @@ mkInverseImageFunctorLocaleAdapter :
   (pf : C3S2.InverseImageFunctorLocale.underlyingFunctor d ≡ f) →
   InverseImageFunctorLocaleAdapter
 mkInverseImageFunctorLocaleAdapter d f pf =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expFunctor = f ; linkFunctor = pf ; status = true }
 
 isFilledInverseImageFunctorLocale : InverseImageFunctorLocaleAdapter → Core.Phase.Bool
@@ -1733,7 +1733,7 @@ mkLocaleChangeOfBaseAdjunctionTheoremAdapter :
   (padj : C3S2.LocaleChangeOfBaseAdjunctionTheorem.adjunction d ≡ adj) →
   LocaleChangeOfBaseAdjunctionTheoremAdapter
 mkLocaleChangeOfBaseAdjunctionTheoremAdapter d inv dir adj pinv pdir padj =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expInverse = inv ; expDirect = dir ; expAdj = adj
          ; linkInverse = pinv ; linkDirect = pdir ; linkAdj = padj ; status = true }
 
@@ -1754,7 +1754,7 @@ mkEtaleMorphismInducesSheafEquivalenceTheoremAdapter :
   (pinv : C3S2.EtaleMorphismInducesSheafEquivalenceTheorem.inverseImageFunctor d ≡ inv) →
   EtaleMorphismInducesSheafEquivalenceTheoremAdapter
 mkEtaleMorphismInducesSheafEquivalenceTheoremAdapter d inv pinv =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expInverse = inv ; linkInverse = pinv ; status = true }
 
 isFilledEtaleMorphismInducesSheafEquivalenceTheorem : EtaleMorphismInducesSheafEquivalenceTheoremAdapter → Core.Phase.Bool
@@ -1786,7 +1786,7 @@ mkSheavesAreCompleteOmegaSetsRefinedTheoremAdapter :
   (pfs : C3S2.SheavesAreCompleteOmegaSetsRefinedTheorem.functorS d ≡ fs) →
   SheavesAreCompleteOmegaSetsRefinedTheoremAdapter
 mkSheavesAreCompleteOmegaSetsRefinedTheoremAdapter d sc oc fa fs psc poc pfa pfs =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expSheafCat = sc ; expOmegaCat = oc
          ; expFunctorA = fa ; expFunctorS = fs
          ; linkSheafCat = psc ; linkOmegaCat = poc
@@ -1809,7 +1809,7 @@ mkSheafOfRingsAdapter :
   (psh : C3S2.SheafOfRings.underlyingSheaf d ≡ sh) →
   SheafOfRingsAdapter
 mkSheafOfRingsAdapter d sh psh =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expSheaf = sh ; linkSheaf = psh ; status = true }
 
 isFilledSheafOfRings : SheafOfRingsAdapter → Core.Phase.Bool
@@ -1833,7 +1833,7 @@ mkSheafOfOModulesAdapter :
   (pms : C3S2.SheafOfOModules.underlyingSheaf d ≡ ms) →
   SheafOfOModulesAdapter
 mkSheafOfOModulesAdapter d rs ms prs pms =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expRingSheaf = rs ; expModSheaf = ms
          ; linkRingSheaf = prs ; linkModSheaf = pms ; status = true }
 
@@ -1858,7 +1858,7 @@ mkCategoryOfOModulesIsAbelianCorollaryAdapter :
   (pcat : C3S2.CategoryOfOModulesIsAbelianCorollary.categoryOfOModules d ≡ cat) →
   CategoryOfOModulesIsAbelianCorollaryAdapter
 mkCategoryOfOModulesIsAbelianCorollaryAdapter d rs cat prs pcat =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expRingSheaf = rs ; expCategory = cat
          ; linkRingSheaf = prs ; linkCategory = pcat ; status = true }
 
@@ -1899,7 +1899,7 @@ mkSemigroupAdapter :
   (pm : AFo.SemigroupDeclaration.underlyingMagma d ≡ m) →
   SemigroupAdapter
 mkSemigroupAdapter d m pm =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expMagma = m ; linkMagma = pm ; status = true }
 
 isFilledSemigroup : SemigroupAdapter → Core.Phase.Bool
@@ -1923,7 +1923,7 @@ mkMonoidAdapter :
   (ps : AFo.MonoidDeclaration.underlyingSemigroup d ≡ s) →
   MonoidAdapter
 mkMonoidAdapter d s ps =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expSemigroup = s ; linkSemigroup = ps ; status = true }
 
 isFilledMonoid : MonoidAdapter → Core.Phase.Bool
@@ -1947,7 +1947,7 @@ mkGroupAdapter :
   (pm : AFo.GroupDeclaration.underlyingMonoid d ≡ m) →
   GroupAdapter
 mkGroupAdapter d m pm =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expMonoid = m ; linkMonoid = pm ; status = true }
 
 isFilledGroup : GroupAdapter → Core.Phase.Bool
@@ -1971,7 +1971,7 @@ mkAbelianGroupAdapter :
   (pg : AFo.AbelianGroupDeclaration.underlyingGroup d ≡ g) →
   AbelianGroupAdapter
 mkAbelianGroupAdapter d g pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expGroup = g ; linkGroup = pg ; status = true }
 
 isFilledAbelianGroup : AbelianGroupAdapter → Core.Phase.Bool
@@ -1995,7 +1995,7 @@ mkRingAdapter :
   (pag : AR.RingDeclaration.additiveGroup d ≡ ag) →
   RingAdapter
 mkRingAdapter d ag pag =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expAdditiveGroup = ag ; linkAdditiveGroup = pag ; status = true }
 
 isFilledRing : RingAdapter → Core.Phase.Bool
@@ -2019,7 +2019,7 @@ mkUnitalRingAdapter :
   (pr : AR.UnitalRingDeclaration.underlyingRing d ≡ r) →
   UnitalRingAdapter
 mkUnitalRingAdapter d r pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expRing = r ; linkRing = pr ; status = true }
 
 isFilledUnitalRing : UnitalRingAdapter → Core.Phase.Bool
@@ -2043,7 +2043,7 @@ mkCommutativeRingAdapter :
   (pur : AR.CommutativeRingDeclaration.underlyingRing d ≡ ur) →
   CommutativeRingAdapter
 mkCommutativeRingAdapter d ur pur =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expUnitalRing = ur ; linkUnitalRing = pur ; status = true }
 
 isFilledCommutativeRing : CommutativeRingAdapter → Core.Phase.Bool
@@ -2067,7 +2067,7 @@ mkDivisionRingAdapter :
   (pur : AR.DivisionRingDeclaration.underlyingRing d ≡ ur) →
   DivisionRingAdapter
 mkDivisionRingAdapter d ur pur =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expUnitalRing = ur ; linkUnitalRing = pur ; status = true }
 
 isFilledDivisionRing : DivisionRingAdapter → Core.Phase.Bool
@@ -2091,7 +2091,7 @@ mkFieldAdapter :
   (pcr : AR.FieldDeclaration.underlyingRing d ≡ cr) →
   FieldAdapter
 mkFieldAdapter d cr pcr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expCommutativeRing = cr ; linkCommutativeRing = pcr ; status = true }
 
 isFilledField : FieldAdapter → Core.Phase.Bool
@@ -2119,7 +2119,7 @@ mkInitialObjectAdapter :
   (pi : CUP.InitialObject.initial d ≡ i) →
   InitialObjectAdapter
 mkInitialObjectAdapter d i pi =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expInitial = i ; linkInitial = pi ; status = true }
 
 isFilledInitialObject : InitialObjectAdapter → Core.Phase.Bool
@@ -2145,7 +2145,7 @@ mkTerminalObjectAdapter :
   (pt : CUP.TerminalObject.terminal d ≡ t) →
   TerminalObjectAdapter
 mkTerminalObjectAdapter d t pt =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expTerminal = t ; linkTerminal = pt ; status = true }
 
 isFilledTerminalObject : TerminalObjectAdapter → Core.Phase.Bool
@@ -2173,7 +2173,7 @@ mkProductPropertyAdapter :
   (pp : CUP.ProductProperty.product d ≡ p) →
   ProductPropertyAdapter
 mkProductPropertyAdapter A B d p pp =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { A = A ; B = B ; decl = d ; expProduct = p ; linkProduct = pp ; status = true }
 
 isFilledProductProperty : ProductPropertyAdapter → Core.Phase.Bool
@@ -2203,7 +2203,7 @@ mkCoproductPropertyAdapter :
   (pc : CUP.CoproductProperty.coproduct d ≡ c) →
   CoproductPropertyAdapter
 mkCoproductPropertyAdapter A B d c pc =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { A = A ; B = B ; decl = d ; expCoproduct = c ; linkCoproduct = pc ; status = true }
 
 isFilledCoproductProperty : CoproductPropertyAdapter → Core.Phase.Bool
@@ -2233,7 +2233,7 @@ mkEqualizerPropertyAdapter :
   (pe : CUP.EqualizerProperty.equalizer d ≡ e) →
   EqualizerPropertyAdapter
 mkEqualizerPropertyAdapter A B f g d e pe =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { A = A ; B = B ; f = f ; g = g ; decl = d ; expEqualizer = e ; linkEqualizer = pe ; status = true }
 
 isFilledEqualizerProperty : EqualizerPropertyAdapter → Core.Phase.Bool
@@ -2269,7 +2269,7 @@ mkCoequalizerPropertyAdapter :
   (pe : CUP.CoequalizerProperty.coequalizer d ≡ e) →
   CoequalizerPropertyAdapter
 mkCoequalizerPropertyAdapter A B f g d e pe =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { A = A ; B = B ; f = f ; g = g ; decl = d ; expCoequalizer = e ; linkCoequalizer = pe ; status = true }
 
 isFilledCoequalizerProperty : CoequalizerPropertyAdapter → Core.Phase.Bool
@@ -2305,7 +2305,7 @@ mkPullbackPropertyAdapter :
   (pp : CUP.PullbackProperty.pullback d ≡ p) →
   PullbackPropertyAdapter
 mkPullbackPropertyAdapter A B C f g d p pp =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { A = A ; B = B ; C = C ; f = f ; g = g ; decl = d ; expPullback = p ; linkPullback = pp ; status = true }
 
 isFilledPullbackProperty : PullbackPropertyAdapter → Core.Phase.Bool
@@ -2343,7 +2343,7 @@ mkPushoutPropertyAdapter :
   (pp : CUP.PushoutProperty.pushout d ≡ p) →
   PushoutPropertyAdapter
 mkPushoutPropertyAdapter A B C f g d p pp =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { A = A ; B = B ; C = C ; f = f ; g = g ; decl = d ; expPushout = p ; linkPushout = pp ; status = true }
 
 isFilledPushoutProperty : PushoutPropertyAdapter → Core.Phase.Bool
@@ -2381,7 +2381,7 @@ mkLimitPropertyAdapter :
   (pl : CUP.LimitProperty.limit d ≡ l) →
   LimitPropertyAdapter
 mkLimitPropertyAdapter D d l pl =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { D = D ; decl = d ; expLimit = l ; linkLimit = pl ; status = true }
 
 isFilledLimitProperty : LimitPropertyAdapter → Core.Phase.Bool
@@ -2410,7 +2410,7 @@ mkColimitPropertyAdapter :
   (pc : CUP.ColimitProperty.colimit d ≡ c) →
   ColimitPropertyAdapter
 mkColimitPropertyAdapter D d c pc =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { D = D ; decl = d ; expColimit = c ; linkColimit = pc ; status = true }
 
 isFilledColimitProperty : ColimitPropertyAdapter → Core.Phase.Bool
@@ -2443,7 +2443,7 @@ mkLeftModuleAdapter :
   (pr : AM.LeftModule.ring d ≡ er) →
   LeftModuleAdapter
 mkLeftModuleAdapter R d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledLeftModule : LeftModuleAdapter → Core.Phase.Bool
@@ -2474,7 +2474,7 @@ mkModuleHomomorphismAdapter :
   (pr : AM.ModuleHomomorphism.ring d ≡ er) →
   ModuleHomomorphismAdapter
 mkModuleHomomorphismAdapter R M N d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; M = M ; N = N ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledModuleHom : ModuleHomomorphismAdapter → Core.Phase.Bool
@@ -2510,7 +2510,7 @@ mkSubmoduleAdapter :
   (pr : AM.Submodule.ring d ≡ er) →
   SubmoduleAdapter
 mkSubmoduleAdapter R M d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledSubmodule : SubmoduleAdapter → Core.Phase.Bool
@@ -2544,7 +2544,7 @@ mkQuotientModuleAdapter :
   (pr : AM.QuotientModule.ring d ≡ er) →
   QuotientModuleAdapter
 mkQuotientModuleAdapter R M N d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; M = M ; N = N ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledQuotientModule : QuotientModuleAdapter → Core.Phase.Bool
@@ -2580,7 +2580,7 @@ mkKernelOfModuleHomomorphismAdapter :
   (pr : AM.KernelOfModuleHomomorphism.ring d ≡ er) →
   KernelOfModuleHomomorphismAdapter
 mkKernelOfModuleHomomorphismAdapter R f d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; f = f ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledKernelModuleHom : KernelOfModuleHomomorphismAdapter → Core.Phase.Bool
@@ -2614,7 +2614,7 @@ mkImageOfModuleHomomorphismAdapter :
   (pr : AM.ImageOfModuleHomomorphism.ring d ≡ er) →
   ImageOfModuleHomomorphismAdapter
 mkImageOfModuleHomomorphismAdapter R f d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; f = f ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledImageModuleHom : ImageOfModuleHomomorphismAdapter → Core.Phase.Bool
@@ -2648,7 +2648,7 @@ mkCokernelOfModuleHomomorphismAdapter :
   (pr : AM.CokernelOfModuleHomomorphism.ring d ≡ er) →
   CokernelOfModuleHomomorphismAdapter
 mkCokernelOfModuleHomomorphismAdapter R f d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; f = f ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledCokernelModuleHom : CokernelOfModuleHomomorphismAdapter → Core.Phase.Bool
@@ -2680,7 +2680,7 @@ mkModuleExactSequenceAdapter :
   (pr : AM.ExactSequence.ring d ≡ er) →
   ModuleExactSequenceAdapter
 mkModuleExactSequenceAdapter R d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledModuleExactSequence : ModuleExactSequenceAdapter → Core.Phase.Bool
@@ -2709,7 +2709,7 @@ mkModuleShortExactSequenceAdapter :
   (pr : AM.ShortExactSequence.ring d ≡ er) →
   ModuleShortExactSequenceAdapter
 mkModuleShortExactSequenceAdapter R d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledModuleShortExactSequence : ModuleShortExactSequenceAdapter → Core.Phase.Bool
@@ -2742,7 +2742,7 @@ mkInseparableExtensionAdapter :
   (pb : AFA.InseparableExtension.baseField d ≡ eb) →
   InseparableExtensionAdapter
 mkInseparableExtensionAdapter F E d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledInseparableExtension : InseparableExtensionAdapter → Core.Phase.Bool
@@ -2774,7 +2774,7 @@ mkPurelyInseparableExtensionAdapter :
   (pb : AFA.PurelyInseparableExtension.baseField d ≡ eb) →
   PurelyInseparableExtensionAdapter
 mkPurelyInseparableExtensionAdapter F E d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledPurelyInseparableExtension : PurelyInseparableExtensionAdapter → Core.Phase.Bool
@@ -2806,7 +2806,7 @@ mkPerfectFieldAdapter :
   (pb : AFA.PerfectField.baseField d ≡ eb) →
   PerfectFieldAdapter
 mkPerfectFieldAdapter F d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledPerfectField : PerfectFieldAdapter → Core.Phase.Bool
@@ -2835,7 +2835,7 @@ mkAlgebraicallyClosedFieldAdapter :
   (pb : AFA.AlgebraicallyClosedField.baseField d ≡ eb) →
   AlgebraicallyClosedFieldAdapter
 mkAlgebraicallyClosedFieldAdapter F d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledAlgebraicallyClosedField : AlgebraicallyClosedFieldAdapter → Core.Phase.Bool
@@ -2865,7 +2865,7 @@ mkNormalClosureAdapter :
   (pn : AFA.NormalClosure.normalClosure d ≡ en) →
   NormalClosureAdapter
 mkNormalClosureAdapter F E d en pn =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expNormal = en ; linkNormal = pn ; status = true }
 
 isFilledNormalClosure : NormalClosureAdapter → Core.Phase.Bool
@@ -2895,7 +2895,7 @@ mkGaloisClosureAdapter :
   (pg : AFA.GaloisClosure.galoisClosure d ≡ eg) →
   GaloisClosureAdapter
 mkGaloisClosureAdapter F E d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expGalois = eg ; linkGalois = pg ; status = true }
 
 isFilledGaloisClosure : GaloisClosureAdapter → Core.Phase.Bool
@@ -2925,7 +2925,7 @@ mkFrobeniusEndomorphismAdapter :
   (pb : AFA.FrobeniusEndomorphism.baseField d ≡ eb) →
   FrobeniusEndomorphismAdapter
 mkFrobeniusEndomorphismAdapter F d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledFrobeniusEndomorphism : FrobeniusEndomorphismAdapter → Core.Phase.Bool
@@ -2954,7 +2954,7 @@ mkRationalFunctionFieldAdapter :
   (pf : AFA.RationalFunctionField.functionField d ≡ eff) →
   RationalFunctionFieldAdapter
 mkRationalFunctionFieldAdapter K d eff pf =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { K = K ; decl = d ; expFunctionField = eff ; linkFunctionField = pf ; status = true }
 
 isFilledRationalFunctionField : RationalFunctionFieldAdapter → Core.Phase.Bool
@@ -2983,7 +2983,7 @@ mkAlgebraicFunctionFieldAdapter :
   (pf : AFA.AlgebraicFunctionField.functionField d ≡ eff) →
   AlgebraicFunctionFieldAdapter
 mkAlgebraicFunctionFieldAdapter K d eff pf =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { K = K ; decl = d ; expFunctionField = eff ; linkFunctionField = pf ; status = true }
 
 isFilledAlgebraicFunctionField : AlgebraicFunctionFieldAdapter → Core.Phase.Bool
@@ -3016,7 +3016,7 @@ mkSubfieldAdapter :
   (ps : AFB.Subfield.subfield d ≡ es) →
   SubfieldAdapter
 mkSubfieldAdapter F d es ps =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; decl = d ; expSubfield = es ; linkSubfield = ps ; status = true }
 
 isFilledSubfield : SubfieldAdapter → Core.Phase.Bool
@@ -3045,7 +3045,7 @@ mkFieldExtensionAdapter :
   (pb : AFB.FieldExtension.baseField d ≡ eb) →
   FieldExtensionAdapter
 mkFieldExtensionAdapter F E d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledFieldExtension : FieldExtensionAdapter → Core.Phase.Bool
@@ -3076,7 +3076,7 @@ mkAlgebraicElementAdapter :
   (pb : AFB.AlgebraicElement.baseField d ≡ eb) →
   AlgebraicElementAdapter
 mkAlgebraicElementAdapter F E α d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; α = α ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledAlgebraicElement : AlgebraicElementAdapter → Core.Phase.Bool
@@ -3110,7 +3110,7 @@ mkAlgebraicExtensionAdapter :
   (pb : AFB.AlgebraicExtension.baseField d ≡ eb) →
   AlgebraicExtensionAdapter
 mkAlgebraicExtensionAdapter F E d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledAlgebraicExtension : AlgebraicExtensionAdapter → Core.Phase.Bool
@@ -3142,7 +3142,7 @@ mkFieldAutomorphismAdapter :
   (pb : AFB.FieldAutomorphism.baseField d ≡ eb) →
   FieldAutomorphismAdapter
 mkFieldAutomorphismAdapter F E d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledFieldAutomorphism : FieldAutomorphismAdapter → Core.Phase.Bool
@@ -3174,7 +3174,7 @@ mkGaloisGroupAdapter :
   (pb : AFB.GaloisGroup.baseField d ≡ eb) →
   GaloisGroupAdapter
 mkGaloisGroupAdapter F E d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledGaloisGroup : GaloisGroupAdapter → Core.Phase.Bool
@@ -3206,7 +3206,7 @@ mkGaloisExtensionAdapter :
   (pb : AFB.GaloisExtension.baseField d ≡ eb) →
   GaloisExtensionAdapter
 mkGaloisExtensionAdapter F E d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledGaloisExtension : GaloisExtensionAdapter → Core.Phase.Bool
@@ -3238,7 +3238,7 @@ mkNormalExtensionAdapter :
   (pb : AFB.NormalExtension.baseField d ≡ eb) →
   NormalExtensionAdapter
 mkNormalExtensionAdapter F E d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledNormalExtension : NormalExtensionAdapter → Core.Phase.Bool
@@ -3270,7 +3270,7 @@ mkSeparableExtensionAdapter :
   (pb : AFB.SeparableExtension.baseField d ≡ eb) →
   SeparableExtensionAdapter
 mkSeparableExtensionAdapter F E d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledSeparableExtension : SeparableExtensionAdapter → Core.Phase.Bool
@@ -3304,7 +3304,7 @@ mkSplittingFieldAdapter :
   (pb : AFB.SplittingField.baseField d ≡ eb) →
   SplittingFieldAdapter
 mkSplittingFieldAdapter F f d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; f = f ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledSplittingField : SplittingFieldAdapter → Core.Phase.Bool
@@ -3336,7 +3336,7 @@ mkAlgebraicClosureAdapter :
   (pb : AFB.AlgebraicClosure.baseField d ≡ eb) →
   AlgebraicClosureAdapter
 mkAlgebraicClosureAdapter F d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; decl = d ; expBase = eb ; linkBase = pb ; status = true }
 
 isFilledAlgebraicClosure : AlgebraicClosureAdapter → Core.Phase.Bool
@@ -3370,7 +3370,7 @@ mkIdealAdapter :
   (pr : AR.Ideal.ring d ≡ er) →
   IdealAdapter
 mkIdealAdapter R d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledIdeal : IdealAdapter → Core.Phase.Bool
@@ -3399,7 +3399,7 @@ mkPrimeIdealAdapter :
   (pr : AR.PrimeIdeal.ring d ≡ er) →
   PrimeIdealAdapter
 mkPrimeIdealAdapter R d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledPrimeIdeal : PrimeIdealAdapter → Core.Phase.Bool
@@ -3428,7 +3428,7 @@ mkMaximalIdealAdapter :
   (pr : AR.MaximalIdeal.ring d ≡ er) →
   MaximalIdealAdapter
 mkMaximalIdealAdapter R d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledMaximalIdeal : MaximalIdealAdapter → Core.Phase.Bool
@@ -3455,7 +3455,7 @@ mkIntegralDomainAdapter :
   (pr : AR.IntegralDomain.underlyingRing d ≡ er) →
   IntegralDomainAdapter
 mkIntegralDomainAdapter d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledIntegralDomain : IntegralDomainAdapter → Core.Phase.Bool
@@ -3485,7 +3485,7 @@ mkIrreducibleElementAdapter :
   (pd : AR.IrreducibleElement.domain d ≡ ed) →
   IrreducibleElementAdapter
 mkIrreducibleElementAdapter R p d ed pd =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; p = p ; decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
 isFilledIrreducibleElement : IrreducibleElementAdapter → Core.Phase.Bool
@@ -3519,7 +3519,7 @@ mkPrimeElementAdapter :
   (pd : AR.PrimeElement.domain d ≡ ed) →
   PrimeElementAdapter
 mkPrimeElementAdapter R p d ed pd =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; p = p ; decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
 isFilledPrimeElement : PrimeElementAdapter → Core.Phase.Bool
@@ -3549,7 +3549,7 @@ mkUFDAdapter :
   (pd : AR.UFD.domain d ≡ ed) →
   UFDAdapter
 mkUFDAdapter d ed pd =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
 isFilledUFD : UFDAdapter → Core.Phase.Bool
@@ -3573,7 +3573,7 @@ mkPrincipalIdealDomainAdapter :
   (pd : AR.PrincipalIdealDomain.domain d ≡ ed) →
   PrincipalIdealDomainAdapter
 mkPrincipalIdealDomainAdapter d ed pd =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
 isFilledPrincipalIdealDomain : PrincipalIdealDomainAdapter → Core.Phase.Bool
@@ -3599,7 +3599,7 @@ mkEuclideanDomainAdapter :
   (pd : AR.EuclideanDomain.domain d ≡ ed) →
   EuclideanDomainAdapter
 mkEuclideanDomainAdapter d ed pd =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
 isFilledEuclideanDomain : EuclideanDomainAdapter → Core.Phase.Bool
@@ -3627,7 +3627,7 @@ mkMultiplicativeSystemAdapter :
   (pr : AR.MultiplicativeSystem.ring d ≡ er) →
   MultiplicativeSystemAdapter
 mkMultiplicativeSystemAdapter R d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledMultiplicativeSystem : MultiplicativeSystemAdapter → Core.Phase.Bool
@@ -3658,7 +3658,7 @@ mkLocalizationAdapter :
   (pr : AR.Localization.ring d ≡ er) →
   LocalizationAdapter
 mkLocalizationAdapter R S d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; S = S ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledLocalization : LocalizationAdapter → Core.Phase.Bool
@@ -3688,7 +3688,7 @@ mkFieldOfFractionsAdapter :
   (pd : AR.FieldOfFractions.domain d ≡ ed) →
   FieldOfFractionsAdapter
 mkFieldOfFractionsAdapter R d ed pd =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
 isFilledFieldOfFractions : FieldOfFractionsAdapter → Core.Phase.Bool
@@ -3717,7 +3717,7 @@ mkPolynomialRingAdapter :
   (pc : AR.PolynomialRing.coefficientRing d ≡ ec) →
   PolynomialRingAdapter
 mkPolynomialRingAdapter R d ec pc =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expCoeffRing = ec ; linkCoeffRing = pc ; status = true }
 
 isFilledPolynomialRing : PolynomialRingAdapter → Core.Phase.Bool
@@ -3748,7 +3748,7 @@ mkQuotientRingAdapter :
   (pr : AR.QuotientRing.ring d ≡ er) →
   QuotientRingAdapter
 mkQuotientRingAdapter R I d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; I = I ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledQuotientRing : QuotientRingAdapter → Core.Phase.Bool
@@ -3782,7 +3782,7 @@ mkProductInGrpAdapter :
   (pg : AGF.ProductInGrp.group1 d ≡ eg) →
   ProductInGrpAdapter
 mkProductInGrpAdapter G H d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { G = G ; H = H ; decl = d ; expGroup1 = eg ; linkGroup1 = pg ; status = true }
 
 isFilledProductInGrp : ProductInGrpAdapter → Core.Phase.Bool
@@ -3811,7 +3811,7 @@ mkCoproductInGrpAdapter :
   (pg : AGF.CoproductInGrp.group1 d ≡ eg) →
   CoproductInGrpAdapter
 mkCoproductInGrpAdapter G H d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { G = G ; H = H ; decl = d ; expGroup1 = eg ; linkGroup1 = pg ; status = true }
 
 isFilledCoproductInGrp : CoproductInGrpAdapter → Core.Phase.Bool
@@ -3840,7 +3840,7 @@ mkFreeGroupObjectAdapter :
   (pg : AGF.FreeGroupObject.generatingSet d ≡ eg) →
   FreeGroupObjectAdapter
 mkFreeGroupObjectAdapter X d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { X = X ; decl = d ; expGenSet = eg ; linkGenSet = pg ; status = true }
 
 isFilledFreeGroupObject : FreeGroupObjectAdapter → Core.Phase.Bool
@@ -3869,7 +3869,7 @@ mkFreeGroupAdapter :
   (pg : AGF.FreeGroup.generatingSet d ≡ eg) →
   FreeGroupAdapter
 mkFreeGroupAdapter X d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { X = X ; decl = d ; expGenSet = eg ; linkGenSet = pg ; status = true }
 
 isFilledFreeGroup : FreeGroupAdapter → Core.Phase.Bool
@@ -3896,7 +3896,7 @@ mkGroupPresentationAdapter :
   (pg : AGF.GroupPresentation.generators d ≡ eg) →
   GroupPresentationAdapter
 mkGroupPresentationAdapter d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expGenerators = eg ; linkGenerators = pg ; status = true }
 
 isFilledGroupPresentation : GroupPresentationAdapter → Core.Phase.Bool
@@ -3924,7 +3924,7 @@ mkAbelianizationAdapter :
   (pg : AGF.Abelianization.group d ≡ eg) →
   AbelianizationAdapter
 mkAbelianizationAdapter G d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
 isFilledAbelianization : AbelianizationAdapter → Core.Phase.Bool
@@ -3951,7 +3951,7 @@ mkFinitelyGeneratedAbelianGroupAdapter :
   (pg : AGF.FinitelyGeneratedAbelianGroup.underlyingGroup d ≡ eg) →
   FinitelyGeneratedAbelianGroupAdapter
 mkFinitelyGeneratedAbelianGroupAdapter d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
 isFilledFinitelyGeneratedAbelianGroup : FinitelyGeneratedAbelianGroupAdapter → Core.Phase.Bool
@@ -3977,7 +3977,7 @@ mkInvariantFactorDecompositionAdapter :
   (pf : AGS.InvariantFactorDecomposition.freeRank d ≡ ef) →
   InvariantFactorDecompositionAdapter
 mkInvariantFactorDecompositionAdapter A d ef pf =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { A = A ; decl = d ; expFreeRank = ef ; linkFreeRank = pf ; status = true }
 
 isFilledInvariantFactorDecomposition : InvariantFactorDecompositionAdapter → Core.Phase.Bool
@@ -4006,7 +4006,7 @@ mkTorsionSubgroupAdapter :
   (pa : AGS.TorsionSubgroup.abelianGroup d ≡ ea) →
   TorsionSubgroupAdapter
 mkTorsionSubgroupAdapter A d ea pa =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { A = A ; decl = d ; expAbelianGroup = ea ; linkAbelianGroup = pa ; status = true }
 
 isFilledTorsionSubgroup : TorsionSubgroupAdapter → Core.Phase.Bool
@@ -4037,7 +4037,7 @@ mkGroupActionAdapter :
   (pg : AGS.GroupAction.group d ≡ eg) →
   GroupActionAdapter
 mkGroupActionAdapter G X d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { G = G ; X = X ; decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
 isFilledGroupAction : GroupActionAdapter → Core.Phase.Bool
@@ -4073,7 +4073,7 @@ mkOrbitAdapter :
   (pa : AGS.Orbit.groupAction d ≡ ea) →
   OrbitAdapter
 mkOrbitAdapter G X act x d ea pa =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { G = G ; X = X ; act = act ; x = x ; decl = d ; expGroupAction = ea ; linkGroupAction = pa ; status = true }
 
 isFilledOrbit : OrbitAdapter → Core.Phase.Bool
@@ -4109,7 +4109,7 @@ mkStabilizerAdapter :
   (pa : AGS.Stabilizer.groupAction d ≡ ea) →
   StabilizerAdapter
 mkStabilizerAdapter G X act x d ea pa =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { G = G ; X = X ; act = act ; x = x ; decl = d ; expGroupAction = ea ; linkGroupAction = pa ; status = true }
 
 isFilledStabilizer : StabilizerAdapter → Core.Phase.Bool
@@ -4141,7 +4141,7 @@ mkPGroupAdapter :
   (pp : AGS.PGroup.prime d ≡ ep) →
   PGroupAdapter
 mkPGroupAdapter p G d ep pp =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { p = p ; G = G ; decl = d ; expPrime = ep ; linkPrime = pp ; status = true }
 
 isFilledPGroup : PGroupAdapter → Core.Phase.Bool
@@ -4172,7 +4172,7 @@ mkSylowPSubgroupAdapter :
   (pp : AGS.SylowPSubgroup.prime d ≡ ep) →
   SylowPSubgroupAdapter
 mkSylowPSubgroupAdapter p G d ep pp =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { p = p ; G = G ; decl = d ; expPrime = ep ; linkPrime = pp ; status = true }
 
 isFilledSylowPSubgroup : SylowPSubgroupAdapter → Core.Phase.Bool
@@ -4201,7 +4201,7 @@ mkSimpleGroupAdapter :
   (pg : AGS.SimpleGroup.group d ≡ eg) →
   SimpleGroupAdapter
 mkSimpleGroupAdapter G d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
 isFilledSimpleGroup : SimpleGroupAdapter → Core.Phase.Bool
@@ -4230,7 +4230,7 @@ mkCompositionSeriesAdapter :
   (pg : AGS.CompositionSeries.group d ≡ eg) →
   CompositionSeriesAdapter
 mkCompositionSeriesAdapter G d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
 isFilledCompositionSeries : CompositionSeriesAdapter → Core.Phase.Bool
@@ -4259,7 +4259,7 @@ mkSolvableGroupAdapter :
   (pg : AGS.SolvableGroup.group d ≡ eg) →
   SolvableGroupAdapter
 mkSolvableGroupAdapter G d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
 isFilledSolvableGroup : SolvableGroupAdapter → Core.Phase.Bool
@@ -4288,7 +4288,7 @@ mkNilpotentGroupAdapter :
   (pg : AGS.NilpotentGroup.group d ≡ eg) →
   NilpotentGroupAdapter
 mkNilpotentGroupAdapter G d eg pg =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { G = G ; decl = d ; expGroup = eg ; linkGroup = pg ; status = true }
 
 isFilledNilpotentGroup : NilpotentGroupAdapter → Core.Phase.Bool
@@ -4321,7 +4321,7 @@ mkFreeAbelianGroupAdapter :
   (pu : AGA.FreeAbelianGroup.underlyingSet d ≡ eu) →
   FreeAbelianGroupAdapter
 mkFreeAbelianGroupAdapter X d eu pu =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { X = X ; decl = d ; expUnderlyingSet = eu ; linkUnderlyingSet = pu ; status = true }
 
 isFilledFreeAbelianGroup : FreeAbelianGroupAdapter → Core.Phase.Bool
@@ -4348,7 +4348,7 @@ mkFreeForgetfulAdjunctionAbAdapter :
   (pf : AGA.FreeForgetfulAdjunctionAb.freeFunctor d ≡ ef) →
   FreeForgetfulAdjunctionAbAdapter
 mkFreeForgetfulAdjunctionAbAdapter d ef pf =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expFreeFunctor = ef ; linkFreeFunctor = pf ; status = true }
 
 isFilledFreeForgetfulAdjunctionAb : FreeForgetfulAdjunctionAbAdapter → Core.Phase.Bool
@@ -4376,7 +4376,7 @@ mkGrothendieckGroupAdapter :
   (pu : AGA.GrothendieckGroup.underlyingSet d ≡ eu) →
   GrothendieckGroupAdapter
 mkGrothendieckGroupAdapter M d eu pu =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { M = M ; decl = d ; expUnderlyingSet = eu ; linkUnderlyingSet = pu ; status = true }
 
 isFilledGrothendieckGroup : GrothendieckGroupAdapter → Core.Phase.Bool
@@ -4406,7 +4406,7 @@ mkTensorProductAbAdapter :
   (pt : AGA.TensorProductAb.tensorProduct d ≡ et) →
   TensorProductAbAdapter
 mkTensorProductAbAdapter A B d et pt =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { A = A ; B = B ; decl = d ; expTensorProduct = et ; linkTensorProduct = pt ; status = true }
 
 isFilledTensorProductAb : TensorProductAbAdapter → Core.Phase.Bool
@@ -4437,7 +4437,7 @@ mkBasisOfVectorSpaceAdapter :
   (pb : AM.BasisOfVectorSpace.basisSet d ≡ eb) →
   BasisOfVectorSpaceAdapter
 mkBasisOfVectorSpaceAdapter F V d eb pb =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; V = V ; decl = d ; expBasisSet = eb ; linkBasisSet = pb ; status = true }
 
 isFilledBasisOfVectorSpace : BasisOfVectorSpaceAdapter → Core.Phase.Bool
@@ -4471,7 +4471,7 @@ mkDimensionAdapter :
   (pdv : AM.Dimension.dimension d ≡ edv) →
   DimensionAdapter
 mkDimensionAdapter F V d edv pdv =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; V = V ; decl = d ; expDimensionValue = edv ; linkDimensionValue = pdv ; status = true }
 
 isFilledDimension : DimensionAdapter → Core.Phase.Bool
@@ -4505,7 +4505,7 @@ mkMultivariatePolynomialRingAdapter :
   (pr : AR.MultivariatePolynomialRing.polynomialRing d ≡ er) →
   MultivariatePolynomialRingAdapter
 mkMultivariatePolynomialRingAdapter R n d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; n = n ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledMultivariatePolynomialRing : MultivariatePolynomialRingAdapter → Core.Phase.Bool
@@ -4536,7 +4536,7 @@ mkContentOfPolynomialAdapter :
   (pc : AR.ContentOfPolynomial.content d ≡ ec) →
   ContentOfPolynomialAdapter
 mkContentOfPolynomialAdapter R f d ec pc =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; f = f ; decl = d ; expContent = ec ; linkContent = pc ; status = true }
 
 isFilledContentOfPolynomial : ContentOfPolynomialAdapter → Core.Phase.Bool
@@ -4567,7 +4567,7 @@ mkPrimitivePolynomialAdapter :
   (pu : AR.PrimitivePolynomial.ufd d ≡ eu) →
   PrimitivePolynomialAdapter
 mkPrimitivePolynomialAdapter R f d eu pu =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; f = f ; decl = d ; expUFD = eu ; linkUFD = pu ; status = true }
 
 isFilledPrimitivePolynomial : PrimitivePolynomialAdapter → Core.Phase.Bool
@@ -4596,7 +4596,7 @@ mkPrimeSpectrumAdapter :
   (pts : AR.PrimeSpectrum.topology d ≡ ets) →
   PrimeSpectrumAdapter
 mkPrimeSpectrumAdapter R d ets pts =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expTopologicalSpace = ets ; linkTopologicalSpace = pts ; status = true }
 
 isFilledPrimeSpectrum : PrimeSpectrumAdapter → Core.Phase.Bool
@@ -4627,7 +4627,7 @@ mkProjectiveModuleAdapter :
   (pr : AM.ProjectiveModule.ring d ≡ er) →
   ProjectiveModuleAdapter
 mkProjectiveModuleAdapter R P d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; P = P ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledProjectiveModule : ProjectiveModuleAdapter → Core.Phase.Bool
@@ -4651,7 +4651,7 @@ mkInjectiveModuleAdapter :
   (pr : AM.InjectiveModule.ring d ≡ er) →
   InjectiveModuleAdapter
 mkInjectiveModuleAdapter R I d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; I = I ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledInjectiveModule : InjectiveModuleAdapter → Core.Phase.Bool
@@ -4677,7 +4677,7 @@ mkTorsionElementAdapter :
   (pd : AM.TorsionElement.domain d ≡ ed) →
   TorsionElementAdapter
 mkTorsionElementAdapter R M m d ed pd =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; M = M ; m = m ; decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
 isFilledTorsionElement : TorsionElementAdapter → Core.Phase.Bool
@@ -4701,7 +4701,7 @@ mkTorsionSubmoduleAdapter :
   (pd : AM.TorsionSubmodule.domain d ≡ ed) →
   TorsionSubmoduleAdapter
 mkTorsionSubmoduleAdapter R M d ed pd =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; M = M ; decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
 isFilledTorsionSubmodule : TorsionSubmoduleAdapter → Core.Phase.Bool
@@ -4725,7 +4725,7 @@ mkTorsionFreeModuleAdapter :
   (pd : AM.TorsionFreeModule.domain d ≡ ed) →
   TorsionFreeModuleAdapter
 mkTorsionFreeModuleAdapter R M d ed pd =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; M = M ; decl = d ; expDomain = ed ; linkDomain = pd ; status = true }
 
 isFilledTorsionFreeModule : TorsionFreeModuleAdapter → Core.Phase.Bool
@@ -4749,7 +4749,7 @@ mkStructureTheoremPIDAdapter :
   (pp : AM.StructureTheoremPID.pid d ≡ ep) →
   StructureTheoremPIDAdapter
 mkStructureTheoremPIDAdapter R M d ep pp =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; M = M ; decl = d ; expPID = ep ; linkPID = pp ; status = true }
 
 isFilledStructureTheoremPID : StructureTheoremPIDAdapter → Core.Phase.Bool
@@ -4809,7 +4809,7 @@ mkHomFunctorAdapter :
   (pr : AM.HomFunctor.ring d ≡ er) →
   HomFunctorAdapter
 mkHomFunctorAdapter R M d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledHomFunctor : HomFunctorAdapter → Core.Phase.Bool
@@ -4833,7 +4833,7 @@ mkDualModuleAdapter :
   (pr : AM.DualModule.ring d ≡ er) →
   DualModuleAdapter
 mkDualModuleAdapter R M d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledDualModule : DualModuleAdapter → Core.Phase.Bool
@@ -4857,7 +4857,7 @@ mkReflexiveModuleAdapter :
   (pr : AM.ReflexiveModule.ring d ≡ er) →
   ReflexiveModuleAdapter
 mkReflexiveModuleAdapter R M d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; M = M ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledReflexiveModule : ReflexiveModuleAdapter → Core.Phase.Bool
@@ -4879,7 +4879,7 @@ mkTensorProductModuleAdapter :
   (d : AM.TensorProduct R M N) →
   TensorProductModuleAdapter
 mkTensorProductModuleAdapter R M N d =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; M = M ; N = N ; decl = d ; status = true }
 
 isFilledTensorProductModule : TensorProductModuleAdapter → Core.Phase.Bool
@@ -4903,7 +4903,7 @@ mkFreeModuleAdapter :
   (pr : AM.FreeModule.ring d ≡ er) →
   FreeModuleAdapter
 mkFreeModuleAdapter R X d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; X = X ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledFreeModule : FreeModuleAdapter → Core.Phase.Bool
@@ -4925,7 +4925,7 @@ mkFreeModuleFunctorAdapter :
   (pr : AM.FreeModuleFunctor.ring d ≡ er) →
   FreeModuleFunctorAdapter
 mkFreeModuleFunctorAdapter R d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledFreeModuleFunctor : FreeModuleFunctorAdapter → Core.Phase.Bool
@@ -4947,7 +4947,7 @@ mkForgetfulModuleFunctorAdapter :
   (pr : AM.ForgetfulModuleFunctor.ring d ≡ er) →
   ForgetfulModuleFunctorAdapter
 mkForgetfulModuleFunctorAdapter R d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledForgetfulModuleFunctor : ForgetfulModuleFunctorAdapter → Core.Phase.Bool
@@ -4969,7 +4969,7 @@ mkRightModuleAdapter :
   (pr : AM.RightModule.ring d ≡ er) →
   RightModuleAdapter
 mkRightModuleAdapter R d er pr =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expRing = er ; linkRing = pr ; status = true }
 
 isFilledRightModule : RightModuleAdapter → Core.Phase.Bool
@@ -5047,7 +5047,7 @@ mkExtensionDegreeAdapter :
   (pe : AFB.ExtensionDegree.extensionField d ≡ ee) →
   ExtensionDegreeAdapter
 mkExtensionDegreeAdapter F E d ef ee pf pe =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = true }
 
 isFilledExtensionDegree : ExtensionDegreeAdapter → Core.Phase.Bool
@@ -5073,7 +5073,7 @@ mkInseparableDegreeAdapter :
   (pe : AFA.InseparableDegree.extensionField d ≡ ee) →
   InseparableDegreeAdapter
 mkInseparableDegreeAdapter F E d ef ee pf pe =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = true }
 
 isFilledInseparableDegree : InseparableDegreeAdapter → Core.Phase.Bool
@@ -5099,7 +5099,7 @@ mkSeparableDegreeAdapter :
   (pe : AFA.SeparableDegree.extensionField d ≡ ee) →
   SeparableDegreeAdapter
 mkSeparableDegreeAdapter F E d ef ee pf pe =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = true }
 
 isFilledSeparableDegree : SeparableDegreeAdapter → Core.Phase.Bool
@@ -5127,7 +5127,7 @@ mkSimpleExtensionAdapter :
   (pe : AFB.SimpleExtension.extensionField d ≡ ee) →
   SimpleExtensionAdapter
 mkSimpleExtensionAdapter F E α d ef ee pf pe =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; α = α ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = true }
 
 isFilledSimpleExtension : SimpleExtensionAdapter → Core.Phase.Bool
@@ -5155,7 +5155,7 @@ mkTranscendentalElementAdapter :
   (pe : AFB.TranscendentalElement.extensionField d ≡ ee) →
   TranscendentalElementAdapter
 mkTranscendentalElementAdapter F E α d ef ee pf pe =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; α = α ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = true }
 
 isFilledTranscendentalElement : TranscendentalElementAdapter → Core.Phase.Bool
@@ -5181,7 +5181,7 @@ mkTranscendenceBasisAdapter :
   (pe : AFB.TranscendenceBasis.extensionField d ≡ ee) →
   TranscendenceBasisAdapter
 mkTranscendenceBasisAdapter F E d ef ee pf pe =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; E = E ; decl = d ; expected = ef ; expExt = ee ; link = pf ; linkExt = pe ; status = true }
 
 isFilledTranscendenceBasis : TranscendenceBasisAdapter → Core.Phase.Bool
@@ -5241,7 +5241,7 @@ mkMonoidAsMonoidalCategoryAdapter :
   (p : AE.MonoidAsMonoidalCategory.monoid d ≡ em) →
   MonoidAsMonoidalCategoryAdapter
 mkMonoidAsMonoidalCategoryAdapter d em p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMonoid = em ; link = p ; status = true }
 
 isFilledMonoidAsMonoidalCategory : MonoidAsMonoidalCategoryAdapter → Core.Phase.Bool
@@ -5261,7 +5261,7 @@ mkAbelianGroupAsSymmetricMonoidalAdapter :
   (p : AE.AbelianGroupAsSymmetricMonoidal.abelianGroup d ≡ eab) →
   AbelianGroupAsSymmetricMonoidalAdapter
 mkAbelianGroupAsSymmetricMonoidalAdapter d eab p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedAbGroup = eab ; link = p ; status = true }
 
 isFilledAbelianGroupAsSymmetricMonoidal : AbelianGroupAsSymmetricMonoidalAdapter → Core.Phase.Bool
@@ -5281,7 +5281,7 @@ mkMonoidEnrichedCategoryAdapter :
   (p : AE.MonoidEnrichedCategory.enrichingMonoid d ≡ em) →
   MonoidEnrichedCategoryAdapter
 mkMonoidEnrichedCategoryAdapter d em p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMonoid = em ; link = p ; status = true }
 
 isFilledMonoidEnrichedCategory : MonoidEnrichedCategoryAdapter → Core.Phase.Bool
@@ -5301,7 +5301,7 @@ mkDistanceCategoryAdapter :
   (p : AE.DistanceCategory.naturalNumbersMonoid d ≡ em) →
   DistanceCategoryAdapter
 mkDistanceCategoryAdapter d em p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMonoid = em ; link = p ; status = true }
 
 isFilledDistanceCategory : DistanceCategoryAdapter → Core.Phase.Bool
@@ -5321,7 +5321,7 @@ mkAbEnrichedCategoryAdapter :
   (p : AE.AbEnrichedCategory.enrichingCategory d ≡ ec) →
   AbEnrichedCategoryAdapter
 mkAbEnrichedCategoryAdapter d ec p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedCat = ec ; link = p ; status = true }
 
 isFilledAbEnrichedCategory : AbEnrichedCategoryAdapter → Core.Phase.Bool
@@ -5343,7 +5343,7 @@ mkGenericEnrichmentAdapter :
   (p : AE.GenericEnrichment.enrichingCategory d ≡ ec) →
   GenericEnrichmentAdapter
 mkGenericEnrichmentAdapter V d ec p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { V = V ; decl = d ; expectedCat = ec ; link = p ; status = true }
 
 isFilledGenericEnrichment : GenericEnrichmentAdapter → Core.Phase.Bool
@@ -5363,7 +5363,7 @@ mkGroupActionEnrichedCategoryAdapter :
   (p : AE.GroupActionEnrichedCategory.actingGroup d ≡ eg) →
   GroupActionEnrichedCategoryAdapter
 mkGroupActionEnrichedCategoryAdapter d eg p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedGroup = eg ; link = p ; status = true }
 
 isFilledGroupActionEnrichedCategory : GroupActionEnrichedCategoryAdapter → Core.Phase.Bool
@@ -5379,7 +5379,7 @@ mkModuleEnrichedCategoryAdapter :
   (d : AE.ModuleEnrichedCategory) →
   ModuleEnrichedCategoryAdapter
 mkModuleEnrichedCategoryAdapter d =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 isFilledModuleEnrichedCategory : ModuleEnrichedCategoryAdapter → Core.Phase.Bool
@@ -5395,7 +5395,7 @@ mkLawvereTheoryEnrichedCategoryAdapter :
   (d : AE.LawvereTheoryEnrichedCategory) →
   LawvereTheoryEnrichedCategoryAdapter
 mkLawvereTheoryEnrichedCategoryAdapter d =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 isFilledLawvereTheoryEnrichedCategory : LawvereTheoryEnrichedCategoryAdapter → Core.Phase.Bool
@@ -5415,7 +5415,7 @@ mkAbSelfEnrichedAdapter :
   (p : AGA.AbSelfEnriched.category d ≡ ec) →
   AbSelfEnrichedAdapter
 mkAbSelfEnrichedAdapter d ec p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedCat = ec ; link = p ; status = true }
 
 isFilledAbSelfEnriched : AbSelfEnrichedAdapter → Core.Phase.Bool
@@ -5435,7 +5435,7 @@ mkAbSelfEnrichmentViaInternalHomAdapter :
   (p : AGA.AbSelfEnrichmentViaInternalHom.category d ≡ ec) →
   AbSelfEnrichmentViaInternalHomAdapter
 mkAbSelfEnrichmentViaInternalHomAdapter d ec p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedCat = ec ; link = p ; status = true }
 
 isFilledAbSelfEnrichmentViaInternalHom : AbSelfEnrichmentViaInternalHomAdapter → Core.Phase.Bool
@@ -5517,7 +5517,7 @@ mkExactSequenceAdapter :
   (p : AM.ExactSequence.ring d ≡ er) →
   ExactSequenceAdapter
 mkExactSequenceAdapter R d er p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expectedRing = er ; link = p ; status = true }
 
 isFilledExactSequence : ExactSequenceAdapter → Core.Phase.Bool
@@ -5539,7 +5539,7 @@ mkCategoryOfModulesAdapter :
   (p : AM.CategoryOfModules.ring d ≡ er) →
   CategoryOfModulesAdapter
 mkCategoryOfModulesAdapter R d er p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expectedRing = er ; link = p ; status = true }
 
 isFilledCategoryOfModules : CategoryOfModulesAdapter → Core.Phase.Bool
@@ -5561,7 +5561,7 @@ mkVectorSpaceAdapter :
   (p : AM.VectorSpace.field' d ≡ ef) →
   VectorSpaceAdapter
 mkVectorSpaceAdapter F d ef p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { F = F ; decl = d ; expectedField = ef ; link = p ; status = true }
 
 isFilledVectorSpace : VectorSpaceAdapter → Core.Phase.Bool
@@ -5583,7 +5583,7 @@ mkRAlgebraAdapter :
   (p : AM.RAlgebra.coefficientRing d ≡ er) →
   RAlgebraAdapter
 mkRAlgebraAdapter R d er p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; decl = d ; expectedRing = er ; link = p ; status = true }
 
 isFilledRAlgebra : RAlgebraAdapter → Core.Phase.Bool
@@ -5607,7 +5607,7 @@ mkAlgebraHomomorphismAdapter :
   (p : AM.AlgebraHomomorphism.coefficientRing d ≡ er) →
   AlgebraHomomorphismAdapter
 mkAlgebraHomomorphismAdapter R A B d er p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { R = R ; A = A ; B = B ; decl = d ; expectedRing = er ; link = p ; status = true }
 
 isFilledAlgebraHomomorphism : AlgebraHomomorphismAdapter → Core.Phase.Bool
@@ -5661,7 +5661,7 @@ mkCategoryOfAlgebrasAdapter :
   (p : C2S4.CategoryOfAlgebras.monad d ≡ em) →
   CategoryOfAlgebrasAdapter
 mkCategoryOfAlgebrasAdapter d em p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMonad = em ; link = p ; status = true }
 
 isFilledCategoryOfAlgebras : CategoryOfAlgebrasAdapter → Core.Phase.Bool
@@ -5687,7 +5687,7 @@ mkAdjunctionInducesMonadTheoremAdapter :
   (p : C2S4.AdjunctionInducesMonadTheorem.inducedMonad d ≡ em) →
   AdjunctionInducesMonadTheoremAdapter
 mkAdjunctionInducesMonadTheoremAdapter d em p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMonad = em ; link = p ; status = true }
 
 isFilledAdjunctionInducesMonadTheorem : AdjunctionInducesMonadTheoremAdapter → Core.Phase.Bool
@@ -5717,7 +5717,7 @@ mkEilenbergMooreAdjunctionAdapter :
   (p2 : C2S4.EilenbergMooreAdjunction.algebraCategory d ≡ eac) →
   EilenbergMooreAdjunctionAdapter
 mkEilenbergMooreAdjunctionAdapter d em eac p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledEilenbergMooreAdjunction : EilenbergMooreAdjunctionAdapter → Core.Phase.Bool
@@ -5747,7 +5747,7 @@ mkMonadAdjunctionCorrespondenceTheoremAdapter :
   (p2 : C2S4.MonadAdjunctionCorrespondenceTheorem.emAdjunction d ≡ eEM) →
   MonadAdjunctionCorrespondenceTheoremAdapter
 mkMonadAdjunctionCorrespondenceTheoremAdapter d em eEM p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMonad = em ; expectedEM = eEM ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledMonadAdjunctionCorrespondenceTheorem : MonadAdjunctionCorrespondenceTheoremAdapter → Core.Phase.Bool
@@ -5773,7 +5773,7 @@ mkBeckMonadicityTheoremAdapter :
   (p : C2S4.BeckMonadicityTheorem.reflectsIsomorphisms d ≡ er) →
   BeckMonadicityTheoremAdapter
 mkBeckMonadicityTheoremAdapter d er p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedReflects = er ; link = p ; status = true }
 
 isFilledBeckMonadicityTheorem : BeckMonadicityTheoremAdapter → Core.Phase.Bool
@@ -5799,7 +5799,7 @@ mkMonadicFunctorPropertyAdapter :
   (p : C2S4.MonadicFunctorProperty.functor d ≡ ef) →
   MonadicFunctorPropertyAdapter
 mkMonadicFunctorPropertyAdapter d ef p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
 isFilledMonadicFunctorProperty : MonadicFunctorPropertyAdapter → Core.Phase.Bool
@@ -5825,7 +5825,7 @@ mkComonadFromAdjunctionAdapter :
   (p : C2S4.ComonadFromAdjunction.inducedComonad d ≡ ec) →
   ComonadFromAdjunctionAdapter
 mkComonadFromAdjunctionAdapter d ec p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedComonad = ec ; link = p ; status = true }
 
 isFilledComonadFromAdjunction : ComonadFromAdjunctionAdapter → Core.Phase.Bool
@@ -5859,7 +5859,7 @@ mkForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter :
   (p2 : C2S4.ForgetfulFunctorFromAlgebrasCreatesLimitsTheorem.algebraCategory d ≡ eac) →
   ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter
 mkForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter d em eac p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledForgetfulFunctorFromAlgebrasCreatesLimitsTheorem : ForgetfulFunctorFromAlgebrasCreatesLimitsTheoremAdapter → Core.Phase.Bool
@@ -5889,7 +5889,7 @@ mkCompletenessOfAlgebraCategoriesCorollaryAdapter :
   (p2 : C2S4.CompletenessOfAlgebraCategoriesCorollary.algebraCategory d ≡ eac) →
   CompletenessOfAlgebraCategoriesCorollaryAdapter
 mkCompletenessOfAlgebraCategoriesCorollaryAdapter d em eac p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledCompletenessOfAlgebraCategoriesCorollary : CompletenessOfAlgebraCategoriesCorollaryAdapter → Core.Phase.Bool
@@ -5919,7 +5919,7 @@ mkReflexivePairAdapter :
   (p2 : C2S4.ReflexivePair.codomain d ≡ ecod) →
   ReflexivePairAdapter
 mkReflexivePairAdapter d edom ecod p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedDomain = edom ; expectedCodomain = ecod ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledReflexivePair : ReflexivePairAdapter → Core.Phase.Bool
@@ -5953,7 +5953,7 @@ mkForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter :
   (p3 : C2S4.ForgetfulFunctorPreservesCertainCoequalizersTheorem.reflexivePair d ≡ erp) →
   ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter
 mkForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter d em eac erp p1 p2 p3 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMonad = em ; expectedAlgCat = eac ; expectedRefPair = erp ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = true }
 
 isFilledForgetfulFunctorPreservesCertainCoequalizersTheorem : ForgetfulFunctorPreservesCertainCoequalizersTheoremAdapter → Core.Phase.Bool
@@ -5979,7 +5979,7 @@ mkReflectsIsomorphismsPropertyAdapter :
   (p : C2S4.ReflectsIsomorphismsProperty.functor d ≡ ef) →
   ReflectsIsomorphismsPropertyAdapter
 mkReflectsIsomorphismsPropertyAdapter d ef p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
 isFilledReflectsIsomorphismsProperty : ReflectsIsomorphismsPropertyAdapter → Core.Phase.Bool
@@ -6005,7 +6005,7 @@ mkUSplitPairAdapter :
   (p : C2S4.USplitPair.functor d ≡ ef) →
   USplitPairAdapter
 mkUSplitPairAdapter d ef p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
 isFilledUSplitPair : USplitPairAdapter → Core.Phase.Bool
@@ -6039,7 +6039,7 @@ mkRegularCategoryDeclarationAdapter :
   (p2 : C2S2.RegularCategoryDeclaration.regularEpiStability d ≡ es) →
   RegularCategoryDeclarationAdapter
 mkRegularCategoryDeclarationAdapter d efl es p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedFiniteLimits = efl ; expectedStability = es ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledRegularCategoryDeclaration : RegularCategoryDeclarationAdapter → Core.Phase.Bool
@@ -6065,7 +6065,7 @@ mkKernelPairDeclarationAdapter :
   (p : C2S2.KernelPairDeclaration.morphism d ≡ em) →
   KernelPairDeclarationAdapter
 mkKernelPairDeclarationAdapter d em p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMorphism = em ; link = p ; status = true }
 
 isFilledKernelPairDeclaration : KernelPairDeclarationAdapter → Core.Phase.Bool
@@ -6091,7 +6091,7 @@ mkInternalEquivalenceRelationDeclarationAdapter :
   (p : C2S2.InternalEquivalenceRelationDeclaration.objectA d ≡ eoa) →
   InternalEquivalenceRelationDeclarationAdapter
 mkInternalEquivalenceRelationDeclarationAdapter d eoa p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedObjectA = eoa ; link = p ; status = true }
 
 isFilledInternalEquivalenceRelationDeclaration : InternalEquivalenceRelationDeclarationAdapter → Core.Phase.Bool
@@ -6117,7 +6117,7 @@ mkExactCategoryDeclarationAdapter :
   (p : C2S2.ExactCategoryDeclaration.regular d ≡ er) →
   ExactCategoryDeclarationAdapter
 mkExactCategoryDeclarationAdapter d er p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedRegular = er ; link = p ; status = true }
 
 isFilledExactCategoryDeclaration : ExactCategoryDeclarationAdapter → Core.Phase.Bool
@@ -6151,7 +6151,7 @@ mkMonadWithRankAdapter :
   (p2 : C2S4.MonadWithRank.cardinal d ≡ ec) →
   MonadWithRankAdapter
 mkMonadWithRankAdapter d em ec p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMonad = em ; expectedCardinal = ec ; link1 = p1 ; link2 = p2 ; status = true }
 
 open import Core.Phase using (Bool)
@@ -6178,7 +6178,7 @@ mkLocallyPresentableCategoryAdapter :
   (p : C2S4.LocallyPresentableCategory.cardinal d ≡ ec) →
   LocallyPresentableCategoryAdapter
 mkLocallyPresentableCategoryAdapter d ec p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedCardinal = ec ; link = p ; status = true }
 
 isFilledLocallyPresentableCategory : LocallyPresentableCategoryAdapter → Core.Phase.Bool
@@ -6212,7 +6212,7 @@ mkRankTheoremForMonadicCategoriesTheoremAdapter :
   (p3 : C2S4.RankTheoremForMonadicCategoriesTheorem.algebraCategory d ≡ eac) →
   RankTheoremForMonadicCategoriesTheoremAdapter
 mkRankTheoremForMonadicCategoriesTheoremAdapter d ebc emr eac p1 p2 p3 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedBaseCategory = ebc ; expectedMonadWithRank = emr ; expectedAlgCat = eac ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = true }
 
 isFilledRankTheoremForMonadicCategoriesTheorem : RankTheoremForMonadicCategoriesTheoremAdapter → Core.Phase.Bool
@@ -6242,7 +6242,7 @@ mkFunctorPreservesLimitsAdapter :
   (p : C1S2.FunctorPreservesLimits.F d ≡ ef) →
   FunctorPreservesLimitsAdapter
 mkFunctorPreservesLimitsAdapter d ef p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
 isFilledFunctorPreservesLimits : FunctorPreservesLimitsAdapter → Core.Phase.Bool
@@ -6268,7 +6268,7 @@ mkFunctorReflectsLimitsAdapter :
   (p : C1S2.FunctorReflectsLimits.F d ≡ ef) →
   FunctorReflectsLimitsAdapter
 mkFunctorReflectsLimitsAdapter d ef p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
 isFilledFunctorReflectsLimits : FunctorReflectsLimitsAdapter → Core.Phase.Bool
@@ -6294,7 +6294,7 @@ mkFunctorCreatesLimitsAdapter :
   (p : C1S2.FunctorCreatesLimits.F d ≡ ef) →
   FunctorCreatesLimitsAdapter
 mkFunctorCreatesLimitsAdapter d ef p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
 isFilledFunctorCreatesLimits : FunctorCreatesLimitsAdapter → Core.Phase.Bool
@@ -6320,7 +6320,7 @@ mkCreationImpliesReflectionAdapter :
   (p : C1S2.CreationImpliesReflection.F d ≡ ef) →
   CreationImpliesReflectionAdapter
 mkCreationImpliesReflectionAdapter d ef p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
 isFilledCreationImpliesReflection : CreationImpliesReflectionAdapter → Core.Phase.Bool
@@ -6346,7 +6346,7 @@ mkIsomorphismsOfCategoriesReflectLimitsAdapter :
   (p : C1S2.IsomorphismsOfCategoriesReflectLimits.F d ≡ ef) →
   IsomorphismsOfCategoriesReflectLimitsAdapter
 mkIsomorphismsOfCategoriesReflectLimitsAdapter d ef p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
 isFilledIsomorphismsOfCategoriesReflectLimits : IsomorphismsOfCategoriesReflectLimitsAdapter → Core.Phase.Bool
@@ -6372,7 +6372,7 @@ mkRightAdjointsPreserveLimits_L2Adapter :
   (p : C1S2.RightAdjointsPreserveLimits_L2.F d ≡ ef) →
   RightAdjointsPreserveLimits_L2Adapter
 mkRightAdjointsPreserveLimits_L2Adapter d ef p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
 isFilledRightAdjointsPreserveLimits_L2 : RightAdjointsPreserveLimits_L2Adapter → Core.Phase.Bool
@@ -6402,7 +6402,7 @@ mkInternalYonedaEmbeddingAdapter :
   (p : C1S8.InternalYonedaEmbedding.internalCategory d ≡ eic) →
   InternalYonedaEmbeddingAdapter
 mkInternalYonedaEmbeddingAdapter d eic p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedInternalCategory = eic ; link = p ; status = true }
 
 isFilledInternalYonedaEmbedding : InternalYonedaEmbeddingAdapter → Core.Phase.Bool
@@ -6432,7 +6432,7 @@ mkInternalYonedaLemmaAdapter :
   (p2 : C1S8.InternalYonedaLemma.presheaf d ≡ ep) →
   InternalYonedaLemmaAdapter
 mkInternalYonedaLemmaAdapter d eic ep p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedInternalCategory = eic ; expectedPresheaf = ep ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledInternalYonedaLemma : InternalYonedaLemmaAdapter → Core.Phase.Bool
@@ -6466,7 +6466,7 @@ mkKanExtensionContextAdapter :
   (p2 : C1S3.KanExtensionContext.T d ≡ et) →
   KanExtensionContextAdapter
 mkKanExtensionContextAdapter d ek et p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledKanExtensionContext : KanExtensionContextAdapter → Core.Phase.Bool
@@ -6492,7 +6492,7 @@ mkLeftKanCandidateAdapter :
   (p : C1S3.LeftKanCandidate.M d ≡ em) →
   LeftKanCandidateAdapter
 mkLeftKanCandidateAdapter d em p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedM = em ; link = p ; status = true }
 
 isFilledLeftKanCandidate : LeftKanCandidateAdapter → Core.Phase.Bool
@@ -6518,7 +6518,7 @@ mkRightKanCandidateAdapter :
   (p : C1S3.RightKanCandidate.M d ≡ em) →
   RightKanCandidateAdapter
 mkRightKanCandidateAdapter d em p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedM = em ; link = p ; status = true }
 
 isFilledRightKanCandidate : RightKanCandidateAdapter → Core.Phase.Bool
@@ -6548,7 +6548,7 @@ mkLeftKanExtensionIsInitialObjectAdapter :
   (p2 : C1S3.LeftKanExtensionIsInitialObject.T d ≡ et) →
   LeftKanExtensionIsInitialObjectAdapter
 mkLeftKanExtensionIsInitialObjectAdapter d ek et p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledLeftKanExtensionIsInitialObject : LeftKanExtensionIsInitialObjectAdapter → Core.Phase.Bool
@@ -6578,7 +6578,7 @@ mkRightKanExtensionIsTerminalObjectAdapter :
   (p2 : C1S3.RightKanExtensionIsTerminalObject.T d ≡ et) →
   RightKanExtensionIsTerminalObjectAdapter
 mkRightKanExtensionIsTerminalObjectAdapter d ek et p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledRightKanExtensionIsTerminalObject : RightKanExtensionIsTerminalObjectAdapter → Core.Phase.Bool
@@ -6608,7 +6608,7 @@ mkPointwiseKanFormulaTheoremAdapter :
   (p2 : C1S3.PointwiseKanFormulaTheorem.T d ≡ et) →
   PointwiseKanFormulaTheoremAdapter
 mkPointwiseKanFormulaTheoremAdapter d ek et p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedK = ek ; expectedT = et ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledPointwiseKanFormulaTheorem : PointwiseKanFormulaTheoremAdapter → Core.Phase.Bool
@@ -6638,7 +6638,7 @@ mkAdjointsAsKanExtensionsAdapter :
   (p2 : C1S3.AdjointsAsKanExtensions.G d ≡ eg) →
   AdjointsAsKanExtensionsAdapter
 mkAdjointsAsKanExtensionsAdapter d ef eg p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedF = ef ; expectedG = eg ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledAdjointsAsKanExtensions : AdjointsAsKanExtensionsAdapter → Core.Phase.Bool
@@ -6664,7 +6664,7 @@ mkAdjointFunctorTheoremRightAdapter :
   (d : C1S3.AdjointFunctorTheoremRight) →
   AdjointFunctorTheoremRightAdapter
 mkAdjointFunctorTheoremRightAdapter d =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 isFilledAdjointFunctorTheoremRight : AdjointFunctorTheoremRightAdapter → Core.Phase.Bool
@@ -6695,7 +6695,7 @@ mkFibrationDeclarationAdapter :
   (f : ⊤ → C2S8.FibrationDeclaration) →
   FibrationDeclarationAdapter
 mkFibrationDeclarationAdapter d ep p f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedProjection = ep ; link = p ; status = true }
 
 fibrationDeclarationCategorical : FibrationDeclarationAdapter → CategoricalAdapter {lsuc lzero} C2S8.FibrationDeclaration
@@ -6719,7 +6719,7 @@ mkCartesianArrowAdapter :
   (f : ⊤ → C2S8.CartesianArrow) →
   CartesianArrowAdapter
 mkCartesianArrowAdapter d ea p f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedArrow = ea ; link = p ; status = true }
 
 cartesianArrowCategorical : CartesianArrowAdapter → CategoricalAdapter {lsuc lzero} C2S8.CartesianArrow
@@ -6743,7 +6743,7 @@ mkCartesianFunctorDeclarationAdapter :
   (f : ⊤ → C2S8.CartesianFunctorDeclaration) →
   CartesianFunctorDeclarationAdapter
 mkCartesianFunctorDeclarationAdapter d ef p f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
 cartesianFunctorDeclarationCategorical : CartesianFunctorDeclarationAdapter → CategoricalAdapter {lsuc lzero} C2S8.CartesianFunctorDeclaration
@@ -6767,7 +6767,7 @@ mkCategoryOfFibrationsAdapter :
   (f : ⊤ → C2S8.CategoryOfFibrations) →
   CategoryOfFibrationsAdapter
 mkCategoryOfFibrationsAdapter d eb p f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedBase = eb ; link = p ; status = true }
 
 categoryOfFibrationsCategorical : CategoryOfFibrationsAdapter → CategoricalAdapter {lsuc lzero} C2S8.CategoryOfFibrations
@@ -6787,7 +6787,7 @@ mkPseudofunctorFromFibrationAdapter :
   (f : ⊤ → C2S8.PseudofunctorFromFibration) →
   PseudofunctorFromFibrationAdapter
 mkPseudofunctorFromFibrationAdapter d f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 pseudofunctorFromFibrationCategorical : PseudofunctorFromFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.PseudofunctorFromFibration
@@ -6811,7 +6811,7 @@ mkGrothendieckConstructionAdapter :
   (f : ⊤ → C2S8.GrothendieckConstruction) →
   GrothendieckConstructionAdapter
 mkGrothendieckConstructionAdapter d et p f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedTotal = et ; link = p ; status = true }
 
 grothendieckConstructionCategorical : GrothendieckConstructionAdapter → CategoricalAdapter {lsuc lzero} C2S8.GrothendieckConstruction
@@ -6835,7 +6835,7 @@ mkGrothendieckEquivalenceTheoremAdapter :
   (f : ⊤ → C2S8.GrothendieckEquivalenceTheorem) →
   GrothendieckEquivalenceTheoremAdapter
 mkGrothendieckEquivalenceTheoremAdapter d eb p f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedBase = eb ; link = p ; status = true }
 
 grothendieckEquivalenceTheoremCategorical : GrothendieckEquivalenceTheoremAdapter → CategoricalAdapter {lsuc lzero} C2S8.GrothendieckEquivalenceTheorem
@@ -6863,7 +6863,7 @@ mkFibredAdjunctionDeclarationAdapter :
   (f : ⊤ → C2S8.FibredAdjunctionDeclaration) →
   FibredAdjunctionDeclarationAdapter
 mkFibredAdjunctionDeclarationAdapter d el er p1 p2 f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedLeft = el ; expectedRight = er ; link1 = p1 ; link2 = p2 ; status = true }
 
 fibredAdjunctionDeclarationCategorical : FibredAdjunctionDeclarationAdapter → CategoricalAdapter {lsuc lzero} C2S8.FibredAdjunctionDeclaration
@@ -6883,7 +6883,7 @@ mkBeckChevalleyConditionAdapter :
   (f : ⊤ → C2S8.BeckChevalleyCondition) →
   BeckChevalleyConditionAdapter
 mkBeckChevalleyConditionAdapter d f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 beckChevalleyConditionCategorical : BeckChevalleyConditionAdapter → CategoricalAdapter {lsuc lzero} C2S8.BeckChevalleyCondition
@@ -6903,7 +6903,7 @@ mkFibrationCompletenessCriterionTheoremAdapter :
   (f : ⊤ → C2S8.FibrationCompletenessCriterionTheorem) →
   FibrationCompletenessCriterionTheoremAdapter
 mkFibrationCompletenessCriterionTheoremAdapter d f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 fibrationCompletenessCriterionTheoremCategorical : FibrationCompletenessCriterionTheoremAdapter → CategoricalAdapter {lsuc lzero} C2S8.FibrationCompletenessCriterionTheorem
@@ -6923,7 +6923,7 @@ mkLocallySmallFibrationAdapter :
   (f : ⊤ → C2S8.LocallySmallFibration) →
   LocallySmallFibrationAdapter
 mkLocallySmallFibrationAdapter d f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 locallySmallFibrationCategorical : LocallySmallFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.LocallySmallFibration
@@ -6947,7 +6947,7 @@ mkRefinedGrothendieckEquivalenceTheoremAdapter :
   (f : ⊤ → C2S8.RefinedGrothendieckEquivalenceTheorem) →
   RefinedGrothendieckEquivalenceTheoremAdapter
 mkRefinedGrothendieckEquivalenceTheoremAdapter d eb p f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedBase = eb ; link = p ; status = true }
 
 refinedGrothendieckEquivalenceTheoremCategorical : RefinedGrothendieckEquivalenceTheoremAdapter → CategoricalAdapter {lsuc lzero} C2S8.RefinedGrothendieckEquivalenceTheorem
@@ -6971,7 +6971,7 @@ mkCodomainFibrationAdapter :
   (f : ⊤ → C2S8.CodomainFibration) →
   CodomainFibrationAdapter
 mkCodomainFibrationAdapter d eb p f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedBase = eb ; link = p ; status = true }
 
 codomainFibrationCategorical : CodomainFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.CodomainFibration
@@ -6991,7 +6991,7 @@ mkLindenbaumTarskiFibrationAdapter :
   (f : ⊤ → C2S8.LindenbaumTarskiFibration) →
   LindenbaumTarskiFibrationAdapter
 mkLindenbaumTarskiFibrationAdapter d f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 lindenbaumTarskiFibrationCategorical : LindenbaumTarskiFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.LindenbaumTarskiFibration
@@ -7015,7 +7015,7 @@ mkFamiliesFibrationAdapter :
   (f : ⊤ → C2S8.FamiliesFibration) →
   FamiliesFibrationAdapter
 mkFamiliesFibrationAdapter d eb p f =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedBase = eb ; link = p ; status = true }
 
 familiesFibrationCategorical : FamiliesFibrationAdapter → CategoricalAdapter {lsuc lzero} C2S8.FamiliesFibration
@@ -7046,7 +7046,7 @@ mkHasZeroObjectPropertyAdapter :
   (p2 : C2S1.HasZeroObjectProperty.zeroObj d ≡ ez) →
   HasZeroObjectPropertyAdapter
 mkHasZeroObjectPropertyAdapter d ec ez p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedCategory = ec ; expectedZero = ez ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledHasZeroObjectProperty : HasZeroObjectPropertyAdapter → Core.Phase.Bool
@@ -7070,7 +7070,7 @@ mkKernelAsEqualizerDefinitionAdapter :
   (p2 : C2S1.KernelAsEqualizerDefinition.equalizerObject d ≡ ek) →
   KernelAsEqualizerDefinitionAdapter
 mkKernelAsEqualizerDefinitionAdapter d em ek p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMorphism = em ; expectedKernel = ek ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledKernelAsEqualizerDefinition : KernelAsEqualizerDefinitionAdapter → Core.Phase.Bool
@@ -7098,7 +7098,7 @@ mkBiproductObjectAdapter :
   (p3 : C2S1.BiproductObject.object d ≡ eo) →
   BiproductObjectAdapter
 mkBiproductObjectAdapter d el er eo p1 p2 p3 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedLeft = el ; expectedRight = er ; expectedObject = eo ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = true }
 
 isFilledBiproductObject : BiproductObjectAdapter → Core.Phase.Bool
@@ -7118,7 +7118,7 @@ mkAdditiveCategoryDeclarationAdapter :
   (p : C2S1.AdditiveCategoryDeclaration.category d ≡ ec) →
   AdditiveCategoryDeclarationAdapter
 mkAdditiveCategoryDeclarationAdapter d ec p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedCategory = ec ; link = p ; status = true }
 
 isFilledAdditiveCategoryDeclaration : AdditiveCategoryDeclarationAdapter → Core.Phase.Bool
@@ -7138,7 +7138,7 @@ mkAbelianCategoryDeclarationAdapter :
   (p : C2S1.AbelianCategoryDeclaration.category d ≡ ec) →
   AbelianCategoryDeclarationAdapter
 mkAbelianCategoryDeclarationAdapter d ec p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedCategory = ec ; link = p ; status = true }
 
 isFilledAbelianCategoryDeclaration : AbelianCategoryDeclarationAdapter → Core.Phase.Bool
@@ -7162,7 +7162,7 @@ mkFirstIsomorphismForAbelianCategoriesTheoremAdapter :
   (p2 : C2S1.FirstIsomorphismForAbelianCategoriesTheorem.morphism d ≡ em) →
   FirstIsomorphismForAbelianCategoriesTheoremAdapter
 mkFirstIsomorphismForAbelianCategoriesTheoremAdapter d ec em p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedCategory = ec ; expectedMorphism = em ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledFirstIsomorphismForAbelianCategoriesTheorem : FirstIsomorphismForAbelianCategoriesTheoremAdapter → Core.Phase.Bool
@@ -7182,7 +7182,7 @@ mkNormalMonomorphismPropertyAdapter :
   (p : C2S1.NormalMonomorphismProperty.mono d ≡ em) →
   NormalMonomorphismPropertyAdapter
 mkNormalMonomorphismPropertyAdapter d em p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedMono = em ; link = p ; status = true }
 
 isFilledNormalMonomorphismProperty : NormalMonomorphismPropertyAdapter → Core.Phase.Bool
@@ -7198,7 +7198,7 @@ mkAbelianCategoryExampleAbAdapter :
   (d : C2S1.AbelianCategoryExampleAb) →
   AbelianCategoryExampleAbAdapter
 mkAbelianCategoryExampleAbAdapter d =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 isFilledAbelianCategoryExampleAb : AbelianCategoryExampleAbAdapter → Core.Phase.Bool
@@ -7218,7 +7218,7 @@ mkAbelianCategoryExampleRModAdapter :
   (p : C2S1.AbelianCategoryExampleRMod.ring d ≡ er) →
   AbelianCategoryExampleRModAdapter
 mkAbelianCategoryExampleRModAdapter d er p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedRing = er ; link = p ; status = true }
 
 isFilledAbelianCategoryExampleRMod : AbelianCategoryExampleRModAdapter → Core.Phase.Bool
@@ -7238,7 +7238,7 @@ mkFunctorAdditivePropertyAdapter :
   (p : C2S1.FunctorAdditiveProperty.functor d ≡ ef) →
   FunctorAdditivePropertyAdapter
 mkFunctorAdditivePropertyAdapter d ef p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedFunctor = ef ; link = p ; status = true }
 
 isFilledFunctorAdditiveProperty : FunctorAdditivePropertyAdapter → Core.Phase.Bool
@@ -7258,7 +7258,7 @@ mkAdditivityViaBiproductCoincidenceTheoremAdapter :
   (p : C2S1.AdditivityViaBiproductCoincidenceTheorem.category d ≡ ec) →
   AdditivityViaBiproductCoincidenceTheoremAdapter
 mkAdditivityViaBiproductCoincidenceTheoremAdapter d ec p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedCategory = ec ; link = p ; status = true }
 
 isFilledAdditivityViaBiproductCoincidenceTheorem : AdditivityViaBiproductCoincidenceTheoremAdapter → Core.Phase.Bool
@@ -7282,7 +7282,7 @@ mkSubobjectLatticeAdapter :
   (p : C1S4.SubobjectLattice.X d ≡ ex) →
   SubobjectLatticeAdapter
 mkSubobjectLatticeAdapter d ex p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedX = ex ; link = p ; status = true }
 
 isFilledSubobjectLattice : SubobjectLatticeAdapter → Core.Phase.Bool
@@ -7302,7 +7302,7 @@ mkWellPoweredCategoryAdapter :
   (p : C1S4.WellPoweredCategory.C d ≡ ec) →
   WellPoweredCategoryAdapter
 mkWellPoweredCategoryAdapter d ec p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedC = ec ; link = p ; status = true }
 
 isFilledWellPoweredCategory : WellPoweredCategoryAdapter → Core.Phase.Bool
@@ -7318,7 +7318,7 @@ mkSubobjectLatticeIsCompleteAdapter :
   (d : C1S4.SubobjectLatticeIsComplete) →
   SubobjectLatticeIsCompleteAdapter
 mkSubobjectLatticeIsCompleteAdapter d =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 isFilledSubobjectLatticeIsComplete : SubobjectLatticeIsCompleteAdapter → Core.Phase.Bool
@@ -7338,7 +7338,7 @@ mkStrongEpimorphismAdapter :
   (p : C1S4.StrongEpimorphism.e d ≡ ee) →
   StrongEpimorphismAdapter
 mkStrongEpimorphismAdapter d ee p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedE = ee ; link = p ; status = true }
 
 isFilledStrongEpimorphism : StrongEpimorphismAdapter → Core.Phase.Bool
@@ -7354,7 +7354,7 @@ mkCanonicalFactorizationSystemAdapter :
   (d : C1S4.CanonicalFactorizationSystem) →
   CanonicalFactorizationSystemAdapter
 mkCanonicalFactorizationSystemAdapter d =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; status = true }
 
 isFilledCanonicalFactorizationSystem : CanonicalFactorizationSystemAdapter → Core.Phase.Bool
@@ -7382,7 +7382,7 @@ mkMorphismFactorizationAdapter :
   (p3 : C1S4.MorphismFactorization.m d ≡ em) →
   MorphismFactorizationAdapter
 mkMorphismFactorizationAdapter d ef ee em p1 p2 p3 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedF = ef ; expectedE = ee ; expectedM = em ; link1 = p1 ; link2 = p2 ; link3 = p3 ; status = true }
 
 isFilledMorphismFactorization : MorphismFactorizationAdapter → Core.Phase.Bool
@@ -7406,7 +7406,7 @@ mkHasGeneratorObjectAdapter :
   (p2 : C1S4.HasGeneratorObject.G d ≡ eg) →
   HasGeneratorObjectAdapter
 mkHasGeneratorObjectAdapter d ec eg p1 p2 =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedC = ec ; expectedG = eg ; link1 = p1 ; link2 = p2 ; status = true }
 
 isFilledHasGeneratorObject : HasGeneratorObjectAdapter → Core.Phase.Bool
@@ -7426,7 +7426,7 @@ mkProjectiveObjectAdapter :
   (p : C1S4.ProjectiveObject.P d ≡ ep) →
   ProjectiveObjectAdapter
 mkProjectiveObjectAdapter d ep p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedP = ep ; link = p ; status = true }
 
 isFilledProjectiveObject : ProjectiveObjectAdapter → Core.Phase.Bool
@@ -7446,7 +7446,7 @@ mkInjectiveObjectAdapter :
   (p : C1S4.InjectiveObject.I d ≡ ei) →
   InjectiveObjectAdapter
 mkInjectiveObjectAdapter d ei p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedI = ei ; link = p ; status = true }
 
 isFilledInjectiveObject : InjectiveObjectAdapter → Core.Phase.Bool
@@ -7466,7 +7466,7 @@ mkHasEnoughProjectivesAdapter :
   (p : C1S4.HasEnoughProjectives.C d ≡ ec) →
   HasEnoughProjectivesAdapter
 mkHasEnoughProjectivesAdapter d ec p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedC = ec ; link = p ; status = true }
 
 isFilledHasEnoughProjectives : HasEnoughProjectivesAdapter → Core.Phase.Bool
@@ -7486,7 +7486,7 @@ mkHasEnoughInjectivesAdapter :
   (p : C1S4.HasEnoughInjectives.C d ≡ ec) →
   HasEnoughInjectivesAdapter
 mkHasEnoughInjectivesAdapter d ec p =
--- | TODO: doc
+-- | Obligation adapter scaffold linking declarations to expected witnesses
   record { decl = d ; expectedC = ec ; link = p ; status = true }
 
 isFilledHasEnoughInjectives : HasEnoughInjectivesAdapter → Core.Phase.Bool

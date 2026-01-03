@@ -1,12 +1,4 @@
 {
-  "src/agda/Tests/ObligationAdapters.agda": {
-    "postulates": 0,
-    "todo": 280,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 280,
-    "weighted_total": 140.0
-  },
   "docs/status/deferred-items.md": {
     "postulates": 0,
     "todo": 83,
