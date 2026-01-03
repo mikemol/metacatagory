@@ -612,6 +612,20 @@ But lacks **compositional operators** (sequential, parallel, dependent).
 
 ***
 
+## Priority Algebra Canonization
+
+The codebase already realizes a richer notion of priority than the Compendium currently documents. `Core.TechnicalDebt.Priority` is a free abelian group over `(String × Int)` weight terms and exposes a `dependsOn` list that concretely models the DAG of blocking dependencies between debts. The `TechnicalDebt.Priorities` module then packages those primitives into reusable strategies (`defaultStrategy`, `ffiSafetyStrategy`, `proofCompletenessStrategy`, etc.), and `TechnicalDebt.PriorityMapping` / `PriorityFormatting` translate those algebraic artifacts into the badge weights, JSON exports, and structured reports consumed by the deferred-items pipeline.
+
+To canonize this algebra in the Compendium, we should:
+
+* state explicitly that priority scoring is the sum of multiple weighted terms rather than a single scalar, so that the theory captures the `terms : List (String × Int)` structure from `Core.TechnicalDebt`.
+* explain that `dependsOn` carries the DAG edges between priorities, giving programmers an explicit “blocking graph” semantics that mirrors the Priority Strategy dependency graph in the implementation.
+* mention that the canonical strategies (`PriorityStrategy` record) expose contextual fields such as `testFixture`, `documentation`, `performance`, `safety`, and `proof`, and that these feed into `TechnicalDebt.PriorityMapping.strategyToWeights` before `PriorityOrchestration` emits the JSON/badge outputs.
+
+Making these facts explicit in the Compendium would close the gap between the theory mandate and the operational priority algebra that already powers the workflow.
+
+***
+
 ## Conclusion
 
 The CIM system exhibits a **classic theory-practice gap**:

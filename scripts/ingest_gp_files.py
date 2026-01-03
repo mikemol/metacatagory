@@ -11,57 +11,106 @@ from typing import Dict, List, Tuple
 
 ROOT = Path(__file__).resolve().parent.parent
 
+def extract_structured_sections(content: str) -> Dict[str, str]:
+    """Extract Insight/Gap/Fix sections from a GP Markdown snippet."""
+    section_re = re.compile(r'^\s*\*\s+\*\*The (Insight|Gap|Fix):\*\s*(.*)', re.IGNORECASE)
+    sections: Dict[str, List[str]] = {}
+    current: str | None = None
+
+    for line in content.splitlines():
+        heading_match = section_re.match(line)
+        if heading_match:
+            label = heading_match.group(1).lower()
+            sections[label] = [heading_match.group(2).strip()]
+            current = label
+            continue
+
+        if current:
+            if re.match(r'^\s*#{1,6}', line):
+                current = None
+                continue
+            stripped = line.strip()
+            if stripped.startswith('* *The '):
+                current = None
+                continue
+            if stripped:
+                cleaned = stripped.lstrip('> ').strip()
+                sections.setdefault(current, []).append(cleaned)
+
+    return {
+        label: ' '.join(lines).replace('\n', ' ').strip()
+        for label, lines in sections.items()
+    }
+
+
 def extract_metadata_from_md(filepath: str) -> Dict:
-    """Extract title, summary, and key concepts from a markdown file."""
+    """Extract title, summary, and key sections from a markdown file."""
     with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
         content = f.read()
-    
+
     # Extract first heading as title
     title_match = re.search(r'^#{1,3}\s+(.+?)$', content, re.MULTILINE)
     title = title_match.group(1).strip() if title_match else Path(filepath).stem
-    
+
     # Get first 200 chars as summary
-    # Remove markdown formatting
     clean_content = re.sub(r'[#\*_`\[\]]', '', content)
     lines = [l.strip() for l in clean_content.split('\n') if l.strip()]
     summary = ' '.join(lines[:3])[:150]
-    
+
     # Extract any keywords or key phrases
     keywords = set()
-    
-    # Look for common patterns
     patterns = [
         r'(?:implementation|implement).*?(?:of|for)\s+([^.]+)',
         r'(?:design|define)\s+([^.]+)',
         r'(?:extends?|builds?|creates?)\s+([^.]+)',
     ]
-    
+
     for pattern in patterns:
         matches = re.findall(pattern, content, re.IGNORECASE)
         keywords.update(m.strip()[:50] for m in matches if m.strip())
-    
+
+    sections = extract_structured_sections(content)
+
     return {
         'title': title,
         'summary': summary,
-        'keywords': list(keywords)[:3]
+        'keywords': list(keywords)[:3],
+        'insight': sections.get('insight', ''),
+        'gap': sections.get('gap', ''),
+        'fix': sections.get('fix', ''),
     }
+
+def sanitize_string(value: str) -> str:
+    """Prepare text to embed inside Agda string literals."""
+    return ' '.join(value.replace('"', "'").split()).strip()
+
 
 def generate_roadmap_step(gp_id: str, metadata: Dict, file_number: int) -> str:
     """Generate an Agda RoadmapStep record for a GP file."""
-    
+
     safe_name = f"gp{gp_id.replace('/', '').lower()}"
     title = metadata['title'][:80]  # Truncate title
-    summary = metadata['summary'].replace('"', "'")  # Escape quotes
-    
-    keywords_str = ' '.join([f'"{k}"' for k in metadata.get('keywords', [])])
-    keywords_list = f"[ {keywords_str} ]" if keywords_str else "[]"
-    
+    summary = sanitize_string(metadata['summary'])
+
+    insight = sanitize_string(metadata.get('insight', ''))
+    gap = sanitize_string(metadata.get('gap', ''))
+    fix = sanitize_string(metadata.get('fix', ''))
+
+    implication_parts = []
+    if insight:
+        implication_parts.append(f"Insight: {insight}")
+    if gap:
+        implication_parts.append(f"Gap: {gap}")
+    if fix:
+        implication_parts.append(f"Fix: {fix}")
+    implication = " | ".join(implication_parts) if implication_parts else "Implication TBD from intake."
+
     record = f'''example{safe_name.capitalize()}Roadmap : RoadmapStep
 example{safe_name.capitalize()}Roadmap = record
     {{ provenance  = "{gp_id}: {title}"
     ; relatedNodes = []
     ; step        = "{summary}"
-    ; implication = "Extends the polytope manifest with additional structural analysis."
+    ; implication = "{sanitize_string(implication)}"
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Polytopes.agda"
     ; next = []
