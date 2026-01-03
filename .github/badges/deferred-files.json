@@ -823,6 +823,14 @@
     "total": 1,
     "weighted_total": 1.5
   },
+  "src/agda/Plan/CIM/IngestedRoadmaps.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
   "src/agda/Plan/CIM/PriorityProfileExport.agda": {
     "postulates": 1,
     "todo": 0,

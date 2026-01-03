@@ -28,6 +28,9 @@ map : ∀ {A B : Set} → (A → B) → List A → List B
 map f [] = []
 map f (x ∷ xs) = f x ∷ map f xs
 
+metricNarrative : String
+metricNarrative = "EmergentMetric now tracks systolic area (sum of both paths plus divergence) as defined in Plan.CIM.Metricization."
+
 add : Nat → Nat → Nat
 add m n = _+_ m n
 
@@ -395,6 +398,7 @@ renderItem report es i =
       "\"dependsOn\":"   ∷ renderStringList (RoadmapItem.dependsOn i)  ∷ "," ∷
       "\"provenance\":"  ∷ renderStringList (RoadmapItem.provenance i) ∷ "," ∷
       "\"related\":"     ∷ renderStringList (RoadmapItem.related i)    ∷ "," ∷
+      "\"metricNarrative\":" ∷ quoteString metricNarrative             ∷ "," ∷
       "\"derived\":{"    ∷
         "\"dependsOnCount\":" ∷ natToString (len (RoadmapItem.dependsOn i)) ∷ "," ∷
         "\"filesCount\":"     ∷ natToString (len (RoadmapItem.files i))     ∷ "," ∷
