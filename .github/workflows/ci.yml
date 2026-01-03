@@ -41,6 +41,9 @@ jobs:
       - name: Run check (aligns with local make)
         run: make check
 
+      - name: Run makefile coverage verification
+        run: python3 scripts/makefile_coverage.py --run-targets
+
       - name: Publish Markdown docs into docs/ (push only)
         if: github.event_name == 'push'
         run: |
