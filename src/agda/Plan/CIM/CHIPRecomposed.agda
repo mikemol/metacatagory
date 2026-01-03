@@ -8,7 +8,7 @@ open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Nat using (Nat; _+_)
 
-open import Plan.CIM.Utility using (TransformationSystem; Path; refl-path; trans-step; map; _++_)
+open import Plan.CIM.Utility using (TransformationSystem; Path; refl-path; trans-step; map; _++_; mkMetric)
 open import Plan.CIM.FunctorialConstructs using (CoherenceWitness; EmergentMetric)
 open import Plan.CIM.FunctorialConstructs using (CoherenceWitness; EmergentMetric)
 open import Plan.CIM.FunctorialConstructs using (CoherenceWitness; EmergentMetric)
@@ -26,7 +26,7 @@ open import Plan.CIM.GrammarBridge using (GrammarExpr; blockToGrammar; inlineToG
 recomposeBlockCoherence : (b : Block) → (mb : MdBlock) → CoherenceWitness blockAmb blockTransSys
 recomposeBlockCoherence b mb = record
   { proofPath = refl-path
-  ; metric = record { magnitude = 1 }
+  ; metric = mkMetric 1 1
   }
 
 -- Build braid trace from list of block transformations
@@ -61,7 +61,7 @@ composeBraidTraces blocks mblocks = record
 recomposeDocCoherence : (doc : PandocDoc) → (mdoc : MarkdownDoc) → CoherenceWitness docAmb docTransSys
 recomposeDocCoherence doc mdoc = record
   { proofPath = refl-path
-  ; metric = record { magnitude = countBlocks (PandocDoc.blocks doc) }
+  ; metric = mkMetric (countBlocks (PandocDoc.blocks doc)) (countBlocks (PandocDoc.blocks doc))
   }
   where
     countBlocks : List Block → Nat
@@ -74,10 +74,9 @@ recomposeDocCoherence doc mdoc = record
 
 -- Aggregate metrics from multiple transformation steps
 aggregateMetrics : List EmergentMetric → EmergentMetric
-aggregateMetrics [] = record { magnitude = 0 }
-aggregateMetrics (m ∷ ms) = record 
-  { magnitude = EmergentMetric.magnitude m + EmergentMetric.magnitude (aggregateMetrics ms) 
-  }
+aggregateMetrics [] = mkMetric 0 0
+aggregateMetrics (m ∷ ms) = mkMetric (EmergentMetric.magnitude m + EmergentMetric.magnitude (aggregateMetrics ms))
+                                     (EmergentMetric.magnitude m + EmergentMetric.magnitude (aggregateMetrics ms))
 
 -- Compose transformation paths into a single path
 composePaths : ∀ {ℓ} {A B : Set ℓ} → (sys : TransformationSystem {ℓ} A B) → List (Path sys) → Path sys
@@ -118,7 +117,7 @@ buildAggregatedBlockWitness [] [] = record
   { blocks = []
   ; mdblocks = []
   ; braidTrace = record { steps = [] ; summary = "Empty transformation" }
-  ; coherence = record { proofPath = refl-path ; metric = record { magnitude = 0 } }
+  ; coherence = record { proofPath = refl-path ; metric = mkMetric 0 0 }
   ; totalCost = 0
   }
 buildAggregatedBlockWitness (b ∷ bs) (mb ∷ mbs) = record

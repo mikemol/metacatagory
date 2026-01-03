@@ -12,7 +12,7 @@ open import Agda.Primitive using (Level; lzero; lsuc)
 open import Agda.Builtin.Sigma using (Σ; _,_)
 
 open import Plan.CIM.Utility using (PhaseAmbiguity; TransformationSystem; Path; map; _×_)
-open import Plan.CIM.FunctorialConstructs using (EmergentMetric; CoherenceWitness; BraidedInheritanceFunctor; BraidedSPPF; packed-node)
+open import Plan.CIM.FunctorialConstructs using (EmergentMetric; mkMetric; CoherenceWitness; BraidedInheritanceFunctor; BraidedSPPF; packed-node)
 
 -- | Graded vector space with per-grade dimensions and an emergent metric.
 record GradedVectorSpace (n : Nat) : Set₁ where
@@ -33,7 +33,8 @@ mapGVS f gvs = record
 composeBraids : ∀ {ℓ} {A B C : Set ℓ} → BraidedInheritanceFunctor A B → BraidedInheritanceFunctor B C → BraidedInheritanceFunctor A C
 composeBraids bif1 bif2 = record
   { inheritanceBraid = λ { (a , c) → c , a }
-  ; coherenceCost = record { magnitude = EmergentMetric.magnitude (BraidedInheritanceFunctor.coherenceCost bif1) + EmergentMetric.magnitude (BraidedInheritanceFunctor.coherenceCost bif2) }
+  ; coherenceCost = mkMetric (EmergentMetric.magnitude (BraidedInheritanceFunctor.coherenceCost bif1) + EmergentMetric.magnitude (BraidedInheritanceFunctor.coherenceCost bif2))
+                           (EmergentMetric.magnitude (BraidedInheritanceFunctor.coherenceCost bif1) + EmergentMetric.magnitude (BraidedInheritanceFunctor.coherenceCost bif2))
   ; fromValue = BraidedInheritanceFunctor.fromValue bif1
   ; toValue   = BraidedInheritanceFunctor.toValue bif2
   ; description = "Composed braid"

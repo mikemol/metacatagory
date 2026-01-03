@@ -23,7 +23,7 @@ blockTransSys : TransformationSystem Block MdBlock
 blockTransSys = record { Step = String ; cost = λ s → 1 }
 
 blockCoherence : CoherenceWitness blockAmb blockTransSys
-blockCoherence = record { proofPath = refl-path ; metric = record { magnitude = 1 } }
+blockCoherence = record { proofPath = refl-path ; metric = mkMetric 1 1 }
 
 -- CHIP-enforced document ambiguity and transformation system
 docAmb : PhaseAmbiguity PandocDoc MarkdownDoc
@@ -33,7 +33,7 @@ docTransSys : TransformationSystem PandocDoc MarkdownDoc
 docTransSys = record { Step = String ; cost = λ s → 1 }
 
 docCoherence : CoherenceWitness docAmb docTransSys
-docCoherence = record { proofPath = refl-path ; metric = record { magnitude = 1 } }
+docCoherence = record { proofPath = refl-path ; metric = mkMetric 1 1 }
 
 ------------------------------------------------------------------------
 -- End of PandocProtocols

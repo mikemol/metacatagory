@@ -8,7 +8,7 @@ open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Nat using (Nat; _+_)
 open import Agda.Builtin.Bool using (Bool; true)
 
-open import Plan.CIM.Utility using (TransformationSystem; map; Path; refl-path)
+open import Plan.CIM.Utility using (TransformationSystem; map; Path; refl-path; mkMetric)
 open import Plan.CIM.FunctorialConstructs using (CoherenceWitness; EmergentMetric; BraidedInheritanceFunctor)
 open import Plan.CIM.FunctorialConstructs using (CoherenceWitness; EmergentMetric; BraidedInheritanceFunctor)
 open import Plan.CIM.PandocAST
@@ -23,7 +23,7 @@ open import Plan.CIM.PandocToMarkdown
 pandocDocTransformationWitness : (doc : PandocDoc) → CoherenceWitness blockAmb blockTransSys
 pandocDocTransformationWitness doc = record
   { proofPath = refl-path
-  ; metric = record { magnitude = 0 }
+  ; metric = mkMetric 0 0
   }
 
 ------------------------------------------------------------------------
@@ -80,7 +80,7 @@ makeTransformationContext doc = record
   ; transformationTrace = makeBraidTrace (PandocDoc.blocks doc) 
                                         (map transformBlock (PandocDoc.blocks doc))
   ; coherenceWitness = pandocDocTransformationWitness doc
-  ; costMetric = record { magnitude = 0 }
+  ; costMetric = mkMetric 0 0
   ; description = "Direct Pandoc → Markdown transformation"
   }
 
