@@ -16,12 +16,12 @@
     "weighted_total": 33.0
   },
   "src/agda/Algebra/Groups/Structure.agda": {
-    "postulates": 20,
+    "postulates": 18,
     "todo": 0,
     "fixme": 0,
     "deviation": 0,
-    "total": 20,
-    "weighted_total": 30.0
+    "total": 18,
+    "weighted_total": 27.0
   },
   "src/agda/Algebra/Rings/Theorems/Classical.agda": {
     "postulates": 18,

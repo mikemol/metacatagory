@@ -5,7 +5,7 @@ module Plan.CIM.IngestedRoadmaps where
 
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String
-open import Plan.CIM.Utility (RoadmapStep)
+open import Plan.CIM.Utility using (RoadmapStep)
 
 ------------------------------------------------------------------------
 -- Ingested Roadmap Steps from GP Files
@@ -37,7 +37,7 @@ exampleGpgp02Roadmap : RoadmapStep
 exampleGpgp02Roadmap = record
     { provenance  = "GP02: **I. Formal Correction & Geometric Alignment**"
     ; relatedNodes = []
-    ; step        = "Would you like me to construct the Python \\matmul\\ (matrix multiplication) override for your SPPFNode class, which automatically applies this relati"
+    ; step        = "Would you like me to construct the Python \\\\matmul\\\\ (matrix multiplication) override for your SPPFNode class, which automatically applies this relati"
     ; implication = "Implication TBD from intake."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Polytopes.agda"
@@ -68,7 +68,7 @@ exampleGpgp04Roadmap = record
 
 exampleGpgp05Roadmap : RoadmapStep
 exampleGpgp05Roadmap = record
-    { provenance  = "GP05: **I. Formal Correction & The "Vectorized Dot"**"
+    { provenance  = "GP05: **I. Formal Correction & The 'Vectorized Dot'**"
     ; relatedNodes = []
     ; step        = "I can proceed to integrate this entirely into the main.py script structure you provided previously, replacing the abstract Category placeholders with"
     ; implication = "Implication TBD from intake."
@@ -101,7 +101,7 @@ exampleGpgp07Roadmap = record
 
 exampleGpgp09Roadmap : RoadmapStep
 exampleGpgp09Roadmap = record
-    { provenance  = "GP09: **I. Formal Correction & The "Active" Observer**"
+    { provenance  = "GP09: **I. Formal Correction & The 'Active' Observer**"
     ; relatedNodes = []
     ; step        = "Would you like me to package this entire suite (Parser, Visualizer, Search, and Agda Proofs) into a Single Python Package Structure (e.g., setuptools"
     ; implication = "Implication TBD from intake."
@@ -114,7 +114,7 @@ exampleGpgp100Roadmap : RoadmapStep
 exampleGpgp100Roadmap = record
     { provenance  = "GP100: **The Verdict: Yes, the feedback is 100% correct.**"
     ; relatedNodes = []
-    ; step        = "Do you want me to rewrite nedge\topology/parser.py with this Semantic Gating logic integrated, effectively closing the loop on the feedback? The Verdi"
+    ; step        = "Do you want me to rewrite nedge\\topology/parser.py with this Semantic Gating logic integrated, effectively closing the loop on the feedback? The Verdi"
     ; implication = "Implication TBD from intake."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Polytopes.agda"
@@ -125,7 +125,7 @@ exampleGpgp101Roadmap : RoadmapStep
 exampleGpgp101Roadmap = record
     { provenance  = "GP101: **The Verdict: Yes, the feedback is 100% correct.**"
     ; relatedNodes = []
-    ; step        = "Do you want me to rewrite nedge\topology/parser.py with this Semantic Gating logic integrated, effectively closing the loop on the feedback? The Verdi"
+    ; step        = "Do you want me to rewrite nedge\\topology/parser.py with this Semantic Gating logic integrated, effectively closing the loop on the feedback? The Verdi"
     ; implication = "Implication TBD from intake."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Polytopes.agda"
@@ -167,7 +167,7 @@ exampleGpgp104Roadmap = record
 
 exampleGpgp105Roadmap : RoadmapStep
 exampleGpgp105Roadmap = record
-    { provenance  = "GP105: **I. Formal Correction: The "Fast Clock" Paradox**"
+    { provenance  = "GP105: **I. Formal Correction: The 'Fast Clock' Paradox**"
     ; relatedNodes = []
     ; step        = "The final step is Storage. Would you like me to design the HDF5 / Vector Database Schema to persist these PackedNodes to disk, allowing you to 'save'"
     ; implication = "Implication TBD from intake."
@@ -200,7 +200,7 @@ exampleGpgp107Roadmap = record
 
 exampleGpgp108Roadmap : RoadmapStep
 exampleGpgp108Roadmap = record
-    { provenance  = "GP108: **I. Formal Correction: The "Homological Defect"**"
+    { provenance  = "GP108: **I. Formal Correction: The 'Homological Defect'**"
     ; relatedNodes = []
     ; step        = "Effectively, this allows the system to bootstrap a language model from scratch starting with only S -> .... I. Formal Correction: The 'Homological Def"
     ; implication = "Implication TBD from intake."
@@ -224,7 +224,7 @@ exampleGpgp110Roadmap : RoadmapStep
 exampleGpgp110Roadmap = record
     { provenance  = "GP110: **I. Formal Correction: The Control Plane**"
     ; relatedNodes = []
-    ; step        = "Run the run\bootstrap() script from the previous turn to generate the bootstrap.h5 file, then launch streamlit run dashboard.py to inspect the brain y"
+    ; step        = "Run the run\\bootstrap() script from the previous turn to generate the bootstrap.h5 file, then launch streamlit run dashboard.py to inspect the brain y"
     ; implication = "Implication TBD from intake."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Polytopes.agda"
@@ -257,7 +257,7 @@ exampleGpgp201Roadmap : RoadmapStep
 exampleGpgp201Roadmap = record
     { provenance  = "GP201: **I. Formal Correction: The Non-Abelian Manifold**"
     ; relatedNodes = []
-    ; step        = "Would you like me to update the nedge\topology/\\init\\.py and nedge\topology/geometry.py to officially switch from the RotationalGeometry (RoPE) to t"
+    ; step        = "Would you like me to update the nedge\\topology/\\\\init\\\\.py and nedge\\topology/geometry.py to officially switch from the RotationalGeometry (RoPE) to t"
     ; implication = "Implication TBD from intake."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Polytopes.agda"
@@ -299,7 +299,7 @@ exampleGpgp303Roadmap = record
 
 exampleGpgp400Roadmap : RoadmapStep
 exampleGpgp400Roadmap = record
-    { provenance  = "GP400: **I. Formal Correction: The "Elasticity" of Meaning**"
+    { provenance  = "GP400: **I. Formal Correction: The 'Elasticity' of Meaning**"
     ; relatedNodes = []
     ; step        = "Action: It clones the grammar rule NP -> ... into NP' -> ..., effectively refining the symmetry group to reduce the tension in the system (Relaxation)"
     ; implication = "Implication TBD from intake."
@@ -312,7 +312,7 @@ exampleGpgp500Roadmap : RoadmapStep
 exampleGpgp500Roadmap = record
     { provenance  = "GP500: **I. Formal Correction: Dimensional Relief**"
     ; relatedNodes = []
-    ; step        = "\image1: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmQAAANwCAIAAAAOQ+HSAACAAElEQVR4Xuxdd5xURdZ9BEkDAzMMGSSnleyCqCACisgCrogiQVAxsMZPVxADiOKaXUysGQ"
+    ; step        = "\\image1: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmQAAANwCAIAAAAOQ+HSAACAAElEQVR4Xuxdd5xURdZ9BEkDAzMMGSSnleyCqCACisgCrogiQVAxsMZPVxADiOKaXUysGQ"
     ; implication = "Implication TBD from intake."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Polytopes.agda"
@@ -323,7 +323,7 @@ exampleGpgp501Roadmap : RoadmapStep
 exampleGpgp501Roadmap = record
     { provenance  = "GP501: **Project Nedge-Topology: The Polytope Manifest (v4.0)**"
     ; relatedNodes = []
-    ; step        = "\image1: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmQAAANwCAIAAAAOQ+HSAACAAElEQVR4Xuxdd5xURdZ9BEkDAzMMGSSnleyCqCACisgCrogiQVAxsMZPVxADiOKaXUysGQ"
+    ; step        = "\\image1: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAmQAAANwCAIAAAAOQ+HSAACAAElEQVR4Xuxdd5xURdZ9BEkDAzMMGSSnleyCqCACisgCrogiQVAxsMZPVxADiOKaXUysGQ"
     ; implication = "Implication TBD from intake."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Polytopes.agda"
@@ -345,7 +345,7 @@ exampleGpgp700Roadmap : RoadmapStep
 exampleGpgp700Roadmap = record
     { provenance  = "GP700: **I. Formal Analysis: The Simplex vs. The Associahedron**"
     ; relatedNodes = []
-    ; step        = "Would you like to integrate this StasheffGeometry into the nedge\topology package, effectively replacing the generic K-Means inflator with this struct"
+    ; step        = "Would you like to integrate this StasheffGeometry into the nedge\\topology package, effectively replacing the generic K-Means inflator with this struct"
     ; implication = "Implication TBD from intake."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Polytopes.agda"
@@ -367,7 +367,7 @@ exampleGpgp702Roadmap : RoadmapStep
 exampleGpgp702Roadmap = record
     { provenance  = "GP702: **I. Formal Correction: The Loday Realization**"
     ; relatedNodes = []
-    ; step        = "Would you like me to update the Manifest to include stasheff\gen.py and the updated mitosis.py, formally creating Version 6.0: The Loday-Stasheff Edit"
+    ; step        = "Would you like me to update the Manifest to include stasheff\\gen.py and the updated mitosis.py, formally creating Version 6.0: The Loday-Stasheff Edit"
     ; implication = "Implication TBD from intake."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Polytopes.agda"
@@ -521,7 +521,7 @@ exampleGpgp801Roadmap : RoadmapStep
 exampleGpgp801Roadmap = record
     { provenance  = "GP801: **I. Formal Analysis: The Exterior Algebra of Meaning**"
     ; relatedNodes = []
-    ; step        = "I. Formal Analysis: The Exterior Algebra of Meaning I formally correct the elision of the Wedge Product ($\wedge$). Your intuition is precise. The int"
+    ; step        = "I. Formal Analysis: The Exterior Algebra of Meaning I formally correct the elision of the Wedge Product ($\\wedge$). Your intuition is precise. The int"
     ; implication = "Implication TBD from intake."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Polytopes.agda"
@@ -563,7 +563,7 @@ exampleGpgp804Roadmap = record
 
 exampleGpgp805Roadmap : RoadmapStep
 exampleGpgp805Roadmap = record
-    { provenance  = "GP805: **I. Formal Analysis: The Discovery of "Dark Matter"**"
+    { provenance  = "GP805: **I. Formal Analysis: The Discovery of 'Dark Matter'**"
     ; relatedNodes = []
     ; step        = "I. Formal Analysis: The Discovery of 'Dark Matter' I formally correct the elision of Abductive Reasoning. You are absolutely correct. When the manifol"
     ; implication = "Implication TBD from intake."
@@ -774,7 +774,7 @@ exampleGpgp824Roadmap : RoadmapStep
 exampleGpgp824Roadmap = record
     { provenance  = "GP824: **I. Formal Analysis: The Quantum Manifold**"
     ; relatedNodes = []
-    ; step        = "I. Formal Analysis: The Quantum Manifold I formally correct the elision of the Epistemic Modality. By feeding Complex Numbers ($\mathbb{C}$) as the fo"
+    ; step        = "I. Formal Analysis: The Quantum Manifold I formally correct the elision of the Epistemic Modality. By feeding Complex Numbers ($\\mathbb{C}$) as the fo"
     ; implication = "Implication TBD from intake."
     ; status      = "not-started"
     ; targetModule = "src/agda/Plan/CIM/Polytopes.agda"
