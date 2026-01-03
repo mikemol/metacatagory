@@ -302,8 +302,9 @@ def scan_repository_for_deferred(
     deviation_log = 0
     file_counts: Dict[str, Dict[str, float]] = {}
 
-    todo_re = re.compile(r"\bTODO\b")
-    fixme_re = re.compile(r"\bFIXME\b")
+    # Only count standalone TODO/FIXME tokens (not part of identifiers/constants)
+    todo_re = re.compile(r"(?<![A-Za-z0-9_])TODO(?![A-Za-z0-9_])")
+    fixme_re = re.compile(r"(?<![A-Za-z0-9_])FIXME(?![A-Za-z0-9_])")
 
     for path in repo_root.rglob("*"):
         if not path.is_file():
@@ -315,6 +316,9 @@ def scan_repository_for_deferred(
         if ext not in FILE_SCAN_EXTENSIONS:
             continue
         rel_file = str(path.relative_to(repo_root))
+        # Skip generated debt reports to avoid double-counting
+        if rel_file == "docs/status/deferred-items.md":
+            continue
         local_postulates = 0
         local_todo = 0
         local_fixme = 0

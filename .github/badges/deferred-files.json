@@ -1,12 +1,4 @@
 {
-  "docs/status/deferred-items.md": {
-    "postulates": 0,
-    "todo": 83,
-    "fixme": 10,
-    "deviation": 15,
-    "total": 108,
-    "weighted_total": 76.5
-  },
   "src/agda/Tests/SerializationTests.agda": {
     "postulates": 22,
     "todo": 0,
@@ -63,6 +55,14 @@
     "total": 15,
     "weighted_total": 22.5
   },
+  "scripts/generate-badges.py": {
+    "postulates": 0,
+    "todo": 8,
+    "fixme": 8,
+    "deviation": 1,
+    "total": 17,
+    "weighted_total": 21.0
+  },
   "src/agda/Tests/AlgorithmCompositionTestsMinimal.agda": {
     "postulates": 14,
     "todo": 0,
@@ -118,14 +118,6 @@
     "deviation": 0,
     "total": 11,
     "weighted_total": 16.5
-  },
-  "scripts/generate-badges.py": {
-    "postulates": 0,
-    "todo": 6,
-    "fixme": 6,
-    "deviation": 1,
-    "total": 13,
-    "weighted_total": 16.0
   },
   ".github/scripts/detect-deferred-items.sh": {
     "postulates": 0,
