@@ -2,21 +2,21 @@
 
 ## Scope
 
-* Normalization helpers for Markdown documents.
+- Normalization helpers for Markdown documents.
 
 ## Key elements
 
-* Transformations that standardize Markdown blocks/inlines for downstream processing.
+- Transformations that standardize Markdown blocks/inlines for downstream processing.
 
 ## Dependencies
 
-* `Plan.CIM.MarkdownParse`, `Plan.CIM.PandocAST`, and rendering utilities.
+- `Plan.CIM.MarkdownParse`, `Plan.CIM.PandocAST`, and rendering utilities.
 
 ## Update triggers
 
-* New normalization rules or dialect changes.
-* Parser or AST shape changes that affect normalization.
+- New normalization rules or dialect changes.
+- Parser or AST shape changes that affect normalization.
 
 ## Technical debt / status
 
-* Track normalization gaps or TODOs in deferred-items.md and ROADMAP.md.
+- Track normalization gaps or TODOs in deferred-items.md and ROADMAP.md.
