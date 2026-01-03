@@ -27,8 +27,6 @@ GENERATED_FILES = [
     "docs/status/DEFERRED-TRACKING.md",
     "docs/status/deferred-items.md",
     "docs/architecture/FRAMEWORK-INTEROPERABILITY.md",
-    "docs/process/QUALITY-FRAMEWORK.md",
-    "build/reports/tasks_enriched.md",
     "build/reports/test-report.md",
 ]
 
