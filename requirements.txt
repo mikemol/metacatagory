@@ -1,5 +1,8 @@
 # Python dependencies for metacatagory tooling and automation
 
+# YAML parsing with Unicode support (required for ROADMAP.md validation)
+PyYAML>=6.0
+
 # Graph visualization for phase diagrams
 networkx>=3.0
 
