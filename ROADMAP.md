@@ -58,7 +58,9 @@ id: BUILD-JSON-SCHEMA
 title: Formalize JSON transformation schema in Agda
 description: "Define record types for Monolithic and Hierarchical JSON representations,\
   \ along with natural transformation laws. Prove isomorphism: backward \u2218 forward\
-  \ \u2261 id and structure preservation."
+  \ \u2261 id and structure preservation. Extended with adequacy framework: synthesize\
+  \ transformations from compositional primitives (json-get, json-set, json-merge)\
+  \ instead of monolithic Python FFI."
 status: in-progress
 category: Build Infrastructure
 dependencies:
@@ -67,15 +69,17 @@ tags:
 - JSON
 - FormalizationProof
 - CategoryTheory
+- Adequacy
 files:
 - src/agda/Plan/CIM/JSONTransformation.agda
+- src/agda/Plan/CIM/JSONTransformationAdequacy.agda
 - src/agda/Plan/CIM/JSONTransformationProofs.agda
 ```
 
-- **Formalize JSON transformation schema in Agda** — Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward ∘ forward ≡ id and structure preservation. [status: in-progress]
+- **Formalize JSON transformation schema in Agda** — Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward ∘ forward ≡ id and structure preservation. Extended with adequacy framework: synthesize transformations from compositional primitives (json-get, json-set, json-merge) instead of monolithic Python FFI. [status: in-progress]
   Source: JSONDecomposition
-  Target: `src/agda/Plan/CIM/JSONTransformation.agda`, `src/agda/Plan/CIM/JSONTransformationProofs.agda`
-  Tags: JSON, FormalizationProof, CategoryTheory
+  Target: `src/agda/Plan/CIM/JSONTransformation.agda`, `src/agda/Plan/CIM/JSONTransformationAdequacy.agda`, `src/agda/Plan/CIM/JSONTransformationProofs.agda`
+  Tags: JSON, FormalizationProof, CategoryTheory, Adequacy
   Depends on: `BUILD-JSON-DECOMPOSITION`
 
 ```yaml
@@ -106,9 +110,10 @@ files:
 ```yaml
 id: BUILD-JSON-FORWARD
 title: "Implement monolithic \u2192 hierarchical forward transformation"
-description: Write Python transformer (or Agda FFI) that reads large monolithic JSON
-  and writes hierarchical representation with _index.json manifests and integrity
-  validation.
+description: Synthesize forward transformation from adequacy kit primitives (json-get,
+  json-set, extractItems, generateIndexManifest). Kit provides decomposition strategy
+  + primitive operations; adequacy proof witnesses sufficiency. Extract to Haskell/Python
+  or implement primitives directly in Agda.
 status: not-started
 category: Build Infrastructure
 dependencies:
@@ -122,7 +127,7 @@ files:
 - scripts/json_decompose.py
 ```
 
-- **Implement monolithic → hierarchical forward transformation** — Write Python transformer (or Agda FFI) that reads large monolithic JSON and writes hierarchical representation with _index.json manifests and integrity validation. [status: not-started]
+- **Implement monolithic → hierarchical forward transformation** — Synthesize forward transformation from adequacy kit primitives (json-get, json-set, extractItems, generateIndexManifest). Kit provides decomposition strategy + primitive operations; adequacy proof witnesses sufficiency. Extract to Haskell/Python or implement primitives directly in Agda. [status: not-started]
   Source: JSONDecomposition
   Target: `scripts/json_decompose.py`
   Tags: JSON, Implementation, Python

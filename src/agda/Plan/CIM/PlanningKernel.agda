@@ -45,14 +45,15 @@ definitionRoadmapItems =
   record
     { id         = "BUILD-JSON-SCHEMA"
     ; title      = "Formalize JSON transformation schema in Agda"
-    ; description = "Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward ∘ forward ≡ id and structure preservation."
+    ; description = "Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward ∘ forward ≡ id and structure preservation. Extended with adequacy framework: synthesize transformations from compositional primitives (json-get, json-set, json-merge) instead of monolithic Python FFI."
     ; status     = "in-progress"
     ; category   = "Build Infrastructure"
     ; source     = "JSONDecomposition"
     ; files      = ("src/agda/Plan/CIM/JSONTransformation.agda"
+                    ∷ "src/agda/Plan/CIM/JSONTransformationAdequacy.agda"
                     ∷ "src/agda/Plan/CIM/JSONTransformationProofs.agda"
                     ∷ [])
-    ; tags       = ("JSON" ∷ "FormalizationProof" ∷ "CategoryTheory" ∷ [])
+    ; tags       = ("JSON" ∷ "FormalizationProof" ∷ "CategoryTheory" ∷ "Adequacy" ∷ [])
     ; dependsOn  = ("BUILD-JSON-DECOMPOSITION" ∷ [])
     ; provenance = ("design review" ∷ [])
     ; related    = []
@@ -77,7 +78,7 @@ definitionRoadmapItems =
   record
     { id         = "BUILD-JSON-FORWARD"
     ; title      = "Implement monolithic → hierarchical forward transformation"
-    ; description = "Write Python transformer (or Agda FFI) that reads large monolithic JSON and writes hierarchical representation with _index.json manifests and integrity validation."
+    ; description = "Synthesize forward transformation from adequacy kit primitives (json-get, json-set, extractItems, generateIndexManifest). Kit provides decomposition strategy + primitive operations; adequacy proof witnesses sufficiency. Extract to Haskell/Python or implement primitives directly in Agda."
     ; status     = "not-started"
     ; category   = "Build Infrastructure"
     ; source     = "JSONDecomposition"
