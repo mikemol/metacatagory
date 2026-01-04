@@ -35,7 +35,7 @@ description: Implement hierarchical decomposition of monolithic build JSONs (dep
   canonical_enriched.json, etc.) using category-theoretic natural transformations.
   Preserve losslessness and structure while improving granularity, diffability, and
   parallel build efficiency.
-status: not-started
+status: in-progress
 category: Build Infrastructure
 tags:
 - JSON
@@ -48,7 +48,7 @@ files:
 - scripts/json_recompose.py
 ```
 
-- **Decompose large JSON artifacts via natural transformations** — Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency. [status: not-started]
+- **Decompose large JSON artifacts via natural transformations** — Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency. [status: in-progress]
   Source: JSONDecomposition
   Target: `src/agda/Plan/CIM/JSONTransformation.agda`, `scripts/json_decompose.py`, `scripts/json_recompose.py`
   Tags: JSON, NaturalTransformation, SPPF, Build
@@ -59,7 +59,7 @@ title: Formalize JSON transformation schema in Agda
 description: "Define record types for Monolithic and Hierarchical JSON representations,\
   \ along with natural transformation laws. Prove isomorphism: backward \u2218 forward\
   \ \u2261 id and structure preservation."
-status: not-started
+status: in-progress
 category: Build Infrastructure
 dependencies:
 - BUILD-JSON-DECOMPOSITION
@@ -72,7 +72,7 @@ files:
 - src/agda/Plan/CIM/JSONTransformationProofs.agda
 ```
 
-- **Formalize JSON transformation schema in Agda** — Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward ∘ forward ≡ id and structure preservation. [status: not-started]
+- **Formalize JSON transformation schema in Agda** — Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward ∘ forward ≡ id and structure preservation. [status: in-progress]
   Source: JSONDecomposition
   Target: `src/agda/Plan/CIM/JSONTransformation.agda`, `src/agda/Plan/CIM/JSONTransformationProofs.agda`
   Tags: JSON, FormalizationProof, CategoryTheory
@@ -84,7 +84,7 @@ title: Design hierarchical JSON directory structure
 description: "Document and implement the target hierarchy: dependency_graph \u2192\
   \ deps/, canonical_enriched \u2192 enriched/, planning_index \u2192 planning/ with\
   \ _index.json manifests, metadata files, and aggregation rules."
-status: not-started
+status: done
 category: Build Infrastructure
 dependencies:
 - BUILD-JSON-DECOMPOSITION
@@ -97,7 +97,7 @@ files:
 - build/schemas/hierarchy.md
 ```
 
-- **Design hierarchical JSON directory structure** — Document and implement the target hierarchy: dependency_graph → deps/, canonical_enriched → enriched/, planning_index → planning/ with _index.json manifests, metadata files, and aggregation rules. [status: not-started]
+- **Design hierarchical JSON directory structure** — Document and implement the target hierarchy: dependency_graph → deps/, canonical_enriched → enriched/, planning_index → planning/ with _index.json manifests, metadata files, and aggregation rules. [status: done]
   Source: JSONDecomposition
   Target: `docs/process/JSON-DECOMPOSITION.md`, `build/schemas/hierarchy.md`
   Tags: JSON, Documentation, Schema
