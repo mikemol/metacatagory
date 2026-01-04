@@ -44,7 +44,7 @@ open import TechnicalDebt.Priorities
 open import TechnicalDebt.PriorityMapping
 import TechnicalDebt.PriorityFormatting
 open module PriorityFormatting = TechnicalDebt.PriorityFormatting intToString
-open import TechnicalDebt.DeferredItemsFormatting
+open import TechnicalDebt.DeferredItemsFormatting hiding (map)
 
 ------------------------------------------------------------------------
 -- Minimal JSON rendering (pure string concatenation)

@@ -8,6 +8,10 @@ open import Agda.Builtin.Nat using (Nat)
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Core.Phase using (_×_; _,_)
 
+map : ∀ {A B : Set} → (A → B) → List A → List B
+map f [] = []
+map f (x ∷ xs) = f x ∷ map f xs
+
 infixr 5 _++_
 _++_ : String → String → String
 _++_ = primStringAppend
@@ -15,6 +19,12 @@ _++_ = primStringAppend
 concatMap : ∀ {A : Set} → (A → String) → List A → String
 concatMap f [] = ""
 concatMap f (x ∷ xs) = f x ++ concatMap f xs
+
+-- Helper: join strings with separator
+joinWith : String → List String → String
+joinWith sep [] = ""
+joinWith sep (x ∷ []) = x
+joinWith sep (x ∷ xs) = x ++ sep ++ joinWith sep xs
 
 -- Reusable record type for list-like structures
 record ListLike (A : Set) : Set where
@@ -116,6 +126,19 @@ mutual
   AUDAXInlineToMarkdown Space = " "
   AUDAXInlineToMarkdown Break = "\n"
 
+-- Implementation of table rendering (after mutual block)
+renderMarkdownTable : ListLike String → ListLike (ListLike AUDAXInline) → String
+renderMarkdownTable header rows =
+  let headerStrs = ListLike.items header
+      separator = joinWith " | " (map (λ _ → "---") headerStrs)
+      headerRow = joinWith " | " headerStrs
+      rowStrs = map renderRow (ListLike.items rows)
+      allRows = joinWith "\n" rowStrs
+  in "| " ++ headerRow ++ " |\n| " ++ separator ++ " |\n" ++ allRows ++ "\n\n"
+  where
+    renderRow : ListLike AUDAXInline → String
+    renderRow cells = "| " ++ joinWith " | " (map AUDAXInlineToMarkdown (ListLike.items cells)) ++ " |"
+
 {-# TERMINATING #-}
 mutual
   AUDAXBlockListToMarkdown : List AUDAXBlock → String
@@ -128,7 +151,7 @@ mutual
   AUDAXBlockToMarkdown (CodeBlock code) = "```\n" ++ code ++ "\n```\n\n"
   AUDAXBlockToMarkdown (BlockQuote blocks) = "> " ++ AUDAXBlockListToMarkdown (ListLike.items blocks)
   AUDAXBlockToMarkdown (ListBlock blockss) = concatMap (\bs → "- " ++ AUDAXBlockListToMarkdown (ListLike.items bs)) (ListLike.items blockss)
-  AUDAXBlockToMarkdown (Table header rows) = "[Table omitted]"
+  AUDAXBlockToMarkdown (Table header rows) = renderMarkdownTable header rows
   AUDAXBlockToMarkdown (Field k v) = k ++ ": " ++ v ++ "\n"
   AUDAXBlockToMarkdown (Raw s) = s ++ "\n"
   AUDAXBlockToMarkdown Null = ""
