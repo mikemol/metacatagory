@@ -26,6 +26,256 @@ This document is a projection from the planning kernel. To update:
 2. Run `make planning-index-json` to refresh build/planning_index.json
 3. Run `make roadmap-export-md` to regenerate this file
 
+## Build Infrastructure
+
+```yaml
+id: BUILD-JSON-DECOMPOSITION
+title: Decompose large JSON artifacts via natural transformations
+description: Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json,
+  canonical_enriched.json, etc.) using category-theoretic natural transformations.
+  Preserve losslessness and structure while improving granularity, diffability, and
+  parallel build efficiency.
+status: not-started
+category: Build Infrastructure
+tags:
+- JSON
+- NaturalTransformation
+- SPPF
+- Build
+files:
+- src/agda/Plan/CIM/JSONTransformation.agda
+- scripts/json_decompose.py
+- scripts/json_recompose.py
+```
+
+- **Decompose large JSON artifacts via natural transformations** — Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency. [status: not-started]
+  Source: JSONDecomposition
+  Target: `src/agda/Plan/CIM/JSONTransformation.agda`, `scripts/json_decompose.py`, `scripts/json_recompose.py`
+  Tags: JSON, NaturalTransformation, SPPF, Build
+
+```yaml
+id: BUILD-JSON-SCHEMA
+title: Formalize JSON transformation schema in Agda
+description: "Define record types for Monolithic and Hierarchical JSON representations,\
+  \ along with natural transformation laws. Prove isomorphism: backward \u2218 forward\
+  \ \u2261 id and structure preservation."
+status: not-started
+category: Build Infrastructure
+dependencies:
+- BUILD-JSON-DECOMPOSITION
+tags:
+- JSON
+- FormalizationProof
+- CategoryTheory
+files:
+- src/agda/Plan/CIM/JSONTransformation.agda
+- src/agda/Plan/CIM/JSONTransformationProofs.agda
+```
+
+- **Formalize JSON transformation schema in Agda** — Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward ∘ forward ≡ id and structure preservation. [status: not-started]
+  Source: JSONDecomposition
+  Target: `src/agda/Plan/CIM/JSONTransformation.agda`, `src/agda/Plan/CIM/JSONTransformationProofs.agda`
+  Tags: JSON, FormalizationProof, CategoryTheory
+  Depends on: `BUILD-JSON-DECOMPOSITION`
+
+```yaml
+id: BUILD-JSON-HIERARCHY
+title: Design hierarchical JSON directory structure
+description: "Document and implement the target hierarchy: dependency_graph \u2192\
+  \ deps/, canonical_enriched \u2192 enriched/, planning_index \u2192 planning/ with\
+  \ _index.json manifests, metadata files, and aggregation rules."
+status: not-started
+category: Build Infrastructure
+dependencies:
+- BUILD-JSON-DECOMPOSITION
+tags:
+- JSON
+- Documentation
+- Schema
+files:
+- docs/process/JSON-DECOMPOSITION.md
+- build/schemas/hierarchy.md
+```
+
+- **Design hierarchical JSON directory structure** — Document and implement the target hierarchy: dependency_graph → deps/, canonical_enriched → enriched/, planning_index → planning/ with _index.json manifests, metadata files, and aggregation rules. [status: not-started]
+  Source: JSONDecomposition
+  Target: `docs/process/JSON-DECOMPOSITION.md`, `build/schemas/hierarchy.md`
+  Tags: JSON, Documentation, Schema
+  Depends on: `BUILD-JSON-DECOMPOSITION`
+
+```yaml
+id: BUILD-JSON-FORWARD
+title: "Implement monolithic \u2192 hierarchical forward transformation"
+description: Write Python transformer (or Agda FFI) that reads large monolithic JSON
+  and writes hierarchical representation with _index.json manifests and integrity
+  validation.
+status: not-started
+category: Build Infrastructure
+dependencies:
+- BUILD-JSON-SCHEMA
+- BUILD-JSON-HIERARCHY
+tags:
+- JSON
+- Implementation
+- Python
+files:
+- scripts/json_decompose.py
+```
+
+- **Implement monolithic → hierarchical forward transformation** — Write Python transformer (or Agda FFI) that reads large monolithic JSON and writes hierarchical representation with _index.json manifests and integrity validation. [status: not-started]
+  Source: JSONDecomposition
+  Target: `scripts/json_decompose.py`
+  Tags: JSON, Implementation, Python
+  Depends on: `BUILD-JSON-SCHEMA`, `BUILD-JSON-HIERARCHY`
+
+```yaml
+id: BUILD-JSON-BACKWARD
+title: "Implement hierarchical \u2192 monolithic backward transformation"
+description: Write inverse transformer that reconstructs original monolithic JSON
+  from hierarchical fragments, with roundtrip verification for CI.
+status: not-started
+category: Build Infrastructure
+dependencies:
+- BUILD-JSON-FORWARD
+tags:
+- JSON
+- Implementation
+- Python
+files:
+- scripts/json_recompose.py
+```
+
+- **Implement hierarchical → monolithic backward transformation** — Write inverse transformer that reconstructs original monolithic JSON from hierarchical fragments, with roundtrip verification for CI. [status: not-started]
+  Source: JSONDecomposition
+  Target: `scripts/json_recompose.py`
+  Tags: JSON, Implementation, Python
+  Depends on: `BUILD-JSON-FORWARD`
+
+```yaml
+id: BUILD-JSON-APPLY-DEPS
+title: Apply decomposition to dependency_graph.json
+description: 'First target: decompose 84-module dependency graph into build/deps/{modules,layers,cycles}/
+  hierarchy with module-level granularity.'
+status: not-started
+category: Build Infrastructure
+dependencies:
+- BUILD-JSON-BACKWARD
+tags:
+- JSON
+- DependencyGraph
+- Phase1
+files:
+- build/deps/_metadata.json
+- build/deps/modules/_index.json
+- build/deps/layers/_index.json
+```
+
+- **Apply decomposition to dependency_graph.json** — First target: decompose 84-module dependency graph into build/deps/{modules,layers,cycles}/ hierarchy with module-level granularity. [status: not-started]
+  Source: JSONDecomposition
+  Target: `build/deps/_metadata.json`, `build/deps/modules/_index.json`, `build/deps/layers/_index.json`
+  Tags: JSON, DependencyGraph, Phase1
+  Depends on: `BUILD-JSON-BACKWARD`
+
+```yaml
+id: BUILD-JSON-APPLY-ENRICHED
+title: Apply decomposition to canonical_enriched.json
+description: 'Second target: decompose roadmap enrichment data into build/enriched/{items,dependencies,annotations}/
+  with per-item granularity.'
+status: not-started
+category: Build Infrastructure
+dependencies:
+- BUILD-JSON-BACKWARD
+tags:
+- JSON
+- RoadmapEnrichment
+- Phase1
+files:
+- build/enriched/_metadata.json
+- build/enriched/items/_index.json
+- build/enriched/dependencies/_manifest.json
+```
+
+- **Apply decomposition to canonical_enriched.json** — Second target: decompose roadmap enrichment data into build/enriched/{items,dependencies,annotations}/ with per-item granularity. [status: not-started]
+  Source: JSONDecomposition
+  Target: `build/enriched/_metadata.json`, `build/enriched/items/_index.json`, `build/enriched/dependencies/_manifest.json`
+  Tags: JSON, RoadmapEnrichment, Phase1
+  Depends on: `BUILD-JSON-BACKWARD`
+
+```yaml
+id: BUILD-JSON-APPLY-PLANNING
+title: Apply decomposition to planning_index.json
+description: 'Third target: decompose planning index into build/planning/{items,sources,artifacts}/
+  with natural hierarchical layout.'
+status: not-started
+category: Build Infrastructure
+dependencies:
+- BUILD-JSON-BACKWARD
+tags:
+- JSON
+- PlanningIndex
+- Phase1
+files:
+- build/planning/_metadata.json
+- build/planning/items/_index.json
+- build/planning/sources/_manifest.json
+```
+
+- **Apply decomposition to planning_index.json** — Third target: decompose planning index into build/planning/{items,sources,artifacts}/ with natural hierarchical layout. [status: not-started]
+  Source: JSONDecomposition
+  Target: `build/planning/_metadata.json`, `build/planning/items/_index.json`, `build/planning/sources/_manifest.json`
+  Tags: JSON, PlanningIndex, Phase1
+  Depends on: `BUILD-JSON-BACKWARD`
+
+```yaml
+id: BUILD-JSON-QUERY-LAYER
+title: Implement query layer for hierarchical JSON
+description: 'Build Python/Agda utilities for querying decomposed JSON: by-category,
+  by-module, transitive-deps, etc., using _index.json for efficient lookups without
+  scanning filesystem.'
+status: not-started
+category: Build Infrastructure
+dependencies:
+- BUILD-JSON-APPLY-DEPS
+- BUILD-JSON-APPLY-ENRICHED
+- BUILD-JSON-APPLY-PLANNING
+tags:
+- JSON
+- Query
+- Performance
+files:
+- scripts/query_json_hierarchy.py
+- src/agda/Plan/CIM/JSONQuery.agda
+```
+
+- **Implement query layer for hierarchical JSON** — Build Python/Agda utilities for querying decomposed JSON: by-category, by-module, transitive-deps, etc., using _index.json for efficient lookups without scanning filesystem. [status: not-started]
+  Source: JSONDecomposition
+  Target: `scripts/query_json_hierarchy.py`, `src/agda/Plan/CIM/JSONQuery.agda`
+  Tags: JSON, Query, Performance
+  Depends on: `BUILD-JSON-APPLY-DEPS`, `BUILD-JSON-APPLY-ENRICHED`, `BUILD-JSON-APPLY-PLANNING`
+
+```yaml
+id: BUILD-JSON-VALIDATION
+title: Implement CI validation for roundtrip equivalence
+description: "Add Makefile target to validate: decompose \u2192 recompose yields original\
+  \ JSON bit-for-bit, ensuring losslessness."
+status: not-started
+category: Build Infrastructure
+dependencies:
+- BUILD-JSON-BACKWARD
+tags:
+- JSON
+- CI
+- Validation
+files:
+- scripts/validate_json_roundtrip.py
+```
+
+- **Implement CI validation for roundtrip equivalence** — Add Makefile target to validate: decompose → recompose yields original JSON bit-for-bit, ensuring losslessness. [status: not-started]
+  Source: JSONDecomposition
+  Target: `scripts/validate_json_roundtrip.py`
+  Tags: JSON, CI, Validation
+  Depends on: `BUILD-JSON-BACKWARD`
+
 ## Infrastructure
 
 ```yaml
