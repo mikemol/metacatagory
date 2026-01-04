@@ -1,48 +1,55 @@
 #!/usr/bin/env python3
 """
-Generate markdown documentation from Agda RoadmapStep records.
-Extracts the 4 key roadmaps from src/agda/Plan/CIM/Utility.agda
-and generates README.md, NAVIGATION.md, and CONTRIBUTING.md
+Generate markdown documentation from planning index.
+Loads roadmap data from build/planning_index.json instead of hardcoded list.
+Generates README.md, NAVIGATION.md, and CONTRIBUTING.md
 """
 
+import json
 import re
 import sys
+from pathlib import Path
 
-# Define the 4 key roadmaps with their data
-ROADMAPS = [
-    {
-        "name": "exampleUnifiedTopologicalParserRoadmap",
-        "provenance": "GP699, Unified Topological Parser, Nedge-Topology, SPPF + RoPE + SymNum",
-        "step": "Integrate Earley parsing, RoPE, and symmetry group concepts into a unified topological parser. Treat syntax as a manifold and ambiguity as vector superposition.",
-        "implication": "Enables composable geometric and topological integration, active topological pruning, and algebraic superposition for ambiguity. Supports recursive revisiting, fiber bundle architecture, and advanced induction/training features.",
-        "status": "not-started",
-        "targetModule": "nedge_topology/parser.py, nedge_topology/train.py, nedge_topology/mitosis.py, nedge_topology/search.py, dashboard.py, src/agda/Plan/CIM/RotationalTransport.agda, src/agda/Plan/CIM/TopologicalGating.agda, src/agda/Plan/CIM/TopologicalSuperposition.agda"
-    },
-    {
-        "name": "exampleDimensionalReliefRoadmap",
-        "provenance": "GP500, Dimensional Relief, Topological Inflation, Stasheff Expansion",
-        "step": "Implement topological inflation: upgrade crowded semantic categories to higher-dimensional polytopes to relieve tension.",
-        "implication": "Enables composable category expansion, tension relief, and dynamic geometry for semantic protocols. Supports recursive revisiting and concept differentiation.",
-        "status": "not-started",
-        "targetModule": "src/agda/Plan/CIM/PolytopeExpansion.agda, nedge_topology/mitosis.py"
-    },
-    {
-        "name": "examplePolytopeManifestRoadmap",
-        "provenance": "GP501, Polytope Manifest, Mitosis Engine, Dynamic Polytopes",
-        "step": "Implement Mitosis Engine to monitor topological tension and inflate categories to dynamic polytopes as needed.",
-        "implication": "Enables dynamic, composable category geometry, tension monitoring, and concept differentiation. Supports recursive revisiting and protocol evolution.",
-        "status": "not-started",
-        "targetModule": "nedge_topology/mitosis.py, nedge_topology/parser.py, dashboard.py, src/agda/Plan/CIM/PolytopeExpansion.agda"
-    },
-    {
-        "name": "exampleElasticityOfMeaningRoadmap",
-        "provenance": "GP400, Elasticity of Meaning, Tension/Resonance phase space",
-        "step": "Integrate 2D gating logic (Tension/Resonance) into parser and protocol records, explicitly cross-referencing ambiguity, metricization, transformation system, and functorial constructs.",
-        "implication": "Enables composable phase space modeling, creative/insightful parse acceptance, and pruning of non-sequitur/hallucination nodes. Supports recursive revisiting for grammar induction, protocol refinement, and functorial traceability.",
-        "status": "not-started",
-        "targetModule": "src/agda/Plan/CIM/Elasticity.agda, parser.py, dashboard.py, src/agda/Plan/CIM/Ambiguity.agda, src/agda/Plan/CIM/Metricization.agda, src/agda/Plan/CIM/TransformationSystem.agda, src/agda/Plan/CIM/FunctorialConstructs.agda"
+def load_planning_index():
+    """Load roadmap data from build/planning_index.json"""
+    workspace = Path(__file__).parent.parent
+    planning_index = workspace / "build" / "planning_index.json"
+    
+    if not planning_index.exists():
+        print(f"Warning: {planning_index} not found, using empty roadmap list", file=sys.stderr)
+        return []
+    
+    with open(planning_index, 'r') as f:
+        items = json.load(f)
+    
+    # Filter for key roadmaps (those with specific categories or tags)
+    # Prioritize: in-progress, then done, then not-started
+    # Limit to top items to keep README readable
+    priority_items = sorted(
+        items,
+        key=lambda x: (
+            0 if x.get('status') == 'in-progress' else
+            1 if x.get('status') == 'done' else 2,
+            -len(x.get('description', ''))  # Prefer detailed items
+        )
+    )[:10]  # Top 10 most relevant items
+    
+    return priority_items
+
+def format_roadmap_for_readme(item):
+    """Convert planning index item to README-compatible format"""
+    return {
+        "id": item.get("id", "unknown"),
+        "title": item.get("title", "Untitled"),
+        "description": item.get("description", ""),
+        "status": item.get("status", "not-started"),
+        "category": item.get("category", "General"),
+        "files": ", ".join(item.get("files", [])),
+        "tags": ", ".join(item.get("tags", []))
     }
-]
+
+# Load roadmaps from planning index instead of hardcoding
+ROADMAPS = [format_roadmap_for_readme(item) for item in load_planning_index()]
 
 def generate_readme():
     """Generate README.md content"""
@@ -71,11 +78,15 @@ The following roadmap steps guide development and protocol composition:
 
 """
     for rm in ROADMAPS:
-        content += f"### {rm['provenance']}\n\n"
-        content += f"**Step:** {rm['step']}\n\n"
-        content += f"**Implication:** {rm['implication']}\n\n"
-        content += f"**Status:** `{rm['status']}`\n\n"
-        content += f"**Target Modules:** {rm['targetModule']}\n\n"
+        content += f"### {rm.get('title', 'Untitled')}\n\n"
+        content += f"**ID:** `{rm.get('id', 'unknown')}`\n\n"
+        content += f"**Description:** {rm.get('description', 'No description')}\n\n"
+        content += f"**Category:** {rm.get('category', 'General')}\n\n"
+        content += f"**Status:** `{rm.get('status', 'not-started')}`\n\n"
+        if rm.get('files'):
+            content += f"**Files:** {rm.get('files')}\n\n"
+        if rm.get('tags'):
+            content += f"**Tags:** {rm.get('tags')}\n\n"
     
     content += """## Development Workflow
 

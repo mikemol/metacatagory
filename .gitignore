@@ -16,6 +16,7 @@ src/agda/MAlonzo/
 src/agda/DeferredItemsScanner
 src/agda/ExporterMakefile
 src/agda/PriorityOrchestrationFFI
+src/agda/DeferredItemsOrchestrationFFI
 src/agda/PlanningExport
 src/agda/PriorityProfileExport
 src/agda/DependencyGraphExport
@@ -30,6 +31,13 @@ Makefile.generated
 # Build outputs (but track witness/reference files for CI)
 build/
 !build/makefile_targets_generated.md
+!build/dependency_graph.json
+!build/impact_analysis.json
+!build/module_mappings.json
+!build/planning_index.json
+!build/priority_strategies_audax.md
+!build/priority_strategy_profiles.json
+!build/strategy_*.json
 dist/
 *.egg-info/
 

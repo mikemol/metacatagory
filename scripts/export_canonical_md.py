@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Export unified planning index to ROADMAP.md format."""
+"""Export unified planning index to ROADMAP.md format.
 
-import json
+Uses shared modules for composability:
+- shared_data: load_planning_index()
+- shared_yaml: dump_yaml()
+"""
+
 from pathlib import Path
 from collections import defaultdict
-
-try:
-    import yaml  # type: ignore
-except ImportError:
-    yaml = None
+from shared_data import load_planning_index, REPO_ROOT
+from shared_yaml import dump_yaml
 
 HEADER = """# Metacatagory Development Roadmap
 
@@ -40,26 +41,9 @@ This document is a projection from the planning kernel. To update:
 
 """
 
-def dump_yaml(data: dict) -> str:
-    """Serialize frontmatter without requiring PyYAML at runtime."""
-    if yaml is not None:
-        return yaml.dump(data, default_flow_style=False, sort_keys=False).rstrip()
-
-    # Minimal fallback for dict[str, str | list[str]]
-    lines = []
-    for key, value in data.items():
-        if isinstance(value, list):
-            lines.append(f"{key}:")
-            for item in value:
-                lines.append(f"  - {item}")
-        else:
-            lines.append(f"{key}: {value}")
-    return "\n".join(lines)
-
-def export_markdown(source_path: Path, output_path: Path):
+def export_markdown(output_path: Path):
     """Export planning index to ROADMAP.md."""
-    with open(source_path) as f:
-        canonical = json.load(f)
+    canonical = load_planning_index()
     
     lines = [HEADER.strip(), ""]
     
@@ -126,8 +110,4 @@ def export_markdown(source_path: Path, output_path: Path):
     print(f"Exported {len(canonical)} items to {output_path}")
 
 if __name__ == "__main__":
-    base = Path(__file__).resolve().parent.parent
-    export_markdown(
-        base / "build/planning_index.json",
-        base / "ROADMAP.md"
-    )
+    export_markdown(REPO_ROOT / "ROADMAP.md")

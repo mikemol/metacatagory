@@ -26,6 +26,165 @@ open import Plan.CIM.CanonicalRoadmap using (canonicalItems)
 definitionRoadmapItems : List RoadmapItem
 definitionRoadmapItems =
   record
+    { id         = "BUILD-JSON-DECOMPOSITION"
+    ; title      = "Decompose large JSON artifacts via natural transformations"
+    ; description = "Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency."
+    ; status     = "in-progress"
+    ; category   = "Build Infrastructure"
+    ; source     = "JSONDecomposition"
+    ; files      = ("src/agda/Plan/CIM/JSONTransformation.agda"
+                    ∷ "scripts/json_decompose.py"
+                    ∷ "scripts/json_recompose.py"
+                    ∷ [])
+    ; tags       = ("JSON" ∷ "NaturalTransformation" ∷ "SPPF" ∷ "Build" ∷ [])
+    ; dependsOn  = []
+    ; provenance = ("session: JSON decomposition design review (2026-01-04)" ∷ [])
+    ; related    = ("BUILD-JSON-SCHEMA" ∷ "BUILD-JSON-HIERARCHY" ∷ [])
+    }
+  ∷
+  record
+    { id         = "BUILD-JSON-SCHEMA"
+    ; title      = "Formalize JSON transformation schema in Agda"
+    ; description = "Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward ∘ forward ≡ id and structure preservation. Extended with adequacy framework: synthesize transformations from compositional primitives (json-get, json-set, json-merge) instead of monolithic Python FFI."
+    ; status     = "in-progress"
+    ; category   = "Build Infrastructure"
+    ; source     = "JSONDecomposition"
+    ; files      = ("src/agda/Plan/CIM/JSONTransformation.agda"
+                    ∷ "src/agda/Plan/CIM/JSONTransformationAdequacy.agda"
+                    ∷ "src/agda/Plan/CIM/JSONTransformationProofs.agda"
+                    ∷ [])
+    ; tags       = ("JSON" ∷ "FormalizationProof" ∷ "CategoryTheory" ∷ "Adequacy" ∷ [])
+    ; dependsOn  = ("BUILD-JSON-DECOMPOSITION" ∷ [])
+    ; provenance = ("design review" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "BUILD-JSON-HIERARCHY"
+    ; title      = "Design hierarchical JSON directory structure"
+    ; description = "Document and implement the target hierarchy: dependency_graph → deps/, canonical_enriched → enriched/, planning_index → planning/ with _index.json manifests, metadata files, and aggregation rules."
+    ; status     = "done"
+    ; category   = "Build Infrastructure"
+    ; source     = "JSONDecomposition"
+    ; files      = ("docs/process/JSON-DECOMPOSITION.md"
+                    ∷ "build/schemas/hierarchy.md"
+                    ∷ [])
+    ; tags       = ("JSON" ∷ "Documentation" ∷ "Schema" ∷ [])
+    ; dependsOn  = ("BUILD-JSON-DECOMPOSITION" ∷ [])
+    ; provenance = ("design review" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "BUILD-JSON-FORWARD"
+    ; title      = "Implement monolithic → hierarchical forward transformation"
+    ; description = "Synthesize forward transformation from adequacy kit primitives (json-get, json-set, extractItems, generateIndexManifest). Kit provides decomposition strategy + primitive operations; adequacy proof witnesses sufficiency. Extract to Haskell/Python or implement primitives directly in Agda."
+    ; status     = "not-started"
+    ; category   = "Build Infrastructure"
+    ; source     = "JSONDecomposition"
+    ; files      = ("scripts/json_decompose.py" ∷ [])
+    ; tags       = ("JSON" ∷ "Implementation" ∷ "Python" ∷ [])
+    ; dependsOn  = ("BUILD-JSON-SCHEMA" ∷ "BUILD-JSON-HIERARCHY" ∷ [])
+    ; provenance = ("design review" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "BUILD-JSON-BACKWARD"
+    ; title      = "Implement hierarchical → monolithic backward transformation"
+    ; description = "Write inverse transformer that reconstructs original monolithic JSON from hierarchical fragments, with roundtrip verification for CI."
+    ; status     = "not-started"
+    ; category   = "Build Infrastructure"
+    ; source     = "JSONDecomposition"
+    ; files      = ("scripts/json_recompose.py" ∷ [])
+    ; tags       = ("JSON" ∷ "Implementation" ∷ "Python" ∷ [])
+    ; dependsOn  = ("BUILD-JSON-FORWARD" ∷ [])
+    ; provenance = ("design review" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "BUILD-JSON-APPLY-DEPS"
+    ; title      = "Apply decomposition to dependency_graph.json"
+    ; description = "First target: decompose 84-module dependency graph into build/deps/{modules,layers,cycles}/ hierarchy with module-level granularity."
+    ; status     = "not-started"
+    ; category   = "Build Infrastructure"
+    ; source     = "JSONDecomposition"
+    ; files      = ("build/deps/_metadata.json"
+                    ∷ "build/deps/modules/_index.json"
+                    ∷ "build/deps/layers/_index.json"
+                    ∷ [])
+    ; tags       = ("JSON" ∷ "DependencyGraph" ∷ "Phase1" ∷ [])
+    ; dependsOn  = ("BUILD-JSON-BACKWARD" ∷ [])
+    ; provenance = ("design review" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "BUILD-JSON-APPLY-ENRICHED"
+    ; title      = "Apply decomposition to canonical_enriched.json"
+    ; description = "Second target: decompose roadmap enrichment data into build/enriched/{items,dependencies,annotations}/ with per-item granularity."
+    ; status     = "not-started"
+    ; category   = "Build Infrastructure"
+    ; source     = "JSONDecomposition"
+    ; files      = ("build/enriched/_metadata.json"
+                    ∷ "build/enriched/items/_index.json"
+                    ∷ "build/enriched/dependencies/_manifest.json"
+                    ∷ [])
+    ; tags       = ("JSON" ∷ "RoadmapEnrichment" ∷ "Phase1" ∷ [])
+    ; dependsOn  = ("BUILD-JSON-BACKWARD" ∷ [])
+    ; provenance = ("design review" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "BUILD-JSON-APPLY-PLANNING"
+    ; title      = "Apply decomposition to planning_index.json"
+    ; description = "Third target: decompose planning index into build/planning/{items,sources,artifacts}/ with natural hierarchical layout."
+    ; status     = "not-started"
+    ; category   = "Build Infrastructure"
+    ; source     = "JSONDecomposition"
+    ; files      = ("build/planning/_metadata.json"
+                    ∷ "build/planning/items/_index.json"
+                    ∷ "build/planning/sources/_manifest.json"
+                    ∷ [])
+    ; tags       = ("JSON" ∷ "PlanningIndex" ∷ "Phase1" ∷ [])
+    ; dependsOn  = ("BUILD-JSON-BACKWARD" ∷ [])
+    ; provenance = ("design review" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "BUILD-JSON-QUERY-LAYER"
+    ; title      = "Implement query layer for hierarchical JSON"
+    ; description = "Build Python/Agda utilities for querying decomposed JSON: by-category, by-module, transitive-deps, etc., using _index.json for efficient lookups without scanning filesystem."
+    ; status     = "not-started"
+    ; category   = "Build Infrastructure"
+    ; source     = "JSONDecomposition"
+    ; files      = ("scripts/query_json_hierarchy.py"
+                    ∷ "src/agda/Plan/CIM/JSONQuery.agda"
+                    ∷ [])
+    ; tags       = ("JSON" ∷ "Query" ∷ "Performance" ∷ [])
+    ; dependsOn  = ("BUILD-JSON-APPLY-DEPS" ∷ "BUILD-JSON-APPLY-ENRICHED" ∷ "BUILD-JSON-APPLY-PLANNING" ∷ [])
+    ; provenance = ("design review" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
+    { id         = "BUILD-JSON-VALIDATION"
+    ; title      = "Implement CI validation for roundtrip equivalence"
+    ; description = "Add Makefile target to validate: decompose → recompose yields original JSON bit-for-bit, ensuring losslessness."
+    ; status     = "not-started"
+    ; category   = "Build Infrastructure"
+    ; source     = "JSONDecomposition"
+    ; files      = ("scripts/validate_json_roundtrip.py" ∷ [])
+    ; tags       = ("JSON" ∷ "CI" ∷ "Validation" ∷ [])
+    ; dependsOn  = ("BUILD-JSON-BACKWARD" ∷ [])
+    ; provenance = ("design review" ∷ [])
+    ; related    = []
+    }
+  ∷
+  record
     { id         = "LOCAL-DEF-DICT"
     ; title      = "Implement Definition Dictionary adequacy module"
     ; description = "Package the Definition Dictionary adequacy module so downstream proofs rely on a canonical definition space."
