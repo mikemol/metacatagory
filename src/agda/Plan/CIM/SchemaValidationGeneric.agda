@@ -96,11 +96,12 @@ open GenericDualAdequacy schema-duality-interface public
 ------------------------------------------------------------------------
 
 -- | Source state for validation: start with either schema or constraints
+postulate
+  default-schema : JSONSchema
+
 schema-validation-kit : DualityKit schema-duality-interface
 schema-validation-kit = record
-  { source = inl (postulate : JSONSchema) }
-  where postulate : JSONSchema
-        postulate = _
+  { source = inl default-schema }
 
 -- Re-export kit for test suites
 schema-kit = schema-validation-kit

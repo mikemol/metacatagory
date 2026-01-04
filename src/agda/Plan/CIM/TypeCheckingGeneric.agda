@@ -99,11 +99,12 @@ open GenericDualAdequacy typecheck-duality-interface public
 ------------------------------------------------------------------------
 
 -- | Source state for type checking: start with either untyped or typed term
+postulate
+  default-untyped : UntypedTerm
+
 typecheck-kit : DualityKit typecheck-duality-interface
 typecheck-kit = record
-  { source = inl (postulate : UntypedTerm) }
-  where postulate : UntypedTerm
-        postulate = _
+  { source = inl default-untyped }
 
 -- Re-export kit for test suites
 type-kit = typecheck-kit

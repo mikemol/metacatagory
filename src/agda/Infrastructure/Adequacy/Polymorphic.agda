@@ -12,7 +12,7 @@
 --  - All types now live in Set ℓ instead of fixed Set
 --  - dualCogenerator and synthesizeRoundtrip use copatterns (see below)
 --  - More compatible with --without-K flag and higher inductive types
-module Infrastructure.Adequacy-Polymorphic where
+module Infrastructure.Adequacy.Polymorphic where
 
 open import Agda.Primitive using (Level; lzero; lsuc; _⊔_)
 open import Agda.Builtin.Equality using (_≡_; refl)
@@ -82,13 +82,14 @@ module GenericDualPaths {ℓ : Level} (iface : DualityInterface ℓ) where
       
       -- Composition (syntactic/constructor form)
       _⊙ᶜ_ : ∀ {s₁ s₂ s₃} → DualPath s₁ s₂ → DualPath s₂ s₃ → DualPath s₁ s₃
-    
-    -- | Cogenerator: Automatically closes the roundtrip
-    -- Uses copatterns for equational reasoning instead of postulate
-    -- This allows pattern matching on the roundtrip structure
-    dualCogenerator : State → State
   
   infixl 20 _⊙ᶜ_
+  
+  -- | Cogenerator: Automatically closes the roundtrip
+  -- Uses postulated behavior since State is abstract in the interface
+  -- Note: Would use copatterns here for better equational theory in the future
+  postulate
+    dualCogenerator : State → State
   
   -- | Computational composition (semantic/function form)
   -- For now, same as constructor form (pattern matching on abstract paths is tricky)

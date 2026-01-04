@@ -25,10 +25,6 @@ open import Plan.CIM.ProofTraceGeneric using
 -- Postulated auxiliary definitions
 ------------------------------------------------------------------------
 
--- Used for tests that are postulated (waiting for concrete implementations)
-postulate
-  True : Set
-
 -- Simple proof terms (postulated for abstract testing)
 postulate
   proof-refl : ProofTerm      -- Reflexivity proof

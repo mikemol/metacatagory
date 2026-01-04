@@ -23,10 +23,6 @@ open import Plan.CIM.ABNFParserGeneric using
 -- Postulated auxiliary definitions
 ------------------------------------------------------------------------
 
--- Used for tests that are postulated (waiting for concrete implementations)
-postulate
-  True : Set
-
 -- Simplified ABNF rules (postulated for abstract testing)
 postulate
   rule-expr : ABNFRules      -- Expression rule
