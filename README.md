@@ -1,203 +1,108 @@
-# Metacatagory
+# The Metacategory: A Homotopical Algebra System
 
-A composable, formal system for semantic parsing and protocol management using categorical proof-driven architecture and topological semantics.
+## Formalizing the Axiom of Well-Founded Indexed Composition
 
-## Overview
+## 1. Overview
 
-Metacatagory unifies parsing, ambiguity resolution, and protocol composition through:
-- **SPPF-based semantics**: Shared Packed Parse Forests as topological lattices
-- **Categorical abstractions**: Functors, natural transformations, and universal properties
-- **Proof-driven composition**: Witness objects and coherence proofs for protocol assembly
-- **Roadmap-driven development**: Systematic integration via implication-driven roadmaps
+This repository contains a formal verification and computational framework implemented in Agda. It unifies Abstract Algebra, Category Theory, and Constructive Algorithmics into a single, self-referential Directed Acyclic Graph (DAG).
 
-## Key Architecture
+The system is not merely a library of mathematical proofs; it is a mathematical operating system. It operates under the Curry-Howard-Lambek (CHL) correspondence, unifying lexical scope (syntax), semantic composition (logic), and categorical morphisms (structure).
 
-- **src/agda/Core/** - Core categorical infrastructure (phases, functors, witnesses)
-- **src/agda/Plan/CIM/** - Protocol records, utility functions, and roadmap structures
-- **src/agda/Algebra/** - Algebraic field hierarchies and categorical foundations
-- **src/agda/Examples/** - Runnable examples and test infrastructure
+### The Core Axioms
 
-## Integrated Roadmaps
+The architecture is strictly bound by the following formally internalized principles:
 
-The following roadmap steps guide development and protocol composition:
+1. The Axiom of Well-Founded Indexed Composition: Every node N is assigned a static coordinate (x, y). A composite node N_n may only depend on constituents N_i where (x_i, y_i) < (x_n, y_n). This enforces a global DAG structure, preventing circular definitions.
 
-### Formalize JSON transformation schema in Agda
+2. The Axiom of Universal Reification: Every concept—whether a data structure, a proof, or an ambiguity—is reified as an indexed Identifier.
 
-**ID:** `BUILD-JSON-SCHEMA`
+3. The Axiom of Gödelian Boundedness: The system explicitly models its own incompleteness. Limit objects (e.g., unprovable statements, infinite regress) are reified as nodes within the solution space.
 
-**Description:** Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward ∘ forward ≡ id and structure preservation. Extended with adequacy framework: synthesize transformations from compositional primitives (json-get, json-set, json-merge) instead of monolithic Python FFI.
+## 2. The Ontological Stack
 
-**Category:** Build Infrastructure
+The system is stratified into phases, representing the evolution from static definitions to dynamic execution.
 
-**Status:** `in-progress`
+### Layer I: The Substrate (Core)
 
-**Files:** src/agda/Plan/CIM/JSONTransformation.agda, src/agda/Plan/CIM/JSONTransformationAdequacy.agda, src/agda/Plan/CIM/JSONTransformationProofs.agda
+This layer defines the physics of the system.
 
-**Tags:** JSON, FormalizationProof, CategoryTheory, Adequacy
+- Metamodel.agda: Defines Identifier, Coordinate, and the ordering relation <ᶜ. This is the syntactic bedrock.
 
-### Decompose large JSON artifacts via natural transformations
+- Core.Phase: Reifies transformation as a first-class citizen. A Phase A B is a morphism in the Category of Phases, allowing for sequential and parallel composition of algorithmic steps.
 
-**ID:** `BUILD-JSON-DECOMPOSITION`
+- Core.GodelBoundary: A formal acknowledgment of the system's limits. It constructs witnesses for self-referential paradoxes and reifies the gap between the system and its self-model.
 
-**Description:** Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency.
+- Core.PathAggregator: Implements Homotopy Type Theory (HoTT) principles. It aggregates individual serialization roundtrips into a GlobalClosureWitness, proving that the system's coordinate geometry is invariant under transformation.
 
-**Category:** Build Infrastructure
+### Layer II: The Algebraic Pillars (Algebra)
 
-**Status:** `in-progress`
+This hierarchy builds the objects of the universe.
 
-**Files:** src/agda/Plan/CIM/JSONTransformation.agda, scripts/json_decompose.py, scripts/json_recompose.py
+- Hierarchy: Magma → Semigroup → Monoid → Group → Ring → Field.
 
-**Tags:** JSON, NaturalTransformation, SPPF, Build
+- Modules & Algebras: Extends rings to LeftModule, VectorSpace, and RAlgebra.
 
-### Complete generic functor interface laws and helpers
+- Feature: These are not just typeclasses; they are deeply nested records containing Constructive Witnesses. A FieldExtension carries proofs of its degree, basis, and separability.
 
-**ID:** `LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS`
+### Layer III: The Categorical Pillars (Chapter1, Chapter2, Chapter3)
 
-**Description:** Complete the generic functor interface laws and helpers to provide the coherence proofs downstream components expect.
+This hierarchy builds the laws of the universe.
 
-**Category:** Infrastructure
+- Chapter1 (Fundamentals): Limits, Colimits, Adjunctions, Kan Extensions.
 
-**Status:** `in-progress`
+- Chapter2 (Structure): Abelian Categories, Regular Categories, Monads, Fibrations.
 
-**Files:** src/agda/Infrastructure/Functor/Interface.agda
+- Chapter3 (Topos Theory): Locales, Sheaves, Ω-sets.
 
-**Tags:** Functor, Interface
+- Deep Integration: These modules define Universal Properties. For example, KernelAsEqualizer defines the algebraic kernel strictly as a categorical limit.
 
-### Introduce generic functor interface for protocol bundles
+## 3. The Unified Bridge: Taking the Product
 
-**ID:** `LOCAL-GENERIC-FUNCTOR`
+The system's power lies in the intersection of the Algebraic and Categorical pillars. This is achieved via the Adapter Pattern.
 
-**Description:** Establish the generic functor interface for protocol bundles so adapters share a single abstraction.
+### Core.CategoricalAdapter
 
-**Category:** Infrastructure
+This module provides a universal interface CategoricalAdapter T that wraps any algebraic structure T. It creates a morphism from the Unit type to T, effectively treating specific algebraic instances as objects in a generalized category.
 
-**Status:** `in-progress`
+### Tests.ObligationAdapters
 
-**Files:** src/agda/Infrastructure/Functor/Interface.agda, src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda, src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda, src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda, src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda, src/agda/Infrastructure/Functor/Instances/Ambiguity.agda, src/agda/Infrastructure/Functor/Compose.agda, src/agda/Core/PhaseCategoryWrapper.agda
+This is the proving ground. It systematically maps algebraic constructs to categorical requirements.
 
-**Tags:** Functor, Interface
+- Example: It proves that an Algebra.Modules.Basic.KernelOfModuleHomomorphism satisfies the Chapter2.KernelAsEqualizerDefinition.
 
-### Add lint to enforce module-level docstrings
+- Mechanism: It uses Indexed Adapters to carry the proof that status ≡ true, ensuring that every algebraic feature is categorically sound.
 
-**ID:** `DOCS-AGDA-LINT`
+## 4. Development Roadmaps
 
-**Description:** Add lint that enforces module-level docstrings to maintain documentation coverage.
+## Development Roadmaps
 
-**Category:** Infrastructure
+- **Provide algebraic structures...** — Enables formal treatment... [status: not-started]
+Target: `src/agda/Plan/CIM/Ambiguity.agda`
 
-**Status:** `in-progress`
+- **Establish metric structures...** — Enables quantitative... [status: not-started]
+Target: `src/agda/Plan/CIM/Metricization.agda`
 
-**Files:** scripts, docs/automation
+- **Define compositional...** — Enables systematic... [status: not-started]
+Target: `src/agda/Plan/CIM/TransformationSystem.agda`
 
-**Tags:** Documentation, Lint, Agda
+- **Implement functorial mappings...** — Enables formal... [status: not-started]
+Target: `src/agda/Plan/CIM/FunctorialConstructs.agda`
 
-### Design hierarchical JSON directory structure
+- **Integrate 2D gating logic...** — Enables composable phase space... [status: not-started]
+Target: `src/agda/Plan/CIM/Elasticity.agda`
 
-**ID:** `BUILD-JSON-HIERARCHY`
+- **Implement topological inflation...** — Enables composable category expansion... [status: not-started]
+Target: `src/agda/Plan/CIM/PolytopeExpansion.agda`
 
-**Description:** Document and implement the target hierarchy: dependency_graph → deps/, canonical_enriched → enriched/, planning_index → planning/ with _index.json manifests, metadata files, and aggregation rules.
+- **Implement Mitosis Engine...** — Enables dynamic... [status: not-started]
+Target: `nedge_topology/mitosis.py`
 
-**Category:** Build Infrastructure
-
-**Status:** `done`
-
-**Files:** docs/process/JSON-DECOMPOSITION.md, build/schemas/hierarchy.md
-
-**Tags:** JSON, Documentation, Schema
-
-### GP400: The "Elasticity" of Meaning
-
-**ID:** `GP-Gp400`
-
-**Description:** GP400: The "Elasticity" of Meaning. Source: Plan/CIM/IngestedRoadmaps/Corrections.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-
-**Category:** IngestedGP
-
-**Status:** `done`
-
-**Files:** src/agda/Plan/CIM/Elasticity.agda, src/agda/Plan/CIM/Implementation.agda
-
-**Tags:** GP
-
-### Normalize FunctionCategory functor instance
-
-**ID:** `LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCTION`
-
-**Description:** Align the FunctionCategory instance with the generic functor interface so generic algorithms see a consistent surface.
-
-**Category:** Infrastructure
-
-**Status:** `done`
-
-**Files:** src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda
-
-**Tags:** Functor, Refactor
-
-### Add regression examples exercising functor identity/compose
-
-**ID:** `LOCAL-GENERIC-FUNCTOR-EXAMPLES`
-
-**Description:** Add regression examples to demonstrate how the generic functor interface simplifies identity and compose reasoning.
-
-**Category:** Infrastructure
-
-**Status:** `done`
-
-**Files:** src/agda/Examples/FunctorComposition.agda
-
-**Tags:** Functor, Example
-
-### Implement Definition Dictionary adequacy module
-
-**ID:** `LOCAL-DEF-DICT`
-
-**Description:** Package the Definition Dictionary adequacy module so downstream proofs rely on a canonical definition space.
-
-**Category:** Infrastructure
-
-**Status:** `done`
-
-**Files:** src/agda/Infrastructure/Definitions/Dictionary.agda
-
-**Tags:** Definition, Adequacy
-
-## Development Workflow
-
-1. **Review architecture** in [ARCHITECTURE.md](ARCHITECTURE.md) for design principles
-2. **Check roadmap** in [src/agda/Plan/CIM/Utility.agda](src/agda/Plan/CIM/Utility.agda) for current integration points
-3. **Follow contribution guidelines** in [CONTRIBUTING.md](CONTRIBUTING.md)
-4. **Build and test** with `make agda-all` (requires Agda 2.6.4.3+)
+- **Integrate Earley parsing...** — Enables composable geometric... [status: not-started]
+Target: `nedge_topology/parser.py`
 
 ## Building
 
-```bash
-# Full Agda compilation
-make agda-all
-
-# Generate documentation
-make docs-all
-
-# Lint markdown
-make md-lint
+```text
+make agda-all  # Compile all Agda modules
+make docs            # Generate documentation
 ```
-
-## Build Topology
-
-`make` is treated as the lazy evaluator for the roadmap automation. Use one
-of the entry-point gravity wells (`check`, `priority-refresh`, `docs-all`,
-`validate-constructive`) and let Make rebuild only the intermediates whose
-inputs changed. The intermediate nodes (`roadmap-*`, lint helpers, priority
-pipelines, etc.) are documented in [docs/process/BUILD-TOPOLOGY.md](docs/process/BUILD-TOPOLOGY.md)
-so tooling and contributors alike know which high-level commands drive the
-internal planning machinery.
-
-## Navigation
-
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Detailed architectural documentation and design patterns
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines and coding standards
-- **[ROADMAP.md](ROADMAP.md)** - Development roadmap and phase timeline
-- **[COPILOT_SYNERGY.md](COPILOT_SYNERGY.md)** - LLM integration guidance
-
-## License
-
-See [LICENSE](LICENSE) for licensing information.

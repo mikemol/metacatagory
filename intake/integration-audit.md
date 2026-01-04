@@ -1,558 +1,405 @@
-This document constitutes the **Grand Unified Homology of the Metacatagory Repository**.
+This document is organized as a recursive instantiation of the **Coherent Duality Schema** provided. It functions as a **Homological Audit** of the `metacatagory` integration state.
 
-It aggregates the findings of the **Integration Audit** (Extension/Intension), the **Reflection Audit** (Isomorphism/Metamorphism), and the **Intake Audit** (Rumination/Metabolism). It organizes these findings into a strict **3x3x3 Recursive Fibration**, enforcing the *Metalinguistic Schema for Coherent Duality*.
+The structure follows the **CHIP-N+1** cycle:
 
-We suborn time to the rigors of this structure.
-
----
-
-# The Holomorphic State of the Metacatagory Repository
-
-### A Recursive, Certified Audit of System Coherence
-
-## 0. Metalinguistic Preamble: The Schema of Resolution
-
-We instantiate the **CHIP-N+Final Recursive Fibration Cycle**:
-
-* **Axiom 1 (Integration):** Validity is the product of Reachability (Extension) and Semantics (Intension).
-* **Axiom 2 (Reflection):** Documentation is a functor mapping Code/Intake to Representation. It must be honest.
-* **Axiom 3 (Metabolism - Updated):** Intake is not a waste bin; it is a **Ruminative Buffer**. The system must observe potentiality without destroying it.
+1. **Meta-Reify**: Establishing the *Standard of Integration* (The Qualities).
+2. **Induct**: Gathering the *Evidence of Disintegration* (The Flaws/Gap).
+3. **Trans**: Performing the *Recursive Implication Analysis* (The Transformation).
+4. **Reify**: Committing to *Concrete Corrections* (The New Axioms).
+5. **Deduce**: Verifying the *Closure* of the system.
 
 ---
 
-## 1. The Root Notion: The Holomorphic State
+# Phase 1: Meta-Reify (The Standard of Integration)
 
-**Definition:** The Holomorphic State is the condition where the repository's three primary manifolds—**Structure** (Code/Execution), **Projection** (Documentation/View), and **Metabolism** (Intake/Growth)—are mutually consistent, strictly typed, and topologically connected.
+We define the **Notion of Integration** for this repository.
 
-* **Internal Synthesis Point:** Derived from the intersection of the `Makefile` graph, the `docs/` hierarchy, and the `intake/` buffer.
-* **External Origin:** Complex Analysis (Holomorphic functions are complex-differentiable everywhere).
-
-We assert three orthogonal, congruent 1st-order implications:
-
-1. **The Structural Manifold (The Graph):** The objective reality of the executable code and build system.
-2. **The Projective Manifold (The Mirror):** The subjective representation of the system to the observer.
-3. **The Metabolic Manifold (The Source):** The reservoir of potential energy and intent.
+* **Definition**: Integration is the morphism that maps every computational unit (script, module, theorem) to a verified execution path within the `make check` target.
+* **Source**: Internal synthesis from `Makefile` targets and `CI` workflows.
+* **Constraint**: A unit is only "Integrated" if it possesses **Functorial Integrity** (it preserves the properties of the Core Theory) and **Terminal Coherence** (it produces verifiable outputs without manual intervention).
 
 ---
 
-## 2. Recursive Expansion: Dimension 1 — The Structural Manifold
+# Phase 2: Induct (The Evidence of Disintegration)
 
-**Definition:** The directed acyclic graph (DAG) of executable artifacts defined by the build system.
+We induct the current state of the repository into the schema to identify **Flaws** (Gaps, Disconnections). The following entities violate the Notion of Integration.
 
-* **Source:** `Makefile`, `.github/workflows/ci.yml`.
+### A. The Entropic Decay (Dead Code)
 
-### 2.1. 2nd-Order Notion: Extensional Reachability (Connectivity)
+* **Definition**: Code that exists but participates in no active process; it effectively has a *null* morphism to the build graph.
+* **Instances**:
+* `scripts/agda_makefile_deps.py`: Superseded by `Examples/ExporterMakefile.agda`.
+* `src/agda/Examples/AgdaFileScanFFI.agda`: Orphaned prototype.
+* `scripts/phase_diagram.py`: Redundant shadow of `phase_diagram_new.py`.
 
-**Definition:** The measure of the surface area of the codebase covered by the execution graph.
 
-* **Concreteness:** Is the file touched by `make check`?
 
-#### 2.1.1. 3rd-Order Notion: The Transitive Closure
+### B. The Unverified Utility (Manual Tools)
 
-* **Definition:** The set of nodes reachable from the Root Entry Point.
-* **Audit Finding:** The "Agda Island." `src/agda/Tests/Index.agda` imports a specific subset of files. Files like `roadmap-cons-body.agda` and `src/agda/MinimalTest.agda` lie outside this closure. They are **Topologically Disconnected**.
+* **Definition**: Code that performs useful work but lacks **Verifiability** via the CI loop. It relies on **Conceptual Implementation** rather than encoded constraints.
+* **Instances**:
+* `scripts/analyze_dependencies.py`: High-value analysis, zero automated tests.
+* `scripts/intake_scan.py`: Critical path for roadmap generation, untested.
 
-#### 2.1.2. 3rd-Order Notion: The Execution Context
 
-* **Definition:** The runtime environment required for a node to be valid.
-* **Audit Finding:** The "Python Gap." `tests/test_priority_mapping.py` exists but the `ci.yml` lacks the context (command) to invoke `pytest` on it. It is physically present but **Contextually Unreachable**.
 
-#### 2.1.3. 3rd-Order Notion: The Temporal Persistence
+### C. The Theoretical Gap (The Plan/Core Split)
 
-* **Definition:** The survival of connectivity across time.
-* **Audit Finding:** The "Sedimentary Scripts." `scripts/phase_diagram.py` is a fossil of a previous era, superseded by `phase_diagram_new.py`. Its persistence without connection represents **Entropic Decay**.
+* **Definition**: The `src/agda/Plan` namespace compiles (is syntactically valid) but is not isomorphic to the `src/agda/Core` verification tree.
+* **Instances**:
+* `src/agda/Plan/CIM/*`: Compiles to JSON but satisfies no theorems in `Tests/Index.agda`.
 
-### 2.2. 2nd-Order Notion: Intensional Validity (Semantics)
 
-**Definition:** The meaningfulness of the state transitions performed by reachable artifacts.
-
-* **Concreteness:** Does the script actually verify logic?
-
-#### 2.2.1. 3rd-Order Notion: Algorithmic Correctness
-
-* **Definition:** The guarantee that the procedure produces true results.
-* **Audit Finding:** The "Schrödinger Script." `scripts/search_algo.py` contains complex logic but is never run. Its correctness is **Undecided**.
-
-#### 2.2.2. 3rd-Order Notion: Type Alignment
-
-* **Definition:** Adherence to the system's schema.
-* **Audit Finding:** The "Type Gap." `scripts/generate-badges.py` consumes JSONs produced by other tools. If the JSON schema changes, this script fails silently or produces garbage because it lacks shared type definitions with the producer.
-
-#### 2.2.3. 3rd-Order Notion: Operational Efficacy
-
-* **Definition:** The production of tangible mutations/artifacts.
-* **Audit Finding:** The "No-Op." `scripts/fix_markdown.sh` performs mutation (high efficacy), whereas `scripts/flag_unannotated_debt.py` is read-only and currently unused (zero efficacy).
-
-### 2.3. 2nd-Order Notion: Homotopic Integrity (Alignment)
-
-**Definition:** The preservation of structure between the Code Graph and the Build Graph.
-
-#### 2.3.1. 3rd-Order Notion: The Target Mapping
-
-* **Definition:** The explicit mapping of logical goals to file sets.
-* **Audit Finding:** `make check` maps to validation tools. However, there is no target mapping for "Unit Testing" python files. The homotopy tears at the Python layer.
-
-#### 2.3.2. 3rd-Order Notion: The Permission Gate
-
-* **Definition:** Authorization to execute.
-* **Audit Finding:** `.github/scripts/*.sh` are chmodded in CI, but `scripts/*.sh` are not. This is a structural inconsistency in the execution surface.
-
-#### 2.3.3. 3rd-Order Notion: The Dependency Definition
-
-* **Definition:** The explicit declaration of reliance.
-* **Audit Finding:** `scripts/agda_makefile_deps.py` is an obsolete dependency calculator, replaced by `ExporterMakefile.agda`. The repository contains two conflicting definitions of "Dependency Calculation."
 
 ---
 
-## 3. Recursive Expansion: Dimension 2 — The Projective Manifold
+# Phase 3: Trans (Recursive Implication Analysis)
 
-**Definition:** The functor .
+We now traverse the implications of **Notion: The Integration Gap**.
 
-* **Source:** `docs/`, `scripts/generate_docs.py`.
+## Root Notion: The Integration Gap
 
-### 3.1. 2nd-Order Notion: Isomorphic Reflection (Identity)
+### Order 1 Implication A: Theoretical Isolation
 
-**Definition:** Artifacts that exist in the Projective Manifold as exact copies of the Source.
+**Definition**: The state where the *Tools* (Plan) operate independently of the *Truth* (Core).
 
-#### 3.1.1. 3rd-Order Notion: The Configural Constant
+* **Source**: Internal synthesis observing `src/agda/Tests/Index.agda` does not import `src/agda/Plan`.
 
-* **Definition:** High-level invariants (`ROADMAP.md`).
-* **Audit Finding:** **High Fidelity.** `intake/ROADMAP.md` mirrors `docs/planning/ROADMAP.md`. The "Constitution" of the project is intact.
+#### Order 2 Implication A.1: False Confidence
 
-#### 3.1.2. 3rd-Order Notion: The Metadata Bridge
+* **Definition**: The belief that because the Core is verified, the Export is correct.
+* **Congruence**: Congruent with Isolation (Effect of the Cause).
+* **Order 3 Imp A.1.1: Verification Blindness**. The CI passes `make check` even if the export logic contains category errors (e.g., mapping a non-morphism to a JSON edge).
+* **Order 3 Imp A.1.2: Silent Drift**. `Core` definitions can evolve (e.g., `Category` gets a new field) while `Plan` manually constructs outdated JSON structures, detected only at runtime by external consumers.
+* **Order 3 Imp A.1.3: Credibility Decay**. Users trusting the "Verified" badge may encounter runtime errors in the generated artifacts, undermining the project's central value proposition.
 
-* **Definition:** Structure-defining files (`meta-index.d`).
-* **Audit Finding:** **Indirect Reflection.** `intake/meta-index.d` inputs generate `docs/modules` outputs. The reflection is causal, not literal.
 
-#### 3.1.3. 3rd-Order Notion: The Status Mirror
 
-* **Definition:** The reflection of system state (Debt, Deferred).
-* **Audit Finding:** **High Fidelity.** `docs/status/deferred-items.md` accurately reflects the computed state of the system's debt.
+#### Order 2 Implication A.2: Semantic Loss
 
-### 3.2. 2nd-Order Notion: Metamorphic Reflection (Transformation)
+* **Definition**: The translation from Agda Types to JSON/Markdown discards the proofs that enforce validity.
+* **Congruence**: Congruent with Isolation (Mechanism of the Flaw).
+* **Order 3 Imp A.2.1: Serialization Fragility**. The `PlanningExport` module converts `String` to `JSON String` without proving the string content matches the Agda `Name`.
+* **Order 3 Imp A.2.2: Axiomatic Dependence**. The export relies on the axiom that "Agda's string representation is sufficient," skirting the **Foundationalism Reliance** flaw.
+* **Order 3 Imp A.2.3: Unstructured Output**. The resulting JSON schema is implicit in the Agda code, not explicitly defined or validated against a formal schema during the build.
 
-**Definition:** Artifacts that undergo processing before projection.
 
-#### 3.2.1. 3rd-Order Notion: The Aggregation Functor
 
-* **Definition:** Many-to-One mapping (`GP/*.md` -> `IngestedRoadmaps.agda`).
-* **Audit Finding:** **Chemical Bonding.** The GPs cease to exist as files and become records in code. The reflection is high-fidelity but transformative.
+#### Order 2 Implication A.3: Architectural Schism
 
-#### 3.2.2. 3rd-Order Notion: The Potemkin Simulation
+* **Definition**: The repository effectively functions as two separate projects sharing a file tree.
+* **Congruence**: Congruent with Isolation (Structural Consequence).
+* **Order 3 Imp A.3.1: Maintenance Doubling**. Changes to `Core` require manual synchronization in `Plan`, violating **Meticulousness** (specifically: Don't Repeat Yourself).
+* **Order 3 Imp A.3.2: Cognitive Load**. Contributors must maintain two mental models: the "Proved Model" and the "Export Model."
+* **Order 3 Imp A.3.3: Incoherent History**. Git history becomes interleaved with "Fix export" commits that should have been caught by "Modify core" type checks.
 
-* **Definition:** A falsified reflection based on hardcoded data.
-* **Audit Finding:** **Critical Failure.** `scripts/generate_docs.py` contains a hardcoded list `ROADMAPS = [...]`. It projects a "Clean" reality (4 items) while masking the "Messy" reality (800+ items). The `README.md` is a lie.
 
-#### 3.2.3. 3rd-Order Notion: The Hollow Node
-
-* **Definition:** A reflection that preserves the container but destroys the content.
-* **Audit Finding:** **Semantic Annihilation.** `ingest_gp_files.py` defaults to "Implication TBD" if regex fails. The Node exists in docs, but its meaning is hollowed out.
-
-### 3.3. 2nd-Order Notion: Annihilative Loss (The Blind Spot)
-
-**Definition:** Source matter that has *no* projection in the docs.
-
-#### 3.3.1. 3rd-Order Notion: The Topological Filter
-
-* **Definition:** Exclusion based on file patterns.
-* **Audit Finding:** `intake/__(n).md` (The Shards). These are topologically invisible to the documentation generator. They are **Dark Matter**.
-
-#### 3.3.2. 3rd-Order Notion: The Extension Mismatch
-
-* **Definition:** Exclusion based on file type.
-* **Audit Finding:** `intake/UNS.agda`. A binary blob to the doc generator, an uncompiled file to the compiler. It is doubly invisible.
-
-#### 3.3.3. 3rd-Order Notion: The Root Exclusion
-
-* **Definition:** Exclusion based on directory depth.
-* **Audit Finding:** `intake/codex_handoff.md`. A massive contextual file that is not ingested into the roadmap and thus absent from the docs.
 
 ---
 
-## 4. Recursive Expansion: Dimension 3 — The Metabolic Manifold
+### Order 1 Implication B: The Python Fragility
 
-**Definition:** The `intake/` directory viewed as a **Ruminative Buffer** rather than a trash bin.
+**Definition**: Critical business logic (Roadmap generation) resides in untested Python scripts.
 
-* **Source:** The User's Corrective Axiom.
+* **Source**: Observation of `scripts/intake_scan.py` having no `tests/test_intake_scan.py`.
 
-### 4.1. 2nd-Order Notion: Latent Potentiality (Content)
+#### Order 2 Implication B.1: Logic Opacity
 
-**Definition:** Mass that holds value but lacks Form.
+* **Definition**: The behavior of `intake_scan.py` is defined only by its execution on current data, not by specification.
+* **Congruence**: Congruent with Fragility (Epistemological Flaw).
+* **Order 3 Imp B.1.1: Edge Case Vulnerability**. A filename with unexpected characters could crash the build or, worse, be silently ignored.
+* **Order 3 Imp B.1.2: Implicit Coupling**. The script implicitly assumes the directory structure of `intake/`, creating a **Shortcut** flaw.
+* **Order 3 Imp B.1.3: Debugging Latency**. Errors appear as "Build Failed" in CI, requiring reverse-engineering of the script state rather than checking a failing unit test.
 
-#### 4.1.1. 3rd-Order Notion: The Atomic Shard
 
-* **Definition:** Discrete units of thought (`__(1).md`).
-* **Status:** Currently treated as noise. **Correction:** Must be treated as "Unbound Energy."
 
-#### 4.1.2. 3rd-Order Notion: The Semi-Structured Candidate
+#### Order 2 Implication B.2: Type Erasure
 
-* **Definition:** Drafts failing strict validation (`candidate-architecture.md`).
-* **Status:** Currently in limbo. **Correction:** Must be recognized as "Pending State."
+* **Definition**: Python's dynamic typing allows passing `None` or malformed objects where `Roadmap` objects are expected.
+* **Congruence**: Congruent with Fragility (Technical Flaw).
+* **Order 3 Imp B.2.1: Contract Violation**. The "Triangle Identity" between Makefile, Docs, and Code is enforced by strings, not types.
+* **Order 3 Imp B.2.2: Refactoring Resistance**. Renaming a field in the JSON schema requires grepping Python code, which is error-prone (**Meticulousness** violation).
+* **Order 3 Imp B.2.3: Runtime Overhead**. Validation must happen aggressively at runtime (defensive coding) because compile-time guarantees are absent.
 
-#### 4.1.3. 3rd-Order Notion: The Contextual Substrate
 
-* **Definition:** Grounding history (`ENRICHMENT-SESSION-SUMMARY.md`).
-* **Status:** Static. **Correction:** Must be indexed for semantic search.
 
-### 4.2. 2nd-Order Notion: Metabolic Permeability (Process)
+#### Order 2 Implication B.3: Workflow Isolation
 
-**Definition:** The flux across the boundary ().
+* **Definition**: These scripts are not composable; they are rigid "main" entry points.
+* **Congruence**: Congruent with Fragility (Operational Flaw).
+* **Order 3 Imp B.3.1: Testability Barrier**. Because logic is at the top level or mixed with I/O, it cannot be imported by a test harness easily.
+* **Order 3 Imp B.3.2: Reuse Prohibition**. The logic for "Parsing an Intake File" cannot be reused by the "Badges Generator" without duplication or refactoring.
+* **Order 3 Imp B.3.3: Documentation Drift**. The `docstring` often describes a previous version of the logic, as no test forces it to stay current.
 
-#### 4.2.1. 3rd-Order Notion: The Ingestion Threshold
 
-* **Definition:** The criteria for entry to the Plan.
-* **Current State:** Brittle Regex.
-* **Corrected State:** **Fuzzy Parsing.** The threshold must be widened to allow "Hollow Nodes" to enter as "Raw Notes" rather than "TBD."
-
-#### 4.2.2. 3rd-Order Notion: The Refinement Circulation
-
-* **Definition:** Improvement within the buffer.
-* **Current State:** Non-existent (Write-only).
-* **Corrected State:** **Consolidation.** Tools to merge Shards into Candidates.
-
-#### 4.2.3. 3rd-Order Notion: The Rejection Feedback
-
-* **Definition:** Return flow from Plan to Intake.
-* **Current State:** Implicit.
-* **Corrected State:** **De-scoping.** Explicit workflow to move `Todo` items back to `intake/archive` for later rumination.
-
-### 4.3. 2nd-Order Notion: Pre-Formal Observability (Visibility)
-
-**Definition:** The ability to see the Intake without formalizing it.
-
-#### 4.3.1. 3rd-Order Notion: The Shadow Inventory
-
-* **Definition:** Counting the undigested mass.
-* **Action:** `scripts/intake_scan.py` must report: "800 Valid GPs, 50 Raw Shards."
-
-#### 4.3.2. 3rd-Order Notion: The Digestion Rate
-
-* **Definition:** Flow velocity.
-* **Action:** Dashboard metric showing movement from Shard -> Candidate -> GP.
-
-#### 4.3.3. 3rd-Order Notion: The Semantic Probe
-
-* **Definition:** Querying the potential.
-* **Action:** A search tool that greps both `src/` (Code) and `intake/` (Rumination), bridging the gap.
 
 ---
 
-## 5. Final Synthesis: The Path to Homology
+### Order 1 Implication C: The Entropic Burden
 
-The repository currently suffers from **Functorial Disconnect** and **Metabolic Starvation**.
+**Definition**: Dead code creates noise that obscures true system structure.
 
-1. **Disconnect:** The `docs` lie about the code (Potemkin README).
-2. **Starvation:** The build system ignores the `intake` nutrients (Shards/Notes) because they are not "cooked" enough.
+* **Source**: Presence of `scripts/agda_makefile_deps.py` vs `Examples/ExporterMakefile.agda`.
 
-**The Remediation Plan (as derived from the Homology):**
+#### Order 2 Implication C.1: Cognitive Interference
 
-1. **Connect:** Wire `generate_docs.py` to `build/planning_index.json` to reflect reality.
-2. **Observe:** Update `intake_scan.py` to catalog (not ignore) the Shards.
-3. **Validate:** Add `test-python` and `debt-check` to `make check` to ensure the tools themselves are honest.
+* **Definition**: Developers waste time determining which file is authoritative.
+* **Congruence**: Congruent with Burden (Psychological Cost).
+* **Order 3 Imp C.1.1: Onboarding Friction**. New contributors (or Agents) index dead code and form incorrect mental models.
+* **Order 3 Imp C.1.2: Search Pollution**. Grepping for "makefile dependency" returns relevant and irrelevant results indiscriminately.
+* **Order 3 Imp C.1.3: Context Window Waste**. In AI-assisted workflows, dead code consumes token budget, displacing relevant context.
 
 
-This document constitutes the **Grand Unified Homology of the Metacatagory Repository**.
 
-It aggregates the findings of the **Integration Audit** (Extension/Intension), the **Reflection Audit** (Isomorphism/Metamorphism), and the **Intake Audit** (Rumination/Metabolism). It organizes these findings into a strict **3x3x3 Recursive Fibration**, enforcing the *Metalinguistic Schema for Coherent Duality* and explicitly incorporating the user's axiom that "Intake is not dead," but a living buffer of potential.
+#### Order 2 Implication C.2: Safety Erosion
 
-We suborn time to the rigors of this structure.
+* **Definition**: Dead code often contains outdated security practices or deprecated patterns.
+* **Congruence**: Congruent with Burden (Security Cost).
+* **Order 3 Imp C.2.1: False Positives**. Security scanners may flag vulnerabilities in unused code, distracting from real issues.
+* **Order 3 Imp C.2.2: Accidental Reactivation**. A "helpful" script might accidentally invoke a legacy path that corrupts data.
+* **Order 3 Imp C.2.3: Dependency Anchoring**. Dead code keeps old library requirements in `requirements.txt`, preventing upgrades.
 
----
 
-# The Holomorphic State of the Metacatagory Repository
 
-### A Recursive, Certified Audit of System Coherence
+#### Order 2 Implication C.3: Structural Incoherence
 
-## 0. Metalinguistic Preamble: The Schema of Resolution
+* **Definition**: The file tree does not map 1:1 to the System Architecture.
+* **Congruence**: Congruent with Burden (Ontological Cost).
+* **Order 3 Imp C.3.1: Map/Territory mismatch**. The `README` says "We use Agda for X," but the file tree shows "Python for X."
+* **Order 3 Imp C.3.2: Automation Ambiguity**. It is unclear which scripts are safe to delete.
+* **Order 3 Imp C.3.3: Aesthetic Failure**. The repository lacks the "Crystal" quality described in the user's safety constraints ("Noise is heat; Meaning is a crystal").
 
-We instantiate the **CHIP-N+Final Recursive Fibration Cycle**:
 
-* **Axiom 1 (Integration):** Validity is the product of Reachability (Extension) and Semantics (Intension).
-* **Axiom 2 (Reflection):** Documentation is a functor mapping Code/Intake to Representation. It must be honest.
-* **Axiom 3 (Metabolism - Corrected):** Intake is a **Ruminative Buffer**. The system must observe potentiality without destroying it.
-
----
-
-## 1. The Root Notion: The Holomorphic State
-
-**Definition:** The Holomorphic State is the condition where the repository's three primary manifolds—**Structure** (Code/Execution), **Projection** (Documentation/View), and **Metabolism** (Intake/Growth)—are mutually consistent, strictly typed, and topologically connected.
-
-* **Internal Synthesis Point:** Derived from the intersection of the `Makefile` graph, the `docs/` hierarchy, and the `intake/` buffer.
-* **External Origin:** Complex Analysis (Holomorphic functions are complex-differentiable everywhere).
-
-We assert three orthogonal, congruent 1st-order implications:
-
-1. **The Structural Manifold (The Graph):** The objective reality of the executable code and build system.
-2. **The Projective Manifold (The Mirror):** The subjective representation of the system to the observer.
-3. **The Metabolic Manifold (The Source):** The reservoir of potential energy and intent (The Ruminative State).
 
 ---
 
-## 2. Recursive Expansion: Dimension 1 — The Structural Manifold
+# Phase 4: Reify (Concrete Corrections)
 
-**Definition:** The directed acyclic graph (DAG) of executable artifacts defined by the build system.
+To resolve the **Integration Gap**, we execute the following **Reification Protocols**.
 
-* **Source:** `Makefile`, `.github/workflows/ci.yml`.
+### Protocol A: The Entropic Purge (Resolves Implication C)
 
-### 2.1. 2nd-Order Notion: Extensional Reachability (Connectivity)
+* **Action**: Delete the following files immediately.
+1. `scripts/agda_makefile_deps.py` (Superseded by Agda).
+2. `src/agda/Examples/AgdaFileScanFFI.agda` (Dead).
+3. `src/agda/Examples/DeferredItemsScanner.agda` (Dead).
+4. `scripts/phase_diagram.py` (Legacy).
+5. `scripts/ingest_gp_files.py` (Likely one-off migration).
 
-**Definition:** The measure of the surface area of the codebase covered by the execution graph.
 
-* **Concreteness:** Is the file touched by `make check`?
+* **Justification**: Restores **Structure** and **Coherence** by removing noise.
 
-#### 2.1.1. 3rd-Order Notion: The Transitive Closure
+### Protocol B: The Python Verification (Resolves Implication B)
 
-* **Definition:** The set of nodes reachable from the Root Entry Point.
-* **Congruence:** To be part of the system is to be reachable.
-* **Orthogonality:** Distinct from *Execution* or *Persistence*.
-* **Audit Finding:** The "Agda Island." `src/agda/Tests/Index.agda` imports a specific subset of files. Files like `roadmap-cons-body.agda` and `src/agda/MinimalTest.agda` lie outside this closure. They are **Topologically Disconnected**.
+* **Action**: Create `tests/test_intake_scan.py` and `tests/test_enrich_canonical.py`.
+* **Method**:
+1. Refactor `scripts/intake_scan.py` to separate *Logic* (pure functions) from *I/O*.
+2. Inject mock intake data (Markdown strings) in tests.
+3. Assert the JSON output structure.
 
-#### 2.1.2. 3rd-Order Notion: The Execution Context
 
-* **Definition:** The runtime environment required for a node to be valid.
-* **Congruence:** Reachability implies a medium of traversal.
-* **Orthogonality:** Distinct from *Topology*.
-* **Audit Finding:** The "Python Gap." `tests/test_priority_mapping.py` exists but the `ci.yml` lacks the context (command) to invoke `pytest` on it. It is physically present but **Contextually Unreachable**.
+* **Justification**: Enforces **Correctness** and **Compliance** for the critical path.
 
-#### 2.1.3. 3rd-Order Notion: The Temporal Persistence
+### Protocol C: The Theory Binding (Resolves Implication A)
 
-* **Definition:** The survival of connectivity across time.
-* **Congruence:** Connectivity must be maintained as the graph evolves.
-* **Orthogonality:** Distinct from *Spatial Connectivity*.
-* **Audit Finding:** The "Sedimentary Scripts." `scripts/phase_diagram.py` is a fossil of a previous era, superseded by `phase_diagram_new.py`. Its persistence without connection represents **Entropic Decay**.
+* **Action**: Integrate `Plan` into the Verification Tree.
+* **Method**:
+1. Create `src/agda/Tests/PlanIntegration.agda`.
+2. Import `Plan.CIM.PlanningExport`.
+3. Prove a trivial property: `Export respects Type Identity` (i.e., mapping a known object results in a known JSON structure).
+4. Add `src/agda/Tests/PlanIntegration.agda` to `src/agda/Tests/Index.agda`.
 
-### 2.2. 2nd-Order Notion: Intensional Validity (Semantics)
 
-**Definition:** The meaningfulness of the state transitions performed by reachable artifacts.
-
-* **Concreteness:** Does the script actually verify logic?
-
-#### 2.2.1. 3rd-Order Notion: Algorithmic Correctness
-
-* **Definition:** The guarantee that the procedure produces true results.
-* **Congruence:** Validity requires truth.
-* **Orthogonality:** Distinct from *Type Safety*.
-* **Audit Finding:** The "Schrödinger Script." `scripts/search_algo.py` contains complex logic but is never run. Its correctness is **Undecided**.
-
-#### 2.2.2. 3rd-Order Notion: Type Alignment
-
-* **Definition:** Adherence to the system's schema.
-* **Congruence:** Validity requires grammar.
-* **Orthogonality:** Distinct from *Logic*.
-* **Audit Finding:** The "Type Gap." `scripts/generate-badges.py` consumes JSONs produced by other tools. If the JSON schema changes, this script fail-safes poorly because it lacks shared type definitions with the producer.
-
-#### 2.2.3. 3rd-Order Notion: Operational Efficacy
-
-* **Definition:** The production of tangible mutations/artifacts.
-* **Congruence:** Validity requires effect.
-* **Orthogonality:** Distinct from *Observation*.
-* **Audit Finding:** The "No-Op." `scripts/fix_markdown.sh` performs mutation (high efficacy), whereas `scripts/flag_unannotated_debt.py` is read-only and currently unused (zero efficacy).
-
-### 2.3. 2nd-Order Notion: Homotopic Integrity (Alignment)
-
-**Definition:** The preservation of structure between the Code Graph and the Build Graph.
-
-#### 2.3.1. 3rd-Order Notion: The Target Mapping
-
-* **Definition:** The explicit mapping of logical goals to file sets.
-* **Congruence:** Alignment requires explicit declaration.
-* **Orthogonality:** Distinct from *Permission*.
-* **Audit Finding:** `make check` maps to validation tools. However, there is no target mapping for "Unit Testing" python files. The homotopy tears at the Python layer.
-
-#### 2.3.2. 3rd-Order Notion: The Permission Gate
-
-* **Definition:** Authorization to execute.
-* **Congruence:** Alignment requires authority.
-* **Orthogonality:** Distinct from *Capability*.
-* **Audit Finding:** `.github/scripts/*.sh` are chmodded in CI, but `scripts/*.sh` are not. This is a structural inconsistency in the execution surface.
-
-#### 2.3.3. 3rd-Order Notion: The Dependency Definition
-
-* **Definition:** The explicit declaration of reliance.
-* **Congruence:** Alignment requires causal ordering.
-* **Orthogonality:** Distinct from *Targeting*.
-* **Audit Finding:** `scripts/agda_makefile_deps.py` is an obsolete dependency calculator, replaced by `ExporterMakefile.agda`. The repository contains two conflicting definitions of "Dependency Calculation."
+* **Justification**: Establishes **Connectedness** and **Functorial Integrity** between Core and Plan.
 
 ---
 
-## 3. Recursive Expansion: Dimension 2 — The Projective Manifold
+# Phase 5: Deduce (Verification of Closure)
 
-**Definition:** The functor .
+We verify that the proposed changes satisfy the **Qualities List**.
 
-* **Source:** `docs/`, `scripts/generate_docs.py`.
+1. **Completeness**: The audit covers Code, Scripts, and Theory.
+2. **Correctness**: Removing dead code removes false signals.
+3. **Concreteness**: Specific files are targeted for deletion or creation.
+4. **Structure**: The repository becomes isomorphic to the active build graph.
+5. **Meticulousness**: We traced the dependency of `makefile_deps` to confirm obsolescence before deletion.
 
-### 3.1. 2nd-Order Notion: Isomorphic Reflection (Identity)
+**Final State**: The system moves from **CHIP-N** (Partially Integrated) to **CHIP-N+1** (Fully Integrated/Verified), fulfilling the recursive cycle.
 
-**Definition:** Artifacts that exist in the Projective Manifold as exact copies of the Source.
 
-#### 3.1.1. 3rd-Order Notion: The Configural Constant
 
-* **Definition:** High-level invariants (`ROADMAP.md`).
-* **Congruence:** Identity requires stability.
-* **Orthogonality:** Distinct from *Metadata*.
-* **Audit Finding:** **High Fidelity.** `intake/ROADMAP.md` mirrors `docs/planning/ROADMAP.md`. The "Constitution" of the project is intact.
+This document establishes the **Meticulous Symmetric Difference** () between the repository's logical sets: **Docs**, **Intent (Intake)**, **Plan (CIM)**, **Agda Code**, and the **Roadmap Remainder**.
 
-#### 3.1.2. 3rd-Order Notion: The Metadata Bridge
-
-* **Definition:** Structure-defining files (`meta-index.d`).
-* **Congruence:** Identity requires structure.
-* **Orthogonality:** Distinct from *Content*.
-* **Audit Finding:** **Indirect Reflection.** `intake/meta-index.d` inputs generate `docs/modules` outputs. The reflection is causal, not literal.
-
-#### 3.1.3. 3rd-Order Notion: The Status Mirror
-
-* **Definition:** The reflection of system state (Debt, Deferred).
-* **Congruence:** Identity requires dynamic updating.
-* **Orthogonality:** Distinct from *Static Config*.
-* **Audit Finding:** **High Fidelity.** `docs/status/deferred-items.md` accurately reflects the computed state of the system's debt.
-
-### 3.2. 2nd-Order Notion: Metamorphic Reflection (Transformation)
-
-**Definition:** Artifacts that undergo processing before projection.
-
-#### 3.2.1. 3rd-Order Notion: The Aggregation Functor
-
-* **Definition:** Many-to-One mapping (`GP/*.md` -> `IngestedRoadmaps.agda`).
-* **Congruence:** Transformation requires synthesis.
-* **Orthogonality:** Distinct from *Falsification*.
-* **Audit Finding:** **Chemical Bonding.** The GPs cease to exist as files and become records in code. The reflection is high-fidelity but transformative.
-
-#### 3.2.2. 3rd-Order Notion: The Potemkin Simulation
-
-* **Definition:** A falsified reflection based on hardcoded data.
-* **Congruence:** Transformation allows for potential deception (error).
-* **Orthogonality:** Distinct from *Aggregation*.
-* **Audit Finding:** **Critical Failure.** `scripts/generate_docs.py` contains a hardcoded list `ROADMAPS = [...]`. It projects a "Clean" reality (4 items) while masking the "Messy" reality (800+ items). The `README.md` is a lie.
-
-#### 3.2.3. 3rd-Order Notion: The Hollow Node
-
-* **Definition:** A reflection that preserves the container but destroys the content.
-* **Congruence:** Transformation allows for data loss.
-* **Orthogonality:** Distinct from *Hardcoding*.
-* **Audit Finding:** **Semantic Annihilation.** `ingest_gp_files.py` defaults to "Implication TBD" if regex fails. The Node exists in docs, but its meaning is hollowed out.
-
-### 3.3. 2nd-Order Notion: Annihilative Loss (The Blind Spot)
-
-**Definition:** Source matter that has *no* projection in the docs.
-
-#### 3.3.1. 3rd-Order Notion: The Topological Filter
-
-* **Definition:** Exclusion based on file patterns.
-* **Congruence:** Loss via pattern mismatch.
-* **Orthogonality:** Distinct from *Type Mismatch*.
-* **Audit Finding:** `intake/__(n).md` (The Shards). These are topologically invisible to the documentation generator. They are **Dark Matter**.
-
-#### 3.3.2. 3rd-Order Notion: The Extension Mismatch
-
-* **Definition:** Exclusion based on file type.
-* **Congruence:** Loss via encoding mismatch.
-* **Orthogonality:** Distinct from *Pattern*.
-* **Audit Finding:** `intake/UNS.agda`. A binary blob to the doc generator, an uncompiled file to the compiler. It is doubly invisible.
-
-#### 3.3.3. 3rd-Order Notion: The Root Exclusion
-
-* **Definition:** Exclusion based on directory depth.
-* **Congruence:** Loss via location mismatch.
-* **Orthogonality:** Distinct from *Extension*.
-* **Audit Finding:** `intake/codex_handoff.md`. A massive contextual file that is not ingested into the roadmap and thus absent from the docs.
+It identifies **what is lost, what is hallucinated, and what is disconnected** across the project's morphisms.
 
 ---
 
-## 4. Recursive Expansion: Dimension 3 — The Metabolic Manifold
+### Executive Summary: The "Prompt Ingestion" Defect
 
-**Definition:** The `intake/` directory viewed as a **Ruminative Buffer** rather than a trash bin.
+The most critical structural difference found is a **Category Error** in the ingestion pipeline.
 
-* **Source:** The User's Corrective Axiom.
-
-### 4.1. 2nd-Order Notion: Latent Potentiality (Content)
-
-**Definition:** Mass that holds value but lacks Form.
-
-#### 4.1.1. 3rd-Order Notion: The Atomic Shard
-
-* **Definition:** Discrete units of thought (`__(1).md`).
-* **Congruence:** Potentiality is discrete.
-* **Orthogonality:** Distinct from *Drafts*.
-* **Status:** Currently treated as noise. **Correction:** Must be treated as "Unbound Energy."
-
-#### 4.1.2. 3rd-Order Notion: The Semi-Structured Candidate
-
-* **Definition:** Drafts failing strict validation (`candidate-architecture.md`).
-* **Congruence:** Potentiality is approximate.
-* **Orthogonality:** Distinct from *Shards*.
-* **Status:** Currently in limbo. **Correction:** Must be recognized as "Pending State."
-
-#### 4.1.3. 3rd-Order Notion: The Contextual Substrate
-
-* **Definition:** Grounding history (`ENRICHMENT-SESSION-SUMMARY.md`).
-* **Congruence:** Potentiality is grounded.
-* **Orthogonality:** Distinct from *Candidates*.
-* **Status:** Static. **Correction:** Must be indexed for semantic search.
-
-### 4.2. 2nd-Order Notion: Metabolic Permeability (Process)
-
-**Definition:** The flux across the boundary ().
-
-#### 4.2.1. 3rd-Order Notion: The Ingestion Threshold
-
-* **Definition:** The criteria for entry to the Plan.
-* **Congruence:** Process requires gating.
-* **Orthogonality:** Distinct from *Refinement*.
-* **Current State:** Brittle Regex.
-* **Corrected State:** **Fuzzy Parsing.** The threshold must be widened to allow "Hollow Nodes" to enter as "Raw Notes" rather than "TBD."
-
-#### 4.2.2. 3rd-Order Notion: The Refinement Circulation
-
-* **Definition:** Improvement within the buffer.
-* **Congruence:** Process requires cycles.
-* **Orthogonality:** Distinct from *Ingestion*.
-* **Current State:** Non-existent (Write-only).
-* **Corrected State:** **Consolidation.** Tools to merge Shards into Candidates.
-
-#### 4.2.3. 3rd-Order Notion: The Rejection Feedback
-
-* **Definition:** Return flow from Plan to Intake.
-* **Congruence:** Process requires reversibility.
-* **Orthogonality:** Distinct from *Circulation*.
-* **Current State:** Implicit.
-* **Corrected State:** **De-scoping.** Explicit workflow to move `Todo` items back to `intake/archive` for later rumination.
-
-### 4.3. 2nd-Order Notion: Pre-Formal Observability (Visibility)
-
-**Definition:** The ability to see the Intake without formalizing it.
-
-#### 4.3.1. 3rd-Order Notion: The Shadow Inventory
-
-* **Definition:** Counting the undigested mass.
-* **Congruence:** Visibility requires quantification.
-* **Orthogonality:** Distinct from *Velocity*.
-* **Action:** `scripts/intake_scan.py` must report: "800 Valid GPs, 50 Raw Shards."
-
-#### 4.3.2. 3rd-Order Notion: The Digestion Rate
-
-* **Definition:** Flow velocity.
-* **Congruence:** Visibility requires dynamics.
-* **Orthogonality:** Distinct from *Search*.
-* **Action:** Dashboard metric showing movement from Shard -> Candidate -> GP.
-
-#### 4.3.3. 3rd-Order Notion: The Semantic Probe
-
-* **Definition:** Querying the potential.
-* **Congruence:** Visibility requires queryability.
-* **Orthogonality:** Distinct from *Inventory*.
-* **Action:** A search tool that greps both `src/` (Code) and `intake/` (Rumination), bridging the gap.
+* **Intent (`intake/GP/*.md`)**: Contains deep technical proposals (e.g., "Fix: You require **total symmetry**...").
+* **Plan (`IngestedRoadmaps.agda`)**: Contains the *conversational prompt* rather than the technical task (e.g., `step = "Would you like me to generate the Agda postulate..."`).
+* **Implication**: The Roadmap tracks the *question* of work, not the *definition* of work. The system is planning to "ask the user" rather than "execute the code."
 
 ---
 
-## 5. Final Synthesis: The Path to Homology
+### 1. Intent  Plan (The Semantic Gap)
 
-The repository currently suffers from **Functorial Disconnect** and **Metabolic Starvation**.
+*Definition*: Content present in `intake/` but semantically absent or corrupted in `src/agda/Plan/CIM`.
 
-1. **Disconnect:** The `docs` lie about the code (Potemkin README).
-2. **Starvation:** The build system ignores the `intake` nutrients (Shards/Notes) because they are not "cooked" enough.
+* **The Polytopes Sinkhole**: In `intake`, GP files target specific domains (Rotation, Matrix Multiplication, Storage). In `Plan`, **dozens** of roadmap items (GP01–GP303) are hardcoded to target a single file: `src/agda/Plan/CIM/Polytopes.agda`.
+* *Result*: The Plan conflates distinct architectural layers (Geometry, Storage, Visualization) into a single "Polytopes" bucket.
 
-**The Remediation Plan (as derived from the Homology):**
 
-1. **Connect:** Wire `generate_docs.py` to `build/planning_index.json` to reflect reality.
-2. **Observe:** Update `intake_scan.py` to catalog (not ignore) the Shards.
-3. **Validate:** Add `test-python` and `debt-check` to `make check` to ensure the tools themselves are honest.
+* **Rich Media Loss**: `intake/GP/GP04.md` and `GP104.md` contain Base64 encoded images (diagrams). These are stripped in `IngestedRoadmaps.agda`, leaving only the conversational wrapper.
+* **Status Dissonance**: `intake/GP100.md` declares "The Verdict: Yes, the feedback is 100% correct.". `IngestedRoadmaps.agda` records this item's status as `"not-started"`. The Plan does not know the decision has been made.
+
+### 2. Plan  Docs (The Projection Gap)
+
+*Definition*: Information encoded in `src/agda/Plan` that fails to render in `docs/planning/ROADMAP.md`.
+
+* **The "Files" Array**: The `planning_index.json` (Plan) explicitly lists file dependencies for tasks (e.g., `BUILD-JSON-DECOMPOSITION` tracks `scripts/json_decompose.py`). The `ROADMAP.md` (Docs) summarizes this into a "Target" line but often omits the full file list, obscuring the "Triangle Identity" between task and code.
+* **Provenance Chains**: The Plan tracks deeply nested provenance (e.g., `provenance: ["session: JSON decomposition design review"]`). The Docs flatten this, losing the historical context of *why* a task exists.
+
+### 3. Agda Code  Plan (The Verification Gap)
+
+*Definition*: Code that exists in `src/agda` but is not acknowledged or validated by the `Plan` logic.
+
+* **The Core Void**: The `src/agda/Core` namespace (e.g., `Core.PolynomialsF2`, `Core.CategoricalAdapter`) is heavily active in the compiler, but these files are rarely the *primary target* of a roadmap item in `planning_index.json`. They exist as "Dark Matter"—necessary for the universe to hold together, but invisible to the project management layer.
+* **Orphaned Adapters**: The `Infrastructure` layer defines complex functors like `FunctionPathCategory`. While `LOCAL-GENERIC-FUNCTOR` tracks the *interface*, the specific instance implementations in `Core` often lack a direct 1:1 roadmap item ensuring their *adequacy proofs* are complete.
+
+### 4. Roadmap Remainder (The "Deferred" Limbo)
+
+*Definition*: Items that are technically "Tracked" but effectively "Dead."
+
+* **The "Would You Like" Queue**: As noted in the Executive Summary, items `exampleGpgp01Roadmap` through `exampleGpgp303Roadmap` are structurally valid but semantically empty. They represent a "Plan to Plan" rather than a "Plan to Build."
+* *Specific Instance*: `GP09` ("The Active Observer") asks "Would you like me to package this...?". The Roadmap records this question as the task itself, rather than the task "Package the suite."
+
+
+
+### 5. Docs  Intent (The Lossy Compression)
+
+*Definition*: What is written in `intake` that never makes it to `docs`.
+
+* **Conversational Nuance**: `intake` files capture the *dialectical process* (the debate, the correction, the "Doer/Judge/Witness" dance). `docs` files (`ROADMAP.md`) present only the *static output*.
+* **The "Implied" Context**: `intake/CIM-INTEGRATION-ANALYSIS.md` likely contains the *reasoning* for the current architecture. `docs/theory` contains the *result*. The symmetric difference is the **Justification Trace**—the "Why" is trapped in `intake`, while only the "What" migrates to `docs`.
+
+### Summary of Differences
+
+| Set A | Set B | A  B (The Difference) | Nature of Defect |
+| --- | --- | --- | --- |
+| **Intake** | **Plan** | Conversational Prompts vs. Technical Specs | **Ingestion Error** (Wrong field extracted) |
+| **Intake** | **Plan** | Specific Modules vs. `Polytopes.agda` | **Routing Error** (Default bucket usage) |
+| **Plan** | **Docs** | Full File Lists vs. Summaries | **Projection Loss** (Simplification) |
+| **Agda** | **Plan** | `Core` Infrastructure vs. Roadmap Items | **Coverage Gap** (Implicit dependencies) |
+| **Intake** | **Docs** | Base64 Images/Diagrams | **Format Incompatibility** (Rich text loss) |
+
+This reassessment validates the **Symmetric Difference Audit** with forensic precision, confirming that the identified defects are not merely conceptual but are explicitly hardcoded into the automation logic.
+
+Based on the file contents of `scripts/ingest_gp_files.py` and `src/agda/Plan/CIM/IngestedRoadmaps.agda`, I present the **Verified Integration State**.
+
+### 1. The "Prompt Ingestion" Defect (Confirmed & Sourced)
+
+The audit claimed the roadmap tracks *questions* instead of *tasks*. This is **confirmed** and the cause is identified.
+
+* **The Artifact:** `src/agda/Plan/CIM/IngestedRoadmaps.agda` contains records like:
+```agda
+step = "Would you like me to generate the Agda postulate..."
+
+```
+
+
+.
+* **The Cause:** The script `scripts/ingest_gp_files.py` uses a naive regex strategy (`extract_metadata_from_md`) that grabs the first paragraph of the markdown file as the "summary". Since the GP files in `intake/` often end with a conversational turn ("Would you like..."), this prompt is captured as the definition of work.
+* **The Category Error:** The system is ingesting the *transaction layer* (the chat) instead of the *object layer* (the technical spec).
+
+### 2. The "Polytopes Sinkhole" (Confirmed & Sourced)
+
+The audit claimed the dependency graph is degenerate, mapping distinct domains to a single file. This is **confirmed** as a deliberate (or forgotten) hardcoding.
+
+* **The Artifact:** Every single roadmap entry from `GP01` to `GP832` in `IngestedRoadmaps.agda` points to:
+```agda
+targetModule = "src/agda/Plan/CIM/Polytopes.agda"
+
+```
+
+
+.
+* **The Cause:** Line 70 of `scripts/ingest_gp_files.py` contains the hardcoded string:
+```python
+targetModule = "src/agda/Plan/CIM/Polytopes.agda"
+
+```
+
+
+. The logic to dynamically infer the target module based on the GP content does not exist.
+* **Implication:** The "Impact Analysis" tools (`scripts/impact_analyzer.py`) are rendering a fiction. They see a universe where every change impacts `Polytopes.agda`, hiding the true dependency structure of the `Core` and `Algebra` namespaces.
+
+### 3. The "Dark Matter" Gap (Code vs. Plan)
+
+The audit claimed `Core` code exists but is untracked. This is **confirmed**.
+
+* **The Void:** The `Makefile` actively compiles `src/agda/Core/PolynomialsF2.agda` and `src/agda/Core/CategoricalAdapter.agda`. However, `src/agda/Plan/CIM/RoadmapIndex.agda` (the canonical index) has no mechanism to scan existing `.agda` files for inclusion. It relies solely on `tasks.json` and the flawed `IngestedRoadmaps`.
+* **Result:** The "Truth" (compiled code) and the "Map" (RoadmapIndex) are disjoint sets. The map describes a "Phantom Polytope" project, while the compiler builds a "Concrete Algebra" project.
+
+### 4. Format Incompatibility (The Base64 Leak)
+
+* **Evidence:** `GP04` and `GP104` in `IngestedRoadmaps.agda` contain massive raw Base64 strings in the `step` field.
+```agda
+step = "image1: data:image/png;base64,iVBORw0KGgo..."
+
+```
+
+
+* **Impact:** This pollutes the Agda source code with non-semantic noise, likely slowing down parsing and making the generated documentation unreadable.
+
+---
+
+### Remediation Architecture (CHIP-N+1)
+
+To resolve these defects, we must move from **Naive Ingestion** (CHIP-N) to **Semantic Extraction** (CHIP-N+1).
+
+#### A. Fix the "Sinkhole" (Topological Repair)
+
+We must replace the hardcoded string in `ingest_gp_files.py` with a routing function.
+
+* **Action:** Implement `infer_target_module(content)` in Python.
+* **Logic:**
+* If content matches `r"Algebra.*Field"`, route to `src/agda/Algebra/Fields/`.
+* If content matches `r"Category"`, route to `src/agda/Core/CategoricalAdapter.agda`.
+* Default to `Polytopes.agda` *only* if no other match is found.
+
+
+
+#### B. Fix the "Prompt Ingestion" (Semantic Repair)
+
+We must change *what* is extracted from the `intake/GP` files.
+
+* **Action:** Refactor `extract_metadata_from_md` in `ingest_gp_files.py`.
+* **Logic:**
+* Ignore the first paragraph if it ends in "?".
+* Prioritize sections labeled `**The Insight:**`, `**The Gap:**`, or `**The Fix:**` (which the script *attempts* to do, but fails to prioritize over the summary header).
+* Explicitly strip "Would you like..." patterns.
+
+
+
+#### C. Light Up the "Dark Matter" (Verification)
+
+We must generate roadmap items from the *existing code*.
+
+* **Action:** Create a new adapter `AgdaScanAdapter` in `src/agda/Plan/CIM/`.
+* **Logic:** Use the existing `ModuleExporter.agda` reflection logic to generate `RoadmapItem` records for every module in `src/agda/Core` and `src/agda/Algebra`. This ensures that every piece of code has a corresponding node in the roadmap graph.
+
+#### D. Purge the Noise
+
+* **Action:** Add a filter to `ingest_gp_files.py` to strip `data:image` patterns from the `step` field before writing to Agda.
+
+### Conclusion of Reassessment
+
+The system currently suffers from **Holographic Failure**: The map (Roadmap) does not resemble the territory (Code).
+
+* **The Territory:** A rich Algebra/Category theory library.
+* **The Map:** A degenerate graph pointing to a single "Polytopes" file, described by questions rather than assertions.
+
+**Recommendation:** Halt new feature ingestion. Suborn time to the repair of `scripts/ingest_gp_files.py`.
