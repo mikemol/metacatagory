@@ -30,28 +30,75 @@ open import Core.Phase using (Bool; true; false)
 -- consolidates the conceptual debt of 20+ individual test fixture postulates.
 -- ============================================================================
 
-postulate TestFixturesPackage : M.Identifier
+fixtureBaseField : FieldDeclaration
+fixtureBaseField = packedFieldBase
+
+fixtureExtensionField : FieldDeclaration
+fixtureExtensionField = packedFieldExt
+
+fixtureNormalClosureField : FieldDeclaration
+fixtureNormalClosureField = packedFieldExt
+
+fixtureAlpha : M.Identifier
+fixtureAlpha = M.mkId "α-fixture"
+
+fixturePolynomial : M.Identifier
+fixturePolynomial = M.mkId "poly-fixture"
+
+fixtureSplittingFieldOutput : M.Identifier
+fixtureSplittingFieldOutput = M.mkId "splitting-field-fixture"
+
+fixtureVanishingWitness : M.Identifier
+fixtureVanishingWitness = M.mkId "vanishing-fixture"
+
+fixtureMonicWitness : M.Identifier
+fixtureMonicWitness = M.mkId "monic-fixture"
+
+fixtureMinpolyAlg : MinimalPolynomialAlgorithm fixtureBaseField fixtureExtensionField
+fixtureMinpolyAlg = MinimalPolynomialAlgorithm-generic
+
+fixtureSplittingAlg : SplittingFieldAlgorithm fixtureBaseField
+fixtureSplittingAlg = SplittingFieldAlgorithm-generic
+
+fixtureGaloisAlg : GaloisGroupAlgorithm fixtureBaseField fixtureExtensionField
+fixtureGaloisAlg = GaloisGroupAlgorithm-generic
+
+fixtureNormalAlg : NormalClosureAlgorithm fixtureBaseField fixtureExtensionField
+fixtureNormalAlg = NormalClosureAlgorithm-generic
+
+fixtureGaloisClosureAlg : GaloisClosureAlgorithm fixtureBaseField fixtureExtensionField
+fixtureGaloisClosureAlg = GaloisClosureAlgorithm-generic
+
+fixtureExtensionDegree : ExtensionDegree fixtureBaseField fixtureExtensionField
+fixtureExtensionDegree = mkExtensionDegree fixtureBaseField fixtureExtensionField
+
+fixtureMinimalPolynomialProperty : MinimalPolynomialProperty fixtureBaseField fixtureExtensionField fixtureAlpha
+fixtureMinimalPolynomialProperty =
+  minimalPolynomialImplementsUniversality fixtureBaseField fixtureExtensionField fixtureMinpolyAlg fixtureAlpha
+
+fixtureConstructiveGaloisGroup : ConstructiveGaloisGroup fixtureBaseField fixtureExtensionField
+fixtureConstructiveGaloisGroup =
+  mkConstructiveGaloisGroup fixtureBaseField fixtureExtensionField fixtureGaloisAlg
+
+TestFixturesPackage : M.Identifier
+TestFixturesPackage = M.mkId "constructive-witness-fixtures"
 
 -- ============================================================================
 -- Test 1: Constructive Minimal Polynomial Creation
 -- ============================================================================
 
 module ConstructiveMinimalPolynomialTest where
-  
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
-    minpolyAlg : MinimalPolynomialAlgorithm F E
-  
+ 
   -- Phase: Build constructive minimal polynomial
-  buildConstructiveMinPoly : Phase (MinimalPolynomialAlgorithm F E) (ConstructiveMinimalPolynomial F E α)
+  buildConstructiveMinPoly : Phase (MinimalPolynomialAlgorithm fixtureBaseField fixtureExtensionField)
+                               (ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha)
   buildConstructiveMinPoly = record
-    { transform = λ alg → mkConstructiveMinimalPolynomial F E α alg
+    { transform = λ alg → mkConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha alg
     }
   
   -- Test execution
-  witness : ConstructiveMinimalPolynomial F E α
-  witness = Phase.transform buildConstructiveMinPoly minpolyAlg
+  witness : ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha
+  witness = Phase.transform buildConstructiveMinPoly fixtureMinpolyAlg
   
   -- Verify witness has computational content
   hasCoefficients : List M.Identifier
@@ -68,25 +115,19 @@ module ConstructiveMinimalPolynomialTest where
 -- ============================================================================
 
 module ConstructiveSplittingFieldTest where
-  
-  postulate
-    F : FieldDeclaration
-    poly : M.Identifier
-    splitAlg : SplittingFieldAlgorithm F
-    computedField : M.Identifier
-  
+ 
   -- Phase: Build constructive splitting field
-  buildSplittingField : Phase M.Identifier (ConstructiveSplittingField F poly)
+  buildSplittingField : Phase M.Identifier (ConstructiveSplittingField fixtureBaseField fixturePolynomial)
   buildSplittingField = record
-    { transform = λ cf → mkConstructiveSplittingField F poly splitAlg cf
+    { transform = λ cf → mkConstructiveSplittingField fixtureBaseField fixturePolynomial fixtureSplittingAlg cf
     }
   
   -- Test execution
-  witness : ConstructiveSplittingField F poly
-  witness = Phase.transform buildSplittingField computedField
+  witness : ConstructiveSplittingField fixtureBaseField fixturePolynomial
+  witness = Phase.transform buildSplittingField fixtureSplittingFieldOutput
   
   -- Verify witness has roots
-  hasRoots : List (ConstructiveRoot F poly)
+  hasRoots : List (ConstructiveRoot fixtureBaseField fixturePolynomial)
   hasRoots = ConstructiveSplittingField.roots witness
   
   hasFactorization : List M.Identifier
@@ -100,26 +141,23 @@ module ConstructiveSplittingFieldTest where
 -- ============================================================================
 
 module ConstructiveGaloisGroupTest where
-  
-  postulate
-    F E : FieldDeclaration
-    galoisAlg : GaloisGroupAlgorithm F E
-  
+ 
   -- Phase: Build constructive Galois group
-  buildGaloisGroup : Phase (GaloisGroupAlgorithm F E) (ConstructiveGaloisGroup F E)
+  buildGaloisGroup : Phase (GaloisGroupAlgorithm fixtureBaseField fixtureExtensionField)
+                        (ConstructiveGaloisGroup fixtureBaseField fixtureExtensionField)
   buildGaloisGroup = record
-    { transform = λ alg → mkConstructiveGaloisGroup F E alg
+    { transform = λ alg → mkConstructiveGaloisGroup fixtureBaseField fixtureExtensionField alg
     }
   
   -- Test execution
-  witness : ConstructiveGaloisGroup F E
-  witness = Phase.transform buildGaloisGroup galoisAlg
+  witness : ConstructiveGaloisGroup fixtureBaseField fixtureExtensionField
+  witness = Phase.transform buildGaloisGroup fixtureGaloisAlg
   
   -- Verify witness has automorphisms
-  hasAutomorphisms : List (ConstructiveAutomorphism F E)
+  hasAutomorphisms : List (ConstructiveAutomorphism fixtureBaseField fixtureExtensionField)
   hasAutomorphisms = ConstructiveGaloisGroup.automorphisms witness
-  
-  hasGroupOps : AutomorphismComposition F E
+
+  hasGroupOps : AutomorphismComposition fixtureBaseField fixtureExtensionField
   hasGroupOps = ConstructiveGaloisGroup.groupOperation witness
   
   hasFundamentalThm : M.Identifier
@@ -130,21 +168,16 @@ module ConstructiveGaloisGroupTest where
 -- ============================================================================
 
 module WitnessValidationTest where
-  
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
-    minpolyAlg : MinimalPolynomialAlgorithm F E
-  
-  witness : ConstructiveMinimalPolynomial F E α
-  witness = mkConstructiveMinimalPolynomial F E α minpolyAlg
-  
+ 
+  witness : ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha
+  witness = mkConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha fixtureMinpolyAlg
   -- Phase: Validate witness
-  validateWitness : Phase (ConstructiveMinimalPolynomial F E α) (WitnessValidation (ConstructiveMinimalPolynomial F E α))
+  validateWitness : Phase (ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha)
+                        (WitnessValidation (ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha))
   validateWitness = validate
-  
+
   -- Test execution
-  validation : WitnessValidation (ConstructiveMinimalPolynomial F E α)
+  validation : WitnessValidation (ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha)
   validation = Phase.transform validateWitness witness
   
   -- Check validation results
@@ -159,25 +192,20 @@ module WitnessValidationTest where
 -- ============================================================================
 
 module CorrectnessProofTest where
-  
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
-    minpolyAlg : MinimalPolynomialAlgorithm F E
-  
-  witness : ConstructiveMinimalPolynomial F E α
-  witness = mkConstructiveMinimalPolynomial F E α minpolyAlg
-  
+ 
+  witness : ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha
+  witness = mkConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha fixtureMinpolyAlg
   -- Phase: Extract correctness proof
-  extractCorrectness : Phase (ConstructiveMinimalPolynomial F E α) (CorrectnessProof (AlgebraicElement F E α))
-  extractCorrectness = extractProof (verifyMinimalPolynomial F E α)
+  extractCorrectness : Phase (ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha)
+                          (CorrectnessProof (AlgebraicElement fixtureBaseField fixtureExtensionField fixtureAlpha))
+  extractCorrectness = extractProof (verifyMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha)
   
   -- Test execution
-  proof : CorrectnessProof (AlgebraicElement F E α)
+  proof : CorrectnessProof (AlgebraicElement fixtureBaseField fixtureExtensionField fixtureAlpha)
   proof = Phase.transform extractCorrectness witness
-  
+
   -- Check proof components
-  hasProperty : AlgebraicElement F E α
+  hasProperty : AlgebraicElement fixtureBaseField fixtureExtensionField fixtureAlpha
   hasProperty = CorrectnessProof.property proof
   
   hasProofId : M.Identifier
@@ -191,23 +219,20 @@ module CorrectnessProofTest where
 -- ============================================================================
 
 module ConstructiveExtensionDegreeTest where
-  
-  postulate
-    F E : FieldDeclaration
-    deg : ExtensionDegree F E
-  
+ 
   -- Phase: Build constructive extension degree
-  buildExtDegree : Phase (ExtensionDegree F E) (ConstructiveExtensionDegree F E)
+  buildExtDegree : Phase (ExtensionDegree fixtureBaseField fixtureExtensionField)
+                     (ConstructiveExtensionDegree fixtureBaseField fixtureExtensionField)
   buildExtDegree = record
-    { transform = λ d → mkConstructiveExtensionDegree F E d
+    { transform = λ d → mkConstructiveExtensionDegree fixtureBaseField fixtureExtensionField d
     }
   
   -- Test execution
-  witness : ConstructiveExtensionDegree F E
-  witness = Phase.transform buildExtDegree deg
+  witness : ConstructiveExtensionDegree fixtureBaseField fixtureExtensionField
+  witness = Phase.transform buildExtDegree fixtureExtensionDegree
   
   -- Verify witness has basis
-  hasBasis : List (ConstructiveBasisElement F E)
+  hasBasis : List (ConstructiveBasisElement fixtureBaseField fixtureExtensionField)
   hasBasis = ConstructiveExtensionDegree.basis witness
   
   hasDimension : Nat
@@ -221,20 +246,17 @@ module ConstructiveExtensionDegreeTest where
 -- ============================================================================
 
 module ConstructiveNormalClosureTest where
-  
-  postulate
-    F E N : FieldDeclaration
-    normalAlg : NormalClosureAlgorithm F E
-  
+ 
   -- Phase: Build constructive normal closure
-  buildNormalClosure : Phase (NormalClosureAlgorithm F E) (ConstructiveNormalClosure F E)
+  buildNormalClosure : Phase (NormalClosureAlgorithm fixtureBaseField fixtureExtensionField)
+                          (ConstructiveNormalClosure fixtureBaseField fixtureExtensionField)
   buildNormalClosure = record
-    { transform = λ alg → mkConstructiveNormalClosure F E N alg
+    { transform = λ alg → mkConstructiveNormalClosure fixtureBaseField fixtureExtensionField fixtureNormalClosureField alg
     }
   
   -- Test execution
-  witness : ConstructiveNormalClosure F E
-  witness = Phase.transform buildNormalClosure normalAlg
+  witness : ConstructiveNormalClosure fixtureBaseField fixtureExtensionField
+  witness = Phase.transform buildNormalClosure fixtureNormalAlg
   
   -- Verify witness has conjugates
   hasConjugates : List M.Identifier
@@ -251,32 +273,26 @@ module ConstructiveNormalClosureTest where
 -- ============================================================================
 
 module ConstructiveBundleTest where
-  
-  postulate
-    F E : FieldDeclaration
-    minpolyAlg : MinimalPolynomialAlgorithm F E
-    splitAlg : SplittingFieldAlgorithm F
-    galoisAlg : GaloisGroupAlgorithm F E
-    normalAlg : NormalClosureAlgorithm F E
-  
+ 
   -- Phase: Build complete bundle
-  buildBundle : Phase (GaloisGroupAlgorithm F E) (ConstructiveExtensionBundle F E)
+  buildBundle : Phase (GaloisGroupAlgorithm fixtureBaseField fixtureExtensionField)
+                     (ConstructiveExtensionBundle fixtureBaseField fixtureExtensionField)
   buildBundle = record
-    { transform = λ _ → mkConstructiveBundle F E minpolyAlg splitAlg galoisAlg normalAlg
+    { transform = λ _ → mkConstructiveBundle fixtureBaseField fixtureExtensionField fixtureMinpolyAlg fixtureSplittingAlg fixtureGaloisAlg fixtureNormalAlg
     }
-  
+
   -- Test execution
-  bundle : ConstructiveExtensionBundle F E
-  bundle = Phase.transform buildBundle galoisAlg
+  bundle : ConstructiveExtensionBundle fixtureBaseField fixtureExtensionField
+  bundle = Phase.transform buildBundle fixtureGaloisAlg
   
   -- Verify bundle components
-  hasExtDegree : ConstructiveExtensionDegree F E
+  hasExtDegree : ConstructiveExtensionDegree fixtureBaseField fixtureExtensionField
   hasExtDegree = ConstructiveExtensionBundle.extensionDegree bundle
-  
-  hasGaloisGroup : ConstructiveGaloisGroup F E
+
+  hasGaloisGroup : ConstructiveGaloisGroup fixtureBaseField fixtureExtensionField
   hasGaloisGroup = ConstructiveExtensionBundle.galoisGroup bundle
-  
-  hasNormalClosure : ConstructiveNormalClosure F E
+
+  hasNormalClosure : ConstructiveNormalClosure fixtureBaseField fixtureExtensionField
   hasNormalClosure = ConstructiveExtensionBundle.normalClosure bundle
   
   isConsistent : M.Identifier
@@ -287,22 +303,18 @@ module ConstructiveBundleTest where
 -- ============================================================================
 
 module ConstructivePhaseCompositionTest where
-  
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
-    minpolyAlg : MinimalPolynomialAlgorithm F E
-  
+ 
   -- Compose phases: Build → Extract proof
-  buildThenProof : Phase (MinimalPolynomialAlgorithm F E) (CorrectnessProof (AlgebraicElement F E α))
+  buildThenProof : Phase (MinimalPolynomialAlgorithm fixtureBaseField fixtureExtensionField)
+                            (CorrectnessProof (AlgebraicElement fixtureBaseField fixtureExtensionField fixtureAlpha))
   buildThenProof =
-    let build = constructivize (λ _ → mkConstructiveMinimalPolynomial F E α minpolyAlg)
-        extract = extractProof (verifyMinimalPolynomial F E α)
+    let build = constructivize (λ _ → mkConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha fixtureMinpolyAlg)
+        extract = extractProof (verifyMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha)
     in build ⟫ extract
-  
+
   -- Test execution
-  result : CorrectnessProof (AlgebraicElement F E α)
-  result = Phase.transform buildThenProof minpolyAlg
+  result : CorrectnessProof (AlgebraicElement fixtureBaseField fixtureExtensionField fixtureAlpha)
+  result = Phase.transform buildThenProof fixtureMinpolyAlg
   
   -- Verify result
   hasCorrectness : List M.Identifier
@@ -313,21 +325,15 @@ module ConstructivePhaseCompositionTest where
 -- ============================================================================
 
 module ComputationalEvidenceTest where
-  
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
-    minpolyAlg : MinimalPolynomialAlgorithm F E
-  
-  witness : ConstructiveMinimalPolynomial F E α
-  witness = mkConstructiveMinimalPolynomial F E α minpolyAlg
-  
+ 
+  witness : ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha
+  witness = mkConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha fixtureMinpolyAlg
   -- Build computational evidence
-  evidence : ComputationalEvidence (ConstructiveMinimalPolynomial F E α)
+  evidence : ComputationalEvidence (ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha)
   evidence = liftToConstructive witness (λ w → w)
   
   -- Verify evidence components
-  hasAlgorithm : ConstructiveMinimalPolynomial F E α
+  hasAlgorithm : ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha
   hasAlgorithm = ComputationalEvidence.algorithm evidence
   
   hasData : M.Identifier
@@ -341,22 +347,37 @@ module ComputationalEvidenceTest where
 -- ============================================================================
 
 module AutomorphismCompositionTest where
-  
-  postulate
-    F E : FieldDeclaration
-    σ τ : ConstructiveAutomorphism F E
-    composition : AutomorphismComposition F E
-  
+ 
+  composition : AutomorphismComposition fixtureBaseField fixtureExtensionField
+  composition = ConstructiveGaloisGroup.groupOperation fixtureConstructiveGaloisGroup
+
+  σ : ConstructiveAutomorphism fixtureBaseField fixtureExtensionField
+  σ = record
+    { fieldMap = M.mkId "σ"
+    ; fixesBaseField = M.mkId "σ-fixes"
+    ; preservesAddition = M.mkId "σ-add"
+    ; preservesMultiplication = M.mkId "σ-mul"
+    ; isBijective = M.mkId "σ-bij"
+    }
+
+  τ : ConstructiveAutomorphism fixtureBaseField fixtureExtensionField
+  τ = record
+    { fieldMap = M.mkId "τ"
+    ; fixesBaseField = M.mkId "τ-fixes"
+    ; preservesAddition = M.mkId "τ-add"
+    ; preservesMultiplication = M.mkId "τ-mul"
+    ; isBijective = M.mkId "τ-bij"
+    }
   -- Test composition operation
-  composed : ConstructiveAutomorphism F E
+  composed : ConstructiveAutomorphism fixtureBaseField fixtureExtensionField
   composed = AutomorphismComposition.compose composition σ τ
-  
+
   -- Test identity
-  identity : ConstructiveAutomorphism F E
+  identity : ConstructiveAutomorphism fixtureBaseField fixtureExtensionField
   identity = AutomorphismComposition.identity composition
-  
+
   -- Test inverse
-  σInverse : ConstructiveAutomorphism F E
+  σInverse : ConstructiveAutomorphism fixtureBaseField fixtureExtensionField
   σInverse = AutomorphismComposition.inverseAut composition σ
   
   -- Verify group axioms present
@@ -372,24 +393,18 @@ module AutomorphismCompositionTest where
 
 module VerificationPipelineTest where
   
-  postulate
-    F : FieldDeclaration
-    poly : M.Identifier
-    splitAlg : SplittingFieldAlgorithm F
-    computedField : M.Identifier
-  
   -- Build witness
-  witness : ConstructiveSplittingField F poly
-  witness = mkConstructiveSplittingField F poly splitAlg computedField
-  
+  witness : ConstructiveSplittingField fixtureBaseField fixturePolynomial
+  witness = mkConstructiveSplittingField fixtureBaseField fixturePolynomial fixtureSplittingAlg fixtureSplittingFieldOutput
+
   -- Validate
-  validation : WitnessValidation (ConstructiveSplittingField F poly)
+  validation : WitnessValidation (ConstructiveSplittingField fixtureBaseField fixturePolynomial)
   validation = validateConstructiveWitness witness
-  
+
   -- Extract proof
-  proof : CorrectnessProof (SplittingField F poly)
-  proof = verifySplittingField F poly witness
-  
+  proof : CorrectnessProof (SplittingField fixtureBaseField fixturePolynomial)
+  proof = verifySplittingField fixtureBaseField fixturePolynomial witness
+
   -- Verify pipeline results
   witnessIsValid : Bool
   witnessIsValid = WitnessValidation.isValid validation
@@ -402,19 +417,14 @@ module VerificationPipelineTest where
 -- ============================================================================
 
 module ConstructiveVsNonConstructiveTest where
-  
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
-    minpolyAlg : MinimalPolynomialAlgorithm F E
-  
+ 
   -- Non-constructive witness (placeholder-based)
-  nonConstructive : AlgebraicElement F E α
-  nonConstructive = mkAlgebraicElement F E α
-  
+  nonConstructive : AlgebraicElement fixtureBaseField fixtureExtensionField fixtureAlpha
+  nonConstructive = mkAlgebraicElement fixtureBaseField fixtureExtensionField fixtureAlpha
+
   -- Constructive witness (algorithm-based)
-  constructive : ConstructiveMinimalPolynomial F E α
-  constructive = mkConstructiveMinimalPolynomial F E α minpolyAlg
+  constructive : ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha
+  constructive = mkConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha fixtureMinpolyAlg
   
   -- Constructive has computational content
   constructiveCoeffs : List M.Identifier
@@ -433,28 +443,30 @@ module ConstructiveVsNonConstructiveTest where
 
 module GaloisGroupVerificationTest where
   
-  postulate
-    F E : FieldDeclaration
-    galoisAlg : GaloisGroupAlgorithm F E
-  
   -- Build constructive Galois group
-  witness : ConstructiveGaloisGroup F E
-  witness = mkConstructiveGaloisGroup F E galoisAlg
-  
+  witness : ConstructiveGaloisGroup fixtureBaseField fixtureExtensionField
+  witness = mkConstructiveGaloisGroup fixtureBaseField fixtureExtensionField fixtureGaloisAlg
+
   -- Verify correctness
-  proof : CorrectnessProof (GaloisGroup F E)
-  proof = verifyGaloisGroup F E witness
-  
+  proof : CorrectnessProof (GaloisGroup fixtureBaseField fixtureExtensionField)
+  proof = verifyGaloisGroup fixtureBaseField fixtureExtensionField witness
+
   -- Check verification steps
   steps : List M.Identifier
   steps = CorrectnessProof.verificationSteps proof
-  
+
   -- Verify steps include key properties
-  postulate
-    stepsIncludeAutomorphismCheck : M.Identifier
-    stepsIncludeGroupAxioms : M.Identifier
-    stepsIncludeOrderEquality : M.Identifier
-    stepsIncludeFundamentalTheorem : M.Identifier
+  stepsIncludeAutomorphismCheck : M.Identifier
+  stepsIncludeAutomorphismCheck = M.mkId "automorphisms-verified"
+
+  stepsIncludeGroupAxioms : M.Identifier
+  stepsIncludeGroupAxioms = M.mkId "group-axioms-checked"
+
+  stepsIncludeOrderEquality : M.Identifier
+  stepsIncludeOrderEquality = M.mkId "order-eq-degree"
+
+  stepsIncludeFundamentalTheorem : M.Identifier
+  stepsIncludeFundamentalTheorem = M.mkId "fundamental-theorem"
 
 -- ============================================================================
 -- Test 15: Bundle Consistency Check
@@ -462,16 +474,11 @@ module GaloisGroupVerificationTest where
 
 module BundleConsistencyTest where
   
-  postulate
-    F E : FieldDeclaration
-    minpolyAlg : MinimalPolynomialAlgorithm F E
-    splitAlg : SplittingFieldAlgorithm F
-    galoisAlg : GaloisGroupAlgorithm F E
-    normalAlg : NormalClosureAlgorithm F E
-  
   -- Build bundle
-  bundle : ConstructiveExtensionBundle F E
-  bundle = mkConstructiveBundle F E minpolyAlg splitAlg galoisAlg normalAlg
+  bundle : ConstructiveExtensionBundle fixtureBaseField fixtureExtensionField
+  bundle =
+    mkConstructiveBundle fixtureBaseField fixtureExtensionField
+      fixtureMinpolyAlg fixtureSplittingAlg fixtureGaloisAlg fixtureNormalAlg
   
   -- Check all witnesses marked as valid
   allValid : Bool
@@ -482,10 +489,10 @@ module BundleConsistencyTest where
   consistency = ConstructiveExtensionBundle.consistencyProof bundle
   
   -- Access individual witnesses for consistency
-  extDeg : ConstructiveExtensionDegree F E
+  extDeg : ConstructiveExtensionDegree fixtureBaseField fixtureExtensionField
   extDeg = ConstructiveExtensionBundle.extensionDegree bundle
-  
-  galois : ConstructiveGaloisGroup F E
+
+  galois : ConstructiveGaloisGroup fixtureBaseField fixtureExtensionField
   galois = ConstructiveExtensionBundle.galoisGroup bundle
   
   -- Verify Galois group order matches extension degree
@@ -501,17 +508,22 @@ module BundleConsistencyTest where
 
 module MinpolyDividesEvidenceTest where
   
-  postulate
-    F E : FieldDeclaration
-    α p : M.Identifier
-    vanishes monic : M.Identifier
-    minpolyAlg : MinimalPolynomialAlgorithm F E
-  
-  ump : MinimalPolynomialProperty F E α
-  ump = minimalPolynomialImplementsUniversality F E minpolyAlg α
-  
-  evidence : MinpolyDividesEvidence F E α
-  evidence = mkMinpolyDividesEvidence F E α ump p vanishes monic
+  p : M.Identifier
+  p = fixturePolynomial
+
+  vanishes : M.Identifier
+  vanishes = fixtureVanishingWitness
+
+  monic : M.Identifier
+  monic = fixtureMonicWitness
+
+  ump : MinimalPolynomialProperty fixtureBaseField fixtureExtensionField fixtureAlpha
+  ump = fixtureMinimalPolynomialProperty
+
+  evidence : MinpolyDividesEvidence fixtureBaseField fixtureExtensionField fixtureAlpha
+  evidence =
+    mkMinpolyDividesEvidence fixtureBaseField fixtureExtensionField fixtureAlpha
+      ump p vanishes monic
   
   minpolyId : M.Identifier
   minpolyId = MinpolyDividesEvidence.minPoly evidence
@@ -579,14 +591,10 @@ module DivisionAlgorithmScaffoldTest where
 -- =========================================================================
 
 module DivisionAlgorithmEvidenceBridgeTest where
-  postulate
-    ℓF : Agda.Primitive.Level
-    F E : FieldDeclaration
-    α p vanishes monic : M.Identifier
-    ump : MinimalPolynomialProperty {ℓF} F E α
-
-  evidence : MinpolyDividesEvidence F E α
-  evidence = mkMinpolyDividesEvidence F E α ump p vanishes monic
+  evidence : MinpolyDividesEvidence fixtureBaseField fixtureExtensionField fixtureAlpha
+  evidence =
+    mkMinpolyDividesEvidence fixtureBaseField fixtureExtensionField fixtureAlpha
+      fixtureMinimalPolynomialProperty fixturePolynomial fixtureVanishingWitness fixtureMonicWitness
 
   bridged : DivisionScaffold
   bridged = dividePolynomialsFromEvidence evidence
@@ -605,15 +613,16 @@ module DivisionAlgorithmEvidenceBridgeTest where
 -- =========================================================================
 
 module DivisionByMinpolyUMPHelperTest where
-  postulate
-    ℓF : Agda.Primitive.Level
-    F E : FieldDeclaration
-    α p vanishes monic : M.Identifier
-    ump : MinimalPolynomialProperty {ℓF} F E α
-
   ds : DivisionScaffold
-  -- Explicitly skip level implicits to avoid unifying FieldDeclaration with levels.
-  ds = divideByMinimalPolynomial {ℓF} {F} {E} {α} ump p vanishes monic
+  ds =
+    divideByMinimalPolynomial
+      {F = fixtureBaseField}
+      {E = fixtureExtensionField}
+      {α = fixtureAlpha}
+      fixtureMinimalPolynomialProperty
+      fixturePolynomial
+      fixtureVanishingWitness
+      fixtureMonicWitness
 
   dsQuot : M.Identifier
   dsQuot = DivisionScaffold.quotient ds
@@ -629,22 +638,27 @@ module DivisionByMinpolyUMPHelperTest where
 -- =========================================================================
 
 module DivisionRefinementByUMPTest where
-  postulate
-    ℓF : Agda.Primitive.Level
-    F E : FieldDeclaration
-    α p vanishes monic : M.Identifier
-    ump : MinimalPolynomialProperty {ℓF} F E α
-
   -- Start with a generic division using the minimal polynomial as divisor
   genericDS : DivisionScaffold
-  genericDS = dividePolynomials (MinimalPolynomialProperty.minPoly ump) p
+  genericDS =
+    dividePolynomials (MinimalPolynomialProperty.minPoly fixtureMinimalPolynomialProperty)
+      fixturePolynomial
 
   genericZero : Bool
   genericZero = flagValue (DivisionScaffold.remainderZeroFlag genericDS)
 
   -- Refine the generic division using UMP evidence
   refinedDS : DivisionScaffold
-  refinedDS = refineDivisionByUMP {ℓF} {F} {E} {α} ump p vanishes monic genericDS
+  refinedDS =
+    refineDivisionByUMP
+      {F = fixtureBaseField}
+      {E = fixtureExtensionField}
+      {α = fixtureAlpha}
+      fixtureMinimalPolynomialProperty
+      fixturePolynomial
+      fixtureVanishingWitness
+      fixtureMonicWitness
+      genericDS
 
   refinedZero : Bool
   refinedZero = flagValue (DivisionScaffold.remainderZeroFlag refinedDS)
@@ -676,32 +690,22 @@ module F2PolynomialDivisionTest where
 -- =========================================================================
 
 module ConstructiveUMPBridgeCoherence where
-  
-  postulate
-    F E : FieldDeclaration
-    α : M.Identifier
-    f : M.Identifier
-    minpolyAlg : MinimalPolynomialAlgorithm F E
-    splitAlg : SplittingFieldAlgorithm F
-    gcAlg : GaloisClosureAlgorithm F E
-    computedSF : M.Identifier
-  
   -- Build constructive witnesses from algorithms
-  cmp : ConstructiveMinimalPolynomial F E α
-  cmp = mkConstructiveMinimalPolynomial F E α minpolyAlg
-  
-  csf : ConstructiveSplittingField F f
-  csf = mkConstructiveSplittingField F f splitAlg computedSF
-  
+  cmp : ConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha
+  cmp = mkConstructiveMinimalPolynomial fixtureBaseField fixtureExtensionField fixtureAlpha fixtureMinpolyAlg
+
+  csf : ConstructiveSplittingField fixtureBaseField fixturePolynomial
+  csf = mkConstructiveSplittingField fixtureBaseField fixturePolynomial fixtureSplittingAlg fixtureSplittingFieldOutput
+
   -- Obtain UMP records from the same algorithms
-  ump-minpoly : MinimalPolynomialProperty F E α
-  ump-minpoly = minimalPolynomialImplementsUniversality F E minpolyAlg α
-  
-  ump-splitting : SplittingFieldProperty F f
-  ump-splitting = splittingFieldImplementsUniversality F splitAlg f
-  
-  ump-galois-closure : GaloisClosureProperty F E
-  ump-galois-closure = galoisClosureImplementsUniversality F E gcAlg
+  ump-minpoly : MinimalPolynomialProperty fixtureBaseField fixtureExtensionField fixtureAlpha
+  ump-minpoly = fixtureMinimalPolynomialProperty
+
+  ump-splitting : SplittingFieldProperty fixtureBaseField fixturePolynomial
+  ump-splitting = splittingFieldImplementsUniversality fixtureBaseField fixtureSplittingAlg fixturePolynomial
+
+  ump-galois-closure : GaloisClosureProperty fixtureBaseField fixtureExtensionField
+  ump-galois-closure = galoisClosureImplementsUniversality fixtureBaseField fixtureExtensionField fixtureGaloisClosureAlg
   
   -- Coherence probes: simply ensure key components are present
   cmp-has-degree : Nat
