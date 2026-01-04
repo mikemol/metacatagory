@@ -41,5 +41,7 @@ want to re-run just that stage.
   * `md-lint` / `md-fix` / `intake-lint` – Markdown linting tools; the linting nodes already respect Make’s lazy timestamps so they run only when touched, and `md-fix`/`intake-lint` exist mainly for manual cleanup.
   * `node-deps` / `deferred-items` / `dependency-graph-json` – optional analytic runs that you run explicitly; they rarely belong in a gravity well unless you are debugging that particular output.
 
+  * `.github/deferred-queue.json` – machine-readable ordered queue derived from `.github/badges/deferred-files.json`; refreshed with `priority-refresh`.
+
 Running a gravity well writes the timestamp graph and leaves all intermediates “built” until their inputs change again.  That is your complete topology: remember the few high-level wells, and trust `make` to lazily recompute the nodes below when source files shift.
 ```
