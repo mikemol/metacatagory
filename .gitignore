@@ -16,6 +16,7 @@ src/agda/MAlonzo/
 src/agda/DeferredItemsScanner
 src/agda/ExporterMakefile
 src/agda/PriorityOrchestrationFFI
+src/agda/DeferredItemsOrchestrationFFI
 src/agda/PlanningExport
 src/agda/PriorityProfileExport
 src/agda/DependencyGraphExport
