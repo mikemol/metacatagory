@@ -26,11 +26,14 @@ def dump_yaml(data: Dict[str, Any]) -> str:
         YAML string representation
     """
     if yaml is not None:
+        # Use default_style='"' to force quoting of all scalars
+        # This prevents YAML parsing errors when values contain colons
         return yaml.dump(
             data,
             default_flow_style=False,
             sort_keys=False,
-            allow_unicode=True
+            allow_unicode=True,
+            default_style='"'
         ).rstrip()
 
     # Minimal fallback for dict[str, str | list[str]]
@@ -48,22 +51,16 @@ def dump_yaml(data: Dict[str, Any]) -> str:
 def normalize_unicode(value: Any) -> Any:
     """Normalize Unicode representation for consistent comparison.
     
-    Handles both literal Unicode characters (→) and escaped sequences (\\u2192).
+    Modern Python (3.x) strings are already Unicode. This function is now
+    a passthrough, but kept for API compatibility.
     
     Args:
         value: String or other value to normalize
         
     Returns:
-        Normalized value (or input if not a string)
+        Input value unchanged
     """
-    if not isinstance(value, str):
-        return value
-    
-    try:
-        # Decode any escaped sequences
-        return value.encode().decode('unicode-escape')
-    except (UnicodeDecodeError, AttributeError):
-        return value
+    return value
 
 
 def normalize_field_comparison(fm_value: Any, json_value: Any) -> Tuple[Any, Any]:
@@ -76,7 +73,8 @@ def normalize_field_comparison(fm_value: Any, json_value: Any) -> Tuple[Any, Any
     Returns:
         (normalized_fm_value, normalized_json_value)
     """
-    fm_normalized = str(normalize_unicode(fm_value)) if fm_value else fm_value
+    # Both are already Unicode strings in Python 3
+    fm_normalized = str(fm_value) if fm_value else fm_value
     json_normalized = str(json_value) if json_value else json_value
     return fm_normalized, json_normalized
 
