@@ -1,0 +1,139 @@
+{
+  "queue": [
+    {
+      "path": "src/agda/Algebra/Groups/Structure.agda",
+      "postulates": 18,
+      "todo": 0,
+      "fixme": 0,
+      "deviation": 0,
+      "total": 18,
+      "weighted_total": 27.0
+    },
+    {
+      "path": "src/agda/Algebra/Rings/Theorems/Classical.agda",
+      "postulates": 18,
+      "todo": 0,
+      "fixme": 0,
+      "deviation": 0,
+      "total": 18,
+      "weighted_total": 27.0
+    },
+    {
+      "path": "src/agda/Tests/AdvancedPhaseExamples.agda",
+      "postulates": 17,
+      "todo": 0,
+      "fixme": 0,
+      "deviation": 0,
+      "total": 17,
+      "weighted_total": 25.5
+    },
+    {
+      "path": "src/agda/Tests/ErrorHandlingTests.agda",
+      "postulates": 15,
+      "todo": 0,
+      "fixme": 0,
+      "deviation": 0,
+      "total": 15,
+      "weighted_total": 22.5
+    },
+    {
+      "path": "src/agda/Examples/AlgorithmCorrectnessExamples.agda",
+      "postulates": 15,
+      "todo": 0,
+      "fixme": 0,
+      "deviation": 0,
+      "total": 15,
+      "weighted_total": 22.5
+    },
+    {
+      "path": "scripts/generate-badges.py",
+      "postulates": 0,
+      "todo": 8,
+      "fixme": 8,
+      "deviation": 1,
+      "total": 17,
+      "weighted_total": 21.0
+    },
+    {
+      "path": "src/agda/Tests/AlgorithmCompositionTestsMinimal.agda",
+      "postulates": 14,
+      "todo": 0,
+      "fixme": 0,
+      "deviation": 0,
+      "total": 14,
+      "weighted_total": 21.0
+    },
+    {
+      "path": "src/agda/Tests/PerformanceBoundaryTests.agda",
+      "postulates": 14,
+      "todo": 0,
+      "fixme": 0,
+      "deviation": 0,
+      "total": 14,
+      "weighted_total": 21.0
+    },
+    {
+      "path": "src/agda/Examples/ConstructiveWitnessExamples.agda",
+      "postulates": 13,
+      "todo": 0,
+      "fixme": 0,
+      "deviation": 0,
+      "total": 13,
+      "weighted_total": 19.5
+    },
+    {
+      "path": "src/agda/Algebra/Fields/Advanced.agda",
+      "postulates": 13,
+      "todo": 0,
+      "fixme": 0,
+      "deviation": 0,
+      "total": 13,
+      "weighted_total": 19.5
+    },
+    {
+      "path": "src/agda/Examples/DeferredItemsScanner.agda",
+      "postulates": 3,
+      "todo": 3,
+      "fixme": 3,
+      "deviation": 6,
+      "total": 15,
+      "weighted_total": 18.0
+    },
+    {
+      "path": "src/agda/Tests/SerializationTests.agda",
+      "postulates": 12,
+      "todo": 0,
+      "fixme": 0,
+      "deviation": 0,
+      "total": 12,
+      "weighted_total": 18.0
+    },
+    {
+      "path": "src/agda/Tests/PhaseExamples.agda",
+      "postulates": 11,
+      "todo": 0,
+      "fixme": 0,
+      "deviation": 0,
+      "total": 11,
+      "weighted_total": 16.5
+    },
+    {
+      "path": "src/agda/Algebra/Modules/Theorems/Classical.agda",
+      "postulates": 11,
+      "todo": 0,
+      "fixme": 0,
+      "deviation": 0,
+      "total": 11,
+      "weighted_total": 16.5
+    },
+    {
+      "path": ".github/scripts/detect-deferred-items.sh",
+      "postulates": 0,
+      "todo": 3,
+      "fixme": 3,
+      "deviation": 8,
+      "total": 14,
+      "weighted_total": 15.5
+    }
+  ]
+}

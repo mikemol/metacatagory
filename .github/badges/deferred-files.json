@@ -1,20 +1,4 @@
 {
-  "src/agda/Tests/SerializationTests.agda": {
-    "postulates": 22,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 22,
-    "weighted_total": 33.0
-  },
-  "src/agda/Tests/ConstructiveWitnessTests.agda": {
-    "postulates": 22,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 22,
-    "weighted_total": 33.0
-  },
   "src/agda/Algebra/Groups/Structure.agda": {
     "postulates": 18,
     "todo": 0,
@@ -101,6 +85,14 @@
     "fixme": 3,
     "deviation": 6,
     "total": 15,
+    "weighted_total": 18.0
+  },
+  "src/agda/Tests/SerializationTests.agda": {
+    "postulates": 12,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 12,
     "weighted_total": 18.0
   },
   "src/agda/Tests/PhaseExamples.agda": {
@@ -934,14 +926,6 @@
     "deviation": 1,
     "total": 1,
     "weighted_total": 1.0
-  },
-  "intake/codex_handoff.md": {
-    "postulates": 0,
-    "todo": 1,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 1,
-    "weighted_total": 0.5
   },
   "scripts/validate_triangle_identity.py": {
     "postulates": 0,
