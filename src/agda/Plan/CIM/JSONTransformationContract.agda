@@ -28,12 +28,12 @@ open import Plan.CIM.JSONTransformation
 -- Contract: Primitive operations interface (what we need)
 ------------------------------------------------------------------------
 
+-- | String inequality (helper for contract laws)
+postulate _≢ₛ_ : String → String → Set
+
 -- | Record of primitive operations required for JSON transformation
 -- This is the CONTRACT - any implementation must provide these
 record JSONPrimitives : Set where
-  -- Helper: String inequality (needed for laws)
-  postulate _≢_ : String → String → Set
-  
   field
     -- Navigation
     get      : JSON → String → Maybe JSON
@@ -55,7 +55,7 @@ record JSONPrimitives : Set where
     
     -- Laws (witnesses that primitives satisfy basic properties)
     get-set-same : ∀ j k v → get (set j k v) k ≡ just v
-    get-set-diff : ∀ j k₁ k₂ v → k₁ ≢ k₂ → get (set j k₁ v) k₂ ≡ get j k₂
+    get-set-diff : ∀ j k₁ k₂ v → k₁ ≢ₛ k₂ → get (set j k₁ v) k₂ ≡ get j k₂
     merge-empty  : ∀ j → merge j empty ≡ j
     parse-serialize : ∀ j → parse (serialize j) ≡ just j
 
@@ -92,25 +92,23 @@ module JSONTransformationParameterized (P : JSONPrimitives) where
   forward strat m =
     let content = Monolithic.content m
         open TransformationStrategy strat
-        frags = List.map (λ where (path , json) → mkFragment path json) 
+        frags = map-list (λ where (path , json) → mkFragment path json) 
                          (fragmentize content)
         meta = metadataExtract content
         idx = indexBuild frags
     in mkHierarchical meta frags manifestSpec
     where
-      open import Agda.Builtin.List
-      postulate map : ∀ {A B : Set} → (A → B) → List A → List B
+      postulate map-list : ∀ {A B : Set} → (A → B) → List A → List B
   
   -- Backward transformation (reconstructs from fragments)
   backward : Hierarchical → Monolithic
   backward h =
     let open Hierarchical h
-        merged = List.foldl (λ acc frag → merge acc (Fragment.content frag))
+        merged = foldl-list (λ acc frag → merge acc (Fragment.content frag))
                             empty fragments
     in mkMonolithic merged
     where
-      open import Agda.Builtin.List
-      postulate foldl : ∀ {A B : Set} → (B → A → B) → B → List A → List B
+      postulate foldl-list : ∀ {A B : Set} → (B → A → B) → B → List A → B
   
   -- Roundtrip property (uses primitive laws)
   postulate
@@ -124,53 +122,53 @@ module JSONTransformationParameterized (P : JSONPrimitives) where
 -- | Concrete implementation of primitives in pure Agda
 -- This is the CONCRETE version - actual working code
 module JSONPrimitivesConcrete where
+  open import Plan.CIM.JSONConcrete
   
-  -- For now, postulate concrete implementations
-  -- In Phase 2, these will be implemented using String manipulation
-  postulate
-    json-get-concrete      : JSON → String → Maybe JSON
-    json-at-concrete       : JSON → Nat → Maybe JSON
-    json-keys-concrete     : JSON → List String
-    json-arrayItems-concrete : JSON → List JSON
-    json-empty-concrete    : JSON
-    json-set-concrete      : JSON → String → JSON → JSON
-    json-merge-concrete    : JSON → JSON → JSON
-    json-serialize-concrete : JSON → String
-    json-parse-concrete     : String → Maybe JSON
-    json-equiv-concrete     : JSON → JSON → Bool
+  -- Import concrete implementations from JSONConcrete module
+  -- Navigation primitives
+  get-impl      = json-get-concrete
+  at-impl       = json-at-concrete
+  keys-impl     = json-keys-concrete
+  arrayItems-impl = json-arrayItems-concrete
   
-  -- Witness that concrete operations satisfy contract laws
+  -- Construction primitives
+  empty-impl    = json-empty-concrete
+  set-impl      = json-set-concrete
+  merge-impl    = json-merge-concrete
+  
+  -- I/O primitives
+  serialize-impl = json-serialize-concrete
+  parse-impl     = json-parse-concrete
+  equiv-impl     = json-equiv-concrete
+  
+  -- Contract law witnesses
+  get-set-same-witness = concrete-get-set-same
+  
+  -- Wrapper for get-set-diff that adapts the inequality type
   postulate
-    concrete-get-set-same : ∀ j k v → 
-      json-get-concrete (json-set-concrete j k v) k ≡ just v
-    concrete-get-set-diff : ∀ j k₁ k₂ v → 
-      k₁ ≢c k₂ → 
+    get-set-diff-witness : ∀ j k₁ k₂ v → k₁ ≢ₛ k₂ → 
       json-get-concrete (json-set-concrete j k₁ v) k₂ ≡ json-get-concrete j k₂
-    concrete-merge-empty : ∀ j → 
-      json-merge-concrete j json-empty-concrete ≡ j
-    concrete-parse-serialize : ∀ j → 
-      json-parse-concrete (json-serialize-concrete j) ≡ just j
   
-  -- String inequality for concrete implementation
-  postulate _≢c_ : String → String → Set
+  merge-empty-witness = concrete-merge-empty
+  parse-serialize-witness = concrete-parse-serialize
   
   -- Bundle into JSONPrimitives record
   concretePrimitives : JSONPrimitives
-  JSONPrimitives.get concretePrimitives = json-get-concrete
-  JSONPrimitives.at concretePrimitives = json-at-concrete
-  JSONPrimitives.keys concretePrimitives = json-keys-concrete
-  JSONPrimitives.arrayItems concretePrimitives = json-arrayItems-concrete
-  JSONPrimitives.empty concretePrimitives = json-empty-concrete
-  JSONPrimitives.set concretePrimitives = json-set-concrete
-  JSONPrimitives.merge concretePrimitives = json-merge-concrete
-  JSONPrimitives.serialize concretePrimitives = json-serialize-concrete
-  JSONPrimitives.parse concretePrimitives = json-parse-concrete
-  JSONPrimitives.equiv concretePrimitives = json-equiv-concrete
-  JSONPrimitives.get-set-same concretePrimitives = concrete-get-set-same
-  JSONPrimitives.get-set-diff concretePrimitives = concrete-get-set-diff
-  JSONPrimitives.merge-empty concretePrimitives = concrete-merge-empty
-  JSONPrimitives.parse-serialize concretePrimitives = concrete-parse-serialize
-  JSONPrimitives._≢_ concretePrimitives = _≢c_
+  JSONPrimitives.get concretePrimitives = get-impl
+  JSONPrimitives.at concretePrimitives = at-impl
+  JSONPrimitives.keys concretePrimitives = keys-impl
+  JSONPrimitives.arrayItems concretePrimitives = arrayItems-impl
+  JSONPrimitives.empty concretePrimitives = empty-impl
+  JSONPrimitives.set concretePrimitives = set-impl
+  JSONPrimitives.merge concretePrimitives = merge-impl
+  JSONPrimitives.serialize concretePrimitives = serialize-impl
+  JSONPrimitives.parse concretePrimitives = parse-impl
+  JSONPrimitives.equiv concretePrimitives = equiv-impl
+  JSONPrimitives.get-set-same concretePrimitives = get-set-same-witness
+  JSONPrimitives.get-set-diff concretePrimitives = get-set-diff-witness
+  JSONPrimitives.merge-empty concretePrimitives = merge-empty-witness
+  JSONPrimitives.parse-serialize concretePrimitives = parse-serialize-witness
+  -- Note: _≢ₛ_ is postulated at module level, not in record
 
 ------------------------------------------------------------------------
 -- Natural transformation: Parameterized ≅ Concrete
@@ -221,12 +219,12 @@ module JSONTransformationTests (P : JSONPrimitives) where
   -- Test: decomposition creates valid fragments  
   postulate
     all : ∀ {A : Set} → (A → Bool) → List A → Bool
+    is-valid-fragment : Fragment → Bool
     
   postulate
     test-fragments-valid : ∀ (strat : TransformationStrategy) (m : Monolithic) →
       let h = forward strat m
-      in all (λ f → equiv (Fragment.content f) (Fragment.content f) ≡ true)
-             (Hierarchical.fragments h)
+      in all is-valid-fragment (Hierarchical.fragments h) ≡ true
   
   -- Test: metadata is preserved
   postulate
