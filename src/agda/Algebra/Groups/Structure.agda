@@ -104,7 +104,23 @@ record SylowPSubgroup (p : M.Identifier) (G : GroupDeclaration) : Set₁ where
     isMaximal       : M.Identifier
 
 -- | Package of Sylow theorems for a group and prime.
-postulate SylowTheoremsPackage : (G : GroupDeclaration) → (p : M.Identifier) → M.Identifier
+record SylowTheoremsPackage (G : GroupDeclaration) (p : M.Identifier) : Set₁ where
+  field
+    sylowSubgroup : SylowPSubgroup p G
+    maximality    : M.Identifier
+    conjugacy     : M.Identifier
+
+mkSylowTheoremsPackage :
+  ∀ {G : GroupDeclaration} {p : M.Identifier}
+  → SylowPSubgroup p G
+  → M.Identifier
+  → M.Identifier
+  → SylowTheoremsPackage G p
+mkSylowTheoremsPackage sylow max conj = record
+  { sylowSubgroup = sylow
+  ; maximality    = max
+  ; conjugacy     = conj
+  }
 
 -- Simple groups and composition series
 -- | Simple group witness.
@@ -204,7 +220,20 @@ postulate FGAbelianAsLawvereModels : M.Identifier
 -- | Correspondence between actions and functors from BG.
 postulate GroupActionFunctorCorrespondence : (G : GroupDeclaration) → M.Identifier
 -- | Categorical view on Sylow theory.
-postulate SylowCategoricalPerspective : M.Identifier
+record SylowCategoricalPerspective (G : GroupDeclaration) (p : M.Identifier) : Set₁ where
+  field
+    package            : SylowTheoremsPackage G p
+    classifyingObject  : M.Identifier
+
+mkSylowCategoricalPerspective :
+  ∀ {G : GroupDeclaration} {p : M.Identifier}
+  → SylowTheoremsPackage G p
+  → M.Identifier
+  → SylowCategoricalPerspective G p
+mkSylowCategoricalPerspective pkg obj = record
+  { package           = pkg
+  ; classifyingObject = obj
+  }
 -- | View composition series as a filtration.
 postulate CompositionSeriesAsFiltration : (G : GroupDeclaration) → M.Identifier
 -- | Solvable groups as iterated extensions.

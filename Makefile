@@ -64,6 +64,7 @@ dependency-graph-json: build/diagrams/agda-deps-full.dot
 # Re-run priority pipeline and refresh roadmap/badge outputs
 priority-refresh: planning-index-json roadmap-export-json priority-badge-weights badges
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "priority pipeline refreshed (planning index, tasks, badge weights, roadmap badges)"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "priority-refresh" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+	python3 scripts/deferred_queue.py --limit 15 --output .github/deferred-queue.json
 # Generate per-module markdown documentation
 docs-modules: src/agda/Plan/CIM/ModuleExporter.agdai
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/ModuleExporter.agda && ./src/agda/Plan/CIM/ModuleExporter); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "docs-modules" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc

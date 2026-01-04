@@ -82,14 +82,16 @@ def extract_metadata_from_md(filepath: str) -> Dict:
 
 def sanitize_string(value: str) -> str:
     """Prepare text to embed inside Agda string literals."""
-    return ' '.join(value.replace('"', "'").split()).strip()
+    escaped = value.replace('"', "'")
+    escaped = escaped.replace('\\', '\\\\')
+    return ' '.join(escaped.split()).strip()
 
 
 def generate_roadmap_step(gp_id: str, metadata: Dict, file_number: int) -> str:
     """Generate an Agda RoadmapStep record for a GP file."""
 
     safe_name = f"gp{gp_id.replace('/', '').lower()}"
-    title = metadata['title'][:80]  # Truncate title
+    title = sanitize_string(metadata['title'])[:80]  # Truncate title
     summary = sanitize_string(metadata['summary'])
 
     insight = sanitize_string(metadata.get('insight', ''))
@@ -160,7 +162,7 @@ module Plan.CIM.IngestedRoadmaps where
 
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.String
-open import Plan.CIM.Utility (RoadmapStep)
+open import Plan.CIM.Utility using (RoadmapStep)
 
 ------------------------------------------------------------------------
 -- Ingested Roadmap Steps from GP Files
