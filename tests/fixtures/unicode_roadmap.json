@@ -1,0 +1,10 @@
+{
+  "items": [
+    {
+      "id": "ITEM-café",
+      "title": "Test with émojis 🎯",
+      "description": "Chinese: 完成, Japanese: 完了",
+      "status": "active"
+    }
+  ]
+}
