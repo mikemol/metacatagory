@@ -50,7 +50,7 @@ test-python:
 debt-check: deferred-items intake-scan
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "✓ Debt tracking tools validated"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "debt-check" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Run all validation checks
-check: makefile-validate md-lint roadmap-validate-triangle docs-validate test-python debt-check all
+check: makefile-validate md-lint roadmap-validate-triangle docs-validate test-python debt-check json-roundtrip-validate json-roundtrip-validate-enriched json-roundtrip-validate-planning all
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "check complete"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "check" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Generate status badges
 badges: priority-badge-weights
@@ -170,7 +170,7 @@ json-roundtrip-validate-enriched: json-decompose-enriched json-recompose-enriche
 json-decompose-planning: build/planning_index.json
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/json_decompose.py build/planning_index.json data/planning/ --strategy item-array); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-decompose-planning" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Recompose planning items into planning_index.json
-json-recompose-planning: data/planning/
+json-recompose-planning: json-decompose-planning
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/json_recompose.py data/planning/ build/planning_index_recomposed.json); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-recompose-planning" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Validate planning roundtrip
 json-roundtrip-validate-planning: json-decompose-planning json-recompose-planning

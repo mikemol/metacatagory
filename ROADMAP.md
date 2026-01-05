@@ -35,7 +35,7 @@ This document is a projection from the planning kernel. To update:
   \ canonical_enriched.json, etc.) using category-theoretic natural transformations.\
   \ Preserve losslessness and structure while improving granularity, diffability,\
   \ and parallel build efficiency."
-"status": "in-progress"
+"status": "done"
 "category": "Build Infrastructure"
 "tags":
 - "JSON"
@@ -48,7 +48,7 @@ This document is a projection from the planning kernel. To update:
 - "scripts/json_recompose.py"
 ```
 
-- **Decompose large JSON artifacts via natural transformations** — Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency. [status: in-progress]
+- **Decompose large JSON artifacts via natural transformations** — Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency. [status: done]
   Source: JSONDecomposition
   Target: `src/agda/Plan/CIM/JSONTransformation.agda`, `scripts/json_decompose.py`, `scripts/json_recompose.py`
   Tags: JSON, NaturalTransformation, SPPF, Build
@@ -161,7 +161,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Apply decomposition to dependency_graph.json"
 "description": "First target: decompose 84-module dependency graph into build/deps/{modules,layers,cycles}/\
   \ hierarchy with module-level granularity."
-"status": "not-started"
+"status": "done"
 "category": "Build Infrastructure"
 "dependencies":
 - "BUILD-JSON-BACKWARD"
@@ -175,7 +175,7 @@ This document is a projection from the planning kernel. To update:
 - "build/deps/layers/_index.json"
 ```
 
-- **Apply decomposition to dependency_graph.json** — First target: decompose 84-module dependency graph into build/deps/{modules,layers,cycles}/ hierarchy with module-level granularity. [status: not-started]
+- **Apply decomposition to dependency_graph.json** — First target: decompose 84-module dependency graph into build/deps/{modules,layers,cycles}/ hierarchy with module-level granularity. [status: done]
   Source: JSONDecomposition
   Target: `build/deps/_metadata.json`, `build/deps/modules/_index.json`, `build/deps/layers/_index.json`
   Tags: JSON, DependencyGraph, Phase1
@@ -186,7 +186,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Apply decomposition to canonical_enriched.json"
 "description": "Second target: decompose roadmap enrichment data into build/enriched/{items,dependencies,annotations}/\
   \ with per-item granularity."
-"status": "not-started"
+"status": "done"
 "category": "Build Infrastructure"
 "dependencies":
 - "BUILD-JSON-BACKWARD"
@@ -200,7 +200,7 @@ This document is a projection from the planning kernel. To update:
 - "build/enriched/dependencies/_manifest.json"
 ```
 
-- **Apply decomposition to canonical_enriched.json** — Second target: decompose roadmap enrichment data into build/enriched/{items,dependencies,annotations}/ with per-item granularity. [status: not-started]
+- **Apply decomposition to canonical_enriched.json** — Second target: decompose roadmap enrichment data into build/enriched/{items,dependencies,annotations}/ with per-item granularity. [status: done]
   Source: JSONDecomposition
   Target: `build/enriched/_metadata.json`, `build/enriched/items/_index.json`, `build/enriched/dependencies/_manifest.json`
   Tags: JSON, RoadmapEnrichment, Phase1
@@ -211,7 +211,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Apply decomposition to planning_index.json"
 "description": "Third target: decompose planning index into build/planning/{items,sources,artifacts}/\
   \ with natural hierarchical layout."
-"status": "not-started"
+"status": "done"
 "category": "Build Infrastructure"
 "dependencies":
 - "BUILD-JSON-BACKWARD"
@@ -225,7 +225,7 @@ This document is a projection from the planning kernel. To update:
 - "build/planning/sources/_manifest.json"
 ```
 
-- **Apply decomposition to planning_index.json** — Third target: decompose planning index into build/planning/{items,sources,artifacts}/ with natural hierarchical layout. [status: not-started]
+- **Apply decomposition to planning_index.json** — Third target: decompose planning index into build/planning/{items,sources,artifacts}/ with natural hierarchical layout. [status: done]
   Source: JSONDecomposition
   Target: `build/planning/_metadata.json`, `build/planning/items/_index.json`, `build/planning/sources/_manifest.json`
   Tags: JSON, PlanningIndex, Phase1
@@ -307,7 +307,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Introduce generic functor interface for protocol bundles"
 "description": "Establish the generic functor interface for protocol bundles so adapters\
   \ share a single abstraction."
-"status": "in-progress"
+"status": "done"
 "category": "Infrastructure"
 "dependencies":
 - "LOCAL-DEF-DICT"
@@ -325,7 +325,7 @@ This document is a projection from the planning kernel. To update:
 - "src/agda/Core/PhaseCategoryWrapper.agda"
 ```
 
-- **Introduce generic functor interface for protocol bundles** — Establish the generic functor interface for protocol bundles so adapters share a single abstraction. [status: in-progress]
+- **Introduce generic functor interface for protocol bundles** — Establish the generic functor interface for protocol bundles so adapters share a single abstraction. [status: done]
   Source: DefinitionDictionary
   Target: `src/agda/Infrastructure/Functor/Interface.agda`, `src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda`, `src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda`, `src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda`, `src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda`, `src/agda/Infrastructure/Functor/Instances/Ambiguity.agda`, `src/agda/Infrastructure/Functor/Compose.agda`, `src/agda/Core/PhaseCategoryWrapper.agda`
   Tags: Functor, Interface
@@ -336,7 +336,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Complete generic functor interface laws and helpers"
 "description": "Complete the generic functor interface laws and helpers to provide\
   \ the coherence proofs downstream components expect."
-"status": "in-progress"
+"status": "done"
 "category": "Infrastructure"
 "dependencies":
 - "LOCAL-GENERIC-FUNCTOR"
@@ -347,7 +347,7 @@ This document is a projection from the planning kernel. To update:
 - "src/agda/Infrastructure/Functor/Interface.agda"
 ```
 
-- **Complete generic functor interface laws and helpers** — Complete the generic functor interface laws and helpers to provide the coherence proofs downstream components expect. [status: in-progress]
+- **Complete generic functor interface laws and helpers** — Complete the generic functor interface laws and helpers to provide the coherence proofs downstream components expect. [status: done]
   Source: DefinitionDictionary
   Target: `src/agda/Infrastructure/Functor/Interface.agda`
   Tags: Functor, Interface
@@ -381,7 +381,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Document interface laws and usage in code comments"
 "description": "Document the interface laws and usage so the new functor API stays\
   \ discoverable."
-"status": "not-started"
+"status": "done"
 "category": "Infrastructure"
 "dependencies":
 - "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
@@ -392,7 +392,7 @@ This document is a projection from the planning kernel. To update:
 - "src/agda/Infrastructure/Functor/Interface.agda"
 ```
 
-- **Document interface laws and usage in code comments** — Document the interface laws and usage so the new functor API stays discoverable. [status: not-started]
+- **Document interface laws and usage in code comments** — Document the interface laws and usage so the new functor API stays discoverable. [status: done]
   Source: DefinitionDictionary
   Target: `src/agda/Infrastructure/Functor/Interface.agda`
   Tags: Functor, Documentation
@@ -403,7 +403,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Normalize existing functor instances onto shared interface"
 "description": "Normalize existing functor instances onto the shared interface to\
   \ keep implementations aligned."
-"status": "not-started"
+"status": "done"
 "category": "Infrastructure"
 "dependencies":
 - "LOCAL-GENERIC-FUNCTOR"
@@ -418,7 +418,7 @@ This document is a projection from the planning kernel. To update:
 - "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda"
 ```
 
-- **Normalize existing functor instances onto shared interface** — Normalize existing functor instances onto the shared interface to keep implementations aligned. [status: not-started]
+- **Normalize existing functor instances onto shared interface** — Normalize existing functor instances onto the shared interface to keep implementations aligned. [status: done]
   Source: DefinitionDictionary
   Target: `src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda`, `src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda`, `src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda`, `src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda`, `src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda`
   Tags: Functor, Refactor

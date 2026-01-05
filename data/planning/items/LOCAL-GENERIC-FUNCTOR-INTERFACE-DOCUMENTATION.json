@@ -2,7 +2,7 @@
   "id": "LOCAL-GENERIC-FUNCTOR-INTERFACE-DOCUMENTATION",
   "title": "Document interface laws and usage in code comments",
   "description": "Document the interface laws and usage so the new functor API stays discoverable.",
-  "status": "not-started",
+  "status": "done",
   "category": "Infrastructure",
   "source": "DefinitionDictionary",
   "files": [

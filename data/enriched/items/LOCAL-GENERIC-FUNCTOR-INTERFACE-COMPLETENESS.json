@@ -2,7 +2,7 @@
   "id": "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS",
   "title": "Complete generic functor interface laws and helpers",
   "description": "Complete the generic functor interface laws and helpers to provide the coherence proofs downstream components expect.",
-  "status": "in-progress",
+  "status": "done",
   "category": "Infrastructure",
   "source": "DefinitionDictionary",
   "files": [
@@ -19,7 +19,7 @@
     "intake/codex_handoff.md"
   ],
   "related": [],
-  "intent": "| FunctorInterface: generic functor specification for category-like bundles. This is intentionally minimal: it works with any record that supplies objects, morphisms, identity, and composition, and it...",
+  "intent": "| FunctorInterface: Generic functor specification for category-like bundles. This module provides a minimalist but complete functor interface that works with any structure supplying objects, morphisms...",
   "deliverable": "Compiled Agda modules: Interface.agda",
   "scope": {
     "in": [],
@@ -27,14 +27,14 @@
   },
   "acceptance": [
     "All Agda modules compile without errors",
-    "Key definitions implemented: map-cong, map-id-on, map-compose-on",
+    "Key definitions implemented: map-cong, map-id-on, map-compose-on (+ 2 more)",
     "Code review and integration approval"
   ],
   "evidence": [
     {
       "source": "src/agda/Infrastructure/Functor/Interface.agda",
       "loc": "module header",
-      "text": "| FunctorInterface: generic functor specification for category-like bundles. This is intentionally minimal: it works with any record that supplies objects, morphisms, identity, and composition, and it..."
+      "text": "| FunctorInterface: Generic functor specification for category-like bundles. This module provides a minimalist but complete functor interface that works with any structure supplying objects, morphisms..."
     }
   ],
   "derivedTags": [
@@ -55,7 +55,9 @@
   "definitions": [
     "map-cong",
     "map-id-on",
-    "map-compose-on"
+    "map-compose-on",
+    "map-compose-chain",
+    "map-id-is-id"
   ],
   "risks": []
 }

@@ -2,7 +2,7 @@
   "id": "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION",
   "title": "Normalize existing functor instances onto shared interface",
   "description": "Normalize existing functor instances onto the shared interface to keep implementations aligned.",
-  "status": "not-started",
+  "status": "done",
   "category": "Infrastructure",
   "source": "DefinitionDictionary",
   "files": [

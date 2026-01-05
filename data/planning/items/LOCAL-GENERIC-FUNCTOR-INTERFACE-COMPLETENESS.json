@@ -2,7 +2,7 @@
   "id": "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS",
   "title": "Complete generic functor interface laws and helpers",
   "description": "Complete the generic functor interface laws and helpers to provide the coherence proofs downstream components expect.",
-  "status": "in-progress",
+  "status": "done",
   "category": "Infrastructure",
   "source": "DefinitionDictionary",
   "files": [
