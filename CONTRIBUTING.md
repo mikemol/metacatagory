@@ -1,54 +1,72 @@
-# Contributing to Metacatagory
+# Contributing to MetaCategory
+
+Welcome! This guide will help you get started as a contributor to the MetaCategory project. Please read carefully to ensure your contributions are effective and consistent with project standards.
 
 ## Getting Started
 
-1. **Review the architecture** - Start with [ARCHITECTURE.md](ARCHITECTURE.md) to understand the proof-driven, categorical design
-2. **Understand roadmaps** - Check [src/agda/Plan/CIM/Utility.agda](src/agda/Plan/CIM/Utility.agda) for RoadmapStep examples and integration patterns
-3. **Build locally** - Run `make agda-all` to ensure the project compiles
+- Clone the repository and set up your environment using the provided Makefile targets.
 
-## Development Guidelines
+- Review the documentation in README.md, ROADMAP.md, and the relevant subdirectory manuals (see src/agda/*/README.md).
 
-### Code Organization
+- Install dependencies:
 
-- **src/agda/Core/** - Foundational categorical structures (phases, functors, witnesses)
-- **src/agda/Plan/CIM/** - Protocol composition and roadmap infrastructure
-- **src/agda/Algebra/** - Algebraic hierarchies (fields, vector spaces, etc.)
+```text
+make venv
+make node-deps
+```
 
-### Writing New Code
+## Coding Standards
 
-1. **Use protocol records** - New functionality should be composed via protocol records (see `src/agda/Plan/CIM/Utility.agda`)
-2. **Add roadmap examples** - Document new features as RoadmapStep records with clear implications and target modules
-3. **Include witness proofs** - Use witness objects and universal properties for formal guarantees
-4. **Update ROADMAP.md** - Add references to new modules and roadmap nodes for traceability
+- Agda code should follow the conventions in the onboarding and module manuals.
 
-### Code Style
+- Python scripts should be formatted with black and linted with flake8.
 
-- Use descriptive names for protocols and records
-- Include comments explaining categorical intent and proof structure
-- Organize imports clearly with `open import` statements
-- Use Unicode operators appropriately (→, ∷, ≡, etc.)
+- Markdown should be auto-formatted and linted using make md-fix and make md-lint.
 
-## Testing
+- Commit messages should be clear and reference relevant issues or roadmap items.
 
-- **Unit tests** are in `src/agda/Tests/`
-- **Run tests**: Tests compile as part of `make agda-all`
-- **Add new tests** for new modules with clear property-based specifications
+## Adding Tests & Checklists
+
+- Place new checklists in src/agda/Tests/ and update the relevant README.
+
+- Use the checklist/test philosophy described in src/agda/Tests/README.md.
+
+- Run make check-tests to verify your additions.
+
+- Document the purpose and expected outcome of each test in its file header.
 
 ## Documentation
 
-- **Markdown files** should be kept consistent with actual Agda implementations
-- **Roadmap nodes** in RoadmapStep records serve as machine-actionable documentation
-- **ARCHITECTURE.md** describes design patterns and their implications
+- Update or add documentation in the appropriate README.md or manual.
+
+- For new modules, include a README describing its purpose, key files, and navigation.
+
+- Link to relevant Makefile targets and automation scripts where appropriate.
+
+## Interpreting Reports & Metrics
+
+- Generated reports (e.g., top-offenders.md) highlight technical debt and deferred items.
+
+- Use these reports to prioritize refactoring and documentation efforts.
+
+- See .github/scripts/README.md for details on automation and metrics.
 
 ## Submitting Changes
 
-1. **Update affected modules** and their corresponding RoadmapStep entries
-2. **Ensure clean compilation** with `make agda-all`
-3. **Update documentation** to reflect architectural changes
-4. **Reference roadmap nodes** in commit messages for traceability
+1. Fork the repository and create a feature branch.
 
-## Questions?
+2. Make your changes and commit with a descriptive message.
 
-- Check [COPILOT_SYNERGY.md](COPILOT_SYNERGY.md) for LLM integration and context guidance
-- Review examples in [src/agda/Examples/](src/agda/Examples/) for patterns and idioms
-- Consult roadmap nodes in [src/agda/Plan/CIM/Utility.agda](src/agda/Plan/CIM/Utility.agda) for integration context
+3. Run all relevant Makefile targets to verify code, tests, and docs.
+
+4. Open a pull request, referencing related issues or roadmap items.
+
+5. Respond to review feedback and iterate as needed.
+
+## Community & Support
+
+- For questions, open a discussion or issue on GitHub.
+
+- See CREDITS.md for contributors and acknowledgments.
+
+Thank you for helping build MetaCategory!
