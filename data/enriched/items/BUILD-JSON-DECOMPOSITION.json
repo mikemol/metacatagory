@@ -2,7 +2,7 @@
   "id": "BUILD-JSON-DECOMPOSITION",
   "title": "Decompose large JSON artifacts via natural transformations",
   "description": "Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency.",
-  "status": "in-progress",
+  "status": "done",
   "category": "Build Infrastructure",
   "source": "JSONDecomposition",
   "files": [

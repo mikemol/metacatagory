@@ -307,7 +307,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Introduce generic functor interface for protocol bundles"
 "description": "Establish the generic functor interface for protocol bundles so adapters\
   \ share a single abstraction."
-"status": "in-progress"
+"status": "done"
 "category": "Infrastructure"
 "dependencies":
 - "LOCAL-DEF-DICT"
@@ -325,7 +325,7 @@ This document is a projection from the planning kernel. To update:
 - "src/agda/Core/PhaseCategoryWrapper.agda"
 ```
 
-- **Introduce generic functor interface for protocol bundles** — Establish the generic functor interface for protocol bundles so adapters share a single abstraction. [status: in-progress]
+- **Introduce generic functor interface for protocol bundles** — Establish the generic functor interface for protocol bundles so adapters share a single abstraction. [status: done]
   Source: DefinitionDictionary
   Target: `src/agda/Infrastructure/Functor/Interface.agda`, `src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda`, `src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda`, `src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda`, `src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda`, `src/agda/Infrastructure/Functor/Instances/Ambiguity.agda`, `src/agda/Infrastructure/Functor/Compose.agda`, `src/agda/Core/PhaseCategoryWrapper.agda`
   Tags: Functor, Interface
@@ -336,7 +336,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Complete generic functor interface laws and helpers"
 "description": "Complete the generic functor interface laws and helpers to provide\
   \ the coherence proofs downstream components expect."
-"status": "in-progress"
+"status": "done"
 "category": "Infrastructure"
 "dependencies":
 - "LOCAL-GENERIC-FUNCTOR"
@@ -347,7 +347,7 @@ This document is a projection from the planning kernel. To update:
 - "src/agda/Infrastructure/Functor/Interface.agda"
 ```
 
-- **Complete generic functor interface laws and helpers** — Complete the generic functor interface laws and helpers to provide the coherence proofs downstream components expect. [status: in-progress]
+- **Complete generic functor interface laws and helpers** — Complete the generic functor interface laws and helpers to provide the coherence proofs downstream components expect. [status: done]
   Source: DefinitionDictionary
   Target: `src/agda/Infrastructure/Functor/Interface.agda`
   Tags: Functor, Interface
@@ -381,7 +381,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Document interface laws and usage in code comments"
 "description": "Document the interface laws and usage so the new functor API stays\
   \ discoverable."
-"status": "not-started"
+"status": "done"
 "category": "Infrastructure"
 "dependencies":
 - "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
@@ -392,7 +392,7 @@ This document is a projection from the planning kernel. To update:
 - "src/agda/Infrastructure/Functor/Interface.agda"
 ```
 
-- **Document interface laws and usage in code comments** — Document the interface laws and usage so the new functor API stays discoverable. [status: not-started]
+- **Document interface laws and usage in code comments** — Document the interface laws and usage so the new functor API stays discoverable. [status: done]
   Source: DefinitionDictionary
   Target: `src/agda/Infrastructure/Functor/Interface.agda`
   Tags: Functor, Documentation
@@ -403,7 +403,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Normalize existing functor instances onto shared interface"
 "description": "Normalize existing functor instances onto the shared interface to\
   \ keep implementations aligned."
-"status": "not-started"
+"status": "done"
 "category": "Infrastructure"
 "dependencies":
 - "LOCAL-GENERIC-FUNCTOR"
@@ -418,7 +418,7 @@ This document is a projection from the planning kernel. To update:
 - "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda"
 ```
 
-- **Normalize existing functor instances onto shared interface** — Normalize existing functor instances onto the shared interface to keep implementations aligned. [status: not-started]
+- **Normalize existing functor instances onto shared interface** — Normalize existing functor instances onto the shared interface to keep implementations aligned. [status: done]
   Source: DefinitionDictionary
   Target: `src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda`, `src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda`, `src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda`, `src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda`, `src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda`
   Tags: Functor, Refactor

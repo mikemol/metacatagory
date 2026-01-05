@@ -2,7 +2,7 @@
   "id": "LOCAL-GENERIC-FUNCTOR",
   "title": "Introduce generic functor interface for protocol bundles",
   "description": "Establish the generic functor interface for protocol bundles so adapters share a single abstraction.",
-  "status": "in-progress",
+  "status": "done",
   "category": "Infrastructure",
   "source": "DefinitionDictionary",
   "files": [

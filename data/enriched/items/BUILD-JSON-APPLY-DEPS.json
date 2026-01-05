@@ -2,7 +2,7 @@
   "id": "BUILD-JSON-APPLY-DEPS",
   "title": "Apply decomposition to dependency_graph.json",
   "description": "First target: decompose 84-module dependency graph into build/deps/{modules,layers,cycles}/ hierarchy with module-level granularity.",
-  "status": "not-started",
+  "status": "done",
   "category": "Build Infrastructure",
   "source": "JSONDecomposition",
   "files": [

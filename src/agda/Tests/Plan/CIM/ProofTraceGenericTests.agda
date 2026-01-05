@@ -7,6 +7,9 @@ module Tests.Plan.CIM.ProofTraceGenericTests where
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Nat using (Nat; zero; suc; _+_)
 
+sym : ∀ {A : Set} {x y : A} → x ≡ y → y ≡ x
+sym refl = refl
+
 postulate True : Set
 
 open import Plan.CIM.ProofTraceGeneric using 
@@ -136,12 +139,12 @@ test-reconstruct-elaborate ts = proof-bwd-coverage ts
 -- Term adequacy: elaborate then reconstruct yields original term
 test-proof-adequacy-term : ∀ (pt : ProofTerm) →
   proof-backward (proof-forward pt) ≡ pt
-test-proof-adequacy-term pt = proof-trace-adequate pt
+test-proof-adequacy-term pt = sym (proof-trace-adequate pt)
 
 -- Trace adequacy: reconstruct then elaborate yields original trace
 test-proof-adequacy-trace : ∀ (ts : TraceStep) →
   proof-forward (proof-backward ts) ≡ ts
-test-proof-adequacy-trace ts = trace-reconstruction-adequate ts
+test-proof-adequacy-trace ts = sym (trace-reconstruction-adequate ts)
 
 ------------------------------------------------------------------------
 -- Test 9: Composition laws via generic algebra

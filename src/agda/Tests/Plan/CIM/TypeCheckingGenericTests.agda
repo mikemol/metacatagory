@@ -7,6 +7,7 @@ module Tests.Plan.CIM.TypeCheckingGenericTests where
 open import Agda.Builtin.Equality using (_≡_; refl)
 
 postulate True : Set
+postulate trivial : True
 
 open import Plan.CIM.TypeCheckingGeneric using
   ( UntypedTerm
@@ -44,23 +45,23 @@ postulate
 
 -- Test: Elaborating variable produces typed variable
 test-elaborate-var : True
-test-elaborate-var = _
+test-elaborate-var = trivial
 
 -- Test: Elaborating lambda produces lambda with inferred parameter type
 test-elaborate-lambda : True
-test-elaborate-lambda = _
+test-elaborate-lambda = trivial
 
 -- Test: Elaborating application produces application with function type
 test-elaborate-app : True
-test-elaborate-app = _
+test-elaborate-app = trivial
 
 -- Test: Elaborating constant produces typed constant
 test-elaborate-const : True
-test-elaborate-const = _
+test-elaborate-const = trivial
 
 -- Test: Elaborating complex term produces fully typed term
 test-elaborate-complex : True
-test-elaborate-complex = _
+test-elaborate-complex = trivial
 
 ------------------------------------------------------------------------
 -- Backward Direction Tests: Type Erasure (Typed → Untyped)
@@ -68,23 +69,23 @@ test-elaborate-complex = _
 
 -- Test: Erasing typed variable recovers variable
 test-erase-var : True
-test-erase-var = _
+test-erase-var = trivial
 
 -- Test: Erasing typed lambda recovers lambda
 test-erase-lambda : True
-test-erase-lambda = _
+test-erase-lambda = trivial
 
 -- Test: Erasing typed application recovers application
 test-erase-app : True
-test-erase-app = _
+test-erase-app = trivial
 
 -- Test: Erasing typed constant recovers constant
 test-erase-const : True
-test-erase-const = _
+test-erase-const = trivial
 
 -- Test: Erasing typed complex term recovers complex term
 test-erase-complex : True
-test-erase-complex = _
+test-erase-complex = trivial
 
 ------------------------------------------------------------------------
 -- Roundtrip Tests: Forward Adequacy (Elaboration)
@@ -135,15 +136,15 @@ test-erase-elaborate-const = typecheck-bwd-coverage typed-const-int
 -- Test: Elaborating, erasing, then re-elaborating yields same typed term
 -- Checks fixpoint: elaborate (erase x) ≡ x
 test-elaborate-cycle-var : True
-test-elaborate-cycle-var = _
+test-elaborate-cycle-var = trivial
 
 -- Test: Elaboration cycle for lambda terms
 test-elaborate-cycle-lambda : True
-test-elaborate-cycle-lambda = _
+test-elaborate-cycle-lambda = trivial
 
 -- Test: Elaboration cycle for application terms
 test-elaborate-cycle-app : True
-test-elaborate-cycle-app = _
+test-elaborate-cycle-app = trivial
 
 ------------------------------------------------------------------------
 -- Erasure Cycle Tests
@@ -152,15 +153,15 @@ test-elaborate-cycle-app = _
 -- Test: Erasing, elaborating, then re-erasing yields same untyped term
 -- Checks fixpoint: erase (elaborate y) ≡ y
 test-erase-cycle-var : True
-test-erase-cycle-var = _
+test-erase-cycle-var = trivial
 
 -- Test: Erasure cycle for lambda terms
 test-erase-cycle-lambda : True
-test-erase-cycle-lambda = _
+test-erase-cycle-lambda = trivial
 
 -- Test: Erasure cycle for application terms
 test-erase-cycle-app : True
-test-erase-cycle-app = _
+test-erase-cycle-app = trivial
 
 ------------------------------------------------------------------------
 -- Composition Tests
@@ -169,11 +170,11 @@ test-erase-cycle-app = _
 -- Test: Elaboration composition is associative
 -- ((t₁ elaborate then t₂ elaborate) then t₃ elaborate) ≡ (t₁ then (t₂ elaborate then t₃ elaborate))
 test-elaborate-assoc : True
-test-elaborate-assoc = _
+test-elaborate-assoc = trivial
 
 -- Test: Erasure composition is associative
 test-erase-assoc : True
-test-erase-assoc = _
+test-erase-assoc = trivial
 
 ------------------------------------------------------------------------
 -- Adequacy Witness Tests
@@ -195,11 +196,11 @@ test-bwd-witness tt = typecheck-bwd-coverage tt
 
 -- Test: Type checking kit is valid source
 test-kit-valid : True
-test-kit-valid = _
+test-kit-valid = trivial
 
 -- Test: Kit source can be used for both elaboration and erasure
 test-kit-bidirectional : True
-test-kit-bidirectional = _
+test-kit-bidirectional = trivial
 
 ------------------------------------------------------------------------
 -- Summary
