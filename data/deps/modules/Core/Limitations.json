@@ -1,0 +1,7 @@
+{
+  "name": "Core.Limitations",
+  "imports": [],
+  "imported_by": [
+    "Core.AlgebraicAlgorithms"
+  ]
+}

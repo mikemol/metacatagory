@@ -1,0 +1,59 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCPATH",
+  "title": "Normalize FunctionPathCategory functor instance",
+  "description": "Normalize the FunctionPathCategory functor instance so path-based functors also obey the shared interface.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Refactor"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [],
+  "intent": "| FunctionPathCategory: functions as morphisms with pointwise equality. Provides a CategoryLike instance and pointwise identity/compose proofs. Simple lift to adjust universe for Hom",
+  "deliverable": "Compiled Agda modules: FunctionPathCategory.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: FunctionPathCategory",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda",
+      "loc": "module header",
+      "text": "| FunctionPathCategory: functions as morphisms with pointwise equality. Provides a CategoryLike instance and pointwise identity/compose proofs. Simple lift to adjust universe for Hom"
+    }
+  ],
+  "derivedTags": [
+    "Functor",
+    "Refactor"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Instances.FunctionPathCategory"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "outputs": [
+    "Agda modules: FunctionPathCategory.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "FunctionPathCategory"
+  ],
+  "risks": []
+}

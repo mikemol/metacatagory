@@ -1,0 +1,14 @@
+{
+  "name": "Core.UniversalProperties",
+  "imports": [
+    "Algebra.Fields.Basic",
+    "Algebra.Rings.Basic"
+  ],
+  "imported_by": [
+    "Tests.ObligationAdapters",
+    "Core.AlgorithmUniversality",
+    "Tests.AlgorithmCompositionTestsMinimal",
+    "Core.ConstructiveWitnesses",
+    "Tests.ErrorHandlingTests"
+  ]
+}

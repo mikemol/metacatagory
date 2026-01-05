@@ -1,0 +1,45 @@
+{
+  "id": "GP-Gp100",
+  "title": "GP100: The Semantic Gating (I)",
+  "description": "GP100: The Semantic Gating (I). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Foundation.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp100|Plan/CIM/IngestedRoadmaps/Foundation.agda",
+    "ROADMAP-MD-62|ROADMAP.md"
+  ],
+  "related": [],
+  "intent": "Implement GP100: The Semantic Gating (I) as specified.",
+  "deliverable": "Compiled Agda modules: Implementation.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Code review and integration approval"
+  ],
+  "evidence": [],
+  "derivedTags": [
+    "GP"
+  ],
+  "moduleAnchors": [
+    "Plan.CIM.Implementation"
+  ],
+  "complexity": "low",
+  "inputs": [],
+  "outputs": [
+    "Agda modules: Implementation.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [],
+  "risks": []
+}

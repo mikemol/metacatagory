@@ -1,0 +1,8 @@
+{
+  "name": "Algebra.Foundation",
+  "imports": [],
+  "imported_by": [
+    "Algebra.Groups.Types",
+    "Core.GrothendieckFibrations"
+  ]
+}

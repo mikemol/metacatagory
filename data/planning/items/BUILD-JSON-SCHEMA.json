@@ -1,0 +1,26 @@
+{
+  "id": "BUILD-JSON-SCHEMA",
+  "title": "Formalize JSON transformation schema in Agda",
+  "description": "Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward \u2218 forward \u2261 id and structure preservation. Extended with adequacy framework: synthesize transformations from compositional primitives (json-get, json-set, json-merge) instead of monolithic Python FFI.",
+  "status": "in-progress",
+  "category": "Build Infrastructure",
+  "source": "JSONDecomposition",
+  "files": [
+    "src/agda/Plan/CIM/JSONTransformation.agda",
+    "src/agda/Plan/CIM/JSONTransformationAdequacy.agda",
+    "src/agda/Plan/CIM/JSONTransformationProofs.agda"
+  ],
+  "tags": [
+    "JSON",
+    "FormalizationProof",
+    "CategoryTheory",
+    "Adequacy"
+  ],
+  "dependsOn": [
+    "BUILD-JSON-DECOMPOSITION"
+  ],
+  "provenance": [
+    "design review"
+  ],
+  "related": []
+}

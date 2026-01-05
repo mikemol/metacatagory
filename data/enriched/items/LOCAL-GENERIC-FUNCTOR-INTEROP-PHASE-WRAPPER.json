@@ -1,0 +1,59 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-INTEROP-PHASE-WRAPPER",
+  "title": "Ensure PhaseCategoryWrapper matches interface helpers",
+  "description": "Ensure the PhaseCategoryWrapper matches interface helpers so interoperable functors can be staged per phase.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Core/PhaseCategoryWrapper.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Interop"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [],
+  "intent": "| PhaseCategoryWrapper: expose Core.Phase as a CategoryLike so it can plug into the generic functor interface (IdentityFunctor, etc.). Lift to align Hom universe with CategoryLike expectation.",
+  "deliverable": "Compiled Agda modules: PhaseCategoryWrapper.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: PhaseCategoryLike",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Core/PhaseCategoryWrapper.agda",
+      "loc": "module header",
+      "text": "| PhaseCategoryWrapper: expose Core.Phase as a CategoryLike so it can plug into the generic functor interface (IdentityFunctor, etc.). Lift to align Hom universe with CategoryLike expectation."
+    }
+  ],
+  "derivedTags": [
+    "Functor",
+    "Interop"
+  ],
+  "moduleAnchors": [
+    "Core.PhaseCategoryWrapper"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS"
+  ],
+  "outputs": [
+    "Agda modules: PhaseCategoryWrapper.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "PhaseCategoryLike"
+  ],
+  "risks": []
+}

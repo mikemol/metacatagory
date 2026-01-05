@@ -1,0 +1,24 @@
+{
+  "id": "DOCS-AGDA-DECL-DOCS",
+  "title": "Export declaration docstrings (records/data) into docs",
+  "description": "Export declaration docstrings so records and data constructors carry human-readable intent.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "Documentation",
+  "files": [
+    "src/agda/Plan/CIM/ModuleExporter.agda",
+    "docs/automation"
+  ],
+  "tags": [
+    "Documentation",
+    "Pipeline",
+    "Agda"
+  ],
+  "dependsOn": [
+    "DOCS-AGDA-DOCCOMMENT-PIPELINE"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": []
+}

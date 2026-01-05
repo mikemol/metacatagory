@@ -1,0 +1,9 @@
+[
+  "Core.Algorithms.Bundle",
+  "Algebra.Groups.Basic",
+  "Algebra.Fields.Advanced",
+  "Algebra.Modules.Types",
+  "Core.UniversalProperties",
+  "Core.Yoneda",
+  "Algorithms.Basic"
+]

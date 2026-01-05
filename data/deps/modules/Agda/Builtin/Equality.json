@@ -1,0 +1,7 @@
+{
+  "name": "Agda.Builtin.Equality",
+  "imports": [
+    "Agda.Primitive"
+  ],
+  "imported_by": []
+}

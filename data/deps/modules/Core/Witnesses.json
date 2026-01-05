@@ -1,0 +1,10 @@
+{
+  "name": "Core.Witnesses",
+  "imports": [
+    "Algebra.Fields.Advanced"
+  ],
+  "imported_by": [
+    "Core.Algorithms.FunctionFields",
+    "Core.ConstructiveWitnesses"
+  ]
+}

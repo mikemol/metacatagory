@@ -1,0 +1,60 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-TRANSFORMATION",
+  "title": "Normalize TransformationSystem functor instance",
+  "description": "Normalize the TransformationSystem functor instance so rewriting follows the unified functor pattern.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Refactor"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [],
+  "intent": "| Functor instance for transformation systems using their path structure. We build a lightweight category where the single object carries morphisms given by `Path Sys`, with composition as path concat...",
+  "deliverable": "Compiled Agda modules: TransformationSystem.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: pathCategory, pathIdentity",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda",
+      "loc": "module header",
+      "text": "| Functor instance for transformation systems using their path structure. We build a lightweight category where the single object carries morphisms given by `Path Sys`, with composition as path concat..."
+    }
+  ],
+  "derivedTags": [
+    "Functor",
+    "Refactor"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Instances.TransformationSystem"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "outputs": [
+    "Agda modules: TransformationSystem.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "pathCategory",
+    "pathIdentity"
+  ],
+  "risks": []
+}

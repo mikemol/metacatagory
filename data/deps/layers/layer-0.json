@@ -1,0 +1,18 @@
+[
+  "Agda.Primitive",
+  "Agda.Builtin.Unit",
+  "Tests.RegularCategoriesChecklist",
+  "Chapter3.Level3sub2",
+  "Algebra.Rings.Types",
+  "Algebra.Groups.Free",
+  "GrowthAnalysis",
+  "Infrastructure.Universe",
+  "Chapter2.Level2sub3",
+  "Algebra.Foundation",
+  "Algebra.Modules.Basic",
+  "Chapter2.Level2sub6",
+  "Tests.ToposObligationAdapters",
+  "Core.Limitations",
+  "PropertyRegistry",
+  "Chapter2.Level2sub4"
+]

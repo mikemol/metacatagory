@@ -38,6 +38,12 @@ build/
 !build/priority_strategies_audax.md
 !build/priority_strategy_profiles.json
 !build/strategy_*.json
+
+# Data artifacts: decomposed JSON hierarchies (version controlled for better diffs and git manageability)
+# Only hierarchical fragments in data/ - never monolithic JSON files
+!data/
+!data/**/.gitkeep
+!data/**/*.json
 dist/
 *.egg-info/
 

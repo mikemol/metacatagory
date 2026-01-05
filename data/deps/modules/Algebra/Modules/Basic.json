@@ -1,0 +1,7 @@
+{
+  "name": "Algebra.Modules.Basic",
+  "imports": [],
+  "imported_by": [
+    "Algebra.Fields.Basic"
+  ]
+}

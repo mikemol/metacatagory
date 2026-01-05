@@ -1,0 +1,20 @@
+{
+  "id": "GP-Gp809",
+  "title": "GP809: The Logarithmic Isomorphism",
+  "description": "GP809: The Logarithmic Isomorphism. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Analysis.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp809|Plan/CIM/IngestedRoadmaps/Analysis.agda",
+    "ROADMAP-MD-13|ROADMAP.md"
+  ],
+  "related": []
+}

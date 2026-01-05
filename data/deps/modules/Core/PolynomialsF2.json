@@ -1,0 +1,9 @@
+{
+  "name": "Core.PolynomialsF2",
+  "imports": [
+    "Core.Phase"
+  ],
+  "imported_by": [
+    "Core.ConstructiveWitnesses"
+  ]
+}

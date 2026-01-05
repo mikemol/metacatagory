@@ -1,0 +1,57 @@
+{
+  "id": "GP-Gp400",
+  "title": "GP400: The \"Elasticity\" of Meaning",
+  "description": "GP400: The \"Elasticity\" of Meaning. Source: Plan/CIM/IngestedRoadmaps/Corrections.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "done",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Corrections.agda",
+  "files": [
+    "src/agda/Plan/CIM/Elasticity.agda",
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp400|Plan/CIM/IngestedRoadmaps/Corrections.agda",
+    "ROADMAP-MD-1|ROADMAP.md"
+  ],
+  "related": [],
+  "intent": "| Elasticity: separate tension (internal stress) from resonance (external alignment) and classify edges into the four elasticity quadrants described in GP400. | Addition on natural numbers.",
+  "deliverable": "Compiled Agda modules: Elasticity.agda, Implementation.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: leq, defaultGate",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Plan/CIM/Elasticity.agda",
+      "loc": "module header",
+      "text": "| Elasticity: separate tension (internal stress) from resonance (external alignment) and classify edges into the four elasticity quadrants described in GP400. | Addition on natural numbers."
+    }
+  ],
+  "derivedTags": [
+    "GP"
+  ],
+  "moduleAnchors": [
+    "Plan.CIM.Elasticity",
+    "Plan.CIM.Implementation"
+  ],
+  "complexity": "low",
+  "inputs": [],
+  "outputs": [
+    "Agda modules: Elasticity.agda, Implementation.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "leq",
+    "defaultGate"
+  ],
+  "risks": []
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Algebra.Fields.Types",
+  "imports": [
+    "Algebra.Rings.Types"
+  ],
+  "imported_by": [
+    "Algebra.Modules.Types"
+  ]
+}

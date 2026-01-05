@@ -1,0 +1,22 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-AMBIGUITY-ADEQUACY",
+  "title": "Add adequacy hook for Ambiguity functor",
+  "description": "Add an adequacy hook for the Ambiguity functor so divergent parses stay justified.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/Ambiguity.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Adequacy"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": []
+}

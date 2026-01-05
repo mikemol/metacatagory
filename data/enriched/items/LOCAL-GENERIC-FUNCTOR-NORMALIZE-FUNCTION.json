@@ -1,0 +1,59 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCTION",
+  "title": "Normalize FunctionCategory functor instance",
+  "description": "Align the FunctionCategory instance with the generic functor interface so generic algorithms see a consistent surface.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Refactor"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [],
+  "intent": "| FunctionCategory: CategoryLike instance for sets with functions as morphisms, plus the identity functor via the generic interface. | Lift wrapper to adjust universe levels for homs.",
+  "deliverable": "Compiled Agda modules: FunctionCategory.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: FunctionCategory",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda",
+      "loc": "module header",
+      "text": "| FunctionCategory: CategoryLike instance for sets with functions as morphisms, plus the identity functor via the generic interface. | Lift wrapper to adjust universe levels for homs."
+    }
+  ],
+  "derivedTags": [
+    "Functor",
+    "Refactor"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Instances.FunctionCategory"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "outputs": [
+    "Agda modules: FunctionCategory.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "FunctionCategory"
+  ],
+  "risks": []
+}

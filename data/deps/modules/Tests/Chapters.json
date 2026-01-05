@@ -1,0 +1,8 @@
+{
+  "name": "Tests.Chapters",
+  "imports": [
+    "Chapter2.Level2Index",
+    "Chapter3.Level3Index"
+  ],
+  "imported_by": []
+}

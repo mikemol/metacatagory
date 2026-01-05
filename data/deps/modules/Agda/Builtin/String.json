@@ -1,0 +1,12 @@
+{
+  "name": "Agda.Builtin.String",
+  "imports": [
+    "Agda.Builtin.Sigma",
+    "Agda.Builtin.Maybe",
+    "Agda.Builtin.List"
+  ],
+  "imported_by": [
+    "Core.Phase",
+    "Agda.Builtin.Int"
+  ]
+}

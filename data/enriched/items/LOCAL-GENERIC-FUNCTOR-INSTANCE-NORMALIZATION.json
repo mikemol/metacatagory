@@ -1,0 +1,93 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION",
+  "title": "Normalize existing functor instances onto shared interface",
+  "description": "Normalize existing functor instances onto the shared interface to keep implementations aligned.",
+  "status": "not-started",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda",
+    "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda",
+    "src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda",
+    "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda",
+    "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Refactor"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [
+    "LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS"
+  ],
+  "intent": "| FunctionCategory: CategoryLike instance for sets with functions as morphisms, plus the identity functor via the generic interface. | Lift wrapper to adjust universe levels for homs.",
+  "deliverable": "Compiled Agda modules: FunctionCategory.agda, FunctionPathCategory.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: FunctionCategory, FunctionPathCategory, pathCategory (+ 2 more)",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda",
+      "loc": "module header",
+      "text": "| FunctionCategory: CategoryLike instance for sets with functions as morphisms, plus the identity functor via the generic interface. | Lift wrapper to adjust universe levels for homs."
+    },
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda",
+      "loc": "module header",
+      "text": "| FunctionPathCategory: functions as morphisms with pointwise equality. Provides a CategoryLike instance and pointwise identity/compose proofs. Simple lift to adjust universe for Hom"
+    },
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda",
+      "loc": "module header",
+      "text": "| Functor instance for transformation systems using their path structure. We build a lightweight category where the single object carries morphisms given by `Path Sys`, with composition as path concat..."
+    },
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda",
+      "loc": "module header",
+      "text": "| PhaseCategory functor instances: identity functor for Core.Phase expressed via the generic CategoryLike/IdentityFunctor machinery."
+    },
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda",
+      "loc": "module header",
+      "text": "| PathAlgebraFunctor: identity functor instance for any PathAlgebra, exposing PathAlgebra as a CategoryLike and reusing the generic IdentityFunctor. This anchors the functor interface in the adequacy ..."
+    }
+  ],
+  "derivedTags": [
+    "Functor",
+    "Refactor"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Instances.FunctionCategory",
+    "Infrastructure.Functor.Instances.FunctionPathCategory",
+    "Infrastructure.Functor.Instances.TransformationSystem",
+    "Infrastructure.Functor.Instances.PhaseCategory",
+    "Infrastructure.Functor.Instances.PathAlgebra"
+  ],
+  "complexity": "high",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR"
+  ],
+  "outputs": [
+    "Agda modules: FunctionCategory.agda, FunctionPathCategory.agda, TransformationSystem.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "FunctionCategory",
+    "FunctionPathCategory",
+    "pathCategory",
+    "pathIdentity",
+    "mkPA-CategoryLike"
+  ],
+  "risks": []
+}

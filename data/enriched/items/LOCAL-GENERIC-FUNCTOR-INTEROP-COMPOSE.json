@@ -1,0 +1,59 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-INTEROP-COMPOSE",
+  "title": "Refine compose helper proofs for reuse",
+  "description": "Verify compose helper proofs so adapters retain interoperability when chained.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Compose.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Interop"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [],
+  "intent": "| Functor composition helper: compose two FunctorInstance values sharing a middle category, with proofs for identity and composition.",
+  "deliverable": "Compiled Agda modules: Compose.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: composeFunctor",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Compose.agda",
+      "loc": "module header",
+      "text": "| Functor composition helper: compose two FunctorInstance values sharing a middle category, with proofs for identity and composition."
+    }
+  ],
+  "derivedTags": [
+    "Functor",
+    "Interop"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Compose"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS"
+  ],
+  "outputs": [
+    "Agda modules: Compose.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "composeFunctor"
+  ],
+  "risks": []
+}

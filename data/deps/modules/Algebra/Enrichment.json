@@ -1,0 +1,9 @@
+{
+  "name": "Algebra.Enrichment",
+  "imports": [
+    "Chapter2.Level2sub6"
+  ],
+  "imported_by": [
+    "Algebra.Groups.Abelian"
+  ]
+}

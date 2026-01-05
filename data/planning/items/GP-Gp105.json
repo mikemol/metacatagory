@@ -1,0 +1,20 @@
+{
+  "id": "GP-Gp105",
+  "title": "GP105: The \"Fast Clock\" Paradox",
+  "description": "GP105: The \"Fast Clock\" Paradox. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Foundation.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp105|Plan/CIM/IngestedRoadmaps/Foundation.agda",
+    "ROADMAP-MD-67|ROADMAP.md"
+  ],
+  "related": []
+}

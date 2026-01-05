@@ -1,0 +1,11 @@
+{
+  "name": "Algebra.Rings.Basic",
+  "imports": [
+    "Chapter2.Level2sub3",
+    "Algebra.Rings.Types"
+  ],
+  "imported_by": [
+    "Algebra.Fields.Advanced",
+    "Core.UniversalProperties"
+  ]
+}

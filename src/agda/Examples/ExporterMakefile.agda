@@ -266,19 +266,19 @@ discoveredTargets =
   ∷ generatorToTarget "docs-validate" "Validate documentation integrity" ([])
     ("python3 scripts/validate_triangle_identity.py" ∷ [])
   ∷ generatorToTarget "json-decompose" "Decompose monolithic JSON to hierarchical structure" ("build/dependency_graph.json" ∷ [])
-    ("python3 scripts/json_decompose.py build/dependency_graph.json build/deps/ --strategy dependency-graph" ∷ [])
-  ∷ generatorToTarget "json-recompose" "Recompose hierarchical JSON back to monolithic form" ("build/deps/" ∷ [])
-    ("python3 scripts/json_recompose.py build/deps/ build/dependency_graph_recomposed.json" ∷ [])
+    ("python3 scripts/json_decompose.py build/dependency_graph.json data/deps/ --strategy dependency-graph" ∷ [])
+  ∷ generatorToTarget "json-recompose" "Recompose hierarchical JSON back to monolithic form" ("data/deps/" ∷ [])
+    ("python3 scripts/json_recompose.py data/deps/ build/dependency_graph_recomposed.json" ∷ [])
   ∷ generatorToTarget "json-roundtrip-validate" "Validate JSON decomposition roundtrip" ("json-decompose" ∷ "json-recompose" ∷ [])
     ("python3 scripts/validate_json_roundtrip.py" ∷ [])
 
   -- Decomposition targets for canonical_enriched.json
   ∷ generatorToTarget "json-decompose-enriched" "Decompose canonical_enriched.json into item hierarchy"
       ("build/canonical_enriched.json" ∷ [])
-      ("python3 scripts/json_decompose.py build/canonical_enriched.json build/enriched/ --strategy item-array" ∷ [])
+      ("python3 scripts/json_decompose.py build/canonical_enriched.json data/enriched/ --strategy item-array" ∷ [])
   ∷ generatorToTarget "json-recompose-enriched" "Recompose enriched items into canonical_enriched.json"
-      ("build/enriched/" ∷ [])
-      ("python3 scripts/json_recompose.py build/enriched/ build/canonical_enriched_recomposed.json" ∷ [])
+      ("data/enriched/" ∷ [])
+      ("python3 scripts/json_recompose.py data/enriched/ build/canonical_enriched_recomposed.json" ∷ [])
   ∷ generatorToTarget "json-roundtrip-validate-enriched" "Validate enriched roundtrip"
       ("json-decompose-enriched" ∷ "json-recompose-enriched" ∷ [])
       ("python3 scripts/validate_json_roundtrip.py build/canonical_enriched.json build/canonical_enriched_recomposed.json" ∷ [])
@@ -286,10 +286,10 @@ discoveredTargets =
   -- Decomposition targets for planning_index.json
   ∷ generatorToTarget "json-decompose-planning" "Decompose planning_index.json into plan hierarchy"
       ("build/planning_index.json" ∷ [])
-      ("python3 scripts/json_decompose.py build/planning_index.json build/planning/ --strategy item-array" ∷ [])
+      ("python3 scripts/json_decompose.py build/planning_index.json data/planning/ --strategy item-array" ∷ [])
   ∷ generatorToTarget "json-recompose-planning" "Recompose planning items into planning_index.json"
-      ("build/planning/" ∷ [])
-      ("python3 scripts/json_recompose.py build/planning/ build/planning_index_recomposed.json" ∷ [])
+      ("data/planning/" ∷ [])
+      ("python3 scripts/json_recompose.py data/planning/ build/planning_index_recomposed.json" ∷ [])
   ∷ generatorToTarget "json-roundtrip-validate-planning" "Validate planning roundtrip"
       ("json-decompose-planning" ∷ "json-recompose-planning" ∷ [])
       ("python3 scripts/validate_json_roundtrip.py build/planning_index.json build/planning_index_recomposed.json" ∷ [])

@@ -1,0 +1,10 @@
+{
+  "name": "Core.AlgorithmUniversality",
+  "imports": [
+    "Core.AlgebraicAlgorithms",
+    "Core.UniversalProperties"
+  ],
+  "imported_by": [
+    "Tests.UniversalPropertyTests"
+  ]
+}

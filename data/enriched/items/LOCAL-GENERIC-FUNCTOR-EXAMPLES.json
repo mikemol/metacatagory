@@ -1,0 +1,65 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-EXAMPLES",
+  "title": "Add regression examples exercising functor identity/compose",
+  "description": "Add regression examples to demonstrate how the generic functor interface simplifies identity and compose reasoning.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Examples/FunctorComposition.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Example"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [
+    "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
+  ],
+  "intent": "| Example: composing functors using the shared interface helpers. Uses the trivial one-object category, so all proofs are definitional. Identity functors on the trivial category",
+  "deliverable": "Compiled Agda modules: FunctorComposition.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: F, G, FG (+ 2 more)",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Examples/FunctorComposition.agda",
+      "loc": "module header",
+      "text": "| Example: composing functors using the shared interface helpers. Uses the trivial one-object category, so all proofs are definitional. Identity functors on the trivial category"
+    }
+  ],
+  "derivedTags": [
+    "Example",
+    "Functor"
+  ],
+  "moduleAnchors": [
+    "Examples.FunctorComposition"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR"
+  ],
+  "outputs": [
+    "Agda modules: FunctorComposition.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "F",
+    "G",
+    "FG",
+    "objMap-tt",
+    "map-tt"
+  ],
+  "risks": []
+}

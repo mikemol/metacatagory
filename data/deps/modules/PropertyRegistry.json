@@ -1,0 +1,7 @@
+{
+  "name": "PropertyRegistry",
+  "imports": [],
+  "imported_by": [
+    "Tests.PropertyRegistryTests"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Core",
+  "imports": [
+    "Chapter1.Level1"
+  ],
+  "imported_by": [
+    "Chapter2.Level2sub1",
+    "Core.GodelBoundary",
+    "Chapter1.Level1sub2"
+  ]
+}

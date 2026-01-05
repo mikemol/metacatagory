@@ -1,0 +1,63 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-INTERFACE-CONVENIENCE-LAWS",
+  "title": "Add convenience lemmas for map-id/compose congruence",
+  "description": "Add map-id and compose convenience lemmas so reasoning about the interface stays manageable.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Interface.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Interface",
+    "Law"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [],
+  "intent": "| FunctorInterface: generic functor specification for category-like bundles. This is intentionally minimal: it works with any record that supplies objects, morphisms, identity, and composition, and it...",
+  "deliverable": "Compiled Agda modules: Interface.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: map-cong, map-id-on, map-compose-on",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Interface.agda",
+      "loc": "module header",
+      "text": "| FunctorInterface: generic functor specification for category-like bundles. This is intentionally minimal: it works with any record that supplies objects, morphisms, identity, and composition, and it..."
+    }
+  ],
+  "derivedTags": [
+    "Functor",
+    "Interface",
+    "Law"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Interface"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
+  ],
+  "outputs": [
+    "Agda modules: Interface.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "map-cong",
+    "map-id-on",
+    "map-compose-on"
+  ],
+  "risks": []
+}

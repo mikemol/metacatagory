@@ -1,0 +1,20 @@
+{
+  "id": "GP-Gp03",
+  "title": "GP03: The PackedNode Aggregation Logic",
+  "description": "GP03: The PackedNode Aggregation Logic. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Foundation.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp03|Plan/CIM/IngestedRoadmaps/Foundation.agda",
+    "ROADMAP-MD-56|ROADMAP.md"
+  ],
+  "related": []
+}

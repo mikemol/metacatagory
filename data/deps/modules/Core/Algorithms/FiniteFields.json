@@ -1,0 +1,9 @@
+{
+  "name": "Core.Algorithms.FiniteFields",
+  "imports": [
+    "Algorithms.Basic"
+  ],
+  "imported_by": [
+    "Core.Algorithms.Registry"
+  ]
+}

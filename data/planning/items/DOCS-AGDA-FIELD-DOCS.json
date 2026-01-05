@@ -1,0 +1,24 @@
+{
+  "id": "DOCS-AGDA-FIELD-DOCS",
+  "title": "Export field/argument docstrings into docs",
+  "description": "Export field and argument docstrings so data carriers are explained in generated docs.",
+  "status": "not-started",
+  "category": "Infrastructure",
+  "source": "Documentation",
+  "files": [
+    "src/agda/Plan/CIM/ModuleExporter.agda",
+    "docs/automation"
+  ],
+  "tags": [
+    "Documentation",
+    "Pipeline",
+    "Agda"
+  ],
+  "dependsOn": [
+    "DOCS-AGDA-DECL-DOCS"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": []
+}

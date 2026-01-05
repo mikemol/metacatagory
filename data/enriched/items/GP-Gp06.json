@@ -1,0 +1,45 @@
+{
+  "id": "GP-Gp06",
+  "title": "GP06: The Visualization Module",
+  "description": "GP06: The Visualization Module. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Foundation.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp06|Plan/CIM/IngestedRoadmaps/Foundation.agda",
+    "ROADMAP-MD-59|ROADMAP.md"
+  ],
+  "related": [],
+  "intent": "Implement GP06: The Visualization Module as specified.",
+  "deliverable": "Compiled Agda modules: Implementation.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Code review and integration approval"
+  ],
+  "evidence": [],
+  "derivedTags": [
+    "GP"
+  ],
+  "moduleAnchors": [
+    "Plan.CIM.Implementation"
+  ],
+  "complexity": "low",
+  "inputs": [],
+  "outputs": [
+    "Agda modules: Implementation.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [],
+  "risks": []
+}

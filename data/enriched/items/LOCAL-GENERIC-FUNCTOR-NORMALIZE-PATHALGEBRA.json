@@ -1,0 +1,59 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-PATHALGEBRA",
+  "title": "Normalize PathAlgebra functor instance",
+  "description": "Normalize the PathAlgebra functor instance so algebraic paths reuse the same categorical structure.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Refactor"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [],
+  "intent": "| PathAlgebraFunctor: identity functor instance for any PathAlgebra, exposing PathAlgebra as a CategoryLike and reusing the generic IdentityFunctor. This anchors the functor interface in the adequacy ...",
+  "deliverable": "Compiled Agda modules: PathAlgebra.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: mkPA-CategoryLike",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda",
+      "loc": "module header",
+      "text": "| PathAlgebraFunctor: identity functor instance for any PathAlgebra, exposing PathAlgebra as a CategoryLike and reusing the generic IdentityFunctor. This anchors the functor interface in the adequacy ..."
+    }
+  ],
+  "derivedTags": [
+    "Functor",
+    "Refactor"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Instances.PathAlgebra"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "outputs": [
+    "Agda modules: PathAlgebra.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "mkPA-CategoryLike"
+  ],
+  "risks": []
+}

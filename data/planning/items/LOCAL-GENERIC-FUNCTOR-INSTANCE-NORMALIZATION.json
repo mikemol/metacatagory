@@ -1,0 +1,28 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION",
+  "title": "Normalize existing functor instances onto shared interface",
+  "description": "Normalize existing functor instances onto the shared interface to keep implementations aligned.",
+  "status": "not-started",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda",
+    "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda",
+    "src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda",
+    "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda",
+    "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Refactor"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [
+    "LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS"
+  ]
+}

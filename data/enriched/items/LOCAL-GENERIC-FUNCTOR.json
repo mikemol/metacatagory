@@ -1,0 +1,117 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR",
+  "title": "Introduce generic functor interface for protocol bundles",
+  "description": "Establish the generic functor interface for protocol bundles so adapters share a single abstraction.",
+  "status": "in-progress",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Interface.agda",
+    "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda",
+    "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda",
+    "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda",
+    "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda",
+    "src/agda/Infrastructure/Functor/Instances/Ambiguity.agda",
+    "src/agda/Infrastructure/Functor/Compose.agda",
+    "src/agda/Core/PhaseCategoryWrapper.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Interface"
+  ],
+  "dependsOn": [
+    "LOCAL-DEF-DICT"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [],
+  "intent": "| FunctorInterface: generic functor specification for category-like bundles. This is intentionally minimal: it works with any record that supplies objects, morphisms, identity, and composition, and it...",
+  "deliverable": "Compiled Agda modules: Interface.agda, PathAlgebra.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: map-cong, map-id-on, map-compose-on (+ 10 more)",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Interface.agda",
+      "loc": "module header",
+      "text": "| FunctorInterface: generic functor specification for category-like bundles. This is intentionally minimal: it works with any record that supplies objects, morphisms, identity, and composition, and it..."
+    },
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda",
+      "loc": "module header",
+      "text": "| PathAlgebraFunctor: identity functor instance for any PathAlgebra, exposing PathAlgebra as a CategoryLike and reusing the generic IdentityFunctor. This anchors the functor interface in the adequacy ..."
+    },
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda",
+      "loc": "module header",
+      "text": "| PhaseCategory functor instances: identity functor for Core.Phase expressed via the generic CategoryLike/IdentityFunctor machinery."
+    },
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda",
+      "loc": "module header",
+      "text": "| FunctionPathCategory: functions as morphisms with pointwise equality. Provides a CategoryLike instance and pointwise identity/compose proofs. Simple lift to adjust universe for Hom"
+    },
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda",
+      "loc": "module header",
+      "text": "| FunctionCategory: CategoryLike instance for sets with functions as morphisms, plus the identity functor via the generic interface. | Lift wrapper to adjust universe levels for homs."
+    },
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/Ambiguity.agda",
+      "loc": "module header",
+      "text": "| Functor instance for Plan.CIM.Ambiguity using a Funext adapter. | Functor instance for Ambiguity lifted through FunctionCategory."
+    },
+    {
+      "source": "src/agda/Infrastructure/Functor/Compose.agda",
+      "loc": "module header",
+      "text": "| Functor composition helper: compose two FunctorInstance values sharing a middle category, with proofs for identity and composition."
+    },
+    {
+      "source": "src/agda/Core/PhaseCategoryWrapper.agda",
+      "loc": "module header",
+      "text": "| PhaseCategoryWrapper: expose Core.Phase as a CategoryLike so it can plug into the generic functor interface (IdentityFunctor, etc.). Lift to align Hom universe with CategoryLike expectation."
+    }
+  ],
+  "derivedTags": [
+    "Functor",
+    "Interface"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Interface",
+    "Infrastructure.Functor.Instances.PathAlgebra",
+    "Infrastructure.Functor.Instances.PhaseCategory",
+    "Infrastructure.Functor.Instances.FunctionPathCategory",
+    "Infrastructure.Functor.Instances.FunctionCategory",
+    "Infrastructure.Functor.Instances.Ambiguity",
+    "Infrastructure.Functor.Compose",
+    "Core.PhaseCategoryWrapper"
+  ],
+  "complexity": "high",
+  "inputs": [
+    "Dependencies: LOCAL-DEF-DICT"
+  ],
+  "outputs": [
+    "Agda modules: Interface.agda, PathAlgebra.agda, PhaseCategory.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "map-cong",
+    "map-id-on",
+    "map-compose-on",
+    "mkPA-CategoryLike",
+    "FunctionPathCategory",
+    "FunctionCategory",
+    "mapOption-id",
+    "mapOption-compose",
+    "mapAmbiguity-id-pt",
+    "mapAmbiguity-comp-pt"
+  ],
+  "risks": []
+}

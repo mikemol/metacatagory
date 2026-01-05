@@ -1,0 +1,20 @@
+{
+  "id": "GP-Gp824",
+  "title": "GP824: The Quantum Manifold",
+  "description": "GP824: The Quantum Manifold. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Analysis.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp824|Plan/CIM/IngestedRoadmaps/Analysis.agda",
+    "ROADMAP-MD-28|ROADMAP.md"
+  ],
+  "related": []
+}

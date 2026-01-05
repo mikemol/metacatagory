@@ -1,0 +1,49 @@
+{
+  "id": "BUILD-JSON-APPLY-PLANNING",
+  "title": "Apply decomposition to planning_index.json",
+  "description": "Third target: decompose planning index into build/planning/{items,sources,artifacts}/ with natural hierarchical layout.",
+  "status": "not-started",
+  "category": "Build Infrastructure",
+  "source": "JSONDecomposition",
+  "files": [
+    "build/planning/_metadata.json",
+    "build/planning/items/_index.json",
+    "build/planning/sources/_manifest.json"
+  ],
+  "tags": [
+    "JSON",
+    "PlanningIndex",
+    "Phase1"
+  ],
+  "dependsOn": [
+    "BUILD-JSON-BACKWARD"
+  ],
+  "provenance": [
+    "design review"
+  ],
+  "related": [],
+  "intent": "Implement Apply decomposition to planning_index.json as specified.",
+  "deliverable": "Apply decomposition to planning_index.json",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "Code review and integration approval"
+  ],
+  "evidence": [],
+  "derivedTags": [
+    "JSON",
+    "Phase1",
+    "PlanningIndex"
+  ],
+  "moduleAnchors": [],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: BUILD-JSON-BACKWARD"
+  ],
+  "outputs": [],
+  "suggestedDependencies": [],
+  "definitions": [],
+  "risks": []
+}
