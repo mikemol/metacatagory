@@ -1,36 +1,10 @@
 | Target | Description |
 | :--- | :--- |
 | `regen-makefile` | Regenerate the Makefile from Agda source (Self-Hosting) |
-| `md-lint` | Lint all markdown files (fail on error) |
-| `md-fix` | Auto-fix markdown lint errors |
-| `intake-lint` | Lint intake files specifically |
-| `build/canonical_roadmap.json` | Generate canonical roadmap JSON from intake |
-| `intake-scan` | Scan intake directory for new files |
-| `md-normalize` | Normalize markdown formatting |
-| `makefile-validate` | Validate Makefile consistency |
-| `all` | Build all code and documentation |
-| `test-python` | Run Python tests |
-| `debt-check` | Run debt tracking validation |
-| `check` | Run all validation checks |
-| `badges` | Generate status badges |
-| `priority-strategy-profiles` | Compile and run Agda priority orchestration (generate strategy profiles) |
-| `priority-badge-weights` | Normalize Agda strategy profiles into badge weights |
-| `priority-profile-json` | Export structured priority profile (lazy; derived from planning index) |
-| `dependency-graph-json` | Export dependency graph JSON via Agda (from agda-deps-full.dot) |
-| `priority-refresh` | Re-run priority pipeline and refresh roadmap/badge outputs |
-| `docs-modules` | Generate per-module markdown documentation |
-| `docs-all` | Generate documentation (markdown only) |
-| `node-deps` | Install Node.js dependencies |
-| `deferred-items` | Scan for TODOs and FIXMEs (Agda FFI binary) |
-| `roadmap-index` | Compile Roadmap Index |
-| `planning-index-json` | Export planning index to JSON |
-| `planning-kernel` | Compile Planning Kernel |
-| `roadmap-sync` | Sync roadmap with external tracker |
-| `roadmap-sppf` | Compile Roadmap SPPF |
-| `validate-constructive` | Run all constructive build targets |
+| `python-build` | Prepare Python artifacts (interpreted; placeholder for future bytecode/vendor steps) |
+| `python-test` | Run Python tests (includes pytest suite) |
+| `python-verified` | Witness target: build + test contracted |
 | `roadmap-merge` | Merge ingestion streams |
-| `build/diagrams/agda-deps-full.dot` | Generate dependency graph |
-| `roadmap-deps-graph` | Generate dependency graph |
 | `build/canonical_enriched.json` | Enrich canonical roadmap |
 | `roadmap-enrich` | Enrich roadmap with graph data |
 | `roadmap-export-json` | Export canonical roadmap to JSON |
@@ -42,7 +16,12 @@
 | `roadmap-validate-triangle` | Verify Triangle Identity (Agda <-> JSON <-> MD) |
 | `roadmap-sppf-export` | Export SPPF structure |
 | `roadmap-all-enriched` | Build all enriched artifacts |
+| `md-lint` | Lint all markdown files (fail on error) |
+| `md-fix` | Auto-fix markdown lint errors |
+| `md-normalize` | Normalize markdown formatting |
 | `docs-generate` | Compile and run Roadmap Exporter |
+| `docs-modules` | Generate per-module markdown documentation |
+| `docs-all` | Generate documentation (markdown only) |
 | `docs-validate` | Validate documentation integrity |
 | `json-decompose` | Decompose monolithic JSON to hierarchical structure |
 | `json-recompose` | Recompose hierarchical JSON back to monolithic form |
@@ -53,3 +32,26 @@
 | `json-decompose-planning` | Decompose planning_index.json into plan hierarchy |
 | `json-recompose-planning` | Recompose planning items into planning_index.json |
 | `json-roundtrip-validate-planning` | Validate planning roundtrip |
+| `intake-lint` | Lint intake files specifically |
+| `build/canonical_roadmap.json` | Generate canonical roadmap JSON from intake |
+| `intake-scan` | Scan intake directory for new files |
+| `makefile-validate` | Validate Makefile consistency |
+| `node-deps` | Install Node.js dependencies |
+| `deferred-items` | Scan for TODOs and FIXMEs (Agda FFI binary) |
+| `badges` | Generate status badges |
+| `priority-strategy-profiles` | Compile and run Agda priority orchestration (generate strategy profiles) |
+| `priority-badge-weights` | Normalize Agda strategy profiles into badge weights |
+| `priority-profile-json` | Export structured priority profile (lazy; derived from planning index) |
+| `priority-refresh` | Re-run priority pipeline and refresh roadmap/badge outputs |
+| `roadmap-index` | Compile Roadmap Index |
+| `planning-index-json` | Export planning index to JSON |
+| `planning-kernel` | Compile Planning Kernel |
+| `roadmap-sync` | Sync roadmap with external tracker |
+| `roadmap-sppf` | Compile Roadmap SPPF |
+| `build/diagrams/agda-deps-full.dot` | Generate dependency graph |
+| `roadmap-deps-graph` | Generate dependency graph |
+| `dependency-graph-json` | Export dependency graph JSON via Agda (from agda-deps-full.dot) |
+| `all` | Build all code and documentation |
+| `debt-check` | Run debt tracking validation |
+| `validate-constructive` | Run all constructive build targets |
+| `check` | Run all validation checks |
