@@ -265,6 +265,12 @@ discoveredTargets =
     ("$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/RoadmapExporter.agda && ./src/agda/RoadmapExporter" ∷ "python3 scripts/normalize_generated_markdown.py" ∷ [])
   ∷ generatorToTarget "docs-validate" "Validate documentation integrity" ([])
     ("python3 scripts/validate_triangle_identity.py" ∷ [])
+  ∷ generatorToTarget "json-decompose" "Decompose monolithic JSON to hierarchical structure" ("build/dependency_graph.json" ∷ [])
+    ("python3 scripts/json_decompose.py build/dependency_graph.json build/deps/ --strategy dependency-graph" ∷ [])
+  ∷ generatorToTarget "json-recompose" "Recompose hierarchical JSON back to monolithic form" ("build/deps/" ∷ [])
+    ("python3 scripts/json_recompose.py build/deps/ build/dependency_graph_recomposed.json" ∷ [])
+  ∷ generatorToTarget "json-roundtrip-validate" "Validate JSON decomposition roundtrip" ("json-decompose" ∷ "json-recompose" ∷ [])
+    ("python3 scripts/validate_json_roundtrip.py" ∷ [])
   
   ∷ []
 

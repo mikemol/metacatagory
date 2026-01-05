@@ -9,6 +9,8 @@
 | `md-normalize` | Normalize markdown formatting |
 | `makefile-validate` | Validate Makefile consistency |
 | `all` | Build all code and documentation |
+| `test-python` | Run Python tests |
+| `debt-check` | Run debt tracking validation |
 | `check` | Run all validation checks |
 | `badges` | Generate status badges |
 | `priority-strategy-profiles` | Compile and run Agda priority orchestration (generate strategy profiles) |
@@ -42,3 +44,6 @@
 | `roadmap-all-enriched` | Build all enriched artifacts |
 | `docs-generate` | Compile and run Roadmap Exporter |
 | `docs-validate` | Validate documentation integrity |
+| `json-decompose` | Decompose monolithic JSON to hierarchical structure |
+| `json-recompose` | Recompose hierarchical JSON back to monolithic form |
+| `json-roundtrip-validate` | Validate JSON decomposition roundtrip |
