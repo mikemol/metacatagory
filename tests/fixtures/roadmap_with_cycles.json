@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "items": [
+    {
+      "id": "A",
+      "title": "Item A",
+      "status": "active",
+      "dependencies": ["B"],
+      "description": "Depends on B"
+    },
+    {
+      "id": "B",
+      "title": "Item B",
+      "status": "active",
+      "dependencies": ["C"],
+      "description": "Depends on C"
+    },
+    {
+      "id": "C",
+      "title": "Item C",
+      "status": "active",
+      "dependencies": ["A"],
+      "description": "Depends on A - creates cycle"
+    }
+  ]
+}
