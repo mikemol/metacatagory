@@ -399,6 +399,29 @@ agda src/agda/Tests/Plan/CIM/ProofTraceGenericTests.agda
 
 ---
 
+## Part 6b: Python Test Suite (Phase 1)
+
+### Scope and Commands
+
+- Run all Python tests: `pytest tests/ -v --tb=short`
+- Coverage: `coverage run -m pytest tests/ && coverage report`
+- Current result (Phase 1): 68 passed, 1 skipped; TOTAL coverage 79%
+
+### Suites Added in Phase 1
+
+- Error handling: [tests/test_error_handling.py](tests/test_error_handling.py) — malformed JSON, missing files, circular deps, permissions
+- Smoke (CLI/paths): [tests/test_script_smoke.py](tests/test_script_smoke.py) — script presence, CLI `--help`, path utilities (one skip for optional shared_data path helper)
+- Edge cases: [tests/test_edge_cases.py](tests/test_edge_cases.py) — unicode, large payloads, deep nesting, boundary IDs/fields
+- Existing integration/priority suites: [tests/test_integration_smoke.py](tests/test_integration_smoke.py), [tests/test_priority_mapping.py](tests/test_priority_mapping.py)
+
+### Coverage Notes
+
+- High: most tests ≥90%
+- Low: [scripts/adopt_priority_strategies.py](scripts/adopt_priority_strategies.py) 36%, [scripts/merge_roadmaps.py](scripts/merge_roadmaps.py) 69%, [scripts/shared_data.py](scripts/shared_data.py) 12%
+- Follow-up: add targeted tests for the above modules (CLI paths, data loading, merge edges)
+
+---
+
 ## Part 7: Summary Table
 
 | Component | Location | Purpose | Tests |
