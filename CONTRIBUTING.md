@@ -43,6 +43,45 @@ make node-deps
 
 - Link to relevant Makefile targets and automation scripts where appropriate.
 
+## Understanding Directory Structure
+
+### data/ - Version-Controlled Hierarchical JSON
+
+The `data/` directory contains decomposed JSON artifacts generated via natural transformations:
+
+- `data/deps/` - Decomposed dependency graph (91 fragments)
+- `data/enriched/` - Decomposed canonical enriched items (122 fragments)
+- `data/planning/` - Decomposed planning index items (122 fragments)
+
+These are **pure text files** that version-control well in git and are tracked in `.gitignore` with `!data/**/*.json`.
+
+**Never add large monolithic JSON files to data/.** The decomposition/recomposition transformation ensures only hierarchical fragments live here.
+
+### build/ - Temporary Build Artifacts
+
+The `build/` directory contains ephemeral outputs and is generally ignored:
+
+- Monolithic source JSONs: `build/dependency_graph.json`, `build/canonical_enriched.json`, `build/planning_index.json`
+- Temporary reconstructions: `build/*_recomposed.json` (created by roundtrip validation)
+- Other build outputs: ignored by `.gitignore` except explicit witness files
+
+### JSON Decomposition Workflow
+
+If you modify the JSON decomposition/recomposition logic:
+
+```bash
+# 1. Decompose artifacts into hierarchies
+make json-decompose json-decompose-enriched json-decompose-planning
+
+# 2. Verify roundtrip (decompose → recompose → validate)
+make json-roundtrip-validate json-roundtrip-validate-enriched json-roundtrip-validate-planning
+
+# 3. These are automatically run by `make check`
+make check
+```
+
+See `docs/process/JSON-DECOMPOSITION.md` for technical details.
+
 ## Interpreting Reports & Metrics
 
 - Generated reports (e.g., top-offenders.md) highlight technical debt and deferred items.
