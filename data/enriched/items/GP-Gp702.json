@@ -1,0 +1,45 @@
+{
+  "id": "GP-Gp702",
+  "title": "GP702: The Loday Realization",
+  "description": "GP702: The Loday Realization. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Polytopes.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp702|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
+    "ROADMAP-MD-40|ROADMAP.md"
+  ],
+  "related": [],
+  "intent": "Implement GP702: The Loday Realization as specified.",
+  "deliverable": "Compiled Agda modules: Implementation.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Code review and integration approval"
+  ],
+  "evidence": [],
+  "derivedTags": [
+    "GP"
+  ],
+  "moduleAnchors": [
+    "Plan.CIM.Implementation"
+  ],
+  "complexity": "low",
+  "inputs": [],
+  "outputs": [
+    "Agda modules: Implementation.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [],
+  "risks": []
+}

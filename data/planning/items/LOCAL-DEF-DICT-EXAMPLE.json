@@ -1,0 +1,24 @@
+{
+  "id": "LOCAL-DEF-DICT-EXAMPLE",
+  "title": "Add DefinitionDictionary adequacy example",
+  "description": "Add a DefinitionDictionary adequacy example to document how adequacy proofs are structured.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Examples/DefinitionDictionaryAdequacy.agda"
+  ],
+  "tags": [
+    "Definition",
+    "Example"
+  ],
+  "dependsOn": [
+    "LOCAL-DEF-DICT"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [
+    "LOCAL-GENERIC-FUNCTOR"
+  ]
+}

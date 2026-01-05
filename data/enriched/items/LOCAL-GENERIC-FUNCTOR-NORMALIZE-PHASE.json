@@ -1,0 +1,56 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-PHASE",
+  "title": "Normalize PhaseCategory functor instance",
+  "description": "Normalize the PhaseCategory functor instance so phases can be treated uniformly under the interface.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Refactor"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [],
+  "intent": "| PhaseCategory functor instances: identity functor for Core.Phase expressed via the generic CategoryLike/IdentityFunctor machinery.",
+  "deliverable": "Compiled Agda modules: PhaseCategory.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda",
+      "loc": "module header",
+      "text": "| PhaseCategory functor instances: identity functor for Core.Phase expressed via the generic CategoryLike/IdentityFunctor machinery."
+    }
+  ],
+  "derivedTags": [
+    "Functor",
+    "Refactor"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Instances.PhaseCategory"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "outputs": [
+    "Agda modules: PhaseCategory.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [],
+  "risks": []
+}

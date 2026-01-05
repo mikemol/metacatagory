@@ -1,0 +1,22 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-AMBIGUITY",
+  "title": "Normalize Ambiguity functor instance",
+  "description": "Normalize the Ambiguity functor instance so branching semantics align with the shared abstraction.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/Ambiguity.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Refactor"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": []
+}

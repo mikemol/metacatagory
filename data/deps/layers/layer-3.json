@@ -1,0 +1,8 @@
+[
+  "Core.AlgorithmUniversality",
+  "Core.Witnesses",
+  "Tests.ErrorHandlingTests",
+  "Core.Algorithms.External",
+  "Tests.YonedaChecklist",
+  "Core.Algorithms.FiniteFields"
+]

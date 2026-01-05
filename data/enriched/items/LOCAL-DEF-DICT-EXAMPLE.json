@@ -1,0 +1,64 @@
+{
+  "id": "LOCAL-DEF-DICT-EXAMPLE",
+  "title": "Add DefinitionDictionary adequacy example",
+  "description": "Add a DefinitionDictionary adequacy example to document how adequacy proofs are structured.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Examples/DefinitionDictionaryAdequacy.agda"
+  ],
+  "tags": [
+    "Definition",
+    "Example"
+  ],
+  "dependsOn": [
+    "LOCAL-DEF-DICT"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [
+    "LOCAL-GENERIC-FUNCTOR"
+  ],
+  "intent": "| Example: Using DefinitionDictionary's adequacy instance to solve declarative faces.  Demonstrates lookup plus the framed-face/solve bridge. A small local dictionary entry to keep the example self co...",
+  "deliverable": "Compiled Agda modules: DefinitionDictionaryAdequacy.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: exampleEntry, exampleLookup, exampleFace (+ 1 more)",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Examples/DefinitionDictionaryAdequacy.agda",
+      "loc": "module header",
+      "text": "| Example: Using DefinitionDictionary's adequacy instance to solve declarative faces.  Demonstrates lookup plus the framed-face/solve bridge. A small local dictionary entry to keep the example self co..."
+    }
+  ],
+  "derivedTags": [
+    "Definition",
+    "Example"
+  ],
+  "moduleAnchors": [
+    "Examples.DefinitionDictionaryAdequacy"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-DEF-DICT"
+  ],
+  "outputs": [
+    "Agda modules: DefinitionDictionaryAdequacy.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "exampleEntry",
+    "exampleLookup",
+    "exampleFace",
+    "exampleSolve"
+  ],
+  "risks": []
+}

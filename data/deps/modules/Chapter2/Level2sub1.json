@@ -1,0 +1,9 @@
+{
+  "name": "Chapter2.Level2sub1",
+  "imports": [
+    "Core"
+  ],
+  "imported_by": [
+    "Algebra.Groups.Abelian"
+  ]
+}

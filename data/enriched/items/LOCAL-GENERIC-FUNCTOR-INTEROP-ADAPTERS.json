@@ -1,0 +1,69 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS",
+  "title": "Align functor composition adapters with interface",
+  "description": "Build adapters so existing structures interoperate through the new generic functor interface.",
+  "status": "not-started",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Compose.agda",
+    "src/agda/Core/PhaseCategoryWrapper.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Interop"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [
+    "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "intent": "| Functor composition helper: compose two FunctorInstance values sharing a middle category, with proofs for identity and composition.",
+  "deliverable": "Compiled Agda modules: Compose.agda, PhaseCategoryWrapper.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: composeFunctor, PhaseCategoryLike",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Compose.agda",
+      "loc": "module header",
+      "text": "| Functor composition helper: compose two FunctorInstance values sharing a middle category, with proofs for identity and composition."
+    },
+    {
+      "source": "src/agda/Core/PhaseCategoryWrapper.agda",
+      "loc": "module header",
+      "text": "| PhaseCategoryWrapper: expose Core.Phase as a CategoryLike so it can plug into the generic functor interface (IdentityFunctor, etc.). Lift to align Hom universe with CategoryLike expectation."
+    }
+  ],
+  "derivedTags": [
+    "Functor",
+    "Interop"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Compose",
+    "Core.PhaseCategoryWrapper"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR"
+  ],
+  "outputs": [
+    "Agda modules: Compose.agda, PhaseCategoryWrapper.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "composeFunctor",
+    "PhaseCategoryLike"
+  ],
+  "risks": []
+}

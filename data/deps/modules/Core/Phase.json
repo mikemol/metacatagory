@@ -1,0 +1,11 @@
+{
+  "name": "Core.Phase",
+  "imports": [
+    "Agda.Builtin.String",
+    "Infrastructure.Coherence.Path2",
+    "Infrastructure.Universe"
+  ],
+  "imported_by": [
+    "Core.PolynomialsF2"
+  ]
+}

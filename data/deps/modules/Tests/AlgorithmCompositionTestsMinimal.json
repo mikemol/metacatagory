@@ -1,0 +1,8 @@
+{
+  "name": "Tests.AlgorithmCompositionTestsMinimal",
+  "imports": [
+    "Core.UniversalProperties",
+    "Core.TechnicalDebt"
+  ],
+  "imported_by": []
+}

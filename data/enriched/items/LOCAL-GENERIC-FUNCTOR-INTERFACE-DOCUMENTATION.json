@@ -1,0 +1,63 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-INTERFACE-DOCUMENTATION",
+  "title": "Document interface laws and usage in code comments",
+  "description": "Document the interface laws and usage so the new functor API stays discoverable.",
+  "status": "not-started",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Interface.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Documentation"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [
+    "LOCAL-GENERIC-FUNCTOR-DOCS"
+  ],
+  "intent": "| FunctorInterface: generic functor specification for category-like bundles. This is intentionally minimal: it works with any record that supplies objects, morphisms, identity, and composition, and it...",
+  "deliverable": "Compiled Agda modules: Interface.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: map-cong, map-id-on, map-compose-on",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Interface.agda",
+      "loc": "module header",
+      "text": "| FunctorInterface: generic functor specification for category-like bundles. This is intentionally minimal: it works with any record that supplies objects, morphisms, identity, and composition, and it..."
+    }
+  ],
+  "derivedTags": [
+    "Documentation",
+    "Functor"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Interface"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
+  ],
+  "outputs": [
+    "Agda modules: Interface.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "map-cong",
+    "map-id-on",
+    "map-compose-on"
+  ],
+  "risks": []
+}

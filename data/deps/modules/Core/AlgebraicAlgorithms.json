@@ -1,0 +1,12 @@
+{
+  "name": "Core.AlgebraicAlgorithms",
+  "imports": [
+    "Core.Limitations"
+  ],
+  "imported_by": [
+    "Core.Algorithms.Bundle",
+    "Core.AlgorithmUniversality",
+    "Core.ConstructiveWitnesses",
+    "Algorithms.Basic"
+  ]
+}

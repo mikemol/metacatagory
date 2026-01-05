@@ -1,0 +1,7 @@
+{
+  "name": "Tests.RegularCategoriesChecklist",
+  "imports": [],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

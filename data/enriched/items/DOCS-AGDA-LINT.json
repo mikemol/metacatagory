@@ -1,0 +1,51 @@
+{
+  "id": "DOCS-AGDA-LINT",
+  "title": "Add lint to enforce module-level docstrings",
+  "description": "Add lint that enforces module-level docstrings to maintain documentation coverage.",
+  "status": "in-progress",
+  "category": "Infrastructure",
+  "source": "Documentation",
+  "files": [
+    "scripts",
+    "docs/automation"
+  ],
+  "tags": [
+    "Documentation",
+    "Lint",
+    "Agda"
+  ],
+  "dependsOn": [
+    "DOCS-AGDA-DOCCOMMENT-PIPELINE"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [
+    "DOCS-AGDA-DECL-DOCS",
+    "DOCS-AGDA-FIELD-DOCS"
+  ],
+  "intent": "Implement Add lint to enforce module-level docstrings as specified.",
+  "deliverable": "Add lint to enforce module-level docstrings",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "Code review and integration approval"
+  ],
+  "evidence": [],
+  "derivedTags": [
+    "Agda",
+    "Documentation",
+    "Lint"
+  ],
+  "moduleAnchors": [],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: DOCS-AGDA-DOCCOMMENT-PIPELINE"
+  ],
+  "outputs": [],
+  "suggestedDependencies": [],
+  "definitions": [],
+  "risks": []
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Core.Algorithms.Bundle",
+  "imports": [
+    "Core.AlgebraicAlgorithms"
+  ],
+  "imported_by": [
+    "Core.Algorithms.FunctionFields"
+  ]
+}

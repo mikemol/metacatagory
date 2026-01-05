@@ -1,0 +1,7 @@
+{
+  "name": "Algebra.Groups.Free",
+  "imports": [],
+  "imported_by": [
+    "Algebra.Groups.Structure"
+  ]
+}

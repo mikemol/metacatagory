@@ -1,0 +1,8 @@
+{
+  "name": "Core.GrothendieckFibrations",
+  "imports": [
+    "Chapter2.Level2sub8",
+    "Algebra.Foundation"
+  ],
+  "imported_by": []
+}

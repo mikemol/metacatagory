@@ -1,0 +1,12 @@
+{
+  "name": "Core.Algorithms.Registry",
+  "imports": [
+    "Algorithms.Adapters.BundleAdapter",
+    "Core.Algorithms.FiniteFields",
+    "Core.Algorithms.NumberFields",
+    "Core.Algorithms.FunctionFields"
+  ],
+  "imported_by": [
+    "Tests.PhaseExamples"
+  ]
+}

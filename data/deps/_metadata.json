@@ -1,0 +1,8 @@
+{
+  "timestamp": "2026-01-05T00:49:50.438075",
+  "strategy": "dependency-graph",
+  "source_file": "build/dependency_graph.json",
+  "total_items": 84,
+  "fragment_count": 91,
+  "version": "1.0"
+}

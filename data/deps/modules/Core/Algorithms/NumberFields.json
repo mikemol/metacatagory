@@ -1,0 +1,9 @@
+{
+  "name": "Core.Algorithms.NumberFields",
+  "imports": [
+    "Core.Algorithms.External"
+  ],
+  "imported_by": [
+    "Core.Algorithms.Registry"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-ADEQUACY-AMBIGUITY",
+  "title": "Confirm Ambiguity adequacy follows shared kit pattern",
+  "description": "Confirm Ambiguity adequacy follows the shared kit pattern so alternative parses remain justified.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/Ambiguity.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Adequacy"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [],
+  "intent": "| Functor instance for Plan.CIM.Ambiguity using a Funext adapter. | Functor instance for Ambiguity lifted through FunctionCategory.",
+  "deliverable": "Compiled Agda modules: Ambiguity.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: mapOption-id, mapOption-compose, mapAmbiguity-id-pt (+ 2 more)",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/Ambiguity.agda",
+      "loc": "module header",
+      "text": "| Functor instance for Plan.CIM.Ambiguity using a Funext adapter. | Functor instance for Ambiguity lifted through FunctionCategory."
+    }
+  ],
+  "derivedTags": [
+    "Adequacy",
+    "Functor"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Instances.Ambiguity"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY"
+  ],
+  "outputs": [
+    "Agda modules: Ambiguity.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "mapOption-id",
+    "mapOption-compose",
+    "mapAmbiguity-id-pt",
+    "mapAmbiguity-comp-pt",
+    "AmbiguityFunctor"
+  ],
+  "risks": []
+}

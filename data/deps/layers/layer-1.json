@@ -1,0 +1,14 @@
+[
+  "Agda.Builtin.Equality",
+  "Algebra.Groups.Types",
+  "Metamodel",
+  "Algebra.Fields.Types",
+  "Algebra.Rings.Basic",
+  "Algebra.Groups.Structure",
+  "Chapter2.Level2sub5",
+  "Algebra.Fields.Basic",
+  "Algebra.Enrichment",
+  "Tests.ToposTheoryChecklist",
+  "Core.AlgebraicAlgorithms",
+  "Tests.PropertyRegistryTests"
+]

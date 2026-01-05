@@ -1,0 +1,11 @@
+{
+  "name": "Algorithms.Basic",
+  "imports": [
+    "Core.AlgebraicAlgorithms"
+  ],
+  "imported_by": [
+    "Core.Algorithms.FunctionFields",
+    "Core.Algorithms.External",
+    "Core.Algorithms.FiniteFields"
+  ]
+}

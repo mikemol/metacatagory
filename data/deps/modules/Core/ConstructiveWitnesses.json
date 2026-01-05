@@ -1,0 +1,12 @@
+{
+  "name": "Core.ConstructiveWitnesses",
+  "imports": [
+    "Core.AlgebraicAlgorithms",
+    "Core.UniversalProperties",
+    "Core.Witnesses",
+    "Core.PolynomialsF2"
+  ],
+  "imported_by": [
+    "Tests.ConstructiveWitnessTests"
+  ]
+}

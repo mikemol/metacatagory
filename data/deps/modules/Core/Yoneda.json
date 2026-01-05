@@ -1,0 +1,9 @@
+{
+  "name": "Core.Yoneda",
+  "imports": [
+    "Algebra.Fields.Basic"
+  ],
+  "imported_by": [
+    "Tests.YonedaChecklist"
+  ]
+}

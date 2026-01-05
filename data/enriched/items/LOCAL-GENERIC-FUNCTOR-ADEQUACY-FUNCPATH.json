@@ -1,0 +1,59 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-ADEQUACY-FUNCPATH",
+  "title": "Confirm FunctionPath adequacy follows shared kit pattern",
+  "description": "Confirm FunctionPath adequacy follows the shared kit pattern to keep path-level correctness continuous.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Adequacy"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [],
+  "intent": "| FunctionPathCategory: functions as morphisms with pointwise equality. Provides a CategoryLike instance and pointwise identity/compose proofs. Simple lift to adjust universe for Hom",
+  "deliverable": "Compiled Agda modules: FunctionPathCategory.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: FunctionPathCategory",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda",
+      "loc": "module header",
+      "text": "| FunctionPathCategory: functions as morphisms with pointwise equality. Provides a CategoryLike instance and pointwise identity/compose proofs. Simple lift to adjust universe for Hom"
+    }
+  ],
+  "derivedTags": [
+    "Adequacy",
+    "Functor"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Functor.Instances.FunctionPathCategory"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY"
+  ],
+  "outputs": [
+    "Agda modules: FunctionPathCategory.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "FunctionPathCategory"
+  ],
+  "risks": []
+}

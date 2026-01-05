@@ -1,0 +1,62 @@
+{
+  "id": "DOCS-AGDA-DOCCOMMENT-PIPELINE",
+  "title": "Extend module exporter to surface Agda doc comments",
+  "description": "Describe the doc-comment pipeline so Agda declarations stay annotated and downstream tools can export them.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "Documentation",
+  "files": [
+    "src/agda/Plan/CIM/ModuleExporter.agda",
+    "docs/automation"
+  ],
+  "tags": [
+    "Documentation",
+    "Pipeline",
+    "Agda"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [],
+  "intent": "| Export Agda module metadata (docs, declarations) for downstream tooling. import qualified Data.Text as T import qualified Data.Text.IO as TIO import qualified System.Directory as Dir import qualifie...",
+  "deliverable": "Compiled Agda modules: ModuleExporter.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: extractModuleName, findAgdaFilesRec, extractImports (+ 2 more)",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Plan/CIM/ModuleExporter.agda",
+      "loc": "module header",
+      "text": "| Export Agda module metadata (docs, declarations) for downstream tooling. import qualified Data.Text as T import qualified Data.Text.IO as TIO import qualified System.Directory as Dir import qualifie..."
+    }
+  ],
+  "derivedTags": [
+    "Agda",
+    "Documentation",
+    "Pipeline"
+  ],
+  "moduleAnchors": [
+    "Plan.CIM.ModuleExporter"
+  ],
+  "complexity": "low",
+  "inputs": [],
+  "outputs": [
+    "Agda modules: ModuleExporter.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "extractModuleName",
+    "findAgdaFilesRec",
+    "extractImports",
+    "extractDocBlock",
+    "extractDeclDocs"
+  ],
+  "risks": []
+}

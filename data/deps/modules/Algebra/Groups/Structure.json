@@ -1,0 +1,9 @@
+{
+  "name": "Algebra.Groups.Structure",
+  "imports": [
+    "Algebra.Groups.Free"
+  ],
+  "imported_by": [
+    "Tests.ObligationAdapters"
+  ]
+}

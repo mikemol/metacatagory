@@ -1,0 +1,9 @@
+{
+  "name": "Examples.AlgorithmCorrectnessExamples",
+  "imports": [
+    "Core.AlgorithmCorrectness"
+  ],
+  "imported_by": [
+    "Tests.ProofObligationStatus"
+  ]
+}

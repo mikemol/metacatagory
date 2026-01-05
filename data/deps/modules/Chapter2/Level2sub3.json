@@ -1,0 +1,8 @@
+{
+  "name": "Chapter2.Level2sub3",
+  "imports": [],
+  "imported_by": [
+    "Algebra.Rings.Basic",
+    "Chapter2.Level2sub5"
+  ]
+}

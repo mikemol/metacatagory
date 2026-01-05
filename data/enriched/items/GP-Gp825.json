@@ -1,0 +1,45 @@
+{
+  "id": "GP-Gp825",
+  "title": "GP825: Dynamic Gauge Symmetry",
+  "description": "GP825: Dynamic Gauge Symmetry. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Analysis.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp825|Plan/CIM/IngestedRoadmaps/Analysis.agda",
+    "ROADMAP-MD-29|ROADMAP.md"
+  ],
+  "related": [],
+  "intent": "Implement GP825: Dynamic Gauge Symmetry as specified.",
+  "deliverable": "Compiled Agda modules: Implementation.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Code review and integration approval"
+  ],
+  "evidence": [],
+  "derivedTags": [
+    "GP"
+  ],
+  "moduleAnchors": [
+    "Plan.CIM.Implementation"
+  ],
+  "complexity": "low",
+  "inputs": [],
+  "outputs": [
+    "Agda modules: Implementation.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [],
+  "risks": []
+}

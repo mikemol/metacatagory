@@ -1,0 +1,18 @@
+{
+  "name": "Tests.ObligationAdapters",
+  "imports": [
+    "Chapter2.Level2sub2",
+    "Algebra.Fields.Advanced",
+    "Chapter2.Level2sub8",
+    "Core.UniversalProperties",
+    "Chapter2.Level2sub4",
+    "Chapter2.Level2sub5",
+    "Core.CategoricalAdapter",
+    "Chapter3.Level3sub1",
+    "Algebra.Groups.Structure",
+    "Chapter3.Level3sub2"
+  ],
+  "imported_by": [
+    "Tests.Chapter2Checklist"
+  ]
+}

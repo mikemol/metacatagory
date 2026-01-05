@@ -1,0 +1,7 @@
+{
+  "name": "Tests.PhaseExamples",
+  "imports": [
+    "Core.Algorithms.Registry"
+  ],
+  "imported_by": []
+}

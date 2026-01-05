@@ -1,0 +1,9 @@
+{
+  "name": "Core.PhaseCategory",
+  "imports": [
+    "Infrastructure.Functor.Interface"
+  ],
+  "imported_by": [
+    "Examples.PhaseCategoryExamples"
+  ]
+}

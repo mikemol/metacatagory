@@ -1,0 +1,47 @@
+{
+  "id": "BUILD-JSON-BACKWARD",
+  "title": "Implement hierarchical \u2192 monolithic backward transformation",
+  "description": "Write inverse transformer that reconstructs original monolithic JSON from hierarchical fragments, with roundtrip verification for CI.",
+  "status": "not-started",
+  "category": "Build Infrastructure",
+  "source": "JSONDecomposition",
+  "files": [
+    "scripts/json_recompose.py"
+  ],
+  "tags": [
+    "JSON",
+    "Implementation",
+    "Python"
+  ],
+  "dependsOn": [
+    "BUILD-JSON-FORWARD"
+  ],
+  "provenance": [
+    "design review"
+  ],
+  "related": [],
+  "intent": "Implement Implement hierarchical \u2192 monolithic backward transformation as specified.",
+  "deliverable": "Implement hierarchical \u2192 monolithic backward transformation",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "Code review and integration approval"
+  ],
+  "evidence": [],
+  "derivedTags": [
+    "Implementation",
+    "JSON",
+    "Python"
+  ],
+  "moduleAnchors": [],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: BUILD-JSON-FORWARD"
+  ],
+  "outputs": [],
+  "suggestedDependencies": [],
+  "definitions": [],
+  "risks": []
+}

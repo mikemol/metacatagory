@@ -1,0 +1,9 @@
+{
+  "name": "Tests.YonedaChecklist",
+  "imports": [
+    "Core.Yoneda"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

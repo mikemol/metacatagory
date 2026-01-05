@@ -1,0 +1,9 @@
+{
+  "name": "Algebra.Groups.Types",
+  "imports": [
+    "Algebra.Foundation"
+  ],
+  "imported_by": [
+    "Algebra.Groups.Basic"
+  ]
+}

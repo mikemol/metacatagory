@@ -1,0 +1,79 @@
+{
+  "id": "BUILD-JSON-SCHEMA",
+  "title": "Formalize JSON transformation schema in Agda",
+  "description": "Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward \u2218 forward \u2261 id and structure preservation. Extended with adequacy framework: synthesize transformations from compositional primitives (json-get, json-set, json-merge) instead of monolithic Python FFI.",
+  "status": "in-progress",
+  "category": "Build Infrastructure",
+  "source": "JSONDecomposition",
+  "files": [
+    "src/agda/Plan/CIM/JSONTransformation.agda",
+    "src/agda/Plan/CIM/JSONTransformationAdequacy.agda",
+    "src/agda/Plan/CIM/JSONTransformationProofs.agda"
+  ],
+  "tags": [
+    "JSON",
+    "FormalizationProof",
+    "CategoryTheory",
+    "Adequacy"
+  ],
+  "dependsOn": [
+    "BUILD-JSON-DECOMPOSITION"
+  ],
+  "provenance": [
+    "design review"
+  ],
+  "related": [],
+  "intent": "| JSONTransformation: Natural transformation between monolithic and hierarchical JSON representations. This module formalizes the decomposition of large monolithic JSON artifacts",
+  "deliverable": "Compiled Agda modules: JSONTransformation.agda, JSONTransformationAdequacy.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: Filepath, validateRoundtrip, standardTransformation (+ 5 more)",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Plan/CIM/JSONTransformation.agda",
+      "loc": "module header",
+      "text": "| JSONTransformation: Natural transformation between monolithic and hierarchical JSON representations. This module formalizes the decomposition of large monolithic JSON artifacts"
+    },
+    {
+      "source": "src/agda/Plan/CIM/JSONTransformationAdequacy.agda",
+      "loc": "module header",
+      "text": "| Adequacy kit for JSON transformations: synthesize forward/backward from primitives. Instead of Python FFI, we construct the natural transformation from smaller compositional operations (JSON navigat..."
+    }
+  ],
+  "derivedTags": [
+    "Adequacy",
+    "CategoryTheory",
+    "FormalizationProof",
+    "JSON"
+  ],
+  "moduleAnchors": [
+    "Plan.CIM.JSONTransformation",
+    "Plan.CIM.JSONTransformationAdequacy",
+    "Plan.CIM.JSONTransformationProofs"
+  ],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: BUILD-JSON-DECOMPOSITION"
+  ],
+  "outputs": [
+    "Agda modules: JSONTransformation.agda, JSONTransformationAdequacy.agda, JSONTransformationProofs.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "Filepath",
+    "validateRoundtrip",
+    "standardTransformation",
+    "subst",
+    "extractMetadata",
+    "extractItems",
+    "mkFragmentFromItem",
+    "DecompositionStrategy"
+  ],
+  "risks": []
+}

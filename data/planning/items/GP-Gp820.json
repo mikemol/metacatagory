@@ -1,0 +1,20 @@
+{
+  "id": "GP-Gp820",
+  "title": "GP820: The Fractal Sheaf",
+  "description": "GP820: The Fractal Sheaf. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Analysis.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp820|Plan/CIM/IngestedRoadmaps/Analysis.agda",
+    "ROADMAP-MD-24|ROADMAP.md"
+  ],
+  "related": []
+}

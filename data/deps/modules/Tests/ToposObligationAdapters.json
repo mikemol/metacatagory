@@ -1,0 +1,7 @@
+{
+  "name": "Tests.ToposObligationAdapters",
+  "imports": [],
+  "imported_by": [
+    "Tests.ToposTheoryChecklist"
+  ]
+}

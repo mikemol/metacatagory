@@ -1,0 +1,7 @@
+{
+  "name": "Tests.UniversalPropertyTests",
+  "imports": [
+    "Core.AlgorithmUniversality"
+  ],
+  "imported_by": []
+}

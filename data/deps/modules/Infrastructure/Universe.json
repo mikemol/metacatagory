@@ -1,0 +1,8 @@
+{
+  "name": "Infrastructure.Universe",
+  "imports": [],
+  "imported_by": [
+    "Core.Phase",
+    "Core.CategoricalAdapter"
+  ]
+}

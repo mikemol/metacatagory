@@ -1,0 +1,61 @@
+{
+  "id": "LOCAL-DEF-DICT",
+  "title": "Implement Definition Dictionary adequacy module",
+  "description": "Package the Definition Dictionary adequacy module so downstream proofs rely on a canonical definition space.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Definitions/Dictionary.agda"
+  ],
+  "tags": [
+    "Definition",
+    "Adequacy"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [
+    "LOCAL-GENERIC-FUNCTOR"
+  ],
+  "intent": "| DefinitionDictionary: canonical store for semantic definitions paired with trivial solvable interfaces.  Each entry names a term, gives a summary, and records provenance.  The accompanying ``AxiomIn...",
+  "deliverable": "Compiled Agda modules: Dictionary.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: lookupDefinition, definitionAlgebra, entryFace (+ 2 more)",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Infrastructure/Definitions/Dictionary.agda",
+      "loc": "module header",
+      "text": "| DefinitionDictionary: canonical store for semantic definitions paired with trivial solvable interfaces.  Each entry names a term, gives a summary, and records provenance.  The accompanying ``AxiomIn..."
+    }
+  ],
+  "derivedTags": [
+    "Adequacy",
+    "Definition"
+  ],
+  "moduleAnchors": [
+    "Infrastructure.Definitions.Dictionary"
+  ],
+  "complexity": "low",
+  "inputs": [],
+  "outputs": [
+    "Agda modules: Dictionary.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "lookupDefinition",
+    "definitionAlgebra",
+    "entryFace",
+    "faces",
+    "definitionInstance"
+  ],
+  "risks": []
+}

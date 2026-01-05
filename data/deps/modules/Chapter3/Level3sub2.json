@@ -1,0 +1,9 @@
+{
+  "name": "Chapter3.Level3sub2",
+  "imports": [],
+  "imported_by": [
+    "Tests.ObligationAdapters",
+    "Chapter3.Level3Index",
+    "Tests.ChapterObligationsSmoke"
+  ]
+}

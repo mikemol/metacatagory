@@ -1,0 +1,10 @@
+{
+  "name": "Tests.ChapterObligationsSmoke",
+  "imports": [
+    "Chapter2.Level2sub2",
+    "Chapter3.Level3sub2"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

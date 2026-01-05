@@ -1,0 +1,48 @@
+{
+  "id": "BUILD-JSON-FORWARD",
+  "title": "Implement monolithic \u2192 hierarchical forward transformation",
+  "description": "Synthesize forward transformation from adequacy kit primitives (json-get, json-set, extractItems, generateIndexManifest). Kit provides decomposition strategy + primitive operations; adequacy proof witnesses sufficiency. Extract to Haskell/Python or implement primitives directly in Agda.",
+  "status": "not-started",
+  "category": "Build Infrastructure",
+  "source": "JSONDecomposition",
+  "files": [
+    "scripts/json_decompose.py"
+  ],
+  "tags": [
+    "JSON",
+    "Implementation",
+    "Python"
+  ],
+  "dependsOn": [
+    "BUILD-JSON-SCHEMA",
+    "BUILD-JSON-HIERARCHY"
+  ],
+  "provenance": [
+    "design review"
+  ],
+  "related": [],
+  "intent": "Implement Implement monolithic \u2192 hierarchical forward transformation as specified.",
+  "deliverable": "Implement monolithic \u2192 hierarchical forward transformation",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "Code review and integration approval"
+  ],
+  "evidence": [],
+  "derivedTags": [
+    "Implementation",
+    "JSON",
+    "Python"
+  ],
+  "moduleAnchors": [],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: BUILD-JSON-SCHEMA, BUILD-JSON-HIERARCHY"
+  ],
+  "outputs": [],
+  "suggestedDependencies": [],
+  "definitions": [],
+  "risks": []
+}

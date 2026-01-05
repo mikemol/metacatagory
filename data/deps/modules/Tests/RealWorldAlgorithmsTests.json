@@ -1,0 +1,9 @@
+{
+  "name": "Tests.RealWorldAlgorithmsTests",
+  "imports": [
+    "Examples.RealWorldAlgorithms"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

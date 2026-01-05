@@ -1,0 +1,7 @@
+{
+  "name": "Tests.Chapter2Checklist",
+  "imports": [
+    "Tests.ObligationAdapters"
+  ],
+  "imported_by": []
+}

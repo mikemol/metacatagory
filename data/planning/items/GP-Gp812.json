@@ -1,0 +1,20 @@
+{
+  "id": "GP-Gp812",
+  "title": "GP812: The Unified Manifest (v17.0)",
+  "description": "GP812: The Unified Manifest (v17.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Analysis.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp812|Plan/CIM/IngestedRoadmaps/Analysis.agda",
+    "ROADMAP-MD-16|ROADMAP.md"
+  ],
+  "related": []
+}

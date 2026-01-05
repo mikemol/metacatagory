@@ -1,0 +1,22 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-INTEROP-PHASE-WRAPPER",
+  "title": "Ensure PhaseCategoryWrapper matches interface helpers",
+  "description": "Ensure the PhaseCategoryWrapper matches interface helpers so interoperable functors can be staged per phase.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Core/PhaseCategoryWrapper.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Interop"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": []
+}

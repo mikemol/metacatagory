@@ -1,0 +1,11 @@
+{
+  "name": "Algebra.Fields.Basic",
+  "imports": [
+    "Algebra.Modules.Basic"
+  ],
+  "imported_by": [
+    "Algebra.Fields.Advanced",
+    "Core.UniversalProperties",
+    "Core.Yoneda"
+  ]
+}

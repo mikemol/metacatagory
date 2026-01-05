@@ -1,0 +1,66 @@
+{
+  "id": "BUILD-JSON-DECOMPOSITION",
+  "title": "Decompose large JSON artifacts via natural transformations",
+  "description": "Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency.",
+  "status": "in-progress",
+  "category": "Build Infrastructure",
+  "source": "JSONDecomposition",
+  "files": [
+    "src/agda/Plan/CIM/JSONTransformation.agda",
+    "scripts/json_decompose.py",
+    "scripts/json_recompose.py"
+  ],
+  "tags": [
+    "JSON",
+    "NaturalTransformation",
+    "SPPF",
+    "Build"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "session: JSON decomposition design review (2026-01-04)"
+  ],
+  "related": [
+    "BUILD-JSON-SCHEMA",
+    "BUILD-JSON-HIERARCHY"
+  ],
+  "intent": "| JSONTransformation: Natural transformation between monolithic and hierarchical JSON representations. This module formalizes the decomposition of large monolithic JSON artifacts",
+  "deliverable": "Compiled Agda modules: JSONTransformation.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Key definitions implemented: Filepath, validateRoundtrip, standardTransformation",
+    "Code review and integration approval"
+  ],
+  "evidence": [
+    {
+      "source": "src/agda/Plan/CIM/JSONTransformation.agda",
+      "loc": "module header",
+      "text": "| JSONTransformation: Natural transformation between monolithic and hierarchical JSON representations. This module formalizes the decomposition of large monolithic JSON artifacts"
+    }
+  ],
+  "derivedTags": [
+    "Build",
+    "JSON",
+    "NaturalTransformation",
+    "SPPF"
+  ],
+  "moduleAnchors": [
+    "Plan.CIM.JSONTransformation"
+  ],
+  "complexity": "medium",
+  "inputs": [],
+  "outputs": [
+    "Agda modules: JSONTransformation.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [
+    "Filepath",
+    "validateRoundtrip",
+    "standardTransformation"
+  ],
+  "risks": []
+}

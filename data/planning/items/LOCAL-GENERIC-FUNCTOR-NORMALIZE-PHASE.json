@@ -1,0 +1,22 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-PHASE",
+  "title": "Normalize PhaseCategory functor instance",
+  "description": "Normalize the PhaseCategory functor instance so phases can be treated uniformly under the interface.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Refactor"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": []
+}

@@ -1,0 +1,20 @@
+{
+  "id": "GP-Gp712",
+  "title": "GP712: The Prediction of Topology",
+  "description": "GP712: The Prediction of Topology. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Polytopes.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp712|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
+    "ROADMAP-MD-50|ROADMAP.md"
+  ],
+  "related": []
+}

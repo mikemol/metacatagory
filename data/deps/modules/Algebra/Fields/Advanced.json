@@ -1,0 +1,11 @@
+{
+  "name": "Algebra.Fields.Advanced",
+  "imports": [
+    "Algebra.Fields.Basic",
+    "Algebra.Rings.Basic"
+  ],
+  "imported_by": [
+    "Tests.ObligationAdapters",
+    "Core.Witnesses"
+  ]
+}

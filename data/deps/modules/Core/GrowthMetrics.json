@@ -1,0 +1,9 @@
+{
+  "name": "Core.GrowthMetrics",
+  "imports": [
+    "Core.Utils"
+  ],
+  "imported_by": [
+    "Core.PathAggregator"
+  ]
+}

@@ -296,6 +296,20 @@ roadmapSyncCategory = Synchronizer
   (githubIssues "owner" "repo")
   ("./src/agda/RoadmapIssueSync" ∷ [])
 
+-- JSON decomposition: monolithic → hierarchical
+jsonDecomposeCategory : TargetCategory
+jsonDecomposeCategory = Generator
+  (fileMetadata "build/")
+  "Decompose monolithic JSON to hierarchical structure"
+  ("python3 scripts/json_decompose.py" ∷ [])
+
+-- JSON recomposition: hierarchical → monolithic  
+jsonRecomposeCategory : TargetCategory
+jsonRecomposeCategory = Generator
+  (fileMetadata "build/")
+  "Recompose hierarchical JSON to monolithic form"
+  ("python3 scripts/json_recompose.py" ∷ [])
+
 -- Export all categories for discovery
 allCategories : List TargetCategory
 allCategories = 
@@ -305,4 +319,6 @@ allCategories =
   nodeSetupCategory ∷
   deferredItemsCategory ∷
   roadmapSyncCategory ∷
+  jsonDecomposeCategory ∷
+  jsonRecomposeCategory ∷
   []

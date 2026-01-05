@@ -1,0 +1,11 @@
+{
+  "name": "Core.Algorithms.FunctionFields",
+  "imports": [
+    "Algorithms.Basic",
+    "Core.Witnesses",
+    "Core.Algorithms.Bundle"
+  ],
+  "imported_by": [
+    "Core.Algorithms.Registry"
+  ]
+}

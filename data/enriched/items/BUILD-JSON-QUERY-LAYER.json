@@ -1,0 +1,57 @@
+{
+  "id": "BUILD-JSON-QUERY-LAYER",
+  "title": "Implement query layer for hierarchical JSON",
+  "description": "Build Python/Agda utilities for querying decomposed JSON: by-category, by-module, transitive-deps, etc., using _index.json for efficient lookups without scanning filesystem.",
+  "status": "not-started",
+  "category": "Build Infrastructure",
+  "source": "JSONDecomposition",
+  "files": [
+    "scripts/query_json_hierarchy.py",
+    "src/agda/Plan/CIM/JSONQuery.agda"
+  ],
+  "tags": [
+    "JSON",
+    "Query",
+    "Performance"
+  ],
+  "dependsOn": [
+    "BUILD-JSON-APPLY-DEPS",
+    "BUILD-JSON-APPLY-ENRICHED",
+    "BUILD-JSON-APPLY-PLANNING"
+  ],
+  "provenance": [
+    "design review"
+  ],
+  "related": [],
+  "intent": "Implement Implement query layer for hierarchical JSON as specified.",
+  "deliverable": "Compiled Agda modules: JSONQuery.agda",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "All Agda modules compile without errors",
+    "Code review and integration approval"
+  ],
+  "evidence": [],
+  "derivedTags": [
+    "Growth",
+    "JSON",
+    "Metrics",
+    "Performance",
+    "Query"
+  ],
+  "moduleAnchors": [
+    "Plan.CIM.JSONQuery"
+  ],
+  "complexity": "high",
+  "inputs": [
+    "Dependencies: BUILD-JSON-APPLY-DEPS, BUILD-JSON-APPLY-ENRICHED, BUILD-JSON-APPLY-PLANNING"
+  ],
+  "outputs": [
+    "Agda modules: JSONQuery.agda"
+  ],
+  "suggestedDependencies": [],
+  "definitions": [],
+  "risks": []
+}

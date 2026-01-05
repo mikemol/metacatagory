@@ -1,0 +1,9 @@
+{
+  "name": "Chapter1.Level1sub2",
+  "imports": [
+    "Core"
+  ],
+  "imported_by": [
+    "Chapter1.Level1Index"
+  ]
+}

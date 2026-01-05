@@ -1,0 +1,9 @@
+{
+  "name": "Core.GodelBoundary",
+  "imports": [
+    "Core"
+  ],
+  "imported_by": [
+    "Tests.GodelBoundaryTests"
+  ]
+}

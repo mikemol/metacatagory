@@ -1,0 +1,7 @@
+{
+  "name": "Tests.PhaseCategoryExamplesRunner",
+  "imports": [
+    "Examples.PhaseCategoryExamples"
+  ],
+  "imported_by": []
+}

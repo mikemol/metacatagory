@@ -1,0 +1,10 @@
+{
+  "name": "Core.CategoricalAdapter",
+  "imports": [
+    "Infrastructure.Coherence.Path2",
+    "Infrastructure.Universe"
+  ],
+  "imported_by": [
+    "Tests.ObligationAdapters"
+  ]
+}

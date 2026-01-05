@@ -1,0 +1,20 @@
+{
+  "id": "GP-Gp821",
+  "title": "GP821: Recursive Self-Substitution",
+  "description": "GP821: Recursive Self-Substitution. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Analysis.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp821|Plan/CIM/IngestedRoadmaps/Analysis.agda",
+    "ROADMAP-MD-25|ROADMAP.md"
+  ],
+  "related": []
+}

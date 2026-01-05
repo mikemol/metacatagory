@@ -1,0 +1,22 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-FUNCPATH-ADEQUACY",
+  "title": "Add adequacy kit for FunctionPathCategory",
+  "description": "Add an adequacy kit for FunctionPathCategory so path-level operations retain their invariants.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Adequacy"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": []
+}

@@ -1,0 +1,47 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY",
+  "title": "Ensure adequacy kits follow standardized pattern",
+  "description": "Ensure adequacy kits follow the standardized pattern so adequacy proofs stay consistent.",
+  "status": "not-started",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances"
+  ],
+  "tags": [
+    "Functor",
+    "Adequacy"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [
+    "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "intent": "Implement Ensure adequacy kits follow standardized pattern as specified.",
+  "deliverable": "Ensure adequacy kits follow standardized pattern",
+  "scope": {
+    "in": [],
+    "out": []
+  },
+  "acceptance": [
+    "Code review and integration approval"
+  ],
+  "evidence": [],
+  "derivedTags": [
+    "Adequacy",
+    "Functor"
+  ],
+  "moduleAnchors": [],
+  "complexity": "medium",
+  "inputs": [
+    "Dependencies: LOCAL-GENERIC-FUNCTOR"
+  ],
+  "outputs": [],
+  "suggestedDependencies": [],
+  "definitions": [],
+  "risks": []
+}
