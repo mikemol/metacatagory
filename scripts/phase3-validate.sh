@@ -3,7 +3,7 @@
 # Purpose: Extract to Haskell, compile, and validate on production data
 # Date: 2026-01-04
 
-set -e
+set -euo pipefail
 
 WORKSPACE="/home/mikemol/github/metacatagory"
 BUILD_DIR="$WORKSPACE/build"

@@ -3,7 +3,7 @@
 # Purpose: Compare performance across three backends
 # Backends: Concrete (pure Agda) | FFI (Haskell Aeson) | Mock (property testing)
 
-set -e
+set -euo pipefail
 
 WORKSPACE="/home/mikemol/github/metacatagory"
 BUILD_DIR="$WORKSPACE/build"

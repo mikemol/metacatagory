@@ -2,7 +2,7 @@
 # create-or-update-tracking-issue.sh
 # Creates or updates a GitHub issue to track deferred items
 
-set -e
+set -euo pipefail
 
 REPORT_FILE="${1:-deferred-items.md}"
 SUMMARY_FILE="${2:-deferred-summary.json}"

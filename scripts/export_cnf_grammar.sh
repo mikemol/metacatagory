@@ -1,6 +1,9 @@
 
 #!/bin/bash
 # Export CNF grammar from Agda module to JSON file using IO main
+
+set -euo pipefail
+
 AGDA_MODULE="src/agda/Plan/CIM/GrammarBridge.agda"
 OUTPUT_JSON="sample_cnf_grammar.json"
 
