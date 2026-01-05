@@ -13,13 +13,14 @@
 
 module Plan.CIM.TypeCheckingGeneric where
 
-open import Infrastructure.Adequacy-Polymorphic using
+open import Infrastructure.Adequacy.Polymorphic using
   ( DualityInterface
   ; DualityKit
-  ; GenericDualPaths
-  ; GenericDualAlgebra
-  ; GenericDualAdequacy
+  ; _⊎_
+  ; inl
+  ; inr
   )
+open Infrastructure.Adequacy.Polymorphic using (module GenericDualPaths; module GenericDualAlgebra; module GenericDualAdequacy)
 open import Agda.Builtin.Equality using (_≡_)
 open import Agda.Builtin.Sigma using (_,_)
 open import Agda.Primitive using (lzero)
@@ -77,7 +78,7 @@ typecheck-duality-interface = record
   ; State = UntypedTerm ⊎ TypedTerm
   ; inj-A = inl
   ; inj-B = inr
-  ; direction = Infrastructure.Adequacy-Polymorphic.Forward
+  ; direction = Infrastructure.Adequacy.Polymorphic.Forward
   ; forward = elaborate-term
   ; backward = erase-types
   ; coverage-fwd-roundtrip = typecheck-fwd-coverage

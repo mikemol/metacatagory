@@ -13,13 +13,14 @@
 
 module Plan.CIM.SchemaValidationGeneric where
 
-open import Infrastructure.Adequacy-Polymorphic using
+open import Infrastructure.Adequacy.Polymorphic using
   ( DualityInterface
   ; DualityKit
-  ; GenericDualPaths
-  ; GenericDualAlgebra
-  ; GenericDualAdequacy
+  ; _⊎_
+  ; inl
+  ; inr
   )
+open Infrastructure.Adequacy.Polymorphic using (module GenericDualPaths; module GenericDualAlgebra; module GenericDualAdequacy)
 open import Agda.Builtin.Equality using (_≡_)
 open import Agda.Builtin.Sigma using (_,_)
 open import Agda.Primitive using (lzero)
@@ -74,7 +75,7 @@ schema-duality-interface = record
   ; State = JSONSchema ⊎ ConstraintGraph
   ; inj-A = inl
   ; inj-B = inr
-  ; direction = Infrastructure.Adequacy-Polymorphic.Forward
+  ; direction = Infrastructure.Adequacy.Polymorphic.Forward
   ; forward = schema-to-constraints
   ; backward = constraints-to-schema
   ; coverage-fwd-roundtrip = schema-fwd-coverage
