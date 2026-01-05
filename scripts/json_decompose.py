@@ -248,6 +248,88 @@ class DependencyGraphDecomposer(JSONDecomposer):
         return cycles
 
 
+class ItemArrayDecomposer(JSONDecomposer):
+    """Generic decomposer for item arrays (direct array or {items: [...]}))."""
+    
+    def strategy_name(self) -> str:
+        return "item-array"
+    
+    def decompose(self, data: Any, source_file: str, strategy: str) -> None:
+        """
+        Decompose item array into:
+        - items/: Individual items
+        - categories/: Items grouped by category (if available)
+        """
+        self.source_file = source_file
+        
+        # Handle both direct array and {items: [...]} structure
+        if isinstance(data, list):
+            items = data
+        elif isinstance(data, dict):
+            items = data.get("items", [])
+        else:
+            items = []
+        
+        fragment_count = 0
+        
+        # Create items directory
+        items_dir = self.output_dir / "items"
+        items_dir.mkdir(parents=True, exist_ok=True)
+        
+        item_index = []
+        categories = {}
+        
+        for idx, item in enumerate(items):
+            if isinstance(item, dict):
+                item_id = item.get("id", f"item-{idx:04d}")
+            else:
+                item_id = f"item-{idx:04d}"
+            
+            # Create simple item index entry
+            index_entry = {
+                "id": item_id,
+                "index": idx
+            }
+            if isinstance(item, dict):
+                index_entry["title"] = item.get("title", "")
+                index_entry["category"] = item.get("category", "")
+            
+            item_index.append(index_entry)
+            
+            # Write full item file
+            item_file = items_dir / f"{item_id}.json"
+            self.write_json(item_file, item)
+            fragment_count += 1
+            
+            # Track categories
+            if isinstance(item, dict):
+                category = item.get("category", "uncategorized")
+                if category not in categories:
+                    categories[category] = []
+                categories[category].append(item_id)
+        
+        # Write items index
+        self.write_json(items_dir / "_index.json", item_index)
+        fragment_count += 1
+        
+        # Create categories directory
+        if categories:
+            categories_dir = self.output_dir / "categories"
+            categories_dir.mkdir(parents=True, exist_ok=True)
+            
+            for category, item_ids in sorted(categories.items()):
+                safe_name = category.lower().replace(" ", "_").replace("/", "_")
+                cat_file = categories_dir / f"{safe_name}.json"
+                self.write_json(cat_file, {"category": category, "items": item_ids})
+                fragment_count += 1
+            
+            self.write_json(categories_dir / "_index.json", list(categories.keys()))
+            fragment_count += 1
+        
+        # Write metadata
+        self.write_metadata(len(items), fragment_count)
+
+
 class RoadmapDecomposer(JSONDecomposer):
     """Decompose planning_index.json into item hierarchy."""
     
@@ -323,7 +405,7 @@ def get_decomposer(strategy: str) -> JSONDecomposer.__class__:
     decomposers = {
         "dependency-graph": DependencyGraphDecomposer,
         "roadmap": RoadmapDecomposer,
-        # "enriched": EnrichedDecomposer,  # Future
+        "item-array": ItemArrayDecomposer,
     }
     
     if strategy not in decomposers:

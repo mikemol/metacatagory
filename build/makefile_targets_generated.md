@@ -47,3 +47,9 @@
 | `json-decompose` | Decompose monolithic JSON to hierarchical structure |
 | `json-recompose` | Recompose hierarchical JSON back to monolithic form |
 | `json-roundtrip-validate` | Validate JSON decomposition roundtrip |
+| `json-decompose-enriched` | Decompose canonical_enriched.json into item hierarchy |
+| `json-recompose-enriched` | Recompose enriched items into canonical_enriched.json |
+| `json-roundtrip-validate-enriched` | Validate enriched roundtrip |
+| `json-decompose-planning` | Decompose planning_index.json into plan hierarchy |
+| `json-recompose-planning` | Recompose planning items into planning_index.json |
+| `json-roundtrip-validate-planning` | Validate planning roundtrip |

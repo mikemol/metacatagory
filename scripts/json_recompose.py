@@ -109,6 +109,49 @@ class DependencyGraphRecomposer(JSONRecomposer):
         return result
 
 
+class ItemArrayRecomposer(JSONRecomposer):
+    """Recompose item arrays from hierarchical structure."""
+    
+    def recompose(self) -> List[Any]:
+        """
+        Reconstruct item array from:
+        - items/: Individual item definitions
+        - categories/: Category grouping (for validation)
+        """
+        items = []
+        
+        # Read all item files
+        items_dir = self.hierarchical_dir / "items"
+        if items_dir.exists():
+            # Read index to get order
+            index_file = items_dir / "_index.json"
+            item_ids = []
+            
+            if index_file.exists():
+                with open(index_file, "r") as f:
+                    index_data = json.load(f)
+                    item_ids = [entry["id"] if isinstance(entry, dict) else entry 
+                               for entry in index_data]
+            
+            # Read items in index order
+            for item_id in item_ids:
+                item_file = items_dir / f"{item_id}.json"
+                if item_file.exists():
+                    with open(item_file, "r") as f:
+                        item_data = json.load(f)
+                        items.append(item_data)
+            
+            # Fallback: read all items if index missing
+            if not items:
+                for json_file in sorted(items_dir.glob("*.json")):
+                    if json_file.name == "_index.json":
+                        continue
+                    with open(json_file, "r") as f:
+                        items.append(json.load(f))
+        
+        return items
+
+
 class RoadmapRecomposer(JSONRecomposer):
     """Recompose planning index from hierarchical structure."""
     
@@ -168,6 +211,7 @@ def get_recomposer(hierarchical_dir: str) -> JSONRecomposer:
     recomposers = {
         "dependency-graph": DependencyGraphRecomposer,
         "roadmap": RoadmapRecomposer,
+        "item-array": ItemArrayRecomposer,
     }
     
     if strategy not in recomposers:

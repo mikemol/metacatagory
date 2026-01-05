@@ -14,7 +14,7 @@ PROFILE_LOG ?= $(PROFILE_DIR)/profile-$(PROFILE_RUN).jsonl
 
 # Common Agda compilation flags
 AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type
-.PHONY: regen-makefile md-lint md-fix intake-lint build/canonical_roadmap.json intake-scan md-normalize makefile-validate all test-python debt-check check badges priority-strategy-profiles priority-badge-weights priority-profile-json dependency-graph-json priority-refresh docs-modules docs-all node-deps deferred-items roadmap-index planning-index-json planning-kernel roadmap-sync roadmap-sppf validate-constructive roadmap-merge build/diagrams/agda-deps-full.dot roadmap-deps-graph build/canonical_enriched.json roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched docs-generate docs-validate json-decompose json-recompose json-roundtrip-validate agda-all
+.PHONY: regen-makefile md-lint md-fix intake-lint build/canonical_roadmap.json intake-scan md-normalize makefile-validate all test-python debt-check check badges priority-strategy-profiles priority-badge-weights priority-profile-json dependency-graph-json priority-refresh docs-modules docs-all node-deps deferred-items roadmap-index planning-index-json planning-kernel roadmap-sync roadmap-sppf validate-constructive roadmap-merge build/diagrams/agda-deps-full.dot roadmap-deps-graph build/canonical_enriched.json roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched docs-generate docs-validate json-decompose json-recompose json-roundtrip-validate json-decompose-enriched json-recompose-enriched json-roundtrip-validate-enriched json-decompose-planning json-recompose-planning json-roundtrip-validate-planning agda-all
 # Regenerate the Makefile from Agda source (Self-Hosting)
 regen-makefile: build/diagrams/agda-deps-full.dot
 	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile
@@ -157,6 +157,24 @@ json-recompose: build/deps/
 # Validate JSON decomposition roundtrip
 json-roundtrip-validate: json-decompose json-recompose
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/validate_json_roundtrip.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-roundtrip-validate" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Decompose canonical_enriched.json into item hierarchy
+json-decompose-enriched: build/canonical_enriched.json
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/json_decompose.py build/canonical_enriched.json build/enriched/ --strategy item-array); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-decompose-enriched" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Recompose enriched items into canonical_enriched.json
+json-recompose-enriched: build/enriched/
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/json_recompose.py build/enriched/ build/canonical_enriched_recomposed.json); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-recompose-enriched" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Validate enriched roundtrip
+json-roundtrip-validate-enriched: json-decompose-enriched json-recompose-enriched
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/validate_json_roundtrip.py build/canonical_enriched.json build/canonical_enriched_recomposed.json); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-roundtrip-validate-enriched" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Decompose planning_index.json into plan hierarchy
+json-decompose-planning: build/planning_index.json
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/json_decompose.py build/planning_index.json build/planning/ --strategy item-array); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-decompose-planning" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Recompose planning items into planning_index.json
+json-recompose-planning: build/planning/
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/json_recompose.py build/planning/ build/planning_index_recomposed.json); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-recompose-planning" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Validate planning roundtrip
+json-roundtrip-validate-planning: json-decompose-planning json-recompose-planning
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/validate_json_roundtrip.py build/planning_index.json build/planning_index_recomposed.json); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-roundtrip-validate-planning" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile src/agda/MetaScan.agda
 src/agda/MetaScan.agdai: src/agda/MetaScan.agda
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/MetaScan.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "src/agda/MetaScan.agdai" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
