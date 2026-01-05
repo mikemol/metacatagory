@@ -194,7 +194,7 @@ discoveredTargets =
     ("pytest tests/ -v" ∷ [])
   ∷ generatorToTarget "debt-check" "Run debt tracking validation" ("deferred-items" ∷ "intake-scan" ∷ [])
     ("@echo \"✓ Debt tracking tools validated\"" ∷ [])
-  ∷ generatorToTarget "check" "Run all validation checks" ("makefile-validate" ∷ "md-lint" ∷ "roadmap-validate-triangle" ∷ "docs-validate" ∷ "test-python" ∷ "debt-check" ∷ "all" ∷ [])
+  ∷ generatorToTarget "check" "Run all validation checks" ("makefile-validate" ∷ "md-lint" ∷ "roadmap-validate-triangle" ∷ "docs-validate" ∷ "test-python" ∷ "debt-check" ∷ "json-roundtrip-validate" ∷ "json-roundtrip-validate-enriched" ∷ "json-roundtrip-validate-planning" ∷ "all" ∷ [])
     ("@echo \"check complete\"" ∷ [])
   ∷ generatorToTarget "badges" "Generate status badges" ("priority-badge-weights" ∷ []) 
     ("python3 scripts/generate-badges.py" ∷ [])

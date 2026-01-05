@@ -50,7 +50,7 @@ test-python:
 debt-check: deferred-items intake-scan
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "✓ Debt tracking tools validated"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "debt-check" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Run all validation checks
-check: makefile-validate md-lint roadmap-validate-triangle docs-validate test-python debt-check all
+check: makefile-validate md-lint roadmap-validate-triangle docs-validate test-python debt-check json-roundtrip-validate json-roundtrip-validate-enriched json-roundtrip-validate-planning all
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "check complete"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "check" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Generate status badges
 badges: priority-badge-weights

@@ -35,7 +35,7 @@ This document is a projection from the planning kernel. To update:
   \ canonical_enriched.json, etc.) using category-theoretic natural transformations.\
   \ Preserve losslessness and structure while improving granularity, diffability,\
   \ and parallel build efficiency."
-"status": "in-progress"
+"status": "done"
 "category": "Build Infrastructure"
 "tags":
 - "JSON"
@@ -48,7 +48,7 @@ This document is a projection from the planning kernel. To update:
 - "scripts/json_recompose.py"
 ```
 
-- **Decompose large JSON artifacts via natural transformations** — Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency. [status: in-progress]
+- **Decompose large JSON artifacts via natural transformations** — Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency. [status: done]
   Source: JSONDecomposition
   Target: `src/agda/Plan/CIM/JSONTransformation.agda`, `scripts/json_decompose.py`, `scripts/json_recompose.py`
   Tags: JSON, NaturalTransformation, SPPF, Build
@@ -161,7 +161,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Apply decomposition to dependency_graph.json"
 "description": "First target: decompose 84-module dependency graph into build/deps/{modules,layers,cycles}/\
   \ hierarchy with module-level granularity."
-"status": "not-started"
+"status": "done"
 "category": "Build Infrastructure"
 "dependencies":
 - "BUILD-JSON-BACKWARD"
@@ -175,7 +175,7 @@ This document is a projection from the planning kernel. To update:
 - "build/deps/layers/_index.json"
 ```
 
-- **Apply decomposition to dependency_graph.json** — First target: decompose 84-module dependency graph into build/deps/{modules,layers,cycles}/ hierarchy with module-level granularity. [status: not-started]
+- **Apply decomposition to dependency_graph.json** — First target: decompose 84-module dependency graph into build/deps/{modules,layers,cycles}/ hierarchy with module-level granularity. [status: done]
   Source: JSONDecomposition
   Target: `build/deps/_metadata.json`, `build/deps/modules/_index.json`, `build/deps/layers/_index.json`
   Tags: JSON, DependencyGraph, Phase1
@@ -186,7 +186,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Apply decomposition to canonical_enriched.json"
 "description": "Second target: decompose roadmap enrichment data into build/enriched/{items,dependencies,annotations}/\
   \ with per-item granularity."
-"status": "not-started"
+"status": "done"
 "category": "Build Infrastructure"
 "dependencies":
 - "BUILD-JSON-BACKWARD"
@@ -200,7 +200,7 @@ This document is a projection from the planning kernel. To update:
 - "build/enriched/dependencies/_manifest.json"
 ```
 
-- **Apply decomposition to canonical_enriched.json** — Second target: decompose roadmap enrichment data into build/enriched/{items,dependencies,annotations}/ with per-item granularity. [status: not-started]
+- **Apply decomposition to canonical_enriched.json** — Second target: decompose roadmap enrichment data into build/enriched/{items,dependencies,annotations}/ with per-item granularity. [status: done]
   Source: JSONDecomposition
   Target: `build/enriched/_metadata.json`, `build/enriched/items/_index.json`, `build/enriched/dependencies/_manifest.json`
   Tags: JSON, RoadmapEnrichment, Phase1
@@ -211,7 +211,7 @@ This document is a projection from the planning kernel. To update:
 "title": "Apply decomposition to planning_index.json"
 "description": "Third target: decompose planning index into build/planning/{items,sources,artifacts}/\
   \ with natural hierarchical layout."
-"status": "not-started"
+"status": "done"
 "category": "Build Infrastructure"
 "dependencies":
 - "BUILD-JSON-BACKWARD"
@@ -225,7 +225,7 @@ This document is a projection from the planning kernel. To update:
 - "build/planning/sources/_manifest.json"
 ```
 
-- **Apply decomposition to planning_index.json** — Third target: decompose planning index into build/planning/{items,sources,artifacts}/ with natural hierarchical layout. [status: not-started]
+- **Apply decomposition to planning_index.json** — Third target: decompose planning index into build/planning/{items,sources,artifacts}/ with natural hierarchical layout. [status: done]
   Source: JSONDecomposition
   Target: `build/planning/_metadata.json`, `build/planning/items/_index.json`, `build/planning/sources/_manifest.json`
   Tags: JSON, PlanningIndex, Phase1
