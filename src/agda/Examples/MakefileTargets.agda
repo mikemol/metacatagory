@@ -26,7 +26,8 @@ joinWith sep (x ∷ []) = x
 joinWith sep (x ∷ xs) = x ++ sep ++ joinWith sep xs
 
 -- Instrument a recipe to emit wall-clock timing for the target.
--- Each wrapped recipe is executed in a single shell with `set -e` to preserve failure propagation.
+-- Shell integrity (set -euo pipefail) is configured via SHELL and .SHELLFLAGS in Makefile header.
+-- Each wrapped recipe preserves failure propagation via `rc=$$?; exit $$rc` pattern.
 instrumentRecipe : String → List String → List String
 instrumentRecipe name [] =
   ( "@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); "

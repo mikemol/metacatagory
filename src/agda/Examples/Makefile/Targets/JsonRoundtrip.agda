@@ -1,0 +1,32 @@
+{-# OPTIONS --without-K #-}
+module Examples.Makefile.Targets.JsonRoundtrip where
+
+open import Agda.Builtin.List using (List; _∷_; [])
+open import Examples.MakefileTargets using (MakefileTarget; generatorToTarget)
+
+-- JSON decomposition/recomposition/roundtrip targets for canonical, enriched, planning
+
+jsonRoundtripTargets : List MakefileTarget
+jsonRoundtripTargets =
+  generatorToTarget "json-decompose" "Decompose monolithic JSON to hierarchical structure" ("build/dependency_graph.json" ∷ [])
+    ("python3 scripts/json_decompose.py build/dependency_graph.json data/deps/ --strategy dependency-graph" ∷ [])
+  ∷ generatorToTarget "json-recompose" "Recompose hierarchical JSON back to monolithic form" ("data/deps/" ∷ [])
+    ("python3 scripts/json_recompose.py data/deps/ build/dependency_graph_recomposed.json" ∷ [])
+  ∷ generatorToTarget "json-roundtrip-validate" "Validate JSON decomposition roundtrip" ("json-decompose" ∷ "json-recompose" ∷ [])
+    ("python3 scripts/validate_json_roundtrip.py" ∷ [])
+
+  ∷ generatorToTarget "json-decompose-enriched" "Decompose canonical_enriched.json into item hierarchy" ("build/canonical_enriched.json" ∷ [])
+      ("python3 scripts/json_decompose.py build/canonical_enriched.json data/enriched/ --strategy item-array" ∷ [])
+  ∷ generatorToTarget "json-recompose-enriched" "Recompose enriched items into canonical_enriched.json" ("data/enriched/" ∷ [])
+      ("python3 scripts/json_recompose.py data/enriched/ build/canonical_enriched_recomposed.json" ∷ [])
+  ∷ generatorToTarget "json-roundtrip-validate-enriched" "Validate enriched roundtrip" ("json-decompose-enriched" ∷ "json-recompose-enriched" ∷ [])
+      ("python3 scripts/validate_json_roundtrip.py build/canonical_enriched.json build/canonical_enriched_recomposed.json" ∷ [])
+
+  ∷ generatorToTarget "json-decompose-planning" "Decompose planning_index.json into plan hierarchy" ("build/planning_index.json" ∷ [])
+      ("python3 scripts/json_decompose.py build/planning_index.json data/planning/ --strategy item-array" ∷ [])
+  ∷ generatorToTarget "json-recompose-planning" "Recompose planning items into planning_index.json" ("data/planning/" ∷ [])
+      ("python3 scripts/json_recompose.py data/planning/ build/planning_index_recomposed.json" ∷ [])
+  ∷ generatorToTarget "json-roundtrip-validate-planning" "Validate planning roundtrip" ("json-decompose-planning" ∷ "json-recompose-planning" ∷ [])
+      ("python3 scripts/validate_json_roundtrip.py build/planning_index.json build/planning_index_recomposed.json" ∷ [])
+
+  ∷ []

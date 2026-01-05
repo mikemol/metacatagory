@@ -82,6 +82,19 @@ open import Examples.MakefileTargets using (MakefileTarget; TargetCategory; allC
   validatorToTarget; generatorToTarget; nodeSetupCategory; badgeCategory; mdLintCategory;
   discoverAgdaFiles; generateAgdaTargets; generateDocsTargets; allAgdaiTarget; allDocsTarget;
   environmentSetupToTarget; synchronizerToTarget; mkTarget; instrumentRecipe)
+open import Examples.Makefile.Targets.Python using (pythonTargets)
+open import Examples.Makefile.Targets.RoadmapExports using (roadmapExportTargets)
+open import Examples.Makefile.Targets.Docs using (docTargets)
+open import Examples.Makefile.Targets.JsonRoundtrip using (jsonRoundtripTargets)
+open import Examples.Makefile.Targets.Infra using (infraTargets)
+open import Examples.Makefile.Targets.Priority using (priorityTargets)
+open import Examples.Makefile.Targets.AgdaBuild using (agdaTargets)
+open import Examples.Makefile.Targets.Composite using (compositeTargets)
+
+infixr 20 _+++_
+_+++_ : {A : Set} → List A → List A → List A
+[] +++ ys = ys
+(x ∷ xs) +++ ys = x ∷ (xs +++ ys)
 
 postulate
   writeFile : String → String → IO ⊤
@@ -174,135 +187,8 @@ renderDocs targets =
 -- Discovered targets
 discoveredTargets : List MakefileTarget
 discoveredTargets = 
-  validatorToTarget "md-lint" "Lint all markdown files (fail on error)" "build/reports/md-lint.txt" 
-    ("mkdir -p build/reports" ∷ "npx markdownlint-cli2 --config .markdownlint.json \"docs/modules/**/*.md\" \"docs/planning/ROADMAP.md\" \"src/agda/Plan/CIM/meta-index.d/*.md\" > build/reports/md-lint.txt 2>&1" ∷ [])
-  ∷ generatorToTarget "md-fix" "Auto-fix markdown lint errors" ([])
-    ("npx markdownlint-cli2 --config .markdownlint.json --fix \"docs/modules/**/*.md\" \"docs/planning/ROADMAP.md\" \"src/agda/Plan/CIM/meta-index.d/*.md\"" ∷ [])
-  ∷ validatorToTarget "intake-lint" "Lint intake files specifically" "build/reports/intake-md-lint.txt"
-    ("mkdir -p build/reports && printf \"intake lint suppressed (too much legacy noise)\\n\" > build/reports/intake-md-lint.txt" ∷ [])
-    ∷ generatorToTarget "build/canonical_roadmap.json" "Generate canonical roadmap JSON from intake" ([])
-      ("python3 scripts/intake_scan.py" ∷ [])
-  ∷ generatorToTarget "intake-scan" "Scan intake directory for new files" ("planning-index-json" ∷ [])
-    ("@echo \"intake scan complete\"" ∷ [])
-  ∷ generatorToTarget "md-normalize" "Normalize markdown formatting" ([])
-    ("python3 scripts/normalize_generated_markdown.py" ∷ [])
-  ∷ validatorToTarget "makefile-validate" "Validate Makefile consistency" "build/reports/makefile-validate.txt"
-    ("mkdir -p build/reports" ∷ "python3 scripts/validate_makefile_docs.py > build/reports/makefile-validate.txt || (cat build/reports/makefile-validate.txt; exit 1)" ∷ [])
-  ∷ generatorToTarget "all" "Build all code and documentation" ("agda-all" ∷ "docs-all" ∷ [])
-    ("@echo \"all complete\"" ∷ [])
-  ∷ generatorToTarget "test-python" "Run Python tests" ([])
-    ("pytest tests/ -v" ∷ [])
-  ∷ generatorToTarget "debt-check" "Run debt tracking validation" ("deferred-items" ∷ "intake-scan" ∷ [])
-    ("@echo \"✓ Debt tracking tools validated\"" ∷ [])
-  ∷ generatorToTarget "check" "Run all validation checks" ("makefile-validate" ∷ "md-lint" ∷ "roadmap-validate-triangle" ∷ "docs-validate" ∷ "test-python" ∷ "debt-check" ∷ "json-roundtrip-validate" ∷ "json-roundtrip-validate-enriched" ∷ "json-roundtrip-validate-planning" ∷ "all" ∷ [])
-    ("@echo \"check complete\"" ∷ [])
-  ∷ generatorToTarget "badges" "Generate status badges" ("priority-badge-weights" ∷ []) 
-    ("python3 scripts/generate-badges.py" ∷ [])
-  ∷ generatorToTarget "priority-strategy-profiles" "Compile and run Agda priority orchestration (generate strategy profiles)" ([]) 
-    ("mkdir -p build" ∷ "$(AGDA) $(AGDA_FLAGS) --compile src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda" ∷ "./src/agda/PriorityOrchestrationFFI" ∷ [])
-  ∷ generatorToTarget "priority-badge-weights" "Normalize Agda strategy profiles into badge weights" ("priority-strategy-profiles" ∷ []) 
-    ("python3 scripts/adopt_priority_strategies.py --input build/priority_strategy_profiles.json --output .github/badges/weights.json" ∷ [])
-  ∷ generatorToTarget "priority-profile-json" "Export structured priority profile (lazy; derived from planning index)" ("planning-index-json" ∷ [])
-    ("mkdir -p build" ∷ "$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/PriorityProfileExport.agda && ./src/agda/PriorityProfileExport" ∷ [])
-  ∷ generatorToTarget "dependency-graph-json" "Export dependency graph JSON via Agda (from agda-deps-full.dot)" ("build/diagrams/agda-deps-full.dot" ∷ [])
-    ("mkdir -p build" ∷ "$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/DependencyGraphExport.agda && ./src/agda/DependencyGraphExport" ∷ [])
-  ∷ generatorToTarget "priority-refresh" "Re-run priority pipeline and refresh roadmap/badge outputs" ("planning-index-json" ∷ "roadmap-export-json" ∷ "priority-badge-weights" ∷ "badges" ∷ [])
-    ("@echo \"priority pipeline refreshed (planning index, tasks, badge weights, roadmap badges)\"" ∷ [])
-  ∷ generatorToTarget "docs-modules" "Generate per-module markdown documentation" ("src/agda/Plan/CIM/ModuleExporter.agdai" ∷ [])
-    ("$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/ModuleExporter.agda && ./src/agda/Plan/CIM/ModuleExporter" ∷ [])
-  ∷ generatorToTarget "docs-all" "Generate documentation (markdown only)" ("docs-generate" ∷ "docs-modules" ∷ [])
-    ("@echo \"docs (markdown) complete\"" ∷ [])
-  ∷ environmentSetupToTarget "node-deps" "Install Node.js dependencies"
-    ("npm install" ∷ [])
-  ∷ generatorToTarget "deferred-items" "Scan for TODOs and FIXMEs (Agda FFI binary)" ([])
-    ("$(AGDA) $(AGDA_FLAGS) --compile src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda" ∷ "./src/agda/DeferredItemsOrchestrationFFI" ∷ [])
-  ∷ generatorToTarget "roadmap-index" "Compile Roadmap Index" ("src/agda/Plan/CIM/RoadmapIndex.agdai" ∷ [])
-    ("$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapIndex.agda" ∷ [])
-  ∷ generatorToTarget "planning-index-json" "Export planning index to JSON" ("src/agda/Plan/CIM/PlanningExport.agdai" ∷ [])
-    ("mkdir -p build" ∷ "$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/PlanningExport.agda && ./src/agda/PlanningExport" ∷ [])
-  ∷ generatorToTarget "planning-kernel" "Compile Planning Kernel" ("src/agda/Plan/CIM/PlanningKernel.agdai" ∷ [])
-    ("$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PlanningKernel.agda" ∷ [])
-  ∷ generatorToTarget "roadmap-sync" "Sync roadmap with external tracker" ("roadmap-export-json" ∷ "src/agda/Plan/CIM/RoadmapSync.agdai" ∷ [])
-    ("$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSync.agda" ∷ [])
-  ∷ generatorToTarget "roadmap-sppf" "Compile Roadmap SPPF" ("src/agda/Plan/CIM/RoadmapSPPF.agdai" ∷ [])
-    ("$(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSPPF.agda" ∷ [])
-  ∷ generatorToTarget "validate-constructive" "Run all constructive build targets" (
-        "docs-all" ∷ "docs-generate" ∷ "docs-modules" ∷
-        "roadmap-export-json" ∷ "roadmap-export-md" ∷ "roadmap-export-enriched" ∷ "roadmap-export-deps" ∷
-        "roadmap-deps-graph" ∷ "roadmap-enrich" ∷ "roadmap-all-enriched" ∷
-        "intake-scan" ∷ "md-normalize" ∷ "badges" ∷ [])
-    ("@echo \"✓ Constructive validation complete\"" ∷ [])
-  ∷ generatorToTarget "roadmap-merge" "Merge ingestion streams" ([])
-    ("python3 scripts/merge_roadmaps.py" ∷ [])
-  ∷ generatorToTarget "build/diagrams/agda-deps-full.dot" "Generate dependency graph" ([]) 
-    ("mkdir -p build/diagrams" ∷ "$(AGDA) --dependency-graph=build/diagrams/agda-deps-full.dot $(AGDA_FLAGS) src/agda/Tests/Index.agda 2>&1 | grep -E \"(Checking|Error)\" | head -20" ∷ [])
-  ∷ generatorToTarget "roadmap-deps-graph" "Generate dependency graph" ("build/diagrams/agda-deps-full.dot" ∷ [])
-    ("@echo \"agda dependency graph generated\"" ∷ [])
-  ∷ generatorToTarget "build/canonical_enriched.json" "Enrich canonical roadmap" ("planning-index-json" ∷ "build/diagrams/agda-deps-full.dot" ∷ [])
-    ("python3 scripts/enrich_canonical.py" ∷ [])
-  ∷ generatorToTarget "roadmap-enrich" "Enrich roadmap with graph data" ("build/canonical_enriched.json" ∷ [])
-    ("@echo \"roadmap enrichment complete\"" ∷ [])
-  ∷ generatorToTarget "roadmap-export-json" "Export canonical roadmap to JSON" ("planning-index-json" ∷ [])
-    ("python3 scripts/export_canonical_json.py" ∷ [])
-  ∷ generatorToTarget "roadmap-export-md" "Export canonical roadmap to Markdown" ("planning-index-json" ∷ [])
-    ("python3 scripts/export_canonical_md.py" ∷ [])
-  ∷ generatorToTarget "roadmap-export-enriched" "Export enriched roadmap" ("build/canonical_enriched.json" ∷ [])
-    ("python3 scripts/export_enriched_md.py" ∷ [])
-  ∷ generatorToTarget "roadmap-export-deps" "Export roadmap dependency graph" ("build/canonical_enriched.json" ∷ [])
-    ("python3 scripts/export_dependency_graph.py" ∷ [])
-  ∷ generatorToTarget "roadmap-validate-json" "Validate canonical JSON" ("roadmap-export-json" ∷ [])
-    ("python3 scripts/validate_json.py" ∷ [])
-  ∷ generatorToTarget "roadmap-validate-md" "Validate canonical Markdown" 
-    ("roadmap-export-md" ∷ [])
-    ("python3 scripts/validate_md.py" ∷ [])
-  ∷ generatorToTarget "roadmap-validate-triangle" "Verify Triangle Identity (Agda <-> JSON <-> MD)" ("roadmap-validate-json" ∷ "roadmap-validate-md" ∷ [])
-    ("@echo \"✓ Triangle validation complete\"" ∷ [])
-  ∷ generatorToTarget "roadmap-sppf-export" "Export SPPF structure" ("planning-index-json" ∷ [])
-    ("python3 scripts/export_roadmap_sppf.py" ∷ [])
-  ∷ generatorToTarget "roadmap-all-enriched" "Build all enriched artifacts" ("roadmap-export-enriched" ∷ "roadmap-export-deps" ∷ [])
-    ("@echo \"roadmap all enriched complete\"" ∷ [])
-  ∷ generatorToTarget "docs-generate" "Compile and run Roadmap Exporter" ("src/agda/Plan/CIM/RoadmapExporter.agdai" ∷ [])
-    ("$(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/RoadmapExporter.agda && ./src/agda/RoadmapExporter" ∷ "python3 scripts/normalize_generated_markdown.py" ∷ [])
-  ∷ generatorToTarget "docs-validate" "Validate documentation integrity" ([])
-    ("python3 scripts/validate_triangle_identity.py" ∷ [])
-  ∷ generatorToTarget "json-decompose" "Decompose monolithic JSON to hierarchical structure" ("build/dependency_graph.json" ∷ [])
-    ("python3 scripts/json_decompose.py build/dependency_graph.json data/deps/ --strategy dependency-graph" ∷ [])
-  ∷ generatorToTarget "json-recompose" "Recompose hierarchical JSON back to monolithic form" ("data/deps/" ∷ [])
-    ("python3 scripts/json_recompose.py data/deps/ build/dependency_graph_recomposed.json" ∷ [])
-  ∷ generatorToTarget "json-roundtrip-validate" "Validate JSON decomposition roundtrip" ("json-decompose" ∷ "json-recompose" ∷ [])
-    ("python3 scripts/validate_json_roundtrip.py" ∷ [])
+  pythonTargets +++ roadmapExportTargets +++ docTargets +++ jsonRoundtripTargets +++ infraTargets +++ priorityTargets +++ agdaTargets +++ compositeTargets
 
-  -- Decomposition targets for canonical_enriched.json
-  ∷ generatorToTarget "json-decompose-enriched" "Decompose canonical_enriched.json into item hierarchy"
-      ("build/canonical_enriched.json" ∷ [])
-      ("python3 scripts/json_decompose.py build/canonical_enriched.json data/enriched/ --strategy item-array" ∷ [])
-  ∷ generatorToTarget "json-recompose-enriched" "Recompose enriched items into canonical_enriched.json"
-      ("data/enriched/" ∷ [])
-      ("python3 scripts/json_recompose.py data/enriched/ build/canonical_enriched_recomposed.json" ∷ [])
-  ∷ generatorToTarget "json-roundtrip-validate-enriched" "Validate enriched roundtrip"
-      ("json-decompose-enriched" ∷ "json-recompose-enriched" ∷ [])
-      ("python3 scripts/validate_json_roundtrip.py build/canonical_enriched.json build/canonical_enriched_recomposed.json" ∷ [])
-
-  -- Decomposition targets for planning_index.json
-  ∷ generatorToTarget "json-decompose-planning" "Decompose planning_index.json into plan hierarchy"
-      ("build/planning_index.json" ∷ [])
-      ("python3 scripts/json_decompose.py build/planning_index.json data/planning/ --strategy item-array" ∷ [])
-  ∷ generatorToTarget "json-recompose-planning" "Recompose planning items into planning_index.json"
-      ("data/planning/" ∷ [])
-      ("python3 scripts/json_recompose.py data/planning/ build/planning_index_recomposed.json" ∷ [])
-  ∷ generatorToTarget "json-roundtrip-validate-planning" "Validate planning roundtrip"
-      ("json-decompose-planning" ∷ "json-recompose-planning" ∷ [])
-      ("python3 scripts/validate_json_roundtrip.py build/planning_index.json build/planning_index_recomposed.json" ∷ [])
-  
-  ∷ []
-
--- Helper to concatenate lists
-infixr 20 _+++_
-_+++_ : {A : Set} → List A → List A → List A
-[] +++ ys = ys
-(x ∷ xs) +++ ys = x ∷ (xs +++ ys)
-
--- Generate Agda compilation target using graph-derived module dependencies
 labelToModuleName : String → ModuleName
 labelToModuleName = parseModuleName
 
@@ -338,6 +224,13 @@ buildArtifact agdaFiles graphEdges =
         ; content =
             ( "# Use local Agda 2.8.0 if available, otherwise system agda"
             ∷ "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)"
+            ∷ ""
+            ∷ "# Shell configuration for error-safe recipes"
+            ∷ "SHELL := /bin/bash"
+            ∷ ".SHELLFLAGS := -euo pipefail -c"
+            ∷ ".DELETE_ON_ERROR:"
+            ∷ "MAKEFLAGS += --warn-undefined-variables"
+            ∷ "MAKEFLAGS += --no-builtin-rules"
             ∷ ""
             ∷ "# Default parallelism scales with available cores unless user overrides MAKEFLAGS."
             ∷ "CORES ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)"
