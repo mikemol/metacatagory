@@ -422,6 +422,214 @@ agda src/agda/Tests/Plan/CIM/ProofTraceGenericTests.agda
 
 ---
 
+## Part 6c: Python Test Suite (Phase 2)
+
+### Goal
+
+Expand coverage from 79% (baseline) to 82%+ by targeting untested core pipeline scripts.
+
+### Target Scripts
+
+1. **json_decompose.py** (257 statements) — Hierarchical decomposition of dependency graphs
+2. **json_recompose.py** (171 statements) — Reconstruction of monolithic graphs from fragments
+3. **merge_roadmaps.py** (219 statements) — Multi-source roadmap merging with conflict resolution
+
+### Test Files Created
+
+- [tests/scripts/test_json_decompose.py](tests/scripts/test_json_decompose.py) — 365 lines, 15 tests
+  - Coverage areas: DecompositionMetadata, base decomposer class, DependencyGraphDecomposer strategy
+  - Tests: new/old format handling, layer creation, cycle detection, error handling, integration
+  
+- [tests/scripts/test_json_recompose.py](tests/scripts/test_json_recompose.py) — 324 lines, 19 tests
+  - Coverage areas: Fragment reading, data merging, layer/cycle reconstruction
+  - Tests: module hierarchy, index skipping, empty structures, malformed JSON, roundtrip validation
+  
+- [tests/scripts/test_merge_roadmaps.py](tests/scripts/test_merge_roadmaps.py) — 527 lines, 29 tests (2 skipped)
+  - Coverage areas: Title normalization, provenance tracking, multi-source loading, deduplication, merge-by-title, description backfill, export (JSON/Agda)
+  - Tests: GitHub tasks.json, ROADMAP.md parsing (partial), conflict resolution, ID preservation
+
+### Results
+
+- **Tests**: 121 total passed (68 Phase 1 + 53 Phase 2), 2 skipped
+- **Total Coverage**: 11.0% across all scripts (558/5090 statements)
+- **Phase 2 Coverage**:
+  - json_decompose.py: **57.6%** (148/257 statements)
+  - json_recompose.py: **39.2%** (67/171 statements)
+  - merge_roadmaps.py: **86.8%** (190/219 statements) ← *highest coverage*
+
+### Command
+
+```bash
+# Run Phase 2 tests only
+pytest tests/scripts/ -v --cov=scripts --cov-report=term-missing
+
+# Run full test suite with coverage
+pytest tests/ -v --cov=scripts --cov-report=term-missing
+```
+
+### Coverage Gaps (Future Work)
+
+- **json_decompose.py**: Lines 263-330 (stratification algorithms), 346-400 (cycle detection), 419-450 (CLI)
+- **json_recompose.py**: Lines 121-152 (layer recomposition), 164-195 (cycle handling), 254-297 (CLI)
+- **merge_roadmaps.py**: Lines 71-101 (normalize_title edge cases), 108-116 (Agda parsing), 120-173 (ROADMAP.md parsing — skipped in tests), 319-345 (legacy Agda), 393-418 (CLI)
+
+### Next Steps
+
+1. Add integration tests for full decompose → recompose roundtrip
+2. Implement parse_roadmap_md fully and unskip tests
+3. Test CLI entry points (`if __name__ == "__main__":` blocks)
+4. Target remaining 91% of untested scripts (49/54 scripts)
+
+---
+
+## Part 6d: Python Test Suite (Phase 3)
+
+### Goal
+
+Continue coverage expansion from 11% to 17%+ by targeting high-value untested scripts.
+
+### Target Scripts (High-Value Analysis)
+
+Selected based on code size, architectural importance, and usage frequency:
+
+1. **dependency_graph_builder.py** (216 statements) - Core dependency analysis, SCC detection
+2. **enrich_canonical.py** (333 statements) - Roadmap enrichment with evidence extraction
+
+### Test Files Created
+
+- [tests/scripts/test_dependency_graph_builder.py](tests/scripts/test_dependency_graph_builder.py) - 580 lines, 27 tests
+  - Coverage areas: DependencyNode dataclass, graph construction, depth computation, SCC (circular dependency) detection, transitive dependency resolution, critical path finding, dependency layers
+  - Tests: Linear chains, diamond dependencies, 2-node/3-node cycles, max depth limits, reverse dependencies, error handling
+  - Algorithms tested: Tarjan's SCC, BFS depth computation, topological layer sorting
+
+- [tests/scripts/test_enrich_canonical.py](tests/scripts/test_enrich_canonical.py) - 454 lines, 24 tests
+  - Coverage areas: Markdown section extraction, evidence extraction (markdown/Agda), Agda module header parsing, DOT dependency graph parsing, module name extraction, tag vocabulary
+  - Tests: Section boundaries, OPTIONS pragma skipping, block/line comments, DOT node labels/edges, stdlib filtering, module-to-tasks mapping
+
+### Results
+
+- **Tests**: 163 total passed (68 Phase 1 + 53 Phase 2 + 42 Phase 3), 2 skipped
+- **Total Coverage**: **17.0%** across all scripts (864/5090 statements)
+- **Phase 3 Coverage**:
+  - dependency_graph_builder.py: **69.0%** (149/216 statements) ← excellent
+  - enrich_canonical.py: **47.1%** (157/333 statements) ← good
+
+### Coverage Summary (All Tested Scripts)
+
+| Script | Coverage | Statements | Category |
+|--------|----------|------------|----------|
+| export_dependency_graph.py | 97.1% | 102/105 | Export |
+| export_roadmap_sppf.py | 93.3% | 14/15 | Export |
+| merge_roadmaps.py | 86.8% | 190/219 | Phase 2 |
+| dependency_graph_builder.py | **69.0%** | 149/216 | **Phase 3** |
+| json_decompose.py | 57.6% | 148/257 | Phase 2 |
+| enrich_canonical.py | **47.1%** | 157/333 | **Phase 3** |
+| json_recompose.py | 39.2% | 67/171 | Phase 2 |
+| adopt_priority_strategies.py | 35.6% | 31/87 | Phase 1 |
+| shared_data.py | 12.0% | 6/50 | Phase 1 |
+
+**Total: 9 scripts tested (17% of 54 scripts), 17.0% overall coverage**
+
+---
+
+## Part 6e: Python Test Suite (Phase 5a)
+
+### Goal
+
+Push toward 20% by covering two medium untested utilities: JSON roundtrip validation and Agda test reporting.
+
+### Target Scripts
+
+1. **validate_json_roundtrip.py** (50 statements) — Validate decompose → recompose semantic preservation
+2. **test_report.py** (73 statements) — Generate Agda test adapter/status report (JSON + Markdown)
+
+### Test Files Created
+
+- [tests/scripts/test_validate_json_roundtrip.py](tests/scripts/test_validate_json_roundtrip.py) — 16 tests
+  - Coverage areas: recursive value extraction, roundtrip validation (module/edge counts), JSON parse errors, missing files, empty graphs, edge reporting, CLI exit behavior (simulated)
+- [tests/scripts/test_test_report.py](tests/scripts/test_test_report.py) — 27 tests, 1 skipped (doc smoke)
+  - Coverage areas: regex patterns, file scan with patched ROOT, status assertions counting, summarize aggregation, AUDAX doc generation, output writing, CLI main with custom roots, integration pipeline
+
+### Results
+
+- **Tests**: +43 new (1 skipped)
+- **Targeted Coverage**:
+  - validate_json_roundtrip.py: **96%** (48/50) — uncovered lines: `__main__` exit branch
+  - test_report.py: **99%** (72/73) — uncovered line: `__main__` exit branch
+- **Total Coverage (all scripts)**: unchanged from 17.0% (Phase 3 baseline); Phase 5a was a focused run
+
+### Commands
+
+```bash
+# Run Phase 3 tests only
+pytest tests/scripts/test_dependency_graph_builder.py tests/scripts/test_enrich_canonical.py -v
+
+# Run full test suite with coverage
+pytest tests/ -v --cov=scripts --cov-report=term-missing
+```
+
+### Coverage Gaps (Future Work)
+
+- **dependency_graph_builder.py**: Lines 300-426 (export functions, CLI main)
+- **enrich_canonical.py**: Lines 300-611 (enrichment orchestration, field synthesis, CLI main)
+
+### Key Achievements
+
+- **Phase 3 added 306 statements of coverage** (from 558 to 864)
+- **Tested critical algorithms**: Tarjan's SCC, topological sorting, BFS traversal
+- **Tested evidence extraction**: Markdown/Agda parsing, DOT graph parsing
+- **High coverage on core infrastructure**: 69% on dependency graph builder
+
+### Next Steps
+
+1. **Reach 20% coverage**: Add ~150 more covered statements (test 1-2 medium scripts)
+2. **CLI integration tests**: Test main() entry points for Phase 2/3 scripts
+3. **Phase 4 candidates**: intake_scan.py (182 stmts), export_enriched_md.py (186 stmts)
+4. **Reduce gaps**: Add tests for export_dependency_graph.py CLI (3% uncovered)
+
+---
+
+## Part 6f: Python Test Suite (Phase 5b)
+
+### Goal
+
+Push coverage toward 20% by testing two medium utilities: roadmap export to Markdown and dependency suggestion analysis.
+
+### Target Scripts
+
+1. **export_roadmap.py** (70 statements) — Export ingested metadata into ROADMAP.md
+2. **analyze_dependencies.py** (98 statements) — Analyze/prompt dependency suggestions from enriched data
+
+### Test Files Created
+
+- [tests/scripts/test_export_roadmap.py](tests/scripts/test_export_roadmap.py) — 6 tests
+  - Coverage areas: category grouping, keyword rendering, missing metadata, insertion before status/see-also, new-file creation, preservation of existing content
+- [tests/scripts/test_analyze_dependencies.py](tests/scripts/test_analyze_dependencies.py) — 8 tests
+  - Coverage areas: missing inputs, suggestion counts/averages, promotion to canonical (dedupe), task lookup (missing/not found/success), usage message dispatch
+
+### Results
+
+- **Tests**: +14 new
+- **Targeted Coverage**:
+  - export_roadmap.py: **94%** (66/70) — uncovered lines: 32, 38, 40, 112 (category branches/print tail)
+  - analyze_dependencies.py: **87%** (85/98) — uncovered lines: 50, 81, 134-147 (message/help branches)
+- **Total Coverage (all scripts)**: focused run only; targeted files substantially covered
+
+### Commands
+
+```bash
+# Phase 5b focused run with coverage on all scripts
+python -m pytest tests/scripts/test_export_roadmap.py tests/scripts/test_analyze_dependencies.py -v --cov=scripts --cov-report=term-missing --cov-report=json:coverage-phase5b.json
+```
+
+### Coverage Gaps (Future Work)
+
+- export_roadmap.py: remaining category branches and final print path
+- analyze_dependencies.py: CLI help branches and detailed rendering paths
+- To reach 20% overall: add ~150 covered statements (e.g., intake_scan.py, export_roadmap.py remaining branches, progress_tracker.py)
+
+---
+
 ## Part 7: Summary Table
 
 | Component | Location | Purpose | Tests |
