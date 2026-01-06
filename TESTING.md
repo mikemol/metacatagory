@@ -589,6 +589,47 @@ pytest tests/ -v --cov=scripts --cov-report=term-missing
 
 ---
 
+## Part 6f: Python Test Suite (Phase 5b)
+
+### Goal
+
+Push coverage toward 20% by testing two medium utilities: roadmap export to Markdown and dependency suggestion analysis.
+
+### Target Scripts
+
+1. **export_roadmap.py** (70 statements) — Export ingested metadata into ROADMAP.md
+2. **analyze_dependencies.py** (98 statements) — Analyze/prompt dependency suggestions from enriched data
+
+### Test Files Created
+
+- [tests/scripts/test_export_roadmap.py](tests/scripts/test_export_roadmap.py) — 6 tests
+  - Coverage areas: category grouping, keyword rendering, missing metadata, insertion before status/see-also, new-file creation, preservation of existing content
+- [tests/scripts/test_analyze_dependencies.py](tests/scripts/test_analyze_dependencies.py) — 8 tests
+  - Coverage areas: missing inputs, suggestion counts/averages, promotion to canonical (dedupe), task lookup (missing/not found/success), usage message dispatch
+
+### Results
+
+- **Tests**: +14 new
+- **Targeted Coverage**:
+  - export_roadmap.py: **94%** (66/70) — uncovered lines: 32, 38, 40, 112 (category branches/print tail)
+  - analyze_dependencies.py: **87%** (85/98) — uncovered lines: 50, 81, 134-147 (message/help branches)
+- **Total Coverage (all scripts)**: focused run only; targeted files substantially covered
+
+### Commands
+
+```bash
+# Phase 5b focused run with coverage on all scripts
+python -m pytest tests/scripts/test_export_roadmap.py tests/scripts/test_analyze_dependencies.py -v --cov=scripts --cov-report=term-missing --cov-report=json:coverage-phase5b.json
+```
+
+### Coverage Gaps (Future Work)
+
+- export_roadmap.py: remaining category branches and final print path
+- analyze_dependencies.py: CLI help branches and detailed rendering paths
+- To reach 20% overall: add ~150 covered statements (e.g., intake_scan.py, export_roadmap.py remaining branches, progress_tracker.py)
+
+---
+
 ## Part 7: Summary Table
 
 | Component | Location | Purpose | Tests |
