@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, asdict
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 @dataclass
@@ -53,7 +53,7 @@ class JSONDecomposer:
     def write_metadata(self, total_items: int, fragment_count: int) -> None:
         """Write metadata file."""
         self.metadata = DecompositionMetadata(
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             strategy=self.strategy_name(),
             source_file=self.source_file,
             total_items=total_items,

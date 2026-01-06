@@ -630,6 +630,47 @@ python -m pytest tests/scripts/test_export_roadmap.py tests/scripts/test_analyze
 
 ---
 
+## Part 6g: Python Test Suite (Phase 5c)
+
+### Goal
+
+Increase coverage by exercising roadmap progress tracking and intake scanning/reporting.
+
+### Target Scripts
+
+1. **progress_tracker.py** (65 statements) — Track roadmap step status and emit progress reports
+2. **intake_scan.py** (182 statements) — Scan intake/ markdown for roadmap IDs and generate coverage reports (JSON + Markdown)
+
+### Test Files Created
+
+- [tests/scripts/test_progress_tracker.py](tests/scripts/test_progress_tracker.py) — 4 tests
+  - Coverage areas: default state creation when missing, step updates and notes, summary math, report generation, `main()` writes outputs in CWD
+- [tests/scripts/test_intake_scan.py](tests/scripts/test_intake_scan.py) — 3 tests
+  - Coverage areas: canonical ID bootstrap, intake file classification (shard/candidate/substrate/formalized), coverage+unknown aggregation, report emission (JSON/MD), `main()` flow with patched paths
+
+### Results
+
+- **Tests**: +7 new (0 skipped)
+- **Targeted Coverage**:
+  - progress_tracker.py: **95%** (62/65) — uncovered: [scripts/progress_tracker.py](scripts/progress_tracker.py#L25-L26) (existing-state branch) and [scripts/progress_tracker.py](scripts/progress_tracker.py#L148) (`__main__` guard print tail)
+  - intake_scan.py: **92%** (167/182) — uncovered: [scripts/intake_scan.py](scripts/intake_scan.py#L172-L239) (Markdown rendering fallbacks/long-list paths) and [scripts/intake_scan.py](scripts/intake_scan.py#L286) (`__main__` guard)
+- **Total Coverage (all scripts)**: **29%** (full-suite run)
+
+### Commands
+
+```bash
+# Full suite with coverage
+python -m pytest tests/ -v --cov=scripts --cov-report=term-missing
+```
+
+### Coverage Gaps (Future Work)
+
+- progress_tracker.py: existing-state branch when state file already exists; `__main__` print tail
+- intake_scan.py: Markdown formatting branches (long lists, empty states), CLI guard
+- Remaining zero-coverage scripts are still the dominant gap (export_enriched_md.py, generate-badges.py, etc.)
+
+---
+
 ## Part 7: Summary Table
 
 | Component | Location | Purpose | Tests |

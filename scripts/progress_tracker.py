@@ -51,7 +51,7 @@ class ProgressTracker:
         if gp_id not in self.state['steps']:
             self.state['steps'][gp_id] = {
                 'created': datetime.now().isoformat(),
-                'status': 'not-started',
+                'status': 'not_started',
                 'notes': [],
                 'subtasks_completed': 0,
                 'subtasks_total': 5,
@@ -129,7 +129,7 @@ def main():
     # Sample initial state
     tracker.update_step('GP01', 'completed', 'Formal correction aligned', 5, 5)
     tracker.update_step('GP010', 'in_progress', 'Packaging strategy in progress', 3, 5)
-    tracker.update_step('GP02', 'not-started', 'Awaiting resources')
+    tracker.update_step('GP02', 'not_started', 'Awaiting resources')
     
     summary = tracker.get_progress_summary()
     
