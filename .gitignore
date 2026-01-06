@@ -95,6 +95,7 @@ combined.agda.txt
 .pytest_cache/
 .coverage
 coverage/
+coverage-*.json
 
 # Editor / aux
 .idea/
