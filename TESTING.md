@@ -530,6 +530,34 @@ Selected based on code size, architectural importance, and usage frequency:
 
 **Total: 9 scripts tested (17% of 54 scripts), 17.0% overall coverage**
 
+---
+
+## Part 6e: Python Test Suite (Phase 5a)
+
+### Goal
+
+Push toward 20% by covering two medium untested utilities: JSON roundtrip validation and Agda test reporting.
+
+### Target Scripts
+
+1. **validate_json_roundtrip.py** (50 statements) — Validate decompose → recompose semantic preservation
+2. **test_report.py** (73 statements) — Generate Agda test adapter/status report (JSON + Markdown)
+
+### Test Files Created
+
+- [tests/scripts/test_validate_json_roundtrip.py](tests/scripts/test_validate_json_roundtrip.py) — 16 tests
+  - Coverage areas: recursive value extraction, roundtrip validation (module/edge counts), JSON parse errors, missing files, empty graphs, edge reporting, CLI exit behavior (simulated)
+- [tests/scripts/test_test_report.py](tests/scripts/test_test_report.py) — 27 tests, 1 skipped (doc smoke)
+  - Coverage areas: regex patterns, file scan with patched ROOT, status assertions counting, summarize aggregation, AUDAX doc generation, output writing, CLI main with custom roots, integration pipeline
+
+### Results
+
+- **Tests**: +43 new (1 skipped)
+- **Targeted Coverage**:
+  - validate_json_roundtrip.py: **96%** (48/50) — uncovered lines: `__main__` exit branch
+  - test_report.py: **99%** (72/73) — uncovered line: `__main__` exit branch
+- **Total Coverage (all scripts)**: unchanged from 17.0% (Phase 3 baseline); Phase 5a was a focused run
+
 ### Commands
 
 ```bash
