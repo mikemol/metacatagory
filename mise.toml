@@ -1,0 +1,64 @@
+# Mise configuration for MetaCategory project
+# Manages tooling versions and environment setup
+
+[env]
+# Python environment activation
+VIRTUAL_ENV = "{env:HOME}/.venv"
+PYTHONPATH = "{root}/src:{root}/scripts"
+
+[tools]
+# Node.js for markdown tooling (remark, markdownlint, prettier)
+node = "20"
+
+# Python for scripts and utilities
+python = "3.11"
+
+# Go for building tools from source
+go = "1.23"
+
+# Note: act is built via the 'install-act' task below (via go install)
+
+[tasks]
+# Install act from Go source (GitHub Actions local runner)
+install-act = """
+set -euo pipefail
+echo "Installing act via go install..."
+go install github.com/nektos/act@latest
+act --version
+echo "✓ act installed successfully"
+"""
+
+# Quick checklist: syntax + formatting + basic tests
+check = """
+set -euo pipefail
+make md-lint
+make check
+"""
+
+# Full CI simulation locally
+ci = """
+set -euo pipefail
+make check
+make roadmap-validate-triangle
+make docs-all
+"""
+
+# Development mode: watch and rebuild
+dev = """
+set -euo pipefail
+echo "Starting development environment..."
+mise run check
+echo "Ready. Run 'make' for all targets or 'make check' for quick validation."
+"""
+
+# Help and discovery
+help = """
+echo "MetaCategory Mise Tasks:"
+echo "  mise run install-act - Build and install act from Go source"
+echo "  mise run check       - Quick syntax/format/test validation"
+echo "  mise run ci          - Full CI simulation (as in GitHub Actions)"
+echo "  mise run dev         - Setup and validate development environment"
+echo ""
+echo "Tools managed by Mise:"
+mise ls
+"""
