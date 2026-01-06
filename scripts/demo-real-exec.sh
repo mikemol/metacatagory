@@ -3,7 +3,7 @@
 # Purpose: Show real decomposition, recomposition, and validation
 # This version skips Agda compilation to show the actual data operations
 
-set -e
+set -euo pipefail
 
 WORKSPACE="/home/mikemol/github/metacatagory"
 BUILD_DIR="$WORKSPACE/build"

@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "id": "ITEM-001",
+      "title": "Implement error handling tests",
+      "status": "pending",
+      "priority": "high",
+      "depends_on": [],
+      "description": "Add comprehensive error path tests for validation scripts"
+    },
+    {
+      "id": "ITEM-002",
+      "title": "Add smoke tests",
+      "status": "pending",
+      "priority": "high",
+      "depends_on": [],
+      "description": "Basic validation that scripts can be imported and called"
+    },
+    {
+      "id": "ITEM-003",
+      "title": "Add edge case tests",
+      "status": "pending",
+      "priority": "medium",
+      "depends_on": ["ITEM-001", "ITEM-002"],
+      "description": "Test unicode, large files, deep nesting"
+    }
+  ]
+}

@@ -63,7 +63,7 @@ jobs:
       - name: Publish Markdown docs into docs/ (push only)
         if: github.event_name == 'push'
         run: |
-          set -e
+          set -euo pipefail
           make docs-publish
           if [ -n "$(git status --porcelain docs)" ]; then
             git config user.name "github-actions[bot]"

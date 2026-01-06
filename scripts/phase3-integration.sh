@@ -2,6 +2,8 @@
 # Phase 3C: Integration into Build System
 # Purpose: Add Phase 3 targets to Makefile and deployment pipeline
 
+set -euo pipefail
+
 WORKSPACE="/home/mikemol/github/metacatagory"
 
 echo "╔══════════════════════════════════════════════════════════════════════╗"

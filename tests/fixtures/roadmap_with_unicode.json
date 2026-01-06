@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "items": [
+    {
+      "id": "UNICODE-001",
+      "title": "café implementation",
+      "status": "完成",
+      "dependencies": [],
+      "description": "Test unicode: 🚀 emoji, 日本語, Ελληνικά, العربية"
+    }
+  ]
+}

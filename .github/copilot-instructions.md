@@ -494,3 +494,16 @@ This prevents 'undefined name' errors and ensures your code is future-proof and 
 > **Note:** Recursive review and onboarding must always reference the traceability protocol and recursive expansion sections above. When introducing new patterns or modules, or revisiting existing ones, ensure all changes are sourced, annotated, and cross-linked to the roadmap, architecture, and Agda nodes. Recursive revisiting is not optional; it is a core protocol for maintaining project coherence and synergy.
 
 * Architectural review and onboarding are recursive: revisit `ARCHITECTURE.md` and roadmap as new patterns and modules are introduced. Cross-reference major roadmap nodes in `Utility.agda` for context and traceability.
+
+## Local Workflow Execution
+
+> **Note:** GitHub Actions workflows can be executed locally using [act](https://github.com/nektos/act) for rapid iteration and testing before pushing to GitHub. Configuration is already in place via `.actrc`.
+
+* **Documentation**: See [.github/WORKFLOWS.md](.github/WORKFLOWS.md) for comprehensive workflow execution guide.
+* **Quick Commands**:
+  - `make act-list` – List all available jobs
+  - `make act-ci` – Run CI workflow locally
+  - `make act-lint` – Run markdown linting
+  - `make act-all` – Run all workflows
+* **VS Code Integration**: All workflows are available as tasks (Ctrl+Shift+P → Tasks: Run Task)
+* **Reference**: [.github/WORKFLOWS.md](.github/WORKFLOWS.md) includes configuration details, troubleshooting, and environment variable setup.

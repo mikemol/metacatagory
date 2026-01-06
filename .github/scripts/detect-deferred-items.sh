@@ -3,7 +3,7 @@
 # Scans codebase for deferred items (DeviationLog, postulates, TODOs, PLANNED)
 # and generates a report for GitHub Actions
 
-set -e
+set -euo pipefail
 
 OUTPUT_FILE="${1:-deferred-items.md}"
 SUMMARY_FILE="deferred-summary.json"

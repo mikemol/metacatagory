@@ -1,7 +1,7 @@
 #!/bin/bash
 # Demo script showcasing the metacatagory tooling and automation
 
-set -e
+set -euo pipefail
 
 echo "================================================"
 echo "Metacatagory Tooling & Automation Demo"
