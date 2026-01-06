@@ -671,6 +671,42 @@ python -m pytest tests/ -v --cov=scripts --cov-report=term-missing
 
 ---
 
+## Part 6h: Python Test Suite (Phase 5d)
+
+### Goal
+
+Break zero-coverage backlog by exercising enriched Markdown export.
+
+### Target Script
+
+1. **export_enriched_md.py** (186 statements) — Render canonical_enriched.json into Markdown digest with structured sections
+
+### Test Files Created
+
+- [tests/scripts/test_export_enriched_md.py](tests/scripts/test_export_enriched_md.py) — 3 tests
+  - Coverage areas: helper formatting (empty list/scope/evidence), missing-enriched guard, full Markdown export with categories, YAML frontmatter, dependencies/relations, evidence/provenance, status/complexity breakdowns
+
+### Results
+
+- **Tests**: +3 new (0 skipped)
+- **Targeted Coverage**:
+  - export_enriched_md.py: **99%** (184/186) — uncovered: [scripts/export_enriched_md.py](scripts/export_enriched_md.py#L197) (final print) and [scripts/export_enriched_md.py](scripts/export_enriched_md.py#L367) (`__main__` guard)
+- **Total Coverage (all scripts)**: **33%** after full-suite run
+
+### Commands
+
+```bash
+# Full suite with coverage
+python -m pytest tests/ -v --cov=scripts --cov-report=term-missing
+```
+
+### Coverage Gaps (Future Work)
+
+- Remaining zero-coverage scripts dominate the uncovered lines (generate-badges.py, export_canonical_md.py, export_meta_index.py, etc.)
+- export_enriched_md.py: print tail and `__main__` guard only
+
+---
+
 ## Part 7: Summary Table
 
 | Component | Location | Purpose | Tests |
