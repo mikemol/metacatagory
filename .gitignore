@@ -114,3 +114,6 @@ build/md/
 
 # Vale (if introduced later) local binary caches
 .vale/
+
+# Temporary shell timestamps
+.bashrc_timestamp
