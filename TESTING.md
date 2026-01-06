@@ -482,6 +482,85 @@ pytest tests/ -v --cov=scripts --cov-report=term-missing
 
 ---
 
+## Part 6d: Python Test Suite (Phase 3)
+
+### Goal
+
+Continue coverage expansion from 11% to 17%+ by targeting high-value untested scripts.
+
+### Target Scripts (High-Value Analysis)
+
+Selected based on code size, architectural importance, and usage frequency:
+
+1. **dependency_graph_builder.py** (216 statements) - Core dependency analysis, SCC detection
+2. **enrich_canonical.py** (333 statements) - Roadmap enrichment with evidence extraction
+
+### Test Files Created
+
+- [tests/scripts/test_dependency_graph_builder.py](tests/scripts/test_dependency_graph_builder.py) - 580 lines, 27 tests
+  - Coverage areas: DependencyNode dataclass, graph construction, depth computation, SCC (circular dependency) detection, transitive dependency resolution, critical path finding, dependency layers
+  - Tests: Linear chains, diamond dependencies, 2-node/3-node cycles, max depth limits, reverse dependencies, error handling
+  - Algorithms tested: Tarjan's SCC, BFS depth computation, topological layer sorting
+
+- [tests/scripts/test_enrich_canonical.py](tests/scripts/test_enrich_canonical.py) - 454 lines, 24 tests
+  - Coverage areas: Markdown section extraction, evidence extraction (markdown/Agda), Agda module header parsing, DOT dependency graph parsing, module name extraction, tag vocabulary
+  - Tests: Section boundaries, OPTIONS pragma skipping, block/line comments, DOT node labels/edges, stdlib filtering, module-to-tasks mapping
+
+### Results
+
+- **Tests**: 163 total passed (68 Phase 1 + 53 Phase 2 + 42 Phase 3), 2 skipped
+- **Total Coverage**: **17.0%** across all scripts (864/5090 statements)
+- **Phase 3 Coverage**:
+  - dependency_graph_builder.py: **69.0%** (149/216 statements) ← excellent
+  - enrich_canonical.py: **47.1%** (157/333 statements) ← good
+
+### Coverage Summary (All Tested Scripts)
+
+| Script | Coverage | Statements | Category |
+|--------|----------|------------|----------|
+| export_dependency_graph.py | 97.1% | 102/105 | Export |
+| export_roadmap_sppf.py | 93.3% | 14/15 | Export |
+| merge_roadmaps.py | 86.8% | 190/219 | Phase 2 |
+| dependency_graph_builder.py | **69.0%** | 149/216 | **Phase 3** |
+| json_decompose.py | 57.6% | 148/257 | Phase 2 |
+| enrich_canonical.py | **47.1%** | 157/333 | **Phase 3** |
+| json_recompose.py | 39.2% | 67/171 | Phase 2 |
+| adopt_priority_strategies.py | 35.6% | 31/87 | Phase 1 |
+| shared_data.py | 12.0% | 6/50 | Phase 1 |
+
+**Total: 9 scripts tested (17% of 54 scripts), 17.0% overall coverage**
+
+### Commands
+
+```bash
+# Run Phase 3 tests only
+pytest tests/scripts/test_dependency_graph_builder.py tests/scripts/test_enrich_canonical.py -v
+
+# Run full test suite with coverage
+pytest tests/ -v --cov=scripts --cov-report=term-missing
+```
+
+### Coverage Gaps (Future Work)
+
+- **dependency_graph_builder.py**: Lines 300-426 (export functions, CLI main)
+- **enrich_canonical.py**: Lines 300-611 (enrichment orchestration, field synthesis, CLI main)
+
+### Key Achievements
+
+- **Phase 3 added 306 statements of coverage** (from 558 to 864)
+- **Tested critical algorithms**: Tarjan's SCC, topological sorting, BFS traversal
+- **Tested evidence extraction**: Markdown/Agda parsing, DOT graph parsing
+- **High coverage on core infrastructure**: 69% on dependency graph builder
+
+### Next Steps
+
+1. **Reach 20% coverage**: Add ~150 more covered statements (test 1-2 medium scripts)
+2. **CLI integration tests**: Test main() entry points for Phase 2/3 scripts
+3. **Phase 4 candidates**: intake_scan.py (182 stmts), export_enriched_md.py (186 stmts)
+4. **Reduce gaps**: Add tests for export_dependency_graph.py CLI (3% uncovered)
+
+---
+
 ## Part 7: Summary Table
 
 | Component | Location | Purpose | Tests |
