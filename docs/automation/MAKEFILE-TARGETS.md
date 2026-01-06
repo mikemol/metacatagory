@@ -38,6 +38,15 @@
 | `makefile-validate` | Validate Makefile consistency |
 | `node-deps` | Install Node.js dependencies |
 | `deferred-items` | Scan for TODOs and FIXMEs (Agda FFI binary) |
+| `act-list` | List available GitHub Actions jobs (act) |
+| `act-ci` | Run CI workflow locally via act |
+| `act-lint` | Run markdown linting workflow locally via act |
+| `act-markdown-fix` | Run markdown auto-fix workflow locally via act |
+| `act-makefile-validate` | Run makefile validation workflow locally via act |
+| `act-roadmap-sync` | Run roadmap sync workflow locally via act |
+| `act-deferred` | Run deferred items workflow locally via act |
+| `act-badges` | Run badge update workflow locally via act |
+| `act-all` | Run all workflows locally via act |
 | `badges` | Generate status badges |
 | `priority-strategy-profiles` | Compile and run Agda priority orchestration (generate strategy profiles) |
 | `priority-badge-weights` | Normalize Agda strategy profiles into badge weights |

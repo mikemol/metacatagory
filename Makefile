@@ -21,7 +21,7 @@ PROFILE_LOG ?= $(PROFILE_DIR)/profile-$(PROFILE_RUN).jsonl
 
 # Common Agda compilation flags
 AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type
-.PHONY: regen-makefile python-build python-test python-verified roadmap-merge build/canonical_enriched.json roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched md-lint md-fix md-normalize docs-generate docs-modules docs-all docs-validate json-decompose json-recompose json-roundtrip-validate json-decompose-enriched json-recompose-enriched json-roundtrip-validate-enriched json-decompose-planning json-recompose-planning json-roundtrip-validate-planning intake-lint build/canonical_roadmap.json intake-scan makefile-validate node-deps deferred-items badges priority-strategy-profiles priority-badge-weights priority-profile-json priority-refresh roadmap-index planning-index-json planning-kernel roadmap-sync roadmap-sppf build/diagrams/agda-deps-full.dot roadmap-deps-graph dependency-graph-json all debt-check validate-constructive check agda-all
+.PHONY: regen-makefile python-build python-test python-verified roadmap-merge build/canonical_enriched.json roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched md-lint md-fix md-normalize docs-generate docs-modules docs-all docs-validate json-decompose json-recompose json-roundtrip-validate json-decompose-enriched json-recompose-enriched json-roundtrip-validate-enriched json-decompose-planning json-recompose-planning json-roundtrip-validate-planning intake-lint build/canonical_roadmap.json intake-scan makefile-validate node-deps deferred-items act-list act-ci act-lint act-markdown-fix act-makefile-validate act-roadmap-sync act-deferred act-badges act-all badges priority-strategy-profiles priority-badge-weights priority-profile-json priority-refresh roadmap-index planning-index-json planning-kernel roadmap-sync roadmap-sppf build/diagrams/agda-deps-full.dot roadmap-deps-graph dependency-graph-json all debt-check validate-constructive check agda-all
 # Regenerate the Makefile from Agda source (Self-Hosting)
 regen-makefile: build/diagrams/agda-deps-full.dot
 	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile
@@ -137,6 +137,33 @@ node-deps:
 # Scan for TODOs and FIXMEs (Agda FFI binary)
 deferred-items: 
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) --compile src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda && ./src/agda/DeferredItemsOrchestrationFFI); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "deferred-items" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# List available GitHub Actions jobs (act)
+act-list: 
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (act -l); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "act-list" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Run CI workflow locally via act
+act-ci: 
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (act -W .github/workflows/ci.yml); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "act-ci" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Run markdown linting workflow locally via act
+act-lint: 
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (act -W .github/workflows/markdown-lint.yml); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "act-lint" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Run markdown auto-fix workflow locally via act
+act-markdown-fix: 
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (act -W .github/workflows/markdown-auto-fix.yml); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "act-markdown-fix" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Run makefile validation workflow locally via act
+act-makefile-validate: 
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (act -W .github/workflows/makefile-validate.yml); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "act-makefile-validate" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Run roadmap sync workflow locally via act
+act-roadmap-sync: 
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (act -W .github/workflows/roadmap-sync.yml); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "act-roadmap-sync" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Run deferred items workflow locally via act
+act-deferred: 
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (act -W .github/workflows/deferred-items.yml); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "act-deferred" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Run badge update workflow locally via act
+act-badges: 
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (act -W .github/workflows/badge-update.yml); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "act-badges" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Run all workflows locally via act
+act-all: 
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (act); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "act-all" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Generate status badges
 badges: priority-badge-weights
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/generate-badges.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "badges" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
