@@ -422,6 +422,66 @@ agda src/agda/Tests/Plan/CIM/ProofTraceGenericTests.agda
 
 ---
 
+## Part 6c: Python Test Suite (Phase 2)
+
+### Goal
+
+Expand coverage from 79% (baseline) to 82%+ by targeting untested core pipeline scripts.
+
+### Target Scripts
+
+1. **json_decompose.py** (257 statements) — Hierarchical decomposition of dependency graphs
+2. **json_recompose.py** (171 statements) — Reconstruction of monolithic graphs from fragments
+3. **merge_roadmaps.py** (219 statements) — Multi-source roadmap merging with conflict resolution
+
+### Test Files Created
+
+- [tests/scripts/test_json_decompose.py](tests/scripts/test_json_decompose.py) — 365 lines, 15 tests
+  - Coverage areas: DecompositionMetadata, base decomposer class, DependencyGraphDecomposer strategy
+  - Tests: new/old format handling, layer creation, cycle detection, error handling, integration
+  
+- [tests/scripts/test_json_recompose.py](tests/scripts/test_json_recompose.py) — 324 lines, 19 tests
+  - Coverage areas: Fragment reading, data merging, layer/cycle reconstruction
+  - Tests: module hierarchy, index skipping, empty structures, malformed JSON, roundtrip validation
+  
+- [tests/scripts/test_merge_roadmaps.py](tests/scripts/test_merge_roadmaps.py) — 527 lines, 29 tests (2 skipped)
+  - Coverage areas: Title normalization, provenance tracking, multi-source loading, deduplication, merge-by-title, description backfill, export (JSON/Agda)
+  - Tests: GitHub tasks.json, ROADMAP.md parsing (partial), conflict resolution, ID preservation
+
+### Results
+
+- **Tests**: 121 total passed (68 Phase 1 + 53 Phase 2), 2 skipped
+- **Total Coverage**: 11.0% across all scripts (558/5090 statements)
+- **Phase 2 Coverage**:
+  - json_decompose.py: **57.6%** (148/257 statements)
+  - json_recompose.py: **39.2%** (67/171 statements)
+  - merge_roadmaps.py: **86.8%** (190/219 statements) ← *highest coverage*
+
+### Command
+
+```bash
+# Run Phase 2 tests only
+pytest tests/scripts/ -v --cov=scripts --cov-report=term-missing
+
+# Run full test suite with coverage
+pytest tests/ -v --cov=scripts --cov-report=term-missing
+```
+
+### Coverage Gaps (Future Work)
+
+- **json_decompose.py**: Lines 263-330 (stratification algorithms), 346-400 (cycle detection), 419-450 (CLI)
+- **json_recompose.py**: Lines 121-152 (layer recomposition), 164-195 (cycle handling), 254-297 (CLI)
+- **merge_roadmaps.py**: Lines 71-101 (normalize_title edge cases), 108-116 (Agda parsing), 120-173 (ROADMAP.md parsing — skipped in tests), 319-345 (legacy Agda), 393-418 (CLI)
+
+### Next Steps
+
+1. Add integration tests for full decompose → recompose roundtrip
+2. Implement parse_roadmap_md fully and unskip tests
+3. Test CLI entry points (`if __name__ == "__main__":` blocks)
+4. Target remaining 91% of untested scripts (49/54 scripts)
+
+---
+
 ## Part 7: Summary Table
 
 | Component | Location | Purpose | Tests |
