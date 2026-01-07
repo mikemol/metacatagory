@@ -1,7 +1,0 @@
-{
-  "name": "Data.Ord",
-  "imports": [],
-  "imported_by": [
-    "Plan.CIM.ModuleExporter"
-  ]
-}

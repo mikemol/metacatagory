@@ -1,7 +1,0 @@
-{
-  "name": "Examples.TechnicalDebtRegistry",
-  "imports": [
-    "Plan.CIM.RoadmapSPPF"
-  ],
-  "imported_by": []
-}

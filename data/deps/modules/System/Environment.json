@@ -1,7 +1,0 @@
-{
-  "name": "System.Environment",
-  "imports": [],
-  "imported_by": [
-    "Plan.CIM.MarkdownNormalize"
-  ]
-}

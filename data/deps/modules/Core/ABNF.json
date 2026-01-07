@@ -1,8 +1,0 @@
-{
-  "name": "Core.ABNF",
-  "imports": [
-    "Infrastructure.Universe",
-    "Infrastructure.Coherence.Path2"
-  ],
-  "imported_by": []
-}

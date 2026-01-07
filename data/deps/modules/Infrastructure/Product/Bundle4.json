@@ -1,7 +1,0 @@
-{
-  "name": "Infrastructure.Product.Bundle4",
-  "imports": [],
-  "imported_by": [
-    "Infrastructure.Index"
-  ]
-}

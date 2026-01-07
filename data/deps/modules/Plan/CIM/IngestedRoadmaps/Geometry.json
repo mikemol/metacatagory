@@ -1,9 +1,0 @@
-{
-  "name": "Plan.CIM.IngestedRoadmaps.Geometry",
-  "imports": [
-    "Plan.CIM.Utility"
-  ],
-  "imported_by": [
-    "Plan.CIM.IngestedRoadmaps"
-  ]
-}

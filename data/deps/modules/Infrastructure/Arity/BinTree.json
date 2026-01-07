@@ -1,9 +1,0 @@
-{
-  "name": "Infrastructure.Arity.BinTree",
-  "imports": [],
-  "imported_by": [
-    "Infrastructure.Axiom.Instances.PentagonAssociahedron",
-    "Infrastructure.Index",
-    "Infrastructure.Polytopes.Associahedron"
-  ]
-}

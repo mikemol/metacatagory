@@ -1,7 +1,0 @@
-{
-  "name": "Control.Monad",
-  "imports": [],
-  "imported_by": [
-    "Examples.RoadmapIssueSync"
-  ]
-}

@@ -1,7 +1,0 @@
-{
-  "name": "TechnicalDebt.PriorityOrchestrationFFI",
-  "imports": [
-    "TechnicalDebt.PriorityOrchestration"
-  ],
-  "imported_by": []
-}

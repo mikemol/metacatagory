@@ -1,7 +1,0 @@
-{
-  "name": "Examples.AgdaFileScanFFI",
-  "imports": [],
-  "imported_by": [
-    "Examples.ExporterMakefile"
-  ]
-}
