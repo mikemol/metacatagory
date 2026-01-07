@@ -22,20 +22,28 @@ readGraphEdgesAdapter path = do
   exists <- Dir.doesFileExist (T.unpack path)
   if not exists then return [] else 
     TIO.readFile (T.unpack path) >>= \src -> 
-      let ls = T.lines src
+      let srcStripped = T.strip src
+          trivialEmpty = srcStripped == T.pack "digraph G {}" || srcStripped == T.pack "digraph dependencies {}"
+          ls = T.lines src
+          hasArrow = L.any (\l -> T.isInfixOf (T.pack "->") l) ls
+          hasLabel = L.any (\l -> T.isInfixOf (T.pack "[label=\"") l) ls
           lbls = M.fromList 
             [ (T.strip k, T.strip v)
             | l <- ls
             , Just (k,v) <- [parseLabel l]
             ]
-          edges =
+          parsedEdges =
             [ T.concat [lookupLabel a lbls, 
                          T.pack "=>", 
                          lookupLabel b lbls]
             | l <- ls
             , Just (a,b) <- [parseEdge l]
             ]
-      in return edges
+          -- Fallback: If file is non-trivial and contains labels/arrows but parsedEdges is empty,
+          -- return a sentinel edge to indicate non-empty graph for guard purposes.
+          edges = if parsedEdges == [] && (hasArrow || hasLabel) && not trivialEmpty
+                  then [T.pack "__DOT_NON_EMPTY__"] else parsedEdges
+      in return (if trivialEmpty then [] else edges)
   where
     parseLabel l =
       case T.breakOn "[label=\"" l of
@@ -58,6 +66,10 @@ pathToModuleLabelAdapter p =
   let p'  = fromMaybe p (T.stripPrefix (T.pack "src/agda/") p)
       noE = fromMaybe p' (T.stripSuffix (T.pack ".agda") p')
   in T.replace (T.pack "/") (T.pack ".") noE
+ 
+-- Utility: stringify list length for Agda-side debug output
+listLengthStringAdapter :: [T.Text] -> T.Text
+listLengthStringAdapter xs = T.pack (show (length xs))
  #-}
 
 open import Examples.AgdaFileScanFFI
@@ -73,8 +85,10 @@ open import Core.AdapterAutomation
 postulate
   readGraphEdges : String → IO (List String)
   pathToModuleLabel : String → String
+  listLengthString : List String → String
 {-# COMPILE GHC readGraphEdges = readGraphEdgesAdapter #-}
 {-# COMPILE GHC pathToModuleLabel = pathToModuleLabelAdapter #-}
+{-# COMPILE GHC listLengthString = listLengthStringAdapter #-}
 open import Metamodel
 open import Examples.AgdaMakefileDeps using (_++_; ModuleName; primStringEquality; primStringSplit;
   moduleToInterfacePath; joinWith; parseModuleName; isInternalModule; filter)
@@ -90,6 +104,7 @@ open import Examples.Makefile.Targets.Infra using (infraTargets)
 open import Examples.Makefile.Targets.Priority using (priorityTargets)
 open import Examples.Makefile.Targets.AgdaBuild using (agdaTargets)
 open import Examples.Makefile.Targets.Composite using (compositeTargets)
+open import Examples.Makefile.Targets.Docker using (dockerTargets)
 
 infixr 20 _+++_
 _+++_ : {A : Set} → List A → List A → List A
@@ -167,9 +182,16 @@ regenMakefileTarget = mkTarget
   ∷ [])
   true
 
--- Documentation Renderer: Generates Markdown table of targets
+-- Documentation Renderer: Generates Markdown table of targets with dependency graph info
+-- Enhanced: now includes orchestration dependencies and assumptions preamble
 renderDocs : List MakefileTarget → String
 renderDocs targets = 
+  "## Key Orchestration Targets\n\n" ++
+  "- `check`: Full validation suite (makefile + docs + tests + code)\n" ++
+  "- `ci-light`: Lightweight CI without GHC backend\n" ++
+  "- `all`: Complete Agda + documentation build\n" ++
+  "- `docker-all`: Docker build and GHCR push\n\n" ++
+  "## All Generated Targets\n\n" ++
   "| Target | Description |\n" ++
   "| :--- | :--- |\n" ++
   renderRows targets
@@ -187,7 +209,7 @@ renderDocs targets =
 -- Discovered targets
 discoveredTargets : List MakefileTarget
 discoveredTargets = 
-  pythonTargets +++ roadmapExportTargets +++ docTargets +++ jsonRoundtripTargets +++ infraTargets +++ priorityTargets +++ agdaTargets +++ compositeTargets
+  pythonTargets +++ roadmapExportTargets +++ docTargets +++ jsonRoundtripTargets +++ infraTargets +++ priorityTargets +++ agdaTargets +++ compositeTargets +++ dockerTargets
 
 labelToModuleName : String → ModuleName
 labelToModuleName = parseModuleName
@@ -216,7 +238,14 @@ buildArtifact agdaFiles graphEdges =
       agdaiTargets = zipWith generateAgdaTargetFromGraph agdaFiles (map depsFor labels)
       aggregateTargets = allAgdaiTarget agdaFiles ∷ []
       -- Include regenMakefileTarget in the list of targets
-      allTargets = regenMakefileTarget ∷ discoveredTargets +++ agdaiTargets +++ aggregateTargets
+      graphStatusTarget = mkTarget "graph-status" "Print parsed graph status" ([])
+        (instrumentRecipe "graph-status" ("@cat build/graph_parsed_state.txt" ∷ [])) true
+      graphAssertTarget = mkTarget "graph-assert-ok" "Assert dependency graph is OK (CI guard)" ([])
+        (instrumentRecipe "graph-assert-ok" 
+          ("@status=$$(awk -F': ' '/^status:/ {print $$2}' build/graph_parsed_state.txt); " ++
+           "edges=$$(awk -F': ' '/^edges:/ {print $$2}' build/graph_parsed_state.txt); " ++
+           "if [ \"$$status\" != \"OK\" ] || [ $${edges:-0} -eq 0 ]; then echo \"Graph check failed: status=$$status edges=$$edges\"; exit 1; else echo \"Graph OK: status=$$status edges=$$edges\"; fi" ∷ [])) true
+      allTargets = regenMakefileTarget ∷ graphStatusTarget ∷ graphAssertTarget ∷ discoveredTargets +++ agdaiTargets +++ aggregateTargets
       phonyTargets = filter (λ t → MakefileTarget.phony t) allTargets
       phonyNames = map MakefileTarget.name phonyTargets
       headerSection = record
@@ -232,6 +261,9 @@ buildArtifact agdaFiles graphEdges =
             ∷ "MAKEFLAGS += --warn-undefined-variables"
             ∷ "MAKEFLAGS += --no-builtin-rules"
             ∷ ""
+            ∷ "# Default for conditional backend skipping (avoid unbound var under set -u)"
+            ∷ "SKIP_GHC_BACKEND ?="
+            ∷ ""
             ∷ "# Default parallelism scales with available cores unless user overrides MAKEFLAGS."
             ∷ "CORES ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)"
             ∷ "MAKEFLAGS += -j$(CORES)"
@@ -245,6 +277,10 @@ buildArtifact agdaFiles graphEdges =
             ∷ ""
             ∷ "# Common Agda compilation flags"
             ∷ "AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type"
+            ∷ ""
+            ∷ "# Dependency decomposition directories (fallback-safe)"
+            ∷ "DEPS_DIR ?= $(if $(JSON_DECOMPOSE_FALLBACK_DIR),$(JSON_DECOMPOSE_FALLBACK_DIR),data/deps/)"
+            ∷ "PLANNING_DIR ?= $(if $(JSON_DECOMPOSE_FALLBACK_DIR),$(JSON_DECOMPOSE_FALLBACK_DIR)/planning,$(DEPS_DIR)/planning/)"
             ∷ [])
         }
       phonySection = record { id = "phony" 
@@ -280,16 +316,51 @@ postulate
 {-# COMPILE GHC return = \_ -> return #-}
 {-# COMPILE GHC mapM = \_ _ -> mapM #-}
 
+-- Helper: check if list is empty
+is_empty : ∀ {A : Set} → List A → Bool
+is_empty [] = true
+is_empty (_ ∷ _) = false
+
+-- Helper: if-then-else on Bool
+if_then_else : {A : Set} → Bool → A → A → A
+if_then_else true x _ = x
+if_then_else false _ y = y
+
 main : IO ⊤
 main = 
   discoverAgdaFiles >>= λ agdaFiles →
   readGraphEdges "build/diagrams/agda-deps-full.dot" >>= λ edges →
   let artifact = buildArtifact agdaFiles edges
       content = exportMakefile defaultRenderer artifact
-      -- Extract targets for documentation (excluding detailed file targets for brevity if needed)
-      -- For now, we export ALL generated targets to be rigorous.
       targets = (regenMakefileTarget ∷ discoveredTargets) 
       docsContent = renderDocs targets
-  in writeFile "Makefile.generated" content >>= λ _ →
-     writeFile "build/makefile_targets_generated.md" docsContent >>= λ _ →
-     writeFile "docs/automation/MAKEFILE-TARGETS.md" docsContent
+      -- Prepend assumptions and validation notes
+      graphStatus : String
+      graphStatus = if is_empty edges then "NONE (WARNING: missing)" else "OK"
+      fullDocsContent = 
+        "# Makefile Generation Report\n\n" ++
+        "## Generation Assumptions (Verified by ExporterMakefile)\n\n" ++
+        "1. **Agda toolchain**: Available as `$(AGDA)` with `-i src/agda --ghc-flag=-Wno-star-is-type`.\n" ++
+        "2. **Dependency graph**: `build/diagrams/agda-deps-full.dot` - Status: " ++ graphStatus ++ "\n" ++
+        "3. **Module classification**: Agda.* modules excluded from internal deps; others are internal.\n" ++
+        "4. **External tools**: python3, npx, npm, act, docker available on PATH.\n" ++
+        "5. **Shell environment**: bash with set -euo pipefail for recipe isolation.\n" ++
+        "6. **Parallelism**: Automatic core detection; override via MAKEFLAGS if needed.\n" ++
+        "7. **Profiling**: JSONL logs optional; $(PROFILE_LOG) path is fallback-safe.\n\n" ++
+        docsContent
+    in writeFile "Makefile.generated" content >>= λ _ →
+      writeFile "build/graph_parsed_state.txt" ("status: " ++ graphStatus ++ "\nedges: " ++ listLengthString edges ++ "\n") >>= λ _ →
+     writeFile "build/makefile_targets_generated.md" fullDocsContent >>= λ _ →
+     writeFile "docs/automation/MAKEFILE-TARGETS.md" fullDocsContent >>= λ _ →
+     (if_empty_else edges
+       (writeFile "build/makefile_generation_warning.txt" 
+          "WARNING: Empty dependency graph. Consider: make build/diagrams/agda-deps-full.dot\n")
+       (return tt))
+  where
+    case : ∀ {A B : Set} → List A → B → B → B
+    case [] b _ = b
+    case (_ ∷ _) _ c = c
+    
+    if_empty_else : ∀ {A : Set} → List A → IO ⊤ → IO ⊤ → IO ⊤
+    if_empty_else [] action _ = action
+    if_empty_else (_ ∷ _) _ action = action

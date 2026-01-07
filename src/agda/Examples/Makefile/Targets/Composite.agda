@@ -18,6 +18,10 @@ compositeTargets =
         "roadmap-deps-graph" ∷ "roadmap-enrich" ∷ "roadmap-all-enriched" ∷
         "intake-scan" ∷ "md-normalize" ∷ "badges" ∷ [])
     ("@echo \"✓ Constructive validation complete\"" ∷ [])
-  ∷ generatorToTarget "check" "Run all validation checks" ("makefile-validate" ∷ "md-lint" ∷ "roadmap-validate-triangle" ∷ "docs-validate" ∷ "python-verified" ∷ "debt-check" ∷ "json-roundtrip-validate" ∷ "json-roundtrip-validate-enriched" ∷ "json-roundtrip-validate-planning" ∷ "all" ∷ [])
+  ∷ generatorToTarget "check" "Run all validation checks" ("graph-assert-ok" ∷ "makefile-validate" ∷ "md-lint" ∷ "roadmap-validate-triangle" ∷ "docs-validate" ∷ "python-verified" ∷ "debt-check" ∷ "json-roundtrip-validate" ∷ "json-roundtrip-validate-enriched" ∷ "json-roundtrip-validate-planning" ∷ "all" ∷ [])
     ("@echo \"check complete\"" ∷ [])
+  ∷ generatorToTarget "ci-light" "Lightweight CI target (no GHC backend)" ("graph-assert-ok" ∷ "makefile-validate" ∷ "md-lint" ∷ "docs-validate" ∷ "json-roundtrip-validate-light" ∷ "json-roundtrip-validate-enriched" ∷ "json-roundtrip-validate-planning" ∷ [])
+    ("@echo \"ci-light complete\"" ∷ [])
+  ∷ generatorToTarget "ci-preflight" "Fast guard: graph + makefile docs" ("graph-assert-ok" ∷ "makefile-validate" ∷ [])
+    ("@echo \"ci-preflight complete\"" ∷ [])
   ∷ []
