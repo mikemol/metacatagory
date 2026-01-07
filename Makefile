@@ -11,6 +11,10 @@ MAKEFLAGS += --no-builtin-rules
 # Default for conditional backend skipping (avoid unbound var under set -u)
 SKIP_GHC_BACKEND ?=
 
+# Optional override for decomposed JSON staging (kept empty by default to silence
+# warn-undefined when not provided).
+JSON_DECOMPOSE_FALLBACK_DIR ?=
+
 # Default parallelism scales with available cores unless user overrides MAKEFLAGS.
 CORES ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
 MAKEFLAGS += -j$(CORES)
@@ -29,15 +33,17 @@ AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type
 DEPS_DIR ?= $(if $(JSON_DECOMPOSE_FALLBACK_DIR),$(JSON_DECOMPOSE_FALLBACK_DIR),data/deps/)
 PLANNING_DIR ?= $(if $(JSON_DECOMPOSE_FALLBACK_DIR),$(JSON_DECOMPOSE_FALLBACK_DIR)/planning,$(DEPS_DIR)/planning/)
 .PHONY: regen-makefile graph-status graph-assert-ok python-build python-test python-verified roadmap-merge build/canonical_enriched.json roadmap-enrich roadmap-export-json roadmap-export-md roadmap-export-enriched roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-sppf-export roadmap-all-enriched md-lint md-fix md-normalize docs-generate docs-modules docs-all docs-validate json-decompose json-decompose-prebuilt json-recompose json-recompose-light json-roundtrip-validate json-roundtrip-validate-light json-decompose-enriched json-recompose-enriched json-roundtrip-validate-enriched json-decompose-planning json-recompose-planning json-roundtrip-validate-planning intake-lint build/canonical_roadmap.json intake-scan makefile-validate node-deps deferred-items act-list act-ci act-lint act-markdown-fix act-makefile-validate act-roadmap-sync act-deferred act-badges act-all badges priority-strategy-profiles priority-badge-weights priority-profile-json priority-refresh roadmap-index planning-index-json planning-kernel roadmap-sync roadmap-sppf build/diagrams/agda-deps-full.dot roadmap-deps-graph dependency-graph-json all debt-check validate-constructive check ci-light ci-preflight docker-rootless-status docker-build docker-build-ghcr docker-push-ghcr docker-all agda-all
-# Regenerate the Makefile from Agda source (Self-Hosting)
-regen-makefile: build/diagrams/agda-deps-full.dot
-	$(AGDA) $(AGDA_FLAGS) --compile src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile
+# Generate both Makefile and graph parse state from Agda source (both produced by single invocation)
+Makefile.generated build/graph_parsed_state.txt: build/diagrams/agda-deps-full.dot
+	@mkdir -p $(PROFILE_DIR) build; start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) --compile src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "makefile-generation" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+# Regenerate the Makefile from Agda source (Self-Hosting phony entry point)
+regen-makefile: Makefile.generated
 	cp Makefile.generated Makefile
 # Print parsed graph status
-graph-status: 
+graph-status: build/graph_parsed_state.txt
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (cat build/graph_parsed_state.txt); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "graph-status" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Assert dependency graph is OK (CI guard)
-graph-assert-ok: 
+graph-assert-ok: build/graph_parsed_state.txt
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (status=$$(awk -F': ' '/^status:/ {print $$2}' build/graph_parsed_state.txt); edges=$$(awk -F': ' '/^edges:/ {print $$2}' build/graph_parsed_state.txt); if [ "$$status" != "OK" ] || [ $${edges:-0} -eq 0 ]; then echo "Graph check failed: status=$$status edges=$$edges"; exit 1; else echo "Graph OK: status=$$status edges=$$edges"; fi); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "graph-assert-ok" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Prepare Python artifacts (interpreted; placeholder for future bytecode/vendor steps)
 python-build: 
@@ -206,7 +212,7 @@ roadmap-index: src/agda/Plan/CIM/RoadmapIndex.agdai
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapIndex.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-index" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Export planning index to JSON
 planning-index-json: src/agda/Plan/CIM/PlanningExport.agdai
-	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (if [ -n "$$SKIP_GHC_BACKEND" ]; then echo "skip planning-index-json (SKIP_GHC_BACKEND)"; else mkdir -p build && $(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/PlanningExport.agda && ./src/agda/PlanningExport; fi); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "planning-index-json" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (if [ -n "$${SKIP_GHC_BACKEND:-}" ]; then echo "skip planning-index-json (SKIP_GHC_BACKEND)"; else mkdir -p build && $(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/PlanningExport.agda && ./src/agda/PlanningExport; fi); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "planning-index-json" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Compile Planning Kernel
 planning-kernel: src/agda/Plan/CIM/PlanningKernel.agdai
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/PlanningKernel.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "planning-kernel" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
@@ -218,13 +224,13 @@ roadmap-sppf: src/agda/Plan/CIM/RoadmapSPPF.agdai
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); ($(AGDA) $(AGDA_FLAGS) src/agda/Plan/CIM/RoadmapSPPF.agda); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-sppf" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Generate dependency graph
 build/diagrams/agda-deps-full.dot: 
-	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (if [ -n "$$SKIP_GHC_BACKEND" ]; then mkdir -p build/diagrams && echo "digraph G {}" > build/diagrams/agda-deps-full.dot; else mkdir -p build/diagrams && $(AGDA) --dependency-graph=build/diagrams/agda-deps-full.dot $(AGDA_FLAGS) src/agda/Tests/Index.agda 2>&1 | (grep -E "(Checking|Error)" || true) | head -20; fi); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "build/diagrams/agda-deps-full.dot" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (if [ -n "$${SKIP_GHC_BACKEND:-}" ]; then mkdir -p build/diagrams && echo "digraph G {}" > build/diagrams/agda-deps-full.dot; else mkdir -p build/diagrams && $(AGDA) --dependency-graph=build/diagrams/agda-deps-full.dot $(AGDA_FLAGS) src/agda/Tests/Index.agda 2>&1 | (grep -E "(Checking|Error)" || true) | head -20; fi); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "build/diagrams/agda-deps-full.dot" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Generate dependency graph
 roadmap-deps-graph: build/diagrams/agda-deps-full.dot
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "agda dependency graph generated"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "roadmap-deps-graph" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Export dependency graph JSON via Agda (from agda-deps-full.dot)
 dependency-graph-json: build/diagrams/agda-deps-full.dot
-	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (if [ -n "$$SKIP_GHC_BACKEND" ]; then echo "skip dependency-graph-json (SKIP_GHC_BACKEND)"; else mkdir -p build && $(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/DependencyGraphExport.agda && ./src/agda/DependencyGraphExport; fi); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "dependency-graph-json" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (if [ -n "$${SKIP_GHC_BACKEND:-}" ]; then echo "skip dependency-graph-json (SKIP_GHC_BACKEND)"; else mkdir -p build && $(AGDA) $(AGDA_FLAGS) --compile src/agda/Plan/CIM/DependencyGraphExport.agda && ./src/agda/DependencyGraphExport; fi); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "dependency-graph-json" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Build all code and documentation
 all: agda-all docs-all
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (echo "all complete"); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "all" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
