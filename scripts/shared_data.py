@@ -69,20 +69,30 @@ def load_roadmap_markdown() -> Tuple[List[str], List[Dict[str, Any]]]:
             except yaml.YAMLError:
                 pass  # Skip malformed blocks
     else:
-        # Minimal fallback: parse key: value lines
+        # Robust fallback: parse key: value lines and strip quotes
+        # Handles simple scalar fields like id/title/status/category
         for yaml_block in yaml_blocks:
             entry: Dict[str, Any] = {}
             for line in yaml_block.splitlines():
                 if ":" in line:
                     key, value = line.split(":", 1)
-                    entry[key.strip()] = value.strip()
+                    key = key.strip()
+                    value = value.strip()
+                    # Strip wrapping quotes from keys/values
+                    if key.startswith('"') and key.endswith('"'):
+                        key = key[1:-1]
+                    if value.startswith('"') and value.endswith('"'):
+                        value = value[1:-1]
+                    # Basic list handling for '- item' lines is out of scope here;
+                    # we only need scalar fields (e.g., 'id') for validation.
+                    entry[key] = value
             if entry:
                 frontmatter_items.append(entry)
     
     # Extract IDs from frontmatter and text fallback
     ids = set()
     for item in frontmatter_items:
-        if 'id' in item:
+        if 'id' in item and isinstance(item['id'], str):
             ids.add(item['id'])
     
     for match in re.finditer(r'\[([A-Z]+-\d+)\]', content):

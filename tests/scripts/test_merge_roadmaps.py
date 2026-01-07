@@ -18,18 +18,22 @@ from pathlib import Path
 
 # Import the module under test
 import sys
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts"))
+scripts_dir = Path(__file__).parent.parent.parent / "scripts"
+sys.path.insert(0, str(scripts_dir))
 from merge_roadmaps import (
-    normalize_title,
-    ensure_provenance,
     load_tasks_json,
     parse_roadmap_md,
-    deduplicate_by_id,
     merge_by_title,
     backfill_descriptions,
     build_description,
     export_to_json,
     export_to_agda
+)
+# Import shared utilities that were refactored out
+from shared.normalization import (
+    normalize_title,
+    ensure_provenance,
+    deduplicate_items_by_id as deduplicate_by_id  # Alias for backward compatibility
 )
 
 

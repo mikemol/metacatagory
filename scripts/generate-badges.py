@@ -9,7 +9,7 @@ import json
 import sys
 import re
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any, Iterable, List, Tuple
 
 # Constants controlling repository scan behavior
@@ -419,7 +419,7 @@ def generate_build_badge() -> Dict[str, Any]:
     return {
         "schemaVersion": 1,
         "label": "last updated",
-        "message": datetime.utcnow().strftime("%Y-%m-%d"),
+        "message": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "color": "informational",
     }
 
@@ -459,7 +459,7 @@ def main():
                     history = data
         except Exception:
             history = []
-    today = datetime.utcnow().strftime("%Y-%m-%d")
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     last_entry_date = history[-1]["date"] if history else None
     current_weighted = deferred.get("weighted_total", 0)
 
@@ -526,7 +526,7 @@ def main():
     
     # Write manifest file listing all badges
     manifest = {
-        "generated": datetime.utcnow().isoformat() + "Z",
+        "generated": datetime.now(timezone.utc).isoformat(),
         "badges": list(all_badges.keys())
     }
     manifest_file = output_dir / 'manifest.json'
@@ -569,7 +569,7 @@ def main():
     lines = [
         "# Top Technical Debt Offenders (Weighted)",
         "",
-        f"Generated: {datetime.utcnow().isoformat()}Z",
+        f"Generated: {datetime.now(timezone.utc).isoformat()}",
         "",
         "| Rank | File | P | TODO | FIXME | DEV | Raw | Wtd |",
         "|------|------|---|------|-------|-----|-----|-----|",

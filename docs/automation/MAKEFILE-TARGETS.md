@@ -1,3 +1,24 @@
+# Makefile Generation Report
+
+## Generation Assumptions (Verified by ExporterMakefile)
+
+1. **Agda toolchain**: Available as `$(AGDA)` with `-i src/agda --ghc-flag=-Wno-star-is-type`.
+2. **Dependency graph**: `build/diagrams/agda-deps-full.dot` - Status: OK
+3. **Module classification**: Agda.* modules excluded from internal deps; others are internal.
+4. **External tools**: python3, npx, npm, act, docker available on PATH.
+5. **Shell environment**: bash with set -euo pipefail for recipe isolation.
+6. **Parallelism**: Automatic core detection; override via MAKEFLAGS if needed.
+7. **Profiling**: JSONL logs optional; $(PROFILE_LOG) path is fallback-safe.
+
+## Key Orchestration Targets
+
+- `check`: Full validation suite (makefile + docs + tests + code)
+- `ci-light`: Lightweight CI without GHC backend
+- `all`: Complete Agda + documentation build
+- `docker-all`: Docker build and GHCR push
+
+## All Generated Targets
+
 | Target | Description |
 | :--- | :--- |
 | `regen-makefile` | Regenerate the Makefile from Agda source (Self-Hosting) |
@@ -24,8 +45,11 @@
 | `docs-all` | Generate documentation (markdown only) |
 | `docs-validate` | Validate documentation integrity |
 | `json-decompose` | Decompose monolithic JSON to hierarchical structure |
+| `json-decompose-prebuilt` | Decompose monolithic JSON using prebuilt inputs |
 | `json-recompose` | Recompose hierarchical JSON back to monolithic form |
+| `json-recompose-light` | Recompose hierarchical JSON (prebuilt, fallback-safe) |
 | `json-roundtrip-validate` | Validate JSON decomposition roundtrip |
+| `json-roundtrip-validate-light` | Validate JSON decomposition roundtrip (light) |
 | `json-decompose-enriched` | Decompose canonical_enriched.json into item hierarchy |
 | `json-recompose-enriched` | Recompose enriched items into canonical_enriched.json |
 | `json-roundtrip-validate-enriched` | Validate enriched roundtrip |
@@ -64,3 +88,10 @@
 | `debt-check` | Run debt tracking validation |
 | `validate-constructive` | Run all constructive build targets |
 | `check` | Run all validation checks |
+| `ci-light` | Lightweight CI target (no GHC backend) |
+| `ci-preflight` | Fast guard: graph + makefile docs |
+| `docker-rootless-status` | Check rootless Docker daemon status |
+| `docker-build` | Build Docker image (metacatagory:dev) |
+| `docker-build-ghcr` | Build and tag image for GHCR (requires GHCR_REGISTRY and GHCR_USERNAME env vars) |
+| `docker-push-ghcr` | Push image to GHCR (requires docker login; set GHCR_REGISTRY and GHCR_USERNAME) |
+| `docker-all` | Build and push to GHCR (full pipeline) |

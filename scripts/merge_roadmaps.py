@@ -13,24 +13,21 @@ import re
 from pathlib import Path
 from typing import List, Dict
 
+# Import shared utilities
+from shared.io import load_json, save_json
+from shared.paths import REPO_ROOT, BUILD_DIR, DOCLINT_ROADMAP_JSON, CANONICAL_ROADMAP_JSON
+from shared.normalization import (
+    normalize_title,
+    ensure_provenance,
+    deduplicate_items_by_id,
+    ensure_item_fields
+)
+
 # --- Helpers --------------------------------------------------------------
-
-def normalize_title(title: str) -> str:
-    return re.sub(r"\W+", " ", title).strip().lower()
-
-def ensure_provenance(item: Dict) -> None:
-    """Ensure each item carries at least one provenance marker."""
-    src = item.get("source", "")
-    item.setdefault("provenance", [])
-    if not item["provenance"]:
-        item["provenance"] = [f"{item.get('id','')}|{src}"]
 
 def load_tasks_json(path: Path) -> List[Dict]:
     """Load tasks.json as RoadmapItems."""
-    if not path.exists():
-        return []
-    with open(path) as f:
-        tasks = json.load(f)
+    tasks = load_json(path, default=[])
     
     items = []
     for task in tasks:
@@ -105,11 +102,7 @@ def parse_roadmap_md(path: Path) -> List[Dict]:
 
 def load_doclint_json(base_path: Path) -> List[Dict]:
     """Load doclint results (already shaped as RoadmapItems)."""
-    path = base_path / "build" / "doclint_roadmap.json"
-    if not path.exists():
-        return []
-    with open(path) as f:
-        items = json.load(f)
+    items = load_json(DOCLINT_ROADMAP_JSON, default=[])
     for item in items:
         item.setdefault("category", "Quality/DocLint")
         ensure_provenance(item)
@@ -207,27 +200,6 @@ def parse_legacy_agda(base_path: Path) -> List[Dict]:
             items.append(item)
     
     return items
-
-def deduplicate_by_id(items: List[Dict]) -> List[Dict]:
-    """Deduplicate items by ID, merging dependsOn and related lists."""
-    seen: Dict[str, Dict] = {}
-    
-    for item in items:
-        item_id = item["id"]
-        if item_id in seen:
-            # Merge dependencies and related
-            existing = seen[item_id]
-            existing["dependsOn"] = list(set(existing["dependsOn"] + item["dependsOn"]))
-            existing["related"] = list(set(existing["related"] + item["related"]))
-            existing["tags"] = list(set(existing["tags"] + item["tags"]))
-            # Prefer non-empty values
-            for key in ["title", "status", "category", "source"]:
-                if not existing[key] and item[key]:
-                    existing[key] = item[key]
-        else:
-            seen[item_id] = item
-    
-    return list(seen.values())
 
 def merge_by_title(items: List[Dict]) -> List[Dict]:
     """Merge duplicates that share the same normalized title, preserving provenance.
@@ -336,8 +308,8 @@ def merge_all_sources(base_path: Path) -> List[Dict]:
     
     print(f"Total items before deduplication: {len(all_items)}")
     
-    # Deduplicate
-    merged = deduplicate_by_id(all_items)
+    # Deduplicate using shared utilities
+    merged = deduplicate_items_by_id(all_items)
     merged = merge_by_title(merged)
     merged = backfill_descriptions(merged)
     print(f"Total items after deduplication: {len(merged)}")
@@ -346,9 +318,7 @@ def merge_all_sources(base_path: Path) -> List[Dict]:
 
 def export_to_json(items: List[Dict], output_path: Path):
     """Export canonical list to JSON."""
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, 'w') as f:
-        json.dump(items, f, indent=2)
+    save_json(output_path, items, indent=2)
     print(f"Exported {len(items)} items to {output_path}")
 
 def export_to_agda(items: List[Dict], output_path: Path):
@@ -401,16 +371,14 @@ def export_to_agda(items: List[Dict], output_path: Path):
     print(f"Exported {len(items)} items to {output_path}")
 
 if __name__ == "__main__":
-    base = Path(__file__).resolve().parent.parent
-    
     # Merge all sources
-    canonical = merge_all_sources(base)
+    canonical = merge_all_sources(REPO_ROOT)
     
     # Export to JSON (intermediate format)
-    export_to_json(canonical, base / "build/canonical_roadmap.json")
+    export_to_json(canonical, CANONICAL_ROADMAP_JSON)
     
     # Export to Agda syntax
-    export_to_agda(canonical, base / "build/canonical_roadmap.agda")
+    export_to_agda(canonical, BUILD_DIR / "canonical_roadmap.agda")
     
     print("\n✓ Merge complete. Next steps:")
     print("  1. Review build/canonical_roadmap.json")

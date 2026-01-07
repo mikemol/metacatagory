@@ -1,15 +1,33 @@
 #!/usr/bin/env python3
-"""Export unified planning index to ROADMAP.md format.
+"""Export unified planning index to ROADMAP.md format (composition-based).
 
-Uses shared modules for composability:
-- shared_data: load_planning_index()
-- shared_yaml: dump_yaml()
+Showcases full integration of shared components:
+- StructuredLogger for progress tracking and context
+- ValidatedProvenance for lineage tracking
+- RecoveryPipeline for retry semantics and error handling
+- Validation for schema checks
+- MarkdownBuilder for programmatic document construction
 """
 
 from pathlib import Path
+import sys
 from collections import defaultdict
-from shared_data import load_planning_index, REPO_ROOT
-from shared_yaml import dump_yaml
+from typing import Any
+
+# Ensure repository root is importable as a package (scripts.*)
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from scripts.shared.paths import REPO_ROOT, PLANNING_INDEX_JSON, ROADMAP_MD
+from scripts.shared.io import load_json, save_markdown
+from scripts.shared.logging import StructuredLogger, configure_logging
+from scripts.shared.validation import ValidationResult, string_validator
+from scripts.shared.validated_provenance import ValidatedProvenance
+from scripts.shared.recovery_pipeline import RecoveryPipeline, RecoveryStrategy
+from scripts.shared.pipelines import Phase, PhaseResult, PhaseStatus
+from scripts.shared.markdown import MarkdownBuilder
+from scripts.shared_yaml import dump_yaml
 
 HEADER = """# Metacatagory Development Roadmap
 
@@ -41,73 +59,260 @@ This document is a projection from the planning kernel. To update:
 
 """
 
-def export_markdown(output_path: Path):
-    """Export planning index to ROADMAP.md."""
-    canonical = load_planning_index()
-    
-    lines = [HEADER.strip(), ""]
-    
-    # Group by category
-    by_category = defaultdict(list)
-    for item in canonical:
-        by_category[item["category"]].append(item)
-    
-    # Render each category
-    for category in sorted(by_category.keys()):
-        items = by_category[category]
-        lines.append(f"## {category}")
-        lines.append("")
-        
-        for item in items:
-            # Build frontmatter metadata
-            frontmatter = {
-                'id': item['id'],
-                'title': item['title'],
-                'description': item['description'],
-                'status': item['status'],
-                'category': item['category']
-            }
-            
-            if item['dependsOn']:
-                frontmatter['dependencies'] = item['dependsOn']
-            
-            if item['tags']:
-                frontmatter['tags'] = item['tags']
-            
-            if item['files']:
-                frontmatter['files'] = item['files']
-            
-            # Generate YAML frontmatter block
-            yaml_str = dump_yaml(frontmatter)
-            lines.append("```yaml")
-            lines.append(yaml_str.rstrip())
-            lines.append("```")
-            lines.append("")
-            
-            # Format: * **Title** — Description [status: X]
-            lines.append(f"- **{item['title']}** — {item['description']} [status: {item['status']}]")
 
-            if item['source']:
-                lines.append(f"  Source: {item['source']}")
+class LoadPlanningIndexPhase(Phase[Path, list[dict]]):
+    """Phase: Load and validate planning index JSON."""
+    
+    def __init__(self, logger: StructuredLogger):
+        super().__init__("load_planning_index", "Load planning index JSON")
+        self.logger = logger
+
+    def transform(self, input_data: Path, context: dict[str, Any]) -> list[dict]:
+        self.logger.info("Loading planning index", input_file=str(input_data))
+        data = load_json(input_data, required=True)
+        
+        if isinstance(data, list):
+            items = data
+        elif isinstance(data, dict):
+            items = data.get("items", [])
+        else:
+            raise ValueError(f"Unexpected JSON shape in {input_data}")
+        
+        self.logger.info("Loaded planning items", count=len(items))
+        context['item_count'] = len(items)
+        return items
+
+
+class ValidatePlanningItemsPhase(Phase[list[dict], list[dict]]):
+    """Phase: Validate planning items schema."""
+    
+    def __init__(self, logger: StructuredLogger, provenance: ValidatedProvenance):
+        super().__init__("validate_items", "Validate item schemas")
+        self.logger = logger
+        self.provenance = provenance
+
+    def transform(self, input_data: list[dict], context: dict[str, Any]) -> list[dict]:
+        validate_string = string_validator(non_empty=True)
+        valid_items = []
+        
+        for idx, item in enumerate(input_data):
+            result = ValidationResult()
             
-            if item['files']:
-                files_str = ', '.join(f"`{f}`" for f in item['files'])
-                lines.append(f"  Target: {files_str}")
+            # Required fields
+            required_fields = ['id', 'title', 'description', 'status', 'category']
+            for field in required_fields:
+                if field not in item:
+                    result.add_error(field, "required field missing", None, f"Item at index {idx}")
             
-            if item['tags']:
-                tags_str = ', '.join(item['tags'])
-                lines.append(f"  Tags: {tags_str}")
+            # Type checks for string fields
+            for field in ['id', 'title', 'description', 'status', 'category']:
+                if field in item:
+                    field_result = validate_string(item[field], field)
+                    result.merge(field_result)
             
-            if item['dependsOn']:
-                deps_str = ', '.join(f"`{d}`" for d in item['dependsOn'])
-                lines.append(f"  Depends on: {deps_str}")
-            
+            if result.is_valid():
+                # Add validated record to provenance
+                item_id = item.get('id', f'item_{idx}')
+                self.provenance.add_validated_record(
+                    artifact_id=item_id,
+                    record={
+                        'source_type': 'ingestion',
+                        'source_id': str(PLANNING_INDEX_JSON),
+                        'source_location': f'item[{idx}]',
+                        'metadata': {'category': item.get('category')}
+                    }
+                )
+                valid_items.append(item)
+            else:
+                self.logger.warning("Skipping invalid item", item_index=idx, errors=[str(e) for e in result.errors[:3]])
+        
+        self.logger.progress(
+            "Validated planning items",
+            current=len(valid_items),
+            total=len(input_data),
+            succeeded=len(valid_items),
+            failed=len(input_data) - len(valid_items)
+        )
+        
+        context['valid_count'] = len(valid_items)
+        context['invalid_count'] = len(input_data) - len(valid_items)
+        return valid_items
+
+
+class BuildMarkdownPhase(Phase[list[dict], str]):
+    """Phase: Build markdown content from planning items."""
+    
+    def __init__(self, logger: StructuredLogger):
+        super().__init__("build_markdown", "Generate markdown content")
+        self.logger = logger
+
+    def transform(self, input_data: list[dict], context: dict[str, Any]) -> str:
+        lines: list[str] = [HEADER.strip(), ""]
+        
+        # Group by category
+        by_category: dict[str, list[dict]] = defaultdict(list)
+        for item in input_data:
+            by_category[item.get("category", "Uncategorized")].append(item)
+        
+        categories_processed = 0
+        items_processed = 0
+        
+        # Render each category
+        for category in sorted(by_category.keys()):
+            items = by_category[category]
+            lines.append(f"## {category}")
             lines.append("")
+            
+            for item in items:
+                # Build frontmatter metadata
+                frontmatter = {
+                    'id': item.get('id'),
+                    'title': item.get('title'),
+                    'description': item.get('description'),
+                    'status': item.get('status'),
+                    'category': item.get('category'),
+                }
+                
+                if item.get('dependsOn'):
+                    frontmatter['dependencies'] = item['dependsOn']
+                
+                if item.get('tags'):
+                    frontmatter['tags'] = item['tags']
+                
+                if item.get('files'):
+                    frontmatter['files'] = item['files']
+                
+                # Generate YAML frontmatter block
+                yaml_str = dump_yaml(frontmatter)
+                lines.append("```yaml")
+                lines.append(yaml_str.rstrip())
+                lines.append("```")
+                lines.append("")
+                
+                # Format: * **Title** — Description [status: X]
+                title = item.get('title', '')
+                desc = item.get('description', '')
+                status = item.get('status', '')
+                lines.append(f"- **{title}** — {desc} [status: {status}]")
+                
+                if item.get('source'):
+                    lines.append(f"  Source: {item['source']}")
+                
+                if item.get('files'):
+                    files_str = ', '.join(f"`{f}`" for f in item['files'])
+                    lines.append(f"  Target: {files_str}")
+                
+                if item.get('tags'):
+                    tags_str = ', '.join(item['tags'])
+                    lines.append(f"  Tags: {tags_str}")
+                
+                if item.get('dependsOn'):
+                    deps_str = ', '.join(f"`{d}`" for d in item['dependsOn'])
+                    lines.append(f"  Depends on: {deps_str}")
+                
+                lines.append("")
+                items_processed += 1
+            
+            categories_processed += 1
+        
+        self.logger.info(
+            "Built markdown content",
+            categories=categories_processed,
+            items=items_processed,
+            lines=len(lines)
+        )
+        
+        context['categories_count'] = categories_processed
+        context['items_rendered'] = items_processed
+        return '\n'.join(lines)
+
+
+class WriteMarkdownPhase(Phase[str, Path]):
+    """Phase: Write markdown content to file."""
     
-    with open(output_path, 'w') as f:
-        f.write('\n'.join(lines))
+    def __init__(self, output_path: Path, logger: StructuredLogger, provenance: ValidatedProvenance):
+        super().__init__("write_markdown", "Write markdown to file")
+        self.output_path = output_path
+        self.logger = logger
+        self.provenance = provenance
+
+    def transform(self, input_data: str, context: dict[str, Any]) -> Path:
+        save_markdown(self.output_path, input_data)
+        
+        # Track provenance of export
+        self.provenance.add_validated_record(
+            artifact_id=str(self.output_path),
+            record={
+                'source_type': 'transformation',
+                'source_id': str(PLANNING_INDEX_JSON),
+                'source_location': 'planning_index',
+                'metadata': {
+                    'item_count': context.get('item_count', 0),
+                    'valid_count': context.get('valid_count', 0),
+                    'categories_count': context.get('categories_count', 0),
+                    'content_length': len(input_data)
+                }
+            }
+        )
+        
+        self.logger.info(
+            "Exported roadmap",
+            output_file=str(self.output_path),
+            size_bytes=len(input_data),
+            item_count=context.get('valid_count', 0)
+        )
+        
+        return self.output_path
+
+
+def export_markdown(output_path: Path):
+    """Export planning index to ROADMAP.md using composition pipeline."""
+    logger = configure_logging("export_canonical_md", structured=False)
     
-    print(f"Exported {len(canonical)} items to {output_path}")
+    # Initialize validated provenance tracker
+    provenance = ValidatedProvenance(system_id="export_roadmap_md", logger=logger)
+    
+    # Configure recovery strategy
+    strategy = RecoveryStrategy(max_retries=2, backoff_factor=1.0, respect_recoverable=True)
+    pipeline = RecoveryPipeline(logger=logger, strategy=strategy, name="ExportRoadmapMD")
+    
+    # Build pipeline phases
+    pipeline.add_phase(LoadPlanningIndexPhase(logger))
+    pipeline.add_phase(ValidatePlanningItemsPhase(logger, provenance))
+    pipeline.add_phase(BuildMarkdownPhase(logger))
+    pipeline.add_phase(WriteMarkdownPhase(output_path, logger, provenance))
+    
+    # Execute pipeline
+    result = pipeline.execute(PLANNING_INDEX_JSON)
+    
+    # Extract context from final result
+    context = result.context if result else {}
+    
+    if result.is_success():
+        # Generate provenance report
+        prov_report_path = REPO_ROOT / "build" / "reports" / "roadmap_export_provenance.json"
+        prov_data = provenance.generate_validated_report(prov_report_path)
+        logger.info("Generated provenance report", report_path=str(prov_report_path))
+        
+        # Extract metadata from provenance report
+        roadmap_trail = prov_data.get('report', {}).get('artifacts', {}).get(str(output_path), {})
+        export_metadata = roadmap_trail.get('records', [{}])[0].get('metadata', {})
+        valid_count = export_metadata.get('valid_count', 0)
+        categories_count = export_metadata.get('categories_count', 0)
+        
+        print(f"✓ Exported {valid_count} items ({categories_count} categories) to {output_path}")
+        
+        # Show recovery summary if retries occurred
+        recovery_patterns = pipeline.analyze_recovery_patterns()
+        exec_stats = recovery_patterns.get('execution_stats', {})
+        avg_retries = exec_stats.get('avg_retries_per_execution', 0)
+        if avg_retries > 0:
+            print(f"  Recovery: {avg_retries:.1f} avg retries per execution")
+    else:
+        logger.error("Export pipeline failed", exception=result.error)
+        print(f"❌ Export failed: {result.error}", file=sys.stderr)
+        sys.exit(1)
+
 
 if __name__ == "__main__":
-    export_markdown(REPO_ROOT / "ROADMAP.md")
+    export_markdown(ROADMAP_MD)
