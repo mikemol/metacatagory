@@ -1,11 +1,20 @@
 {
   "name": "Core.Algorithms.FunctionFields",
   "imports": [
+    "Metamodel",
+    "Algebra.Foundation",
     "Algorithms.Basic",
+    "Algebra.Fields.Advanced",
+    "Core.Algorithms.Bundle",
+    "Core",
     "Core.Witnesses",
-    "Core.Algorithms.Bundle"
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
   "imported_by": [
-    "Core.Algorithms.Registry"
+    "Core.Algorithms.Registry",
+    "Examples.FunctionField.F2x",
+    "Tests.DispatchBehaviorTests"
   ]
 }

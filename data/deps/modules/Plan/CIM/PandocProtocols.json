@@ -1,0 +1,12 @@
+{
+  "name": "Plan.CIM.PandocProtocols",
+  "imports": [
+    "Plan.CIM.Utility",
+    "Plan.CIM.PandocAST",
+    "Plan.CIM.CHIPConformance"
+  ],
+  "imported_by": [
+    "Plan.CIM.CHIPRecomposed",
+    "Plan.CIM.Structure"
+  ]
+}

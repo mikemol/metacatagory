@@ -1,10 +1,28 @@
 {
   "name": "Core.Witnesses",
   "imports": [
-    "Algebra.Fields.Advanced"
+    "Algebra.Rings.Basic",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algebra.Fields.Advanced",
+    "Core",
+    "Infrastructure.Coherence.Path2",
+    "Infrastructure.Universe",
+    "Algebra.Fields.Basic"
   ],
   "imported_by": [
+    "Algebra.Index",
+    "Core.AlgorithmCorrectness",
+    "Core.Algorithms.External",
+    "Core.Algorithms.FiniteFields",
     "Core.Algorithms.FunctionFields",
-    "Core.ConstructiveWitnesses"
+    "Core.Algorithms.NumberFields",
+    "Core.ConstructiveWitnesses",
+    "Examples.AlgorithmCorrectnessExamples",
+    "Examples.ConstructiveWitnessExamples",
+    "Tests.AlgorithmSmokeTests",
+    "Tests.ConstructiveWitnessTests",
+    "Tests.ErrorAsSpecificationTests",
+    "Tests.WitnessConstructionTests"
   ]
 }

@@ -1,7 +1,12 @@
 {
   "name": "Tests.YonedaChecklist",
   "imports": [
-    "Core.Yoneda"
+    "Tests.ObligationAdapters",
+    "Core.Phase",
+    "Metamodel",
+    "Core.Yoneda",
+    "Algebra.Rings.Basic",
+    "Core.CategoricalAdapter"
   ],
   "imported_by": [
     "Tests.Index"

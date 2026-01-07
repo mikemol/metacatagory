@@ -1,7 +1,14 @@
 {
   "name": "Core.PathAggregator",
   "imports": [
-    "Core.GrowthMetrics"
+    "Core.Phase",
+    "Core.GrowthMetrics",
+    "Metamodel",
+    "Infrastructure.Coherence.Path2",
+    "Infrastructure.Universe"
   ],
-  "imported_by": []
+  "imported_by": [
+    "Tests.Index",
+    "Tests.PathAggregatorTests"
+  ]
 }

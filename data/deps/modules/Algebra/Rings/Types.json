@@ -1,8 +1,17 @@
 {
   "name": "Algebra.Rings.Types",
-  "imports": [],
+  "imports": [
+    "Algebra.Foundation",
+    "Core",
+    "Metamodel",
+    "Algebra.Groups.Types"
+  ],
   "imported_by": [
+    "Algebra.Fields.Basic",
     "Algebra.Fields.Types",
-    "Algebra.Rings.Basic"
+    "Algebra.Modules.Basic",
+    "Algebra.Modules.Types",
+    "Algebra.Rings.Basic",
+    "Algebra.Rings.Theorems.Classical"
   ]
 }

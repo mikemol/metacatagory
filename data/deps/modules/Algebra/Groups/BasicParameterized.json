@@ -1,0 +1,12 @@
+{
+  "name": "Algebra.Groups.BasicParameterized",
+  "imports": [
+    "Chapter1.Level1Index",
+    "Metamodel",
+    "Algebra.Groups.Types",
+    "Algebra.Foundation",
+    "PropertyRegistry",
+    "Core"
+  ],
+  "imported_by": []
+}

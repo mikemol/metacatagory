@@ -1,7 +1,28 @@
 {
   "name": "PropertyRegistry",
-  "imports": [],
+  "imports": [
+    "Metamodel"
+  ],
   "imported_by": [
+    "Algebra.Enrichment",
+    "Algebra.Fields.Advanced",
+    "Algebra.Fields.Basic",
+    "Algebra.Fields.BasicWithTheorems",
+    "Algebra.Foundation",
+    "Algebra.Groups.Abelian",
+    "Algebra.Groups.Basic",
+    "Algebra.Groups.BasicParameterized",
+    "Algebra.Groups.BasicWithTheorems",
+    "Algebra.Groups.Free",
+    "Algebra.Modules.Basic",
+    "Algebra.Modules.BasicWithTheorems",
+    "Algebra.Rings.Basic",
+    "Algebra.Rings.BasicWithTheorems",
+    "Chapter1.Level1",
+    "Chapter2.Level2sub3",
+    "Core",
+    "Examples.TechnicalDebtChecklist",
+    "Examples.TechnicalDebtExample",
     "Tests.PropertyRegistryTests"
   ]
 }

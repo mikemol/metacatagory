@@ -19,7 +19,7 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
-from scripts.shared.paths import REPO_ROOT, PLANNING_INDEX_JSON, ROADMAP_MD
+from scripts.shared.paths import REPO_ROOT as _DEFAULT_REPO_ROOT, PLANNING_INDEX_JSON as _DEFAULT_PLANNING_INDEX_JSON, ROADMAP_MD as _DEFAULT_ROADMAP_MD
 from scripts.shared.io import load_json, save_markdown
 from scripts.shared.logging import StructuredLogger, configure_logging
 from scripts.shared.validation import ValidationResult, string_validator
@@ -27,7 +27,48 @@ from scripts.shared.validated_provenance import ValidatedProvenance
 from scripts.shared.recovery_pipeline import RecoveryPipeline, RecoveryStrategy
 from scripts.shared.pipelines import Phase, PhaseResult, PhaseStatus
 from scripts.shared.markdown import MarkdownBuilder
-from scripts.shared_yaml import dump_yaml
+
+# Optional lightweight shims for tests (monkeypatched in test_export_canonical_md)
+try:  # Prefer plain shared_data/shared_yaml if provided for test isolation
+    import shared_data as _SHARED_DATA
+except ImportError:  # pragma: no cover - normal path
+    _SHARED_DATA = None
+
+try:
+    import shared_yaml as _SHARED_YAML
+except ImportError:  # pragma: no cover - normal path
+    _SHARED_YAML = None
+
+# Allow REPO_ROOT/PLANNING_INDEX_JSON/ROADMAP_MD overrides when shared_data is patched
+if _SHARED_DATA and hasattr(_SHARED_DATA, "REPO_ROOT"):
+    _SD_ROOT = Path(_SHARED_DATA.REPO_ROOT)
+    REPO_ROOT = _SD_ROOT
+    PLANNING_INDEX_JSON = Path(getattr(_SHARED_DATA, "PLANNING_INDEX_JSON", _SD_ROOT / "build" / "planning_index.json"))
+    ROADMAP_MD = Path(getattr(_SHARED_DATA, "ROADMAP_MD", _SD_ROOT / "ROADMAP.md"))
+else:
+    REPO_ROOT = Path(_DEFAULT_REPO_ROOT)
+    PLANNING_INDEX_JSON = Path(_DEFAULT_PLANNING_INDEX_JSON)
+    ROADMAP_MD = Path(_DEFAULT_ROADMAP_MD)
+
+# Allow dump_yaml override via shared_yaml stub for tests
+if _SHARED_YAML and hasattr(_SHARED_YAML, "dump_yaml"):
+    dump_yaml = _SHARED_YAML.dump_yaml
+else:
+    from scripts.shared_yaml import dump_yaml
+
+
+def load_planning_index() -> list[dict]:
+    """Load planning index items, overridable by shared_data in tests."""
+
+    if _SHARED_DATA and hasattr(_SHARED_DATA, "load_planning_index"):
+        return list(_SHARED_DATA.load_planning_index())
+
+    data = load_json(PLANNING_INDEX_JSON, required=True)
+    if isinstance(data, dict):
+        return list(data.get("items", []))
+    if isinstance(data, list):
+        return list(data)
+    raise ValueError(f"Unexpected JSON shape in {PLANNING_INDEX_JSON}")
 
 HEADER = """# Metacatagory Development Roadmap
 
@@ -68,16 +109,9 @@ class LoadPlanningIndexPhase(Phase[Path, list[dict]]):
         self.logger = logger
 
     def transform(self, input_data: Path, context: dict[str, Any]) -> list[dict]:
+        # Input path is retained for logging; actual load is delegated to overridable helper
         self.logger.info("Loading planning index", input_file=str(input_data))
-        data = load_json(input_data, required=True)
-        
-        if isinstance(data, list):
-            items = data
-        elif isinstance(data, dict):
-            items = data.get("items", [])
-        else:
-            raise ValueError(f"Unexpected JSON shape in {input_data}")
-        
+        items = load_planning_index()
         self.logger.info("Loaded planning items", count=len(items))
         context['item_count'] = len(items)
         return items
@@ -265,9 +299,10 @@ class WriteMarkdownPhase(Phase[str, Path]):
         return self.output_path
 
 
-def export_markdown(output_path: Path):
+def export_markdown(output_path: Path | None = None):
     """Export planning index to ROADMAP.md using composition pipeline."""
     logger = configure_logging("export_canonical_md", structured=False)
+    output_path = Path(output_path or ROADMAP_MD)
     
     # Initialize validated provenance tracker
     provenance = ValidatedProvenance(system_id="export_roadmap_md", logger=logger)
@@ -291,6 +326,7 @@ def export_markdown(output_path: Path):
     if result.is_success():
         # Generate provenance report
         prov_report_path = REPO_ROOT / "build" / "reports" / "roadmap_export_provenance.json"
+        prov_report_path.parent.mkdir(parents=True, exist_ok=True)
         prov_data = provenance.generate_validated_report(prov_report_path)
         logger.info("Generated provenance report", report_path=str(prov_report_path))
         

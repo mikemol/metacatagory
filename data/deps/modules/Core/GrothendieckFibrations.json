@@ -1,8 +1,16 @@
 {
   "name": "Core.GrothendieckFibrations",
   "imports": [
-    "Chapter2.Level2sub8",
-    "Algebra.Foundation"
+    "Core.Phase",
+    "Metamodel",
+    "Chapter1.Level1sub3",
+    "Algebra.Foundation",
+    "Core",
+    "Infrastructure.Coherence.Path2",
+    "Infrastructure.Universe",
+    "Chapter2.Level2sub8"
   ],
-  "imported_by": []
+  "imported_by": [
+    "Tests.GrothendieckFibrationsChecklist"
+  ]
 }

@@ -1,0 +1,12 @@
+{
+  "name": "Tests.SubobjectTheoryChecklist",
+  "imports": [
+    "Tests.ObligationAdapters",
+    "Core.Phase",
+    "Metamodel"
+  ],
+  "imported_by": [
+    "Tests.Index",
+    "Tests.SpecificationValidation"
+  ]
+}

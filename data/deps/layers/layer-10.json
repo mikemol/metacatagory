@@ -1,0 +1,10 @@
+[
+  "TechnicalDebt.PriorityFormatting",
+  "Tests.ToposTheoryChecklist",
+  "Algebra.Rings.Types",
+  "Tests.Chapters",
+  "Algebra.Groups.Abelian",
+  "Algebra.Groups.Basic",
+  "Algebra.Groups.BasicParameterized",
+  "Algebra.Groups.Theorems.Classical"
+]

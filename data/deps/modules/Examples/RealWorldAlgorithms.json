@@ -1,6 +1,8 @@
 {
   "name": "Examples.RealWorldAlgorithms",
   "imports": [
+    "Core.Phase",
+    "Metamodel",
     "Core.AlgorithmCorrectness"
   ],
   "imported_by": [

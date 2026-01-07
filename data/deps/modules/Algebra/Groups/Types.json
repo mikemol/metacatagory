@@ -1,9 +1,18 @@
 {
   "name": "Algebra.Groups.Types",
   "imports": [
-    "Algebra.Foundation"
+    "Algebra.Foundation",
+    "Core",
+    "Metamodel"
   ],
   "imported_by": [
-    "Algebra.Groups.Basic"
+    "Algebra.Groups.Basic",
+    "Algebra.Groups.BasicParameterized",
+    "Algebra.Groups.BasicWithTheorems",
+    "Algebra.Groups.Theorems.Classical",
+    "Algebra.Modules.Basic",
+    "Algebra.Modules.Types",
+    "Algebra.Rings.Basic",
+    "Algebra.Rings.Types"
   ]
 }

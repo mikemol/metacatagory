@@ -1,0 +1,9 @@
+{
+  "name": "Infrastructure.Functor.Compose",
+  "imports": [
+    "Infrastructure.Functor.Interface"
+  ],
+  "imported_by": [
+    "Infrastructure.Index"
+  ]
+}

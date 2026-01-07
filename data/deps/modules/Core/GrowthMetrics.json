@@ -1,9 +1,17 @@
 {
   "name": "Core.GrowthMetrics",
   "imports": [
-    "Core.Utils"
+    "Infrastructure.Universe",
+    "Core.Utils",
+    "Metamodel",
+    "Infrastructure.Coherence.Path2"
   ],
   "imported_by": [
-    "Core.PathAggregator"
+    "Algorithms.Instrumented",
+    "Core.PathAggregator",
+    "Examples.InstrumentedAlgorithmDemo",
+    "GrowthAnalysis",
+    "Tests.PathAggregatorTests",
+    "Tests.PerformanceBoundaryTests"
   ]
 }

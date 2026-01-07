@@ -1,0 +1,8 @@
+{
+  "name": "Algebra.Groups.ClassicalInstance",
+  "imports": [
+    "Algebra.Groups.Theorems.Classical",
+    "Algebra.Groups.Basic"
+  ],
+  "imported_by": []
+}

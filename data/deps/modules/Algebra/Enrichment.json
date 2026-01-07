@@ -1,9 +1,17 @@
 {
   "name": "Algebra.Enrichment",
   "imports": [
-    "Chapter2.Level2sub6"
+    "Chapter1.Level1Index",
+    "Chapter2.Level2sub6",
+    "Metamodel",
+    "Algebra.Foundation",
+    "PropertyRegistry",
+    "Core"
   ],
   "imported_by": [
-    "Algebra.Groups.Abelian"
+    "Algebra.Groups.Abelian",
+    "Algebra.Index",
+    "Tests.EnrichmentChecklist",
+    "Tests.ObligationAdapters"
   ]
 }

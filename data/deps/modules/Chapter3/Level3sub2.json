@@ -1,9 +1,16 @@
 {
   "name": "Chapter3.Level3sub2",
-  "imports": [],
+  "imports": [
+    "Chapter1.Level1Index",
+    "Core",
+    "Metamodel"
+  ],
   "imported_by": [
-    "Tests.ObligationAdapters",
     "Chapter3.Level3Index",
-    "Tests.ChapterObligationsSmoke"
+    "Tests.Chapter3Checklist",
+    "Tests.ChapterObligationsSmoke",
+    "Tests.ObligationAdapters",
+    "Tests.ToposObligationAdapters",
+    "Tests.ToposTheoryChecklist"
   ]
 }

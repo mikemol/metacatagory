@@ -1,8 +1,17 @@
 {
   "name": "Chapter2.Level2sub3",
-  "imports": [],
+  "imports": [
+    "Core",
+    "Core.Phase",
+    "Metamodel",
+    "PropertyRegistry"
+  ],
   "imported_by": [
     "Algebra.Rings.Basic",
-    "Chapter2.Level2sub5"
+    "Algebra.Rings.BasicWithTheorems",
+    "Chapter2.Level2Index",
+    "Chapter2.Level2sub5",
+    "Tests.Chapter2Checklist",
+    "Tests.ObligationAdapters"
   ]
 }

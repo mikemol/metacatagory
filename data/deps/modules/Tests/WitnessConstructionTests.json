@@ -1,0 +1,17 @@
+{
+  "name": "Tests.WitnessConstructionTests",
+  "imports": [
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algebra.Fields.Advanced",
+    "Core",
+    "Core.Witnesses",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Algebra.Groups.Basic",
+    "Core.AlgebraicAlgorithms"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

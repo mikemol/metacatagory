@@ -1,0 +1,9 @@
+{
+  "name": "TechnicalDebt.DeferredItemsOrchestrationFFI",
+  "imports": [
+    "Core.Phase",
+    "TechnicalDebt.DeferredItemsFormatting",
+    "TechnicalDebt.DeferredItemsDetection"
+  ],
+  "imported_by": []
+}

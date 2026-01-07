@@ -1,9 +1,15 @@
 {
   "name": "Core.Yoneda",
   "imports": [
+    "Core.Phase",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Core",
+    "Algebra.Rings.Basic",
     "Algebra.Fields.Basic"
   ],
   "imported_by": [
+    "Plan.CIM.YonedaProfiler",
     "Tests.YonedaChecklist"
   ]
 }

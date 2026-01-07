@@ -1,0 +1,10 @@
+{
+  "name": "Examples.DeferredItemsScanner",
+  "imports": [
+    "Core.Strings",
+    "Core.IO",
+    "qualified",
+    "Core.Rendering"
+  ],
+  "imported_by": []
+}

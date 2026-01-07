@@ -2,6 +2,9 @@
 # Docker image mapping (prebuilt worker image with Agda+pandoc)
 -P ubuntu-latest=metacatagory/act-ubuntu-agda:latest
 
+# Run as non-root user (UID:GID 1000:1000 matches 'runner' in image)
+--container-options --user 1000:1000
+
 # Do not force-pull; use the locally built worker image.
 --pull=false
 

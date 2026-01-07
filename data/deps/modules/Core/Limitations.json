@@ -1,7 +1,15 @@
 {
   "name": "Core.Limitations",
-  "imports": [],
+  "imports": [
+    "Infrastructure.Universe",
+    "Core.Phase",
+    "Metamodel",
+    "Infrastructure.Coherence.Path2"
+  ],
   "imported_by": [
-    "Core.AlgebraicAlgorithms"
+    "Algorithms.Basic",
+    "Algorithms.Instrumented",
+    "Core.AlgebraicAlgorithms",
+    "Tests.ErrorAsSpecificationTests"
   ]
 }

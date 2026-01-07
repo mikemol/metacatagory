@@ -1,0 +1,11 @@
+{
+  "name": "Infrastructure.Axiom.Instances.HexagonBraiding",
+  "imports": [
+    "Infrastructure.Axiom.Adequacy",
+    "Infrastructure.Polytopes.Braiding.HexagonTriangulation",
+    "Infrastructure.Axiom.Instance"
+  ],
+  "imported_by": [
+    "Infrastructure.Index"
+  ]
+}

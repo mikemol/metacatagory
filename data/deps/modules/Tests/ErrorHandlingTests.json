@@ -1,7 +1,16 @@
 {
   "name": "Tests.ErrorHandlingTests",
   "imports": [
-    "Core.UniversalProperties"
+    "Core.Algorithms.Registry",
+    "Core.Algorithms.NumberFields",
+    "Metamodel",
+    "Core.Algorithms.FiniteFields",
+    "Core.Algorithms.Bundle",
+    "Core",
+    "Algebra.Rings.Basic",
+    "Core.UniversalProperties",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
   "imported_by": [
     "Tests.Index"

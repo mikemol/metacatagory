@@ -13,9 +13,23 @@ Showcases full integration of shared components:
 
 import json
 import sys
+from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Set
 from dataclasses import dataclass, field
+
+
+@dataclass
+class DependencyNode:
+    """Simple dependency node used by unit tests."""
+
+    module_name: str
+    imports: List[str] = field(default_factory=list)
+    imported_by: List[str] = field(default_factory=list)
+    depth: int = 0
+
+    def __hash__(self) -> int:  # hash by identifier so nodes dedupe in sets
+        return hash(self.module_name)
 
 # Ensure repository root is importable as a package (scripts.*)
 ROOT = Path(__file__).resolve().parent.parent
@@ -30,6 +44,142 @@ from scripts.shared.validated_provenance import ValidatedProvenance
 from scripts.shared.recovery_pipeline import RecoveryPipeline, RecoveryStrategy
 from scripts.shared.pipelines import Phase, PhaseResult, PhaseStatus
 from scripts.shared.validation import ValidationResult, dict_validator
+
+
+class DependencyGraphBuilder:
+    """Lightweight builder for unit tests (dictionary based)."""
+
+    def __init__(self, workspace_root: str):
+        self.workspace_root = str(Path(workspace_root))
+        self.nodes: Dict[str, DependencyNode] = {}
+        self.graph: Dict[str, Set[str]] = defaultdict(set)
+        self.reverse_graph: Dict[str, Set[str]] = defaultdict(set)
+
+    def load_module_mappings(self) -> None:
+        """Load module_mappings.json from the workspace build directory."""
+
+        mapping_path = Path(self.workspace_root) / "build" / "module_mappings.json"
+        data = json.loads(mapping_path.read_text())
+        module_index: Dict[str, Dict[str, Any]] = data.get("module_index", {})
+
+        for module_name, module_data in module_index.items():
+            imports = list(module_data.get("imports", []))
+            node = self.nodes.get(module_name) or DependencyNode(module_name=module_name)
+            node.imports = imports
+            self.nodes[module_name] = node
+
+            self.graph[module_name].update(imports)
+
+            for imported in imports:
+                # Ensure reverse lookup and imported nodes exist
+                self.reverse_graph[imported].add(module_name)
+                self.graph.setdefault(imported, set())
+                imported_node = self.nodes.get(imported) or DependencyNode(module_name=imported)
+                imported_node.imported_by.append(module_name)
+                self.nodes[imported] = imported_node
+
+    def compute_depths(self) -> None:
+        """Compute depths for all nodes via DFS (leaf depth=0)."""
+
+        depth_cache: Dict[str, int] = {}
+        visiting: Set[str] = set()
+
+        def depth(node: str) -> int:
+            if node in depth_cache:
+                return depth_cache[node]
+            if node in visiting:
+                return 0  # break cycles conservatively
+            visiting.add(node)
+            children = self.graph.get(node, set())
+            child_depths = [depth(child) for child in children] if children else [0]
+            visiting.discard(node)
+            d = max(child_depths, default=0)
+            depth_cache[node] = d + (1 if children else 0)
+            return depth_cache[node]
+
+        for module_name in self.graph.keys():
+            self.nodes.setdefault(module_name, DependencyNode(module_name=module_name))
+            self.nodes[module_name].depth = depth(module_name)
+
+    def find_strongly_connected_components(self) -> List[Set[str]]:
+        """Tarjan SCC over the forward graph; returns cycles only."""
+
+        index_counter = [0]
+        stack: List[str] = []
+        index: Dict[str, int] = {}
+        lowlink: Dict[str, int] = {}
+        on_stack: Set[str] = set()
+        sccs: List[Set[str]] = []
+
+        def strongconnect(v: str) -> None:
+            index[v] = index_counter[0]
+            lowlink[v] = index_counter[0]
+            index_counter[0] += 1
+            stack.append(v)
+            on_stack.add(v)
+
+            for w in self.graph.get(v, set()):
+                if w not in index:
+                    strongconnect(w)
+                    lowlink[v] = min(lowlink[v], lowlink[w])
+                elif w in on_stack:
+                    lowlink[v] = min(lowlink[v], index[w])
+
+            if lowlink[v] == index[v]:
+                component: Set[str] = set()
+                while True:
+                    w = stack.pop()
+                    on_stack.discard(w)
+                    component.add(w)
+                    if w == v:
+                        break
+                if len(component) > 1:
+                    sccs.append(component)
+
+        for v in self.graph.keys():
+            if v not in index:
+                strongconnect(v)
+
+        return sccs
+
+    def find_transitive_dependencies(self, module: str, max_depth: int | None = None) -> Set[str]:
+        """Return transitive dependencies (forward) up to optional depth."""
+
+        if module not in self.graph:
+            return set()
+
+        visited: Set[str] = set()
+        stack: List[tuple[str, int]] = [(module, 0)]
+
+        while stack:
+            current, depth_level = stack.pop()
+            for dep in self.graph.get(current, set()):
+                if dep in visited:
+                    continue
+                next_depth = depth_level + 1
+                if max_depth is None or next_depth <= max_depth:
+                    visited.add(dep)
+                    stack.append((dep, next_depth))
+
+        visited.discard(module)
+        return visited
+
+    def find_reverse_dependencies(self, module: str) -> Set[str]:
+        """Return reverse dependencies (who imports this module)."""
+
+        return set(self.reverse_graph.get(module, set()))
+
+    def get_dependency_layers(self) -> List[List[str]]:
+        """Group modules by computed depth (layer 0 = no imports)."""
+
+        self.compute_depths()
+        layers: Dict[int, List[str]] = defaultdict(list)
+        for node in self.nodes.values():
+            layers[node.depth].append(node.module_name)
+
+        # Sort module names within each layer for determinism
+        ordered_layers = [sorted(layers[d]) for d in sorted(layers.keys())]
+        return ordered_layers
 
 
 class LoadModuleMappingsPhase(Phase[Path, Dict[str, Any]]):

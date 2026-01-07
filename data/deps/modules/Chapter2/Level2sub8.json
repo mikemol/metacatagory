@@ -1,0 +1,15 @@
+{
+  "name": "Chapter2.Level2sub8",
+  "imports": [
+    "Chapter1.Level1Index",
+    "Core",
+    "Metamodel"
+  ],
+  "imported_by": [
+    "Chapter2.Level2Index",
+    "Core.GrothendieckFibrations",
+    "Tests.Chapter2Checklist",
+    "Tests.GrothendieckFibrationsChecklist",
+    "Tests.ObligationAdapters"
+  ]
+}

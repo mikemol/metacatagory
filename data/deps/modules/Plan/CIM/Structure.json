@@ -1,0 +1,13 @@
+{
+  "name": "Plan.CIM.Structure",
+  "imports": [
+    "Plan.CIM.Utility",
+    "Plan.CIM.PandocToMarkdown",
+    "Plan.CIM.PandocProtocols",
+    "Plan.CIM.PandocAST"
+  ],
+  "imported_by": [
+    "Plan.CIM.PandocProofExample",
+    "Plan.CIM.PandocProofExport"
+  ]
+}

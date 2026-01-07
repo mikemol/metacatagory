@@ -1,0 +1,11 @@
+{
+  "name": "Infrastructure.Functor.Instances.PathAlgebra",
+  "imports": [
+    "Infrastructure.Functor.Instances.Trivial",
+    "Infrastructure.Axiom.Adequacy",
+    "Infrastructure.Functor.Interface"
+  ],
+  "imported_by": [
+    "Infrastructure.Index"
+  ]
+}

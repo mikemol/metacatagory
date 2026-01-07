@@ -1,0 +1,14 @@
+{
+  "name": "Infrastructure.Axiom.Adequacy",
+  "imports": [],
+  "imported_by": [
+    "Infrastructure.Axiom.Face",
+    "Infrastructure.Axiom.Instance",
+    "Infrastructure.Axiom.Instances.HexagonBraiding",
+    "Infrastructure.Axiom.Instances.PentagonAssociahedron",
+    "Infrastructure.Axiom.Solver",
+    "Infrastructure.Definitions.Dictionary",
+    "Infrastructure.Functor.Instances.PathAlgebra",
+    "Infrastructure.Index"
+  ]
+}

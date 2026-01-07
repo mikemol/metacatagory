@@ -1,7 +1,12 @@
 {
   "name": "Tests.ToposTheoryChecklist",
   "imports": [
-    "Tests.ToposObligationAdapters"
+    "Core.Phase",
+    "Chapter3.Level3sub2",
+    "Metamodel",
+    "Chapter1.Level1sub3",
+    "Tests.ToposObligationAdapters",
+    "Core.CategoricalAdapter"
   ],
   "imported_by": [
     "Tests.Index"

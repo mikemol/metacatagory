@@ -1,9 +1,12 @@
 {
   "name": "Core.PolynomialsF2",
   "imports": [
-    "Core.Phase"
+    "Infrastructure.Universe",
+    "Core.Phase",
+    "Infrastructure.Coherence.Path2"
   ],
   "imported_by": [
-    "Core.ConstructiveWitnesses"
+    "Core.ConstructiveWitnesses",
+    "Tests.ConstructiveWitnessTests"
   ]
 }

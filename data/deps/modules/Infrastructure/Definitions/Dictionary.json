@@ -1,0 +1,11 @@
+{
+  "name": "Infrastructure.Definitions.Dictionary",
+  "imports": [
+    "Infrastructure.Axiom.Adequacy",
+    "Infrastructure.Axiom.Face",
+    "Infrastructure.Axiom.Instance"
+  ],
+  "imported_by": [
+    "Infrastructure.Index"
+  ]
+}

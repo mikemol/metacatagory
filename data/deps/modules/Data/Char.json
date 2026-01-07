@@ -1,0 +1,7 @@
+{
+  "name": "Data.Char",
+  "imports": [],
+  "imported_by": [
+    "Plan.CIM.ModuleExporter"
+  ]
+}

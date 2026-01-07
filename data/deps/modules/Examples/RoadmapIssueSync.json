@@ -1,0 +1,9 @@
+{
+  "name": "Examples.RoadmapIssueSync",
+  "imports": [
+    "Control.Monad",
+    "qualified",
+    "Data.Maybe"
+  ],
+  "imported_by": []
+}

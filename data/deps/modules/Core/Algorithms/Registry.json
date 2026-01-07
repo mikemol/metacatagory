@@ -1,12 +1,33 @@
 {
   "name": "Core.Algorithms.Registry",
   "imports": [
+    "Core.Phase",
+    "Core.Algorithms.NumberFields",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algorithms.Basic",
     "Algorithms.Adapters.BundleAdapter",
     "Core.Algorithms.FiniteFields",
-    "Core.Algorithms.NumberFields",
-    "Core.Algorithms.FunctionFields"
+    "Algebra.Fields.Advanced",
+    "Core.Algorithms.Bundle",
+    "Core",
+    "Core.Algorithms.FunctionFields",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
   "imported_by": [
+    "Algebra.Index",
+    "Examples.AutomaticEvidenceDemo",
+    "Examples.FunctionField.F2x",
+    "Examples.InstrumentedAlgorithmDemo",
+    "Examples.LazyHybridDemo",
+    "Examples.NumberField.Sqrt2",
+    "Tests.AdvancedPhaseExamples",
+    "Tests.AlgorithmCompositionTestsMinimal",
+    "Tests.DispatchBehaviorTests",
+    "Tests.ErrorHandlingTests",
+    "Tests.PerformanceBoundaryTests",
     "Tests.PhaseExamples"
   ]
 }

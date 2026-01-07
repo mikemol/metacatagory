@@ -1,7 +1,15 @@
 {
   "name": "Algebra.Modules.Types",
   "imports": [
-    "Algebra.Fields.Types"
+    "Algebra.Groups.Types",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algebra.Fields.Types",
+    "Core",
+    "Algebra.Rings.Types"
   ],
-  "imported_by": []
+  "imported_by": [
+    "Algebra.Modules.Basic",
+    "Algebra.Modules.Theorems.Classical"
+  ]
 }

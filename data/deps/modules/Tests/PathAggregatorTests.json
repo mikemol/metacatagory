@@ -1,0 +1,12 @@
+{
+  "name": "Tests.PathAggregatorTests",
+  "imports": [
+    "Core.GrowthMetrics",
+    "Core.Phase",
+    "Core.PathAggregator",
+    "Metamodel"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

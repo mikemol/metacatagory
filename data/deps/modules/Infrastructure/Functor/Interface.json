@@ -1,9 +1,15 @@
 {
   "name": "Infrastructure.Functor.Interface",
-  "imports": [
-    "Infrastructure.Equality"
-  ],
+  "imports": [],
   "imported_by": [
-    "Core.PhaseCategory"
+    "Core.PhaseCategoryWrapper",
+    "Infrastructure.Functor.Compose",
+    "Infrastructure.Functor.Instances.Ambiguity",
+    "Infrastructure.Functor.Instances.FunctionCategory",
+    "Infrastructure.Functor.Instances.FunctionPathCategory",
+    "Infrastructure.Functor.Instances.PathAlgebra",
+    "Infrastructure.Functor.Instances.PhaseCategory",
+    "Infrastructure.Functor.Instances.Trivial",
+    "Infrastructure.Index"
   ]
 }

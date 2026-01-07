@@ -1,0 +1,13 @@
+{
+  "name": "Core.Algorithms.AutomaticEvidence",
+  "imports": [
+    "Core.Algorithms.NumberFields",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Core.Algorithms.FiniteFields",
+    "Core",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic"
+  ],
+  "imported_by": []
+}

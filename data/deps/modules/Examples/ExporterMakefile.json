@@ -1,0 +1,15 @@
+{
+  "name": "Examples.ExporterMakefile",
+  "imports": [
+    "Examples.AgdaMakefileDeps",
+    "Core.Utils",
+    "Data.Maybe",
+    "Metamodel",
+    "qualified",
+    "Core.AdapterAutomation",
+    "Examples.AgdaFileScanFFI",
+    "Examples.MakefileTargets",
+    "Core.CategoricalAdapter"
+  ],
+  "imported_by": []
+}

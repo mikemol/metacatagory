@@ -1,9 +1,28 @@
 {
   "name": "Core.Algorithms.Bundle",
   "imports": [
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
     "Core.AlgebraicAlgorithms"
   ],
   "imported_by": [
-    "Core.Algorithms.FunctionFields"
+    "Algebra.Index",
+    "Algorithms.Adapters.BundleAdapter",
+    "Algorithms.Instrumented",
+    "Core.Algorithms.External",
+    "Core.Algorithms.FunctionFields",
+    "Core.Algorithms.NumberFields",
+    "Core.Algorithms.Registry",
+    "Examples.AutomaticEvidenceDemo",
+    "Examples.InstrumentedAlgorithmDemo",
+    "Examples.LazyHybridDemo",
+    "Examples.NumberField.Sqrt2",
+    "Tests.AdvancedPhaseExamples",
+    "Tests.AlgorithmCompositionTestsMinimal",
+    "Tests.DispatchBehaviorTests",
+    "Tests.ErrorHandlingTests",
+    "Tests.PerformanceBoundaryTests",
+    "Tests.PhaseExamples",
+    "Tests.SerializationTests"
   ]
 }

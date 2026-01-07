@@ -1,7 +1,11 @@
 {
   "name": "Tests.GodelBoundaryTests",
   "imports": [
-    "Core.GodelBoundary"
+    "Core.GodelBoundary",
+    "Core.Phase",
+    "Metamodel"
   ],
-  "imported_by": []
+  "imported_by": [
+    "Tests.Index"
+  ]
 }

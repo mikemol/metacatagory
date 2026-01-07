@@ -1,0 +1,12 @@
+{
+  "name": "Tests.AdvancedMonadTheoryChecklist",
+  "imports": [
+    "Tests.ObligationAdapters",
+    "Core.Phase",
+    "Chapter2.Level2sub4",
+    "Core.CategoricalAdapter"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Core.AlgorithmComplexity",
+  "imports": [
+    "Infrastructure.Universe",
+    "Metamodel",
+    "Infrastructure.Coherence.Path2"
+  ],
+  "imported_by": [
+    "Tests.PerformanceBoundaryTests"
+  ]
+}

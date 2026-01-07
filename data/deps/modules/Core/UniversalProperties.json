@@ -1,14 +1,23 @@
 {
   "name": "Core.UniversalProperties",
   "imports": [
-    "Algebra.Fields.Basic",
-    "Algebra.Rings.Basic"
+    "Algebra.Rings.Basic",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Core",
+    "Infrastructure.Coherence.Path2",
+    "Infrastructure.Universe",
+    "Algebra.Fields.Basic"
   ],
   "imported_by": [
-    "Tests.ObligationAdapters",
     "Core.AlgorithmUniversality",
-    "Tests.AlgorithmCompositionTestsMinimal",
     "Core.ConstructiveWitnesses",
-    "Tests.ErrorHandlingTests"
+    "Tests.AlgorithmCompositionTestsMinimal",
+    "Tests.ConstructiveWitnessTests",
+    "Tests.CoreUniversalPropertiesChecklist",
+    "Tests.ErrorHandlingTests",
+    "Tests.ObligationAdapters",
+    "Tests.UniversalPropertyTests",
+    "Tests.WarningAggregatorsTest"
   ]
 }

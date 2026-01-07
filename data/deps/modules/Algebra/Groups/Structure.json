@@ -1,9 +1,15 @@
 {
   "name": "Algebra.Groups.Structure",
   "imports": [
-    "Algebra.Groups.Free"
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algebra.Groups.Free",
+    "Core",
+    "Algebra.Groups.Basic"
   ],
   "imported_by": [
+    "Algebra.Index",
+    "Tests.GroupsStructureChecklist",
     "Tests.ObligationAdapters"
   ]
 }

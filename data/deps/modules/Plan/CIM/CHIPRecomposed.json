@@ -1,0 +1,11 @@
+{
+  "name": "Plan.CIM.CHIPRecomposed",
+  "imports": [
+    "Plan.CIM.Utility",
+    "Plan.CIM.PandocProtocols",
+    "Plan.CIM.PandocToMarkdown",
+    "Plan.CIM.GrammarBridge",
+    "Plan.CIM.PandocAST"
+  ],
+  "imported_by": []
+}
