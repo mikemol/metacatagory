@@ -237,15 +237,19 @@ buildArtifact agdaFiles graphEdges =
   let labels = map pathToModuleLabel agdaFiles
       agdaiTargets = zipWith generateAgdaTargetFromGraph agdaFiles (map depsFor labels)
       aggregateTargets = allAgdaiTarget agdaFiles ∷ []
+      -- Dedicated target for the graph parse state; depends only on the graph export inputs
+      graphStateTarget = mkTarget "build/graph_parsed_state.txt" "Graph parse state file (produced alongside Makefile generation)" ("build/diagrams/agda-deps-full.dot" ∷ [])
+        (instrumentRecipe "build/graph_parsed_state.txt"
+          ("$(AGDA) $(AGDA_FLAGS) --compile src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile" ∷ [])) false
       -- Include regenMakefileTarget in the list of targets
-      graphStatusTarget = mkTarget "graph-status" "Print parsed graph status" ([])
+      graphStatusTarget = mkTarget "graph-status" "Print parsed graph status" ("build/graph_parsed_state.txt" ∷ [])
         (instrumentRecipe "graph-status" ("@cat build/graph_parsed_state.txt" ∷ [])) true
-      graphAssertTarget = mkTarget "graph-assert-ok" "Assert dependency graph is OK (CI guard)" ([])
+      graphAssertTarget = mkTarget "graph-assert-ok" "Assert dependency graph is OK (CI guard)" ("build/graph_parsed_state.txt" ∷ [])
         (instrumentRecipe "graph-assert-ok" 
           ("@status=$$(awk -F': ' '/^status:/ {print $$2}' build/graph_parsed_state.txt); " ++
            "edges=$$(awk -F': ' '/^edges:/ {print $$2}' build/graph_parsed_state.txt); " ++
            "if [ \"$$status\" != \"OK\" ] || [ $${edges:-0} -eq 0 ]; then echo \"Graph check failed: status=$$status edges=$$edges\"; exit 1; else echo \"Graph OK: status=$$status edges=$$edges\"; fi" ∷ [])) true
-      allTargets = regenMakefileTarget ∷ graphStatusTarget ∷ graphAssertTarget ∷ discoveredTargets +++ agdaiTargets +++ aggregateTargets
+      allTargets = regenMakefileTarget ∷ graphStateTarget ∷ graphStatusTarget ∷ graphAssertTarget ∷ discoveredTargets +++ agdaiTargets +++ aggregateTargets
       phonyTargets = filter (λ t → MakefileTarget.phony t) allTargets
       phonyNames = map MakefileTarget.name phonyTargets
       headerSection = record
