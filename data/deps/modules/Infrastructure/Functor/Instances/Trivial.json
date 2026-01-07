@@ -1,0 +1,12 @@
+{
+  "name": "Infrastructure.Functor.Instances.Trivial",
+  "imports": [
+    "Infrastructure.Functor.Interface"
+  ],
+  "imported_by": [
+    "Infrastructure.Functor.Instances.FunctionCategory",
+    "Infrastructure.Functor.Instances.PathAlgebra",
+    "Infrastructure.Functor.Instances.PhaseCategory",
+    "Infrastructure.Index"
+  ]
+}

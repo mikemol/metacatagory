@@ -1,0 +1,20 @@
+{
+  "id": "GP-Gp303",
+  "title": "GP303: The Adjoint Manifest (v3.0)",
+  "description": "GP303: The Adjoint Manifest (v3.0). Source: Plan/CIM/IngestedRoadmaps/Geometry.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Geometry.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp303|Plan/CIM/IngestedRoadmaps/Geometry.agda",
+    "ROADMAP-MD-78|ROADMAP.md"
+  ],
+  "related": []
+}

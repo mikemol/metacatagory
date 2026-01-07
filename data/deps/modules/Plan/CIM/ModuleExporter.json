@@ -1,0 +1,12 @@
+{
+  "name": "Plan.CIM.ModuleExporter",
+  "imports": [
+    "Data.List",
+    "Core.Utils",
+    "Control.Exception",
+    "qualified",
+    "Data.Ord",
+    "Data.Char"
+  ],
+  "imported_by": []
+}

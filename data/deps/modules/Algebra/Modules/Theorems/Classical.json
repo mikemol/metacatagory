@@ -1,0 +1,13 @@
+{
+  "name": "Algebra.Modules.Theorems.Classical",
+  "imports": [
+    "Algebra.Foundation",
+    "Core",
+    "Metamodel",
+    "Algebra.Modules.Types"
+  ],
+  "imported_by": [
+    "Algebra.Modules.BasicWithTheorems",
+    "Algebra.Modules.ClassicalInstance"
+  ]
+}

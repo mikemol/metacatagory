@@ -1,0 +1,11 @@
+{
+  "name": "Examples.TechnicalDebtChecklist",
+  "imports": [
+    "Core.Utils",
+    "Metamodel",
+    "PropertyRegistry",
+    "Core.TechnicalDebt",
+    "Tests.AlgorithmCompositionTests"
+  ],
+  "imported_by": []
+}

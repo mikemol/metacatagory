@@ -1,0 +1,17 @@
+{
+  "name": "Tests.PolynomialFieldExtensionsChecklist",
+  "imports": [
+    "Tests.ObligationAdapters",
+    "Core.Phase",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Chapter1.Level1",
+    "Algebra.Fields.Advanced",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.CategoricalAdapter"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

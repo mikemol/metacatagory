@@ -1,0 +1,20 @@
+{
+  "id": "GP-Gp714",
+  "title": "GP714: The Self-Defining Manifest (v26.0)",
+  "description": "GP714: The Self-Defining Manifest (v26.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Polytopes.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp714|Plan/CIM/IngestedRoadmaps/Polytopes.agda",
+    "ROADMAP-MD-52|ROADMAP.md"
+  ],
+  "related": []
+}

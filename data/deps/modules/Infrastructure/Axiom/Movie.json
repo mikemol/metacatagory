@@ -1,0 +1,7 @@
+{
+  "name": "Infrastructure.Axiom.Movie",
+  "imports": [
+    "Infrastructure.Axiom.SolvableInterface"
+  ],
+  "imported_by": []
+}

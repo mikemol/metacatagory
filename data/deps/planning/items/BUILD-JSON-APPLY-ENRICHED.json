@@ -1,0 +1,25 @@
+{
+  "id": "BUILD-JSON-APPLY-ENRICHED",
+  "title": "Apply decomposition to canonical_enriched.json",
+  "description": "Second target: decompose roadmap enrichment data into build/enriched/{items,dependencies,annotations}/ with per-item granularity.",
+  "status": "done",
+  "category": "Build Infrastructure",
+  "source": "JSONDecomposition",
+  "files": [
+    "build/enriched/_metadata.json",
+    "build/enriched/items/_index.json",
+    "build/enriched/dependencies/_manifest.json"
+  ],
+  "tags": [
+    "JSON",
+    "RoadmapEnrichment",
+    "Phase1"
+  ],
+  "dependsOn": [
+    "BUILD-JSON-BACKWARD"
+  ],
+  "provenance": [
+    "design review"
+  ],
+  "related": []
+}

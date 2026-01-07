@@ -1,0 +1,13 @@
+{
+  "name": "TechnicalDebt.PriorityOrchestration",
+  "imports": [
+    "Core.Phase",
+    "TechnicalDebt.DeferredItemsFormatting",
+    "TechnicalDebt.PriorityFormatting",
+    "TechnicalDebt.PriorityMapping",
+    "TechnicalDebt.Priorities"
+  ],
+  "imported_by": [
+    "TechnicalDebt.PriorityOrchestrationFFI"
+  ]
+}

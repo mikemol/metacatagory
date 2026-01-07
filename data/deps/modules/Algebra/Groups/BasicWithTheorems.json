@@ -1,0 +1,13 @@
+{
+  "name": "Algebra.Groups.BasicWithTheorems",
+  "imports": [
+    "Chapter1.Level1Index",
+    "Metamodel",
+    "Algebra.Groups.Types",
+    "Algebra.Foundation",
+    "PropertyRegistry",
+    "Core",
+    "Algebra.Groups.Theorems.Classical"
+  ],
+  "imported_by": []
+}

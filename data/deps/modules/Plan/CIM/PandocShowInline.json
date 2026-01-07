@@ -1,0 +1,11 @@
+{
+  "name": "Plan.CIM.PandocShowInline",
+  "imports": [
+    "Plan.CIM.PandocAST"
+  ],
+  "imported_by": [
+    "Plan.CIM.PandocShowBlock",
+    "Plan.CIM.PandocShowMdBlock",
+    "Plan.CIM.RoadmapExporter"
+  ]
+}

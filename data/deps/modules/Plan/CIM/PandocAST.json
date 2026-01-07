@@ -1,0 +1,21 @@
+{
+  "name": "Plan.CIM.PandocAST",
+  "imports": [],
+  "imported_by": [
+    "Plan.CIM.CHIPRecomposed",
+    "Plan.CIM.DocumentSynthesis",
+    "Plan.CIM.DocumentationContent",
+    "Plan.CIM.GrammarBridge",
+    "Plan.CIM.MarkdownNormalize",
+    "Plan.CIM.MarkdownParse",
+    "Plan.CIM.PandocProofExample",
+    "Plan.CIM.PandocProofExport",
+    "Plan.CIM.PandocProtocols",
+    "Plan.CIM.PandocShowBlock",
+    "Plan.CIM.PandocShowInline",
+    "Plan.CIM.PandocShowMdBlock",
+    "Plan.CIM.PandocToMarkdown",
+    "Plan.CIM.RoadmapExporter",
+    "Plan.CIM.Structure"
+  ]
+}

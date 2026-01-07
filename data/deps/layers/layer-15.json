@@ -1,0 +1,7 @@
+[
+  "Algebra.Fields.ClassicalInstance",
+  "Algorithms.TestInstances",
+  "Core.UniversalProperties",
+  "Core.Yoneda",
+  "Algebra.Fields.Advanced"
+]

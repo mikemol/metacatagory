@@ -1,0 +1,8 @@
+{
+  "name": "TechnicalDebt.AlgorithmCompositionRegistry",
+  "imports": [
+    "Core.TechnicalDebt",
+    "Metamodel"
+  ],
+  "imported_by": []
+}

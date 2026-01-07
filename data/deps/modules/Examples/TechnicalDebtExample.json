@@ -1,0 +1,9 @@
+{
+  "name": "Examples.TechnicalDebtExample",
+  "imports": [
+    "Core.Utils",
+    "Metamodel",
+    "PropertyRegistry"
+  ],
+  "imported_by": []
+}

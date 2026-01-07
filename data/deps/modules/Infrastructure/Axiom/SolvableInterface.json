@@ -1,0 +1,8 @@
+{
+  "name": "Infrastructure.Axiom.SolvableInterface",
+  "imports": [],
+  "imported_by": [
+    "Infrastructure.Axiom.Movie",
+    "Infrastructure.Axiom.PentagonFromTriangles"
+  ]
+}

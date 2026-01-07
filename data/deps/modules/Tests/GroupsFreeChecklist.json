@@ -1,0 +1,15 @@
+{
+  "name": "Tests.GroupsFreeChecklist",
+  "imports": [
+    "Tests.ObligationAdapters",
+    "Core.Phase",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Chapter1.Level1",
+    "Algebra.Groups.Free",
+    "Core.CategoricalAdapter"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

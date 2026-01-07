@@ -1,0 +1,19 @@
+{
+  "name": "Algorithms.Instrumented",
+  "imports": [
+    "Core.Phase",
+    "Metamodel",
+    "Core.GrowthMetrics",
+    "Core.Utils",
+    "Algebra.Foundation",
+    "Algebra.Fields.Types",
+    "Core.Algorithms.Bundle",
+    "Algebra.Rings.Basic",
+    "GrowthAnalysis",
+    "Core.Limitations",
+    "Core.AlgebraicAlgorithms"
+  ],
+  "imported_by": [
+    "Examples.InstrumentedAlgorithmDemo"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Infrastructure.Functor.Instances.FunctionCategory",
+  "imports": [
+    "Infrastructure.Functor.Instances.Trivial",
+    "Infrastructure.Functor.Interface"
+  ],
+  "imported_by": [
+    "Infrastructure.Functor.Instances.Ambiguity",
+    "Infrastructure.Index"
+  ]
+}

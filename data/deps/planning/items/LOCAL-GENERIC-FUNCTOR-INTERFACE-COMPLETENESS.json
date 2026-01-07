@@ -1,0 +1,22 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS",
+  "title": "Complete generic functor interface laws and helpers",
+  "description": "Complete the generic functor interface laws and helpers to provide the coherence proofs downstream components expect.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Interface.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Interface"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": []
+}

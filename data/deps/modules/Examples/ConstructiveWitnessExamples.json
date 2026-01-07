@@ -1,0 +1,16 @@
+{
+  "name": "Examples.ConstructiveWitnessExamples",
+  "imports": [
+    "Core.ConstructiveWitnesses",
+    "Core.Phase",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algebra.Fields.Advanced",
+    "Core",
+    "Core.Witnesses",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
+  ],
+  "imported_by": []
+}

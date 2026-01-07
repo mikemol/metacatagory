@@ -1,0 +1,7 @@
+{
+  "name": "Core.AdapterReflection",
+  "imports": [
+    "Core.CategoricalAdapter"
+  ],
+  "imported_by": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS",
+  "title": "Align functor composition adapters with interface",
+  "description": "Build adapters so existing structures interoperate through the new generic functor interface.",
+  "status": "not-started",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Compose.agda",
+    "src/agda/Core/PhaseCategoryWrapper.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Interop"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": [
+    "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ]
+}

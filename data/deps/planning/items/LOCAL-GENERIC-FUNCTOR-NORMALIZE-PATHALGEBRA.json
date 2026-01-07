@@ -1,0 +1,22 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-PATHALGEBRA",
+  "title": "Normalize PathAlgebra functor instance",
+  "description": "Normalize the PathAlgebra functor instance so algebraic paths reuse the same categorical structure.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Refactor"
+  ],
+  "dependsOn": [
+    "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": []
+}

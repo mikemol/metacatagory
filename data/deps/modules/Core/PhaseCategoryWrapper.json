@@ -1,0 +1,11 @@
+{
+  "name": "Core.PhaseCategoryWrapper",
+  "imports": [
+    "Infrastructure.Functor.Interface",
+    "Core.Phase"
+  ],
+  "imported_by": [
+    "Infrastructure.Functor.Instances.PhaseCategory",
+    "Infrastructure.Index"
+  ]
+}

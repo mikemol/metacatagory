@@ -1,0 +1,20 @@
+{
+  "id": "GP-Gp811",
+  "title": "GP811: The Free Energy Principle",
+  "description": "GP811: The Free Energy Principle. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda",
+  "status": "not-started",
+  "category": "IngestedGP",
+  "source": "Plan/CIM/IngestedRoadmaps/Analysis.agda",
+  "files": [
+    "src/agda/Plan/CIM/Implementation.agda"
+  ],
+  "tags": [
+    "GP"
+  ],
+  "dependsOn": [],
+  "provenance": [
+    "GP-Gp811|Plan/CIM/IngestedRoadmaps/Analysis.agda",
+    "ROADMAP-MD-15|ROADMAP.md"
+  ],
+  "related": []
+}

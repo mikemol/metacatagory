@@ -1,0 +1,13 @@
+{
+  "name": "Examples.InstrumentedAlgorithmDemo",
+  "imports": [
+    "Core.Algorithms.Registry",
+    "Metamodel",
+    "Core.GrowthMetrics",
+    "Algorithms.Instrumented",
+    "Algebra.Fields.Types",
+    "Core.Algorithms.Bundle",
+    "Algebra.Rings.Basic"
+  ],
+  "imported_by": []
+}

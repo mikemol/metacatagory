@@ -1,0 +1,7 @@
+{
+  "name": "Infrastructure.Iso.Structural",
+  "imports": [],
+  "imported_by": [
+    "Infrastructure.Index"
+  ]
+}

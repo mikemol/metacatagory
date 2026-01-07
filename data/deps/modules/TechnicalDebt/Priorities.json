@@ -1,0 +1,12 @@
+{
+  "name": "TechnicalDebt.Priorities",
+  "imports": [
+    "Core.TechnicalDebt",
+    "Core"
+  ],
+  "imported_by": [
+    "TechnicalDebt.PriorityFormatting",
+    "TechnicalDebt.PriorityMapping",
+    "TechnicalDebt.PriorityOrchestration"
+  ]
+}

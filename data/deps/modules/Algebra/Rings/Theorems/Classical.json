@@ -1,0 +1,13 @@
+{
+  "name": "Algebra.Rings.Theorems.Classical",
+  "imports": [
+    "Algebra.Foundation",
+    "Core",
+    "Metamodel",
+    "Algebra.Rings.Types"
+  ],
+  "imported_by": [
+    "Algebra.Rings.BasicWithTheorems",
+    "Algebra.Rings.ClassicalInstance"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Examples.LazyHybridDemo",
+  "imports": [
+    "Core.Algorithms.Registry",
+    "Core.Algorithms.NumberFields",
+    "Algebra.Foundation",
+    "Core.Algorithms.FiniteFields",
+    "Core.Algorithms.Bundle",
+    "Core",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
+  ],
+  "imported_by": []
+}

@@ -1,0 +1,29 @@
+{
+  "id": "LOCAL-GENERIC-FUNCTOR",
+  "title": "Introduce generic functor interface for protocol bundles",
+  "description": "Establish the generic functor interface for protocol bundles so adapters share a single abstraction.",
+  "status": "done",
+  "category": "Infrastructure",
+  "source": "DefinitionDictionary",
+  "files": [
+    "src/agda/Infrastructure/Functor/Interface.agda",
+    "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda",
+    "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda",
+    "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda",
+    "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda",
+    "src/agda/Infrastructure/Functor/Instances/Ambiguity.agda",
+    "src/agda/Infrastructure/Functor/Compose.agda",
+    "src/agda/Core/PhaseCategoryWrapper.agda"
+  ],
+  "tags": [
+    "Functor",
+    "Interface"
+  ],
+  "dependsOn": [
+    "LOCAL-DEF-DICT"
+  ],
+  "provenance": [
+    "intake/codex_handoff.md"
+  ],
+  "related": []
+}

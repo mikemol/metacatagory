@@ -1,0 +1,12 @@
+{
+  "name": "Infrastructure.Functor.Instances.Ambiguity",
+  "imports": [
+    "Infrastructure.Functor.Instances.FunctionCategory",
+    "Infrastructure.Functor.Adapters.Funext",
+    "Infrastructure.Functor.Interface",
+    "Plan.CIM.Ambiguity"
+  ],
+  "imported_by": [
+    "Infrastructure.Index"
+  ]
+}

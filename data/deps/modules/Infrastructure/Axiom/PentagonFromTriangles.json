@@ -1,0 +1,7 @@
+{
+  "name": "Infrastructure.Axiom.PentagonFromTriangles",
+  "imports": [
+    "Infrastructure.Axiom.SolvableInterface"
+  ],
+  "imported_by": []
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Algebra.Fields.ClassicalInstance",
+  "imports": [
+    "Algebra.Fields.Basic",
+    "Algebra.Fields.Theorems.Classical"
+  ],
+  "imported_by": []
+}

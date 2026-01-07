@@ -1,0 +1,16 @@
+{
+  "name": "Tests.VectorSpaceChecklist",
+  "imports": [
+    "Tests.ObligationAdapters",
+    "Core.Phase",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algebra.Modules.Basic",
+    "Chapter1.Level1",
+    "Algebra.Rings.Basic",
+    "Core.CategoricalAdapter"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}
