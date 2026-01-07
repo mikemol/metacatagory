@@ -1,1 +1,4979 @@
-{"metadata":{"total_modules":84,"total_dependencies":151,"cycles_detected":0,"critical_path_length":0,"dependency_layers":0,"timestamp":""},"nodes":[{"module":"Algebra.Groups.Abelian","imports":["Algebra.Enrichment","Chapter2.Level2sub1"],"imported_by":["Algebra.Modules.Basic"]},{"module":"Chapter2.Level2sub1","imports":["Core"],"imported_by":["Chapter2.Level2Index","Tests.ChapterObligationsSmoke"]},{"module":"Chapter2.Level2sub7","imports":["Chapter1.Level1Index"],"imported_by":["Chapter2.Level2Index","Tests.ObligationAdapters"]},{"module":"Chapter1.Level1Index","imports":["Chapter1.Level1sub8","Chapter1.Level1sub3","Chapter1.Level1sub6","Chapter1.Level1sub7","Chapter1.Level1sub4","Chapter1.Level1sub5","Chapter1.Level1sub2"],"imported_by":["Chapter2.Level2sub8","Chapter2.Level2sub6","Chapter2.Level2sub5","Algebra.Foundation","Chapter3.Level3sub1","Chapter3.Level3sub2"]},{"module":"Tests.PhaseExamples","imports":["Core.Algorithms.Registry"],"imported_by":["Tests.Index"]},{"module":"Core.Algorithms.Registry","imports":["Algorithms.Adapters.BundleAdapter","Core.Algorithms.FiniteFields","Core.Algorithms.NumberFields","Core.Algorithms.FunctionFields"],"imported_by":["Tests.AdvancedPhaseExamples","Tests.PerformanceBoundaryTests","Tests.ErrorHandlingTests","Tests.DispatchBehaviorTests","Tests.AlgorithmCompositionTestsMinimal"]},{"module":"Tests.Chapter2Checklist","imports":["Tests.ObligationAdapters"],"imported_by":["Tests.Index"]},{"module":"Tests.ObligationAdapters","imports":["Chapter2.Level2sub2","Algebra.Fields.Advanced","Chapter2.Level2sub8","Core.UniversalProperties","Chapter2.Level2sub4","Chapter2.Level2sub5","Core.CategoricalAdapter","Chapter3.Level3sub1","Algebra.Groups.Structure","Chapter3.Level3sub2"],"imported_by":["Tests.GroupsAbelianChecklist","Tests.AbelianCategoriesChecklist","Tests.GrothendieckFibrationsChecklist","Tests.PolynomialFieldExtensionsChecklist","Tests.GroupsFreeChecklist","Tests.ModuleTheoryChecklist","Tests.MonadAdjunctionChecklist","Tests.Chapter3Checklist","Tests.TensorProductChecklist","Tests.AlgebraicCompletionChecklist","Tests.LimitsColimitsChecklist","Tests.SubobjectTheoryChecklist","Tests.YonedaChecklist","Tests.AdvancedFieldsChecklist","Tests.ModuleStructureChecklist","Tests.RingsBasicChecklist","Tests.KanExtensionsChecklist","Tests.FunctorPropertiesChecklist","Tests.FieldsBasicChecklist","Tests.GroupsStructureChecklist","Tests.AlgebraChecklist","Tests.VectorSpaceChecklist","Tests.ModulesChecklist","Tests.Chapter1Checklist","Tests.AdvancedMonadTheoryChecklist","Tests.EnrichmentChecklist","Tests.CoreUniversalPropertiesChecklist","Tests.PolynomialExtensionsChecklist","Tests.RegularCategoriesChecklist"]},{"module":"Core.PathAggregator","imports":["Core.GrowthMetrics"],"imported_by":["Tests.PathAggregatorTests"]},{"module":"Core.GrowthMetrics","imports":["Core.Utils"],"imported_by":["GrowthAnalysis"]},{"module":"Core.Algorithms.FunctionFields","imports":["Algorithms.Basic","Core.Witnesses","Core.Algorithms.Bundle"],"imported_by":[]},{"module":"Core.Algorithms.Bundle","imports":["Core.AlgebraicAlgorithms"],"imported_by":["Algorithms.Adapters.BundleAdapter","Core.Algorithms.External","Tests.SerializationTests"]},{"module":"Tests.PhaseCategoryExamplesRunner","imports":["Examples.PhaseCategoryExamples"],"imported_by":["Tests.Index"]},{"module":"Examples.PhaseCategoryExamples","imports":["Core.PhaseCategory"],"imported_by":[]},{"module":"Tests.GodelBoundaryTests","imports":["Core.GodelBoundary"],"imported_by":["Tests.Index"]},{"module":"Core.GodelBoundary","imports":["Core"],"imported_by":[]},{"module":"Agda.Builtin.Equality","imports":["Agda.Primitive"],"imported_by":["Infrastructure.Equality","Infrastructure.Coherence.Path2"]},{"module":"Agda.Primitive","imports":[],"imported_by":["Agda.Builtin.Sigma","Agda.Builtin.Maybe","Agda.Builtin.List","Agda.Builtin.Unit","Infrastructure.Universe","Agda.Builtin.Bool"]},{"module":"Algebra.Groups.Basic","imports":["Algebra.Groups.Types"],"imported_by":["Core.AlgebraicAlgorithms","Algebra.Groups.Free"]},{"module":"Algebra.Groups.Types","imports":["Algebra.Foundation"],"imported_by":["Algebra.Rings.Types"]},{"module":"Tests.UniversalPropertyTests","imports":["Core.AlgorithmUniversality"],"imported_by":["Tests.Index"]},{"module":"Core.AlgorithmUniversality","imports":["Core.AlgebraicAlgorithms","Core.UniversalProperties"],"imported_by":["Tests.ConstructiveWitnessTests"]},{"module":"Chapter1.Level1sub2","imports":["Core"],"imported_by":[]},{"module":"Core","imports":["Chapter1.Level1"],"imported_by":["Chapter1.Level1sub8","Chapter2.Level2sub2","Chapter2.Level2sub3","Chapter1.Level1sub3","Chapter2.Level2sub4","Chapter1.Level1sub6","Core.Utils","Chapter1.Level1sub7","Chapter1.Level1sub4","Chapter1.Level1sub5"]},{"module":"Tests.AlgorithmCompositionTestsMinimal","imports":["Core.UniversalProperties","Core.TechnicalDebt"],"imported_by":["Tests.AlgorithmCompositionTests"]},{"module":"Core.TechnicalDebt","imports":["Agda.Builtin.Int","Core.Utils"],"imported_by":["Tests.SerializationTests"]},{"module":"Tests.ConstructiveWitnessTests","imports":["Core.ConstructiveWitnesses"],"imported_by":["Tests.Index"]},{"module":"Core.ConstructiveWitnesses","imports":["Core.AlgebraicAlgorithms","Core.UniversalProperties","Core.Witnesses","Core.PolynomialsF2"],"imported_by":["Core.AlgorithmCorrectness"]},{"module":"Core.PolynomialsF2","imports":["Core.Phase"],"imported_by":[]},{"module":"Core.Phase","imports":["Agda.Builtin.String","Infrastructure.Coherence.Path2","Infrastructure.Universe"],"imported_by":["Core.PhaseCategory","Metamodel"]},{"module":"Tests.Chapters","imports":["Chapter2.Level2Index","Chapter3.Level3Index"],"imported_by":["Tests.Index"]},{"module":"Chapter3.Level3Index","imports":["Chapter3.Level3sub1","Chapter3.Level3sub2"],"imported_by":[]},{"module":"Metamodel","imports":["Agda.Builtin.Unit"],"imported_by":["Core.Limitations","PropertyRegistry","Core.AlgorithmComplexity"]},{"module":"Agda.Builtin.Unit","imports":[],"imported_by":["Core.CategoricalAdapter"]},{"module":"Tests.Index","imports":["Tests.GroupsAbelianChecklist","Tests.AbelianCategoriesChecklist","Tests.WitnessConstructionTests","Tests.GrothendieckFibrationsChecklist","Tests.PolynomialFieldExtensionsChecklist","Tests.GroupsFreeChecklist","Tests.ModuleTheoryChecklist","Tests.MonadAdjunctionChecklist","Tests.PropertyRegistryTests","Tests.AdvancedPhaseExamples","Tests.Chapter3Checklist","Tests.TensorProductChecklist","Tests.ToposTheoryChecklist","Tests.AlgebraicCompletionChecklist","Tests.LimitsColimitsChecklist","Tests.RealWorldAlgorithmsTests","Tests.SubobjectTheoryChecklist","Tests.YonedaChecklist","Tests.PathAggregatorTests","Tests.AdvancedFieldsChecklist","Tests.ModuleStructureChecklist","Tests.RingsBasicChecklist","Tests.KanExtensionsChecklist","Tests.SerializationTests","Tests.FunctorPropertiesChecklist","Tests.AlgorithmCompositionTests","Tests.FieldsBasicChecklist","Tests.PerformanceBoundaryTests","Tests.GroupsStructureChecklist","Tests.ErrorHandlingTests","Tests.AlgebraChecklist","Tests.VectorSpaceChecklist","Tests.ChapterObligationsSmoke","Tests.ProofObligationStatus","Tests.ModulesChecklist","Tests.Chapter1Checklist","Tests.AdvancedMonadTheoryChecklist","Tests.DispatchBehaviorTests","Tests.EnrichmentChecklist","Tests.CoreUniversalPropertiesChecklist","Tests.PolynomialExtensionsChecklist","Tests.RegularCategoriesChecklist"],"imported_by":[]},{"module":"Tests.RegularCategoriesChecklist","imports":[],"imported_by":[]},{"module":"Tests.ProofObligationStatus","imports":["Examples.AlgorithmCorrectnessExamples"],"imported_by":[]},{"module":"Examples.AlgorithmCorrectnessExamples","imports":["Core.AlgorithmCorrectness"],"imported_by":[]},{"module":"Agda.Builtin.Char","imports":["Agda.Builtin.Nat"],"imported_by":["Agda.Builtin.String"]},{"module":"Agda.Builtin.Nat","imports":["Agda.Builtin.Bool"],"imported_by":[]},{"module":"Core.Witnesses","imports":["Algebra.Fields.Advanced"],"imported_by":["Tests.WitnessConstructionTests","Core.Algorithms.External","Core.Algorithms.FiniteFields"]},{"module":"Algebra.Fields.Advanced","imports":["Algebra.Fields.Basic","Algebra.Rings.Basic"],"imported_by":["Core.AlgebraicAlgorithms"]},{"module":"Tests.ChapterObligationsSmoke","imports":["Chapter2.Level2sub2","Chapter3.Level3sub2"],"imported_by":[]},{"module":"Chapter3.Level3sub2","imports":[],"imported_by":["Tests.ToposObligationAdapters"]},{"module":"Algebra.Modules.Types","imports":["Algebra.Fields.Types"],"imported_by":["Algebra.Modules.Basic"]},{"module":"Algebra.Fields.Types","imports":["Algebra.Rings.Types"],"imported_by":[]},{"module":"Tests.ErrorHandlingTests","imports":["Core.UniversalProperties"],"imported_by":[]},{"module":"Core.UniversalProperties","imports":["Algebra.Fields.Basic","Algebra.Rings.Basic"],"imported_by":[]},{"module":"Core.Algorithms.NumberFields","imports":["Core.Algorithms.External"],"imported_by":[]},{"module":"Core.Algorithms.External","imports":["Algorithms.Basic"],"imported_by":[]},{"module":"Algebra.Rings.Basic","imports":["Chapter2.Level2sub3","Algebra.Rings.Types"],"imported_by":["Core.Yoneda"]},{"module":"Algebra.Rings.Types","imports":[],"imported_by":[]},{"module":"Algebra.Groups.Structure","imports":["Algebra.Groups.Free"],"imported_by":[]},{"module":"Algebra.Groups.Free","imports":[],"imported_by":[]},{"module":"Tests.PerformanceBoundaryTests","imports":["Core.AlgorithmComplexity","GrowthAnalysis"],"imported_by":[]},{"module":"GrowthAnalysis","imports":[],"imported_by":[]},{"module":"Core.CategoricalAdapter","imports":["Infrastructure.Coherence.Path2","Infrastructure.Universe"],"imported_by":["Tests.ToposObligationAdapters"]},{"module":"Infrastructure.Universe","imports":[],"imported_by":[]},{"module":"Chapter2.Level2sub5","imports":["Chapter2.Level2sub3"],"imported_by":["Chapter2.Level2Index"]},{"module":"Chapter2.Level2sub3","imports":[],"imported_by":[]},{"module":"Agda.Builtin.Int","imports":["Agda.Builtin.String"],"imported_by":[]},{"module":"Agda.Builtin.String","imports":["Agda.Builtin.Sigma","Agda.Builtin.Maybe","Agda.Builtin.List"],"imported_by":[]},{"module":"Tests.YonedaChecklist","imports":["Core.Yoneda"],"imported_by":[]},{"module":"Core.Yoneda","imports":["Algebra.Fields.Basic"],"imported_by":[]},{"module":"Core.GrothendieckFibrations","imports":["Chapter2.Level2sub8","Algebra.Foundation"],"imported_by":["Tests.GrothendieckFibrationsChecklist"]},{"module":"Algebra.Foundation","imports":[],"imported_by":["Algebra.Enrichment"]},{"module":"Core.Algorithms.FiniteFields","imports":["Algorithms.Basic"],"imported_by":[]},{"module":"Algorithms.Basic","imports":["Core.AlgebraicAlgorithms"],"imported_by":["Algorithms.Adapters.BundleAdapter"]},{"module":"Algebra.Fields.Basic","imports":["Algebra.Modules.Basic"],"imported_by":[]},{"module":"Algebra.Modules.Basic","imports":[],"imported_by":[]},{"module":"Algebra.Enrichment","imports":["Chapter2.Level2sub6"],"imported_by":[]},{"module":"Chapter2.Level2sub6","imports":[],"imported_by":["Chapter2.Level2Index"]},{"module":"Tests.RealWorldAlgorithmsTests","imports":["Examples.RealWorldAlgorithms"],"imported_by":[]},{"module":"Examples.RealWorldAlgorithms","imports":["Core.AlgorithmCorrectness"],"imported_by":[]},{"module":"Tests.ToposTheoryChecklist","imports":["Tests.ToposObligationAdapters"],"imported_by":[]},{"module":"Tests.ToposObligationAdapters","imports":[],"imported_by":[]},{"module":"Core.AlgebraicAlgorithms","imports":["Core.Limitations"],"imported_by":["Tests.WitnessConstructionTests"]},{"module":"Core.Limitations","imports":[],"imported_by":[]},{"module":"Core.PhaseCategory","imports":["Infrastructure.Functor.Interface"],"imported_by":[]},{"module":"Infrastructure.Functor.Interface","imports":["Infrastructure.Equality"],"imported_by":[]},{"module":"Tests.PropertyRegistryTests","imports":["PropertyRegistry"],"imported_by":[]},{"module":"PropertyRegistry","imports":[],"imported_by":["Chapter1.Level1"]},{"module":"Chapter2.Level2Index","imports":["Chapter2.Level2sub2","Chapter2.Level2sub8","Chapter2.Level2sub4"],"imported_by":[]},{"module":"Chapter2.Level2sub4","imports":[],"imported_by":[]}]}
+{
+  "metadata": {
+    "total_modules": 263,
+    "total_dependencies": 1215,
+    "cycles_detected": 0,
+    "max_fan_in": 126,
+    "max_fan_out": 50,
+    "avg_dependencies": 4.619771863117871
+  },
+  "cycles": [],
+  "nodes": [
+    {
+      "module": "Algebra.Enrichment",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Chapter2.Level2sub6",
+        "Metamodel",
+        "Algebra.Foundation",
+        "PropertyRegistry",
+        "Core"
+      ],
+      "imported_by": [
+        "Algebra.Groups.Abelian",
+        "Tests.EnrichmentChecklist",
+        "Tests.ObligationAdapters",
+        "Algebra.Index"
+      ],
+      "direct_deps": 6,
+      "reverse_deps": 4,
+      "transitive_deps": 17
+    },
+    {
+      "module": "Algebra.Fields.Advanced",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Modules.Basic",
+        "PropertyRegistry",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic"
+      ],
+      "imported_by": [
+        "Core.ConstructiveWitnesses",
+        "Tests.ConstructiveWitnessTests",
+        "Core.Algorithms.External",
+        "Core.AlgorithmUniversality",
+        "Core.Witnesses",
+        "Tests.AlgorithmSmokeTests",
+        "Tests.UniversalPropertyTests",
+        "Algorithms.Basic",
+        "Tests.WitnessConstructionTests",
+        "Core.Algorithms.FunctionFields",
+        "Tests.PolynomialFieldExtensionsChecklist",
+        "Examples.AlgorithmCorrectnessExamples",
+        "Tests.AdvancedFieldsChecklist",
+        "Core.Algorithms.Registry",
+        "Tests.ObligationAdapters",
+        "Core.Algorithms.NumberFields",
+        "Core.AlgorithmCorrectness",
+        "Core.AlgebraicAlgorithms",
+        "Examples.ConstructiveWitnessExamples",
+        "Algebra.Index"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 20,
+      "transitive_deps": 28
+    },
+    {
+      "module": "Algebra.Fields.Basic",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Modules.Basic",
+        "PropertyRegistry",
+        "Algebra.Fields.Types",
+        "Core",
+        "Algebra.Rings.Types"
+      ],
+      "imported_by": [
+        "Core.ConstructiveWitnesses",
+        "Tests.ConstructiveWitnessTests",
+        "Core.Algorithms.InductiveClassification",
+        "Algebra.Fields.ClassicalInstance",
+        "Tests.AlgebraicCompletionChecklist",
+        "Core.AlgorithmUniversality",
+        "Core.Algorithms.External",
+        "Examples.FunctionField.F2x",
+        "Tests.FieldsBasicChecklist",
+        "Core.Yoneda",
+        "Core.Witnesses",
+        "Tests.AlgorithmSmokeTests",
+        "Core.Algorithms.AutomaticEvidence",
+        "Tests.UniversalPropertyTests",
+        "Algorithms.Basic",
+        "Tests.PerformanceBoundaryTests",
+        "Tests.AdvancedPhaseExamples",
+        "Tests.WitnessConstructionTests",
+        "Core.UniversalProperties",
+        "Core.Algorithms.FunctionFields",
+        "Tests.PolynomialFieldExtensionsChecklist",
+        "Examples.AlgorithmCorrectnessExamples",
+        "Tests.DispatchBehaviorTests",
+        "Core.Algorithms.Registry",
+        "Tests.ObligationAdapters",
+        "Tests.ErrorHandlingTests",
+        "Core.Algorithms.NumberFields",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Tests.SerializationTests",
+        "Examples.NumberField.Sqrt2",
+        "Core.AlgorithmCorrectness",
+        "Core.Algorithms.FiniteFields",
+        "Core.Algorithms.Bundle",
+        "Algebra.Fields.Advanced",
+        "Tests.ErrorAsSpecificationTests",
+        "Core.AlgebraicAlgorithms",
+        "Tests.PhaseExamples",
+        "Examples.LazyHybridDemo",
+        "Examples.ConstructiveWitnessExamples",
+        "Algorithms.TestInstances",
+        "Algebra.Index",
+        "Examples.AutomaticEvidenceDemo"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 42,
+      "transitive_deps": 25
+    },
+    {
+      "module": "Algebra.Fields.BasicWithTheorems",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Modules.Basic",
+        "PropertyRegistry",
+        "Algebra.Fields.Theorems.Classical",
+        "Core",
+        "Algebra.Rings.Basic"
+      ],
+      "imported_by": [],
+      "direct_deps": 8,
+      "reverse_deps": 0,
+      "transitive_deps": 28
+    },
+    {
+      "module": "Algebra.Fields.ClassicalInstance",
+      "imports": [
+        "Algebra.Fields.Basic",
+        "Algebra.Fields.Theorems.Classical"
+      ],
+      "imported_by": [],
+      "direct_deps": 2,
+      "reverse_deps": 0,
+      "transitive_deps": 27
+    },
+    {
+      "module": "Algebra.Fields.Theorems.Classical",
+      "imports": [
+        "Algebra.Foundation",
+        "Core",
+        "Metamodel",
+        "Algebra.Fields.Types"
+      ],
+      "imported_by": [
+        "Algebra.Fields.BasicWithTheorems",
+        "Algebra.Fields.ClassicalInstance"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 2,
+      "transitive_deps": 19
+    },
+    {
+      "module": "Algebra.Fields.Types",
+      "imports": [
+        "Algebra.Foundation",
+        "Core",
+        "Metamodel",
+        "Algebra.Rings.Types"
+      ],
+      "imported_by": [
+        "Algorithms.Instrumented",
+        "Algebra.Fields.Theorems.Classical",
+        "Examples.InstrumentedAlgorithmDemo",
+        "Algebra.Modules.Types",
+        "Algebra.Fields.Basic"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 5,
+      "transitive_deps": 18
+    },
+    {
+      "module": "Algebra.Foundation",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Core",
+        "Metamodel",
+        "PropertyRegistry"
+      ],
+      "imported_by": [
+        "Tests.RingsBasicChecklist",
+        "Core.ConstructiveWitnesses",
+        "Tests.ConstructiveWitnessTests",
+        "Algebra.Groups.Types",
+        "Tests.AlgebraicCompletionChecklist",
+        "Core.AlgorithmUniversality",
+        "Core.Algorithms.External",
+        "Examples.FunctionField.F2x",
+        "Tests.ModuleStructureChecklist",
+        "Tests.FieldsBasicChecklist",
+        "Core.GrothendieckFibrations",
+        "Core.Yoneda",
+        "Tests.ModuleTheoryChecklist",
+        "Core.Witnesses",
+        "Tests.AlgorithmSmokeTests",
+        "Core.Algorithms.AutomaticEvidence",
+        "Algebra.Groups.Abelian",
+        "Tests.AlgebraChecklist",
+        "Tests.ModulesChecklist",
+        "Algebra.Modules.Types",
+        "Algebra.Fields.Basic",
+        "Algebra.Modules.Theorems.Classical",
+        "Tests.UniversalPropertyTests",
+        "Tests.EnrichmentChecklist",
+        "Algorithms.Basic",
+        "Algebra.Fields.Theorems.Classical",
+        "Algebra.Groups.Free",
+        "Algebra.Rings.BasicWithTheorems",
+        "Algebra.Rings.Types",
+        "Tests.WitnessConstructionTests",
+        "Tests.GroupsFreeChecklist",
+        "Tests.VectorSpaceChecklist",
+        "Tests.PolynomialFieldExtensionsChecklist",
+        "Examples.AlgorithmCorrectnessExamples",
+        "Tests.DispatchBehaviorTests",
+        "Core.UniversalProperties",
+        "Tests.AdvancedFieldsChecklist",
+        "Core.Algorithms.FunctionFields",
+        "Core.Algorithms.Registry",
+        "Algebra.Groups.Basic",
+        "Tests.ObligationAdapters",
+        "Algebra.Groups.BasicParameterized",
+        "Core.Algorithms.NumberFields",
+        "Algebra.Rings.Theorems.Classical",
+        "Examples.NumberField.Sqrt2",
+        "Core.AlgorithmCorrectness",
+        "Tests.GroupsStructureChecklist",
+        "Core.Algorithms.FiniteFields",
+        "Algebra.Fields.Advanced",
+        "Tests.GroupsAbelianChecklist",
+        "Algebra.Rings.Basic",
+        "Algebra.Groups.Theorems.Classical",
+        "Tests.TensorProductChecklist",
+        "Core.AlgebraicAlgorithms",
+        "Tests.PolynomialExtensionsChecklist",
+        "Algebra.Enrichment",
+        "Examples.LazyHybridDemo",
+        "Algebra.Groups.BasicWithTheorems",
+        "Examples.ConstructiveWitnessExamples",
+        "Algebra.Modules.Basic",
+        "Algorithms.Instrumented",
+        "Algorithms.TestInstances",
+        "Algebra.Index",
+        "Algebra.Fields.Types",
+        "Algebra.Groups.Structure",
+        "Algebra.Modules.BasicWithTheorems",
+        "Examples.AutomaticEvidenceDemo",
+        "Algebra.Fields.BasicWithTheorems"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 68,
+      "transitive_deps": 15
+    },
+    {
+      "module": "Algebra.Groups.Abelian",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Chapter2.Level2sub6",
+        "Algebra.Enrichment",
+        "Metamodel",
+        "Algebra.Foundation",
+        "PropertyRegistry",
+        "Core",
+        "Chapter2.Level2sub1"
+      ],
+      "imported_by": [
+        "Tests.ObligationAdapters",
+        "Tests.AlgebraicCompletionChecklist",
+        "Tests.EnrichmentChecklist",
+        "Algebra.Modules.Basic",
+        "Algebra.Index",
+        "Algebra.Modules.BasicWithTheorems",
+        "Tests.GroupsAbelianChecklist",
+        "Tests.AlgorithmSmokeTests",
+        "Tests.ModulesChecklist",
+        "Tests.TensorProductChecklist"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 10,
+      "transitive_deps": 19
+    },
+    {
+      "module": "Algebra.Groups.Basic",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Metamodel",
+        "Algebra.Groups.Types",
+        "Algebra.Foundation",
+        "PropertyRegistry",
+        "Core"
+      ],
+      "imported_by": [
+        "Tests.RingsBasicChecklist",
+        "Core.ConstructiveWitnesses",
+        "Tests.ObligationAdapters",
+        "Tests.AlgebraicCompletionChecklist",
+        "Algorithms.Basic",
+        "Algebra.Groups.ClassicalInstance",
+        "Algorithms.TestInstances",
+        "Algebra.Index",
+        "Tests.GroupsStructureChecklist",
+        "Core.AlgorithmCorrectness",
+        "Core.Algorithms.FiniteFields",
+        "Algebra.Groups.Structure",
+        "Algebra.Groups.Free",
+        "Algebra.Rings.BasicWithTheorems",
+        "Algebra.Modules.BasicWithTheorems",
+        "Tests.WitnessConstructionTests",
+        "Tests.ModulesChecklist",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "direct_deps": 6,
+      "reverse_deps": 18,
+      "transitive_deps": 17
+    },
+    {
+      "module": "Algebra.Groups.BasicParameterized",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Metamodel",
+        "Algebra.Groups.Types",
+        "Algebra.Foundation",
+        "PropertyRegistry",
+        "Core"
+      ],
+      "imported_by": [],
+      "direct_deps": 6,
+      "reverse_deps": 0,
+      "transitive_deps": 17
+    },
+    {
+      "module": "Algebra.Groups.BasicWithTheorems",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Metamodel",
+        "Algebra.Groups.Types",
+        "Algebra.Foundation",
+        "PropertyRegistry",
+        "Core",
+        "Algebra.Groups.Theorems.Classical"
+      ],
+      "imported_by": [],
+      "direct_deps": 7,
+      "reverse_deps": 0,
+      "transitive_deps": 18
+    },
+    {
+      "module": "Algebra.Groups.ClassicalInstance",
+      "imports": [
+        "Algebra.Groups.Theorems.Classical",
+        "Algebra.Groups.Basic"
+      ],
+      "imported_by": [],
+      "direct_deps": 2,
+      "reverse_deps": 0,
+      "transitive_deps": 19
+    },
+    {
+      "module": "Algebra.Groups.Free",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Metamodel",
+        "Algebra.Foundation",
+        "PropertyRegistry",
+        "Core",
+        "Algebra.Groups.Basic"
+      ],
+      "imported_by": [
+        "Tests.ObligationAdapters",
+        "Algebra.Index",
+        "Tests.GroupsStructureChecklist",
+        "Algebra.Groups.Structure",
+        "Tests.GroupsFreeChecklist"
+      ],
+      "direct_deps": 6,
+      "reverse_deps": 5,
+      "transitive_deps": 18
+    },
+    {
+      "module": "Algebra.Groups.Structure",
+      "imports": [
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Groups.Free",
+        "Core",
+        "Algebra.Groups.Basic"
+      ],
+      "imported_by": [
+        "Tests.GroupsStructureChecklist",
+        "Tests.ObligationAdapters",
+        "Algebra.Index"
+      ],
+      "direct_deps": 5,
+      "reverse_deps": 3,
+      "transitive_deps": 19
+    },
+    {
+      "module": "Algebra.Groups.Theorems.Classical",
+      "imports": [
+        "Algebra.Foundation",
+        "Core",
+        "Metamodel",
+        "Algebra.Groups.Types"
+      ],
+      "imported_by": [
+        "Algebra.Groups.ClassicalInstance",
+        "Algebra.Groups.BasicWithTheorems"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 2,
+      "transitive_deps": 17
+    },
+    {
+      "module": "Algebra.Groups.Types",
+      "imports": [
+        "Algebra.Foundation",
+        "Core",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Algebra.Groups.BasicWithTheorems",
+        "Algebra.Modules.Basic",
+        "Algebra.Groups.Basic",
+        "Algebra.Rings.Types",
+        "Algebra.Rings.Basic",
+        "Algebra.Modules.Types",
+        "Algebra.Groups.Theorems.Classical",
+        "Algebra.Groups.BasicParameterized"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 8,
+      "transitive_deps": 16
+    },
+    {
+      "module": "Algebra.Index",
+      "imports": [
+        "Algebra.Enrichment",
+        "Core.Algorithms.Registry",
+        "Core.Algorithms.NumberFields",
+        "Core.Algorithms.External",
+        "Algebra.Foundation",
+        "Algebra.Modules.Basic",
+        "Core.Algorithms.FiniteFields",
+        "Algebra.Groups.Free",
+        "Algebra.Groups.Structure",
+        "Algebra.Fields.Advanced",
+        "Core.Algorithms.Bundle",
+        "Core.Witnesses",
+        "Algebra.Rings.Basic",
+        "Algebra.Groups.Abelian",
+        "Algebra.Fields.Basic",
+        "Algebra.Groups.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Examples.FiniteField.GF8"
+      ],
+      "direct_deps": 17,
+      "reverse_deps": 1,
+      "transitive_deps": 43
+    },
+    {
+      "module": "Algebra.Modules.Basic",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Algebra.Groups.Types",
+        "Metamodel",
+        "Algebra.Foundation",
+        "PropertyRegistry",
+        "Core",
+        "Chapter2.Level2sub1",
+        "Algebra.Rings.Types",
+        "Algebra.Groups.Abelian",
+        "Algebra.Modules.Types"
+      ],
+      "imported_by": [
+        "Tests.ObligationAdapters",
+        "Tests.AlgebraicCompletionChecklist",
+        "Algebra.Modules.ClassicalInstance",
+        "Tests.ModuleStructureChecklist",
+        "Algebra.Index",
+        "Algebra.Fields.Advanced",
+        "Tests.ModuleTheoryChecklist",
+        "Tests.VectorSpaceChecklist",
+        "Algebra.Fields.Basic",
+        "Tests.ModulesChecklist",
+        "Algebra.Fields.BasicWithTheorems"
+      ],
+      "direct_deps": 10,
+      "reverse_deps": 11,
+      "transitive_deps": 24
+    },
+    {
+      "module": "Algebra.Modules.BasicWithTheorems",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Metamodel",
+        "Algebra.Modules.Theorems.Classical",
+        "Algebra.Foundation",
+        "PropertyRegistry",
+        "Core",
+        "Chapter2.Level2sub1",
+        "Algebra.Rings.Basic",
+        "Algebra.Groups.Abelian",
+        "Algebra.Groups.Basic"
+      ],
+      "imported_by": [],
+      "direct_deps": 10,
+      "reverse_deps": 0,
+      "transitive_deps": 28
+    },
+    {
+      "module": "Algebra.Modules.ClassicalInstance",
+      "imports": [
+        "Algebra.Modules.Basic",
+        "Algebra.Modules.Theorems.Classical"
+      ],
+      "imported_by": [],
+      "direct_deps": 2,
+      "reverse_deps": 0,
+      "transitive_deps": 26
+    },
+    {
+      "module": "Algebra.Modules.Theorems.Classical",
+      "imports": [
+        "Algebra.Foundation",
+        "Core",
+        "Metamodel",
+        "Algebra.Modules.Types"
+      ],
+      "imported_by": [
+        "Algebra.Modules.ClassicalInstance",
+        "Algebra.Modules.BasicWithTheorems"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 2,
+      "transitive_deps": 20
+    },
+    {
+      "module": "Algebra.Modules.Types",
+      "imports": [
+        "Algebra.Groups.Types",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Fields.Types",
+        "Core",
+        "Algebra.Rings.Types"
+      ],
+      "imported_by": [
+        "Algebra.Modules.Basic",
+        "Algebra.Modules.Theorems.Classical"
+      ],
+      "direct_deps": 6,
+      "reverse_deps": 2,
+      "transitive_deps": 19
+    },
+    {
+      "module": "Algebra.Rings.Basic",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Algebra.Groups.Types",
+        "Metamodel",
+        "Algebra.Foundation",
+        "PropertyRegistry",
+        "Core",
+        "Chapter2.Level2sub3",
+        "Algebra.Rings.Types"
+      ],
+      "imported_by": [
+        "Tests.RingsBasicChecklist",
+        "Core.ConstructiveWitnesses",
+        "Tests.ConstructiveWitnessTests",
+        "Core.Algorithms.InductiveClassification",
+        "Tests.AlgebraicCompletionChecklist",
+        "Core.AlgorithmUniversality",
+        "Core.Algorithms.External",
+        "Examples.FunctionField.F2x",
+        "Tests.ModuleStructureChecklist",
+        "Tests.FieldsBasicChecklist",
+        "Algorithms.Adapters.BundleAdapter",
+        "Core.Yoneda",
+        "Tests.ModuleTheoryChecklist",
+        "Core.Witnesses",
+        "Tests.AlgorithmSmokeTests",
+        "Core.Algorithms.AutomaticEvidence",
+        "Tests.AlgebraChecklist",
+        "Tests.ModulesChecklist",
+        "Tests.UniversalPropertyTests",
+        "Algorithms.Basic",
+        "Tests.PerformanceBoundaryTests",
+        "Tests.AdvancedPhaseExamples",
+        "Tests.WitnessConstructionTests",
+        "Core.UniversalProperties",
+        "Tests.VectorSpaceChecklist",
+        "Tests.PolynomialFieldExtensionsChecklist",
+        "Examples.AlgorithmCorrectnessExamples",
+        "Tests.DispatchBehaviorTests",
+        "Core.Algorithms.FunctionFields",
+        "Tests.AdvancedFieldsChecklist",
+        "Core.Algorithms.Registry",
+        "Tests.ObligationAdapters",
+        "Tests.ErrorHandlingTests",
+        "Core.Algorithms.NumberFields",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Tests.SerializationTests",
+        "Tests.YonedaChecklist",
+        "Examples.NumberField.Sqrt2",
+        "Core.AlgorithmCorrectness",
+        "Core.Algorithms.FiniteFields",
+        "Core.Algorithms.Bundle",
+        "Algebra.Fields.Advanced",
+        "Tests.ErrorAsSpecificationTests",
+        "Examples.InstrumentedAlgorithmDemo",
+        "Core.AlgebraicAlgorithms",
+        "Tests.PolynomialExtensionsChecklist",
+        "Tests.PhaseExamples",
+        "Examples.LazyHybridDemo",
+        "Examples.ConstructiveWitnessExamples",
+        "Algebra.Rings.ClassicalInstance",
+        "Algorithms.Instrumented",
+        "Algorithms.TestInstances",
+        "Algebra.Index",
+        "Algebra.Modules.BasicWithTheorems",
+        "Tests.WarningAggregatorsTest",
+        "Examples.AutomaticEvidenceDemo",
+        "Algebra.Fields.BasicWithTheorems"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 57,
+      "transitive_deps": 19
+    },
+    {
+      "module": "Algebra.Rings.BasicWithTheorems",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Algebra.Rings.Theorems.Classical",
+        "Metamodel",
+        "Algebra.Foundation",
+        "PropertyRegistry",
+        "Core",
+        "Chapter2.Level2sub3",
+        "Algebra.Groups.Basic"
+      ],
+      "imported_by": [],
+      "direct_deps": 8,
+      "reverse_deps": 0,
+      "transitive_deps": 21
+    },
+    {
+      "module": "Algebra.Rings.ClassicalInstance",
+      "imports": [
+        "Algebra.Rings.Basic",
+        "Algebra.Rings.Theorems.Classical"
+      ],
+      "imported_by": [],
+      "direct_deps": 2,
+      "reverse_deps": 0,
+      "transitive_deps": 21
+    },
+    {
+      "module": "Algebra.Rings.Theorems.Classical",
+      "imports": [
+        "Algebra.Foundation",
+        "Core",
+        "Metamodel",
+        "Algebra.Rings.Types"
+      ],
+      "imported_by": [
+        "Algebra.Rings.BasicWithTheorems",
+        "Algebra.Rings.ClassicalInstance"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 2,
+      "transitive_deps": 18
+    },
+    {
+      "module": "Algebra.Rings.Types",
+      "imports": [
+        "Algebra.Foundation",
+        "Core",
+        "Metamodel",
+        "Algebra.Groups.Types"
+      ],
+      "imported_by": [
+        "Algebra.Rings.Theorems.Classical",
+        "Algebra.Modules.Basic",
+        "Algebra.Fields.Types",
+        "Algebra.Rings.Basic",
+        "Algebra.Modules.Types",
+        "Algebra.Fields.Basic"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 6,
+      "transitive_deps": 17
+    },
+    {
+      "module": "Algorithms.Adapters.BundleAdapter",
+      "imports": [
+        "Algebra.Rings.Basic",
+        "Core.Algorithms.Bundle",
+        "Algorithms.Basic"
+      ],
+      "imported_by": [
+        "Core.Algorithms.Registry"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 34
+    },
+    {
+      "module": "Algorithms.Basic",
+      "imports": [
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Fields.Advanced",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.Limitations",
+        "Algebra.Groups.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Core.Algorithms.Registry",
+        "Core.Algorithms.NumberFields",
+        "Core.Algorithms.External",
+        "Algorithms.Adapters.BundleAdapter",
+        "Core.Algorithms.FiniteFields",
+        "Core.Algorithms.FunctionFields"
+      ],
+      "direct_deps": 10,
+      "reverse_deps": 6,
+      "transitive_deps": 32
+    },
+    {
+      "module": "Algorithms.Instrumented",
+      "imports": [
+        "Core.Phase",
+        "Metamodel",
+        "Core.GrowthMetrics",
+        "Core.Utils",
+        "Algebra.Foundation",
+        "Algebra.Fields.Types",
+        "Core.Algorithms.Bundle",
+        "Algebra.Rings.Basic",
+        "GrowthAnalysis",
+        "Core.Limitations",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Examples.InstrumentedAlgorithmDemo"
+      ],
+      "direct_deps": 11,
+      "reverse_deps": 1,
+      "transitive_deps": 36
+    },
+    {
+      "module": "Algorithms.TestInstances",
+      "imports": [
+        "Metamodel",
+        "Algebra.Foundation",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Algebra.Groups.Basic"
+      ],
+      "imported_by": [
+        "Tests.AlgorithmSmokeTests"
+      ],
+      "direct_deps": 6,
+      "reverse_deps": 1,
+      "transitive_deps": 29
+    },
+    {
+      "module": "Chapter1.Level1",
+      "imports": [
+        "Core.Phase",
+        "Metamodel",
+        "PropertyRegistry"
+      ],
+      "imported_by": [
+        "Tests.RingsBasicChecklist",
+        "Tests.AlgebraicCompletionChecklist",
+        "Tests.ModuleStructureChecklist",
+        "Tests.FieldsBasicChecklist",
+        "Tests.ModuleTheoryChecklist",
+        "Tests.ModulesChecklist",
+        "Tests.AlgebraChecklist",
+        "Tests.GroupsFreeChecklist",
+        "Tests.VectorSpaceChecklist",
+        "Tests.PolynomialFieldExtensionsChecklist",
+        "Tests.AdvancedFieldsChecklist",
+        "Tests.ObligationAdapters",
+        "Tests.GroupsStructureChecklist",
+        "Tests.GroupsAbelianChecklist",
+        "Tests.Chapter2Checklist",
+        "Tests.TensorProductChecklist",
+        "Tests.PolynomialExtensionsChecklist",
+        "Chapter1.Level1Index",
+        "Core"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 19,
+      "transitive_deps": 5
+    },
+    {
+      "module": "Chapter1.Level1Index",
+      "imports": [
+        "Chapter1.Level1sub5",
+        "Chapter1.Level1sub7",
+        "Chapter1.Level1sub6",
+        "Chapter1.Level1sub2",
+        "Chapter1.Level1sub3",
+        "Chapter1.Level1",
+        "Chapter1.Level1sub8",
+        "Chapter1.Level1sub4"
+      ],
+      "imported_by": [
+        "Chapter3.Level3sub2",
+        "Tests.Chapters",
+        "Algebra.Groups.Abelian",
+        "Algebra.Fields.Basic",
+        "Algebra.Foundation",
+        "Algebra.Groups.Free",
+        "Algebra.Rings.BasicWithTheorems",
+        "Algebra.Groups.Basic",
+        "Algebra.Groups.BasicParameterized",
+        "Chapter2.Level2sub8",
+        "Chapter2.Level2sub7",
+        "Algebra.Fields.Advanced",
+        "Algebra.Rings.Basic",
+        "Algebra.Enrichment",
+        "Chapter2.Level2sub6",
+        "Algebra.Groups.BasicWithTheorems",
+        "Algebra.Modules.Basic",
+        "Chapter3.Level3sub1",
+        "Algebra.Modules.BasicWithTheorems",
+        "Chapter2.Level2sub5",
+        "Algebra.Fields.BasicWithTheorems"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 21,
+      "transitive_deps": 14
+    },
+    {
+      "module": "Chapter1.Level1sub2",
+      "imports": [
+        "Core",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Chapter1.Level1Index",
+        "Tests.ObligationAdapters",
+        "Tests.FunctorPropertiesChecklist",
+        "Tests.Chapter1Checklist",
+        "Tests.ChapterObligationsSmoke"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 5,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Chapter1.Level1sub3",
+      "imports": [
+        "Core",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Chapter1.Level1Index",
+        "Tests.ObligationAdapters",
+        "Tests.EnrichmentChecklist",
+        "Tests.Chapter3Checklist",
+        "Core.GrothendieckFibrations",
+        "Tests.GrothendieckFibrationsChecklist",
+        "Tests.Chapter1Checklist",
+        "Tests.ToposObligationAdapters",
+        "Tests.Chapter2Checklist",
+        "Tests.ToposTheoryChecklist"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 10,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Chapter1.Level1sub4",
+      "imports": [
+        "Core",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Chapter1.Level1Index",
+        "Tests.Chapter1Checklist",
+        "Tests.ChapterObligationsSmoke",
+        "Tests.ObligationAdapters"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 4,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Chapter1.Level1sub5",
+      "imports": [
+        "Core",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Chapter1.Level1Index",
+        "Tests.Chapter1Checklist",
+        "Tests.ObligationAdapters"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 3,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Chapter1.Level1sub6",
+      "imports": [
+        "Core",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.Chapter2Checklist",
+        "Tests.Chapter1Checklist",
+        "Chapter1.Level1Index",
+        "Tests.ObligationAdapters"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 4,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Chapter1.Level1sub7",
+      "imports": [
+        "Core",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Chapter1.Level1Index",
+        "Tests.Chapter1Checklist"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 2,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Chapter1.Level1sub8",
+      "imports": [
+        "Core",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Chapter1.Level1Index",
+        "Tests.Chapter1Checklist",
+        "Tests.ObligationAdapters"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 3,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Chapter2.Level2Index",
+      "imports": [
+        "Chapter2.Level2sub6",
+        "Chapter2.Level2sub7",
+        "Chapter2.Level2sub2",
+        "Chapter2.Level2sub1",
+        "Chapter2.Level2sub4",
+        "Chapter2.Level2sub3",
+        "Chapter2.Level2sub5",
+        "Chapter2.Level2sub8"
+      ],
+      "imported_by": [
+        "Tests.Chapters"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 1,
+      "transitive_deps": 23
+    },
+    {
+      "module": "Chapter2.Level2sub1",
+      "imports": [
+        "Core",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.ObligationAdapters",
+        "Chapter2.Level2Index",
+        "Algebra.Modules.Basic",
+        "Algebra.Modules.BasicWithTheorems",
+        "Tests.ChapterObligationsSmoke",
+        "Tests.Chapter2Checklist",
+        "Algebra.Groups.Abelian"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 7,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Chapter2.Level2sub2",
+      "imports": [
+        "Core",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.Chapter2Checklist",
+        "Tests.ObligationAdapters",
+        "Tests.ChapterObligationsSmoke",
+        "Chapter2.Level2Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 4,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Chapter2.Level2sub3",
+      "imports": [
+        "Core",
+        "Core.Phase",
+        "Metamodel",
+        "PropertyRegistry"
+      ],
+      "imported_by": [
+        "Tests.ObligationAdapters",
+        "Chapter2.Level2Index",
+        "Algebra.Rings.BasicWithTheorems",
+        "Algebra.Rings.Basic",
+        "Tests.Chapter2Checklist",
+        "Chapter2.Level2sub5"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 6,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Chapter2.Level2sub4",
+      "imports": [
+        "Core",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.AdvancedMonadTheoryChecklist",
+        "Tests.Chapter2Checklist",
+        "Tests.ObligationAdapters",
+        "Chapter2.Level2Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 4,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Chapter2.Level2sub5",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Core",
+        "Chapter2.Level2sub3",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.Chapter2Checklist",
+        "Tests.ObligationAdapters",
+        "Chapter2.Level2Index"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 3,
+      "transitive_deps": 16
+    },
+    {
+      "module": "Chapter2.Level2sub6",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Core",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Algebra.Enrichment",
+        "Tests.ObligationAdapters",
+        "Chapter2.Level2Index",
+        "Tests.EnrichmentChecklist",
+        "Tests.Chapter2Checklist",
+        "Algebra.Groups.Abelian"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 6,
+      "transitive_deps": 15
+    },
+    {
+      "module": "Chapter2.Level2sub7",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Core",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.Chapter2Checklist",
+        "Tests.ObligationAdapters",
+        "Chapter2.Level2Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 3,
+      "transitive_deps": 15
+    },
+    {
+      "module": "Chapter2.Level2sub8",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Core",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.ObligationAdapters",
+        "Chapter2.Level2Index",
+        "Core.GrothendieckFibrations",
+        "Tests.GrothendieckFibrationsChecklist",
+        "Tests.Chapter2Checklist"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 5,
+      "transitive_deps": 15
+    },
+    {
+      "module": "Chapter3.Level3Index",
+      "imports": [
+        "Chapter3.Level3sub1",
+        "Chapter3.Level3sub2"
+      ],
+      "imported_by": [
+        "Tests.Chapters"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 1,
+      "transitive_deps": 17
+    },
+    {
+      "module": "Chapter3.Level3sub1",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Core",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.Chapter3Checklist",
+        "Tests.ObligationAdapters",
+        "Chapter3.Level3Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 3,
+      "transitive_deps": 15
+    },
+    {
+      "module": "Chapter3.Level3sub2",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Core",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.ObligationAdapters",
+        "Tests.ToposTheoryChecklist",
+        "Tests.ToposObligationAdapters",
+        "Tests.ChapterObligationsSmoke",
+        "Tests.Chapter3Checklist",
+        "Chapter3.Level3Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 6,
+      "transitive_deps": 15
+    },
+    {
+      "module": "Control.Exception",
+      "imports": [],
+      "imported_by": [
+        "Plan.CIM.ModuleExporter"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Control.Monad",
+      "imports": [],
+      "imported_by": [
+        "Examples.RoadmapIssueSync"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Core",
+      "imports": [
+        "Chapter1.Level1",
+        "Metamodel",
+        "PropertyRegistry"
+      ],
+      "imported_by": [
+        "Tests.ConstructiveWitnessTests",
+        "Chapter3.Level3sub2",
+        "Core.Algorithms.External",
+        "Algebra.Groups.Abelian",
+        "Algebra.Modules.Types",
+        "Chapter1.Level1sub2",
+        "Tests.UniversalPropertyTests",
+        "Tests.AdvancedPhaseExamples",
+        "Core.Algorithms.FunctionFields",
+        "Core.Algorithms.Registry",
+        "Core.Algorithms.NumberFields",
+        "Examples.NumberField.Sqrt2",
+        "Examples.FiniteField.GF8",
+        "Examples.LazyHybridDemo",
+        "Algebra.Groups.Structure",
+        "Algebra.Fields.BasicWithTheorems",
+        "Core.ConstructiveWitnesses",
+        "Algebra.Groups.Types",
+        "Examples.FunctionField.F2x",
+        "Core.GrothendieckFibrations",
+        "Core.Witnesses",
+        "Algebra.Modules.Theorems.Classical",
+        "Chapter1.Level1sub3",
+        "Core.GodelBoundary",
+        "Chapter1.Level1sub8",
+        "Core.UniversalProperties",
+        "Algebra.Groups.Basic",
+        "Algebra.Groups.BasicParameterized",
+        "Chapter1.Level1sub6",
+        "Core.Algorithms.FiniteFields",
+        "Algebra.Fields.Advanced",
+        "Chapter2.Level2sub2",
+        "TechnicalDebt.PriorityMapping",
+        "Chapter1.Level1sub5",
+        "Chapter2.Level2sub6",
+        "Algebra.Modules.Basic",
+        "Chapter3.Level3sub1",
+        "Algebra.Modules.BasicWithTheorems",
+        "Tests.WarningAggregatorsTest",
+        "Examples.AutomaticEvidenceDemo",
+        "Core.Algorithms.InductiveClassification",
+        "Core.Yoneda",
+        "Tests.AlgorithmSmokeTests",
+        "Algebra.Fields.Basic",
+        "Algebra.Foundation",
+        "Algebra.Fields.Theorems.Classical",
+        "Tests.PerformanceBoundaryTests",
+        "Algebra.Groups.Free",
+        "Tests.WitnessConstructionTests",
+        "Tests.DispatchBehaviorTests",
+        "TechnicalDebt.Priorities",
+        "Algebra.Rings.Theorems.Classical",
+        "Tests.ErrorHandlingTests",
+        "Core.AlgorithmCorrectness",
+        "Chapter2.Level2sub1",
+        "Tests.ErrorAsSpecificationTests",
+        "Chapter2.Level2sub4",
+        "Algebra.Rings.Basic",
+        "Chapter1.Level1sub4",
+        "Algebra.Groups.Theorems.Classical",
+        "Core.AlgebraicAlgorithms",
+        "Tests.PhaseExamples",
+        "Algebra.Groups.BasicWithTheorems",
+        "Examples.ConstructiveWitnessExamples",
+        "Core.AlgorithmUniversality",
+        "Core.TechnicalDebt",
+        "Core.Algorithms.AutomaticEvidence",
+        "Core.Utils",
+        "Algorithms.Basic",
+        "Algebra.Rings.BasicWithTheorems",
+        "Algebra.Rings.Types",
+        "Examples.AlgorithmCorrectnessExamples",
+        "Chapter2.Level2sub8",
+        "Chapter1.Level1sub7",
+        "Chapter2.Level2sub7",
+        "Tests.SerializationTests",
+        "Algebra.Enrichment",
+        "Algorithms.TestInstances",
+        "Algebra.Fields.Types",
+        "Chapter2.Level2sub3",
+        "Chapter2.Level2sub5"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 81,
+      "transitive_deps": 6
+    },
+    {
+      "module": "Core.ABNF",
+      "imports": [
+        "Infrastructure.Universe",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [],
+      "direct_deps": 2,
+      "reverse_deps": 0,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Core.AdapterAutomation",
+      "imports": [
+        "Infrastructure.Universe",
+        "Core.Phase",
+        "Core.CategoricalAdapter",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [
+        "Examples.ExporterMakefile"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 1,
+      "transitive_deps": 4
+    },
+    {
+      "module": "Core.AdapterReflection",
+      "imports": [
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [],
+      "direct_deps": 1,
+      "reverse_deps": 0,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Core.AlgebraicAlgorithms",
+      "imports": [
+        "Algebra.Rings.Basic",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Fields.Advanced",
+        "Core",
+        "Infrastructure.Coherence.Path2",
+        "Infrastructure.Universe",
+        "Algebra.Fields.Basic",
+        "Core.Limitations",
+        "Algebra.Groups.Basic"
+      ],
+      "imported_by": [
+        "Core.ConstructiveWitnesses",
+        "Tests.ConstructiveWitnessTests",
+        "Core.Algorithms.External",
+        "Core.AlgorithmUniversality",
+        "Examples.FunctionField.F2x",
+        "Tests.AlgorithmSmokeTests",
+        "Tests.UniversalPropertyTests",
+        "Algorithms.Basic",
+        "Tests.PerformanceBoundaryTests",
+        "Tests.AdvancedPhaseExamples",
+        "Tests.WitnessConstructionTests",
+        "Core.Algorithms.FunctionFields",
+        "Examples.AlgorithmCorrectnessExamples",
+        "Tests.DispatchBehaviorTests",
+        "Core.Algorithms.Registry",
+        "Tests.ErrorHandlingTests",
+        "Core.Algorithms.NumberFields",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Tests.SerializationTests",
+        "Examples.NumberField.Sqrt2",
+        "Core.AlgorithmCorrectness",
+        "Core.Algorithms.FiniteFields",
+        "Core.Algorithms.Bundle",
+        "Tests.ErrorAsSpecificationTests",
+        "Tests.PhaseExamples",
+        "Examples.LazyHybridDemo",
+        "Examples.ConstructiveWitnessExamples",
+        "Algorithms.Instrumented",
+        "Algebra.Index",
+        "Tests.WarningAggregatorsTest",
+        "Examples.AutomaticEvidenceDemo"
+      ],
+      "direct_deps": 11,
+      "reverse_deps": 31,
+      "transitive_deps": 31
+    },
+    {
+      "module": "Core.AlgorithmComplexity",
+      "imports": [
+        "Infrastructure.Universe",
+        "Metamodel",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [
+        "Tests.PerformanceBoundaryTests"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 4
+    },
+    {
+      "module": "Core.AlgorithmCorrectness",
+      "imports": [
+        "Core.ConstructiveWitnesses",
+        "Algebra.Rings.Basic",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Fields.Advanced",
+        "Core",
+        "Core.Witnesses",
+        "Infrastructure.Coherence.Path2",
+        "Infrastructure.Universe",
+        "Algebra.Fields.Basic",
+        "Algebra.Groups.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Examples.AlgorithmCorrectnessExamples",
+        "Examples.RealWorldAlgorithms",
+        "Tests.ProofObligationStatus"
+      ],
+      "direct_deps": 13,
+      "reverse_deps": 3,
+      "transitive_deps": 36
+    },
+    {
+      "module": "Core.AlgorithmUniversality",
+      "imports": [
+        "Algebra.Rings.Basic",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Fields.Advanced",
+        "Core",
+        "Infrastructure.Coherence.Path2",
+        "Infrastructure.Universe",
+        "Core.UniversalProperties",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.UniversalPropertyTests",
+        "Tests.ConstructiveWitnessTests",
+        "Tests.WarningAggregatorsTest"
+      ],
+      "direct_deps": 10,
+      "reverse_deps": 3,
+      "transitive_deps": 33
+    },
+    {
+      "module": "Core.Algorithms.AutomaticEvidence",
+      "imports": [
+        "Core.Algorithms.NumberFields",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Core.Algorithms.FiniteFields",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic"
+      ],
+      "imported_by": [],
+      "direct_deps": 7,
+      "reverse_deps": 0,
+      "transitive_deps": 38
+    },
+    {
+      "module": "Core.Algorithms.Bundle",
+      "imports": [
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Core.Algorithms.Registry",
+        "Tests.ErrorHandlingTests",
+        "Tests.PhaseExamples",
+        "Examples.LazyHybridDemo",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Core.Algorithms.NumberFields",
+        "Core.Algorithms.External",
+        "Tests.SerializationTests",
+        "Algorithms.Instrumented",
+        "Examples.NumberField.Sqrt2",
+        "Algebra.Index",
+        "Tests.PerformanceBoundaryTests",
+        "Algorithms.Adapters.BundleAdapter",
+        "Tests.AdvancedPhaseExamples",
+        "Examples.AutomaticEvidenceDemo",
+        "Core.Algorithms.FunctionFields",
+        "Tests.DispatchBehaviorTests",
+        "Examples.InstrumentedAlgorithmDemo"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 18,
+      "transitive_deps": 32
+    },
+    {
+      "module": "Core.Algorithms.External",
+      "imports": [
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algorithms.Basic",
+        "Algebra.Fields.Advanced",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Core.Witnesses",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Core.Algorithms.NumberFields",
+        "Algebra.Index"
+      ],
+      "direct_deps": 11,
+      "reverse_deps": 2,
+      "transitive_deps": 35
+    },
+    {
+      "module": "Core.Algorithms.FiniteFields",
+      "imports": [
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algorithms.Basic",
+        "Core",
+        "Core.Witnesses",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Algebra.Groups.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Core.Algorithms.Registry",
+        "Tests.ErrorHandlingTests",
+        "Tests.PhaseExamples",
+        "Examples.LazyHybridDemo",
+        "Core.Algorithms.InductiveClassification",
+        "Algebra.Index",
+        "Tests.PerformanceBoundaryTests",
+        "Tests.AdvancedPhaseExamples",
+        "Examples.AutomaticEvidenceDemo",
+        "Core.Algorithms.AutomaticEvidence",
+        "Tests.DispatchBehaviorTests"
+      ],
+      "direct_deps": 10,
+      "reverse_deps": 11,
+      "transitive_deps": 34
+    },
+    {
+      "module": "Core.Algorithms.FunctionFields",
+      "imports": [
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algorithms.Basic",
+        "Algebra.Fields.Advanced",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Core.Witnesses",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Core.Algorithms.Registry",
+        "Examples.FunctionField.F2x",
+        "Tests.DispatchBehaviorTests"
+      ],
+      "direct_deps": 10,
+      "reverse_deps": 3,
+      "transitive_deps": 35
+    },
+    {
+      "module": "Core.Algorithms.InductiveClassification",
+      "imports": [
+        "Core.Algorithms.NumberFields",
+        "Metamodel",
+        "Core.Algorithms.FiniteFields",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic"
+      ],
+      "imported_by": [],
+      "direct_deps": 6,
+      "reverse_deps": 0,
+      "transitive_deps": 38
+    },
+    {
+      "module": "Core.Algorithms.NumberFields",
+      "imports": [
+        "Metamodel",
+        "Core.Algorithms.External",
+        "Algebra.Foundation",
+        "Algorithms.Basic",
+        "Algebra.Fields.Advanced",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Core.Witnesses",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Core.Algorithms.Registry",
+        "Tests.ErrorHandlingTests",
+        "Tests.PhaseExamples",
+        "Examples.LazyHybridDemo",
+        "Core.Algorithms.InductiveClassification",
+        "Examples.NumberField.Sqrt2",
+        "Algebra.Index",
+        "Examples.AutomaticEvidenceDemo",
+        "Core.Algorithms.AutomaticEvidence",
+        "Tests.DispatchBehaviorTests"
+      ],
+      "direct_deps": 11,
+      "reverse_deps": 10,
+      "transitive_deps": 36
+    },
+    {
+      "module": "Core.Algorithms.Registry",
+      "imports": [
+        "Core.Phase",
+        "Core.Algorithms.NumberFields",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algorithms.Basic",
+        "Algorithms.Adapters.BundleAdapter",
+        "Core.Algorithms.FiniteFields",
+        "Algebra.Fields.Advanced",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Core.Algorithms.FunctionFields",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.ErrorHandlingTests",
+        "Tests.PhaseExamples",
+        "Examples.LazyHybridDemo",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Examples.FunctionField.F2x",
+        "Examples.NumberField.Sqrt2",
+        "Algebra.Index",
+        "Tests.PerformanceBoundaryTests",
+        "Tests.AdvancedPhaseExamples",
+        "Examples.AutomaticEvidenceDemo",
+        "Tests.DispatchBehaviorTests",
+        "Examples.InstrumentedAlgorithmDemo"
+      ],
+      "direct_deps": 14,
+      "reverse_deps": 12,
+      "transitive_deps": 40
+    },
+    {
+      "module": "Core.BraidTree",
+      "imports": [
+        "Infrastructure.Universe",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [],
+      "direct_deps": 2,
+      "reverse_deps": 0,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Core.CategoricalAdapter",
+      "imports": [
+        "Infrastructure.Universe",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [
+        "Tests.RingsBasicChecklist",
+        "Tests.AlgebraicCompletionChecklist",
+        "Tests.ModuleStructureChecklist",
+        "Tests.ModuleTheoryChecklist",
+        "Tests.AlgebraChecklist",
+        "Tests.ModulesChecklist",
+        "ExporterMakefile",
+        "Examples.ExporterMakefile",
+        "Tests.LimitsColimitsChecklist",
+        "Tests.ToposObligationAdapters",
+        "Tests.GroupsFreeChecklist",
+        "Tests.VectorSpaceChecklist",
+        "Tests.PolynomialFieldExtensionsChecklist",
+        "Tests.AdvancedFieldsChecklist",
+        "Core.AdapterReflection",
+        "Tests.ObligationAdapters",
+        "Tests.CoreUniversalPropertiesChecklist",
+        "Tests.YonedaChecklist",
+        "Tests.GroupsStructureChecklist",
+        "Tests.MonadAdjunctionChecklist",
+        "Tests.GroupsAbelianChecklist",
+        "Tests.AdvancedMonadTheoryChecklist",
+        "Tests.Chapter2Checklist",
+        "Tests.RegularCategoriesChecklist",
+        "Tests.Chapter3Checklist",
+        "Tests.TensorProductChecklist",
+        "Tests.PolynomialExtensionsChecklist",
+        "Core.AdapterAutomation",
+        "Tests.Chapter1Checklist",
+        "Tests.ToposTheoryChecklist",
+        "Tests.KanExtensionsChecklist"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 31,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Core.ConstructiveWitnesses",
+      "imports": [
+        "Algebra.Rings.Basic",
+        "Core.Phase",
+        "Core.PolynomialsF2",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Fields.Advanced",
+        "Core",
+        "Core.Witnesses",
+        "Infrastructure.Coherence.Path2",
+        "Infrastructure.Universe",
+        "Core.UniversalProperties",
+        "Algebra.Fields.Basic",
+        "Algebra.Groups.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.ConstructiveWitnessTests",
+        "Examples.ConstructiveWitnessExamples",
+        "Core.AlgorithmCorrectness",
+        "Tests.WarningAggregatorsTest",
+        "Examples.AlgorithmCorrectnessExamples",
+        "Tests.ProofObligationStatus"
+      ],
+      "direct_deps": 14,
+      "reverse_deps": 6,
+      "transitive_deps": 35
+    },
+    {
+      "module": "Core.GodelBoundary",
+      "imports": [
+        "Core.Phase",
+        "Metamodel",
+        "Core",
+        "Infrastructure.Coherence.Path2",
+        "Infrastructure.Universe"
+      ],
+      "imported_by": [
+        "Tests.GodelBoundaryTests"
+      ],
+      "direct_deps": 5,
+      "reverse_deps": 1,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Core.GrothendieckFibrations",
+      "imports": [
+        "Core.Phase",
+        "Metamodel",
+        "Chapter1.Level1sub3",
+        "Algebra.Foundation",
+        "Core",
+        "Infrastructure.Coherence.Path2",
+        "Infrastructure.Universe",
+        "Chapter2.Level2sub8"
+      ],
+      "imported_by": [
+        "Tests.GrothendieckFibrationsChecklist"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 1,
+      "transitive_deps": 17
+    },
+    {
+      "module": "Core.GrowthMetrics",
+      "imports": [
+        "Infrastructure.Universe",
+        "Core.Utils",
+        "Metamodel",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [
+        "Tests.PathAggregatorTests",
+        "Algorithms.Instrumented",
+        "Tests.PerformanceBoundaryTests",
+        "Core.PathAggregator",
+        "Examples.InstrumentedAlgorithmDemo",
+        "GrowthAnalysis"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 6,
+      "transitive_deps": 8
+    },
+    {
+      "module": "Core.IO",
+      "imports": [
+        "Infrastructure.Universe",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [
+        "Examples.DeferredItemsScanner"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 1,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Core.Limitations",
+      "imports": [
+        "Infrastructure.Universe",
+        "Core.Phase",
+        "Metamodel",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [
+        "Tests.ErrorAsSpecificationTests",
+        "Algorithms.Basic",
+        "Algorithms.Instrumented",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 4,
+      "transitive_deps": 4
+    },
+    {
+      "module": "Core.PathAggregator",
+      "imports": [
+        "Core.Phase",
+        "Core.GrowthMetrics",
+        "Metamodel",
+        "Infrastructure.Coherence.Path2",
+        "Infrastructure.Universe"
+      ],
+      "imported_by": [
+        "Tests.Index",
+        "Tests.PathAggregatorTests"
+      ],
+      "direct_deps": 5,
+      "reverse_deps": 2,
+      "transitive_deps": 9
+    },
+    {
+      "module": "Core.Phase",
+      "imports": [
+        "Infrastructure.Universe",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [
+        "Core.PhaseCategory",
+        "Tests.ConstructiveWitnessTests",
+        "Core.Algorithms.External",
+        "Tests.PathAggregatorTests",
+        "Tests.SubobjectTheoryChecklist",
+        "Tests.RealWorldAlgorithmsTests",
+        "Tests.ModuleTheoryChecklist",
+        "Chapter1.Level1sub2",
+        "Tests.UniversalPropertyTests",
+        "Tests.EnrichmentChecklist",
+        "Tests.LimitsColimitsChecklist",
+        "Tests.AdvancedPhaseExamples",
+        "Tests.VectorSpaceChecklist",
+        "Core.Limitations",
+        "Tests.AdvancedFieldsChecklist",
+        "TechnicalDebt.DeferredItemsOrchestrationFFI",
+        "Core.Algorithms.Registry",
+        "Tests.MonadAdjunctionChecklist",
+        "TechnicalDebt.DeferredItemsFormatting_AUDAX",
+        "Tests.AbelianCategoriesChecklist",
+        "Tests.Chapter3Checklist",
+        "Tests.ToposTheoryChecklist",
+        "Core.ConstructiveWitnesses",
+        "Tests.AlgebraicCompletionChecklist",
+        "Tests.FieldsBasicChecklist",
+        "Core.GrothendieckFibrations",
+        "Chapter1.Level1sub3",
+        "Core.GodelBoundary",
+        "Chapter1.Level1sub8",
+        "Chapter1.Level1sub6",
+        "Tests.ObligationAdapters",
+        "Core.PhaseCategoryWrapper",
+        "Tests.GrothendieckFibrationsChecklist",
+        "Tests.GroupsStructureChecklist",
+        "Core.Algorithms.FiniteFields",
+        "Chapter2.Level2sub2",
+        "Tests.TensorProductChecklist",
+        "Tests.ProofObligationStatus",
+        "Chapter1.Level1sub5",
+        "Tests.PolynomialExtensionsChecklist",
+        "Core.AdapterAutomation",
+        "Tests.Chapter1Checklist",
+        "Core.Yoneda",
+        "Tests.ModulesChecklist",
+        "TechnicalDebt.PriorityOrchestration",
+        "Examples.PhaseCategoryExamples",
+        "Tests.PerformanceBoundaryTests",
+        "TechnicalDebt.PriorityFormatting",
+        "Tests.ToposObligationAdapters",
+        "Tests.PolynomialFieldExtensionsChecklist",
+        "Tests.DispatchBehaviorTests",
+        "Tests.CoverageReport",
+        "Metamodel",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Tests.CoreUniversalPropertiesChecklist",
+        "Tests.YonedaChecklist",
+        "Core.AlgorithmCorrectness",
+        "Chapter2.Level2sub1",
+        "Tests.ErrorAsSpecificationTests",
+        "Chapter2.Level2sub4",
+        "Tests.GroupsAbelianChecklist",
+        "Tests.AdvancedMonadTheoryChecklist",
+        "Chapter1.Level1sub4",
+        "Tests.RegularCategoriesChecklist",
+        "Core.AlgebraicAlgorithms",
+        "Tests.GodelBoundaryTests",
+        "Tests.SpecificationValidation",
+        "Tests.PhaseExamples",
+        "Examples.ConstructiveWitnessExamples",
+        "Algorithms.Instrumented",
+        "Tests.ChapterObligationsSmoke",
+        "Core.PolynomialsF2",
+        "Tests.RingsBasicChecklist",
+        "Tests.ModuleStructureChecklist",
+        "Tests.AlgebraChecklist",
+        "Core.Utils",
+        "Algorithms.Basic",
+        "Tests.FunctorPropertiesChecklist",
+        "Tests.GroupsFreeChecklist",
+        "Examples.AlgorithmCorrectnessExamples",
+        "Chapter1.Level1sub7",
+        "Tests.SerializationTests",
+        "Examples.RealWorldAlgorithms",
+        "Tests.Chapter2Checklist",
+        "TechnicalDebt.DeferredItemsFormatting",
+        "Chapter1.Level1",
+        "Chapter2.Level2sub3",
+        "Core.PathAggregator",
+        "Tests.HierarchyValidation",
+        "Tests.KanExtensionsChecklist"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 90,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Core.PhaseCategory",
+      "imports": [
+        "Infrastructure.Universe",
+        "Core.Phase",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [
+        "Examples.PhaseCategoryExamples"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Core.PhaseCategoryWrapper",
+      "imports": [
+        "Infrastructure.Functor.Interface",
+        "Core.Phase"
+      ],
+      "imported_by": [
+        "Infrastructure.Functor.Instances.PhaseCategory",
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 2,
+      "transitive_deps": 4
+    },
+    {
+      "module": "Core.PolynomialsF2",
+      "imports": [
+        "Infrastructure.Universe",
+        "Core.Phase",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [
+        "Core.ConstructiveWitnesses",
+        "Tests.ConstructiveWitnessTests"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 2,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Core.Rendering",
+      "imports": [
+        "Infrastructure.Universe",
+        "Core.Strings",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [
+        "Examples.DeferredItemsScanner"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Core.Strings",
+      "imports": [
+        "Infrastructure.Universe",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [
+        "Core.Rendering",
+        "Examples.DeferredItemsScanner"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 2,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Core.TechnicalDebt",
+      "imports": [
+        "Core.Utils",
+        "Metamodel",
+        "Core",
+        "Infrastructure.Coherence.Path2",
+        "Infrastructure.Universe"
+      ],
+      "imported_by": [
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Tests.SerializationTests",
+        "Examples.TechnicalDebtChecklist",
+        "TechnicalDebt.AlgorithmCompositionRegistry",
+        "TechnicalDebt.PriorityMapping",
+        "TechnicalDebt.Priorities"
+      ],
+      "direct_deps": 5,
+      "reverse_deps": 6,
+      "transitive_deps": 8
+    },
+    {
+      "module": "Core.UniversalProperties",
+      "imports": [
+        "Algebra.Rings.Basic",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Core",
+        "Infrastructure.Coherence.Path2",
+        "Infrastructure.Universe",
+        "Algebra.Fields.Basic"
+      ],
+      "imported_by": [
+        "Core.ConstructiveWitnesses",
+        "Tests.ConstructiveWitnessTests",
+        "Tests.ObligationAdapters",
+        "Tests.ErrorHandlingTests",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Tests.CoreUniversalPropertiesChecklist",
+        "Tests.UniversalPropertyTests",
+        "Core.AlgorithmUniversality",
+        "Tests.WarningAggregatorsTest"
+      ],
+      "direct_deps": 7,
+      "reverse_deps": 9,
+      "transitive_deps": 28
+    },
+    {
+      "module": "Core.Utils",
+      "imports": [
+        "Infrastructure.Universe",
+        "Core",
+        "Core.Phase",
+        "Infrastructure.Coherence.Path2"
+      ],
+      "imported_by": [
+        "ExporterMakefile",
+        "Plan.CIM.ModuleExporter",
+        "Core.GrowthMetrics",
+        "Markdown.Normalization",
+        "Algorithms.Instrumented",
+        "Examples.TechnicalDebtExample",
+        "Examples.TechnicalDebtChecklist",
+        "Tests.PerformanceBoundaryTests",
+        "Examples.ExporterMakefile",
+        "Markdown.ExportProof",
+        "Core.TechnicalDebt",
+        "GrowthAnalysis"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 12,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Core.Witnesses",
+      "imports": [
+        "Algebra.Rings.Basic",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Fields.Advanced",
+        "Core",
+        "Infrastructure.Coherence.Path2",
+        "Infrastructure.Universe",
+        "Algebra.Fields.Basic"
+      ],
+      "imported_by": [
+        "Core.ConstructiveWitnesses",
+        "Tests.ConstructiveWitnessTests",
+        "Core.Algorithms.NumberFields",
+        "Core.Algorithms.External",
+        "Examples.ConstructiveWitnessExamples",
+        "Algebra.Index",
+        "Core.AlgorithmCorrectness",
+        "Core.Algorithms.FiniteFields",
+        "Tests.ErrorAsSpecificationTests",
+        "Tests.WitnessConstructionTests",
+        "Tests.AlgorithmSmokeTests",
+        "Core.Algorithms.FunctionFields",
+        "Examples.AlgorithmCorrectnessExamples"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 13,
+      "transitive_deps": 29
+    },
+    {
+      "module": "Core.Yoneda",
+      "imports": [
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic"
+      ],
+      "imported_by": [
+        "Plan.CIM.YonedaProfiler",
+        "Tests.YonedaChecklist"
+      ],
+      "direct_deps": 6,
+      "reverse_deps": 2,
+      "transitive_deps": 28
+    },
+    {
+      "module": "Data.Char",
+      "imports": [],
+      "imported_by": [
+        "Plan.CIM.ModuleExporter"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Data.List",
+      "imports": [],
+      "imported_by": [
+        "Plan.CIM.ModuleExporter"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Data.Maybe",
+      "imports": [],
+      "imported_by": [
+        "Examples.RoadmapIssueSync",
+        "Examples.ExporterMakefile"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 2,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Data.Ord",
+      "imports": [],
+      "imported_by": [
+        "Plan.CIM.ModuleExporter"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Docs.MetaIndex",
+      "imports": [
+        "qualified"
+      ],
+      "imported_by": [],
+      "direct_deps": 1,
+      "reverse_deps": 0,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Examples.AgdaFileScanFFI",
+      "imports": [],
+      "imported_by": [
+        "Examples.ExporterMakefile"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Examples.AgdaMakefileDeps",
+      "imports": [],
+      "imported_by": [
+        "Examples.ExporterMakefile"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Examples.AlgorithmCorrectnessExamples",
+      "imports": [
+        "Core.ConstructiveWitnesses",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Core.AlgorithmCorrectness",
+        "Algebra.Fields.Advanced",
+        "Core",
+        "Core.Witnesses",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.ProofObligationStatus"
+      ],
+      "direct_deps": 11,
+      "reverse_deps": 1,
+      "transitive_deps": 37
+    },
+    {
+      "module": "Examples.AutomaticEvidenceDemo",
+      "imports": [
+        "Core.Algorithms.Registry",
+        "Core.Algorithms.NumberFields",
+        "Algebra.Foundation",
+        "Core.Algorithms.FiniteFields",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [],
+      "direct_deps": 9,
+      "reverse_deps": 0,
+      "transitive_deps": 41
+    },
+    {
+      "module": "Examples.ConstructiveWitnessExamples",
+      "imports": [
+        "Core.ConstructiveWitnesses",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Fields.Advanced",
+        "Core",
+        "Core.Witnesses",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [],
+      "direct_deps": 10,
+      "reverse_deps": 0,
+      "transitive_deps": 36
+    },
+    {
+      "module": "Examples.DeferredItemsScanner",
+      "imports": [
+        "Core.Strings",
+        "Core.IO",
+        "qualified",
+        "Core.Rendering"
+      ],
+      "imported_by": [],
+      "direct_deps": 4,
+      "reverse_deps": 0,
+      "transitive_deps": 6
+    },
+    {
+      "module": "Examples.ExporterMakefile",
+      "imports": [
+        "Examples.AgdaMakefileDeps",
+        "Core.Utils",
+        "Data.Maybe",
+        "Metamodel",
+        "qualified",
+        "Core.AdapterAutomation",
+        "Examples.AgdaFileScanFFI",
+        "Examples.MakefileTargets",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [],
+      "direct_deps": 9,
+      "reverse_deps": 0,
+      "transitive_deps": 15
+    },
+    {
+      "module": "Examples.FiniteField.GF8",
+      "imports": [
+        "Core",
+        "Metamodel",
+        "Algebra.Index"
+      ],
+      "imported_by": [],
+      "direct_deps": 3,
+      "reverse_deps": 0,
+      "transitive_deps": 44
+    },
+    {
+      "module": "Examples.FunctionField.F2x",
+      "imports": [
+        "Core.Algorithms.Registry",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Core",
+        "Core.Algorithms.FunctionFields",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [],
+      "direct_deps": 8,
+      "reverse_deps": 0,
+      "transitive_deps": 41
+    },
+    {
+      "module": "Examples.InstrumentedAlgorithmDemo",
+      "imports": [
+        "Core.Algorithms.Registry",
+        "Metamodel",
+        "Core.GrowthMetrics",
+        "Algorithms.Instrumented",
+        "Algebra.Fields.Types",
+        "Core.Algorithms.Bundle",
+        "Algebra.Rings.Basic"
+      ],
+      "imported_by": [],
+      "direct_deps": 7,
+      "reverse_deps": 0,
+      "transitive_deps": 45
+    },
+    {
+      "module": "Examples.LazyHybridDemo",
+      "imports": [
+        "Core.Algorithms.Registry",
+        "Core.Algorithms.NumberFields",
+        "Algebra.Foundation",
+        "Core.Algorithms.FiniteFields",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [],
+      "direct_deps": 9,
+      "reverse_deps": 0,
+      "transitive_deps": 41
+    },
+    {
+      "module": "Examples.MakefileTargets",
+      "imports": [
+        "qualified"
+      ],
+      "imported_by": [
+        "Examples.ExporterMakefile"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Examples.NumberField.Sqrt2",
+      "imports": [
+        "Core.Algorithms.Registry",
+        "Core.Algorithms.NumberFields",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [],
+      "direct_deps": 9,
+      "reverse_deps": 0,
+      "transitive_deps": 41
+    },
+    {
+      "module": "Examples.PhaseCategoryExamples",
+      "imports": [
+        "Core.PhaseCategory",
+        "Core.Phase"
+      ],
+      "imported_by": [
+        "Tests.PhaseCategoryExamplesRunner"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 1,
+      "transitive_deps": 4
+    },
+    {
+      "module": "Examples.RealWorldAlgorithms",
+      "imports": [
+        "Core.Phase",
+        "Metamodel",
+        "Core.AlgorithmCorrectness"
+      ],
+      "imported_by": [
+        "Tests.RealWorldAlgorithmsTests"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 37
+    },
+    {
+      "module": "Examples.RoadmapIssueSync",
+      "imports": [
+        "Control.Monad",
+        "qualified",
+        "Data.Maybe"
+      ],
+      "imported_by": [],
+      "direct_deps": 3,
+      "reverse_deps": 0,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Examples.TechnicalDebtChecklist",
+      "imports": [
+        "Core.Utils",
+        "Metamodel",
+        "PropertyRegistry",
+        "Core.TechnicalDebt",
+        "Tests.AlgorithmCompositionTests"
+      ],
+      "imported_by": [],
+      "direct_deps": 5,
+      "reverse_deps": 0,
+      "transitive_deps": 46
+    },
+    {
+      "module": "Examples.TechnicalDebtExample",
+      "imports": [
+        "Core.Utils",
+        "Metamodel",
+        "PropertyRegistry"
+      ],
+      "imported_by": [],
+      "direct_deps": 3,
+      "reverse_deps": 0,
+      "transitive_deps": 8
+    },
+    {
+      "module": "Examples.TechnicalDebtRegistry",
+      "imports": [
+        "Plan.CIM.RoadmapSPPF"
+      ],
+      "imported_by": [],
+      "direct_deps": 1,
+      "reverse_deps": 0,
+      "transitive_deps": 4
+    },
+    {
+      "module": "ExporterMakefile",
+      "imports": [
+        "Core.CategoricalAdapter",
+        "Core.Utils"
+      ],
+      "imported_by": [],
+      "direct_deps": 2,
+      "reverse_deps": 0,
+      "transitive_deps": 9
+    },
+    {
+      "module": "GrowthAnalysis",
+      "imports": [
+        "Metamodel",
+        "Core.Utils",
+        "Core.GrowthMetrics"
+      ],
+      "imported_by": [
+        "Tests.PerformanceBoundaryTests",
+        "Algorithms.Instrumented"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 2,
+      "transitive_deps": 9
+    },
+    {
+      "module": "Infrastructure.Arity.BinTree",
+      "imports": [],
+      "imported_by": [
+        "Infrastructure.Polytopes.Associahedron",
+        "Infrastructure.Axiom.Instances.PentagonAssociahedron",
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 3,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Infrastructure.Axiom.Adequacy",
+      "imports": [],
+      "imported_by": [
+        "Infrastructure.Axiom.Face",
+        "Infrastructure.Axiom.Instance",
+        "Infrastructure.Definitions.Dictionary",
+        "Infrastructure.Axiom.Instances.HexagonBraiding",
+        "Infrastructure.Functor.Instances.PathAlgebra",
+        "Infrastructure.Axiom.Solver",
+        "Infrastructure.Index",
+        "Infrastructure.Axiom.Instances.PentagonAssociahedron"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 8,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Infrastructure.Axiom.Face",
+      "imports": [
+        "Infrastructure.Axiom.Adequacy"
+      ],
+      "imported_by": [
+        "Infrastructure.Definitions.Dictionary",
+        "Infrastructure.Axiom.Instance",
+        "Infrastructure.Axiom.Solver",
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 4,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Infrastructure.Axiom.Instance",
+      "imports": [
+        "Infrastructure.Axiom.Adequacy",
+        "Infrastructure.Axiom.Face"
+      ],
+      "imported_by": [
+        "Infrastructure.Axiom.Instances.PentagonAssociahedron",
+        "Infrastructure.Definitions.Dictionary",
+        "Infrastructure.Axiom.Instances.HexagonBraiding",
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 4,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Infrastructure.Axiom.Instances.HexagonBraiding",
+      "imports": [
+        "Infrastructure.Axiom.Adequacy",
+        "Infrastructure.Polytopes.Braiding.HexagonTriangulation",
+        "Infrastructure.Axiom.Instance"
+      ],
+      "imported_by": [
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 4
+    },
+    {
+      "module": "Infrastructure.Axiom.Instances.PentagonAssociahedron",
+      "imports": [
+        "Infrastructure.Axiom.Instance",
+        "Infrastructure.Polytopes.Associahedron",
+        "Infrastructure.Axiom.Adequacy",
+        "Infrastructure.Arity.BinTree",
+        "Infrastructure.Polytopes.Associahedron.Triangulation"
+      ],
+      "imported_by": [
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 5,
+      "reverse_deps": 1,
+      "transitive_deps": 6
+    },
+    {
+      "module": "Infrastructure.Axiom.Movie",
+      "imports": [
+        "Infrastructure.Axiom.SolvableInterface"
+      ],
+      "imported_by": [],
+      "direct_deps": 1,
+      "reverse_deps": 0,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Infrastructure.Axiom.PentagonFromTriangles",
+      "imports": [
+        "Infrastructure.Axiom.SolvableInterface"
+      ],
+      "imported_by": [],
+      "direct_deps": 1,
+      "reverse_deps": 0,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Infrastructure.Axiom.SolvableInterface",
+      "imports": [],
+      "imported_by": [
+        "Infrastructure.Axiom.Movie",
+        "Infrastructure.Axiom.PentagonFromTriangles"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 2,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Infrastructure.Axiom.Solver",
+      "imports": [
+        "Infrastructure.Axiom.Adequacy",
+        "Infrastructure.Axiom.Face"
+      ],
+      "imported_by": [
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 1,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Infrastructure.Coherence.Path2",
+      "imports": [],
+      "imported_by": [
+        "Core.ConstructiveWitnesses",
+        "Core.PhaseCategory",
+        "Core.Phase",
+        "Core.GrowthMetrics",
+        "Core.AlgorithmUniversality",
+        "Core.GrothendieckFibrations",
+        "Core.TechnicalDebt",
+        "Core.Witnesses",
+        "Core.AlgorithmComplexity",
+        "Core.Utils",
+        "Core.GodelBoundary",
+        "Core.ABNF",
+        "Core.UniversalProperties",
+        "Core.Rendering",
+        "Core.Limitations",
+        "Core.IO",
+        "Infrastructure.Index",
+        "Core.BraidTree",
+        "Core.AlgorithmCorrectness",
+        "Core.CategoricalAdapter",
+        "Core.AlgebraicAlgorithms",
+        "Core.AdapterAutomation",
+        "Core.PathAggregator",
+        "Core.PolynomialsF2",
+        "Core.Strings"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 25,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Infrastructure.Definitions.Dictionary",
+      "imports": [
+        "Infrastructure.Axiom.Adequacy",
+        "Infrastructure.Axiom.Face",
+        "Infrastructure.Axiom.Instance"
+      ],
+      "imported_by": [
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Infrastructure.Functor.Adapters.Funext",
+      "imports": [],
+      "imported_by": [
+        "Infrastructure.Index",
+        "Infrastructure.Functor.Instances.Ambiguity"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 2,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Infrastructure.Functor.Compose",
+      "imports": [
+        "Infrastructure.Functor.Interface"
+      ],
+      "imported_by": [
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Infrastructure.Functor.Instances.Ambiguity",
+      "imports": [
+        "Infrastructure.Functor.Instances.FunctionCategory",
+        "Infrastructure.Functor.Adapters.Funext",
+        "Infrastructure.Functor.Interface",
+        "Plan.CIM.Ambiguity"
+      ],
+      "imported_by": [
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 1,
+      "transitive_deps": 5
+    },
+    {
+      "module": "Infrastructure.Functor.Instances.FunctionCategory",
+      "imports": [
+        "Infrastructure.Functor.Instances.Trivial",
+        "Infrastructure.Functor.Interface"
+      ],
+      "imported_by": [
+        "Infrastructure.Index",
+        "Infrastructure.Functor.Instances.Ambiguity"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 2,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Infrastructure.Functor.Instances.FunctionPathCategory",
+      "imports": [
+        "Infrastructure.Functor.Interface"
+      ],
+      "imported_by": [
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Infrastructure.Functor.Instances.PathAlgebra",
+      "imports": [
+        "Infrastructure.Functor.Instances.Trivial",
+        "Infrastructure.Axiom.Adequacy",
+        "Infrastructure.Functor.Interface"
+      ],
+      "imported_by": [
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Infrastructure.Functor.Instances.PhaseCategory",
+      "imports": [
+        "Infrastructure.Functor.Instances.Trivial",
+        "Infrastructure.Functor.Interface",
+        "Core.PhaseCategoryWrapper"
+      ],
+      "imported_by": [
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 6
+    },
+    {
+      "module": "Infrastructure.Functor.Instances.Trivial",
+      "imports": [
+        "Infrastructure.Functor.Interface"
+      ],
+      "imported_by": [
+        "Infrastructure.Functor.Instances.PhaseCategory",
+        "Infrastructure.Functor.Instances.PathAlgebra",
+        "Infrastructure.Index",
+        "Infrastructure.Functor.Instances.FunctionCategory"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 4,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Infrastructure.Functor.Interface",
+      "imports": [],
+      "imported_by": [
+        "Infrastructure.Functor.Instances.PhaseCategory",
+        "Infrastructure.Functor.Instances.Ambiguity",
+        "Infrastructure.Functor.Compose",
+        "Infrastructure.Functor.Instances.Trivial",
+        "Core.PhaseCategoryWrapper",
+        "Infrastructure.Index",
+        "Infrastructure.Functor.Instances.PathAlgebra",
+        "Infrastructure.Functor.Instances.FunctionCategory",
+        "Infrastructure.Functor.Instances.FunctionPathCategory"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 9,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Infrastructure.Index",
+      "imports": [
+        "Infrastructure.Functor.Instances.PhaseCategory",
+        "Infrastructure.Axiom.Face",
+        "Infrastructure.Functor.Instances.FunctionPathCategory",
+        "Infrastructure.Definitions.Dictionary",
+        "Infrastructure.Functor.Adapters.Funext",
+        "Infrastructure.Coherence.Path2",
+        "Infrastructure.Functor.Instances.FunctionCategory",
+        "Infrastructure.Functor.Instances.Ambiguity",
+        "Infrastructure.Polytopes.Braiding.HexagonTriangulation",
+        "Infrastructure.Product.Bundle4",
+        "Infrastructure.Functor.Instances.Trivial",
+        "Infrastructure.Axiom.Instances.HexagonBraiding",
+        "Core.PhaseCategoryWrapper",
+        "Infrastructure.Axiom.Adequacy",
+        "Infrastructure.Wrapper.With",
+        "Infrastructure.Iso.Structural",
+        "Infrastructure.Axiom.Instances.PentagonAssociahedron",
+        "Infrastructure.Axiom.Instance",
+        "Infrastructure.Polytopes.Associahedron",
+        "Infrastructure.Functor.Compose",
+        "Infrastructure.Functor.Instances.PathAlgebra",
+        "Infrastructure.Axiom.Solver",
+        "Infrastructure.Arity.BinTree",
+        "Infrastructure.Universe",
+        "Infrastructure.Functor.Interface",
+        "Infrastructure.Polytopes.Associahedron.Triangulation"
+      ],
+      "imported_by": [],
+      "direct_deps": 26,
+      "reverse_deps": 0,
+      "transitive_deps": 28
+    },
+    {
+      "module": "Infrastructure.Iso.Structural",
+      "imports": [],
+      "imported_by": [
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Infrastructure.Polytopes.Associahedron",
+      "imports": [
+        "Infrastructure.Arity.BinTree"
+      ],
+      "imported_by": [
+        "Infrastructure.Axiom.Instances.PentagonAssociahedron",
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 2,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Infrastructure.Polytopes.Associahedron.Triangulation",
+      "imports": [],
+      "imported_by": [
+        "Infrastructure.Axiom.Instances.PentagonAssociahedron",
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 2,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Infrastructure.Polytopes.Braiding.HexagonTriangulation",
+      "imports": [],
+      "imported_by": [
+        "Infrastructure.Axiom.Instances.HexagonBraiding",
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 2,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Infrastructure.Product.Bundle4",
+      "imports": [],
+      "imported_by": [
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Infrastructure.Universe",
+      "imports": [],
+      "imported_by": [
+        "Core.ConstructiveWitnesses",
+        "Core.PhaseCategory",
+        "Core.Phase",
+        "Core.GrowthMetrics",
+        "Core.AlgorithmUniversality",
+        "Core.GrothendieckFibrations",
+        "Core.TechnicalDebt",
+        "Core.Witnesses",
+        "Core.AlgorithmComplexity",
+        "Core.Utils",
+        "Core.GodelBoundary",
+        "Core.ABNF",
+        "Core.UniversalProperties",
+        "Core.Rendering",
+        "Core.Limitations",
+        "Core.IO",
+        "Infrastructure.Index",
+        "Core.BraidTree",
+        "Core.AlgorithmCorrectness",
+        "Core.CategoricalAdapter",
+        "Core.AlgebraicAlgorithms",
+        "Core.AdapterAutomation",
+        "Core.PathAggregator",
+        "Core.PolynomialsF2",
+        "Core.Strings"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 25,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Infrastructure.Wrapper.With",
+      "imports": [],
+      "imported_by": [
+        "Infrastructure.Index"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Markdown.ExportProof",
+      "imports": [
+        "Core.Utils",
+        "Markdown.Normalization"
+      ],
+      "imported_by": [],
+      "direct_deps": 2,
+      "reverse_deps": 0,
+      "transitive_deps": 9
+    },
+    {
+      "module": "Markdown.Normalization",
+      "imports": [
+        "Core.Utils"
+      ],
+      "imported_by": [
+        "Markdown.ExportProof"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 8
+    },
+    {
+      "module": "MetaScan",
+      "imports": [],
+      "imported_by": [],
+      "direct_deps": 0,
+      "reverse_deps": 0,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Metamodel",
+      "imports": [
+        "Core.Phase"
+      ],
+      "imported_by": [
+        "Tests.ConstructiveWitnessTests",
+        "Chapter3.Level3sub2",
+        "Core.Algorithms.External",
+        "Tests.PathAggregatorTests",
+        "Tests.SubobjectTheoryChecklist",
+        "Tests.ModuleTheoryChecklist",
+        "Algebra.Groups.Abelian",
+        "Algebra.Modules.Types",
+        "Chapter1.Level1sub2",
+        "Tests.UniversalPropertyTests",
+        "Tests.EnrichmentChecklist",
+        "Tests.AdvancedPhaseExamples",
+        "Core.Algorithms.FunctionFields",
+        "Tests.VectorSpaceChecklist",
+        "Core.Limitations",
+        "Tests.AdvancedFieldsChecklist",
+        "Core.Algorithms.Registry",
+        "Core.Algorithms.NumberFields",
+        "Examples.NumberField.Sqrt2",
+        "Examples.FiniteField.GF8",
+        "Tests.AbelianCategoriesChecklist",
+        "Algebra.Groups.Structure",
+        "Tests.Chapter3Checklist",
+        "Tests.ToposTheoryChecklist",
+        "Algebra.Fields.BasicWithTheorems",
+        "Core.ConstructiveWitnesses",
+        "Algebra.Groups.Types",
+        "Tests.AlgebraicCompletionChecklist",
+        "Examples.FunctionField.F2x",
+        "Tests.FieldsBasicChecklist",
+        "Core.GrothendieckFibrations",
+        "Core.Witnesses",
+        "Algebra.Modules.Theorems.Classical",
+        "Chapter1.Level1sub3",
+        "Core.GodelBoundary",
+        "TechnicalDebt.AlgorithmCompositionRegistry",
+        "Chapter1.Level1sub8",
+        "Core.UniversalProperties",
+        "Algebra.Groups.Basic",
+        "Algebra.Groups.BasicParameterized",
+        "Chapter1.Level1sub6",
+        "Tests.ObligationAdapters",
+        "Tests.GrothendieckFibrationsChecklist",
+        "Tests.GroupsStructureChecklist",
+        "Core.Algorithms.FiniteFields",
+        "Chapter2.Level2sub2",
+        "Algebra.Fields.Advanced",
+        "Tests.TensorProductChecklist",
+        "Tests.ProofObligationStatus",
+        "Chapter1.Level1sub5",
+        "Tests.PolynomialExtensionsChecklist",
+        "Chapter2.Level2sub6",
+        "Algebra.Modules.Basic",
+        "Chapter3.Level3sub1",
+        "Algebra.Modules.BasicWithTheorems",
+        "Tests.Chapter1Checklist",
+        "Tests.WarningAggregatorsTest",
+        "Core.Algorithms.InductiveClassification",
+        "PropertyRegistry",
+        "Core.Yoneda",
+        "Tests.AlgorithmSmokeTests",
+        "Algebra.Fields.Basic",
+        "Tests.ModulesChecklist",
+        "Algebra.Foundation",
+        "Algebra.Fields.Theorems.Classical",
+        "Tests.PerformanceBoundaryTests",
+        "Algebra.Groups.Free",
+        "Tests.ToposObligationAdapters",
+        "Tests.WitnessConstructionTests",
+        "Plan.CIM.YonedaProfiler",
+        "Tests.PolynomialFieldExtensionsChecklist",
+        "Tests.DispatchBehaviorTests",
+        "Algebra.Rings.Theorems.Classical",
+        "Tests.ErrorHandlingTests",
+        "Tests.AlgorithmCompositionTestsMinimal",
+        "Tests.CoreUniversalPropertiesChecklist",
+        "Tests.YonedaChecklist",
+        "Core.AlgorithmCorrectness",
+        "Chapter2.Level2sub1",
+        "Tests.ErrorAsSpecificationTests",
+        "Chapter2.Level2sub4",
+        "Tests.GroupsAbelianChecklist",
+        "Examples.InstrumentedAlgorithmDemo",
+        "Chapter1.Level1sub4",
+        "Algebra.Rings.Basic",
+        "Algebra.Groups.Theorems.Classical",
+        "Core.AlgebraicAlgorithms",
+        "Tests.GodelBoundaryTests",
+        "Tests.PhaseExamples",
+        "Algebra.Groups.BasicWithTheorems",
+        "Examples.ConstructiveWitnessExamples",
+        "Algorithms.Instrumented",
+        "Tests.ChapterObligationsSmoke",
+        "Tests.PropertyRegistryTests",
+        "Tests.RingsBasicChecklist",
+        "Core.GrowthMetrics",
+        "Core.AlgorithmUniversality",
+        "Tests.ModuleStructureChecklist",
+        "Core.TechnicalDebt",
+        "GrowthAnalysis",
+        "Core.Algorithms.AutomaticEvidence",
+        "Tests.AlgebraChecklist",
+        "Core.AlgorithmComplexity",
+        "Algorithms.Basic",
+        "Tests.FunctorPropertiesChecklist",
+        "Examples.TechnicalDebtExample",
+        "Examples.ExporterMakefile",
+        "Algebra.Rings.BasicWithTheorems",
+        "Algebra.Rings.Types",
+        "Tests.GroupsFreeChecklist",
+        "Examples.AlgorithmCorrectnessExamples",
+        "Chapter2.Level2sub8",
+        "Chapter1.Level1sub7",
+        "Chapter2.Level2sub7",
+        "Tests.SerializationTests",
+        "Examples.RealWorldAlgorithms",
+        "Tests.Chapter2Checklist",
+        "Algebra.Enrichment",
+        "Chapter1.Level1",
+        "Algorithms.TestInstances",
+        "Examples.TechnicalDebtChecklist",
+        "Algebra.Fields.Types",
+        "Core",
+        "Chapter2.Level2sub3",
+        "Core.PathAggregator",
+        "Chapter2.Level2sub5"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 126,
+      "transitive_deps": 3
+    },
+    {
+      "module": "MinimalAUDAXInlineTest",
+      "imports": [],
+      "imported_by": [],
+      "direct_deps": 0,
+      "reverse_deps": 0,
+      "transitive_deps": 0
+    },
+    {
+      "module": "MinimalTest",
+      "imports": [],
+      "imported_by": [],
+      "direct_deps": 0,
+      "reverse_deps": 0,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Plan.CIM.Ambiguity",
+      "imports": [],
+      "imported_by": [
+        "Infrastructure.Functor.Instances.Ambiguity"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Plan.CIM.CHIPConformance",
+      "imports": [
+        "Plan.CIM.Utility"
+      ],
+      "imported_by": [
+        "Plan.CIM.PandocProtocols"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Plan.CIM.CHIPCoreRecompose",
+      "imports": [
+        "Plan.CIM.Utility"
+      ],
+      "imported_by": [],
+      "direct_deps": 1,
+      "reverse_deps": 0,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Plan.CIM.CHIPRecomposed",
+      "imports": [
+        "Plan.CIM.Utility",
+        "Plan.CIM.PandocProtocols",
+        "Plan.CIM.PandocToMarkdown",
+        "Plan.CIM.GrammarBridge",
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [],
+      "direct_deps": 5,
+      "reverse_deps": 0,
+      "transitive_deps": 6
+    },
+    {
+      "module": "Plan.CIM.CanonicalRoadmap",
+      "imports": [
+        "Plan.CIM.RoadmapIndex"
+      ],
+      "imported_by": [
+        "Plan.CIM.PlanningKernel"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Plan.CIM.DocumentSynthesis",
+      "imports": [
+        "Plan.CIM.Utility",
+        "Plan.CIM.FrameworkMetadata",
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [
+        "Plan.CIM.RoadmapExporter"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Plan.CIM.DocumentationContent",
+      "imports": [
+        "Plan.CIM.Utility",
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [
+        "Plan.CIM.RoadmapExporter"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 1,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Plan.CIM.FrameworkMetadata",
+      "imports": [],
+      "imported_by": [
+        "Plan.CIM.DocumentSynthesis"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Plan.CIM.GPNarrativeDAG",
+      "imports": [],
+      "imported_by": [],
+      "direct_deps": 0,
+      "reverse_deps": 0,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Plan.CIM.GrammarBridge",
+      "imports": [
+        "Plan.CIM.Utility",
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [
+        "Plan.CIM.PandocProofExample",
+        "Plan.CIM.CHIPRecomposed"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 2,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Plan.CIM.IngestedRoadmaps",
+      "imports": [
+        "Plan.CIM.Utility",
+        "Plan.CIM.IngestedRoadmaps.Polytopes",
+        "Plan.CIM.IngestedRoadmaps.Geometry",
+        "Plan.CIM.IngestedRoadmaps.Foundation",
+        "Plan.CIM.IngestedRoadmaps.Analysis",
+        "Plan.CIM.IngestedRoadmaps.Corrections"
+      ],
+      "imported_by": [],
+      "direct_deps": 6,
+      "reverse_deps": 0,
+      "transitive_deps": 6
+    },
+    {
+      "module": "Plan.CIM.IngestedRoadmaps.Analysis",
+      "imports": [
+        "Plan.CIM.Utility"
+      ],
+      "imported_by": [
+        "Plan.CIM.IngestedRoadmaps"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Plan.CIM.IngestedRoadmaps.Corrections",
+      "imports": [
+        "Plan.CIM.Utility"
+      ],
+      "imported_by": [
+        "Plan.CIM.IngestedRoadmaps"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Plan.CIM.IngestedRoadmaps.Foundation",
+      "imports": [
+        "Plan.CIM.Utility"
+      ],
+      "imported_by": [
+        "Plan.CIM.IngestedRoadmaps"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Plan.CIM.IngestedRoadmaps.Geometry",
+      "imports": [
+        "Plan.CIM.Utility"
+      ],
+      "imported_by": [
+        "Plan.CIM.IngestedRoadmaps"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Plan.CIM.IngestedRoadmaps.Polytopes",
+      "imports": [
+        "Plan.CIM.Utility"
+      ],
+      "imported_by": [
+        "Plan.CIM.IngestedRoadmaps"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Plan.CIM.MarkdownNormalize",
+      "imports": [
+        "Plan.CIM.MarkdownParse",
+        "qualified",
+        "Plan.CIM.PandocAST",
+        "System.Environment"
+      ],
+      "imported_by": [],
+      "direct_deps": 4,
+      "reverse_deps": 0,
+      "transitive_deps": 6
+    },
+    {
+      "module": "Plan.CIM.MarkdownParse",
+      "imports": [
+        "Plan.CIM.PandocToMarkdown",
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [
+        "Plan.CIM.MarkdownNormalize"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 1,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Plan.CIM.ModuleExporter",
+      "imports": [
+        "Data.List",
+        "Core.Utils",
+        "Control.Exception",
+        "qualified",
+        "Data.Ord",
+        "Data.Char"
+      ],
+      "imported_by": [],
+      "direct_deps": 6,
+      "reverse_deps": 0,
+      "transitive_deps": 13
+    },
+    {
+      "module": "Plan.CIM.PandocAST",
+      "imports": [],
+      "imported_by": [
+        "Plan.CIM.RoadmapExporter",
+        "Plan.CIM.PandocShowBlock",
+        "Plan.CIM.DocumentSynthesis",
+        "Plan.CIM.PandocProtocols",
+        "Plan.CIM.PandocProofExample",
+        "Plan.CIM.Structure",
+        "Plan.CIM.MarkdownNormalize",
+        "Plan.CIM.PandocShowInline",
+        "Plan.CIM.CHIPRecomposed",
+        "Plan.CIM.PandocToMarkdown",
+        "Plan.CIM.GrammarBridge",
+        "Plan.CIM.PandocProofExport",
+        "Plan.CIM.PandocShowMdBlock",
+        "Plan.CIM.MarkdownParse",
+        "Plan.CIM.DocumentationContent"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 15,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Plan.CIM.PandocProofExample",
+      "imports": [
+        "Plan.CIM.Utility",
+        "Plan.CIM.Structure",
+        "Plan.CIM.PandocToMarkdown",
+        "Plan.CIM.GrammarBridge",
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [
+        "Plan.CIM.PandocProofExport"
+      ],
+      "direct_deps": 5,
+      "reverse_deps": 1,
+      "transitive_deps": 7
+    },
+    {
+      "module": "Plan.CIM.PandocProofExport",
+      "imports": [
+        "Plan.CIM.Utility",
+        "Plan.CIM.PandocProofExample",
+        "Plan.CIM.Structure",
+        "Plan.CIM.PandocToMarkdown",
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [],
+      "direct_deps": 5,
+      "reverse_deps": 0,
+      "transitive_deps": 8
+    },
+    {
+      "module": "Plan.CIM.PandocProtocols",
+      "imports": [
+        "Plan.CIM.Utility",
+        "Plan.CIM.PandocAST",
+        "Plan.CIM.CHIPConformance"
+      ],
+      "imported_by": [
+        "Plan.CIM.Structure",
+        "Plan.CIM.CHIPRecomposed"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 2,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Plan.CIM.PandocShowBlock",
+      "imports": [
+        "Plan.CIM.PandocShowInline",
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [
+        "Plan.CIM.PandocShowMdBlock",
+        "Plan.CIM.RoadmapExporter"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 2,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Plan.CIM.PandocShowInline",
+      "imports": [
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [
+        "Plan.CIM.PandocShowMdBlock",
+        "Plan.CIM.RoadmapExporter",
+        "Plan.CIM.PandocShowBlock"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 3,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Plan.CIM.PandocShowMdBlock",
+      "imports": [
+        "Plan.CIM.PandocShowBlock",
+        "Plan.CIM.PandocShowInline",
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [
+        "Plan.CIM.RoadmapExporter"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Plan.CIM.PandocToMarkdown",
+      "imports": [
+        "Plan.CIM.Utility",
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [
+        "Plan.CIM.PandocProofExample",
+        "Plan.CIM.Structure",
+        "Plan.CIM.CHIPRecomposed",
+        "Plan.CIM.PandocProofExport",
+        "Plan.CIM.MarkdownParse"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 5,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Plan.CIM.PlanningExport",
+      "imports": [
+        "qualified",
+        "Plan.CIM.RoadmapIndex",
+        "Plan.CIM.PlanningKernel"
+      ],
+      "imported_by": [],
+      "direct_deps": 3,
+      "reverse_deps": 0,
+      "transitive_deps": 4
+    },
+    {
+      "module": "Plan.CIM.PlanningKernel",
+      "imports": [
+        "Plan.CIM.RoadmapIndex",
+        "Plan.CIM.CanonicalRoadmap"
+      ],
+      "imported_by": [
+        "Plan.CIM.RoadmapSPPF",
+        "Plan.CIM.PlanningExport"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 2,
+      "transitive_deps": 2
+    },
+    {
+      "module": "Plan.CIM.PolytopeExpansion",
+      "imports": [],
+      "imported_by": [],
+      "direct_deps": 0,
+      "reverse_deps": 0,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Plan.CIM.RoadmapExporter",
+      "imports": [
+        "Plan.CIM.Utility",
+        "Plan.CIM.PandocShowBlock",
+        "Plan.CIM.DocumentSynthesis",
+        "Plan.CIM.PandocShowInline",
+        "Plan.CIM.DocumentationContent",
+        "Plan.CIM.PandocShowMdBlock",
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [],
+      "direct_deps": 7,
+      "reverse_deps": 0,
+      "transitive_deps": 8
+    },
+    {
+      "module": "Plan.CIM.RoadmapIndex",
+      "imports": [],
+      "imported_by": [
+        "Plan.CIM.RoadmapSPPF",
+        "Plan.CIM.PlanningExport",
+        "Plan.CIM.CanonicalRoadmap",
+        "Plan.CIM.PlanningKernel"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 4,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Plan.CIM.RoadmapSPPF",
+      "imports": [
+        "Plan.CIM.RoadmapIndex",
+        "Plan.CIM.PlanningKernel"
+      ],
+      "imported_by": [
+        "Examples.TechnicalDebtRegistry"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 1,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Plan.CIM.RoadmapSPPFExport",
+      "imports": [
+        "qualified"
+      ],
+      "imported_by": [],
+      "direct_deps": 1,
+      "reverse_deps": 0,
+      "transitive_deps": 1
+    },
+    {
+      "module": "Plan.CIM.RoadmapSync",
+      "imports": [],
+      "imported_by": [],
+      "direct_deps": 0,
+      "reverse_deps": 0,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Plan.CIM.Structure",
+      "imports": [
+        "Plan.CIM.Utility",
+        "Plan.CIM.PandocToMarkdown",
+        "Plan.CIM.PandocProtocols",
+        "Plan.CIM.PandocAST"
+      ],
+      "imported_by": [
+        "Plan.CIM.PandocProofExample",
+        "Plan.CIM.PandocProofExport"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 2,
+      "transitive_deps": 5
+    },
+    {
+      "module": "Plan.CIM.Utility",
+      "imports": [],
+      "imported_by": [
+        "Plan.CIM.PandocToMarkdown",
+        "Plan.CIM.IngestedRoadmaps.Analysis",
+        "Plan.CIM.IngestedRoadmaps",
+        "Plan.CIM.PandocProofExample",
+        "Plan.CIM.IngestedRoadmaps.Foundation",
+        "Plan.CIM.GrammarBridge",
+        "Plan.CIM.PandocProofExport",
+        "Plan.CIM.YonedaProfiler",
+        "Plan.CIM.DocumentationContent",
+        "Plan.CIM.IngestedRoadmaps.Corrections",
+        "Plan.CIM.CHIPCoreRecompose",
+        "Plan.CIM.DocumentSynthesis",
+        "Plan.CIM.Structure",
+        "Plan.CIM.CHIPRecomposed",
+        "Plan.CIM.RoadmapExporter",
+        "Plan.CIM.IngestedRoadmaps.Polytopes",
+        "Plan.CIM.IngestedRoadmaps.Geometry",
+        "Plan.CIM.PandocProtocols",
+        "Plan.CIM.CHIPConformance"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 19,
+      "transitive_deps": 0
+    },
+    {
+      "module": "Plan.CIM.YonedaProfiler",
+      "imports": [
+        "Plan.CIM.Utility",
+        "Core.Yoneda",
+        "Metamodel"
+      ],
+      "imported_by": [],
+      "direct_deps": 3,
+      "reverse_deps": 0,
+      "transitive_deps": 30
+    },
+    {
+      "module": "PropertyRegistry",
+      "imports": [
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Algebra.Groups.Abelian",
+        "Algebra.Fields.Basic",
+        "Algebra.Foundation",
+        "Examples.TechnicalDebtExample",
+        "Algebra.Groups.Free",
+        "Algebra.Rings.BasicWithTheorems",
+        "Algebra.Groups.BasicParameterized",
+        "Algebra.Groups.Basic",
+        "Algebra.Fields.Advanced",
+        "Algebra.Rings.Basic",
+        "Algebra.Enrichment",
+        "Algebra.Groups.BasicWithTheorems",
+        "Algebra.Modules.Basic",
+        "Chapter1.Level1",
+        "Examples.TechnicalDebtChecklist",
+        "Core",
+        "Algebra.Modules.BasicWithTheorems",
+        "Chapter2.Level2sub3",
+        "Tests.PropertyRegistryTests",
+        "Algebra.Fields.BasicWithTheorems"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 20,
+      "transitive_deps": 4
+    },
+    {
+      "module": "System.Environment",
+      "imports": [],
+      "imported_by": [
+        "Plan.CIM.MarkdownNormalize"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 1,
+      "transitive_deps": 0
+    },
+    {
+      "module": "TechnicalDebt.AlgorithmCompositionRegistry",
+      "imports": [
+        "Core.TechnicalDebt",
+        "Metamodel"
+      ],
+      "imported_by": [],
+      "direct_deps": 2,
+      "reverse_deps": 0,
+      "transitive_deps": 9
+    },
+    {
+      "module": "TechnicalDebt.DeferredItemsDetection",
+      "imports": [],
+      "imported_by": [
+        "TechnicalDebt.DeferredItemsOrchestrationFFI",
+        "TechnicalDebt.DeferredItemsFormatting_AUDAX",
+        "TechnicalDebt.DeferredItemsFormatting"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 3,
+      "transitive_deps": 0
+    },
+    {
+      "module": "TechnicalDebt.DeferredItemsFormatting",
+      "imports": [
+        "Core.Phase",
+        "TechnicalDebt.DeferredItemsDetection"
+      ],
+      "imported_by": [
+        "TechnicalDebt.PriorityFormatting",
+        "TechnicalDebt.PriorityOrchestration",
+        "TechnicalDebt.DeferredItemsOrchestrationFFI"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 3,
+      "transitive_deps": 4
+    },
+    {
+      "module": "TechnicalDebt.DeferredItemsFormatting_AUDAX",
+      "imports": [
+        "Core.Phase",
+        "TechnicalDebt.DeferredItemsDetection"
+      ],
+      "imported_by": [],
+      "direct_deps": 2,
+      "reverse_deps": 0,
+      "transitive_deps": 4
+    },
+    {
+      "module": "TechnicalDebt.DeferredItemsOrchestrationFFI",
+      "imports": [
+        "Core.Phase",
+        "TechnicalDebt.DeferredItemsFormatting",
+        "TechnicalDebt.DeferredItemsDetection"
+      ],
+      "imported_by": [],
+      "direct_deps": 3,
+      "reverse_deps": 0,
+      "transitive_deps": 5
+    },
+    {
+      "module": "TechnicalDebt.Priorities",
+      "imports": [
+        "Core.TechnicalDebt",
+        "Core"
+      ],
+      "imported_by": [
+        "TechnicalDebt.PriorityFormatting",
+        "TechnicalDebt.PriorityOrchestration",
+        "TechnicalDebt.PriorityMapping"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 3,
+      "transitive_deps": 9
+    },
+    {
+      "module": "TechnicalDebt.PriorityFormatting",
+      "imports": [
+        "TechnicalDebt.PriorityMapping",
+        "Core.Phase",
+        "TechnicalDebt.DeferredItemsFormatting",
+        "TechnicalDebt.Priorities"
+      ],
+      "imported_by": [
+        "TechnicalDebt.PriorityOrchestration"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 1,
+      "transitive_deps": 13
+    },
+    {
+      "module": "TechnicalDebt.PriorityMapping",
+      "imports": [
+        "Core.TechnicalDebt",
+        "Core",
+        "TechnicalDebt.Priorities"
+      ],
+      "imported_by": [
+        "TechnicalDebt.PriorityFormatting",
+        "TechnicalDebt.PriorityOrchestration"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 2,
+      "transitive_deps": 10
+    },
+    {
+      "module": "TechnicalDebt.PriorityOrchestration",
+      "imports": [
+        "Core.Phase",
+        "TechnicalDebt.DeferredItemsFormatting",
+        "TechnicalDebt.PriorityFormatting",
+        "TechnicalDebt.PriorityMapping",
+        "TechnicalDebt.Priorities"
+      ],
+      "imported_by": [
+        "TechnicalDebt.PriorityOrchestrationFFI"
+      ],
+      "direct_deps": 5,
+      "reverse_deps": 1,
+      "transitive_deps": 14
+    },
+    {
+      "module": "TechnicalDebt.PriorityOrchestrationFFI",
+      "imports": [
+        "TechnicalDebt.PriorityOrchestration"
+      ],
+      "imported_by": [],
+      "direct_deps": 1,
+      "reverse_deps": 0,
+      "transitive_deps": 15
+    },
+    {
+      "module": "Tests.AbelianCategoriesChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.Index",
+        "Tests.SpecificationValidation"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 2,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.AdvancedFieldsChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Chapter1.Level1",
+        "Algebra.Fields.Advanced",
+        "Algebra.Rings.Basic",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.AdvancedMonadTheoryChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Chapter2.Level2sub4",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.AdvancedPhaseExamples",
+      "imports": [
+        "Core.Algorithms.Registry",
+        "Core.Phase",
+        "Metamodel",
+        "Core.Algorithms.FiniteFields",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 9,
+      "reverse_deps": 1,
+      "transitive_deps": 41
+    },
+    {
+      "module": "Tests.AlgebraChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Chapter1.Level1",
+        "Algebra.Rings.Basic",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 7,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.AlgebraicCompletionChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Modules.Basic",
+        "Chapter1.Level1",
+        "Core.CategoricalAdapter",
+        "Algebra.Rings.Basic",
+        "Algebra.Groups.Abelian",
+        "Algebra.Fields.Basic",
+        "Algebra.Groups.Basic"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 11,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.AlgorithmCompositionTests",
+      "imports": [
+        "Tests.AlgorithmCompositionTestsMinimal"
+      ],
+      "imported_by": [
+        "Tests.Index",
+        "Examples.TechnicalDebtChecklist"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 2,
+      "transitive_deps": 45
+    },
+    {
+      "module": "Tests.AlgorithmCompositionTestsMinimal",
+      "imports": [
+        "Core.Algorithms.Registry",
+        "Core.Phase",
+        "Metamodel",
+        "Core.Algorithms.Bundle",
+        "Core.TechnicalDebt",
+        "Algebra.Rings.Basic",
+        "Core.UniversalProperties",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.AlgorithmCompositionTests"
+      ],
+      "direct_deps": 9,
+      "reverse_deps": 1,
+      "transitive_deps": 44
+    },
+    {
+      "module": "Tests.AlgorithmSmokeTests",
+      "imports": [
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algorithms.TestInstances",
+        "Algebra.Fields.Advanced",
+        "Core",
+        "Core.Witnesses",
+        "Algebra.Rings.Basic",
+        "Algebra.Groups.Abelian",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [],
+      "direct_deps": 10,
+      "reverse_deps": 0,
+      "transitive_deps": 34
+    },
+    {
+      "module": "Tests.Chapter1Checklist",
+      "imports": [
+        "Chapter1.Level1sub5",
+        "Chapter1.Level1sub7",
+        "Chapter1.Level1sub6",
+        "Chapter1.Level1sub2",
+        "Core.Phase",
+        "Tests.ObligationAdapters",
+        "Metamodel",
+        "Chapter1.Level1sub3",
+        "Chapter1.Level1sub8",
+        "Chapter1.Level1sub4",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 11,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.Chapter2Checklist",
+      "imports": [
+        "Chapter2.Level2sub6",
+        "Chapter1.Level1sub6",
+        "Core.Phase",
+        "Chapter2.Level2sub7",
+        "Metamodel",
+        "Tests.ObligationAdapters",
+        "Chapter1.Level1sub3",
+        "Chapter1.Level1",
+        "Core.CategoricalAdapter",
+        "Chapter2.Level2sub2",
+        "Chapter2.Level2sub1",
+        "Chapter2.Level2sub3",
+        "Chapter2.Level2sub4",
+        "Chapter2.Level2sub5",
+        "Chapter2.Level2sub8"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 15,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.Chapter3Checklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Chapter3.Level3sub2",
+        "Metamodel",
+        "Chapter1.Level1sub3",
+        "Chapter3.Level3sub1",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 7,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.ChapterObligationsSmoke",
+      "imports": [
+        "Chapter1.Level1sub2",
+        "Core.Phase",
+        "Chapter3.Level3sub2",
+        "Metamodel",
+        "Chapter2.Level2sub1",
+        "Chapter2.Level2sub2",
+        "Chapter1.Level1sub4"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 7,
+      "reverse_deps": 1,
+      "transitive_deps": 18
+    },
+    {
+      "module": "Tests.Chapters",
+      "imports": [
+        "Chapter1.Level1Index",
+        "Chapter2.Level2Index",
+        "Chapter3.Level3Index"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 27
+    },
+    {
+      "module": "Tests.ConstructiveWitnessTests",
+      "imports": [
+        "Core.ConstructiveWitnesses",
+        "Core.Phase",
+        "Core.PolynomialsF2",
+        "Metamodel",
+        "Core.AlgorithmUniversality",
+        "Algebra.Foundation",
+        "Algebra.Fields.Advanced",
+        "Core",
+        "Core.Witnesses",
+        "Algebra.Rings.Basic",
+        "Core.UniversalProperties",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.Index",
+        "Tests.Index_PhaseII"
+      ],
+      "direct_deps": 13,
+      "reverse_deps": 2,
+      "transitive_deps": 37
+    },
+    {
+      "module": "Tests.CoreUniversalPropertiesChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Core.UniversalProperties",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 5,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.CoverageReport",
+      "imports": [
+        "Core.Phase"
+      ],
+      "imported_by": [
+        "Tests.HierarchyValidation"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 3
+    },
+    {
+      "module": "Tests.DispatchBehaviorTests",
+      "imports": [
+        "Core.Algorithms.Registry",
+        "Core.Phase",
+        "Core.Algorithms.NumberFields",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Core.Algorithms.FiniteFields",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Core.Algorithms.FunctionFields",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 12,
+      "reverse_deps": 1,
+      "transitive_deps": 41
+    },
+    {
+      "module": "Tests.EnrichmentChecklist",
+      "imports": [
+        "Algebra.Enrichment",
+        "Chapter2.Level2sub6",
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Chapter1.Level1sub3",
+        "Algebra.Foundation",
+        "Algebra.Groups.Abelian"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.ErrorAsSpecificationTests",
+      "imports": [
+        "Core.Phase",
+        "Metamodel",
+        "Core",
+        "Core.Witnesses",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.Limitations",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [],
+      "direct_deps": 8,
+      "reverse_deps": 0,
+      "transitive_deps": 33
+    },
+    {
+      "module": "Tests.ErrorHandlingTests",
+      "imports": [
+        "Core.Algorithms.Registry",
+        "Core.Algorithms.NumberFields",
+        "Metamodel",
+        "Core.Algorithms.FiniteFields",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Core.UniversalProperties",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 10,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.FieldsBasicChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Chapter1.Level1",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 7,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.FunctorPropertiesChecklist",
+      "imports": [
+        "Chapter1.Level1sub2",
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.GodelBoundaryTests",
+      "imports": [
+        "Core.GodelBoundary",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 8
+    },
+    {
+      "module": "Tests.GrothendieckFibrationsChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Chapter1.Level1sub3",
+        "Core.GrothendieckFibrations",
+        "Chapter2.Level2sub8"
+      ],
+      "imported_by": [
+        "Tests.Index",
+        "Tests.SpecificationValidation"
+      ],
+      "direct_deps": 6,
+      "reverse_deps": 2,
+      "transitive_deps": 43
+    },
+    {
+      "module": "Tests.GroupsAbelianChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Chapter1.Level1",
+        "Algebra.Groups.Abelian",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 7,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.GroupsFreeChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Chapter1.Level1",
+        "Algebra.Groups.Free",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 7,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.GroupsStructureChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Chapter1.Level1",
+        "Algebra.Groups.Basic",
+        "Algebra.Groups.Free",
+        "Algebra.Groups.Structure",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 9,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.HierarchyValidation",
+      "imports": [
+        "Core.Phase",
+        "Tests.CoverageReport"
+      ],
+      "imported_by": [],
+      "direct_deps": 2,
+      "reverse_deps": 0,
+      "transitive_deps": 4
+    },
+    {
+      "module": "Tests.Index",
+      "imports": [
+        "Tests.RingsBasicChecklist",
+        "Tests.ConstructiveWitnessTests",
+        "Tests.AlgebraicCompletionChecklist",
+        "Tests.Chapters",
+        "Tests.ToposTheoryChecklist",
+        "Tests.FieldsBasicChecklist",
+        "Tests.ModuleStructureChecklist",
+        "Tests.PathAggregatorTests",
+        "Tests.SubobjectTheoryChecklist",
+        "Tests.RealWorldAlgorithmsTests",
+        "Tests.ModuleTheoryChecklist",
+        "Tests.AlgebraChecklist",
+        "Tests.ModulesChecklist",
+        "Tests.PhaseCategoryExamplesRunner",
+        "Tests.UniversalPropertyTests",
+        "Tests.EnrichmentChecklist",
+        "Tests.FunctorPropertiesChecklist",
+        "Tests.PerformanceBoundaryTests",
+        "Tests.LimitsColimitsChecklist",
+        "Tests.AdvancedPhaseExamples",
+        "Tests.WitnessConstructionTests",
+        "Tests.GroupsFreeChecklist",
+        "Tests.VectorSpaceChecklist",
+        "Tests.PolynomialFieldExtensionsChecklist",
+        "Tests.DispatchBehaviorTests",
+        "Tests.AdvancedFieldsChecklist",
+        "Tests.ErrorHandlingTests",
+        "Tests.CoreUniversalPropertiesChecklist",
+        "Tests.SerializationTests",
+        "Tests.YonedaChecklist",
+        "Tests.GrothendieckFibrationsChecklist",
+        "Tests.GroupsStructureChecklist",
+        "Tests.MonadAdjunctionChecklist",
+        "Tests.GroupsAbelianChecklist",
+        "Tests.Chapter2Checklist",
+        "Tests.AdvancedMonadTheoryChecklist",
+        "Tests.RegularCategoriesChecklist",
+        "Tests.TensorProductChecklist",
+        "Tests.ProofObligationStatus",
+        "Tests.GodelBoundaryTests",
+        "Tests.PolynomialExtensionsChecklist",
+        "Tests.PhaseExamples",
+        "Tests.AbelianCategoriesChecklist",
+        "Tests.Chapter1Checklist",
+        "Tests.ChapterObligationsSmoke",
+        "Tests.PropertyRegistryTests",
+        "Core.PathAggregator",
+        "Tests.AlgorithmCompositionTests",
+        "Tests.Chapter3Checklist",
+        "Tests.KanExtensionsChecklist"
+      ],
+      "imported_by": [],
+      "direct_deps": 50,
+      "reverse_deps": 0,
+      "transitive_deps": 123
+    },
+    {
+      "module": "Tests.Index_PhaseII",
+      "imports": [
+        "Tests.UniversalPropertyTests",
+        "Tests.ConstructiveWitnessTests"
+      ],
+      "imported_by": [],
+      "direct_deps": 2,
+      "reverse_deps": 0,
+      "transitive_deps": 39
+    },
+    {
+      "module": "Tests.KanExtensionsChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.LimitsColimitsChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.ModuleStructureChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Modules.Basic",
+        "Chapter1.Level1",
+        "Algebra.Rings.Basic",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.ModuleTheoryChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Modules.Basic",
+        "Chapter1.Level1",
+        "Algebra.Rings.Basic",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.ModulesChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Modules.Basic",
+        "Algebra.Groups.Basic",
+        "Chapter1.Level1",
+        "Algebra.Rings.Basic",
+        "Algebra.Groups.Abelian",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 10,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.MonadAdjunctionChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.ObligationAdapters",
+      "imports": [
+        "Core.Phase",
+        "Chapter3.Level3sub2",
+        "Algebra.Groups.Abelian",
+        "Algebra.Fields.Basic",
+        "Chapter1.Level1sub2",
+        "Chapter1.Level1sub3",
+        "Algebra.Foundation",
+        "Algebra.Groups.Free",
+        "Chapter1.Level1sub8",
+        "Core.UniversalProperties",
+        "Chapter2.Level2sub8",
+        "Algebra.Groups.Basic",
+        "Chapter1.Level1sub6",
+        "Chapter2.Level2sub7",
+        "Metamodel",
+        "Algebra.Fields.Advanced",
+        "Chapter2.Level2sub1",
+        "Chapter2.Level2sub2",
+        "Chapter2.Level2sub4",
+        "Algebra.Rings.Basic",
+        "Chapter1.Level1sub4",
+        "Core.CategoricalAdapter",
+        "Chapter1.Level1sub5",
+        "Algebra.Enrichment",
+        "Chapter2.Level2sub6",
+        "Algebra.Modules.Basic",
+        "Chapter1.Level1",
+        "Chapter3.Level3sub1",
+        "Algebra.Groups.Structure",
+        "Chapter2.Level2sub3",
+        "Chapter2.Level2sub5"
+      ],
+      "imported_by": [
+        "Tests.RingsBasicChecklist",
+        "Tests.AlgebraicCompletionChecklist",
+        "Tests.ModuleStructureChecklist",
+        "Tests.FieldsBasicChecklist",
+        "Tests.SubobjectTheoryChecklist",
+        "Tests.ModuleTheoryChecklist",
+        "Tests.AlgebraChecklist",
+        "Tests.ModulesChecklist",
+        "Tests.EnrichmentChecklist",
+        "Tests.FunctorPropertiesChecklist",
+        "Tests.LimitsColimitsChecklist",
+        "Tests.GroupsFreeChecklist",
+        "Tests.VectorSpaceChecklist",
+        "Tests.PolynomialFieldExtensionsChecklist",
+        "Tests.AdvancedFieldsChecklist",
+        "Tests.CoreUniversalPropertiesChecklist",
+        "Tests.YonedaChecklist",
+        "Tests.GrothendieckFibrationsChecklist",
+        "Tests.GroupsStructureChecklist",
+        "Tests.MonadAdjunctionChecklist",
+        "Tests.GroupsAbelianChecklist",
+        "Tests.AdvancedMonadTheoryChecklist",
+        "Tests.Chapter2Checklist",
+        "Tests.RegularCategoriesChecklist",
+        "Tests.TensorProductChecklist",
+        "Tests.PolynomialExtensionsChecklist",
+        "Tests.AbelianCategoriesChecklist",
+        "Tests.Chapter1Checklist",
+        "Tests.Chapter3Checklist",
+        "Tests.KanExtensionsChecklist"
+      ],
+      "direct_deps": 31,
+      "reverse_deps": 30,
+      "transitive_deps": 41
+    },
+    {
+      "module": "Tests.PathAggregatorTests",
+      "imports": [
+        "Core.GrowthMetrics",
+        "Core.Phase",
+        "Core.PathAggregator",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 4,
+      "reverse_deps": 1,
+      "transitive_deps": 10
+    },
+    {
+      "module": "Tests.PerformanceBoundaryTests",
+      "imports": [
+        "Core.Algorithms.Registry",
+        "Core.AlgorithmComplexity",
+        "Core.Phase",
+        "Metamodel",
+        "Core.GrowthMetrics",
+        "Core.Utils",
+        "Core.Algorithms.FiniteFields",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Algebra.Rings.Basic",
+        "GrowthAnalysis",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 13,
+      "reverse_deps": 1,
+      "transitive_deps": 45
+    },
+    {
+      "module": "Tests.PhaseCategoryExamplesRunner",
+      "imports": [
+        "Examples.PhaseCategoryExamples"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 1,
+      "reverse_deps": 1,
+      "transitive_deps": 5
+    },
+    {
+      "module": "Tests.PhaseExamples",
+      "imports": [
+        "Core.Algorithms.Registry",
+        "Core.Phase",
+        "Core.Algorithms.NumberFields",
+        "Metamodel",
+        "Core.Algorithms.FiniteFields",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 10,
+      "reverse_deps": 1,
+      "transitive_deps": 41
+    },
+    {
+      "module": "Tests.PolynomialExtensionsChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Chapter1.Level1",
+        "Algebra.Rings.Basic",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 7,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.PolynomialFieldExtensionsChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Chapter1.Level1",
+        "Algebra.Fields.Advanced",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 9,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.ProofObligationStatus",
+      "imports": [
+        "Core.ConstructiveWitnesses",
+        "Core.Phase",
+        "Metamodel",
+        "Core.AlgorithmCorrectness",
+        "Examples.AlgorithmCorrectnessExamples"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 5,
+      "reverse_deps": 1,
+      "transitive_deps": 38
+    },
+    {
+      "module": "Tests.PropertyRegistryTests",
+      "imports": [
+        "Metamodel",
+        "PropertyRegistry"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 1,
+      "transitive_deps": 5
+    },
+    {
+      "module": "Tests.RealWorldAlgorithmsTests",
+      "imports": [
+        "Core.Phase",
+        "Examples.RealWorldAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 2,
+      "reverse_deps": 1,
+      "transitive_deps": 38
+    },
+    {
+      "module": "Tests.RegularCategoriesChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.RingsBasicChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Chapter1.Level1",
+        "Algebra.Groups.Basic",
+        "Algebra.Rings.Basic",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.SerializationTests",
+      "imports": [
+        "Core.Phase",
+        "Metamodel",
+        "Core.Algorithms.Bundle",
+        "Core",
+        "Core.TechnicalDebt",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 1,
+      "transitive_deps": 35
+    },
+    {
+      "module": "Tests.SpecificationValidation",
+      "imports": [
+        "Tests.AbelianCategoriesChecklist",
+        "Tests.SubobjectTheoryChecklist",
+        "Core.Phase",
+        "Tests.GrothendieckFibrationsChecklist"
+      ],
+      "imported_by": [],
+      "direct_deps": 4,
+      "reverse_deps": 0,
+      "transitive_deps": 46
+    },
+    {
+      "module": "Tests.SubobjectTheoryChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel"
+      ],
+      "imported_by": [
+        "Tests.Index",
+        "Tests.SpecificationValidation"
+      ],
+      "direct_deps": 3,
+      "reverse_deps": 2,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.TensorProductChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Chapter1.Level1",
+        "Algebra.Groups.Abelian",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 7,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.ToposObligationAdapters",
+      "imports": [
+        "Core.Phase",
+        "Chapter3.Level3sub2",
+        "Metamodel",
+        "Chapter1.Level1sub3",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.ToposTheoryChecklist"
+      ],
+      "direct_deps": 5,
+      "reverse_deps": 1,
+      "transitive_deps": 17
+    },
+    {
+      "module": "Tests.ToposTheoryChecklist",
+      "imports": [
+        "Core.Phase",
+        "Chapter3.Level3sub2",
+        "Metamodel",
+        "Chapter1.Level1sub3",
+        "Tests.ToposObligationAdapters",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 6,
+      "reverse_deps": 1,
+      "transitive_deps": 18
+    },
+    {
+      "module": "Tests.UniversalPropertyTests",
+      "imports": [
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Core.AlgorithmUniversality",
+        "Algebra.Fields.Advanced",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Core.UniversalProperties",
+        "Algebra.Fields.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.Index",
+        "Tests.Index_PhaseII"
+      ],
+      "direct_deps": 10,
+      "reverse_deps": 2,
+      "transitive_deps": 34
+    },
+    {
+      "module": "Tests.VectorSpaceChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Modules.Basic",
+        "Chapter1.Level1",
+        "Algebra.Rings.Basic",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 8,
+      "reverse_deps": 1,
+      "transitive_deps": 42
+    },
+    {
+      "module": "Tests.WarningAggregatorsTest",
+      "imports": [
+        "Core.ConstructiveWitnesses",
+        "Metamodel",
+        "Core.AlgorithmUniversality",
+        "Core",
+        "Algebra.Rings.Basic",
+        "Core.UniversalProperties",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [],
+      "direct_deps": 7,
+      "reverse_deps": 0,
+      "transitive_deps": 37
+    },
+    {
+      "module": "Tests.WitnessConstructionTests",
+      "imports": [
+        "Metamodel",
+        "Algebra.Foundation",
+        "Algebra.Fields.Advanced",
+        "Core",
+        "Core.Witnesses",
+        "Algebra.Rings.Basic",
+        "Algebra.Fields.Basic",
+        "Algebra.Groups.Basic",
+        "Core.AlgebraicAlgorithms"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 9,
+      "reverse_deps": 1,
+      "transitive_deps": 33
+    },
+    {
+      "module": "Tests.YonedaChecklist",
+      "imports": [
+        "Tests.ObligationAdapters",
+        "Core.Phase",
+        "Metamodel",
+        "Core.Yoneda",
+        "Algebra.Rings.Basic",
+        "Core.CategoricalAdapter"
+      ],
+      "imported_by": [
+        "Tests.Index"
+      ],
+      "direct_deps": 6,
+      "reverse_deps": 1,
+      "transitive_deps": 43
+    },
+    {
+      "module": "qualified",
+      "imports": [],
+      "imported_by": [
+        "Examples.DeferredItemsScanner",
+        "Plan.CIM.ModuleExporter",
+        "Plan.CIM.MarkdownNormalize",
+        "Examples.ExporterMakefile",
+        "Plan.CIM.PlanningExport",
+        "Examples.RoadmapIssueSync",
+        "Docs.MetaIndex",
+        "Examples.MakefileTargets",
+        "Plan.CIM.RoadmapSPPFExport"
+      ],
+      "direct_deps": 0,
+      "reverse_deps": 9,
+      "transitive_deps": 0
+    }
+  ]
+}
