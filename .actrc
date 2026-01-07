@@ -1,6 +1,9 @@
 # act configuration file (project-specific)
-# Docker image mapping
--P ubuntu-latest=catthehacker/ubuntu:act-22.04
+# Docker image mapping (prebuilt worker image with Agda+pandoc)
+-P ubuntu-latest=metacatagory/act-ubuntu-agda:latest
+
+# Do not force-pull; use the locally built worker image.
+--pull=false
 
 # Bind working directory to container
 -b

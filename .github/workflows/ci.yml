@@ -14,6 +14,10 @@ jobs:
   build:
     name: Typecheck and Docs
     runs-on: ubuntu-latest
+    env:
+      AGDA_DIR: /usr/share/agda/lib
+      AGDA_EXEC_OPTIONS: --include-path=/usr/share/agda/lib/prim
+      AGDA_STDLIB: /usr/share/agda-stdlib
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,12 +27,51 @@ jobs:
       - name: Install Agda and Pandoc
         run: |
           sudo apt-get update
-          sudo apt-get install -y agda pandoc
+          sudo apt-get install -y agda agda-stdlib pandoc ghc libghc-agda-dev
+
+      - name: Configure Agda standard library
+        run: |
+          mkdir -p ~/.agda
+          echo "/usr/share/agda-stdlib/standard-library.agda-lib" > ~/.agda/libraries
+          echo "standard-library" > ~/.agda/defaults
+          # Resolve prim path robustly across package layouts
+          AGDA_PRIM_PATH=""
+          for candidate in \
+            "$AGDA_DIR/prim" \
+            "/usr/share/agda/lib/prim" \
+            "/usr/lib/agda/lib/prim" \
+            "/usr/share/libghc-agda-dev/lib/prim"; do
+            if [ -d "$candidate" ]; then
+              AGDA_PRIM_PATH="$candidate"
+              break
+            fi
+          done
+
+          if [ -z "$AGDA_PRIM_PATH" ]; then
+            echo "Agda prim library not found; searched common locations" >&2
+            find /usr -maxdepth 4 -type d -name prim | head -n 20 >&2 || true
+            exit 1
+          fi
+
+          # Create compatibility symlink for toolchains that still expect libghc-agda-dev layout
+          if [ ! -d "/usr/share/libghc-agda-dev/lib/prim" ]; then
+            mkdir -p /usr/share/libghc-agda-dev/lib
+            ln -s "$AGDA_PRIM_PATH" /usr/share/libghc-agda-dev/lib/prim || true
+          fi
+
+          echo "AGDA_PRIM_PATH=$AGDA_PRIM_PATH" >> "$GITHUB_ENV"
+          echo "AGDA_EXEC_OPTIONS=--include-path=$AGDA_PRIM_PATH" >> "$GITHUB_ENV"
+          ls "$AGDA_PRIM_PATH" >/dev/null
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -39,7 +82,7 @@ jobs:
         run: npm ci
 
       - name: Run check (aligns with local make)
-        run: make check
+        run: AGDA_FLAGS="-i src/agda -i ${AGDA_PRIM_PATH:-/usr/share/agda/lib/prim} --ghc-flag=-Wno-star-is-type" make check
 
       - name: Run makefile coverage verification
         run: python3 scripts/makefile_coverage.py --run-targets

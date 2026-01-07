@@ -12,6 +12,8 @@ Coverage targets:
 """
 
 import json
+import runpy
+import shutil
 import sys
 from pathlib import Path
 from unittest.mock import MagicMock, Mock, patch
@@ -463,6 +465,34 @@ status{i} : A.TypeA adapter{i} ≡ true
         
         assert exit_code == 0
         assert (custom_out / "test-report.json").exists()
+
+    def test_main_guard_executes(self, monkeypatch):
+        """Execute __main__ block via runpy to cover guard."""
+        root = Path(__file__).parents[2]
+        scratch = root / "build" / "tmp_test_report_main"
+        tests_dir = scratch / "Tests"
+        out_dir = scratch / "reports"
+        shutil.rmtree(scratch, ignore_errors=True)
+        tests_dir.mkdir(parents=True, exist_ok=True)
+
+        test_file = tests_dir / "Sample.agda"
+        test_file.write_text(
+            """
+module Tests.Sample where
+adapter1 : A.TestAdapter
+status1 : A.TestAdapter adapter1 ≡ true
+            """
+        )
+
+        monkeypatch.setattr(sys, "argv", ["test_report.py", "--tests-dir", str(tests_dir), "--out-dir", str(out_dir)])
+        try:
+            with pytest.raises(SystemExit) as excinfo:
+                runpy.run_path(str(root / "scripts" / "test_report.py"), run_name="__main__")
+            assert excinfo.value.code == 0
+            assert (out_dir / "test-report.json").exists()
+            assert (out_dir / "test-report.md").exists()
+        finally:
+            shutil.rmtree(scratch, ignore_errors=True)
 
 
 class TestIntegration:

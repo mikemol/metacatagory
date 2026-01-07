@@ -630,6 +630,122 @@ python -m pytest tests/scripts/test_export_roadmap.py tests/scripts/test_analyze
 
 ---
 
+## Part 6g: Python Test Suite (Phase 5c)
+
+### Goal
+
+Increase coverage by exercising roadmap progress tracking and intake scanning/reporting.
+
+### Target Scripts
+
+1. **progress_tracker.py** (65 statements) — Track roadmap step status and emit progress reports
+2. **intake_scan.py** (182 statements) — Scan intake/ markdown for roadmap IDs and generate coverage reports (JSON + Markdown)
+
+### Test Files Created
+
+- [tests/scripts/test_progress_tracker.py](tests/scripts/test_progress_tracker.py) — 4 tests
+  - Coverage areas: default state creation when missing, step updates and notes, summary math, report generation, `main()` writes outputs in CWD
+- [tests/scripts/test_intake_scan.py](tests/scripts/test_intake_scan.py) — 3 tests
+  - Coverage areas: canonical ID bootstrap, intake file classification (shard/candidate/substrate/formalized), coverage+unknown aggregation, report emission (JSON/MD), `main()` flow with patched paths
+
+### Results
+
+- **Tests**: +7 new (0 skipped)
+- **Targeted Coverage**:
+  - progress_tracker.py: **95%** (62/65) — uncovered: [scripts/progress_tracker.py](scripts/progress_tracker.py#L25-L26) (existing-state branch) and [scripts/progress_tracker.py](scripts/progress_tracker.py#L148) (`__main__` guard print tail)
+  - intake_scan.py: **92%** (167/182) — uncovered: [scripts/intake_scan.py](scripts/intake_scan.py#L172-L239) (Markdown rendering fallbacks/long-list paths) and [scripts/intake_scan.py](scripts/intake_scan.py#L286) (`__main__` guard)
+- **Total Coverage (all scripts)**: **29%** (full-suite run)
+
+### Commands
+
+```bash
+# Full suite with coverage
+python -m pytest tests/ -v --cov=scripts --cov-report=term-missing
+```
+
+### Coverage Gaps (Future Work)
+
+- progress_tracker.py: existing-state branch when state file already exists; `__main__` print tail
+- intake_scan.py: Markdown formatting branches (long lists, empty states), CLI guard
+- Remaining zero-coverage scripts are still the dominant gap (export_enriched_md.py, generate-badges.py, etc.)
+
+---
+
+## Part 6h: Python Test Suite (Phase 5d)
+
+### Goal
+
+Break zero-coverage backlog by exercising enriched Markdown export.
+
+### Target Script
+
+1. **export_enriched_md.py** (186 statements) — Render canonical_enriched.json into Markdown digest with structured sections
+
+### Test Files Created
+
+- [tests/scripts/test_export_enriched_md.py](tests/scripts/test_export_enriched_md.py) — 3 tests
+  - Coverage areas: helper formatting (empty list/scope/evidence), missing-enriched guard, full Markdown export with categories, YAML frontmatter, dependencies/relations, evidence/provenance, status/complexity breakdowns
+
+### Results
+
+- **Tests**: +3 new (0 skipped)
+- **Targeted Coverage**:
+  - export_enriched_md.py: **99%** (184/186) — uncovered: [scripts/export_enriched_md.py](scripts/export_enriched_md.py#L197) (final print) and [scripts/export_enriched_md.py](scripts/export_enriched_md.py#L367) (`__main__` guard)
+- **Total Coverage (all scripts)**: **33%** after full-suite run
+
+### Commands
+
+```bash
+# Full suite with coverage
+python -m pytest tests/ -v --cov=scripts --cov-report=term-missing
+```
+
+### Coverage Gaps (Future Work)
+
+- Remaining zero-coverage scripts dominate the uncovered lines (generate-badges.py, export_canonical_md.py, export_meta_index.py, etc.)
+- export_enriched_md.py: print tail and `__main__` guard only
+
+---
+
+## Part 6i: Python Test Suite (Phase 5e)
+
+### Goal
+
+Tackle zero-coverage generators: Shields.io badge emission and canonical roadmap Markdown export.
+
+### Target Scripts
+
+1. **generate-badges.py** (263 statements) — Produce badge JSON/MD from roadmap + deferred data
+2. **export_canonical_md.py** (46 statements) — Render planning_index.json to ROADMAP.md
+
+### Test Files Created
+
+- [tests/scripts/test_generate_badges.py](tests/scripts/test_generate_badges.py) — 14 tests
+  - Coverage areas: threshold colors (progress/deferred/trend weekly), missing-file JSON load, weights default/error/profile selection, roadmap empty case, deferred zero/positive/negative trends, repo scan skips/errors/invalid tasks, `main()` scan + history trim/weekly avg, corrupt history recovery, `__main__` guard execution
+- [tests/scripts/test_export_canonical_md.py](tests/scripts/test_export_canonical_md.py) — 2 tests
+  - Coverage areas: category grouping, frontmatter rendering (deps/tags/files), summary lines, patched loader/yaml output, `__main__` guard
+
+### Results
+
+- **Tests**: +16 new (0 skipped)
+- **Targeted Coverage**:
+  - generate-badges.py: **100%** (263/263)
+  - export_canonical_md.py: **100%** (46/46)
+- **Total Coverage (all scripts)**: **39%** after full-suite run
+
+### Commands
+
+```bash
+# Full suite with coverage
+python -m pytest tests/ -v --cov=scripts --cov-report=term-missing
+```
+
+### Coverage Gaps (Future Work)
+
+- Zero-coverage backlog still includes export_meta_index.py, export_canonical_json.py, generate_docs.py, doclint_to_roadmap.py, and shared_data/shared_yaml improvements
+
+---
+
 ## Part 7: Summary Table
 
 | Component | Location | Purpose | Tests |

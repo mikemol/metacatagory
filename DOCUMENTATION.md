@@ -18,6 +18,13 @@ This document provides an index to all project documentation.
   * [THEOREM-PARAMETERIZATION.md](docs/architecture/THEOREM-PARAMETERIZATION.md) - Theorem proof parameterization approach
   * [FRAMEWORK-INTEROPERABILITY.md](docs/architecture/FRAMEWORK-INTEROPERABILITY.md) - Framework integration patterns
 
+### Automation & Pipelines
+
+* [docs/automation/](docs/automation/)
+  * [COMPOSITION-PATTERNS.md](docs/automation/COMPOSITION-PATTERNS.md) - Shared pipeline composition patterns for Python scripts
+  * [MAKEFILE-TARGETS.md](docs/automation/MAKEFILE-TARGETS.md) - Makefile target reference
+  * [MAKEFILE-TRIANGLE-IDENTITY.md](docs/automation/MAKEFILE-TRIANGLE-IDENTITY.md) - Triangle identity validation
+
 ### Planning & Roadmap
 
 * [docs/planning/](docs/planning/)

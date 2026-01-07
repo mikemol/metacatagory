@@ -197,6 +197,27 @@ class TestSPPFExport:
         assert len(node["tags"]) == 3
         assert node["parents"] == []
 
+    def test_main_guard_executes(self, tmp_path, monkeypatch):
+        """Run __main__ guard to cover direct execution."""
+        monkeypatch.chdir(tmp_path)
+        build_dir = tmp_path / "build"
+        build_dir.mkdir(parents=True)
+        (build_dir / "planning_index.json").write_text("[]")
+
+        script_path = Path(__file__).parents[2] / "scripts" / "export_roadmap_sppf.py"
+        fake_file = tmp_path / "scripts" / "export_roadmap_sppf.py"
+        fake_file.parent.mkdir(parents=True)
+
+        code = script_path.read_text()
+        exec_globals = {
+            "__name__": "__main__",
+            "__file__": str(fake_file),
+            "__builtins__": __builtins__,
+        }
+        exec(compile(code, str(script_path), "exec"), exec_globals)
+
+        assert (build_dir / "gp_roadmap_sppf.json").exists()
+
 
 class TestIntegration:
     """Integration tests for complete SPPF export workflow."""

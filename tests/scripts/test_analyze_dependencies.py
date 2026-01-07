@@ -4,6 +4,7 @@ Tests for analyze_dependencies.py (Phase 5b)
 """
 
 import json
+import sys
 from pathlib import Path
 from unittest.mock import patch
 
@@ -124,7 +125,10 @@ class TestMainDispatch:
         with patch("sys.argv", ["analyze_dependencies.py", "--unknown"]):
             import runpy
 
-            runpy.run_module("scripts.analyze_dependencies", run_name="__main__")
+            # Clear cached module so run_module executes a fresh __main__
+            sys.modules.pop("scripts.analyze_dependencies", None)
+
+            runpy.run_module("scripts.analyze_dependencies", run_name="__main__", alter_sys=True)
 
         out = capsys.readouterr().out
         assert "Usage" in out

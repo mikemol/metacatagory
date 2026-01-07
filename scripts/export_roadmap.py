@@ -3,17 +3,12 @@
 Export ingested roadmap steps to structured Markdown ROADMAP.
 """
 
-import json
-import os
 from pathlib import Path
 from typing import Dict, List
 
-ROOT = Path(__file__).resolve().parent.parent
-
-def load_metadata(metadata_path: str) -> Dict:
-    """Load the ingested metadata."""
-    with open(metadata_path, 'r') as f:
-        return json.load(f)
+# Import shared utilities
+from scripts.shared.io import load_json, load_markdown, save_markdown
+from scripts.shared.config import Config
 
 def generate_markdown_section(metadata: Dict) -> str:
     """Generate a markdown section for each GP file."""
@@ -67,28 +62,34 @@ def generate_markdown_section(metadata: Dict) -> str:
     
     return md
 
-def main():
-    """Main execution."""
-    metadata_path = str(ROOT / 'build/ingested_metadata.json')
-    roadmap_path = str(ROOT / 'ROADMAP.md')
+def main(config: Config | None = None):
+    """Main execution.
+    
+    Args:
+        config: Optional Config instance for dependency injection (useful for testing).
+    """
+    if config is None:
+        config = Config()
+    
+    roadmap_path = config.repo_root / 'ROADMAP.md'
+    metadata_path = config.build_dir / 'ingested_metadata.json'
     
     print("Generating Markdown roadmap from ingested metadata...")
     
-    # Load metadata
-    if not os.path.exists(metadata_path):
-        print(f"Metadata file not found: {metadata_path}")
+    # Load metadata using shared utility
+    try:
+        metadata = load_json(metadata_path, required=True)
+    except (FileNotFoundError, SystemExit):
+        print("Metadata file not found: " + str(metadata_path))
         return
-    
-    metadata = load_metadata(metadata_path)
     
     # Generate markdown
     markdown = generate_markdown_section(metadata)
     
-    # Read existing ROADMAP
-    if os.path.exists(roadmap_path):
-        with open(roadmap_path, 'r') as f:
-            existing = f.read()
-        
+    # Read existing ROADMAP using shared utility
+    existing = load_markdown(roadmap_path, default="")
+    
+    if existing:
         # Find insertion point (before ## Implementation Status if it exists)
         insertion_point = existing.find("## Implementation Status")
         if insertion_point == -1:
@@ -101,9 +102,8 @@ def main():
     else:
         updated = markdown
     
-    # Save updated ROADMAP
-    with open(roadmap_path, 'w') as f:
-        f.write(updated)
+    # Save updated ROADMAP using shared utility
+    save_markdown(roadmap_path, updated)
     
     print(f"✓ Updated {roadmap_path}")
     print(f"✓ Added {metadata['total_files']} ingested roadmap items")

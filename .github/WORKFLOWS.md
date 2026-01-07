@@ -5,9 +5,15 @@ Run GitHub Actions workflows locally using [act](https://github.com/nektos/act).
 ## Configuration
 
 Your project is configured with:
-- **Docker Image**: `catthehacker/ubuntu:act-22.04`
+- **Docker Image**: `metacatagory/act-ubuntu-agda:latest` (prebuilt, see below)
 - **Config File**: `.actrc`
 - **Environment**: Loaded from `.env.local`
+
+To build the local worker image (once per machine):
+
+```bash
+docker build -f .github/workflows/images/act-ubuntu-agda.Dockerfile -t metacatagory/act-ubuntu-agda:latest .
+```
 
 ## Available Workflows
 

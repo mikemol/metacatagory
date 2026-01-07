@@ -291,3 +291,29 @@ class TestCLI:
                 success = False
                 mock_exit(0 if success else 1)
                 mock_exit.assert_called_once_with(1)
+
+    def test_main_guard_executes(self, tmp_path, monkeypatch):
+        """Execute __main__ to cover sys.exit path."""
+        monkeypatch.chdir(tmp_path)
+        build_dir = tmp_path / "build"
+        build_dir.mkdir(parents=True)
+
+        original = {"nodes": [{"id": "A"}], "edges": []}
+        recomposed = {"modules": [{"name": "A"}], "edges": [], "layers": []}
+        (build_dir / "dependency_graph.json").write_text(json.dumps(original))
+        (build_dir / "dependency_graph_recomposed.json").write_text(json.dumps(recomposed))
+
+        script_path = Path(__file__).parents[2] / "scripts" / "validate_json_roundtrip.py"
+        fake_file = tmp_path / "scripts" / "validate_json_roundtrip.py"
+        fake_file.parent.mkdir(parents=True)
+
+        code = script_path.read_text()
+        with pytest.raises(SystemExit) as excinfo:
+            exec_globals = {
+                "__name__": "__main__",
+                "__file__": str(fake_file),
+                "__builtins__": __builtins__,
+            }
+            exec(compile(code, str(script_path), "exec"), exec_globals)
+
+        assert excinfo.value.code == 0
