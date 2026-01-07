@@ -25,6 +25,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Agda and Pandoc
+        if: ${{ !env.ACT }}
         run: |
           sudo apt-get update
           sudo apt-get install -y agda agda-stdlib pandoc ghc libghc-agda-dev
