@@ -707,6 +707,45 @@ python -m pytest tests/ -v --cov=scripts --cov-report=term-missing
 
 ---
 
+## Part 6i: Python Test Suite (Phase 5e)
+
+### Goal
+
+Tackle zero-coverage generators: Shields.io badge emission and canonical roadmap Markdown export.
+
+### Target Scripts
+
+1. **generate-badges.py** (263 statements) — Produce badge JSON/MD from roadmap + deferred data
+2. **export_canonical_md.py** (46 statements) — Render planning_index.json to ROADMAP.md
+
+### Test Files Created
+
+- [tests/scripts/test_generate_badges.py](tests/scripts/test_generate_badges.py) — 14 tests
+  - Coverage areas: threshold colors (progress/deferred/trend weekly), missing-file JSON load, weights default/error/profile selection, roadmap empty case, deferred zero/positive/negative trends, repo scan skips/errors/invalid tasks, `main()` scan + history trim/weekly avg, corrupt history recovery, `__main__` guard execution
+- [tests/scripts/test_export_canonical_md.py](tests/scripts/test_export_canonical_md.py) — 2 tests
+  - Coverage areas: category grouping, frontmatter rendering (deps/tags/files), summary lines, patched loader/yaml output, `__main__` guard
+
+### Results
+
+- **Tests**: +16 new (0 skipped)
+- **Targeted Coverage**:
+  - generate-badges.py: **100%** (263/263)
+  - export_canonical_md.py: **100%** (46/46)
+- **Total Coverage (all scripts)**: **39%** after full-suite run
+
+### Commands
+
+```bash
+# Full suite with coverage
+python -m pytest tests/ -v --cov=scripts --cov-report=term-missing
+```
+
+### Coverage Gaps (Future Work)
+
+- Zero-coverage backlog still includes export_meta_index.py, export_canonical_json.py, generate_docs.py, doclint_to_roadmap.py, and shared_data/shared_yaml improvements
+
+---
+
 ## Part 7: Summary Table
 
 | Component | Location | Purpose | Tests |
