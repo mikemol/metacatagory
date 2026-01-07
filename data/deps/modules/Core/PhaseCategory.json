@@ -1,7 +1,9 @@
 {
   "name": "Core.PhaseCategory",
   "imports": [
-    "Infrastructure.Functor.Interface"
+    "Infrastructure.Universe",
+    "Core.Phase",
+    "Infrastructure.Coherence.Path2"
   ],
   "imported_by": [
     "Examples.PhaseCategoryExamples"

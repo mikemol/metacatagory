@@ -1,11 +1,35 @@
 {
   "name": "Algebra.Fields.Advanced",
   "imports": [
-    "Algebra.Fields.Basic",
-    "Algebra.Rings.Basic"
+    "Chapter1.Level1Index",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algebra.Modules.Basic",
+    "PropertyRegistry",
+    "Core",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic"
   ],
   "imported_by": [
+    "Algebra.Index",
+    "Algorithms.Basic",
+    "Core.AlgebraicAlgorithms",
+    "Core.AlgorithmCorrectness",
+    "Core.AlgorithmUniversality",
+    "Core.Algorithms.External",
+    "Core.Algorithms.FunctionFields",
+    "Core.Algorithms.NumberFields",
+    "Core.Algorithms.Registry",
+    "Core.ConstructiveWitnesses",
+    "Core.Witnesses",
+    "Examples.AlgorithmCorrectnessExamples",
+    "Examples.ConstructiveWitnessExamples",
+    "Tests.AdvancedFieldsChecklist",
+    "Tests.AlgorithmSmokeTests",
+    "Tests.ConstructiveWitnessTests",
     "Tests.ObligationAdapters",
-    "Core.Witnesses"
+    "Tests.PolynomialFieldExtensionsChecklist",
+    "Tests.UniversalPropertyTests",
+    "Tests.WitnessConstructionTests"
   ]
 }

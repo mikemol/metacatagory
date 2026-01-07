@@ -1,0 +1,17 @@
+{
+  "name": "Tests.AdvancedPhaseExamples",
+  "imports": [
+    "Core.Algorithms.Registry",
+    "Core.Phase",
+    "Metamodel",
+    "Core.Algorithms.FiniteFields",
+    "Core.Algorithms.Bundle",
+    "Core",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

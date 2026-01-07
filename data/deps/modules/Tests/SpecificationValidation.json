@@ -1,0 +1,10 @@
+{
+  "name": "Tests.SpecificationValidation",
+  "imports": [
+    "Tests.AbelianCategoriesChecklist",
+    "Tests.SubobjectTheoryChecklist",
+    "Core.Phase",
+    "Tests.GrothendieckFibrationsChecklist"
+  ],
+  "imported_by": []
+}

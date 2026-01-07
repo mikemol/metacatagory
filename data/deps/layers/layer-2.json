@@ -1,9 +1,21 @@
 [
-  "Core.Algorithms.Bundle",
-  "Algebra.Groups.Basic",
-  "Algebra.Fields.Advanced",
-  "Algebra.Modules.Types",
-  "Core.UniversalProperties",
-  "Core.Yoneda",
-  "Algorithms.Basic"
+  "Infrastructure.Axiom.Instance",
+  "Infrastructure.Axiom.Solver",
+  "Core.PhaseCategory",
+  "Core.PhaseCategoryWrapper",
+  "Core.PolynomialsF2",
+  "Metamodel",
+  "Plan.CIM.PandocProtocols",
+  "Plan.CIM.PandocShowBlock",
+  "Plan.CIM.PlanningKernel",
+  "TechnicalDebt.DeferredItemsFormatting",
+  "TechnicalDebt.DeferredItemsFormatting_AUDAX",
+  "Tests.CoverageReport",
+  "Core.AdapterAutomation",
+  "Core.AdapterReflection",
+  "Core.Rendering",
+  "Infrastructure.Functor.Instances.FunctionCategory",
+  "Infrastructure.Functor.Instances.PathAlgebra",
+  "Plan.CIM.IngestedRoadmaps",
+  "Plan.CIM.MarkdownParse"
 ]

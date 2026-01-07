@@ -1,10 +1,40 @@
 {
   "name": "Core.CategoricalAdapter",
   "imports": [
-    "Infrastructure.Coherence.Path2",
-    "Infrastructure.Universe"
+    "Infrastructure.Universe",
+    "Infrastructure.Coherence.Path2"
   ],
   "imported_by": [
-    "Tests.ObligationAdapters"
+    "Core.AdapterAutomation",
+    "Core.AdapterReflection",
+    "Examples.ExporterMakefile",
+    "ExporterMakefile",
+    "Tests.AdvancedFieldsChecklist",
+    "Tests.AdvancedMonadTheoryChecklist",
+    "Tests.AlgebraChecklist",
+    "Tests.AlgebraicCompletionChecklist",
+    "Tests.Chapter1Checklist",
+    "Tests.Chapter2Checklist",
+    "Tests.Chapter3Checklist",
+    "Tests.CoreUniversalPropertiesChecklist",
+    "Tests.GroupsAbelianChecklist",
+    "Tests.GroupsFreeChecklist",
+    "Tests.GroupsStructureChecklist",
+    "Tests.KanExtensionsChecklist",
+    "Tests.LimitsColimitsChecklist",
+    "Tests.ModuleStructureChecklist",
+    "Tests.ModuleTheoryChecklist",
+    "Tests.ModulesChecklist",
+    "Tests.MonadAdjunctionChecklist",
+    "Tests.ObligationAdapters",
+    "Tests.PolynomialExtensionsChecklist",
+    "Tests.PolynomialFieldExtensionsChecklist",
+    "Tests.RegularCategoriesChecklist",
+    "Tests.RingsBasicChecklist",
+    "Tests.TensorProductChecklist",
+    "Tests.ToposObligationAdapters",
+    "Tests.ToposTheoryChecklist",
+    "Tests.VectorSpaceChecklist",
+    "Tests.YonedaChecklist"
   ]
 }

@@ -1,12 +1,49 @@
 {
   "name": "Core.AlgebraicAlgorithms",
   "imports": [
-    "Core.Limitations"
+    "Algebra.Rings.Basic",
+    "Core.Phase",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algebra.Fields.Advanced",
+    "Core",
+    "Infrastructure.Coherence.Path2",
+    "Infrastructure.Universe",
+    "Algebra.Fields.Basic",
+    "Core.Limitations",
+    "Algebra.Groups.Basic"
   ],
   "imported_by": [
-    "Core.Algorithms.Bundle",
+    "Algebra.Index",
+    "Algorithms.Basic",
+    "Algorithms.Instrumented",
+    "Core.AlgorithmCorrectness",
     "Core.AlgorithmUniversality",
+    "Core.Algorithms.Bundle",
+    "Core.Algorithms.External",
+    "Core.Algorithms.FiniteFields",
+    "Core.Algorithms.FunctionFields",
+    "Core.Algorithms.NumberFields",
+    "Core.Algorithms.Registry",
     "Core.ConstructiveWitnesses",
-    "Algorithms.Basic"
+    "Examples.AlgorithmCorrectnessExamples",
+    "Examples.AutomaticEvidenceDemo",
+    "Examples.ConstructiveWitnessExamples",
+    "Examples.FunctionField.F2x",
+    "Examples.LazyHybridDemo",
+    "Examples.NumberField.Sqrt2",
+    "Tests.AdvancedPhaseExamples",
+    "Tests.AlgorithmCompositionTestsMinimal",
+    "Tests.AlgorithmSmokeTests",
+    "Tests.ConstructiveWitnessTests",
+    "Tests.DispatchBehaviorTests",
+    "Tests.ErrorAsSpecificationTests",
+    "Tests.ErrorHandlingTests",
+    "Tests.PerformanceBoundaryTests",
+    "Tests.PhaseExamples",
+    "Tests.SerializationTests",
+    "Tests.UniversalPropertyTests",
+    "Tests.WarningAggregatorsTest",
+    "Tests.WitnessConstructionTests"
   ]
 }

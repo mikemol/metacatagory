@@ -1,0 +1,14 @@
+{
+  "name": "Examples.FunctionField.F2x",
+  "imports": [
+    "Core.Algorithms.Registry",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Core",
+    "Core.Algorithms.FunctionFields",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
+  ],
+  "imported_by": []
+}

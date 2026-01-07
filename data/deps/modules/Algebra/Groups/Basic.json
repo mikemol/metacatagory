@@ -1,7 +1,31 @@
 {
   "name": "Algebra.Groups.Basic",
   "imports": [
-    "Algebra.Groups.Types"
+    "Chapter1.Level1Index",
+    "Metamodel",
+    "Algebra.Groups.Types",
+    "Algebra.Foundation",
+    "PropertyRegistry",
+    "Core"
   ],
-  "imported_by": []
+  "imported_by": [
+    "Algebra.Groups.ClassicalInstance",
+    "Algebra.Groups.Free",
+    "Algebra.Groups.Structure",
+    "Algebra.Index",
+    "Algebra.Modules.BasicWithTheorems",
+    "Algebra.Rings.BasicWithTheorems",
+    "Algorithms.Basic",
+    "Algorithms.TestInstances",
+    "Core.AlgebraicAlgorithms",
+    "Core.AlgorithmCorrectness",
+    "Core.Algorithms.FiniteFields",
+    "Core.ConstructiveWitnesses",
+    "Tests.AlgebraicCompletionChecklist",
+    "Tests.GroupsStructureChecklist",
+    "Tests.ModulesChecklist",
+    "Tests.ObligationAdapters",
+    "Tests.RingsBasicChecklist",
+    "Tests.WitnessConstructionTests"
+  ]
 }

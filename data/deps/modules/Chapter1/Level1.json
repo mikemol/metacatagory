@@ -1,0 +1,29 @@
+{
+  "name": "Chapter1.Level1",
+  "imports": [
+    "Core.Phase",
+    "Metamodel",
+    "PropertyRegistry"
+  ],
+  "imported_by": [
+    "Chapter1.Level1Index",
+    "Core",
+    "Tests.AdvancedFieldsChecklist",
+    "Tests.AlgebraChecklist",
+    "Tests.AlgebraicCompletionChecklist",
+    "Tests.Chapter2Checklist",
+    "Tests.FieldsBasicChecklist",
+    "Tests.GroupsAbelianChecklist",
+    "Tests.GroupsFreeChecklist",
+    "Tests.GroupsStructureChecklist",
+    "Tests.ModuleStructureChecklist",
+    "Tests.ModuleTheoryChecklist",
+    "Tests.ModulesChecklist",
+    "Tests.ObligationAdapters",
+    "Tests.PolynomialExtensionsChecklist",
+    "Tests.PolynomialFieldExtensionsChecklist",
+    "Tests.RingsBasicChecklist",
+    "Tests.TensorProductChecklist",
+    "Tests.VectorSpaceChecklist"
+  ]
+}

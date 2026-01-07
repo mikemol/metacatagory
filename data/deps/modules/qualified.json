@@ -1,0 +1,15 @@
+{
+  "name": "qualified",
+  "imports": [],
+  "imported_by": [
+    "Docs.MetaIndex",
+    "Examples.DeferredItemsScanner",
+    "Examples.ExporterMakefile",
+    "Examples.MakefileTargets",
+    "Examples.RoadmapIssueSync",
+    "Plan.CIM.MarkdownNormalize",
+    "Plan.CIM.ModuleExporter",
+    "Plan.CIM.PlanningExport",
+    "Plan.CIM.RoadmapSPPFExport"
+  ]
+}

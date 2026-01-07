@@ -1,7 +1,11 @@
 {
   "name": "Core.GodelBoundary",
   "imports": [
-    "Core"
+    "Core.Phase",
+    "Metamodel",
+    "Core",
+    "Infrastructure.Coherence.Path2",
+    "Infrastructure.Universe"
   ],
   "imported_by": [
     "Tests.GodelBoundaryTests"

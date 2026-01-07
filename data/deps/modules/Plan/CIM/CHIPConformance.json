@@ -1,0 +1,9 @@
+{
+  "name": "Plan.CIM.CHIPConformance",
+  "imports": [
+    "Plan.CIM.Utility"
+  ],
+  "imported_by": [
+    "Plan.CIM.PandocProtocols"
+  ]
+}

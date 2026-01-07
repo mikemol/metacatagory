@@ -1,0 +1,15 @@
+{
+  "name": "Tests.GrothendieckFibrationsChecklist",
+  "imports": [
+    "Tests.ObligationAdapters",
+    "Core.Phase",
+    "Metamodel",
+    "Chapter1.Level1sub3",
+    "Core.GrothendieckFibrations",
+    "Chapter2.Level2sub8"
+  ],
+  "imported_by": [
+    "Tests.Index",
+    "Tests.SpecificationValidation"
+  ]
+}

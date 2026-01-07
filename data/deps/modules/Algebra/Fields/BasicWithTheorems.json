@@ -1,0 +1,14 @@
+{
+  "name": "Algebra.Fields.BasicWithTheorems",
+  "imports": [
+    "Chapter1.Level1Index",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algebra.Modules.Basic",
+    "PropertyRegistry",
+    "Algebra.Fields.Theorems.Classical",
+    "Core",
+    "Algebra.Rings.Basic"
+  ],
+  "imported_by": []
+}

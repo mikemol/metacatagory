@@ -1,0 +1,13 @@
+{
+  "name": "Tests.CoreUniversalPropertiesChecklist",
+  "imports": [
+    "Tests.ObligationAdapters",
+    "Core.Phase",
+    "Metamodel",
+    "Core.UniversalProperties",
+    "Core.CategoricalAdapter"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

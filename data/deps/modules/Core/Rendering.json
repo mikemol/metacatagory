@@ -1,0 +1,11 @@
+{
+  "name": "Core.Rendering",
+  "imports": [
+    "Infrastructure.Universe",
+    "Core.Strings",
+    "Infrastructure.Coherence.Path2"
+  ],
+  "imported_by": [
+    "Examples.DeferredItemsScanner"
+  ]
+}

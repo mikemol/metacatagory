@@ -1,0 +1,25 @@
+{
+  "name": "Algebra.Index",
+  "imports": [
+    "Algebra.Enrichment",
+    "Core.Algorithms.Registry",
+    "Core.Algorithms.NumberFields",
+    "Core.Algorithms.External",
+    "Algebra.Foundation",
+    "Algebra.Modules.Basic",
+    "Core.Algorithms.FiniteFields",
+    "Algebra.Groups.Free",
+    "Algebra.Groups.Structure",
+    "Algebra.Fields.Advanced",
+    "Core.Algorithms.Bundle",
+    "Core.Witnesses",
+    "Algebra.Rings.Basic",
+    "Algebra.Groups.Abelian",
+    "Algebra.Fields.Basic",
+    "Algebra.Groups.Basic",
+    "Core.AlgebraicAlgorithms"
+  ],
+  "imported_by": [
+    "Examples.FiniteField.GF8"
+  ]
+}

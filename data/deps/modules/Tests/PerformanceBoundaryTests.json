@@ -1,8 +1,19 @@
 {
   "name": "Tests.PerformanceBoundaryTests",
   "imports": [
+    "Core.Algorithms.Registry",
     "Core.AlgorithmComplexity",
-    "GrowthAnalysis"
+    "Core.Phase",
+    "Metamodel",
+    "Core.GrowthMetrics",
+    "Core.Utils",
+    "Core.Algorithms.FiniteFields",
+    "Core.Algorithms.Bundle",
+    "Core",
+    "Algebra.Rings.Basic",
+    "GrowthAnalysis",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
   "imported_by": [
     "Tests.Index"

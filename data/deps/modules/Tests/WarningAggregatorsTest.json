@@ -1,0 +1,13 @@
+{
+  "name": "Tests.WarningAggregatorsTest",
+  "imports": [
+    "Core.ConstructiveWitnesses",
+    "Metamodel",
+    "Core.AlgorithmUniversality",
+    "Core",
+    "Algebra.Rings.Basic",
+    "Core.UniversalProperties",
+    "Core.AlgebraicAlgorithms"
+  ],
+  "imported_by": []
+}

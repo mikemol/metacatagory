@@ -1,8 +1,20 @@
 [
-  "Core.AlgorithmUniversality",
-  "Core.Witnesses",
-  "Tests.ErrorHandlingTests",
-  "Core.Algorithms.External",
-  "Tests.YonedaChecklist",
-  "Core.Algorithms.FiniteFields"
+  "Infrastructure.Definitions.Dictionary",
+  "Examples.PhaseCategoryExamples",
+  "Infrastructure.Axiom.Instances.HexagonBraiding",
+  "Infrastructure.Axiom.Instances.PentagonAssociahedron",
+  "Plan.CIM.PandocShowMdBlock",
+  "Plan.CIM.RoadmapSPPF",
+  "Plan.CIM.Structure",
+  "PropertyRegistry",
+  "TechnicalDebt.DeferredItemsOrchestrationFFI",
+  "Tests.HierarchyValidation",
+  "Core.AlgorithmComplexity",
+  "Core.Limitations",
+  "Examples.DeferredItemsScanner",
+  "Infrastructure.Functor.Instances.PhaseCategory",
+  "Plan.CIM.CHIPRecomposed",
+  "Plan.CIM.PlanningExport",
+  "Infrastructure.Functor.Instances.Ambiguity",
+  "Plan.CIM.MarkdownNormalize"
 ]

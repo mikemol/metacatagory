@@ -1,8 +1,14 @@
 {
   "name": "Chapter2.Level2sub4",
-  "imports": [],
+  "imports": [
+    "Core",
+    "Core.Phase",
+    "Metamodel"
+  ],
   "imported_by": [
-    "Tests.ObligationAdapters",
-    "Chapter2.Level2Index"
+    "Chapter2.Level2Index",
+    "Tests.AdvancedMonadTheoryChecklist",
+    "Tests.Chapter2Checklist",
+    "Tests.ObligationAdapters"
   ]
 }

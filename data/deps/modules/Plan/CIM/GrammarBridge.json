@@ -1,0 +1,11 @@
+{
+  "name": "Plan.CIM.GrammarBridge",
+  "imports": [
+    "Plan.CIM.Utility",
+    "Plan.CIM.PandocAST"
+  ],
+  "imported_by": [
+    "Plan.CIM.CHIPRecomposed",
+    "Plan.CIM.PandocProofExample"
+  ]
+}

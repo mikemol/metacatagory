@@ -1,0 +1,9 @@
+{
+  "name": "Infrastructure.Functor.Instances.FunctionPathCategory",
+  "imports": [
+    "Infrastructure.Functor.Interface"
+  ],
+  "imported_by": [
+    "Infrastructure.Index"
+  ]
+}

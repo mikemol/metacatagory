@@ -1,0 +1,11 @@
+{
+  "name": "Algorithms.Adapters.BundleAdapter",
+  "imports": [
+    "Algebra.Rings.Basic",
+    "Core.Algorithms.Bundle",
+    "Algorithms.Basic"
+  ],
+  "imported_by": [
+    "Core.Algorithms.Registry"
+  ]
+}

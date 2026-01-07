@@ -1,0 +1,9 @@
+{
+  "name": "Tests.CoverageReport",
+  "imports": [
+    "Core.Phase"
+  ],
+  "imported_by": [
+    "Tests.HierarchyValidation"
+  ]
+}

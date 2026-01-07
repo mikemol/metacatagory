@@ -1,0 +1,12 @@
+{
+  "name": "Tests.AbelianCategoriesChecklist",
+  "imports": [
+    "Tests.ObligationAdapters",
+    "Core.Phase",
+    "Metamodel"
+  ],
+  "imported_by": [
+    "Tests.Index",
+    "Tests.SpecificationValidation"
+  ]
+}

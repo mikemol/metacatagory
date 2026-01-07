@@ -1,0 +1,14 @@
+{
+  "name": "Plan.CIM.PandocToMarkdown",
+  "imports": [
+    "Plan.CIM.Utility",
+    "Plan.CIM.PandocAST"
+  ],
+  "imported_by": [
+    "Plan.CIM.CHIPRecomposed",
+    "Plan.CIM.MarkdownParse",
+    "Plan.CIM.PandocProofExample",
+    "Plan.CIM.PandocProofExport",
+    "Plan.CIM.Structure"
+  ]
+}

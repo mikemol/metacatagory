@@ -1,0 +1,10 @@
+{
+  "name": "Plan.CIM.DocumentationContent",
+  "imports": [
+    "Plan.CIM.Utility",
+    "Plan.CIM.PandocAST"
+  ],
+  "imported_by": [
+    "Plan.CIM.RoadmapExporter"
+  ]
+}

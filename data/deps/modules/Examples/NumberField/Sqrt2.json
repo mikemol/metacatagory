@@ -1,0 +1,15 @@
+{
+  "name": "Examples.NumberField.Sqrt2",
+  "imports": [
+    "Core.Algorithms.Registry",
+    "Core.Algorithms.NumberFields",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Core.Algorithms.Bundle",
+    "Core",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
+  ],
+  "imported_by": []
+}

@@ -1,8 +1,17 @@
 {
   "name": "Tests.AlgorithmCompositionTestsMinimal",
   "imports": [
+    "Core.Algorithms.Registry",
+    "Core.Phase",
+    "Metamodel",
+    "Core.Algorithms.Bundle",
+    "Core.TechnicalDebt",
+    "Algebra.Rings.Basic",
     "Core.UniversalProperties",
-    "Core.TechnicalDebt"
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
-  "imported_by": []
+  "imported_by": [
+    "Tests.AlgorithmCompositionTests"
+  ]
 }

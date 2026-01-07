@@ -1,0 +1,25 @@
+{
+  "name": "Plan.CIM.Utility",
+  "imports": [],
+  "imported_by": [
+    "Plan.CIM.CHIPConformance",
+    "Plan.CIM.CHIPCoreRecompose",
+    "Plan.CIM.CHIPRecomposed",
+    "Plan.CIM.DocumentSynthesis",
+    "Plan.CIM.DocumentationContent",
+    "Plan.CIM.GrammarBridge",
+    "Plan.CIM.IngestedRoadmaps",
+    "Plan.CIM.IngestedRoadmaps.Analysis",
+    "Plan.CIM.IngestedRoadmaps.Corrections",
+    "Plan.CIM.IngestedRoadmaps.Foundation",
+    "Plan.CIM.IngestedRoadmaps.Geometry",
+    "Plan.CIM.IngestedRoadmaps.Polytopes",
+    "Plan.CIM.PandocProofExample",
+    "Plan.CIM.PandocProofExport",
+    "Plan.CIM.PandocProtocols",
+    "Plan.CIM.PandocToMarkdown",
+    "Plan.CIM.RoadmapExporter",
+    "Plan.CIM.Structure",
+    "Plan.CIM.YonedaProfiler"
+  ]
+}

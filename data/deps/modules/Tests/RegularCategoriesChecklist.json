@@ -1,6 +1,10 @@
 {
   "name": "Tests.RegularCategoriesChecklist",
-  "imports": [],
+  "imports": [
+    "Tests.ObligationAdapters",
+    "Core.Phase",
+    "Core.CategoricalAdapter"
+  ],
   "imported_by": [
     "Tests.Index"
   ]

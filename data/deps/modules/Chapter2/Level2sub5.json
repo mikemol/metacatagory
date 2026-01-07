@@ -1,9 +1,14 @@
 {
   "name": "Chapter2.Level2sub5",
   "imports": [
-    "Chapter2.Level2sub3"
+    "Chapter1.Level1Index",
+    "Core",
+    "Chapter2.Level2sub3",
+    "Metamodel"
   ],
   "imported_by": [
+    "Chapter2.Level2Index",
+    "Tests.Chapter2Checklist",
     "Tests.ObligationAdapters"
   ]
 }

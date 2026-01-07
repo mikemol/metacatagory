@@ -1,6 +1,7 @@
 {
   "name": "Tests.RealWorldAlgorithmsTests",
   "imports": [
+    "Core.Phase",
     "Examples.RealWorldAlgorithms"
   ],
   "imported_by": [

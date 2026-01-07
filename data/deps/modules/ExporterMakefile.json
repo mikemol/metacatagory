@@ -1,0 +1,8 @@
+{
+  "name": "ExporterMakefile",
+  "imports": [
+    "Core.CategoricalAdapter",
+    "Core.Utils"
+  ],
+  "imported_by": []
+}

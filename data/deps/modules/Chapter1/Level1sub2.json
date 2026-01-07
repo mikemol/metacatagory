@@ -1,9 +1,15 @@
 {
   "name": "Chapter1.Level1sub2",
   "imports": [
-    "Core"
+    "Core",
+    "Core.Phase",
+    "Metamodel"
   ],
   "imported_by": [
-    "Chapter1.Level1Index"
+    "Chapter1.Level1Index",
+    "Tests.Chapter1Checklist",
+    "Tests.ChapterObligationsSmoke",
+    "Tests.FunctorPropertiesChecklist",
+    "Tests.ObligationAdapters"
   ]
 }

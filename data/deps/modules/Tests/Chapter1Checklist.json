@@ -1,0 +1,19 @@
+{
+  "name": "Tests.Chapter1Checklist",
+  "imports": [
+    "Chapter1.Level1sub5",
+    "Chapter1.Level1sub7",
+    "Chapter1.Level1sub6",
+    "Chapter1.Level1sub2",
+    "Core.Phase",
+    "Tests.ObligationAdapters",
+    "Metamodel",
+    "Chapter1.Level1sub3",
+    "Chapter1.Level1sub8",
+    "Chapter1.Level1sub4",
+    "Core.CategoricalAdapter"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Tests.FunctorPropertiesChecklist",
+  "imports": [
+    "Chapter1.Level1sub2",
+    "Tests.ObligationAdapters",
+    "Core.Phase",
+    "Metamodel"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

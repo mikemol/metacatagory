@@ -1,0 +1,8 @@
+{
+  "name": "Algebra.Rings.ClassicalInstance",
+  "imports": [
+    "Algebra.Rings.Basic",
+    "Algebra.Rings.Theorems.Classical"
+  ],
+  "imported_by": []
+}

@@ -1,9 +1,28 @@
 {
   "name": "Core.Algorithms.NumberFields",
   "imports": [
-    "Core.Algorithms.External"
+    "Metamodel",
+    "Core.Algorithms.External",
+    "Algebra.Foundation",
+    "Algorithms.Basic",
+    "Algebra.Fields.Advanced",
+    "Core.Algorithms.Bundle",
+    "Core",
+    "Core.Witnesses",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
   "imported_by": [
-    "Core.Algorithms.Registry"
+    "Algebra.Index",
+    "Core.Algorithms.AutomaticEvidence",
+    "Core.Algorithms.InductiveClassification",
+    "Core.Algorithms.Registry",
+    "Examples.AutomaticEvidenceDemo",
+    "Examples.LazyHybridDemo",
+    "Examples.NumberField.Sqrt2",
+    "Tests.DispatchBehaviorTests",
+    "Tests.ErrorHandlingTests",
+    "Tests.PhaseExamples"
   ]
 }

@@ -1,0 +1,16 @@
+{
+  "name": "Algebra.Modules.BasicWithTheorems",
+  "imports": [
+    "Chapter1.Level1Index",
+    "Metamodel",
+    "Algebra.Modules.Theorems.Classical",
+    "Algebra.Foundation",
+    "PropertyRegistry",
+    "Core",
+    "Chapter2.Level2sub1",
+    "Algebra.Rings.Basic",
+    "Algebra.Groups.Abelian",
+    "Algebra.Groups.Basic"
+  ],
+  "imported_by": []
+}

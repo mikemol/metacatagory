@@ -1,9 +1,17 @@
 {
   "name": "Chapter2.Level2sub1",
   "imports": [
-    "Core"
+    "Core",
+    "Core.Phase",
+    "Metamodel"
   ],
   "imported_by": [
-    "Algebra.Groups.Abelian"
+    "Algebra.Groups.Abelian",
+    "Algebra.Modules.Basic",
+    "Algebra.Modules.BasicWithTheorems",
+    "Chapter2.Level2Index",
+    "Tests.Chapter2Checklist",
+    "Tests.ChapterObligationsSmoke",
+    "Tests.ObligationAdapters"
   ]
 }

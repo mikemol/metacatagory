@@ -1,0 +1,7 @@
+{
+  "name": "Examples.AgdaMakefileDeps",
+  "imports": [],
+  "imported_by": [
+    "Examples.ExporterMakefile"
+  ]
+}

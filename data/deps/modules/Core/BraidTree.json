@@ -1,0 +1,8 @@
+{
+  "name": "Core.BraidTree",
+  "imports": [
+    "Infrastructure.Universe",
+    "Infrastructure.Coherence.Path2"
+  ],
+  "imported_by": []
+}

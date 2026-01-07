@@ -1,6 +1,10 @@
 {
   "name": "Tests.ProofObligationStatus",
   "imports": [
+    "Core.ConstructiveWitnesses",
+    "Core.Phase",
+    "Metamodel",
+    "Core.AlgorithmCorrectness",
     "Examples.AlgorithmCorrectnessExamples"
   ],
   "imported_by": [

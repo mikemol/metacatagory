@@ -1,0 +1,7 @@
+{
+  "name": "Plan.CIM.FrameworkMetadata",
+  "imports": [],
+  "imported_by": [
+    "Plan.CIM.DocumentSynthesis"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Infrastructure.Axiom.Face",
+  "imports": [
+    "Infrastructure.Axiom.Adequacy"
+  ],
+  "imported_by": [
+    "Infrastructure.Axiom.Instance",
+    "Infrastructure.Axiom.Solver",
+    "Infrastructure.Definitions.Dictionary",
+    "Infrastructure.Index"
+  ]
+}

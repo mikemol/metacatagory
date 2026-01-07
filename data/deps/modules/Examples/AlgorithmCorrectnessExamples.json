@@ -1,7 +1,17 @@
 {
   "name": "Examples.AlgorithmCorrectnessExamples",
   "imports": [
-    "Core.AlgorithmCorrectness"
+    "Core.ConstructiveWitnesses",
+    "Core.Phase",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Core.AlgorithmCorrectness",
+    "Algebra.Fields.Advanced",
+    "Core",
+    "Core.Witnesses",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
   "imported_by": [
     "Tests.ProofObligationStatus"

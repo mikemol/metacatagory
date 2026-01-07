@@ -1,0 +1,11 @@
+[
+  "Examples.ExporterMakefile",
+  "Examples.TechnicalDebtExample",
+  "ExporterMakefile",
+  "Markdown.Normalization",
+  "Plan.CIM.ModuleExporter",
+  "Tests.GodelBoundaryTests",
+  "Core.GrowthMetrics",
+  "Core.TechnicalDebt",
+  "Chapter1.Level1Index"
+]

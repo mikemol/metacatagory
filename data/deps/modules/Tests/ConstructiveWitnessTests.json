@@ -1,7 +1,22 @@
 {
   "name": "Tests.ConstructiveWitnessTests",
   "imports": [
-    "Core.ConstructiveWitnesses"
+    "Core.ConstructiveWitnesses",
+    "Core.Phase",
+    "Core.PolynomialsF2",
+    "Metamodel",
+    "Core.AlgorithmUniversality",
+    "Algebra.Foundation",
+    "Algebra.Fields.Advanced",
+    "Core",
+    "Core.Witnesses",
+    "Algebra.Rings.Basic",
+    "Core.UniversalProperties",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
-  "imported_by": []
+  "imported_by": [
+    "Tests.Index",
+    "Tests.Index_PhaseII"
+  ]
 }

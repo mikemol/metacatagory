@@ -1,7 +1,12 @@
 {
   "name": "GrowthAnalysis",
-  "imports": [],
+  "imports": [
+    "Metamodel",
+    "Core.Utils",
+    "Core.GrowthMetrics"
+  ],
   "imported_by": [
+    "Algorithms.Instrumented",
     "Tests.PerformanceBoundaryTests"
   ]
 }

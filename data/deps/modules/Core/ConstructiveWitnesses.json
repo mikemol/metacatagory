@@ -1,12 +1,27 @@
 {
   "name": "Core.ConstructiveWitnesses",
   "imports": [
-    "Core.AlgebraicAlgorithms",
-    "Core.UniversalProperties",
+    "Algebra.Rings.Basic",
+    "Core.Phase",
+    "Core.PolynomialsF2",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algebra.Fields.Advanced",
+    "Core",
     "Core.Witnesses",
-    "Core.PolynomialsF2"
+    "Infrastructure.Coherence.Path2",
+    "Infrastructure.Universe",
+    "Core.UniversalProperties",
+    "Algebra.Fields.Basic",
+    "Algebra.Groups.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
   "imported_by": [
-    "Tests.ConstructiveWitnessTests"
+    "Core.AlgorithmCorrectness",
+    "Examples.AlgorithmCorrectnessExamples",
+    "Examples.ConstructiveWitnessExamples",
+    "Tests.ConstructiveWitnessTests",
+    "Tests.ProofObligationStatus",
+    "Tests.WarningAggregatorsTest"
   ]
 }

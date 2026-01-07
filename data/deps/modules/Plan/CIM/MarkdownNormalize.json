@@ -1,0 +1,10 @@
+{
+  "name": "Plan.CIM.MarkdownNormalize",
+  "imports": [
+    "Plan.CIM.MarkdownParse",
+    "qualified",
+    "Plan.CIM.PandocAST",
+    "System.Environment"
+  ],
+  "imported_by": []
+}

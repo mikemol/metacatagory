@@ -1,0 +1,12 @@
+{
+  "name": "Core.AdapterAutomation",
+  "imports": [
+    "Infrastructure.Universe",
+    "Core.Phase",
+    "Core.CategoricalAdapter",
+    "Infrastructure.Coherence.Path2"
+  ],
+  "imported_by": [
+    "Examples.ExporterMakefile"
+  ]
+}

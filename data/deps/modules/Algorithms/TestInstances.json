@@ -1,0 +1,14 @@
+{
+  "name": "Algorithms.TestInstances",
+  "imports": [
+    "Metamodel",
+    "Algebra.Foundation",
+    "Core",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Algebra.Groups.Basic"
+  ],
+  "imported_by": [
+    "Tests.AlgorithmSmokeTests"
+  ]
+}

@@ -1,9 +1,20 @@
 {
   "name": "Core.Algorithms.External",
   "imports": [
-    "Algorithms.Basic"
+    "Core.Phase",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algorithms.Basic",
+    "Algebra.Fields.Advanced",
+    "Core.Algorithms.Bundle",
+    "Core",
+    "Core.Witnesses",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
   "imported_by": [
+    "Algebra.Index",
     "Core.Algorithms.NumberFields"
   ]
 }

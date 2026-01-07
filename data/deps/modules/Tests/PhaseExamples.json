@@ -1,7 +1,18 @@
 {
   "name": "Tests.PhaseExamples",
   "imports": [
-    "Core.Algorithms.Registry"
+    "Core.Algorithms.Registry",
+    "Core.Phase",
+    "Core.Algorithms.NumberFields",
+    "Metamodel",
+    "Core.Algorithms.FiniteFields",
+    "Core.Algorithms.Bundle",
+    "Core",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
-  "imported_by": []
+  "imported_by": [
+    "Tests.Index"
+  ]
 }

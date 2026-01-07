@@ -1,10 +1,20 @@
 {
   "name": "Core.AlgorithmUniversality",
   "imports": [
-    "Core.AlgebraicAlgorithms",
-    "Core.UniversalProperties"
+    "Algebra.Rings.Basic",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algebra.Fields.Advanced",
+    "Core",
+    "Infrastructure.Coherence.Path2",
+    "Infrastructure.Universe",
+    "Core.UniversalProperties",
+    "Algebra.Fields.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
   "imported_by": [
-    "Tests.UniversalPropertyTests"
+    "Tests.ConstructiveWitnessTests",
+    "Tests.UniversalPropertyTests",
+    "Tests.WarningAggregatorsTest"
   ]
 }

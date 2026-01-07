@@ -1,0 +1,14 @@
+{
+  "name": "Tests.ErrorAsSpecificationTests",
+  "imports": [
+    "Core.Phase",
+    "Metamodel",
+    "Core",
+    "Core.Witnesses",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Core.Limitations",
+    "Core.AlgebraicAlgorithms"
+  ],
+  "imported_by": []
+}

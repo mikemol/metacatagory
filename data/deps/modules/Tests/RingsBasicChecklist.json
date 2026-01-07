@@ -1,0 +1,16 @@
+{
+  "name": "Tests.RingsBasicChecklist",
+  "imports": [
+    "Tests.ObligationAdapters",
+    "Core.Phase",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Chapter1.Level1",
+    "Algebra.Groups.Basic",
+    "Algebra.Rings.Basic",
+    "Core.CategoricalAdapter"
+  ],
+  "imported_by": [
+    "Tests.Index"
+  ]
+}

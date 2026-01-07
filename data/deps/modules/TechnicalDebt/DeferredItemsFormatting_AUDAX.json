@@ -1,0 +1,8 @@
+{
+  "name": "TechnicalDebt.DeferredItemsFormatting_AUDAX",
+  "imports": [
+    "Core.Phase",
+    "TechnicalDebt.DeferredItemsDetection"
+  ],
+  "imported_by": []
+}

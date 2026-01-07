@@ -1,0 +1,13 @@
+{
+  "name": "Algebra.Groups.Theorems.Classical",
+  "imports": [
+    "Algebra.Foundation",
+    "Core",
+    "Metamodel",
+    "Algebra.Groups.Types"
+  ],
+  "imported_by": [
+    "Algebra.Groups.BasicWithTheorems",
+    "Algebra.Groups.ClassicalInstance"
+  ]
+}

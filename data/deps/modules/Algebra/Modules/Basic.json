@@ -1,7 +1,28 @@
 {
   "name": "Algebra.Modules.Basic",
-  "imports": [],
+  "imports": [
+    "Chapter1.Level1Index",
+    "Algebra.Groups.Types",
+    "Metamodel",
+    "Algebra.Foundation",
+    "PropertyRegistry",
+    "Core",
+    "Chapter2.Level2sub1",
+    "Algebra.Rings.Types",
+    "Algebra.Groups.Abelian",
+    "Algebra.Modules.Types"
+  ],
   "imported_by": [
-    "Algebra.Fields.Basic"
+    "Algebra.Fields.Advanced",
+    "Algebra.Fields.Basic",
+    "Algebra.Fields.BasicWithTheorems",
+    "Algebra.Index",
+    "Algebra.Modules.ClassicalInstance",
+    "Tests.AlgebraicCompletionChecklist",
+    "Tests.ModuleStructureChecklist",
+    "Tests.ModuleTheoryChecklist",
+    "Tests.ModulesChecklist",
+    "Tests.ObligationAdapters",
+    "Tests.VectorSpaceChecklist"
   ]
 }

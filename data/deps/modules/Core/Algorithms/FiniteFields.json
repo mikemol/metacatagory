@@ -1,9 +1,28 @@
 {
   "name": "Core.Algorithms.FiniteFields",
   "imports": [
-    "Algorithms.Basic"
+    "Core.Phase",
+    "Metamodel",
+    "Algebra.Foundation",
+    "Algorithms.Basic",
+    "Core",
+    "Core.Witnesses",
+    "Algebra.Rings.Basic",
+    "Algebra.Fields.Basic",
+    "Algebra.Groups.Basic",
+    "Core.AlgebraicAlgorithms"
   ],
   "imported_by": [
-    "Core.Algorithms.Registry"
+    "Algebra.Index",
+    "Core.Algorithms.AutomaticEvidence",
+    "Core.Algorithms.InductiveClassification",
+    "Core.Algorithms.Registry",
+    "Examples.AutomaticEvidenceDemo",
+    "Examples.LazyHybridDemo",
+    "Tests.AdvancedPhaseExamples",
+    "Tests.DispatchBehaviorTests",
+    "Tests.ErrorHandlingTests",
+    "Tests.PerformanceBoundaryTests",
+    "Tests.PhaseExamples"
   ]
 }
