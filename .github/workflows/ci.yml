@@ -106,6 +106,15 @@ jobs:
         working-directory: ${{ env.WORKDIR }}
         run: python3 scripts/makefile_coverage.py --run-targets
 
+      - name: Upload build reports
+        if: ${{ !env.ACT }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-reports
+          path: build/reports/**
+          if-no-files-found: ignore
+          retention-days: 30
+
   coverage:
     name: Makefile Coverage Proof
     runs-on: ubuntu-latest
