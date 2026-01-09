@@ -9,6 +9,8 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mikemol/act-ubuntu-agda:latest
     permissions:
       issues: write
       contents: read

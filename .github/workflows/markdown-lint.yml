@@ -11,6 +11,8 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mikemol/act-ubuntu-agda:latest
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node

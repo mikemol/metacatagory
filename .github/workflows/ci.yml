@@ -14,6 +14,8 @@ jobs:
   build:
     name: Typecheck and Docs
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
       AGDA_DIR: /usr/share/agda/lib
       AGDA_EXEC_OPTIONS: --include-path=/usr/share/agda/lib/prim
@@ -29,12 +31,6 @@ jobs:
         if: ${{ env.ACT }}
         run: |
           scripts/act_prepare_workspace.sh /tmp/act-workdir
-
-      - name: Install Agda and Pandoc
-        if: ${{ !env.ACT }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y agda agda-stdlib pandoc ghc libghc-agda-dev
 
       - name: Configure Agda standard library
         run: |
@@ -113,6 +109,8 @@ jobs:
   coverage:
     name: Makefile Coverage Proof
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mikemol/act-ubuntu-agda:latest
     needs: build
     steps:
       - name: Checkout
@@ -131,6 +129,8 @@ jobs:
   deferred-items-check:
     name: Track Deferred Items
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mikemol/act-ubuntu-agda:latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     permissions:
       contents: read

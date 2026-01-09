@@ -30,6 +30,8 @@ permissions:
 jobs:
   update-badges:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mikemol/act-ubuntu-agda:latest
     
     steps:
       - name: Checkout repository

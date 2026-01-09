@@ -14,6 +14,8 @@ jobs:
   review-deferred-items:
     name: Review and Report Deferred Items
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mikemol/act-ubuntu-agda:latest
     steps:
       - name: Checkout base branch
         uses: actions/checkout@v4

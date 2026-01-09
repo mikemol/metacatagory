@@ -20,6 +20,8 @@ jobs:
   validate:
     name: Validate Makefile Triangle Identity
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mikemol/act-ubuntu-agda:latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
