@@ -8,6 +8,7 @@ import pytest
 import os
 import json
 import tempfile
+import warnings
 from scripts.shared.config import Config, get_config, reset_config, with_config
 
 
@@ -126,6 +127,26 @@ class TestConfigFromEnv:
         assert config.workers == 12
         assert config.log_level == "WARNING"
 
+    def test_additional_env_vars(self):
+        """Test additional environment variables are honored."""
+        os.environ["METACATAGORY_DRY_RUN"] = "true"
+        os.environ["METACATAGORY_FAIL_ON_WARNING"] = "true"
+        os.environ["METACATAGORY_LOG_STRUCTURED"] = "true"
+        os.environ["METACATAGORY_LOG_FILE"] = "/tmp/test.log"
+        os.environ["METACATAGORY_JSON_INDENT"] = "4"
+        os.environ["METACATAGORY_CREATE_PARENTS"] = "false"
+        os.environ["METACATAGORY_BACKUP_ON_OVERWRITE"] = "true"
+
+        config = Config.from_env()
+
+        assert config.dry_run is True
+        assert config.fail_on_warning is True
+        assert config.log_structured is True
+        assert config.log_file == Path("/tmp/test.log")
+        assert config.json_indent == 4
+        assert config.create_parents is False
+        assert config.backup_on_overwrite is True
+
 
 class TestConfigFromFile:
     """Test Config.from_file() JSON configuration loading."""
@@ -175,6 +196,26 @@ class TestConfigFromFile:
             
             assert config.custom["api_key"] == "test-key"
             assert config.custom["endpoint"] == "https://example.com"
+        finally:
+            os.unlink(config_file)
+
+    def test_unknown_keys_warn(self):
+        """Test unknown keys emit a warning."""
+        config_data = {
+            "unknown_setting": "value"
+        }
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            json.dump(config_data, f)
+            config_file = f.name
+
+        try:
+            with warnings.catch_warnings(record=True) as w:
+                warnings.simplefilter("always")
+                config = Config.from_file(config_file)
+
+                assert config.custom["unknown_setting"] == "value"
+                assert len(w) == 1
         finally:
             os.unlink(config_file)
     

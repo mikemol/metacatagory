@@ -333,6 +333,51 @@ class TestContextMergingPriority:
         # kwargs should win (added last)
         assert data["context"]["key"] == "from_kwargs"
 
+    def test_context_merge_with_extra_context_dict(self):
+        """Test extra_ctx['context'] is merged into context."""
+        logger = StructuredLogger("test_merge_extra")
+        output = StringIO()
+        handler = logging.StreamHandler(output)
+        handler.setFormatter(StructuredFormatter())
+        logger.logger.handlers.clear()
+        logger.logger.addHandler(handler)
+        logger.logger.setLevel(logging.INFO)
+
+        logger._log_with_context(
+            logging.INFO,
+            "message",
+            None,
+            **{"context": {"key": "from_extra_context"}, "other": "value"}
+        )
+
+        output_str = output.getvalue()
+        data = json.loads(output_str)
+
+        assert data["context"]["key"] == "from_extra_context"
+        assert data["context"]["other"] == "value"
+
+    def test_context_merge_priority_kwargs_over_extra_context(self):
+        """Test kwargs override extra_ctx['context'] keys."""
+        logger = StructuredLogger("test_merge_extra_priority")
+        output = StringIO()
+        handler = logging.StreamHandler(output)
+        handler.setFormatter(StructuredFormatter())
+        logger.logger.handlers.clear()
+        logger.logger.addHandler(handler)
+        logger.logger.setLevel(logging.INFO)
+
+        logger._log_with_context(
+            logging.INFO,
+            "message",
+            None,
+            **{"context": {"key": "from_extra_context"}, "key": "from_kwargs"}
+        )
+
+        output_str = output.getvalue()
+        data = json.loads(output_str)
+
+        assert data["context"]["key"] == "from_kwargs"
+
 
 class TestLevelFiltering:
     """First-Order Pragmatic: Level Checks (Performance Optimization)"""
@@ -352,6 +397,22 @@ class TestLevelFiltering:
         logger.progress("Processing", current=5, total=10)
         
         # Output should be empty (progress uses INFO level)
+        assert output.getvalue() == ""
+
+    def test_info_respects_log_level(self):
+        """Test info() respects logger level."""
+        logger = StructuredLogger("test_level_info")
+        output = StringIO()
+        handler = logging.StreamHandler(output)
+        handler.setFormatter(StructuredFormatter())
+        logger.logger.handlers.clear()
+        logger.logger.addHandler(handler)
+
+        # Set to WARNING, so INFO messages are suppressed
+        logger.logger.setLevel(logging.WARNING)
+
+        logger.info("Message", context={"key": "value"})
+
         assert output.getvalue() == ""
 
 
