@@ -111,6 +111,22 @@ data TargetCategory : Set where
 -- Makefile Target Representation
 -- ==========================================================
 
+-- | Mutability classification for targets.
+data Mutability : Set where
+  Mutative : Mutability
+  ReadOnly : Mutability
+
+-- | Certificate required to construct mutating targets.
+record MutateCert : Set where
+  constructor mkMutateCert
+  field
+    reason : String
+    provenance : String
+    scope : String
+
+mutateCert : MutateCert
+mutateCert = mkMutateCert "makefile-targets" "Examples.MakefileTargets" "build/docs/data"
+
 -- | Concrete make target descriptor with dependencies and recipe lines.
 record MakefileTarget : Set where
   constructor mkTarget
@@ -120,6 +136,16 @@ record MakefileTarget : Set where
     dependencies : List String
     recipe : List String
     phony : Bool
+    mutability : Mutability
+
+-- Explicit constructors to enforce mutability certificates where needed.
+mkReadOnlyTarget : String → String → List String → List String → Bool → MakefileTarget
+mkReadOnlyTarget name description deps recipe phony =
+  mkTarget name description deps recipe phony ReadOnly
+
+mkMutativeTarget : MutateCert → String → String → List String → List String → Bool → MakefileTarget
+mkMutativeTarget cert name description deps recipe phony =
+  mkTarget name description deps recipe phony Mutative
 
 -- ==========================================================
 -- Category to Target Conversion
@@ -149,9 +175,9 @@ generateRecipe (markdownSource _) (validationReport _) _ =
 generateRecipe _ _ _ = []
 
 -- Convert FileTransform category to concrete target
-fileTransformToTarget : String → String → SourcePattern → OutputPattern → List String → MakefileTarget
-fileTransformToTarget sourcePath targetPath sourcePattern outputPattern extraDeps =
-  mkTarget 
+fileTransformToTarget : MutateCert → String → String → SourcePattern → OutputPattern → List String → MakefileTarget
+fileTransformToTarget cert sourcePath targetPath sourcePattern outputPattern extraDeps =
+  mkMutativeTarget cert
     targetPath 
     ("Compile " ++ sourcePath ++ " to " ++ targetPath)
     (sourcePath ∷ extraDeps)
@@ -161,22 +187,22 @@ fileTransformToTarget sourcePath targetPath sourcePattern outputPattern extraDep
 -- Convert Validator to target
 validatorToTarget : String → String → String → List String → MakefileTarget
 validatorToTarget name description outputFile recipe =
-  mkTarget name description [] (instrumentRecipe name recipe) true
+  mkReadOnlyTarget name description [] (instrumentRecipe name recipe) true
 
 -- Convert Generator to target
-generatorToTarget : String → String → List String → List String → MakefileTarget
-generatorToTarget name description deps recipe =
-  mkTarget name description deps (instrumentRecipe name recipe) true
+generatorToTarget : MutateCert → String → String → List String → List String → MakefileTarget
+generatorToTarget cert name description deps recipe =
+  mkMutativeTarget cert name description deps (instrumentRecipe name recipe) true
 
 -- Convert EnvironmentSetup to target
-environmentSetupToTarget : String → String → List String → MakefileTarget
-environmentSetupToTarget name description recipe =
-  mkTarget name description [] (instrumentRecipe name recipe) true
+environmentSetupToTarget : MutateCert → String → String → List String → MakefileTarget
+environmentSetupToTarget cert name description recipe =
+  mkMutativeTarget cert name description [] (instrumentRecipe name recipe) true
 
 -- Convert Synchronizer to target
-synchronizerToTarget : String → String → List String → List String → MakefileTarget
-synchronizerToTarget name description deps recipe =
-  mkTarget name description deps (instrumentRecipe name recipe) true
+synchronizerToTarget : MutateCert → String → String → List String → List String → MakefileTarget
+synchronizerToTarget cert name description deps recipe =
+  mkMutativeTarget cert name description deps (instrumentRecipe name recipe) true
 
 -- ==========================================================
 -- Discovery and Generation
@@ -187,33 +213,33 @@ agdaToAgdai : String → String
 agdaToAgdai path = path ++ "i"  -- simple append for now
 
 -- Generate targets for discovered Agda files
-generateAgdaTargets : List String → List MakefileTarget
-generateAgdaTargets [] = []
-generateAgdaTargets (path ∷ paths) =
+generateAgdaTargets : MutateCert → List String → List MakefileTarget
+generateAgdaTargets cert [] = []
+generateAgdaTargets cert (path ∷ paths) =
   let target = agdaToAgdai path
       recipe = ("$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type " ++ path) ∷ []
-  in mkTarget target ("Compile " ++ path) (path ∷ []) (instrumentRecipe target recipe) false ∷ generateAgdaTargets paths
+  in mkMutativeTarget cert target ("Compile " ++ path) (path ∷ []) (instrumentRecipe target recipe) false ∷ generateAgdaTargets cert paths
 
 -- Generate HTML documentation targets
-generateDocsTargets : List String → List MakefileTarget  
-generateDocsTargets [] = []
-generateDocsTargets (path ∷ paths) =
+generateDocsTargets : MutateCert → List String → List MakefileTarget  
+generateDocsTargets cert [] = []
+generateDocsTargets cert (path ∷ paths) =
   let htmlTarget = "build/html/" ++ path ++ ".html"
       agdaiDep = agdaToAgdai path
       recipe = ("$(AGDA) --html --html-dir=build/html -i src/agda " ++ path) ∷ []
-  in mkTarget htmlTarget ("Generate HTML for " ++ path) (agdaiDep ∷ []) (instrumentRecipe htmlTarget recipe) false ∷ generateDocsTargets paths
+  in mkMutativeTarget cert htmlTarget ("Generate HTML for " ++ path) (agdaiDep ∷ []) (instrumentRecipe htmlTarget recipe) false ∷ generateDocsTargets cert paths
 
 -- Aggregate target: build all .agdai files
-allAgdaiTarget : List String → MakefileTarget
-allAgdaiTarget agdaFiles =
+allAgdaiTarget : MutateCert → List String → MakefileTarget
+allAgdaiTarget cert agdaFiles =
   let agdaiFiles = map agdaToAgdai agdaFiles
-  in mkTarget "agda-all" "Compile all Agda modules" agdaiFiles (instrumentRecipe "agda-all" []) true
+  in mkMutativeTarget cert "agda-all" "Compile all Agda modules" agdaiFiles (instrumentRecipe "agda-all" []) true
 
 -- Aggregate target: build all HTML docs
-allDocsTarget : List String → MakefileTarget
-allDocsTarget agdaFiles =
+allDocsTarget : MutateCert → List String → MakefileTarget
+allDocsTarget cert agdaFiles =
   let htmlFiles = map (\path → "build/html/" ++ path ++ ".html") agdaFiles
-  in mkTarget "docs-all" "Generate all HTML documentation" htmlFiles (instrumentRecipe "docs-all" []) true
+  in mkMutativeTarget cert "docs-all" "Generate all HTML documentation" htmlFiles (instrumentRecipe "docs-all" []) true
 
 -- ==========================================================
 -- Discovery Functions

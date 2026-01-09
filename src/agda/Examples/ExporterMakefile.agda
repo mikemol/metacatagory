@@ -92,10 +92,10 @@ postulate
 open import Metamodel
 open import Examples.AgdaMakefileDeps using (_++_; ModuleName; primStringEquality; primStringSplit;
   moduleToInterfacePath; joinWith; parseModuleName; isInternalModule; filter)
-open import Examples.MakefileTargets using (MakefileTarget; TargetCategory; allCategories; 
+open import Examples.MakefileTargets using (MakefileTarget; TargetCategory; Mutability; Mutative; ReadOnly; MutateCert; mutateCert; allCategories; 
   validatorToTarget; generatorToTarget; nodeSetupCategory; badgeCategory; mdLintCategory;
   discoverAgdaFiles; generateAgdaTargets; generateDocsTargets; allAgdaiTarget; allDocsTarget;
-  environmentSetupToTarget; synchronizerToTarget; mkTarget; instrumentRecipe)
+  environmentSetupToTarget; synchronizerToTarget; mkMutativeTarget; mkReadOnlyTarget; instrumentRecipe)
 open import Examples.Makefile.Targets.Python using (pythonTargets)
 open import Examples.Makefile.Targets.RoadmapExports using (roadmapExportTargets)
 open import Examples.Makefile.Targets.Docs using (docTargets)
@@ -163,9 +163,13 @@ targetToSection target = record
   { id = MakefileTarget.name target
   ; content = ("# " ++ MakefileTarget.description target) 
              ∷ (MakefileTarget.name target ++ ": " ++ intercalate " " (MakefileTarget.dependencies target)) 
-             ∷ map ("\t" ++_) (MakefileTarget.recipe target)
+             ∷ map ("\t" ++_) (guardLines +++ MakefileTarget.recipe target)
   }
   where
+    guardLines : List String
+    guardLines with MakefileTarget.mutability target
+    ... | Mutative = "$(call require_mutate)" ∷ []
+    ... | ReadOnly = []
     intercalate : String → List String → String
     intercalate sep [] = ""
     intercalate sep (x ∷ []) = x
@@ -173,7 +177,7 @@ targetToSection target = record
 
 -- Typed Bootstrapping: regen-makefile is now a rigorous target
 regenMakefileTarget : MakefileTarget
-regenMakefileTarget = mkTarget
+regenMakefileTarget = mkMutativeTarget mutateCert
   "regen-makefile"
   "Regenerate the Makefile from Agda source (Self-Hosting)"
   ("build/diagrams/agda-deps-full.dot" ∷ [])
@@ -184,6 +188,10 @@ regenMakefileTarget = mkTarget
 
 -- Documentation Renderer: Generates Markdown table of targets with dependency graph info
 -- Enhanced: now includes orchestration dependencies and assumptions preamble
+mutabilityLabel : Mutability → String
+mutabilityLabel Mutative = "mutative"
+mutabilityLabel ReadOnly = "read-only"
+
 renderDocs : List MakefileTarget → String
 renderDocs targets = 
   "## Key Orchestration Targets\n\n" ++
@@ -192,15 +200,16 @@ renderDocs targets =
   "- `all`: Complete Agda + documentation build\n" ++
   "- `docker-all`: Docker build and GHCR push\n\n" ++
   "## All Generated Targets\n\n" ++
-  "| Target | Description |\n" ++
-  "| :--- | :--- |\n" ++
+  "Mutability indicates whether a target is allowed to write artifacts or update the workspace.\n\n" ++
+  "| Target | Description | Mutability |\n" ++
+  "| :--- | :--- | :--- |\n" ++
   renderRows targets
   where
     escape : String → String
     escape s = s -- minimal escaping for now
     
     renderRow : MakefileTarget → String
-    renderRow t = "| `" ++ MakefileTarget.name t ++ "` | " ++ MakefileTarget.description t ++ " |"
+    renderRow t = "| `" ++ MakefileTarget.name t ++ "` | " ++ MakefileTarget.description t ++ " | " ++ mutabilityLabel (MakefileTarget.mutability t) ++ " |"
 
     renderRows : List MakefileTarget → String
     renderRows [] = ""
@@ -229,29 +238,34 @@ generateAgdaTargetFromGraph agdaPath depLabels =
       agdaiPath = agdaPath ++ "i"
       allDeps = agdaPath ∷ importPaths
       recipe = ("$(AGDA) $(AGDA_FLAGS) " ++ agdaPath) ∷ []
-  in mkTarget agdaiPath ("Compile " ++ agdaPath) allDeps (instrumentRecipe agdaiPath recipe) false
+  in mkMutativeTarget mutateCert agdaiPath ("Compile " ++ agdaPath) allDeps (instrumentRecipe agdaiPath recipe) false
 
 -- Build complete artifact from discovered files and graph edges
 buildArtifact : List String → List String → MakefileArtifact
 buildArtifact agdaFiles graphEdges =
   let labels = map pathToModuleLabel agdaFiles
       agdaiTargets = zipWith generateAgdaTargetFromGraph agdaFiles (map depsFor labels)
-      aggregateTargets = allAgdaiTarget agdaFiles ∷ []
+      aggregateTargets = allAgdaiTarget mutateCert agdaFiles ∷ []
       -- Dedicated target for the graph parse state; depends only on the graph export inputs
-      graphStateTarget = mkTarget "build/graph_parsed_state.txt" "Graph parse state file (produced alongside Makefile generation)" ("build/diagrams/agda-deps-full.dot" ∷ [])
+      graphStateTarget = mkMutativeTarget mutateCert "build/graph_parsed_state.txt" "Graph parse state file (produced alongside Makefile generation)" ("build/diagrams/agda-deps-full.dot" ∷ [])
         (instrumentRecipe "build/graph_parsed_state.txt"
           ("$(AGDA) $(AGDA_FLAGS) --compile src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile" ∷ [])) false
       -- Include regenMakefileTarget in the list of targets
-      graphStatusTarget = mkTarget "graph-status" "Print parsed graph status" ("build/graph_parsed_state.txt" ∷ [])
+      graphStatusTarget = mkReadOnlyTarget "graph-status" "Print parsed graph status" ("build/graph_parsed_state.txt" ∷ [])
         (instrumentRecipe "graph-status" ("@cat build/graph_parsed_state.txt" ∷ [])) true
-      graphAssertTarget = mkTarget "graph-assert-ok" "Assert dependency graph is OK (CI guard)" ("build/graph_parsed_state.txt" ∷ [])
+      graphAssertTarget = mkReadOnlyTarget "graph-assert-ok" "Assert dependency graph is OK (CI guard)" ("build/graph_parsed_state.txt" ∷ [])
         (instrumentRecipe "graph-assert-ok" 
           ("@status=$$(awk -F': ' '/^status:/ {print $$2}' build/graph_parsed_state.txt); " ++
            "edges=$$(awk -F': ' '/^edges:/ {print $$2}' build/graph_parsed_state.txt); " ++
            "if [ \"$$status\" != \"OK\" ] || [ $${edges:-0} -eq 0 ]; then echo \"Graph check failed: status=$$status edges=$$edges\"; exit 1; else echo \"Graph OK: status=$$status edges=$$edges\"; fi" ∷ [])) true
       allTargets = regenMakefileTarget ∷ graphStateTarget ∷ graphStatusTarget ∷ graphAssertTarget ∷ discoveredTargets +++ agdaiTargets +++ aggregateTargets
+      classificationTargets = regenMakefileTarget ∷ graphStateTarget ∷ graphStatusTarget ∷ graphAssertTarget ∷ discoveredTargets
       phonyTargets = filter (λ t → MakefileTarget.phony t) allTargets
       phonyNames = map MakefileTarget.name phonyTargets
+      mutativeTargets = filter isMutative classificationTargets
+      readonlyTargets = filter isReadOnly classificationTargets
+      mutativeNames = map MakefileTarget.name mutativeTargets
+      readonlyNames = map MakefileTarget.name readonlyTargets
       headerSection = record
         { id = "header"
         ; content =
@@ -267,6 +281,17 @@ buildArtifact agdaFiles graphEdges =
             ∷ ""
             ∷ "# Default for conditional backend skipping (avoid unbound var under set -u)"
             ∷ "SKIP_GHC_BACKEND ?="
+            ∷ "export SKIP_GHC_BACKEND"
+            ∷ ""
+            ∷ "# Guard for targets that write to repo outputs (docs/data/build artifacts)."
+            ∷ "MUTATE_OK ?= 1"
+            ∷ "define require_mutate"
+            ∷ "\t@if [ \"$(MUTATE_OK)\" != \"1\" ]; then echo \"Mutative target requires MUTATE_OK=1\"; exit 1; fi"
+            ∷ "endef"
+            ∷ ""
+            ∷ "# Optional override for decomposed JSON staging (kept empty by default to silence"
+            ∷ "# warn-undefined when not provided)."
+            ∷ "JSON_DECOMPOSE_FALLBACK_DIR ?="
             ∷ ""
             ∷ "# Default parallelism scales with available cores unless user overrides MAKEFLAGS."
             ∷ "CORES ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)"
@@ -279,8 +304,20 @@ buildArtifact agdaFiles graphEdges =
             ∷ "endif"
             ∷ "PROFILE_LOG ?= $(PROFILE_DIR)/profile-$(PROFILE_RUN).jsonl"
             ∷ ""
+            ∷ "# Target mutability groups (exported from Agda typing)"
+            ∷ ("MUTATIVE_TARGETS := " ++ intercalate " " mutativeNames)
+            ∷ ("READONLY_TARGETS := " ++ intercalate " " readonlyNames)
+            ∷ ""
             ∷ "# Common Agda compilation flags"
             ∷ "AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type"
+            ∷ ""
+            ∷ "# Allow callers (e.g., ACT) to redirect execution to an alternate workspace."
+            ∷ "WORKDIR ?= ."
+            ∷ "ifneq ($(origin ACT_WORKDIR), undefined)"
+            ∷ "ifneq ($(strip $(ACT_WORKDIR)),)"
+            ∷ "WORKDIR := $(ACT_WORKDIR)"
+            ∷ "endif"
+            ∷ "endif"
             ∷ ""
             ∷ "# Dependency decomposition directories (fallback-safe)"
             ∷ "DEPS_DIR ?= $(if $(JSON_DECOMPOSE_FALLBACK_DIR),$(JSON_DECOMPOSE_FALLBACK_DIR),data/deps/)"
@@ -299,6 +336,14 @@ buildArtifact agdaFiles graphEdges =
     hasSrc l e with primStringSplit "=>" e
     ... | src ∷ dst ∷ [] = primStringEquality src l
     ... | _ = false
+    isMutative : MakefileTarget → Bool
+    isMutative t with MakefileTarget.mutability t
+    ... | Mutative = true
+    ... | ReadOnly = false
+    isReadOnly : MakefileTarget → Bool
+    isReadOnly t with MakefileTarget.mutability t
+    ... | Mutative = false
+    ... | ReadOnly = true
     depsFor : String → List String
     depsFor lbl = map (second lbl) (filter (hasSrc lbl) graphEdges)
     zipWith : {A B C : Set} → (A → B → C) → List A → List B → List C
