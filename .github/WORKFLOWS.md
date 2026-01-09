@@ -15,6 +15,17 @@ To build the local worker image (once per machine):
 docker build -f .github/workflows/images/act-ubuntu-agda.Dockerfile -t metacatagory/act-ubuntu-agda:latest .
 ```
 
+For faster rebuilds, use registry-backed BuildKit cache:
+
+```bash
+docker buildx build \
+  -f .github/workflows/images/act-ubuntu-agda.Dockerfile \
+  -t metacatagory/act-ubuntu-agda:latest \
+  --cache-from type=registry,ref=ghcr.io/metacatagory/act-ubuntu-agda:buildcache \
+  --cache-to type=registry,ref=ghcr.io/metacatagory/act-ubuntu-agda:buildcache,mode=max \
+  --load .
+```
+
 ## Available Workflows
 
 | Workflow | Command | Purpose |
