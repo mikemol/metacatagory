@@ -39,7 +39,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: makefile-validation-report
-          path: build/reports/makefile-validate.txt
+          path: |
+            build/reports/makefile-validate.txt
+            build/reports/makefile-docs.md
           retention-days: 30
 
       - name: Fail on validation errors
