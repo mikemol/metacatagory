@@ -184,7 +184,7 @@ module Tests = ConcreteTestSuite
 -- ✅ Natural transformation proves equivalence
 --
 -- NEXT PHASE: 2D.4 - Real Data Validation
--- Load build/dependency_graph.json and validate full roundtrip
+-- Load data/dependency_graph.json and validate full roundtrip
 --
 -- FUTURE PHASES:
 -- Phase 2E: Haskell extraction (agda -c)

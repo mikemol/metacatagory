@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
 Export roadmap to SPPF JSON format for graph visualization.
-Reads from build/planning_index.json (planning source)
+Reads from data/planning_index.json (planning source)
 """
 import json
 from pathlib import Path
 
 def main():
     # Read from planning index, not tasks.json
-    in_path = Path('build/planning_index.json')
+    in_path = Path('data/planning_index.json')
     out_path = Path('build/gp_roadmap_sppf.json')
 
     with in_path.open('r') as f:

@@ -432,7 +432,7 @@ Maintain alignment with project planning kernel without redundant loading.
 
 ### Canonical Roadmap Sources (Load Order)
 
-1. **[build/planning_index.json](build/planning_index.json)** - Machine-readable, auto-generated
+1. **[data/planning_index.json](data/planning_index.json)** - Machine-readable, auto-generated
    - **When to use:** Programmatic access, filtering, analysis
    - **When NOT to use:** Human-readable overview needed
 
@@ -603,9 +603,9 @@ IF unsure THEN
 
 **Source:** [Makefile](Makefile), [ROOT_INDEX.md](ROOT_INDEX.md) Key Build Artifacts section
 
-- `build/planning_index.json` - Unified planning index
+- `data/planning_index.json` - Unified planning index
 - `build/canonical_enriched.json` - Enriched roadmap  
-- `build/dependency_graph.json` - Module dependencies
+- `data/dependency_graph.json` - Module dependencies
 - `.github/roadmap/tasks.json` - Machine-readable roadmap
 - `data/planning/`, `data/enriched/`, `data/deps/` - Decomposed hierarchies
 
@@ -921,7 +921,7 @@ Agda source files → Extract module headers → Generate docs/modules/*.md
 
 **Process:**
 ```
-build/planning_index.json → Format as markdown → ROADMAP.md
+data/planning_index.json → Format as markdown → ROADMAP.md
 ```
 
 **Update Trigger:** When planning kernel changes or tasks complete

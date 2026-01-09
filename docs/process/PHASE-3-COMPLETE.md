@@ -198,11 +198,11 @@ phase3-compile: phase3-extract
 # Validate on production data (12 KB dependency_graph.json)
 phase3-validate: phase3-compile
 	mkdir -p build/phase3-output
-	./json-transform decompose build/dependency_graph.json \
+	./json-transform decompose data/dependency_graph.json \
 		build/phase3-decomposition/
 	./json-transform recompose build/phase3-decomposition/ \
 		build/phase3-output/dependency_graph_reconstructed.json
-	diff build/dependency_graph.json \
+	diff data/dependency_graph.json \
 		build/phase3-output/dependency_graph_reconstructed.json
 
 # Run benchmarking suite
@@ -348,7 +348,7 @@ module RedisEquiv = JSONTransformationEquivalence redisPrimitives  -- Proofs wor
 
 ### Production Data
 
-**Dataset:** `build/dependency_graph.json`
+**Dataset:** `data/dependency_graph.json`
 - Size: 12 KB
 - Format: Dependency graph JSON
 - Usage: Roundtrip validation (decompose → recompose → compare)
@@ -375,7 +375,7 @@ module RedisEquiv = JSONTransformationEquivalence redisPrimitives  -- Proofs wor
 ### Expected Outcomes
 
 ```
-Input:  build/dependency_graph.json (12 KB)
+Input:  data/dependency_graph.json (12 KB)
          ↓
     [Decompose]
          ↓

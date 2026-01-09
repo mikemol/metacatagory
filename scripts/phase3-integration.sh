@@ -53,11 +53,11 @@ phase3-compile: phase3-extract
 phase3-validate: phase3-compile
 	@echo "Validating on production data..."
 	@mkdir -p build/phase3-output
-	./json-transform decompose build/dependency_graph.json \
+	./json-transform decompose data/dependency_graph.json \
 		build/phase3-decomposition/ || echo "⚠️  Decomposition in progress..."
 	./json-transform recompose build/phase3-decomposition/ \
 		build/phase3-output/dependency_graph_reconstructed.json || echo "⚠️  Recomposition in progress..."
-	@if diff -q build/dependency_graph.json \
+	@if diff -q data/dependency_graph.json \
 		build/phase3-output/dependency_graph_reconstructed.json > /dev/null; then \
 		echo "✅ VALIDATION PASSED: Roundtrip successful"; \
 	else \

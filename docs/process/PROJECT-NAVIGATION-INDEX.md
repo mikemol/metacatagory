@@ -370,13 +370,13 @@ agda -c src/agda/Plan/CIM/JSONTransformationBackends.agda
 
 ```bash
 # Decompose production data
-./json-transform decompose build/dependency_graph.json build/phase3-decomposition/
+./json-transform decompose data/dependency_graph.json build/phase3-decomposition/
 
 # Recompose
 ./json-transform recompose build/phase3-decomposition/ output.json
 
 # Validate roundtrip
-diff build/dependency_graph.json output.json
+diff data/dependency_graph.json output.json
 # Should be identical (roundtrip property verified)
 ```
 

@@ -26,12 +26,12 @@
 }
 ```
 
-## Target: `build/enriched/`
+## Target: `data/enriched/`
 
 **Hierarchical Structure:**
 
 ```
-build/enriched/
+data/enriched/
 ├── _metadata.json                  # Top-level metadata + reconstruction rules
 ├── _index.json                     # Fast lookup index of all item IDs
 ├── items/                          # Core item data

@@ -9,7 +9,7 @@ Usage:
     python json_recompose.py <hierarchical_dir> <output_file>
 
 Example:
-    python json_recompose.py build/deps/ build/dependency_graph.json
+    python json_recompose.py data/deps/ data/dependency_graph.json
 """
 
 import json

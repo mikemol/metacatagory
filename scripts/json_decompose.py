@@ -14,7 +14,7 @@ Strategies:
     enriched:        Split canonical_enriched.json into item+annotation hierarchy
 
 Example:
-    python json_decompose.py build/dependency_graph.json build/deps/ \\
+    python json_decompose.py data/dependency_graph.json data/deps/ \\
         --strategy dependency-graph
 """
 

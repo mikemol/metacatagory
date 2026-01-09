@@ -92,7 +92,7 @@ Implementation and workflow:
 | [docs/planning/AUDAX.md](docs/planning/AUDAX.md) | AUDAX planning framework | - | ✅ Complete |
 | [src/agda/Plan/CIM/Utility.agda](src/agda/Plan/CIM/Utility.agda) | Concrete RoadmapStep definitions | - | ✅ Complete |
 | [.github/roadmap/tasks.json](.github/roadmap/tasks.json) | Machine-readable roadmap | 2486 | ✅ Auto-generated |
-| [build/planning_index.json](build/planning_index.json) | Unified planning index | - | ✅ Auto-generated |
+| [data/planning_index.json](data/planning_index.json) | Unified planning index | - | ✅ Auto-generated |
 
 ### Testing & Quality Assurance
 
@@ -178,9 +178,9 @@ make badges
 
 ### Key Build Artifacts
 
-- `build/planning_index.json` - Unified planning index
+- `data/planning_index.json` - Unified planning index
 - `build/canonical_enriched.json` - Enriched roadmap data
-- `build/dependency_graph.json` - Module dependency graph
+- `data/dependency_graph.json` - Module dependency graph
 - `.github/roadmap/tasks.json` - Machine-readable roadmap
 - `.github/badges/top-offenders.md` - Technical debt report
 
@@ -256,10 +256,10 @@ Located in [scripts/](scripts/):
 ### Machine-Readable Indices
 
 - **[.github/roadmap/tasks.json](.github/roadmap/tasks.json)** - Primary roadmap source (2486 lines)
-- **[build/planning_index.json](build/planning_index.json)** - Unified planning index
+- **[data/planning_index.json](data/planning_index.json)** - Unified planning index
 - **[build/canonical_enriched.json](build/canonical_enriched.json)** - Enriched roadmap with metadata
-- **[build/dependency_graph.json](build/dependency_graph.json)** - Module dependency graph
-- **[build/priority_strategy_profiles.json](build/priority_strategy_profiles.json)** - AUDAX priority strategies
+- **[data/dependency_graph.json](data/dependency_graph.json)** - Module dependency graph
+- **[data/priority_strategy_profiles.json](data/priority_strategy_profiles.json)** - AUDAX priority strategies
 
 ### Decomposed Data Hierarchies
 

@@ -152,7 +152,7 @@ def validate_roundtrip(base_dir: Path | None = None) -> bool:
     """Validate decompose → recompose roundtrip (test-friendly)."""
 
     if base_dir is None:
-        original_path = Path("build/dependency_graph.json")
+        original_path = Path("data/dependency_graph.json")
         recomposed_path = Path("build/dependency_graph_recomposed.json")
     else:
         base_dir = Path(base_dir)

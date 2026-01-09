@@ -165,7 +165,7 @@ class ModuleMatcher:
     ) -> Dict[str, ModuleMapping]:
         """Match each roadmap step to relevant modules.
 
-        Fallback: if metadata_file is missing, use build/planning_index.json
+        Fallback: if metadata_file is missing, use data/planning_index.json
         (generated from PlanningKernel) to keep prioritization running.
         """
         print("\n🔗 Matching roadmap steps to modules...")
@@ -360,7 +360,7 @@ class ModuleMatcher:
     def generate_report(
         self,
         mappings: Dict[str, ModuleMapping],
-        output_file: str = "build/module_mappings.json"
+        output_file: str = "data/module_mappings.json"
     ) -> None:
         """Generate report of module mappings."""
         print(f"\n📄 Generating module mapping report...")

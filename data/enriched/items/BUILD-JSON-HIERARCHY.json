@@ -7,7 +7,7 @@
   "source": "JSONDecomposition",
   "files": [
     "docs/process/JSON-DECOMPOSITION.md",
-    "build/schemas/hierarchy.md"
+    "docs/schemas/hierarchy.md"
   ],
   "tags": [
     "JSON",

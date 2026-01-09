@@ -26,15 +26,15 @@ class CrossReferenceReporter:
         print("📥 Loading all Phase 4 analysis data...")
         
         # Load module mappings
-        with open(Path(self.workspace_root) / "build/module_mappings.json") as f:
+        with open(Path(self.workspace_root) / "data/module_mappings.json") as f:
             module_data = json.load(f)
         
         # Load dependency graph
-        with open(Path(self.workspace_root) / "build/dependency_graph.json") as f:
+        with open(Path(self.workspace_root) / "data/dependency_graph.json") as f:
             dependency_data = json.load(f)
         
         # Load impact analysis
-        with open(Path(self.workspace_root) / "build/impact_analysis.json") as f:
+        with open(Path(self.workspace_root) / "data/impact_analysis.json") as f:
             impact_data = json.load(f)
         
         # Load original roadmap traversal

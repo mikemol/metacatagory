@@ -2,7 +2,7 @@
 """
 Enrich canonical roadmap with semantic details extracted from source materials.
 
-Reads build/planning_index.json and outputs build/canonical_enriched.json
+Reads data/planning_index.json and outputs build/canonical_enriched.json
 with additional fields:
   - intent: why the task exists (1-2 sentences)
   - deliverable: concrete artifact/behavior expected

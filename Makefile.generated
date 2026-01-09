@@ -155,13 +155,13 @@ docs-validate:
 	$(call require_mutate)
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/validate_triangle_identity.py); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "docs-validate" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Decompose monolithic JSON to hierarchical structure
-json-decompose: build/dependency_graph.json
+json-decompose: data/dependency_graph.json
 	$(call require_mutate)
-	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/json_decompose.py build/dependency_graph.json $(DEPS_DIR) --strategy dependency-graph); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-decompose" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/json_decompose.py data/dependency_graph.json $(DEPS_DIR) --strategy dependency-graph); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-decompose" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Decompose monolithic JSON using prebuilt inputs
-json-decompose-prebuilt: build/dependency_graph.json
+json-decompose-prebuilt: data/dependency_graph.json
 	$(call require_mutate)
-	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/json_decompose.py build/dependency_graph.json $(DEPS_DIR) --strategy dependency-graph); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-decompose-prebuilt" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/json_decompose.py data/dependency_graph.json $(DEPS_DIR) --strategy dependency-graph); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-decompose-prebuilt" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Recompose hierarchical JSON back to monolithic form
 json-recompose: $(DEPS_DIR)
 	$(call require_mutate)
@@ -191,9 +191,9 @@ json-roundtrip-validate-enriched: json-decompose-enriched json-recompose-enriche
 	$(call require_mutate)
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/validate_json_roundtrip.py build/canonical_enriched.json build/canonical_enriched_recomposed.json); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-roundtrip-validate-enriched" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Decompose planning_index.json into plan hierarchy
-json-decompose-planning: build/planning_index.json
+json-decompose-planning: data/planning_index.json
 	$(call require_mutate)
-	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/json_decompose.py build/planning_index.json $(PLANNING_DIR) --strategy item-array); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-decompose-planning" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/json_decompose.py data/planning_index.json $(PLANNING_DIR) --strategy item-array); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-decompose-planning" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Recompose planning items into planning_index.json
 json-recompose-planning: $(PLANNING_DIR)
 	$(call require_mutate)
@@ -201,7 +201,7 @@ json-recompose-planning: $(PLANNING_DIR)
 # Validate planning roundtrip
 json-roundtrip-validate-planning: json-decompose-planning json-recompose-planning
 	$(call require_mutate)
-	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/validate_json_roundtrip.py build/planning_index.json build/planning_index_recomposed.json); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-roundtrip-validate-planning" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/validate_json_roundtrip.py data/planning_index.json build/planning_index_recomposed.json); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "json-roundtrip-validate-planning" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Lint intake files specifically
 intake-lint: 
 	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (mkdir -p build/reports && printf "intake lint suppressed (too much legacy noise)\n" > build/reports/intake-md-lint.txt); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "intake-lint" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
@@ -271,7 +271,7 @@ priority-strategy-profiles:
 # Normalize Agda strategy profiles into badge weights
 priority-badge-weights: priority-strategy-profiles
 	$(call require_mutate)
-	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/adopt_priority_strategies.py --input build/priority_strategy_profiles.json --output .github/badges/weights.json); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "priority-badge-weights" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
+	@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (python3 scripts/adopt_priority_strategies.py --input data/priority_strategy_profiles.json --output .github/badges/weights.json); rc=$$?; end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); printf '{"target":"%s","start_ns":%s,"end_ns":%s,"elapsed_ms":%s,"status":"%s"}\n' "priority-badge-weights" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc
 # Export structured priority profile (lazy; derived from planning index)
 priority-profile-json: planning-index-json
 	$(call require_mutate)

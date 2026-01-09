@@ -1,6 +1,6 @@
 # Dependency Graph Hierarchical Schema
 
-## Source: `build/dependency_graph.json`
+## Source: `data/dependency_graph.json`
 
 **Monolithic Structure:**
 ```json
@@ -22,12 +22,12 @@
 }
 ```
 
-## Target: `build/deps/`
+## Target: `data/deps/`
 
 **Hierarchical Structure:**
 
 ```
-build/deps/
+data/deps/
 ├── _metadata.json           # Top-level metadata + reconstruction rules
 ├── _index.json              # Fast lookup index of all modules
 ├── modules/                 # Per-module dependency information
@@ -55,7 +55,7 @@ build/deps/
 ```json
 {
   "schema_version": "1.0.0",
-  "source_file": "build/dependency_graph.json",
+  "source_file": "data/dependency_graph.json",
   "decomposition_timestamp": "2026-01-04T...",
   "total_modules": 84,
   "total_dependencies": 151,

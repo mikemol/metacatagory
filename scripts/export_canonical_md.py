@@ -95,7 +95,7 @@ make md-lint
 This document is a projection from the planning kernel. To update:
 
 1. Edit source items (e.g., canonical in src/agda/Plan/CIM/RoadmapIndex.agda or other adapters)
-2. Run `make planning-index-json` to refresh build/planning_index.json
+2. Run `make planning-index-json` to refresh data/planning_index.json
 3. Run `make roadmap-export-md` to regenerate this file
 
 """

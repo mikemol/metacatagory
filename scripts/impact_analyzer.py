@@ -51,7 +51,7 @@ class ImpactAnalyzer:
         print("📥 Loading module mappings and dependency graph...")
         
         # Load module mappings
-        mappings_path = Path(self.workspace_root) / "build/module_mappings.json"
+        mappings_path = Path(self.workspace_root) / "data/module_mappings.json"
         with open(mappings_path, 'r') as f:
             data = json.load(f)
             self.module_mappings = {
@@ -59,7 +59,7 @@ class ImpactAnalyzer:
             }
         
         # Load dependency graph
-        graph_path = Path(self.workspace_root) / "build/dependency_graph.json"
+        graph_path = Path(self.workspace_root) / "data/dependency_graph.json"
         with open(graph_path, 'r') as f:
             graph_data = json.load(f)
             
@@ -251,7 +251,7 @@ class ImpactAnalyzer:
     ) -> List[ImpactAssessment]:
         """Find steps on the critical path (high impact, high dependencies)."""
         # Load critical path from dependency graph
-        graph_path = Path(self.workspace_root) / "build/dependency_graph.json"
+        graph_path = Path(self.workspace_root) / "data/dependency_graph.json"
         with open(graph_path, 'r') as f:
             graph_data = json.load(f)
             critical_modules = set(graph_data['critical_path'])
@@ -267,7 +267,7 @@ class ImpactAnalyzer:
     def generate_report(
         self,
         assessments: Dict[str, ImpactAssessment],
-        output_file: str = "build/impact_analysis.json"
+        output_file: str = "data/impact_analysis.json"
     ) -> None:
         """Generate impact analysis report."""
         print(f"\n📄 Generating impact analysis report...")

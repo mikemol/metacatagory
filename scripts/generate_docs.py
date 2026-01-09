@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Generate markdown documentation from planning index.
-Loads roadmap data from build/planning_index.json instead of hardcoded list.
+Loads roadmap data from data/planning_index.json instead of hardcoded list.
 Generates README.md, NAVIGATION.md, and CONTRIBUTING.md
 """
 
@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 def load_planning_index():
-    """Load roadmap data from build/planning_index.json"""
+    """Load roadmap data from data/planning_index.json"""
     workspace = Path(__file__).parent.parent
     planning_index = workspace / "build" / "planning_index.json"
     

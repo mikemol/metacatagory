@@ -291,7 +291,7 @@ The architecture scales to multiple backends without duplication.
 
 - Extract via `agda -c`
 - Compile with GHC
-- Validate on build/dependency_graph.json
+- Validate on data/dependency_graph.json
 - Check roundtrip equivalence
 
 ## Traceability

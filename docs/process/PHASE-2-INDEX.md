@@ -176,7 +176,7 @@ Entry point for MAlonzo backend (Agda → Haskell compiler)
 ### Level 6: Real-World (⏳ Pending Execution)
 - Extraction to Haskell (ready)
 - Compilation to executable (ready)
-- Validation on build/dependency_graph.json (ready)
+- Validation on data/dependency_graph.json (ready)
 
 ---
 
@@ -197,7 +197,7 @@ Entry point for MAlonzo backend (Agda → Haskell compiler)
 - `docs/process/PHASE-2E-COMPLETE.md` - Extraction pipeline
 
 ### Real Data
-- `build/dependency_graph.json` (12 KB) - Validation target
+- `data/dependency_graph.json` (12 KB) - Validation target
 
 ---
 
@@ -222,7 +222,7 @@ Entry point for MAlonzo backend (Agda → Haskell compiler)
 ### For Real-World Validation:
 - See [PHASE-2E-COMPLETE.md](PHASE-2E-COMPLETE.md)
 - Follow extraction commands
-- Validate on build/dependency_graph.json
+- Validate on data/dependency_graph.json
 
 ---
 
@@ -275,9 +275,9 @@ agda -i src/agda --ghc-flag=-O2 src/agda/Plan/CIM/JSONTransformationExtraction.a
 ghc -O2 -o json-transform MAlonzo/Code/Plan/CIM/*.hs
 
 # Validate
-./json-transform decompose build/dependency_graph.json build/deps/
-./json-transform recompose build/deps/ output.json
-diff build/dependency_graph.json output.json
+./json-transform decompose data/dependency_graph.json data/deps/
+./json-transform recompose data/deps/ output.json
+diff data/dependency_graph.json output.json
 ```
 
 ### Short-term (Phase 2F)

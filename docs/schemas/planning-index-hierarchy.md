@@ -1,6 +1,6 @@
 # Planning Index Hierarchical Schema
 
-## Source: `build/planning_index.json`
+## Source: `data/planning_index.json`
 
 **Monolithic Structure:**
 ```json
@@ -37,12 +37,12 @@
 }
 ```
 
-## Target: `build/planning/`
+## Target: `data/planning/`
 
 **Hierarchical Structure:**
 
 ```
-build/planning/
+data/planning/
 ├── _metadata.json              # Top-level metadata + reconstruction rules
 ├── _index.json                 # Fast lookup index of all item IDs
 ├── items/                      # Items organized by category
@@ -85,7 +85,7 @@ build/planning/
 ```json
 {
   "schema_version": "1.0.0",
-  "source_file": "build/planning_index.json",
+  "source_file": "data/planning_index.json",
   "decomposition_timestamp": "2026-01-04T...",
   "total_items": 150,
   "total_adapters": 5,

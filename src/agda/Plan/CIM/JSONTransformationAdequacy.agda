@@ -408,15 +408,15 @@ AxiomInstance.solve jsonTransformationAxiomInstance kit =
 -- Concrete kits for each target decomposition
 ------------------------------------------------------------------------
 
--- | Kit for dependency_graph.json → build/deps/
+-- | Kit for dependency_graph.json → data/deps/
 postulate
   dependencyGraphKit : JSONTransformationKit
 
--- | Kit for canonical_enriched.json → build/enriched/  
+-- | Kit for canonical_enriched.json → data/enriched/  
 postulate
   enrichedRoadmapKit : JSONTransformationKit
 
--- | Kit for planning_index.json → build/planning/
+-- | Kit for planning_index.json → data/planning/
 postulate
   planningIndexKit : JSONTransformationKit
 

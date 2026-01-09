@@ -89,7 +89,7 @@ planningJson : String
 planningJson = renderItems planningIndex
 
 defaultPath : String
-defaultPath = "build/planning_index.json"
+defaultPath = "data/planning_index.json"
 
 main : IO ⊤
 main = writeFile defaultPath planningJson

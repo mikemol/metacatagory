@@ -399,7 +399,7 @@ main =
         docsContent
     in writeFile "Makefile.generated" content >>= λ _ →
       writeFile "build/graph_parsed_state.txt" ("status: " ++ graphStatus ++ "\nedges: " ++ listLengthString edges ++ "\n") >>= λ _ →
-     writeFile "build/makefile_targets_generated.md" fullDocsContent >>= λ _ →
+     writeFile "docs/automation/makefile_targets_generated.md" fullDocsContent >>= λ _ →
      writeFile "docs/automation/MAKEFILE-TARGETS.md" fullDocsContent >>= λ _ →
      (if_empty_else edges
        (writeFile "build/makefile_generation_warning.txt" 

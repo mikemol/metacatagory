@@ -8,10 +8,10 @@ open import Examples.MakefileTargets using (MakefileTarget; generatorToTarget; m
 
 jsonRoundtripTargets : List MakefileTarget
 jsonRoundtripTargets =
-  generatorToTarget mutateCert "json-decompose" "Decompose monolithic JSON to hierarchical structure" ("build/dependency_graph.json" ∷ [])
-    ("python3 scripts/json_decompose.py build/dependency_graph.json $(DEPS_DIR) --strategy dependency-graph" ∷ [])
-  ∷ generatorToTarget mutateCert "json-decompose-prebuilt" "Decompose monolithic JSON using prebuilt inputs" ("build/dependency_graph.json" ∷ [])
-    ("python3 scripts/json_decompose.py build/dependency_graph.json $(DEPS_DIR) --strategy dependency-graph" ∷ [])
+  generatorToTarget mutateCert "json-decompose" "Decompose monolithic JSON to hierarchical structure" ("data/dependency_graph.json" ∷ [])
+    ("python3 scripts/json_decompose.py data/dependency_graph.json $(DEPS_DIR) --strategy dependency-graph" ∷ [])
+  ∷ generatorToTarget mutateCert "json-decompose-prebuilt" "Decompose monolithic JSON using prebuilt inputs" ("data/dependency_graph.json" ∷ [])
+    ("python3 scripts/json_decompose.py data/dependency_graph.json $(DEPS_DIR) --strategy dependency-graph" ∷ [])
   ∷ generatorToTarget mutateCert "json-recompose" "Recompose hierarchical JSON back to monolithic form" ("$(DEPS_DIR)" ∷ [])
     ("python3 scripts/json_recompose.py $(DEPS_DIR) build/dependency_graph_recomposed.json" ∷ [])
   ∷ generatorToTarget mutateCert "json-recompose-light" "Recompose hierarchical JSON (prebuilt, fallback-safe)" ("json-decompose-prebuilt" ∷ [])
@@ -28,11 +28,11 @@ jsonRoundtripTargets =
   ∷ generatorToTarget mutateCert "json-roundtrip-validate-enriched" "Validate enriched roundtrip" ("json-decompose-enriched" ∷ "json-recompose-enriched" ∷ [])
       ("python3 scripts/validate_json_roundtrip.py build/canonical_enriched.json build/canonical_enriched_recomposed.json" ∷ [])
 
-  ∷ generatorToTarget mutateCert "json-decompose-planning" "Decompose planning_index.json into plan hierarchy" ("build/planning_index.json" ∷ [])
-      ("python3 scripts/json_decompose.py build/planning_index.json $(PLANNING_DIR) --strategy item-array" ∷ [])
+  ∷ generatorToTarget mutateCert "json-decompose-planning" "Decompose planning_index.json into plan hierarchy" ("data/planning_index.json" ∷ [])
+      ("python3 scripts/json_decompose.py data/planning_index.json $(PLANNING_DIR) --strategy item-array" ∷ [])
     ∷ generatorToTarget mutateCert "json-recompose-planning" "Recompose planning items into planning_index.json" ("$(PLANNING_DIR)" ∷ [])
       ("python3 scripts/json_recompose.py $(PLANNING_DIR) build/planning_index_recomposed.json" ∷ [])
   ∷ generatorToTarget mutateCert "json-roundtrip-validate-planning" "Validate planning roundtrip" ("json-decompose-planning" ∷ "json-recompose-planning" ∷ [])
-      ("python3 scripts/validate_json_roundtrip.py build/planning_index.json build/planning_index_recomposed.json" ∷ [])
+      ("python3 scripts/validate_json_roundtrip.py data/planning_index.json build/planning_index_recomposed.json" ∷ [])
 
   ∷ []

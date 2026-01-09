@@ -43,9 +43,9 @@
 * **Input**: Module mappings, dependency graphs, impact assessments
 * **Processing**: Cross-reference analysis and integrated planning
 * **Output**:
-  * `build/module_mappings.json` (85 KB, 78 step-to-module mappings)
-  * `build/dependency_graph.json` (150 KB, 163 modules, 909 dependencies)
-  * `build/impact_analysis.json` (120 KB, impact assessments)
+  * `data/module_mappings.json` (85 KB, 78 step-to-module mappings)
+  * `data/dependency_graph.json` (150 KB, 163 modules, 909 dependencies)
+  * `data/impact_analysis.json` (120 KB, impact assessments)
   * `build/cross_reference_report.json` (90 KB, integrated plan)
 
 **Artifacts Created**:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Validate the Makefile "triangle identity" among:
-1) The Agda exporter (Source of Truth) -> build/makefile_targets_generated.md
+1) The Agda exporter (Source of Truth) -> docs/automation/makefile_targets_generated.md
 2) The Checked-in Documentation -> docs/automation/MAKEFILE-TARGETS.md
 
 The script enforces that the checked-in documentation matches the generated truth.
@@ -30,7 +30,7 @@ from scripts.audax_doc import (
     render_doc,
 )
 
-GENERATED_DOC = ROOT / "build" / "makefile_targets_generated.md"
+GENERATED_DOC = ROOT / "docs" / "automation" / "makefile_targets_generated.md"
 CHECKED_IN_DOC = ROOT / "docs" / "automation" / "MAKEFILE-TARGETS.md"
 REPORT_DOC = ROOT / "build" / "reports" / "makefile-docs.md"
 

@@ -293,7 +293,7 @@ defaultInPath : String
 defaultInPath = "build/diagrams/agda-deps-full.dot"
 
 defaultOutPath : String
-defaultOutPath = "build/dependency_graph.json"
+defaultOutPath = "data/dependency_graph.json"
 
 count : ∀ {A : Set} → List A → Nat
 count [] = zero

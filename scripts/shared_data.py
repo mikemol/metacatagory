@@ -18,7 +18,7 @@ def load_planning_index() -> List[Dict[str, Any]]:
         List of planning items
         
     Raises:
-        FileNotFoundError: If build/planning_index.json doesn't exist
+        FileNotFoundError: If data/planning_index.json doesn't exist
     """
     json_path = REPO_ROOT / "build" / "planning_index.json"
     if not json_path.exists():

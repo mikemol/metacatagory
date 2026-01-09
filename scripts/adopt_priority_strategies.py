@@ -224,7 +224,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--input",
         type=Path,
-        default=Path("build/priority_strategy_profiles.json"),
+        default=Path("data/priority_strategy_profiles.json"),
         help="Agda-generated strategy profiles JSON",
     )
     parser.add_argument(
