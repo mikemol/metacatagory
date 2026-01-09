@@ -61,3 +61,11 @@ jobs:
         if: steps.check_changes.outputs.changed != 'true'
         run: |
           echo "No badge changes detected, skipping commit"
+      - name: Upload build reports
+        if: ${{ !env.ACT }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-reports
+          path: build/reports/**
+          if-no-files-found: ignore
+          retention-days: 30

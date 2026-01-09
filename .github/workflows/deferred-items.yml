@@ -155,3 +155,11 @@ jobs:
           FIXME=$(jq -r '.fixme' deferred-summary.json)
           
           echo "::notice title=Deferred Items Summary::Total: $TOTAL (DeviationLog: $DEVIATION_LOG, Postulates: $POSTULATES, TODO: $TODO, PLANNED: $PLANNED, FIXME: $FIXME)"
+      - name: Upload build reports
+        if: ${{ !env.ACT }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-reports
+          path: build/reports/**
+          if-no-files-found: ignore
+          retention-days: 30
