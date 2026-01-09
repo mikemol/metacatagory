@@ -49,9 +49,9 @@ record InternalCategory : Set where
     datum : InternalCategoryData
     axioms : InternalCategoryAxioms
 
--- Example: Monoid internalized in Set
-record InternalCategoryExample_Monoid_within_Set : Set where
-  constructor INTERNAL_CATEGORY_MonoidAsCat_within_Set
+-- Example: Monoid internalized in a Set-like context
+record InternalCategoryExample_Monoid_within_SetObj : Set where
+  constructor INTERNAL_CATEGORY_MonoidAsCat_within_SetObj
   field
     monoidCarrier : M.Identifier
     identityElementPicker : M.Identifier
