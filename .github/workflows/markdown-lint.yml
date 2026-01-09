@@ -24,11 +24,11 @@ jobs:
       - name: Summary
         if: ${{ success() }}
         run: echo "Markdown lint completed successfully"
-      - name: Upload markdown lint report
+      - name: Upload build reports
         if: ${{ !env.ACT }}
         uses: actions/upload-artifact@v4
         with:
-          name: markdown-lint-report
-          path: build/reports/md-lint.txt
+          name: build-reports
+          path: build/reports/**
           if-no-files-found: ignore
           retention-days: 30
