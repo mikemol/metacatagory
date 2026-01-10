@@ -1,9 +1,0 @@
-{
-  "name": "Plan.CIM.IngestedRoadmaps.Foundation",
-  "imports": [
-    "Plan.CIM.Utility"
-  ],
-  "imported_by": [
-    "Plan.CIM.IngestedRoadmaps"
-  ]
-}

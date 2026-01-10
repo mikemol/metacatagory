@@ -1,7 +1,0 @@
-{
-  "name": "Agda.Builtin.Unit",
-  "imports": [],
-  "imported_by": [
-    "Metamodel"
-  ]
-}

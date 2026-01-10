@@ -1,9 +1,0 @@
-{
-  "name": "Plan.CIM.YonedaProfiler",
-  "imports": [
-    "Plan.CIM.Utility",
-    "Core.Yoneda",
-    "Metamodel"
-  ],
-  "imported_by": []
-}

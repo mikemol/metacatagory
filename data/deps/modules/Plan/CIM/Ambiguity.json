@@ -1,7 +1,0 @@
-{
-  "name": "Plan.CIM.Ambiguity",
-  "imports": [],
-  "imported_by": [
-    "Infrastructure.Functor.Instances.Ambiguity"
-  ]
-}

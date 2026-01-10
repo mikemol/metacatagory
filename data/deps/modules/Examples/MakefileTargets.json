@@ -1,9 +1,0 @@
-{
-  "name": "Examples.MakefileTargets",
-  "imports": [
-    "qualified"
-  ],
-  "imported_by": [
-    "Examples.ExporterMakefile"
-  ]
-}

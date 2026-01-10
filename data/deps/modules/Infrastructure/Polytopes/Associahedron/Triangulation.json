@@ -1,8 +1,0 @@
-{
-  "name": "Infrastructure.Polytopes.Associahedron.Triangulation",
-  "imports": [],
-  "imported_by": [
-    "Infrastructure.Axiom.Instances.PentagonAssociahedron",
-    "Infrastructure.Index"
-  ]
-}

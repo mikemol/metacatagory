@@ -1,7 +1,0 @@
-{
-  "name": "Agda.Builtin.Char",
-  "imports": [
-    "Agda.Builtin.Nat"
-  ],
-  "imported_by": []
-}

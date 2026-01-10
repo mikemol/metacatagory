@@ -1,9 +1,0 @@
-{
-  "name": "Agda.Builtin.Int",
-  "imports": [
-    "Agda.Builtin.String"
-  ],
-  "imported_by": [
-    "Core.TechnicalDebt"
-  ]
-}

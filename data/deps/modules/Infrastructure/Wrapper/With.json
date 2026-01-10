@@ -1,7 +1,0 @@
-{
-  "name": "Infrastructure.Wrapper.With",
-  "imports": [],
-  "imported_by": [
-    "Infrastructure.Index"
-  ]
-}

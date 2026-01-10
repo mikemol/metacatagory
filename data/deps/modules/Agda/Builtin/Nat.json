@@ -1,9 +1,0 @@
-{
-  "name": "Agda.Builtin.Nat",
-  "imports": [
-    "Agda.Builtin.Bool"
-  ],
-  "imported_by": [
-    "Agda.Builtin.Char"
-  ]
-}

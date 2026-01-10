@@ -1,8 +1,0 @@
-{
-  "name": "Algebra.Modules.ClassicalInstance",
-  "imports": [
-    "Algebra.Modules.Basic",
-    "Algebra.Modules.Theorems.Classical"
-  ],
-  "imported_by": []
-}
