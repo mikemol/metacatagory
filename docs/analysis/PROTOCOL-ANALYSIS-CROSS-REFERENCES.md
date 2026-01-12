@@ -117,7 +117,7 @@
 
 **Analysis Cross-References:**
 - **Notion 1.3 (Operational Implication):** Concrete decision trees for build targets (lines 577-588)
-- **Essential Targets:** Four-target minimization (make check, agda-all, docs-all, roadmap-export-md) shows cognitive load minimization
+- **Essential Targets:** Four-target minimization (make check, agda-all, docs-all, ROADMAP.md) shows cognitive load minimization
 - **Target Selection Logic:** Decision tree instantiation of Protocol-as-Executable-Workflow
 - **Framework 4 (State Machine):** Make targets are state transitions in build automation
 

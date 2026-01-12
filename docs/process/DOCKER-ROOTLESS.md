@@ -63,6 +63,29 @@ make docker-build-ghcr
 make docker-push-ghcr
 ```
 
+## ACT / Workflow Runs (Rootless)
+
+When using `act` in this repo, use the rootless user socket and run through
+`mise` (not the host shell). The working path that consistently succeeds here is
+the user `docker.sock` (not the `dockerd-rootless/api.sock`, which returns
+`404 page not found` for `docker info` and image queries).
+
+```bash
+# Force the correct rootless socket for act
+export DOCKER_HOST="unix:///run/user/$(id -u)/docker.sock"
+
+# List available workflows
+MUTATE_OK=1 mise exec -- make act-list
+
+# Run CI workflow locally (requires container image pull)
+MUTATE_OK=1 mise exec -- make act-ci
+```
+
+Notes:
+- If `act` reports `permission denied` to the socket, the rootless daemon needs
+  to be started with a group mapping that includes your primary gid.
+- Always use `MUTATE_OK=1` for `act-*` targets.
+
 ## Notes
 
 - Makefile is generated from Agda (`make regen-makefile`). Do not edit Makefile directly.

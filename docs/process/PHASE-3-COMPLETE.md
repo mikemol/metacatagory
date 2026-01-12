@@ -23,7 +23,7 @@ Phase 3 operationalizes Phase 2's theoretical architecture by implementing produ
 1. **MAlonzo Backend Configuration**
    - Entry point: `src/agda/Plan/CIM/JSONTransformationExtraction.agda`
    - Command: `agda -i src/agda --ghc-flag=-O2 src/agda/Plan/CIM/JSONTransformationContract.agda`
-   - Output: Haskell modules in `src/agda/MAlonzo/Code/Plan/CIM/`
+   - Output: Haskell modules in `build/agda/MAlonzo/Code/Plan/CIM/`
 
 2. **Extraction Pipeline** (5-step process)
    ```
@@ -36,7 +36,7 @@ Phase 3 operationalizes Phase 2's theoretical architecture by implementing produ
 
 3. **Validation Points**
    - ✅ All 7 Phase 2 modules extract successfully
-   - ✅ MAlonzo directory created: `src/agda/MAlonzo/Code/Plan/CIM/`
+   - ✅ MAlonzo directory created: `build/agda/MAlonzo/Code/Plan/CIM/`
    - ✅ Extraction artifacts ready for compilation
 
 #### Status: ✅ COMPLETE
@@ -190,7 +190,7 @@ phase3-extract:
 
 # Compile extracted Haskell to native binary
 phase3-compile: phase3-extract
-	cd src/agda/MAlonzo && \
+	cd build/agda/MAlonzo && \
 		ghc -O2 -threaded \
 			-o ../../json-transform \
 			Code/Plan/CIM/JSONTransformationContract.hs

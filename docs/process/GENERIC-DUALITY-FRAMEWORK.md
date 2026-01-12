@@ -109,7 +109,7 @@ module Plan.CIM.JSONTransformationGeneric where
   -- Public API (all derived)
   JSONPath = DualPath json-interface
   json-decompose = forward json-interface
-  json-recompose = backward json-interface
+  build/dependency_graph_recomposed.json = backward json-interface
 ```
 
 **~30 lines of actual code.**

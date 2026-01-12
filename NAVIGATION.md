@@ -58,6 +58,12 @@ make agda-all
 # Generate documentation
 make docs-all
 
+# Regenerate all tracked artifacts
+make regen-all
+
+# Full validation suite (alias: make check)
+make check-all
+
 # Check markdown
 make md-lint
 

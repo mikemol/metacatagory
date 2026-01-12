@@ -79,7 +79,7 @@ The system is now prepared for:
 * **Agentic Roadmap Traversal**: Automatically process steps to generate implementation plans
 * **Dependency Analysis**: Identify relationships between items
 * **Progress Tracking**: Monitor which items are completed
-* **Mechanical Generation**: Auto-update ROADMAP.md on each build
+* **Mechanical Generation**: Auto-update ROADMAP.md via `make ROADMAP.md` (after roadmap merges)
 
 ## Category Breakdown
 
@@ -106,7 +106,7 @@ The 78 items are organized into 9 categories:
 
 2. **Integrate with Build System**
     * Add `make ingest-roadmap` target
-    * Auto-run during `make docs-all`
+    * Auto-run during `make intake-scan` (also pulled in by `make validate-constructive` / `make check`)
     * Keep ROADMAP.md synchronized
 
 3. **Cross-Reference Resolution**

@@ -54,7 +54,7 @@ make roadmap-merge
 make roadmap-enrich
 
 # 4. Export human-readable markdown
-make roadmap-export-enriched
+make build/reports/tasks_enriched.md
 
 # 5. Generate dependency visualizations
 make roadmap-export-deps
@@ -232,7 +232,7 @@ make roadmap-enrich
 ### "Triangle validation fails"
 
 ```bash
-make roadmap-export-json
+make .github/roadmap/tasks.json
 make roadmap-validate-triangle
 ```
 

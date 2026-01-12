@@ -27,15 +27,14 @@ This report summarizes the failures and environmental issues observed when runni
 - `rsync` is not required, but **tar must be present** (it is).
 
 4) **Python tests fail: pytest missing**
-- `make check` calls `python-test`, which runs `pytest tests/ -v`.
-- The container installs `requirements.txt`, but **pytest is not in that file**.
-- Result: `/bin/bash: line 1: pytest: command not found`.
-- Action: install pytest in the image or add it to `requirements.txt`.
+- `make check` calls `python-test`, which runs `$(VIRTUAL_ENV)/bin/python -m pytest tests/ -v`.
+- The repo now installs `requirements.txt` + `requirements-dev.txt` via `build/venv/python_setup.stamp`, and `requirements-dev.txt` includes pytest.
+- Action: ensure CI runs the python setup target (or bake pytest into the image to avoid network installs).
 
 5) **GLIBC mismatch for compiled Agda binaries**
-- During `docs-generate` / `docs-modules`, Agda compiles and then executes:
-  - `/tmp/act-workdir/src/agda/RoadmapExporter`
-  - `/tmp/act-workdir/src/agda/Plan/CIM/ModuleExporter`
+- During `build/reports/roadmap_ast.txt` / `docs-modules`, Agda compiles and then executes:
+  - `/tmp/act-workdir/build/agda/Plan/CIM/RoadmapExporterMain`
+  - `/tmp/act-workdir/build/agda/Plan/CIM/ModuleExporter`
 - These fail with:
   - `.../libc.so.6: version 'GLIBC_2.38' not found`
 - This indicates the image provides older glibc than the compiled artifacts expect.
@@ -108,4 +107,3 @@ Key failures observed in logs:
 - `pytest: command not found`
 - `GLIBC_2.38 not found` when running compiled Agda binaries
 - Ownership flip to uid/gid `100999` on host
-

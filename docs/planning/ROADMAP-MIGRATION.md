@@ -52,9 +52,9 @@ Merges all roadmap sources into `build/canonical_roadmap.json`:
 ### 2. Exporting Projections
 
 ```bash
-make roadmap-export-json  # → .github/roadmap/tasks.json
-make roadmap-export-md    # → ROADMAP.md
-make roadmap-sppf-export  # → build/gp_roadmap_sppf.json
+make .github/roadmap/tasks.json  # → .github/roadmap/tasks.json
+make ROADMAP.md    # → ROADMAP.md
+make build/gp_roadmap_sppf.json  # → build/gp_roadmap_sppf.json
 ```
 
 ### 3. Validating Triangle
@@ -75,7 +75,7 @@ Ensures:
 make roadmap-sync
 ```
 
-Depends on `roadmap-export-json` to ensure tasks.json is current before sync.
+Depends on `.github/roadmap/tasks.json` to ensure tasks.json is current before sync.
 
 ## Key Files
 
@@ -104,13 +104,13 @@ Depends on `roadmap-export-json` to ensure tasks.json is current before sync.
 | Target | Dependencies | Action |
 |--------|--------------|--------|
 | `roadmap-merge` | - | Merge sources → `build/canonical_roadmap.json` |
-| `roadmap-export-json` | `build/canonical_roadmap.json` | Export → `tasks.json` |
-| `roadmap-export-md` | `build/canonical_roadmap.json` | Export → `ROADMAP.md` |
-| `roadmap-sppf-export` | `build/canonical_roadmap.json` | Export → `gp_roadmap_sppf.json` |
+| `.github/roadmap/tasks.json` | `build/canonical_roadmap.json` | Export → `tasks.json` |
+| `ROADMAP.md` | `build/canonical_roadmap.json` | Export → `ROADMAP.md` |
+| `build/gp_roadmap_sppf.json` | `build/canonical_roadmap.json` | Export → `gp_roadmap_sppf.json` |
 | `roadmap-validate-json` | canonical, tasks.json | Validate JSON projection |
 | `roadmap-validate-md` | canonical, ROADMAP.md | Validate Markdown projection |
 | `roadmap-validate-triangle` | validate-json, validate-md | Full triangle check |
-| `roadmap-sync` | `roadmap-export-json` | Sync to GitHub |
+| `roadmap-sync` | `.github/roadmap/tasks.json` | Sync to GitHub |
 
 ## Deprecated Files
 
@@ -151,8 +151,8 @@ The following files are now **redundant** and can be removed after confirming ca
 
 ```bash
 make roadmap-merge          # Reimport from all sources
-make roadmap-export-json    # Update tasks.json
-make roadmap-export-md      # Update ROADMAP.md
+make .github/roadmap/tasks.json    # Update tasks.json
+make ROADMAP.md      # Update ROADMAP.md
 make roadmap-validate-triangle  # Verify consistency
 ```
 
@@ -165,7 +165,7 @@ make roadmap-validate-triangle
 If validation fails:
 
 * Review diffs between canonical and projections
-* Run `make roadmap-export-json roadmap-export-md` to sync
+* Run `make .github/roadmap/tasks.json ROADMAP.md` to sync
 * Re-validate
 
 ## Benefits

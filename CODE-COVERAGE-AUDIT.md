@@ -80,7 +80,7 @@
 ❌ src/agda/Plan/CIM/ModuleExporter.agda
    - Agda module documentation export
    - 160+ lines of doc generation
-   - Used by: make docs-export target
+   - Used by: make docs-modules
    - Current validation: Only markdown linting
    - Gap: Logic errors not caught (content-agnostic lint)
 
@@ -487,13 +487,13 @@ check: makefile-validate md-lint roadmap-validate-triangle \
 **50+ targets exist but are not validated:**
 
 ```makefile
-❌ python-build          # Build artifacts, not tested for correctness
+❌ build/venv/python_setup.stamp # Python setup, not tested for correctness
 ❌ roadmap-merge         # Merge logic not tested
 ❌ roadmap-enrich        # Enrichment correctness unchecked
-❌ roadmap-export-json   # Export logic not tested
-❌ roadmap-export-md     # Export logic not tested
-❌ roadmap-export-enriched  # Export logic not tested
-❌ docs-generate         # Generation logic not tested
+❌ .github/roadmap/tasks.json   # Export logic not tested
+❌ ROADMAP.md     # Export logic not tested
+❌ build/reports/tasks_enriched.md  # Export logic not tested
+❌ build/reports/roadmap_ast.txt # Generation logic not tested
 ❌ docs-preview          # Display logic not tested
 ❌ agda-repl             # Interactive mode not tested
 ❌ agda-html             # HTML generation not tested

@@ -11,7 +11,7 @@ Welcome! This guide will help you get started as a contributor to the MetaCatego
 - Install dependencies:
 
 ```text
-make venv
+make build/venv/python_setup.stamp
 make node-deps
 ```
 
@@ -31,7 +31,7 @@ make node-deps
 
 - Use the checklist/test philosophy described in src/agda/Tests/README.md.
 
-- Run make check-tests to verify your additions.
+- Run make python-verified to verify your additions.
 
 - Document the purpose and expected outcome of each test in its file header.
 

@@ -232,10 +232,10 @@ def transitive_deps(module_id):
 ### Current Makefile
 
 ```makefile
-dependency-graph-json: build/diagrams/agda-deps-full.dot
+data/dependency_graph.json: build/diagrams/agda-deps-full.dot
     $(AGDA) ... --compile src/agda/Plan/CIM/DependencyGraphExport.agda
 
-roadmap-export-json: planning-index-json
+.github/roadmap/tasks.json: data/planning_index.json
     # exports monolithic canonical_enriched.json
 ```
 
@@ -243,7 +243,7 @@ roadmap-export-json: planning-index-json
 
 ```makefile
 # Legacy targets (for backward compatibility)
-dependency-graph-json: data/deps/_metadata.json  # aggregated
+data/dependency_graph.json: data/deps/_metadata.json  # aggregated
 canonical-enriched-json: data/enriched/_metadata.json
 
 # New granular targets

@@ -8,14 +8,14 @@ This roadmap is synthesized from tracked work items and structured roadmap steps
 
 - Agda: 2.8.0 (project setting)
 
-- Docs regenerated via make docs
+- Docs regenerated via make docs-all
 
 - Deferred items tracked in DEFERRED-TRACKING.md
 
 ## How to Regenerate
 
 ```text
-make docs
+make docs-all
 make md-lint
 ```
 
@@ -29,7 +29,7 @@ This document is a projection from the canonical Agda index. To update:
 3. Run `make roadmap-merge` to refresh build/canonical_roadmap.json
 
 4.
-5. Run `make roadmap-export-md` to regenerate this file
+5. Run `make ROADMAP.md` to regenerate this file
 
 ## Structured Roadmaps
 

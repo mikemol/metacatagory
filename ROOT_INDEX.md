@@ -16,7 +16,7 @@ Start here in this order:
 2. [NAVIGATION.md](NAVIGATION.md) - Quick start guide and key module locations
 3. [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) - Design philosophy and SPPF model
 4. [CONTRIBUTING.md](CONTRIBUTING.md) - Coding standards and submission process
-5. [Makefile](Makefile) - Build commands: `make check`, `make all`, `make docs-all`
+5. [Makefile](Makefile) - Build commands: `make check-all` (alias: `make check`), `make regen-all`, `make all`, `make docs-all`
 
 ### 🤖 AI Agents & LLMs
 
@@ -154,8 +154,11 @@ Implementation and workflow:
 ### Essential Commands
 
 ```bash
-# Full validation suite
-make check
+# Full validation suite (alias: make check)
+make check-all
+
+# Regenerate all tracked artifacts
+make regen-all
 
 # Build all Agda modules
 make agda-all
@@ -164,7 +167,7 @@ make agda-all
 make docs-all
 
 # Regenerate roadmap from planning kernel
-make roadmap-export-md
+make ROADMAP.md
 
 # JSON decomposition/recomposition roundtrip
 make json-roundtrip-validate
@@ -306,7 +309,7 @@ Located in [docs/sessions/](docs/sessions/):
 
 ### For Running Tests
 
-1. [TESTING.md](TESTING.md) → [Makefile](Makefile) (`make check`) → [src/agda/Tests/](src/agda/Tests/)
+1. [TESTING.md](TESTING.md) → [Makefile](Makefile) (`make check-all`) → [src/agda/Tests/](src/agda/Tests/)
 
 ### For Automation & CI
 

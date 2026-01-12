@@ -459,7 +459,7 @@ When completing a task:
 3. **Update status fields** - Mark task as done/in-progress with rationale
 4. **Annotate changes** - Document why status changed, what was completed
 5. **Cross-link** - Reference architectural patterns and Agda nodes involved
-6. **Regenerate** - Run `make roadmap-export-md` to update ROADMAP.md
+6. **Regenerate** - Run `make ROADMAP.md` to update ROADMAP.md
 7. **Verify** - Confirm changes propagated to all canonical sources
 
 ### Recursive Revisiting Triggers
@@ -571,7 +571,7 @@ Understand Makefile targets without reading entire 1068-line file.
 make check           # Full validation suite
 make agda-all        # Compile all Agda modules  
 make docs-all        # Generate all documentation
-make roadmap-export-md  # Regenerate ROADMAP.md from planning kernel
+make ROADMAP.md  # Regenerate ROADMAP.md from planning kernel
 make priority-refresh   # Update roadmap priorities and badges
 ```
 
@@ -587,8 +587,8 @@ IF modifying documentation THEN
   Then: make md-lint (to verify markdown quality)
 
 IF modifying roadmap data THEN
-  Run: make planning-index-json
-  Then: make roadmap-export-md
+  Run: make data/planning_index.json
+  Then: make ROADMAP.md
   Then: make priority-refresh
 
 IF modifying JSON decomposition THEN
@@ -712,7 +712,7 @@ def select_script(task_type, inputs_available):
     
     elif task_type == "roadmap_update":
         if inputs_available["planning_kernel_changed"]:
-            return ["export_roadmap.py", "make roadmap-export-md"]
+            return ["export_roadmap.py", "make ROADMAP.md"]
         elif inputs_available["need_enrichment"]:
             return "enrich_canonical.py"
         else:
@@ -915,7 +915,7 @@ Agda source files → Extract module headers → Generate docs/modules/*.md
 
 #### Layer 2: Roadmap Documentation (Auto-Generated)
 
-**Source:** [Makefile](Makefile) `roadmap-export-md` target
+**Source:** [Makefile](Makefile) `ROADMAP.md` target
 
 **Generator:** [scripts/export_roadmap.py](scripts/export_roadmap.py)
 
@@ -943,7 +943,7 @@ IF changed Agda source comments THEN
   Run: make docs-modules
   
 IF changed planning kernel or task status THEN
-  Run: make roadmap-export-md
+  Run: make ROADMAP.md
   
 IF changed manual documentation THEN
   Run: make md-lint
@@ -1613,7 +1613,7 @@ Provide concrete instructions for applying this protocol in practice.
 3. Update status fields with rationale
 4. Annotate changes
 5. Cross-link to architectural patterns and Agda nodes
-6. Run `make roadmap-export-md`
+6. Run `make ROADMAP.md`
 7. Verify propagation
 
 **Source:** Stage 4, Roadmap Update Protocol
