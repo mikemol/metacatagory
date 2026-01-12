@@ -3,22 +3,53 @@
 Generate dependency graph visualization from enriched canonical roadmap.
 
 Outputs:
-- build/reports/dependency_graph.mmd (Mermaid)
-- build/reports/dependency_graph.dot (GraphViz DOT)
+- build/reports/dependency_graph.mmd (Mermaid) (or CI_REPORT_DIR override)
+- build/reports/dependency_graph.dot (GraphViz DOT) (or CI_REPORT_DIR override)
 """
 
 import json
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from typing import List, Dict, Set
+import sys
+from typing import Dict, List, Set, Tuple
 
 REPO_ROOT = Path(__file__).parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.shared.paths import REPORTS_DIR
+from scripts.shared.parallel import get_parallel_settings
+
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
-MERMAID_OUTPUT = REPO_ROOT / "build" / "reports" / "dependency_graph.mmd"
-DOT_OUTPUT = REPO_ROOT / "build" / "reports" / "dependency_graph.dot"
+MERMAID_OUTPUT = REPORTS_DIR / "dependency_graph.mmd"
+DOT_OUTPUT = REPORTS_DIR / "dependency_graph.dot"
 
 def escape_label(text: str) -> str:
     """Escape special characters for labels."""
     return text.replace('"', '\\"').replace("'", "\\'")
+
+def _mermaid_node_and_edges(item: Dict, status_colors: Dict[str, str]) -> Tuple[str, Set[Tuple]]:
+    task_id = item.get("id", "unknown")
+    title = item.get("title", "")[:40]  # Truncate long titles
+    status = item.get("status", "not-started")
+
+    # Sanitize ID for Mermaid
+    node_id = task_id.replace("-", "_").replace(".", "_")
+
+    # Node with status class
+    status_class = status_colors.get(status, "")
+    node_line = f'  {node_id}["{task_id}: {escape_label(title)}"]{status_class}'
+
+    edges: Set[Tuple] = set()
+    for dep_id in item.get("dependsOn", []):
+        dep_node_id = dep_id.replace("-", "_").replace(".", "_")
+        edges.add((dep_node_id, node_id))
+
+    for dep_id in item.get("suggestedDependencies", [])[:3]:
+        dep_node_id = dep_id.replace("-", "_").replace(".", "_")
+        edges.add((dep_node_id, node_id, "suggested"))
+
+    return node_line, edges
 
 def generate_mermaid_graph(items: List[Dict]) -> str:
     """Generate Mermaid flowchart from task dependencies."""
@@ -40,28 +71,23 @@ def generate_mermaid_graph(items: List[Dict]) -> str:
         "deferred": ":::deferred"
     }
     
-    for item in items:
-        task_id = item.get("id", "unknown")
-        title = item.get("title", "")[:40]  # Truncate long titles
-        status = item.get("status", "not-started")
-        
-        # Sanitize ID for Mermaid
-        node_id = task_id.replace("-", "_").replace(".", "_")
-        
-        # Node with status class
-        status_class = status_colors.get(status, "")
-        lines.append(f'  {node_id}["{task_id}: {escape_label(title)}"]{status_class}')
-        
-        # Explicit dependencies
-        for dep_id in item.get("dependsOn", []):
-            dep_node_id = dep_id.replace("-", "_").replace(".", "_")
-            edges.add((dep_node_id, node_id))
-        
-        # Suggested dependencies (dashed)
-        for dep_id in item.get("suggestedDependencies", [])[:3]:  # Limit to avoid clutter
-            dep_node_id = dep_id.replace("-", "_").replace(".", "_")
-            # Use different edge style
-            edges.add((dep_node_id, node_id, "suggested"))
+    edges: Set[Tuple] = set()
+
+    parallel, workers = get_parallel_settings()
+    if parallel and workers > 1:
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            results = executor.map(
+                lambda item: _mermaid_node_and_edges(item, status_colors),
+                items,
+            )
+            for node_line, item_edges in results:
+                lines.append(node_line)
+                edges.update(item_edges)
+    else:
+        for item in items:
+            node_line, item_edges = _mermaid_node_and_edges(item, status_colors)
+            lines.append(node_line)
+            edges.update(item_edges)
     
     lines.append("")
     
@@ -86,6 +112,30 @@ def generate_mermaid_graph(items: List[Dict]) -> str:
     
     return "\n".join(lines)
 
+def _dot_node_and_edges(item: Dict, status_colors: Dict[str, str]) -> Tuple[str, Set[Tuple]]:
+    task_id = item.get("id", "unknown")
+    title = item.get("title", "")[:40]
+    status = item.get("status", "not-started")
+    category = item.get("category", "")
+
+    color = status_colors.get(status, "#FFFFFF")
+    label = f"{task_id}\\n{escape_label(title)}"
+
+    # Escape ID for DOT
+    node_id = f'"{task_id}"'
+    node_line = f'  {node_id} [label="{label}", fillcolor="{color}", tooltip="{category}"];'
+
+    edges: Set[Tuple] = set()
+    for dep_id in item.get("dependsOn", []):
+        dep_node_id = f'"{dep_id}"'
+        edges.add((dep_node_id, node_id, "explicit"))
+
+    for dep_id in item.get("suggestedDependencies", [])[:3]:
+        dep_node_id = f'"{dep_id}"'
+        edges.add((dep_node_id, node_id, "suggested"))
+
+    return node_line, edges
+
 def generate_dot_graph(items: List[Dict]) -> str:
     """Generate GraphViz DOT format from task dependencies."""
     lines = [
@@ -103,39 +153,25 @@ def generate_dot_graph(items: List[Dict]) -> str:
         "not-started": "#FFE4B5",
         "deferred": "#D3D3D3"
     }
+    edges: set[tuple[str, str, str]] = set()
     
-    for item in items:
-        task_id = item.get("id", "unknown")
-        title = item.get("title", "")[:40]
-        status = item.get("status", "not-started")
-        category = item.get("category", "")
-        
-        color = status_colors.get(status, "#FFFFFF")
-        label = f"{task_id}\\n{escape_label(title)}"
-        
-        # Escape ID for DOT
-        node_id = f'"{task_id}"'
-        
-        lines.append(f'  {node_id} [label="{label}", fillcolor="{color}", tooltip="{category}"];')
+    parallel, workers = get_parallel_settings()
+    if parallel and workers > 1:
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            results = executor.map(
+                lambda item: _dot_node_and_edges(item, status_colors),
+                items,
+            )
+            for node_line, item_edges in results:
+                lines.append(node_line)
+                edges.update(item_edges)
+    else:
+        for item in items:
+            node_line, item_edges = _dot_node_and_edges(item, status_colors)
+            lines.append(node_line)
+            edges.update(item_edges)
     
     lines.append("")
-    
-    # Edges
-    edges: Set[tuple] = set()
-    
-    for item in items:
-        task_id = item.get("id", "unknown")
-        node_id = f'"{task_id}"'
-        
-        # Explicit dependencies
-        for dep_id in item.get("dependsOn", []):
-            dep_node_id = f'"{dep_id}"'
-            edges.add((dep_node_id, node_id, "explicit"))
-        
-        # Suggested dependencies
-        for dep_id in item.get("suggestedDependencies", [])[:3]:
-            dep_node_id = f'"{dep_id}"'
-            edges.add((dep_node_id, node_id, "suggested"))
     
     for edge in sorted(edges):
         if edge[2] == "suggested":

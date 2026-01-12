@@ -177,7 +177,7 @@ class ModuleMatcher:
                 data = json.load(f)
             files = data.get('files', {})
         else:
-            fallback_path = Path(self.workspace_root) / "build" / "planning_index.json"
+            fallback_path = Path(self.workspace_root) / "data" / "planning_index.json"
             try:
                 with open(fallback_path, 'r') as f:
                     index_items = json.load(f)

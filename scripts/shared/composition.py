@@ -10,6 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Generic, Optional, Set, Tuple, TypeVar, Callable
+from concurrent.futures import ThreadPoolExecutor
 import json
 import re
 
@@ -17,6 +18,7 @@ from .pipelines import Phase, PhaseResult, PhaseStatus, PipelineContext
 from .logging import StructuredLogger
 from .errors import ValidationError
 from .recovery_pipeline import RecoveryPipeline, RecoveryStrategy
+from .parallel import get_parallel_settings
 
 A = TypeVar('A')
 B = TypeVar('B')
@@ -131,30 +133,61 @@ def run_validate_roadmap_md(base_dir: Path, logger: Optional[StructuredLogger] =
 
     context: Dict[str, Any] = {}
     # Seed inputs: planning_index.json then ROADMAP.md then None
-    planning_path = base_dir / "build" / "planning_index.json"
+    planning_path = base_dir / "data" / "planning_index.json"
     roadmap_path = base_dir / "ROADMAP.md"
 
-    # Execute manually to feed different inputs across phases
-    # Phase 1
-    r1 = pipeline.execute_phase_with_recovery(pipeline.phases[0], planning_path, context)
-    if not r1.is_success():
-        return 1, context
-    # Phase 1.5 extract titles
-    r1b = pipeline.execute_phase_with_recovery(pipeline.phases[1], r1.output, context)
-    if not r1b.is_success():
-        return 1, context
-    # Store canonical
-    r1c = pipeline.execute_phase_with_recovery(pipeline.phases[2], r1b.output, context)
-    if not r1c.is_success():
-        return 1, context
-    # Phase 2: read MD
-    r2 = pipeline.execute_phase_with_recovery(pipeline.phases[3], roadmap_path, context)
-    if not r2.is_success():
-        return 1, context
-    # Store md titles
-    r2b = pipeline.execute_phase_with_recovery(pipeline.phases[4], r2.output, context)
-    if not r2b.is_success():
-        return 1, context
+    parallel, workers = get_parallel_settings()
+
+    if parallel and workers > 1:
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            json_future = executor.submit(
+                pipeline.execute_phase_with_recovery, pipeline.phases[0], planning_path, {}
+            )
+            md_future = executor.submit(
+                pipeline.execute_phase_with_recovery, pipeline.phases[3], roadmap_path, {}
+            )
+            r1 = json_future.result()
+            r2 = md_future.result()
+
+        if not r1.is_success():
+            return 1, context
+        if not r2.is_success():
+            return 1, context
+
+        # Phase 1.5 extract titles
+        r1b = pipeline.execute_phase_with_recovery(pipeline.phases[1], r1.output, context)
+        if not r1b.is_success():
+            return 1, context
+        # Store canonical
+        r1c = pipeline.execute_phase_with_recovery(pipeline.phases[2], r1b.output, context)
+        if not r1c.is_success():
+            return 1, context
+        # Store md titles
+        r2b = pipeline.execute_phase_with_recovery(pipeline.phases[4], r2.output, context)
+        if not r2b.is_success():
+            return 1, context
+    else:
+        # Execute manually to feed different inputs across phases
+        # Phase 1
+        r1 = pipeline.execute_phase_with_recovery(pipeline.phases[0], planning_path, context)
+        if not r1.is_success():
+            return 1, context
+        # Phase 1.5 extract titles
+        r1b = pipeline.execute_phase_with_recovery(pipeline.phases[1], r1.output, context)
+        if not r1b.is_success():
+            return 1, context
+        # Store canonical
+        r1c = pipeline.execute_phase_with_recovery(pipeline.phases[2], r1b.output, context)
+        if not r1c.is_success():
+            return 1, context
+        # Phase 2: read MD
+        r2 = pipeline.execute_phase_with_recovery(pipeline.phases[3], roadmap_path, context)
+        if not r2.is_success():
+            return 1, context
+        # Store md titles
+        r2b = pipeline.execute_phase_with_recovery(pipeline.phases[4], r2.output, context)
+        if not r2b.is_success():
+            return 1, context
     # Compare
     r3 = pipeline.execute_phase_with_recovery(pipeline.phases[5], None, context)
     exit_code = 0 if r3.is_success() and r3.output == 0 else 1

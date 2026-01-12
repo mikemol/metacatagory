@@ -11,8 +11,18 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 import json
+import os
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.shared.paths import REPORTS_DIR
+from scripts.shared.config import get_config
+
+
+def allow_report_write() -> bool:
+    return os.environ.get("MUTATE_OK") == "1" and get_config().report_mode == "write"
 SRC = ROOT / "src" / "agda"
 
 DECL_PREFIXES = ("record ", "data ", "postulate ")
@@ -87,16 +97,21 @@ def main() -> int:
             print(f"  - {p}: lines {locs}")
 
     if not ok:
-        # write report to build/reports if available
-        reports_dir = ROOT / "build" / "reports"
-        reports_dir.mkdir(parents=True, exist_ok=True)
-        (reports_dir / "docs-lint.json").write_text(json.dumps(report, indent=2))
+        if allow_report_write():
+            REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+            (REPORTS_DIR / "docs-lint.json").write_text(json.dumps(report, indent=2))
+        else:
+            print(json.dumps(report, indent=2))
+            print("docs-lint report suppressed (report writing disabled).")
         return 1
 
     print(f"✓ Doc lint passed ({len(agda_files)} files checked)")
-    reports_dir = ROOT / "build" / "reports"
-    reports_dir.mkdir(parents=True, exist_ok=True)
-    (reports_dir / "docs-lint.json").write_text(json.dumps(report, indent=2))
+    if allow_report_write():
+        REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+        (REPORTS_DIR / "docs-lint.json").write_text(json.dumps(report, indent=2))
+    else:
+        print(json.dumps(report, indent=2))
+        print("docs-lint report suppressed (report writing disabled).")
     return 0
 
 

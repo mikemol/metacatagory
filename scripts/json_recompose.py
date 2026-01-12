@@ -17,6 +17,14 @@ import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+from concurrent.futures import ThreadPoolExecutor
+
+# Ensure repository root is importable as a package (scripts.*)
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from scripts.shared.parallel import get_parallel_settings
 
 
 class JSONRecomposer:
@@ -52,22 +60,37 @@ class DependencyGraphRecomposer(JSONRecomposer):
         edges = []
         edge_set = set()  # Avoid duplicates
         
-        # Read all module files
+        # Read all module files (prefer index to avoid stale artifacts)
         modules_dir = self.hierarchical_dir / "modules"
         if modules_dir.exists():
-            for json_file in modules_dir.rglob("*.json"):
-                if json_file.name == "_index.json":
-                    continue
-                
+            index_file = modules_dir / "_index.json"
+            module_files = []
+
+            if index_file.exists():
+                with open(index_file, "r") as f:
+                    module_names = json.load(f)
+                for module_name in module_names:
+                    if not isinstance(module_name, str):
+                        continue
+                    parts = module_name.split(".")
+                    module_path = modules_dir / "/".join(parts[:-1]) / f"{parts[-1]}.json"
+                    if module_path.exists():
+                        module_files.append(module_path)
+            if not module_files:
+                module_files = [
+                    p for p in modules_dir.rglob("*.json") if p.name != "_index.json"
+                ]
+
+            for json_file in module_files:
                 with open(json_file, "r") as f:
                     module_data = json.load(f)
-                
+
                 module_name = module_data.get("name")
                 if not module_name:
                     continue
-                
+
                 modules[module_name] = True
-                
+
                 # Extract edges from imports
                 for imported in module_data.get("imports", []):
                     edge = {"from": module_name, "to": imported}
@@ -134,20 +157,40 @@ class ItemArrayRecomposer(JSONRecomposer):
                                for entry in index_data]
             
             # Read items in index order
-            for item_id in item_ids:
+            parallel, workers = get_parallel_settings()
+
+            def load_item(item_id: str) -> Any | None:
                 item_file = items_dir / f"{item_id}.json"
-                if item_file.exists():
-                    with open(item_file, "r") as f:
-                        item_data = json.load(f)
+                if not item_file.exists():
+                    return None
+                with open(item_file, "r") as f:
+                    return json.load(f)
+
+            if parallel and workers > 1 and item_ids:
+                with ThreadPoolExecutor(max_workers=workers) as executor:
+                    for item_data in executor.map(load_item, item_ids):
+                        if item_data is not None:
+                            items.append(item_data)
+            else:
+                for item_id in item_ids:
+                    item_data = load_item(item_id)
+                    if item_data is not None:
                         items.append(item_data)
             
             # Fallback: read all items if index missing
             if not items:
-                for json_file in sorted(items_dir.glob("*.json")):
-                    if json_file.name == "_index.json":
-                        continue
-                    with open(json_file, "r") as f:
-                        items.append(json.load(f))
+                json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
+
+                def load_path(path: Path) -> Any:
+                    with open(path, "r") as f:
+                        return json.load(f)
+
+                if parallel and workers > 1 and json_files:
+                    with ThreadPoolExecutor(max_workers=workers) as executor:
+                        items.extend(executor.map(load_path, json_files))
+                else:
+                    for json_file in json_files:
+                        items.append(load_path(json_file))
         
         return items
 
@@ -177,20 +220,40 @@ class RoadmapRecomposer(JSONRecomposer):
                                for entry in index_data]
             
             # Read items in index order
-            for item_id in item_ids:
+            parallel, workers = get_parallel_settings()
+
+            def load_item(item_id: str) -> Any | None:
                 item_file = items_dir / f"{item_id}.json"
-                if item_file.exists():
-                    with open(item_file, "r") as f:
-                        item_data = json.load(f)
+                if not item_file.exists():
+                    return None
+                with open(item_file, "r") as f:
+                    return json.load(f)
+
+            if parallel and workers > 1 and item_ids:
+                with ThreadPoolExecutor(max_workers=workers) as executor:
+                    for item_data in executor.map(load_item, item_ids):
+                        if item_data is not None:
+                            items.append(item_data)
+            else:
+                for item_id in item_ids:
+                    item_data = load_item(item_id)
+                    if item_data is not None:
                         items.append(item_data)
             
             # Fallback: read all items if index missing
             if not items:
-                for json_file in sorted(items_dir.glob("*.json")):
-                    if json_file.name == "_index.json":
-                        continue
-                    with open(json_file, "r") as f:
-                        items.append(json.load(f))
+                json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
+
+                def load_path(path: Path) -> Any:
+                    with open(path, "r") as f:
+                        return json.load(f)
+
+                if parallel and workers > 1 and json_files:
+                    with ThreadPoolExecutor(max_workers=workers) as executor:
+                        items.extend(executor.map(load_path, json_files))
+                else:
+                    for json_file in json_files:
+                        items.append(load_path(json_file))
         
         return {"items": items}
 

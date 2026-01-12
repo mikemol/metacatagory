@@ -13,7 +13,9 @@ from pathlib import Path
 def load_planning_index():
     """Load roadmap data from data/planning_index.json"""
     workspace = Path(__file__).parent.parent
-    planning_index = workspace / "build" / "planning_index.json"
+    build_planning = workspace / "build" / "planning_index.json"
+    data_planning = workspace / "data" / "planning_index.json"
+    planning_index = build_planning if build_planning.exists() else data_planning
     
     if not planning_index.exists():
         print(f"Warning: {planning_index} not found, using empty roadmap list", file=sys.stderr)

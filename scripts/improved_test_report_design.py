@@ -11,10 +11,16 @@ This eliminates regex fragility while keeping the build process simple.
 """
 
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.shared.paths import REPORTS_DIR
+
 TESTS_DIR = ROOT / "src" / "agda" / "Tests"
-OUT_DIR = ROOT / "build" / "reports"
+OUT_DIR = REPORTS_DIR
 
 # For now, maintain the regex-based approach but document the better path
 # TODO: Implement Agda-based metadata generation
@@ -84,7 +90,7 @@ def improved_design_notes() -> None:
     Then in build process:
     ```bash
     agda --compile --ghc Tests/CoverageMetadata.agda
-    ./Tests/CoverageMetadata > build/reports/adapters.json
+    ./Tests/CoverageMetadata > build/reports/adapters.json  # or CI_REPORT_DIR override
     python scripts/test_report.py  # reads adapters.json
     ```
     """

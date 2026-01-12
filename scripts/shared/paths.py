@@ -4,14 +4,22 @@
 Centralizes repository structure knowledge and standard build paths.
 """
 
+import os
 from pathlib import Path
+
+def _resolve_repo_path(value: str, base: Path) -> Path:
+    path = Path(value)
+    return path if path.is_absolute() else base / path
 
 # Repository root - calculated once
 REPO_ROOT = Path(__file__).parent.parent.parent
 
 # Standard build output directories
 BUILD_DIR = REPO_ROOT / "build"
-REPORTS_DIR = BUILD_DIR / "reports"
+REPORTS_DIR = _resolve_repo_path(
+    os.getenv("CI_REPORT_DIR", str(BUILD_DIR / "reports")),
+    REPO_ROOT
+)
 DEPS_DIR = REPO_ROOT / "data" / "deps"
 ENRICHED_DIR = REPO_ROOT / "data" / "enriched"
 PLANNING_DIR = REPO_ROOT / "data" / "planning"

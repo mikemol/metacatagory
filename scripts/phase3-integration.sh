@@ -13,13 +13,13 @@ echo ""
 
 # Step 1: Verify extraction artifacts
 echo "Step 1: Verifying extraction artifacts..."
-if [ -d "$WORKSPACE/src/agda/MAlonzo" ]; then
+if [ -d "$WORKSPACE/build/agda/MAlonzo" ]; then
     echo "  ✅ MAlonzo extraction directory found"
-    COUNT=$(find "$WORKSPACE/src/agda/MAlonzo/Code/Plan/CIM" -name "*.hs" 2>/dev/null | wc -l)
+    COUNT=$(find "$WORKSPACE/build/agda/MAlonzo/Code/Plan/CIM" -name "*.hs" 2>/dev/null | wc -l)
     echo "  ✅ $COUNT Haskell modules extracted"
 else
     echo "  ⚠️  MAlonzo extraction not yet generated"
-    echo "     Run: agda -i src/agda src/agda/Plan/CIM/JSONTransformationContract.agda"
+    echo "     Run: agda --compile-dir=build/agda -i src/agda src/agda/Plan/CIM/JSONTransformationContract.agda"
 fi
 echo ""
 
@@ -36,26 +36,26 @@ cat <<'MAKEFILE'
 # Extract JSON transformation system to Haskell (MAlonzo backend)
 phase3-extract:
 	@echo "Extracting JSON transformation to Haskell..."
-	agda -i src/agda --ghc-flag=-O2 \
+	agda --compile-dir=build/agda -i src/agda --ghc-flag=-O2 \
 		src/agda/Plan/CIM/JSONTransformationContract.agda
-	@echo "✅ Extraction complete (MAlonzo/Code/Plan/CIM/)"
+	@echo "✅ Extraction complete (build/agda/MAlonzo/Code/Plan/CIM/)"
 
 # Compile extracted Haskell to native binary
 phase3-compile: phase3-extract
 	@echo "Compiling Haskell to native binary..."
-	cd src/agda/MAlonzo && \
+	cd build/agda/MAlonzo && \
 		ghc -O2 -threaded \
-			-o ../../json-transform \
+			-o ../../build/json-transform \
 			Code/Plan/CIM/JSONTransformationContract.hs
-	@echo "✅ Compilation complete (./json-transform)"
+	@echo "✅ Compilation complete (build/json-transform)"
 
 # Validate on real production data
 phase3-validate: phase3-compile
 	@echo "Validating on production data..."
 	@mkdir -p build/phase3-output
-	./json-transform decompose data/dependency_graph.json \
+	./build/json-transform decompose data/dependency_graph.json \
 		build/phase3-decomposition/ || echo "⚠️  Decomposition in progress..."
-	./json-transform recompose build/phase3-decomposition/ \
+	./build/json-transform recompose build/phase3-decomposition/ \
 		build/phase3-output/dependency_graph_reconstructed.json || echo "⚠️  Recomposition in progress..."
 	@if diff -q data/dependency_graph.json \
 		build/phase3-output/dependency_graph_reconstructed.json > /dev/null; then \

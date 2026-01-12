@@ -21,10 +21,19 @@ Example:
 import json
 import os
 import sys
+import shutil
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Iterable, Tuple
 from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
+from concurrent.futures import ThreadPoolExecutor
+
+# Ensure repository root is importable as a package (scripts.*)
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from scripts.shared.parallel import get_parallel_settings
 
 
 @dataclass
@@ -73,6 +82,22 @@ class JSONDecomposer:
             json.dump(data, f, indent=2)
 
 
+def _write_many(writer: JSONDecomposer, tasks: Iterable[Tuple[Path, Any]]) -> None:
+    parallel, workers = get_parallel_settings()
+    task_list = list(tasks)
+    if not parallel or workers <= 1 or len(task_list) <= 1:
+        for path, data in task_list:
+            writer.write_json(path, data)
+        return
+
+    def write_task(task: Tuple[Path, Any]) -> None:
+        path, data = task
+        writer.write_json(path, data)
+
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        list(executor.map(write_task, task_list))
+
+
 class DependencyGraphDecomposer(JSONDecomposer):
     """Decompose dependency_graph.json into module hierarchy."""
     
@@ -116,11 +141,18 @@ class DependencyGraphDecomposer(JSONDecomposer):
         
         fragment_count = 0
         
+        # Clean stale fragments to avoid mixing prior decompositions
+        for subdir in ("modules", "layers", "cycles"):
+            target_dir = self.output_dir / subdir
+            if target_dir.exists():
+                shutil.rmtree(target_dir)
+
         # Create modules directory structure
         modules_dir = self.output_dir / "modules"
         modules_dir.mkdir(parents=True, exist_ok=True)
         
         module_index = []
+        module_tasks = []
         for module_name in sorted(modules.keys()):
             module_index.append(module_name)
             
@@ -129,15 +161,16 @@ class DependencyGraphDecomposer(JSONDecomposer):
             module_path = modules_dir / "/".join(parts[:-1])
             module_path.mkdir(parents=True, exist_ok=True)
             
-            # Write individual module file
             module_file = module_path / f"{parts[-1]}.json"
             module_data = {
                 "name": module_name,
                 "imports": [e["to"] for e in edges if e["from"] == module_name],
                 "imported_by": [e["from"] for e in edges if e["to"] == module_name]
             }
-            self.write_json(module_file, module_data)
-            fragment_count += 1
+            module_tasks.append((module_file, module_data))
+
+        _write_many(self, module_tasks)
+        fragment_count += len(module_tasks)
         
         # Write modules index
         self.write_json(modules_dir / "_index.json", module_index)
@@ -279,6 +312,8 @@ class ItemArrayDecomposer(JSONDecomposer):
         item_index = []
         categories = {}
         
+        item_tasks = []
+        item_tasks = []
         for idx, item in enumerate(items):
             if isinstance(item, dict):
                 item_id = item.get("id", f"item-{idx:04d}")
@@ -296,10 +331,8 @@ class ItemArrayDecomposer(JSONDecomposer):
             
             item_index.append(index_entry)
             
-            # Write full item file
             item_file = items_dir / f"{item_id}.json"
-            self.write_json(item_file, item)
-            fragment_count += 1
+            item_tasks.append((item_file, item))
             
             # Track categories
             if isinstance(item, dict):
@@ -308,6 +341,9 @@ class ItemArrayDecomposer(JSONDecomposer):
                     categories[category] = []
                 categories[category].append(item_id)
         
+        _write_many(self, item_tasks)
+        fragment_count += len(item_tasks)
+
         # Write items index
         self.write_json(items_dir / "_index.json", item_index)
         fragment_count += 1
@@ -317,11 +353,14 @@ class ItemArrayDecomposer(JSONDecomposer):
             categories_dir = self.output_dir / "categories"
             categories_dir.mkdir(parents=True, exist_ok=True)
             
+            category_tasks = []
             for category, item_ids in sorted(categories.items()):
                 safe_name = category.lower().replace(" ", "_").replace("/", "_")
                 cat_file = categories_dir / f"{safe_name}.json"
-                self.write_json(cat_file, {"category": category, "items": item_ids})
-                fragment_count += 1
+                category_tasks.append((cat_file, {"category": category, "items": item_ids}))
+
+            _write_many(self, category_tasks)
+            fragment_count += len(category_tasks)
             
             self.write_json(categories_dir / "_index.json", list(categories.keys()))
             fragment_count += 1
@@ -367,10 +406,8 @@ class RoadmapDecomposer(JSONDecomposer):
             }
             item_index.append(index_entry)
             
-            # Write full item file
             item_file = items_dir / f"{item_id}.json"
-            self.write_json(item_file, item)
-            fragment_count += 1
+            item_tasks.append((item_file, item))
             
             # Track categories
             category = item.get("category", "uncategorized")
@@ -378,6 +415,9 @@ class RoadmapDecomposer(JSONDecomposer):
                 categories[category] = []
             categories[category].append(item_id)
         
+        _write_many(self, item_tasks)
+        fragment_count += len(item_tasks)
+
         # Write items index
         self.write_json(items_dir / "_index.json", item_index)
         fragment_count += 1
@@ -387,11 +427,14 @@ class RoadmapDecomposer(JSONDecomposer):
             categories_dir = self.output_dir / "categories"
             categories_dir.mkdir(parents=True, exist_ok=True)
             
+            category_tasks = []
             for category, item_ids in sorted(categories.items()):
                 safe_name = category.lower().replace(" ", "_").replace("/", "_")
                 cat_file = categories_dir / f"{safe_name}.json"
-                self.write_json(cat_file, {"category": category, "items": item_ids})
-                fragment_count += 1
+                category_tasks.append((cat_file, {"category": category, "items": item_ids}))
+
+            _write_many(self, category_tasks)
+            fragment_count += len(category_tasks)
             
             self.write_json(categories_dir / "_index.json", list(categories.keys()))
             fragment_count += 1

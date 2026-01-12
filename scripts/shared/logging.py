@@ -128,13 +128,13 @@ class StructuredLogger:
         self.logger = logging.getLogger(name)
         self.logger.setLevel(level)
     
-    def _log_with_context(self, level: int, message: str, context: dict[str, Any] | None = None, **extra_ctx):
+    def _log_with_context(self, level: int, message: str, base_context: dict[str, Any] | None = None, **extra_ctx):
         """Internal method to log with structured context."""
         if self.logger.isEnabledFor(level):
             # Merge provided context dict and any extra kwargs
             merged_ctx: dict[str, Any] = {}
-            if context and isinstance(context, dict):
-                merged_ctx.update(context)
+            if base_context and isinstance(base_context, dict):
+                merged_ctx.update(base_context)
             # If a 'context' key was passed via extra kwargs, merge it too
             if 'context' in extra_ctx and isinstance(extra_ctx['context'], dict):
                 merged_ctx.update(extra_ctx.pop('context'))

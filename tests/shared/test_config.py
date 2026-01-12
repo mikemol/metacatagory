@@ -309,6 +309,9 @@ class TestWithConfigDecorator:
     def setup_method(self):
         """Reset config before each test."""
         reset_config()
+        for key in list(os.environ.keys()):
+            if key.startswith("METACATAGORY_"):
+                del os.environ[key]
     
     def test_function_with_config_kwarg(self):
         """Test decorator with explicit config kwarg."""

@@ -15,6 +15,7 @@ import json
 import sys
 from collections import defaultdict
 from pathlib import Path
+import os
 from typing import Any, Dict, List, Set
 from dataclasses import dataclass, field
 
@@ -36,13 +37,18 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.shared.paths import REPO_ROOT, AGDA_DIR, BUILD_DIR
+from scripts.shared.paths import REPO_ROOT, AGDA_DIR, BUILD_DIR, REPORTS_DIR
 from scripts.shared.io import load_json, save_json
 from scripts.shared.logging import configure_logging, StructuredLogger
 from scripts.shared.agda import AgdaParser, DependencyAnalyzer
 from scripts.shared.validated_provenance import ValidatedProvenance
 from scripts.shared.recovery_pipeline import RecoveryPipeline, RecoveryStrategy
 from scripts.shared.pipelines import Phase, PhaseResult, PhaseStatus
+from scripts.shared.config import get_config
+
+
+def allow_report_write() -> bool:
+    return os.environ.get("MUTATE_OK") == "1" and get_config().report_mode == "write"
 from scripts.shared.validation import ValidationResult, dict_validator
 
 
@@ -466,10 +472,14 @@ def build_dependency_graph(
     result = pipeline.execute(mapping_file)
     
     if result.is_success():
-        # Generate provenance report
-        prov_report_path = BUILD_DIR / "reports" / "dependency_graph_provenance.json"
-        prov_data = provenance.generate_validated_report(prov_report_path)
-        logger.info("Generated provenance report", report_path=str(prov_report_path))
+        # Generate provenance report only when explicitly enabled.
+        prov_report_path = REPORTS_DIR / "dependency_graph_provenance.json"
+        if allow_report_write():
+            prov_data = provenance.generate_validated_report(prov_report_path)
+            logger.info("Generated provenance report", report_path=str(prov_report_path))
+        else:
+            prov_data = provenance.generate_validated_report(None)
+            logger.info("Provenance report suppressed (report writing disabled).")
         
         # Extract metadata from the report
         report_trail = prov_data.get('report', {}).get('artifacts', {}).get(str(output_file), {})

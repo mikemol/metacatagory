@@ -7,7 +7,13 @@ Uses modular validators from shared_validators for composability and reusability
 """
 
 import sys
-from shared_validators import run_all_validations
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.shared_validators import run_all_validations
 
 if __name__ == "__main__":
     success = run_all_validations()

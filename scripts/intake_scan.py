@@ -12,14 +12,20 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
-INTAKE_DIR = ROOT / "intake"
-CANONICAL_PATH = ROOT / "build" / "planning_index.json"
-REPORT_DIR = ROOT / "build" / "reports"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.shared.paths import REPO_ROOT, PLANNING_INDEX_JSON, REPORTS_DIR
+
+INTAKE_DIR = REPO_ROOT / "intake"
+CANONICAL_PATH = PLANNING_INDEX_JSON
+REPORT_DIR = REPORTS_DIR
 REPORT_JSON = REPORT_DIR / "intake_coverage.json"
 REPORT_MD = REPORT_DIR / "intake_coverage.md"
 

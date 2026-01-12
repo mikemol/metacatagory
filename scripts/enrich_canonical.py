@@ -20,14 +20,17 @@ with additional fields:
 
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
 # --- Configuration --------------------------------------------------------
 
 REPO_ROOT = Path(__file__).parent.parent
-CANONICAL_JSON = REPO_ROOT / "build" / "planning_index.json"
+CANONICAL_JSON = REPO_ROOT / "data" / "planning_index.json"
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
+
+from shared.parallel import get_parallel_settings
 
 # Controlled tag vocabulary
 TAG_VOCAB = {
@@ -237,21 +240,34 @@ def build_module_to_tasks_map(items: List[Dict]) -> Dict[str, List[str]]:
     Build a mapping from module names to task IDs that reference them.
     """
     module_to_tasks: Dict[str, List[str]] = {}
-    
-    for item in items:
+
+    parallel, workers = get_parallel_settings()
+
+    def extract_pairs(item: Dict[str, Any]) -> List[tuple[str, str]]:
+        pairs: List[tuple[str, str]] = []
         task_id = item.get("id", "")
         for file_path in item.get("files", []):
             if not file_path.endswith(".agda"):
                 continue
-            
+
             # Convert path to module name
             parts = Path(file_path).parts
             if "agda" in parts:
                 idx = parts.index("agda")
                 module_parts = parts[idx + 1:]
                 module_name = ".".join(module_parts).replace(".agda", "")
-                
-                module_to_tasks.setdefault(module_name, []).append(task_id)
+                pairs.append((module_name, task_id))
+        return pairs
+
+    if parallel and workers > 1 and items:
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            results = list(executor.map(extract_pairs, items))
+    else:
+        results = [extract_pairs(item) for item in items]
+
+    for pairs in results:
+        for module_name, task_id in pairs:
+            module_to_tasks.setdefault(module_name, []).append(task_id)
     
     return module_to_tasks
 
@@ -591,10 +607,12 @@ def enrich_canonical() -> None:
     module_to_tasks = build_module_to_tasks_map(canonical)
     print(f"  Found {len(module_to_tasks)} task modules")
     
-    enriched = []
-    for item in canonical:
-        enriched_item = enrich_item(item, module_to_tasks, dep_graph)
-        enriched.append(enriched_item)
+    parallel, workers = get_parallel_settings()
+    if parallel and workers > 1 and canonical:
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            enriched = list(executor.map(lambda it: enrich_item(it, module_to_tasks, dep_graph), canonical))
+    else:
+        enriched = [enrich_item(item, module_to_tasks, dep_graph) for item in canonical]
     
     # Write enriched output
     ENRICHED_JSON.parent.mkdir(parents=True, exist_ok=True)

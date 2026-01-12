@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import argparse
+import json
+import os
 import subprocess
+from pathlib import Path
 from typing import Iterable, List
 
 from scripts.makefile_graph import (
@@ -11,6 +14,29 @@ from scripts.makefile_graph import (
 )
 
 DEFAULT_ROOTS: List[str] = ["check", "regen-makefile"]
+FAILURES_PATH = Path("build/reports/last_failures.json")
+
+
+def load_failures() -> list[str]:
+    if not FAILURES_PATH.exists():
+        return []
+    try:
+        data = json.loads(FAILURES_PATH.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return []
+    return [item for item in data if isinstance(item, str)]
+
+
+def save_failures(targets: list[str]) -> None:
+    FAILURES_PATH.parent.mkdir(parents=True, exist_ok=True)
+    FAILURES_PATH.write_text(
+        json.dumps(targets, indent=2) + "\n", encoding="utf-8"
+    )
+
+
+def clear_failures() -> None:
+    if FAILURES_PATH.exists():
+        FAILURES_PATH.unlink()
 
 
 def load_make_graph() -> dict[str, set[str]]:
@@ -20,10 +46,43 @@ def load_make_graph() -> dict[str, set[str]]:
     return parse_make_database(result.stdout)
 
 
-def run_targets(targets: Iterable[str]) -> None:
-    for target in targets:
+def run_targets(targets: Iterable[str], prioritize_failures: bool = True) -> None:
+    env = os.environ.copy()
+    env.setdefault("MUTATE_OK", "1")
+    skip_act = bool(env.get("ACT"))
+    skip_targets_env = env.get("MAKEFILE_COVERAGE_SKIP", "")
+    skip_targets = {
+        item.strip()
+        for item in skip_targets_env.replace(",", " ").split()
+        if item.strip()
+    }
+    target_list = list(targets)
+    if prioritize_failures:
+        failures = load_failures()
+        failed_first = [t for t in failures if t in target_list]
+        remaining = [t for t in target_list if t not in failed_first]
+        target_list = failed_first + remaining
+    for target in target_list:
+        if target in skip_targets:
+            print(f"\n== Skipping make {target} (MAKEFILE_COVERAGE_SKIP) ==")
+            continue
+        if skip_act and target.startswith("act-"):
+            print(f"\n== Skipping make {target} (ACT environment) ==")
+            continue
+        if skip_act and target.startswith("docker-"):
+            print(f"\n== Skipping make {target} (ACT environment) ==")
+            continue
+        if target.startswith("docker-"):
+            if not env.get("GHCR_REGISTRY") or not env.get("GHCR_USERNAME"):
+                print(f"\n== Skipping make {target} (missing GHCR env) ==")
+                continue
         print(f"\n== Executing make {target} ==")
-        subprocess.run(["make", target], check=True)
+        try:
+            subprocess.run(["make", target], check=True, env=env)
+        except subprocess.CalledProcessError:
+            save_failures([target])
+            raise
+    clear_failures()
 
 
 def main() -> None:
@@ -41,6 +100,11 @@ def main() -> None:
         action="store_true",
         help="Execute each phony target before computing reachability",
     )
+    parser.add_argument(
+        "--no-prioritize-failures",
+        action="store_true",
+        help="Disable failed-first ordering for target execution",
+    )
 
     args = parser.parse_args()
 
@@ -54,7 +118,10 @@ def main() -> None:
         if not execution_targets:
             print("No phony targets were discovered; skipping execution step.")
         else:
-            run_targets(execution_targets)
+            run_targets(
+                execution_targets,
+                prioritize_failures=not args.no_prioritize_failures,
+            )
         graph = load_make_graph()
         phony = parse_phony_targets(graph)
         if args.roots == DEFAULT_ROOTS:

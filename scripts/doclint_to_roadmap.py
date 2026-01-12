@@ -7,10 +7,23 @@ of items with fields compatible with RoadmapItem.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parent.parent
-REPORT = ROOT / "build" / "reports" / "docs-lint.json"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+report_dir_env = os.getenv("CI_REPORT_DIR")
+if report_dir_env:
+    report_dir = Path(report_dir_env)
+    if not report_dir.is_absolute():
+        report_dir = ROOT / report_dir
+else:
+    report_dir = ROOT / "build" / "reports"
+
+REPORT = report_dir / "docs-lint.json"
 OUT = ROOT / "build" / "doclint_roadmap.json"
 
 
@@ -24,7 +37,7 @@ def make_item(file_path: str, kind: str) -> dict:
         "files": [file_path],
         "tags": ["Docs", kind],
         "dependsOn": [],
-        "provenance": ["build/reports/docs-lint.json"],
+        "provenance": [str(REPORT)],
         "related": [],
     }
 

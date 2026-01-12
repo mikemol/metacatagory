@@ -86,7 +86,7 @@ class TestSPPFExport:
         monkeypatch.chdir(tmp_path)
         
         # Create planning_index.json in a build dir that will be created
-        planning_file = tmp_path / "build" / "planning_index.json"
+        planning_file = tmp_path / "data" / "planning_index.json"
         planning_file.parent.mkdir(parents=True)
         
         with open(planning_file, "w") as f:

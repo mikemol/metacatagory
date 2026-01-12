@@ -57,7 +57,7 @@ def test_main_writes_reports(tmp_path, monkeypatch, capsys):
     (intake_dir / "__.md").write_text("GP-1 GP-unknown")
     (intake_dir / "draft.md").write_text("GP-2")
 
-    canonical_path = root / "build" / "planning_index.json"
+    canonical_path = root / "data" / "planning_index.json"
     canonical_path.parent.mkdir(parents=True, exist_ok=True)
     canonical_path.write_text(json.dumps([{"id": "GP-1"}, {"id": "GP-2"}]))
 

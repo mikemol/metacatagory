@@ -11,14 +11,15 @@ Showcases full integration of shared components:
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
+from concurrent.futures import ThreadPoolExecutor
 
 # Ensure repository root is importable as a package (scripts.*)
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
-from scripts.shared.paths import BUILD_DIR
+from scripts.shared.parallel import get_parallel_settings
 from scripts.shared.io import load_json
 from scripts.shared.logging import configure_logging, StructuredLogger
 from scripts.shared.validation import ValidationResult
@@ -53,11 +54,25 @@ class LoadRoundtripFilesPhase(Phase[Path, Dict[str, Dict[str, Any]]]):
         self.logger = logger
 
     def transform(self, input_data: Path, context: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
-        self.logger.info("Loading original file", file=str(input_data))
-        original = load_json(input_data, required=True)
-        
-        self.logger.info("Loading recomposed file", file=str(self.recomposed_path))
-        recomposed = load_json(self.recomposed_path, required=True)
+        parallel, workers = get_parallel_settings()
+
+        def load_file(path: Path) -> Dict[str, Any]:
+            return load_json(path, required=True)
+
+        if parallel and workers > 1:
+            self.logger.info("Loading original file", file=str(input_data), mode="parallel")
+            self.logger.info("Loading recomposed file", file=str(self.recomposed_path), mode="parallel")
+            with ThreadPoolExecutor(max_workers=2) as executor:
+                original_future = executor.submit(load_file, input_data)
+                recomposed_future = executor.submit(load_file, self.recomposed_path)
+                original = original_future.result()
+                recomposed = recomposed_future.result()
+        else:
+            self.logger.info("Loading original file", file=str(input_data))
+            original = load_json(input_data, required=True)
+            
+            self.logger.info("Loading recomposed file", file=str(self.recomposed_path))
+            recomposed = load_json(self.recomposed_path, required=True)
         
         self.logger.info("Files loaded successfully")
         
@@ -88,7 +103,7 @@ class ValidateSemanticEquivalencePhase(Phase[Dict[str, Dict[str, Any]], Dict[str
         original_edges = len(original.get("edges", []))
         recomposed_edges = len(recomposed.get("edges", []))
         
-        is_valid = original_modules == recomposed_modules
+        is_valid = (original_modules == recomposed_modules) and (original_edges == recomposed_edges)
         
         result = {
             'is_valid': is_valid,
@@ -142,9 +157,9 @@ class GenerateRoundtripReportPhase(Phase[Dict[str, Any], bool]):
             print(f"   Edges:      {result['original_edges']} ↔ {result['recomposed_edges']}")
             return True
         else:
-            print("❌ JSON roundtrip validation FAILED (module count differs)")
-            print(f"   Original:   {result['original_modules']} modules")
-            print(f"   Recomposed: {result['recomposed_modules']} modules")
+            print("❌ JSON roundtrip validation FAILED (module/edge counts differ)")
+            print(f"   Original:   {result['original_modules']} modules, {result['original_edges']} edges")
+            print(f"   Recomposed: {result['recomposed_modules']} modules, {result['recomposed_edges']} edges")
             return False
 
 
@@ -152,40 +167,70 @@ def validate_roundtrip(base_dir: Path | None = None) -> bool:
     """Validate decompose → recompose roundtrip (test-friendly)."""
 
     if base_dir is None:
-        original_path = Path("data/dependency_graph.json")
+        original_path = Path("build/dependency_graph.json")
         recomposed_path = Path("build/dependency_graph_recomposed.json")
+        if not original_path.exists():
+            legacy_original = Path("data/dependency_graph.json")
+            if legacy_original.exists():
+                original_path = legacy_original
+                original_exists = True
+            else:
+                original_exists = False
+        else:
+            original_exists = True
     else:
         base_dir = Path(base_dir)
         original_path = base_dir / "dependency_graph.json"
         recomposed_path = base_dir / "dependency_graph_recomposed.json"
+        original_exists = original_path.exists()
 
-    if not original_path.exists():
+    if not original_exists:
         print("Original file not found")
         return False
-    if not recomposed_path.exists():
+    recomposed_exists = recomposed_path.exists()
+    if not recomposed_exists:
         print("Recomposed file not found")
         return False
 
     try:
-        with open(original_path, "r", encoding="utf-8") as f:
-            original = json.load(f)
+        def load_file(path: Path) -> Dict[str, Any]:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+
+        parallel, workers = get_parallel_settings()
+        if parallel and workers > 1:
+            with ThreadPoolExecutor(max_workers=2) as executor:
+                original_future = executor.submit(load_file, original_path)
+                recomposed_future = executor.submit(load_file, recomposed_path)
+                try:
+                    original = original_future.result()
+                except json.JSONDecodeError:
+                    print("JSON parse error in original file")
+                    return False
+                try:
+                    recomposed = recomposed_future.result()
+                except json.JSONDecodeError:
+                    print("JSON parse error in recomposed file")
+                    return False
+        else:
+            original = load_file(original_path)
     except json.JSONDecodeError:
         print("JSON parse error in original file")
         return False
 
-    try:
-        with open(recomposed_path, "r", encoding="utf-8") as f:
-            recomposed = json.load(f)
-    except json.JSONDecodeError:
-        print("JSON parse error in recomposed file")
-        return False
+    if not (parallel and workers > 1):
+        try:
+            recomposed = load_file(recomposed_path)
+        except json.JSONDecodeError:
+            print("JSON parse error in recomposed file")
+            return False
 
     original_modules = len(original.get("nodes", []))
     recomposed_modules = len(recomposed.get("modules", []))
     original_edges = len(original.get("edges", []))
     recomposed_edges = len(recomposed.get("edges", []))
 
-    if original_modules == recomposed_modules:
+    if original_modules == recomposed_modules and original_edges == recomposed_edges:
         print("✅ JSON decomposition roundtrip PASSED (module count preserved)")
         print(f"   Original:   {original_path}")
         print(f"   Recomposed: {recomposed_path}")
@@ -194,12 +239,11 @@ def validate_roundtrip(base_dir: Path | None = None) -> bool:
         return True
 
     print("❌ JSON roundtrip validation FAILED (module count differs)")
-    print(f"   Original:   {original_modules} modules")
-    print(f"   Recomposed: {recomposed_modules} modules")
+    print(f"   Original:   {original_modules} modules, {original_edges} edges")
+    print(f"   Recomposed: {recomposed_modules} modules, {recomposed_edges} edges")
     return False
 
 
 if __name__ == "__main__":
     success = validate_roundtrip()
     sys.exit(0 if success else 1)
-

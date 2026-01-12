@@ -23,7 +23,7 @@ def test_load_planning_index_missing(tmp_path, capsys):
 
 def test_load_planning_index_present(tmp_path):
     mod.__file__ = str(tmp_path / "scripts" / "generate_docs.py")
-    plan = tmp_path / "build" / "planning_index.json"
+    plan = tmp_path / "data" / "planning_index.json"
     plan.parent.mkdir(parents=True, exist_ok=True)
     data = [
         {"id": "GP-2", "status": "done", "description": "B"},

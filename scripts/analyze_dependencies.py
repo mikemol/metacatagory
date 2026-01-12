@@ -12,7 +12,7 @@ from typing import List, Dict
 
 REPO_ROOT = Path(__file__).parent.parent
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
-CANONICAL_JSON = REPO_ROOT / "build" / "planning_index.json"
+CANONICAL_JSON = REPO_ROOT / "data" / "planning_index.json"
 
 def analyze_suggestions() -> None:
     """Analyze suggested dependencies."""

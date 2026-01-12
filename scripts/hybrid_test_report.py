@@ -26,12 +26,18 @@ This is more robust than pure regex while being immediately implementable.
 
 from pathlib import Path
 import re
+import sys
 from typing import Any, Optional, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.shared.paths import REPORTS_DIR
+
 TESTS_DIR = ROOT / "src" / "agda" / "Tests"
 COVERAGE_REPORT_FILE = TESTS_DIR / "CoverageReport.agda"
-OUT_DIR = ROOT / "build" / "reports"
+OUT_DIR = REPORTS_DIR
 
 def parse_coverage_metadata() -> Optional[dict[str, Any]]:
     """

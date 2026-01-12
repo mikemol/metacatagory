@@ -614,8 +614,7 @@ class RetryPhase(Phase[A, B]):
 class ConcurrentPhase(Phase[A, List[B]]):
     """Phase that executes multiple phases in parallel (stub for future use).
     
-    Note: Current implementation is sequential. Use with threading.Thread
-    or multiprocessing for actual concurrency.
+    Uses a thread pool when METACATAGORY_PARALLEL is enabled.
     """
     
     def __init__(self, name: str, phases: List[Phase[A, B]]):
@@ -629,7 +628,7 @@ class ConcurrentPhase(Phase[A, List[B]]):
         self.phases = phases
     
     def transform(self, input_data: A, context: Dict[str, Any]) -> List[B]:
-        """Execute phases (sequentially).
+        """Execute phases (sequentially or in parallel).
         
         Args:
             input_data: Input data for all phases
@@ -638,12 +637,40 @@ class ConcurrentPhase(Phase[A, List[B]]):
         Returns:
             List of outputs from all phases
         """
-        results = []
-        
-        for phase in self.phases:
-            result = phase.execute(input_data, context)
-            if result.is_failure():
-                raise RuntimeError(f"Concurrent phase failed: {result.error}")
-            results.append(result.output)
-        
+        from concurrent.futures import ThreadPoolExecutor
+
+        parallel = False
+        workers = 1
+        try:
+            from .config import get_config
+
+            config = get_config()
+            parallel = config.parallel
+            workers = max(1, int(config.workers))
+        except Exception:
+            parallel = False
+            workers = 1
+
+        if not parallel or len(self.phases) <= 1 or workers <= 1:
+            results = []
+            for phase in self.phases:
+                result = phase.execute(input_data, context)
+                if result.is_failure():
+                    raise RuntimeError(f"Concurrent phase failed: {result.error}")
+                results.append(result.output)
+            return results
+
+        results: list[B] = [None] * len(self.phases)  # type: ignore[list-item]
+
+        def run_phase(idx: int, phase: Phase[A, B]) -> tuple[int, PhaseResult[B]]:
+            return idx, phase.execute(input_data, context)
+
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            futures = [executor.submit(run_phase, idx, phase) for idx, phase in enumerate(self.phases)]
+            for future in futures:
+                idx, result = future.result()
+                if result.is_failure():
+                    raise RuntimeError(f"Concurrent phase failed: {result.error}")
+                results[idx] = result.output  # type: ignore[assignment]
+
         return results

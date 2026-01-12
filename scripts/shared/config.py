@@ -74,6 +74,7 @@ class Config:
     # Validation settings
     strict_validation: bool = True
     fail_on_warning: bool = False
+    report_mode: str = "stdout"  # stdout | write
     
     # I/O settings
     json_indent: int = 2
@@ -114,6 +115,12 @@ class Config:
         config.dry_run = _parse_bool(os.getenv('METACATAGORY_DRY_RUN', 'false'))
         config.parallel = _parse_bool(os.getenv('METACATAGORY_PARALLEL', 'false'))
         config.strict_validation = _parse_bool(os.getenv('METACATAGORY_STRICT', 'true'))
+        config.fail_on_warning = _parse_bool(os.getenv('METACATAGORY_FAIL_ON_WARNING', 'false'))
+        if report_mode := os.getenv('METACATAGORY_REPORT_MODE'):
+            config.report_mode = report_mode.lower()
+        config.log_structured = _parse_bool(os.getenv('METACATAGORY_LOG_STRUCTURED', 'false'))
+        config.create_parents = _parse_bool(os.getenv('METACATAGORY_CREATE_PARENTS', 'true'))
+        config.backup_on_overwrite = _parse_bool(os.getenv('METACATAGORY_BACKUP_ON_OVERWRITE', 'false'))
         
         # Integer settings
         if workers := os.getenv('METACATAGORY_WORKERS'):
@@ -128,6 +135,12 @@ class Config:
         
         if log_file := os.getenv('METACATAGORY_LOG_FILE'):
             config.log_file = Path(log_file)
+
+        if json_indent := os.getenv('METACATAGORY_JSON_INDENT'):
+            try:
+                config.json_indent = int(json_indent)
+            except ValueError:
+                pass
         
         return config
     
@@ -162,6 +175,10 @@ class Config:
             else:
                 # Unknown keys go into custom dict
                 config.custom[key] = value
+                warnings.warn(
+                    f"Unknown config key '{key}' added to custom dict.",
+                    stacklevel=2
+                )
         
         return config
     
@@ -339,6 +356,14 @@ class Config:
                 f"Invalid log_level: {self.log_level}",
                 field="log_level",
                 hint=f"Must be one of: {', '.join(valid_log_levels)}"
+            )
+
+        valid_report_modes = {'stdout', 'write'}
+        if self.report_mode not in valid_report_modes:
+            raise ValidationError(
+                f"Invalid report_mode: {self.report_mode}",
+                field="report_mode",
+                hint="Must be one of: stdout, write"
             )
         
         return self

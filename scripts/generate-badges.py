@@ -9,12 +9,13 @@ import json
 import sys
 import re
 from pathlib import Path
+import os
 from datetime import datetime, timezone
 from typing import Dict, Any, Iterable, List, Tuple
 
 # Constants controlling repository scan behavior
 FILE_SCAN_EXTENSIONS = {".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"}
-EXCLUDED_DIRS = {".git", "venv", ".github/badges"}
+EXCLUDED_DIRS = {".git", "venv", "build", ".github/badges"}
 
 # Thresholds: list of (limit, color) evaluated in order for value < limit
 ROADMAP_PROGRESS_THRESHOLDS: List[Tuple[int, str]] = [
@@ -429,11 +430,19 @@ def main():
     # Paths
     repo_root = Path(__file__).parent.parent
     tasks_file = repo_root / ".github" / "roadmap" / "tasks.json"
-    deferred_summary = repo_root / "deferred-summary.json"
+    report_dir_env = os.getenv("CI_REPORT_DIR")
+    if report_dir_env:
+        report_dir = Path(report_dir_env)
+        if not report_dir.is_absolute():
+            report_dir = repo_root / report_dir
+    else:
+        report_dir = repo_root / "build" / "reports"
+    deferred_summary = report_dir / "deferred-summary.json"
     output_dir = repo_root / ".github" / "badges"
 
-    # Create output directory
+    # Create output directories
     output_dir.mkdir(parents=True, exist_ok=True)
+    report_dir.mkdir(parents=True, exist_ok=True)
 
     # Load weights
     weights = load_weights(output_dir)
@@ -542,11 +551,11 @@ def main():
     
     print(f"\n✅ Generated {len(all_badges)} badge JSON files in {output_dir}")
     # Optionally write back a refreshed deferred summary for future runs
-    refreshed_summary = repo_root / "deferred-summary.json"
+    refreshed_summary = report_dir / "deferred-summary.json"
     with open(refreshed_summary, "w") as f:
         json.dump({k: v for k, v in deferred.items() if k != "files"}, f, indent=2)
     print(
-        "Refreshed deferred-summary.json "
+        f"Refreshed {refreshed_summary} "
         f"postulates={deferred.get('postulates')} "
         f"TODO={deferred.get('todo')} "
         f"FIXME={deferred.get('fixme')}"

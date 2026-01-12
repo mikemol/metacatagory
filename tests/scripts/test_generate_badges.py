@@ -237,6 +237,8 @@ def test_main_writes_badges_and_history(tmp_path, monkeypatch):
 
     output_dir = repo_root / ".github" / "badges"
     output_dir.mkdir(parents=True, exist_ok=True)
+    report_dir = repo_root / "build" / "reports"
+    report_dir.mkdir(parents=True, exist_ok=True)
 
     # Tasks data
     tasks_file = repo_root / ".github" / "roadmap" / "tasks.json"
@@ -247,7 +249,7 @@ def test_main_writes_badges_and_history(tmp_path, monkeypatch):
     ]))
 
     # Deferred summary with files to skip scan
-    deferred_summary = repo_root / "deferred-summary.json"
+    deferred_summary = report_dir / "deferred-summary.json"
     deferred_summary.write_text(json.dumps({
         "total": 2,
         "weighted_total": 10,
@@ -281,7 +283,7 @@ def test_main_writes_badges_and_history(tmp_path, monkeypatch):
     history = json.loads((output_dir / "deferred-history.json").read_text())
     assert len(history) >= 1
 
-    refreshed = json.loads((repo_root / "deferred-summary.json").read_text())
+    refreshed = json.loads((report_dir / "deferred-summary.json").read_text())
     assert "files" not in refreshed  # stripped when refreshed
 
 
@@ -320,7 +322,8 @@ def test_main_scans_trims_and_updates_history(tmp_path):
     assert len(history) == mod.MAX_HISTORY_ENTRIES
     assert history[-1]["date"] == today
 
-    refreshed = json.loads((repo_root / "deferred-summary.json").read_text())
+    report_dir = repo_root / "build" / "reports"
+    refreshed = json.loads((report_dir / "deferred-summary.json").read_text())
     assert refreshed.get("weekly_avg_delta") is not None
     assert refreshed.get("trend_delta") is not None
 
@@ -341,7 +344,9 @@ def test_main_recovers_from_corrupt_history(tmp_path):
     tasks_file.parent.mkdir(parents=True, exist_ok=True)
     tasks_file.write_text(json.dumps([]))
 
-    deferred_summary = repo_root / "deferred-summary.json"
+    report_dir = repo_root / "build" / "reports"
+    report_dir.mkdir(parents=True, exist_ok=True)
+    deferred_summary = report_dir / "deferred-summary.json"
     deferred_summary.write_text(json.dumps({
         "total": 1,
         "weighted_total": 2,
@@ -373,7 +378,9 @@ def test_main_guard_runs_as_script(tmp_path):
     tasks_file.parent.mkdir(parents=True, exist_ok=True)
     tasks_file.write_text(json.dumps([]))
 
-    deferred_summary = repo_root / "deferred-summary.json"
+    report_dir = repo_root / "build" / "reports"
+    report_dir.mkdir(parents=True, exist_ok=True)
+    deferred_summary = report_dir / "deferred-summary.json"
     deferred_summary.write_text(json.dumps({
         "total": 1,
         "weighted_total": 1,
