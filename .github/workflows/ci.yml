@@ -11,72 +11,124 @@ permissions:
   issues: read
 
 jobs:
-  build:
-    name: Typecheck and Docs
+  agda-exports:
+    name: Agda Exports
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
-      AGDA_DIR: /usr/share/agda/lib
-      AGDA_EXEC_OPTIONS: --include-path=/usr/share/agda/lib/prim
-      AGDA_STDLIB: /usr/share/agda-stdlib
-      WORKDIR: .
+      BUILD_WORKDIR: ${{ github.workspace }}
+      CI_REPORT_DIR: build/reports
+      CI_ARTIFACT_DIR: build/reports
+      MAKEFILE_COVERAGE_SKIP: docs-normalize docs-all md-normalize regen-all all
+      METACATAGORY_PARALLEL: "true"
+      METACATAGORY_WORKERS: "8"
     steps:
+      - name: Set DRY_RUN (ACT)
+        if: ${{ env.ACT }}
+        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
+      - name: Set DRY_RUN (GitHub)
+        if: ${{ !env.ACT }}
+        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v4
+        if: ${{ env.DRY_RUN != 'true' }}
         with:
           fetch-depth: 0
 
-      - name: Prepare ACT workspace
+      - name: Use ACT workspace
+        if: ${{ env.DRY_RUN == 'true' }}
+        shell: bash
+        run: |
+          if [ -n "${ACT_SRC:-}" ]; then
+            rm -rf ./*
+            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
+          fi
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate Makefile recipes
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: bash scripts/recipes/regen-makefile.sh
+
+      - name: Generate Agda exports
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          MUTATE_OK=1 make \
+            build/diagrams/agda-deps-full.dot \
+            data/planning_index.json \
+            data/dependency_graph.json \
+            graph-assert-ok \
+            makefile-validate
+
+      - name: Run makefile coverage verification
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: python3 -m scripts.makefile_coverage --run-targets
+
+      - name: Upload Agda exports
+        if: ${{ env.DRY_RUN != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: agda-exports
+          path: |
+            build/recipes/**
+            data/planning_index.json
+            data/dependency_graph.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload build reports
+        if: ${{ env.DRY_RUN != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-reports
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
+          if-no-files-found: ignore
+          retention-days: 30
+
+  docs-checks:
+    name: Docs and Markdown
+    needs: agda-exports
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mikemol/act-ubuntu-agda:latest
+    env:
+      BUILD_WORKDIR: ${{ github.workspace }}
+      CI_REPORT_DIR: build/reports
+      CI_ARTIFACT_DIR: build/reports
+      METACATAGORY_PARALLEL: "true"
+      METACATAGORY_WORKERS: "8"
+    steps:
+      - name: Set DRY_RUN (ACT)
         if: ${{ env.ACT }}
+        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
+      - name: Set DRY_RUN (GitHub)
+        if: ${{ !env.ACT }}
+        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
+      - name: Checkout
+        uses: actions/checkout@v4
+        if: ${{ env.DRY_RUN != 'true' }}
+        with:
+          fetch-depth: 0
+
+      - name: Use ACT workspace
+        if: ${{ env.DRY_RUN == 'true' }}
+        shell: bash
         run: |
-          scripts/act_prepare_workspace.sh /tmp/act-workdir
-
-      - name: Configure Agda standard library
-        run: |
-          if [ -n "${ACT:-}" ]; then
-            agda --setup
-          fi
-          mkdir -p ~/.agda
-          echo "/usr/share/agda-stdlib/standard-library.agda-lib" > ~/.agda/libraries
-          echo "standard-library" > ~/.agda/defaults
-          # Resolve prim path robustly across package layouts
-          AGDA_DATA_DIR="$(agda --print-agda-data-dir)"
-          AGDA_PRIM_PATH=""
-          for candidate in \
-            "$AGDA_DATA_DIR/lib/prim" \
-            "$AGDA_DIR/prim" \
-            "/usr/share/agda/lib/prim" \
-            "/usr/lib/agda/lib/prim" \
-            "/usr/share/libghc-agda-dev/lib/prim"; do
-            if [ -d "$candidate" ]; then
-              AGDA_PRIM_PATH="$candidate"
-              break
-            fi
-          done
-
-          if [ -z "$AGDA_PRIM_PATH" ]; then
-            echo "Agda prim library not found; searched common locations" >&2
-            find /usr -maxdepth 4 -type d -name prim | head -n 20 >&2 || true
-            exit 1
+          if [ -n "${ACT_SRC:-}" ]; then
+            rm -rf ./*
+            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
 
-          # Create compatibility symlink for toolchains that still expect libghc-agda-dev layout
-          if [ ! -d "/usr/share/libghc-agda-dev/lib/prim" ]; then
-            mkdir -p /usr/share/libghc-agda-dev/lib
-            ln -s "$AGDA_PRIM_PATH" /usr/share/libghc-agda-dev/lib/prim || true
-          fi
-
-          # Ensure Agda's data dir has a lib/prim entry (needed for act image).
-          AGDA_DATA_DIR="$(agda --print-agda-data-dir)"
-          mkdir -p "$AGDA_DATA_DIR/lib"
-          if [ ! -d "$AGDA_DATA_DIR/lib/prim" ]; then
-            ln -s "$AGDA_PRIM_PATH" "$AGDA_DATA_DIR/lib/prim" || true
-          fi
-
-          echo "AGDA_PRIM_PATH=$AGDA_PRIM_PATH" >> "$GITHUB_ENV"
-          echo "AGDA_EXEC_OPTIONS=--include-path=$AGDA_PRIM_PATH" >> "$GITHUB_ENV"
-          ls "$AGDA_PRIM_PATH" >/dev/null
+      - name: Download Agda exports
+        if: ${{ env.DRY_RUN != 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: agda-exports
+          path: .
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -84,7 +136,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install Python dependencies
-        working-directory: ${{ env.WORKDIR }}
+        working-directory: ${{ env.BUILD_WORKDIR }}
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
@@ -95,45 +147,153 @@ jobs:
           node-version: 20
 
       - name: Install Node dependencies
-        working-directory: ${{ env.WORKDIR }}
+        working-directory: ${{ env.BUILD_WORKDIR }}
         run: npm ci
 
-      - name: Run check (aligns with local make)
-        working-directory: ${{ env.WORKDIR }}
-        run: AGDA_FLAGS="-i src/agda -i ${AGDA_PRIM_PATH:-/usr/share/agda/lib/prim} --ghc-flag=-Wno-star-is-type" make check
-
-      - name: Run makefile coverage verification
-        working-directory: ${{ env.WORKDIR }}
-        run: python3 scripts/makefile_coverage.py --run-targets
+      - name: Run docs checks
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: MUTATE_OK=1 make check-docs
 
       - name: Upload build reports
-        if: ${{ !env.ACT }}
+        if: ${{ env.DRY_RUN != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports
-          path: build/reports/**
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
           if-no-files-found: ignore
           retention-days: 30
 
-  coverage:
-    name: Makefile Coverage Proof
+  roadmap-json-checks:
+    name: Roadmap and JSON
+    needs: agda-exports
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-    needs: build
+    env:
+      BUILD_WORKDIR: ${{ github.workspace }}
+      CI_REPORT_DIR: build/reports
+      CI_ARTIFACT_DIR: build/reports
+      METACATAGORY_PARALLEL: "true"
+      METACATAGORY_WORKERS: "8"
     steps:
+      - name: Set DRY_RUN (ACT)
+        if: ${{ env.ACT }}
+        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
+      - name: Set DRY_RUN (GitHub)
+        if: ${{ !env.ACT }}
+        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v4
+        if: ${{ env.DRY_RUN != 'true' }}
+        with:
+          fetch-depth: 0
+
+      - name: Use ACT workspace
+        if: ${{ env.DRY_RUN == 'true' }}
+        shell: bash
+        run: |
+          if [ -n "${ACT_SRC:-}" ]; then
+            rm -rf ./*
+            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
+          fi
+
+      - name: Download Agda exports
+        if: ${{ env.DRY_RUN != 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: agda-exports
+          path: .
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Run makefile coverage verification
-        working-directory: ${{ env.ACT_WORKDIR }}
-        run: python3 scripts/makefile_coverage.py --run-targets
+      - name: Install Python dependencies
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
+      - name: Run roadmap checks
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: MUTATE_OK=1 make check-roadmap
+
+      - name: Run JSON checks
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: MUTATE_OK=1 make check-json
+
+      - name: Upload build reports
+        if: ${{ env.DRY_RUN != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-reports
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
+          if-no-files-found: ignore
+          retention-days: 30
+
+  python-checks:
+    name: Python and Debt
+    needs: agda-exports
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mikemol/act-ubuntu-agda:latest
+    env:
+      BUILD_WORKDIR: ${{ github.workspace }}
+      CI_REPORT_DIR: build/reports
+      CI_ARTIFACT_DIR: build/reports
+      METACATAGORY_PARALLEL: "true"
+      METACATAGORY_WORKERS: "8"
+    steps:
+      - name: Set DRY_RUN (ACT)
+        if: ${{ env.ACT }}
+        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
+      - name: Set DRY_RUN (GitHub)
+        if: ${{ !env.ACT }}
+        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
+      - name: Checkout
+        uses: actions/checkout@v4
+        if: ${{ env.DRY_RUN != 'true' }}
+        with:
+          fetch-depth: 0
+
+      - name: Prepare ACT workspace
+        if: ${{ env.DRY_RUN == 'true' }}
+        shell: bash
+        run: |
+          if [ -n "${ACT_SRC:-}" ]; then
+            rm -rf ./*
+            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
+          fi
+
+      - name: Download Agda exports
+        if: ${{ env.DRY_RUN != 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: agda-exports
+          path: .
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Python tests
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: MUTATE_OK=1 make check-python
+
+      - name: Run debt checks
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: MUTATE_OK=1 make check-debt
+
+      - name: Upload build reports
+        if: ${{ env.DRY_RUN != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-reports
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
+          if-no-files-found: ignore
+          retention-days: 30
 
   deferred-items-check:
     name: Track Deferred Items
@@ -144,37 +304,61 @@ jobs:
     permissions:
       contents: read
       issues: write
+    env:
+      CI_REPORT_DIR: build/reports
+      CI_ARTIFACT_DIR: build/reports
+      METACATAGORY_REPORT_MODE: "write"
+      METACATAGORY_PARALLEL: "true"
+      METACATAGORY_WORKERS: "8"
     steps:
+      - name: Set DRY_RUN (ACT)
+        if: ${{ env.ACT }}
+        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
+      - name: Set DRY_RUN (GitHub)
+        if: ${{ !env.ACT }}
+        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v4
+        if: ${{ env.DRY_RUN != 'true' }}
+
+      - name: Use ACT workspace
+        if: ${{ env.DRY_RUN == 'true' }}
+        shell: bash
+        run: |
+          if [ -n "${ACT_SRC:-}" ]; then
+            rm -rf ./*
+            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
+          fi
 
       - name: Make scripts executable
-        if: ${{ !env.ACT }}
+        if: ${{ env.DRY_RUN != 'true' }}
         run: chmod +x .github/scripts/*.sh
 
       - name: Track Deferred Items
-        if: ${{ !env.ACT }}
+        if: ${{ env.DRY_RUN != 'true' }}
         run: make deferred-items
 
       - name: Upload deferred items report
-        if: ${{ !env.ACT }}
+        if: ${{ env.DRY_RUN != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: deferred-items-report
           path: |
-            deferred-items.md
-            deferred-summary.json
+            ${{ env.CI_REPORT_DIR }}/deferred-items.md
+            ${{ env.CI_REPORT_DIR }}/deferred-summary.json
           retention-days: 90
 
       - name: Create or update tracking issue
-        if: ${{ !env.ACT }}
+        if: ${{ env.DRY_RUN != 'true' }}
         env:
           GH_TOKEN: ${{ github.token }}
-          GITHUB_SHA: ${{ github.sha }}
+          CI_GITHUB_SHA: ${{ github.sha }}
+          CI_DEFERRED_REPORT_FILE: ${{ env.CI_REPORT_DIR }}/deferred-items.md
+          CI_DEFERRED_SUMMARY_FILE: ${{ env.CI_REPORT_DIR }}/deferred-summary.json
         run: |
-          .github/scripts/create-or-update-tracking-issue.sh deferred-items.md deferred-summary.json
+          .github/scripts/create-or-update-tracking-issue.sh
 
       - name: Post summary comment
-        if: ${{ !env.ACT && steps.scan.outputs.total > 0 }}
+        if: ${{ env.DRY_RUN != 'true' && steps.scan.outputs.total > 0 }}
         run: |
           echo "::notice title=Deferred Items::Found ${{ steps.scan.outputs.total }} deferred items: ${{ steps.scan.outputs.deviation_log }} DeviationLog, ${{ steps.scan.outputs.postulates }} postulates, ${{ steps.scan.outputs.todo }} TODOs, ${{ steps.scan.outputs.planned }} PLANNED, ${{ steps.scan.outputs.fixme }} FIXMEs"
