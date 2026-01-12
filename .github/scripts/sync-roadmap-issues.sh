@@ -3,10 +3,11 @@ set -euo pipefail
 
 # sync-roadmap-issues.sh
 # Creates or updates GitHub issues for roadmap tasks defined in .github/roadmap/tasks.json
-# Requires: env GITHUB_TOKEN; runs inside GitHub Actions or locally (set GITHUB_REPOSITORY=owner/repo)
+# Requires: env CI_GITHUB_TOKEN (or legacy GITHUB_TOKEN); runs inside GitHub Actions or locally
+# (set CI_GITHUB_REPOSITORY or GITHUB_REPOSITORY=owner/repo)
 
-TASKS_FILE="${TASKS_FILE:-.github/roadmap/tasks.json}"
-REPO="${GITHUB_REPOSITORY:-}"
+TASKS_FILE="${CI_TASKS_FILE:-${TASKS_FILE:-.github/roadmap/tasks.json}}"
+REPO="${CI_GITHUB_REPOSITORY:-${GITHUB_REPOSITORY:-}}"
 API_ROOT="https://api.github.com"
 LABEL_ROADMAP="roadmap"
 
@@ -14,8 +15,9 @@ if [[ -z "${REPO}" ]]; then
   echo "GITHUB_REPOSITORY not set (expected owner/repo)" >&2
   exit 1
 fi
+GITHUB_TOKEN="${CI_GITHUB_TOKEN:-${GITHUB_TOKEN:-}}"
 if [[ -z "${GITHUB_TOKEN:-}" ]]; then
-  echo "GITHUB_TOKEN not set" >&2
+  echo "GITHUB_TOKEN not set (or CI_GITHUB_TOKEN not set)" >&2
   exit 1
 fi
 if [[ ! -f "$TASKS_FILE" ]]; then
@@ -28,10 +30,15 @@ accept_header="Accept: application/vnd.github+json"
 
 # Ensure roadmap label exists
 echo "Ensuring label '$LABEL_ROADMAP' exists"
+label_payload=$(jq -nc \
+  --arg name "$LABEL_ROADMAP" \
+  --arg color "0e8a16" \
+  --arg description "MetaCategory roadmap task" \
+  '{name:$name,color:$color,description:$description}')
 curl -s -X POST -H "$auth_header" -H "$accept_header" \
   -H 'Content-Type: application/json' \
   "$API_ROOT/repos/$REPO/labels" \
-  -d '{"name":"'$LABEL_ROADMAP'","color":"0e8a16","description":"MetaCategory roadmap task"}' >/dev/null || true
+  -d "$label_payload" >/dev/null || true
 
 echo "Fetching existing roadmap issues"
 existing=$(curl -s -H "$auth_header" -H "$accept_header" "$API_ROOT/repos/$REPO/issues?state=open&labels=$LABEL_ROADMAP")
@@ -47,9 +54,15 @@ create_issue() {
     --arg source "$source" \
     --arg files "$files_json" \
     --arg tags "$tags_json" '"### Roadmap Task\n\nID: \($id)\nStatus: \($status)\nSource: \($source)\n\nFiles: \($files)\nTags: \($tags)\n\nThis issue was auto-generated. Update status by editing tasks.json and re-running sync."')
+  local payload
+  payload=$(jq -nc \
+    --arg title "$issue_title" \
+    --arg body "$body" \
+    --arg label "$LABEL_ROADMAP" \
+    '{title:$title,body:$body,labels:[$label]}')
   curl -s -X POST -H "$auth_header" -H "$accept_header" -H 'Content-Type: application/json' \
     "$API_ROOT/repos/$REPO/issues" \
-    -d "{\"title\":\"$issue_title\",\"body\":$(jq -Rs . <<< "$body"),\"labels\":[\"$LABEL_ROADMAP\"]}" >/dev/null
+    -d "$payload" >/dev/null
   echo "Created issue: $issue_title"
 }
 
@@ -64,9 +77,14 @@ update_issue() {
     --arg source "$source" \
     --arg files "$files_json" \
     --arg tags "$tags_json" '"### Roadmap Task (Updated)\n\nID: \($id)\nStatus: \($status)\nSource: \($source)\n\nFiles: \($files)\nTags: \($tags)\n\nEdit tasks.json and re-run sync to change."')
+  local payload
+  payload=$(jq -nc \
+    --arg title "$issue_title" \
+    --arg body "$body" \
+    '{title:$title,body:$body}')
   curl -s -X PATCH -H "$auth_header" -H "$accept_header" -H 'Content-Type: application/json' \
     "$API_ROOT/repos/$REPO/issues/$number" \
-    -d "{\"title\":\"$issue_title\",\"body\":$(jq -Rs . <<< "$body")}" >/dev/null
+    -d "$payload" >/dev/null
   echo "Updated issue #$number: $issue_title"
 }
 

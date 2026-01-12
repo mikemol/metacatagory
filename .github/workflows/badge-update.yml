@@ -5,7 +5,7 @@ on:
     branches: [main, master, stripped]
     paths:
       - '.github/roadmap/tasks.json'
-      - 'deferred-summary.json'
+      - 'build/reports/deferred-summary.json'
       - 'scripts/**/*.py'
       - 'src/agda/**/*.agda'
       # Narrowed triggers: remove docs & README to reduce churn
@@ -14,7 +14,7 @@ on:
     branches: [main, master, stripped]
     paths:
       - '.github/roadmap/tasks.json'
-      - 'deferred-summary.json'
+      - 'build/reports/deferred-summary.json'
       - 'scripts/**/*.py'
       - 'src/agda/**/*.agda'
       - 'ROADMAP*.md'
@@ -32,24 +32,78 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
+    env:
+      CI_REPORT_DIR: build/reports
+      CI_ARTIFACT_DIR: build/reports
+      METACATAGORY_REPORT_MODE: "write"
+      METACATAGORY_PARALLEL: "true"
+      METACATAGORY_WORKERS: "8"
+      MUTATE_OK: "1"
     
     steps:
+      - name: Set DRY_RUN (ACT)
+        if: ${{ env.ACT }}
+        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
+      - name: Set DRY_RUN (GitHub)
+        if: ${{ !env.ACT }}
+        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
       - name: Checkout repository
         uses: actions/checkout@v4
+        if: ${{ env.DRY_RUN != 'true' }}
         with:
           ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
+
+      - name: Use ACT workspace
+        if: ${{ env.DRY_RUN == 'true' }}
+        working-directory: ${{ github.workspace }}
+        shell: bash
+        run: |
+          echo "Using ACT workspace at $(pwd)"
+          if [ -n "${ACT_SRC:-}" ]; then
+            rm -rf ./*
+            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
+          fi
+
+      - name: Generate Makefile recipes
+        env:
+          MUTATE_OK: "1"
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
+          agda_bin="${AGDA_BIN:-agda}"
+          if [[ -n "${BUILD_CORES:-}" ]]; then
+            cores="$BUILD_CORES"
+          else
+            cores="$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)"
+          fi
+          base_workdir="${BUILD_WORKDIR:-${WORKDIR:-.}}"
+          compile_dir="${AGDA_COMPILE_DIR:-${base_workdir}/build/agda}"
+          xdg_data="${XDG_DATA_HOME:-${base_workdir}/build/xdg-data}"
+          xdg_cache="${XDG_CACHE_HOME:-${base_workdir}/build/xdg-cache}"
+          agda_data_dir="$(env XDG_DATA_HOME="$xdg_data" XDG_CACHE_HOME="$xdg_cache" AGDA_EXEC_OPTIONS= "$agda_bin" --library-file=/dev/null --no-libraries --no-default-libraries --print-agda-data-dir 2>/dev/null)"
+          agda_prim_dir="${agda_data_dir}/lib/prim"
+          agda_flags="-i src/agda --include-path=${agda_prim_dir} --no-default-libraries --no-libraries --ghc-flag=-Wno-star-is-type --ghc-flag=-j${cores}"
+          env XDG_DATA_HOME="$xdg_data" XDG_CACHE_HOME="$xdg_cache" AGDA_EXEC_OPTIONS= AGDA_DATA_DIR="$agda_data_dir" \
+            "$agda_bin" $agda_flags --compile-dir="$compile_dir" --compile src/agda/Examples/ExporterMakefile.agda
+          "$compile_dir/ExporterMakefile"
+          cp Makefile.generated Makefile
       
       - name: Generate badges
+        env:
+          MUTATE_OK: "1"
+        working-directory: ${{ github.workspace }}
         run: make badges
       
       - name: Check for changes
         id: check_changes
+        if: ${{ env.DRY_RUN != 'true' }}
         run: |
           git diff --quiet .github/badges/ || echo "changed=true" >> $GITHUB_OUTPUT
       
       - name: Commit and push badge updates
-        if: steps.check_changes.outputs.changed == 'true'
+        if: ${{ env.DRY_RUN != 'true' && steps.check_changes.outputs.changed == 'true' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -58,14 +112,14 @@ jobs:
           git push origin HEAD:${{ github.head_ref || github.ref_name }}
       
       - name: No changes detected
-        if: steps.check_changes.outputs.changed != 'true'
+        if: ${{ env.DRY_RUN != 'true' && steps.check_changes.outputs.changed != 'true' }}
         run: |
           echo "No badge changes detected, skipping commit"
       - name: Upload build reports
-        if: ${{ !env.ACT }}
+        if: ${{ env.DRY_RUN != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports
-          path: build/reports/**
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
           if-no-files-found: ignore
           retention-days: 30

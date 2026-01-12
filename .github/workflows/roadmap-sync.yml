@@ -11,20 +11,45 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
+    env:
+      CI_REPORT_DIR: build/reports
+      CI_ARTIFACT_DIR: build/reports
+      METACATAGORY_REPORT_MODE: "write"
+      METACATAGORY_PARALLEL: "true"
+      METACATAGORY_WORKERS: "8"
     permissions:
       issues: write
       contents: read
     steps:
+      - name: Set DRY_RUN (ACT)
+        if: ${{ env.ACT }}
+        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
+      - name: Set DRY_RUN (GitHub)
+        if: ${{ !env.ACT }}
+        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
+        if: ${{ env.DRY_RUN != 'true' }}
+      - name: Use ACT workspace
+        if: ${{ env.DRY_RUN == 'true' }}
+        shell: bash
+        run: |
+          if [ -n "${ACT_SRC:-}" ]; then
+            rm -rf ./*
+            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
+          fi
+      - name: Generate Makefile recipes
+        run: MUTATE_OK=1 make regen-makefile
       - name: Sync roadmap issues
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: make roadmap-sync
+          CI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CI_GITHUB_REPOSITORY: ${{ github.repository }}
+          CI_TASKS_FILE: .github/roadmap/tasks.json
+        run: MUTATE_OK=1 make roadmap-sync
       - name: Upload build reports
-        if: ${{ !env.ACT }}
+        if: ${{ env.DRY_RUN != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports
-          path: build/reports/**
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
           if-no-files-found: ignore
           retention-days: 30
