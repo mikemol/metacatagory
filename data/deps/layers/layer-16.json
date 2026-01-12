@@ -1,6 +1,5 @@
 [
-  "Plan.CIM.YonedaProfiler",
-  "Core.AlgebraicAlgorithms",
+  "Tests.ObligationAdapters",
   "Core.Witnesses",
-  "Tests.ObligationAdapters"
+  "Core.AlgebraicAlgorithms"
 ]

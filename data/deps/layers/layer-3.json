@@ -1,20 +1,6 @@
 [
-  "Infrastructure.Definitions.Dictionary",
-  "Examples.PhaseCategoryExamples",
-  "Infrastructure.Axiom.Instances.HexagonBraiding",
-  "Infrastructure.Axiom.Instances.PentagonAssociahedron",
-  "Plan.CIM.PandocShowMdBlock",
-  "Plan.CIM.RoadmapSPPF",
-  "Plan.CIM.Structure",
-  "PropertyRegistry",
-  "TechnicalDebt.DeferredItemsOrchestrationFFI",
-  "Tests.HierarchyValidation",
   "Core.AlgorithmComplexity",
+  "PropertyRegistry",
   "Core.Limitations",
-  "Examples.DeferredItemsScanner",
-  "Infrastructure.Functor.Instances.PhaseCategory",
-  "Plan.CIM.CHIPRecomposed",
-  "Plan.CIM.PlanningExport",
-  "Infrastructure.Functor.Instances.Ambiguity",
-  "Plan.CIM.MarkdownNormalize"
+  "Examples.PhaseCategoryExamples"
 ]

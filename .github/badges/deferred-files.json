@@ -1,4 +1,20 @@
 {
+  "src/agda/Plan/CIM/JSONTransformationAdequacy.agda": {
+    "postulates": 28,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 28,
+    "weighted_total": 42.0
+  },
+  "src/agda/Tests/Examples/CrossDomainCompositionTests.agda": {
+    "postulates": 22,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 22,
+    "weighted_total": 33.0
+  },
   "src/agda/Algebra/Groups/Structure.agda": {
     "postulates": 18,
     "todo": 0,
@@ -62,6 +78,14 @@
     "deviation": 0,
     "total": 14,
     "weighted_total": 21.0
+  },
+  "src/agda/Plan/CIM/JSONTransformation.agda": {
+    "postulates": 13,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 15,
+    "weighted_total": 20.5
   },
   "src/agda/Examples/ConstructiveWitnessExamples.agda": {
     "postulates": 13,
@@ -127,6 +151,30 @@
     "total": 10,
     "weighted_total": 15.0
   },
+  "src/agda/Tests/Plan/CIM/ProofTraceGenericTests.agda": {
+    "postulates": 9,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 9,
+    "weighted_total": 13.5
+  },
+  "src/agda/Plan/CIM/ABNFParserGeneric.agda": {
+    "postulates": 9,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 9,
+    "weighted_total": 13.5
+  },
+  "src/agda/Plan/CIM/JSONTransformationContract.agda": {
+    "postulates": 9,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 9,
+    "weighted_total": 13.5
+  },
   "src/agda/Algebra/Groups/Free.agda": {
     "postulates": 9,
     "todo": 0,
@@ -151,13 +199,29 @@
     "total": 8,
     "weighted_total": 12.0
   },
-  "deferred-items.md": {
-    "postulates": 0,
-    "todo": 3,
-    "fixme": 3,
-    "deviation": 3,
-    "total": 9,
-    "weighted_total": 10.5
+  "src/agda/Infrastructure/Adequacy.agda": {
+    "postulates": 8,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 8,
+    "weighted_total": 12.0
+  },
+  "src/agda/Infrastructure/Adequacy/Polymorphic.agda": {
+    "postulates": 8,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 8,
+    "weighted_total": 12.0
+  },
+  "src/agda/Plan/CIM/ProofTraceGeneric.agda": {
+    "postulates": 8,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 8,
+    "weighted_total": 12.0
   },
   "src/agda/Plan/CIM/DocumentationContent.agda": {
     "postulates": 2,
@@ -165,6 +229,38 @@
     "fixme": 3,
     "deviation": 0,
     "total": 8,
+    "weighted_total": 10.5
+  },
+  "src/agda/Tests/Plan/CIM/ABNFParserGenericTests.agda": {
+    "postulates": 7,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 7,
+    "weighted_total": 10.5
+  },
+  "src/agda/Plan/CIM/SchemaValidationGeneric.agda": {
+    "postulates": 7,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 7,
+    "weighted_total": 10.5
+  },
+  "src/agda/Plan/CIM/JSONConcrete.agda": {
+    "postulates": 7,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 7,
+    "weighted_total": 10.5
+  },
+  "src/agda/Plan/CIM/TypeCheckingGeneric.agda": {
+    "postulates": 7,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 7,
     "weighted_total": 10.5
   },
   "src/agda/Algebra/Fields/Theorems/Classical.agda": {
@@ -215,6 +311,22 @@
     "total": 5,
     "weighted_total": 7.5
   },
+  "src/agda/Infrastructure/Adequacy/CrossDomain.agda": {
+    "postulates": 5,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 5,
+    "weighted_total": 7.5
+  },
+  "src/agda/Examples/CrossDomainComposition.agda": {
+    "postulates": 5,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 5,
+    "weighted_total": 7.5
+  },
   "src/agda/Chapter1/Level1.agda": {
     "postulates": 5,
     "todo": 0,
@@ -231,6 +343,14 @@
     "total": 5,
     "weighted_total": 7.5
   },
+  "tests/scripts/test_generate_badges.py": {
+    "postulates": 0,
+    "todo": 6,
+    "fixme": 1,
+    "deviation": 2,
+    "total": 9,
+    "weighted_total": 7.0
+  },
   "docs/status/DEFERRED-TRACKING.md": {
     "postulates": 0,
     "todo": 2,
@@ -246,6 +366,22 @@
     "deviation": 0,
     "total": 11,
     "weighted_total": 6.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/markup.py": {
+    "postulates": 0,
+    "todo": 5,
+    "fixme": 2,
+    "deviation": 0,
+    "total": 7,
+    "weighted_total": 6.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/pkg_resources/__init__.py": {
+    "postulates": 0,
+    "todo": 4,
+    "fixme": 2,
+    "deviation": 0,
+    "total": 6,
+    "weighted_total": 6.0
   },
   "src/agda/Tests/UniversalPropertyTests.agda": {
     "postulates": 4,
@@ -287,14 +423,6 @@
     "total": 4,
     "weighted_total": 6.0
   },
-  "src/agda/Core/Algorithms/External.agda": {
-    "postulates": 4,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 4,
-    "weighted_total": 6.0
-  },
   "src/agda/Algebra/Groups/Abelian.agda": {
     "postulates": 4,
     "todo": 0,
@@ -309,6 +437,22 @@
     "fixme": 0,
     "deviation": 0,
     "total": 4,
+    "weighted_total": 6.0
+  },
+  "src/agda/Core/Algorithms/External.agda": {
+    "postulates": 4,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 4,
+    "weighted_total": 6.0
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/urllib3/response.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 3,
+    "deviation": 0,
+    "total": 3,
     "weighted_total": 6.0
   },
   "src/agda/Tests/AbelianCategoriesChecklist.agda": {
@@ -327,6 +471,38 @@
     "total": 11,
     "weighted_total": 5.5
   },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/pygments/filters/__init__.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 2,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 4.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/filters/__init__.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 2,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 4.5
+  },
+  "src/agda/Tests/Plan/CIM/SchemaValidationGenericTests.agda": {
+    "postulates": 3,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 4.5
+  },
+  "src/agda/Tests/Plan/CIM/TypeCheckingGenericTests.agda": {
+    "postulates": 3,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 4.5
+  },
   "src/agda/Examples/ExporterMakefile.agda": {
     "postulates": 3,
     "todo": 0,
@@ -335,7 +511,23 @@
     "total": 3,
     "weighted_total": 4.5
   },
+  "src/agda/Plan/CIM/JSONTransformationGeneric.agda": {
+    "postulates": 3,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 4.5
+  },
   "src/agda/Algebra/Enrichment.agda": {
+    "postulates": 3,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 4.5
+  },
+  "src/agda/Algebra/Modules/BasicWithTheorems.agda": {
     "postulates": 3,
     "todo": 0,
     "fixme": 0,
@@ -359,7 +551,7 @@
     "total": 3,
     "weighted_total": 4.5
   },
-  "src/agda/Algebra/Modules/BasicWithTheorems.agda": {
+  "src/agda/Core/PhaseCategory/Duality.agda": {
     "postulates": 3,
     "todo": 0,
     "fixme": 0,
@@ -391,6 +583,38 @@
     "total": 3,
     "weighted_total": 4.0
   },
+  ".venv/lib/python3.13/site-packages/pip/_internal/utils/unpacking.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 2,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 4.0
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/locations/base.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 2,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 4.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/graphics.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 2,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 4.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/sql.py": {
+    "postulates": 0,
+    "todo": 3,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 4,
+    "weighted_total": 3.5
+  },
   "src/agda/TechnicalDebt/DeferredItemsFormatting.agda": {
     "postulates": 0,
     "todo": 1,
@@ -414,6 +638,22 @@
     "deviation": 2,
     "total": 3,
     "weighted_total": 3.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/req/req_file.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 3.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/objective.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 3.0
   },
   "src/agda/Tests/SpecificationValidation.agda": {
     "postulates": 0,
@@ -503,7 +743,7 @@
     "total": 2,
     "weighted_total": 3.0
   },
-  "src/agda/Core/Phase.agda": {
+  "src/agda/Examples/FunctionField/F2x.agda": {
     "postulates": 2,
     "todo": 0,
     "fixme": 0,
@@ -511,7 +751,23 @@
     "total": 2,
     "weighted_total": 3.0
   },
-  "src/agda/Core/ConstructiveWitnesses.agda": {
+  "src/agda/Examples/NumberField/Sqrt2.agda": {
+    "postulates": 2,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 3.0
+  },
+  "src/agda/Examples/FiniteField/GF8.agda": {
+    "postulates": 2,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 3.0
+  },
+  "src/agda/Plan/CIM/JSONTransformationBackends.agda": {
     "postulates": 2,
     "todo": 0,
     "fixme": 0,
@@ -543,7 +799,7 @@
     "total": 2,
     "weighted_total": 3.0
   },
-  "src/agda/Examples/FunctionField/F2x.agda": {
+  "src/agda/Core/Phase.agda": {
     "postulates": 2,
     "todo": 0,
     "fixme": 0,
@@ -551,7 +807,7 @@
     "total": 2,
     "weighted_total": 3.0
   },
-  "src/agda/Examples/NumberField/Sqrt2.agda": {
+  "src/agda/Core/ConstructiveWitnesses.agda": {
     "postulates": 2,
     "todo": 0,
     "fixme": 0,
@@ -559,13 +815,13 @@
     "total": 2,
     "weighted_total": 3.0
   },
-  "src/agda/Examples/FiniteField/GF8.agda": {
-    "postulates": 2,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/pip/_vendor/urllib3/util/retry.py": {
+    "postulates": 0,
+    "todo": 5,
     "fixme": 0,
     "deviation": 0,
-    "total": 2,
-    "weighted_total": 3.0
+    "total": 5,
+    "weighted_total": 2.5
   },
   "src/agda/Core/Algorithms/InductiveClassification.agda": {
     "postulates": 1,
@@ -575,15 +831,31 @@
     "total": 3,
     "weighted_total": 2.5
   },
-  "src/agda/Core/Algorithms/FunctionFields.agda": {
-    "postulates": 1,
-    "todo": 0,
-    "fixme": 0,
-    "deviation": 1,
+  ".venv/lib/python3.13/site-packages/pip/_internal/operations/prepare.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 1,
+    "deviation": 0,
     "total": 2,
     "weighted_total": 2.5
   },
-  "docs/workflows/PARAMETERIZATION.md": {
+  ".venv/lib/python3.13/site-packages/pygments/lexers/templates.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 2.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/openscad.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 2.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/haskell.py": {
     "postulates": 0,
     "todo": 1,
     "fixme": 1,
@@ -599,6 +871,46 @@
     "total": 2,
     "weighted_total": 2.5
   },
+  "docs/workflows/PARAMETERIZATION.md": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 2.5
+  },
+  "src/agda/Core/Algorithms/FunctionFields.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 1,
+    "total": 2,
+    "weighted_total": 2.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/msgpack/fallback.py": {
+    "postulates": 0,
+    "todo": 4,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 4,
+    "weighted_total": 2.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/mojo.py": {
+    "postulates": 0,
+    "todo": 4,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 4,
+    "weighted_total": 2.0
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/fixtures.py": {
+    "postulates": 0,
+    "todo": 4,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 4,
+    "weighted_total": 2.0
+  },
   "src/agda/Tests/Chapter3Checklist.agda": {
     "postulates": 0,
     "todo": 4,
@@ -606,6 +918,126 @@
     "deviation": 0,
     "total": 4,
     "weighted_total": 2.0
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/urllib3/contrib/pyopenssl.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/urllib3/util/response.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/build_env.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/req/req_uninstall.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/req/req_install.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/vcs/subversion.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/shortest_paths/tests/test_weighted.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/typst.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/julia.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 1,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 2.0
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/urllib3/contrib/securetransport.py": {
+    "postulates": 0,
+    "todo": 3,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 1.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/metadata/base.py": {
+    "postulates": 0,
+    "todo": 3,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 1.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/bipartite/matching.py": {
+    "postulates": 0,
+    "todo": 3,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 1.5
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/raises.py": {
+    "postulates": 0,
+    "todo": 3,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 1.5
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/python.py": {
+    "postulates": 0,
+    "todo": 3,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 1.5
+  },
+  ".venv/lib/python3.13/site-packages/pluggy/_hooks.py": {
+    "postulates": 0,
+    "todo": 3,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 3,
+    "weighted_total": 1.5
   },
   "src/agda/Tests/CoverageReport.agda": {
     "postulates": 0,
@@ -663,6 +1095,22 @@
     "total": 1,
     "weighted_total": 1.5
   },
+  "src/agda/Infrastructure/Polytopes/Braiding/HexagonTriangulation.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
+  "src/agda/Infrastructure/Definitions/Dictionary.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
   "src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda": {
     "postulates": 1,
     "todo": 0,
@@ -712,6 +1160,94 @@
     "weighted_total": 1.5
   },
   "src/agda/Docs/MetaIndex.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
+  "src/agda/Plan/CIM/RoadmapExporterMain.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
+  "src/agda/Plan/CIM/PriorityProfileExport.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
+  "src/agda/Plan/CIM/PlanningExport.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
+  "src/agda/Plan/CIM/RoadmapExporter.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
+  "src/agda/Plan/CIM/FrameworkMetadata.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
+  "src/agda/Plan/CIM/DependencyGraphExport.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
+  "src/agda/Plan/CIM/YonedaProfiler.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
+  "src/agda/Plan/CIM/Ambiguity.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
+  "src/agda/Plan/CIM/RoadmapSPPFExport.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
+  "src/agda/Plan/CIM/MarkdownNormalize.agda": {
+    "postulates": 1,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 1.5
+  },
+  "src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda": {
     "postulates": 1,
     "todo": 0,
     "fixme": 0,
@@ -815,109 +1351,221 @@
     "total": 1,
     "weighted_total": 1.5
   },
-  "src/agda/Plan/CIM/IngestedRoadmaps.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/packaging/requirements.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
-    "total": 1,
-    "weighted_total": 1.5
+    "total": 2,
+    "weighted_total": 1.0
   },
-  "src/agda/Plan/CIM/PriorityProfileExport.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/packaging/metadata.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
-    "total": 1,
-    "weighted_total": 1.5
+    "total": 2,
+    "weighted_total": 1.0
   },
-  "src/agda/Plan/CIM/PlanningExport.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/pip/_vendor/packaging/requirements.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
-    "total": 1,
-    "weighted_total": 1.5
+    "total": 2,
+    "weighted_total": 1.0
   },
-  "src/agda/Plan/CIM/RoadmapExporter.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/pip/_vendor/packaging/metadata.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
-    "total": 1,
-    "weighted_total": 1.5
+    "total": 2,
+    "weighted_total": 1.0
   },
-  "src/agda/Plan/CIM/FrameworkMetadata.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/pip/_internal/resolution/resolvelib/candidates.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
-    "total": 1,
-    "weighted_total": 1.5
+    "total": 2,
+    "weighted_total": 1.0
   },
-  "src/agda/Plan/CIM/DependencyGraphExport.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/pip/_internal/resolution/resolvelib/factory.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
-    "total": 1,
-    "weighted_total": 1.5
+    "total": 2,
+    "weighted_total": 1.0
   },
-  "src/agda/Plan/CIM/YonedaProfiler.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/networkx/drawing/nx_latex.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
-    "total": 1,
-    "weighted_total": 1.5
+    "total": 2,
+    "weighted_total": 1.0
   },
-  "src/agda/Plan/CIM/Ambiguity.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/cuts.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
-    "total": 1,
-    "weighted_total": 1.5
+    "total": 2,
+    "weighted_total": 1.0
   },
-  "src/agda/Plan/CIM/RoadmapSPPFExport.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/centrality/reaching.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
-    "total": 1,
-    "weighted_total": 1.5
+    "total": 2,
+    "weighted_total": 1.0
   },
-  "src/agda/Plan/CIM/MarkdownNormalize.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/shortest_paths/unweighted.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
-    "total": 1,
-    "weighted_total": 1.5
+    "total": 2,
+    "weighted_total": 1.0
   },
-  "src/agda/Plan/CIM/IngestedRoadmaps/Polytopes.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/connectivity/edge_kcomponents.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
-    "total": 1,
-    "weighted_total": 1.5
+    "total": 2,
+    "weighted_total": 1.0
   },
-  "src/agda/Infrastructure/Definitions/Dictionary.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/tree/mst.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
-    "total": 1,
-    "weighted_total": 1.5
+    "total": 2,
+    "weighted_total": 1.0
   },
-  "src/agda/Infrastructure/Polytopes/Braiding/HexagonTriangulation.agda": {
-    "postulates": 1,
-    "todo": 0,
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/isomorphism/ismags.py": {
+    "postulates": 0,
+    "todo": 2,
     "fixme": 0,
     "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/meson.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/inferno.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/fantom.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/nix.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/textedit.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/wgsl.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/jvm.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/yaml/scanner.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/doctest.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/reports.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/cacheprovider.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/coverage/sysmon.py": {
+    "postulates": 0,
+    "todo": 2,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 2,
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/_mql_builtins.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 1,
     "total": 1,
-    "weighted_total": 1.5
+    "weighted_total": 1.0
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/business.py": {
+    "postulates": 0,
+    "todo": 0,
+    "fixme": 0,
+    "deviation": 1,
+    "total": 1,
+    "weighted_total": 1.0
   },
   ".github/workflows/ci.yml": {
     "postulates": 0,
@@ -927,7 +1575,687 @@
     "total": 1,
     "weighted_total": 1.0
   },
-  "scripts/validate_triangle_identity.py": {
+  "CODE-COVERAGE-AUDIT.md": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/packaging/tags.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/rich/text.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/markdown_it/parser_inline.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/markdown_it/rules_core/replacements.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/packaging/tags.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/urllib3/exceptions.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/urllib3/connectionpool.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/urllib3/connection.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/urllib3/util/url.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/rich/text.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/distlib/util.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/requests/hooks.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/requests/adapters.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/pygments/lexer.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/pygments/lexers/python.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/truststore/_macos.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/cachecontrol/filewrapper.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_vendor/cachecontrol/controller.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/cache.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/commands/inspect.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/network/lazy_wheel.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/index/collector.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/req/req_set.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/req/constructors.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/models/selection_prefs.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/models/installation_report.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pip/_internal/cli/base_command.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/conftest.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/drawing/layout.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/drawing/nx_pylab.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/generators/degree_seq.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/generators/community.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/generators/geometric.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/generators/tests/test_expanders.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/efficiency_measures.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/cycles.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/distance_regular.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/similarity.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/dag.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/shortest_paths/weighted.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/coloring/equitable_coloring.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/bipartite/redundancy.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/bipartite/tests/test_matching.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/tree/branchings.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/approximation/traveling_salesman.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/approximation/dominating_set.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/tests/test_swap.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/assortativity/tests/test_connectivity.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/isomorphism/isomorphvf2.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/networkx/algorithms/traversal/beamsearch.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/iniconfig/__init__.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexer.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/rnc.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/_asy_builtins.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/dns.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/scripting.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/c_like.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/ada.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/oberon.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/urbi.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/perl.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/javascript.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/python.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/textfmts.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/css.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/mips.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/parsers.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/lexers/dotnet.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/formatters/latex.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/formatters/terminal256.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/pygments/formatters/img.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/junitxml.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/main.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/legacypath.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/capture.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/compat.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/terminal.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/nodes.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/mark/structures.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/_pytest/assertion/rewrite.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/mdurl/_parse.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/graphviz/quoting.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/graphviz/backend/viewing.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  ".venv/lib/python3.13/site-packages/coverage/parser.py": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
+  "scripts/shared_validators.py": {
     "postulates": 0,
     "todo": 1,
     "fixme": 0,
@@ -951,6 +2279,14 @@
     "total": 1,
     "weighted_total": 0.5
   },
+  "src/agda/Core/AdapterReflection.agda": {
+    "postulates": 0,
+    "todo": 1,
+    "fixme": 0,
+    "deviation": 0,
+    "total": 1,
+    "weighted_total": 0.5
+  },
   "node_modules/semver/README.md": {
     "postulates": 0,
     "todo": 1,
@@ -960,14 +2296,6 @@
     "weighted_total": 0.5
   },
   "node_modules/@nodelib/fs.scandir/README.md": {
-    "postulates": 0,
-    "todo": 1,
-    "fixme": 0,
-    "deviation": 0,
-    "total": 1,
-    "weighted_total": 0.5
-  },
-  "src/agda/Core/AdapterReflection.agda": {
     "postulates": 0,
     "todo": 1,
     "fixme": 0,

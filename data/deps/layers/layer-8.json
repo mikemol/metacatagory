@@ -1,14 +1,11 @@
 [
-  "Core.PathAggregator",
-  "GrowthAnalysis",
-  "Markdown.ExportProof",
-  "TechnicalDebt.AlgorithmCompositionRegistry",
-  "TechnicalDebt.Priorities",
+  "Chapter3.Level3sub2",
+  "Chapter3.Level3sub1",
+  "Algebra.Foundation",
   "Chapter2.Level2sub5",
   "Chapter2.Level2sub6",
-  "Chapter2.Level2sub7",
   "Chapter2.Level2sub8",
-  "Chapter3.Level3sub1",
-  "Chapter3.Level3sub2",
-  "Algebra.Foundation"
+  "Chapter2.Level2sub7",
+  "Core.PathAggregator",
+  "GrowthAnalysis"
 ]

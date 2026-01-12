@@ -1,9 +1,5 @@
 [
-  "Plan.CIM.RoadmapExporter",
-  "Tests.PhaseCategoryExamplesRunner",
   "Tests.PropertyRegistryTests",
   "Chapter1.Level1",
-  "Examples.TechnicalDebtRegistry",
-  "Plan.CIM.PandocProofExample",
-  "Infrastructure.Index"
+  "Tests.PhaseCategoryExamplesRunner"
 ]

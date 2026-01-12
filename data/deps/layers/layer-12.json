@@ -1,8 +1,4 @@
 [
-  "TechnicalDebt.PriorityOrchestrationFFI",
-  "Algebra.Groups.Structure",
   "Algebra.Modules.Types",
-  "Algebra.Fields.Theorems.Classical",
-  "Algebra.Rings.BasicWithTheorems",
-  "Algebra.Rings.ClassicalInstance"
+  "Algebra.Groups.Structure"
 ]

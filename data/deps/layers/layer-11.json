@@ -1,9 +1,5 @@
 [
-  "TechnicalDebt.PriorityOrchestration",
-  "Algebra.Fields.Types",
-  "Algebra.Groups.Free",
   "Algebra.Rings.Basic",
-  "Algebra.Rings.Theorems.Classical",
-  "Algebra.Groups.BasicWithTheorems",
-  "Algebra.Groups.ClassicalInstance"
+  "Algebra.Groups.Free",
+  "Algebra.Fields.Types"
 ]

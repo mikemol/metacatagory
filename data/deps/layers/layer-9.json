@@ -1,11 +1,10 @@
 [
-  "TechnicalDebt.PriorityMapping",
-  "Tests.PathAggregatorTests",
   "Tests.ChapterObligationsSmoke",
-  "Tests.ToposObligationAdapters",
   "Algebra.Groups.Types",
-  "Chapter2.Level2Index",
+  "Tests.ToposObligationAdapters",
   "Chapter3.Level3Index",
+  "Tests.PathAggregatorTests",
   "Core.GrothendieckFibrations",
-  "Algebra.Enrichment"
+  "Algebra.Enrichment",
+  "Chapter2.Level2Index"
 ]
