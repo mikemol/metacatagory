@@ -59,6 +59,7 @@ module GenericDualPaths (iface : DualityInterface) where
   -- | Path type: transformation sequences
   -- Uses mutual block so both directions can reference each other
   mutual
+    -- | Dual path constructors between abstract states.
     data DualPath : State → State → Set where
       -- Identity path
       id-path : ∀ {s} → DualPath s s
@@ -169,4 +170,3 @@ record GenericDualFramework : Set₁ where
   -- - ⊙-duality : natural transformation
   -- - synthesizeRoundtrip : derive missing direction
   -- - adequacy-witness : prove correctness
-

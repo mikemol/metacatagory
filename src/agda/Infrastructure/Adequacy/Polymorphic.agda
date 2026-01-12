@@ -70,6 +70,7 @@ module GenericDualPaths {ℓ : Level} (iface : DualityInterface ℓ) where
   -- | Path type: transformation sequences
   -- Uses mutual block so both directions can reference each other
   mutual
+    -- | Dual path constructors between abstract states.
     data DualPath : State → State → Set ℓ where
       -- Identity path
       id-path : ∀ {s} → DualPath s s

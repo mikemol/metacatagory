@@ -98,5 +98,6 @@ JSONPath = DualPath
 json-decompose : Monolithic → Hierarchical
 json-decompose = DualityInterface.forward json-duality-interface
 
-json-recompose : Hierarchical → Monolithic
-json-recompose = DualityInterface.backward json-duality-interface
+-- Recompose a hierarchical JSON back to monolithic.
+dependency_graph_recomposed_json : Hierarchical → Monolithic
+dependency_graph_recomposed_json = DualityInterface.backward json-duality-interface

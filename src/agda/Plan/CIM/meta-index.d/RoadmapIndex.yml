@@ -17,4 +17,4 @@ sections:
 - name: Technical debt / status
   bullets:
   - Keep deferred-items.md in sync when schema shifts; regen projections (`make roadmap-merge`,
-    `make roadmap-export-md`) after changes.
+    `make ROADMAP.md`) after changes.

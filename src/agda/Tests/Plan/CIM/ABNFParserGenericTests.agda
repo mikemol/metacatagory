@@ -7,6 +7,7 @@ module Tests.Plan.CIM.ABNFParserGenericTests where
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Builtin.Nat using (Nat; zero; suc)
 
+-- | Minimal truth type for test postulates.
 postulate True : Set
 
 open import Plan.CIM.ABNFParserGeneric using 

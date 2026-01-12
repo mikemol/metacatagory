@@ -6,8 +6,10 @@ module Tests.Plan.CIM.SchemaValidationGenericTests where
 
 open import Agda.Builtin.Equality using (_≡_; refl)
 
-postulate True : Set
-postulate trivial : True
+-- | Minimal truth type for test postulates.
+postulate
+  True : Set
+  trivial : True
 
 open import Plan.CIM.SchemaValidationGeneric using
   ( JSONSchema

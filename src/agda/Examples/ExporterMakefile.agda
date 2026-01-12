@@ -10,11 +10,14 @@ import qualified Data.Map.Strict as M
 import qualified Data.List as L
 import           Data.Maybe (fromMaybe)
 import qualified System.Directory as Dir
+import           System.FilePath (takeDirectory)
 
 writeFileAdapter :: T.Text -> T.Text -> IO ()
 writeFileAdapter path content = do
-    let dir = T.takeWhileEnd (/= '/') path
-    if T.null dir then return () else Dir.createDirectoryIfMissing True (T.unpack $ T.dropEnd 1 dir)
+    let dir = takeDirectory (T.unpack path)
+    if null dir || dir == "."
+      then return ()
+      else Dir.createDirectoryIfMissing True dir
     TIO.writeFile (T.unpack path) content
 
 readGraphEdgesAdapter :: T.Text -> IO [T.Text]
@@ -75,12 +78,13 @@ listLengthStringAdapter xs = T.pack (show (length xs))
 open import Examples.AgdaFileScanFFI
 open import Agda.Builtin.IO using (IO)
 open import Agda.Builtin.Unit using (⊤; tt)
-open import Agda.Builtin.String using (String)
+open import Agda.Builtin.String using (String; primStringToList; primStringFromList)
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Bool using (Bool; true; false)
 open import Core.Utils using (map)
 open import Core.CategoricalAdapter
 open import Core.AdapterAutomation
+open import Agda.Builtin.Char using (Char)
 
 postulate
   readGraphEdges : String → IO (List String)
@@ -91,11 +95,11 @@ postulate
 {-# COMPILE GHC listLengthString = listLengthStringAdapter #-}
 open import Metamodel
 open import Examples.AgdaMakefileDeps using (_++_; ModuleName; primStringEquality; primStringSplit;
-  moduleToInterfacePath; joinWith; parseModuleName; isInternalModule; filter)
+  moduleToInterfacePath; joinWith; parseModuleName; isInternalModule; filter; startsWith?; _||_)
 open import Examples.MakefileTargets using (MakefileTarget; TargetCategory; Mutability; Mutative; ReadOnly; MutateCert; mutateCert; allCategories; 
   validatorToTarget; generatorToTarget; nodeSetupCategory; badgeCategory; mdLintCategory;
   discoverAgdaFiles; generateAgdaTargets; generateDocsTargets; allAgdaiTarget; allDocsTarget;
-  environmentSetupToTarget; synchronizerToTarget; mkMutativeTarget; mkReadOnlyTarget; instrumentRecipe)
+  environmentSetupToTarget; synchronizerToTarget; mkMutativeTarget; mkReadOnlyTarget; instrumentRecipe; profileRecipe; recipeScriptPath)
 open import Examples.Makefile.Targets.Python using (pythonTargets)
 open import Examples.Makefile.Targets.RoadmapExports using (roadmapExportTargets)
 open import Examples.Makefile.Targets.Docs using (docTargets)
@@ -114,6 +118,16 @@ _+++_ : {A : Set} → List A → List A → List A
 postulate
   writeFile : String → String → IO ⊤
 {-# COMPILE GHC writeFile = writeFileAdapter #-}
+
+-- IO helpers
+postulate
+  _>>=_ : {A B : Set} → IO A → (A → IO B) → IO B
+  return : {A : Set} → A → IO A
+  mapM : {A B : Set} → (A → IO B) → List A → IO (List B)
+
+{-# COMPILE GHC _>>=_ = \_ _ -> (>>=) #-}
+{-# COMPILE GHC return = \_ -> return #-}
+{-# COMPILE GHC mapM = \_ _ -> mapM #-}
 
 -- Section: Makefile Artifact Types
 
@@ -163,13 +177,16 @@ targetToSection target = record
   { id = MakefileTarget.name target
   ; content = ("# " ++ MakefileTarget.description target) 
              ∷ (MakefileTarget.name target ++ ": " ++ intercalate " " (MakefileTarget.dependencies target)) 
-             ∷ map ("\t" ++_) (guardLines +++ MakefileTarget.recipe target)
+             ∷ map ("\t" ++_) (guardLines +++ profileRecipe (MakefileTarget.name target))
   }
   where
+    safeTarget : Bool
+    safeTarget = startsWith? "data/" (MakefileTarget.name target) || startsWith? "docs/" (MakefileTarget.name target)
     guardLines : List String
-    guardLines with MakefileTarget.mutability target
-    ... | Mutative = "$(call require_mutate)" ∷ []
-    ... | ReadOnly = []
+    guardLines with MakefileTarget.mutability target | safeTarget
+    ... | Mutative | true = []
+    ... | Mutative | false = "$(call require_mutate)" ∷ []
+    ... | ReadOnly | _ = []
     intercalate : String → List String → String
     intercalate sep [] = ""
     intercalate sep (x ∷ []) = x
@@ -180,8 +197,8 @@ regenMakefileTarget : MakefileTarget
 regenMakefileTarget = mkMutativeTarget mutateCert
   "regen-makefile"
   "Regenerate the Makefile from Agda source (Self-Hosting)"
-  ("build/diagrams/agda-deps-full.dot" ∷ [])
-  ( "$(AGDA) $(AGDA_FLAGS) --compile src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile"
+  []
+  ( "$(AGDA_COMPILE) src/agda/Examples/ExporterMakefile.agda && (cd \"$(AGDA_COMPILE_DIR)\" && ./ExporterMakefile)"
   ∷ "cp Makefile.generated Makefile"
   ∷ [])
   true
@@ -240,6 +257,42 @@ generateAgdaTargetFromGraph agdaPath depLabels =
       recipe = ("$(AGDA) $(AGDA_FLAGS) " ++ agdaPath) ∷ []
   in mkMutativeTarget mutateCert agdaiPath ("Compile " ++ agdaPath) allDeps (instrumentRecipe agdaiPath recipe) false
 
+-- Build all targets from discovered files and graph edges
+buildTargets : List String → List String → List MakefileTarget
+buildTargets agdaFiles graphEdges =
+  let labels = map pathToModuleLabel agdaFiles
+      agdaiTargets = zipWith generateAgdaTargetFromGraph agdaFiles (map depsFor labels)
+      aggregateTargets = allAgdaiTarget mutateCert agdaFiles ∷ []
+      -- Dedicated target for the graph parse state; depends only on the graph export inputs
+      graphStateTarget = mkMutativeTarget mutateCert "build/graph_parsed_state.txt" "Graph parse state file (produced alongside Makefile generation)" ("build/diagrams/agda-deps-full.dot" ∷ [])
+        (instrumentRecipe "build/graph_parsed_state.txt"
+          ("cd \"$BUILD_WORKDIR\" && $(AGDA_COMPILE) src/agda/Examples/ExporterMakefile.agda && \"$(AGDA_COMPILE_DIR)/ExporterMakefile\"" ∷ [])) false
+      -- Include regenMakefileTarget in the list of targets
+      graphStatusTarget = mkReadOnlyTarget "graph-status" "Print parsed graph status" ("build/graph_parsed_state.txt" ∷ [])
+        (instrumentRecipe "graph-status" ("@cat build/graph_parsed_state.txt" ∷ [])) true
+      graphAssertTarget = mkReadOnlyTarget "graph-assert-ok" "Assert dependency graph is OK (CI guard)" ("build/graph_parsed_state.txt" ∷ [])
+        (instrumentRecipe "graph-assert-ok" 
+          ("@status=$$(awk -F': ' '/^status:/ {print $$2}' build/graph_parsed_state.txt); " ++
+           "edges=$$(awk -F': ' '/^edges:/ {print $$2}' build/graph_parsed_state.txt); " ++
+           "if [ \"$$status\" != \"OK\" ] || [ $${edges:-0} -eq 0 ]; then echo \"Graph check failed: status=$$status edges=$$edges\"; exit 1; else echo \"Graph OK: status=$$status edges=$$edges\"; fi" ∷ [])) true
+      allTargets = regenMakefileTarget ∷ graphStateTarget ∷ graphStatusTarget ∷ graphAssertTarget ∷ discoveredTargets +++ agdaiTargets +++ aggregateTargets
+  in allTargets
+  where
+    second : String → String → String
+    second _ e with primStringSplit "=>" e
+    ... | src ∷ dst ∷ [] = dst
+    ... | _ = ""
+    hasSrc : String → String → Bool
+    hasSrc l e with primStringSplit "=>" e
+    ... | src ∷ dst ∷ [] = primStringEquality src l
+    ... | _ = false
+    depsFor : String → List String
+    depsFor lbl = map (second lbl) (filter (hasSrc lbl) graphEdges)
+    zipWith : {A B C : Set} → (A → B → C) → List A → List B → List C
+    zipWith f [] _ = []
+    zipWith f _ [] = []
+    zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
+
 -- Build complete artifact from discovered files and graph edges
 buildArtifact : List String → List String → MakefileArtifact
 buildArtifact agdaFiles graphEdges =
@@ -249,7 +302,7 @@ buildArtifact agdaFiles graphEdges =
       -- Dedicated target for the graph parse state; depends only on the graph export inputs
       graphStateTarget = mkMutativeTarget mutateCert "build/graph_parsed_state.txt" "Graph parse state file (produced alongside Makefile generation)" ("build/diagrams/agda-deps-full.dot" ∷ [])
         (instrumentRecipe "build/graph_parsed_state.txt"
-          ("$(AGDA) $(AGDA_FLAGS) --compile src/agda/Examples/ExporterMakefile.agda && ./src/agda/ExporterMakefile" ∷ [])) false
+          ("cd \"$BUILD_WORKDIR\" && $(AGDA_COMPILE) src/agda/Examples/ExporterMakefile.agda && \"$(AGDA_COMPILE_DIR)/ExporterMakefile\"" ∷ [])) false
       -- Include regenMakefileTarget in the list of targets
       graphStatusTarget = mkReadOnlyTarget "graph-status" "Print parsed graph status" ("build/graph_parsed_state.txt" ∷ [])
         (instrumentRecipe "graph-status" ("@cat build/graph_parsed_state.txt" ∷ [])) true
@@ -269,10 +322,7 @@ buildArtifact agdaFiles graphEdges =
       headerSection = record
         { id = "header"
         ; content =
-            ( "# Use local Agda 2.8.0 if available, otherwise system agda"
-            ∷ "AGDA := $(if $(wildcard .local/agda),.local/agda,agda)"
-            ∷ ""
-            ∷ "# Shell configuration for error-safe recipes"
+            ( "# Shell configuration for error-safe recipes"
             ∷ "SHELL := /bin/bash"
             ∷ ".SHELLFLAGS := -euo pipefail -c"
             ∷ ".DELETE_ON_ERROR:"
@@ -280,27 +330,37 @@ buildArtifact agdaFiles graphEdges =
             ∷ "MAKEFLAGS += --no-builtin-rules"
             ∷ ""
             ∷ "# Default for conditional backend skipping (avoid unbound var under set -u)"
-            ∷ "SKIP_GHC_BACKEND ?="
+            ∷ "BUILD_SKIP_GHC_BACKEND ?="
+            ∷ "SKIP_GHC_BACKEND ?= $(BUILD_SKIP_GHC_BACKEND)"
             ∷ "export SKIP_GHC_BACKEND"
             ∷ ""
-            ∷ "# Guard for targets that write to repo outputs (docs/data/build artifacts)."
-            ∷ "MUTATE_OK ?= 1"
+            ∷ "# Guard for targets that write outside docs/ or data/ (default deny)."
+            ∷ "BUILD_MUTATE_OK ?= 0"
+            ∷ "MUTATE_OK ?= $(BUILD_MUTATE_OK)"
             ∷ "define require_mutate"
             ∷ "\t@if [ \"$(MUTATE_OK)\" != \"1\" ]; then echo \"Mutative target requires MUTATE_OK=1\"; exit 1; fi"
             ∷ "endef"
             ∷ ""
             ∷ "# Optional override for decomposed JSON staging (kept empty by default to silence"
             ∷ "# warn-undefined when not provided)."
-            ∷ "JSON_DECOMPOSE_FALLBACK_DIR ?="
+            ∷ "BUILD_JSON_DECOMPOSE_FALLBACK_DIR ?="
+            ∷ "JSON_DECOMPOSE_FALLBACK_DIR ?= $(BUILD_JSON_DECOMPOSE_FALLBACK_DIR)"
             ∷ ""
             ∷ "# Default parallelism scales with available cores unless user overrides MAKEFLAGS."
-            ∷ "CORES ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)"
+            ∷ "BUILD_CORES ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)"
+            ∷ "CORES ?= $(BUILD_CORES)"
             ∷ "MAKEFLAGS += -j$(CORES)"
             ∷ ""
+            ∷ "# Python virtualenv (default within build/)"
+            ∷ "BUILD_VENV_DIR ?= $(BUILD_WORKDIR)/build/venv/.venv"
+            ∷ "VIRTUAL_ENV ?= $(BUILD_VENV_DIR)"
+            ∷ ""
             ∷ "# Profiling output (JSONL). New file per make invocation for history."
-            ∷ "PROFILE_DIR ?= build/profiles.d"
+            ∷ "BUILD_PROFILE_DIR ?= $(BUILD_WORKDIR)/build/profiles.d"
+            ∷ "PROFILE_DIR ?= $(BUILD_PROFILE_DIR)"
             ∷ "ifndef PROFILE_RUN"
-            ∷ "PROFILE_RUN := $(shell sh -c \"echo $$(date +%Y%m%dT%H%M%S%z)-$$$$\")"
+            ∷ "BUILD_PROFILE_RUN := $(shell sh -c \"echo $$(date +%Y%m%dT%H%M%S%z)-$$$$\")"
+            ∷ "PROFILE_RUN := $(BUILD_PROFILE_RUN)"
             ∷ "endif"
             ∷ "PROFILE_LOG ?= $(PROFILE_DIR)/profile-$(PROFILE_RUN).jsonl"
             ∷ ""
@@ -308,16 +368,39 @@ buildArtifact agdaFiles graphEdges =
             ∷ ("MUTATIVE_TARGETS := " ++ intercalate " " mutativeNames)
             ∷ ("READONLY_TARGETS := " ++ intercalate " " readonlyNames)
             ∷ ""
-            ∷ "# Common Agda compilation flags"
-            ∷ "AGDA_FLAGS := -i src/agda --ghc-flag=-Wno-star-is-type"
-            ∷ ""
             ∷ "# Allow callers (e.g., ACT) to redirect execution to an alternate workspace."
-            ∷ "WORKDIR ?= ."
+            ∷ "BUILD_WORKDIR ?= ."
+            ∷ "ifneq ($(origin WORKDIR), undefined)"
+            ∷ "ifneq ($(strip $(WORKDIR)),)"
+            ∷ "BUILD_WORKDIR := $(WORKDIR)"
+            ∷ "endif"
+            ∷ "endif"
             ∷ "ifneq ($(origin ACT_WORKDIR), undefined)"
             ∷ "ifneq ($(strip $(ACT_WORKDIR)),)"
-            ∷ "WORKDIR := $(ACT_WORKDIR)"
+            ∷ "BUILD_WORKDIR := $(ACT_WORKDIR)"
             ∷ "endif"
             ∷ "endif"
+            ∷ "WORKDIR ?= $(BUILD_WORKDIR)"
+            ∷ ""
+            ∷ "# Keep Agda global cache/data inside the repo to avoid cross-project contamination."
+            ∷ "XDG_DATA_HOME ?= $(BUILD_WORKDIR)/build/xdg-data"
+            ∷ "XDG_CACHE_HOME ?= $(BUILD_WORKDIR)/build/xdg-cache"
+            ∷ "AGDA_BIN ?= agda"
+            ∷ "AGDA_DATA_DIR := $(shell env AGDA_EXEC_OPTIONS= $(AGDA_BIN) --library-file=/dev/null --no-libraries --no-default-libraries --print-agda-data-dir 2>/dev/null)"
+            ∷ "AGDA_PRIM_DIR := $(AGDA_DATA_DIR)/lib/prim"
+            ∷ "AGDA_ENV := env XDG_DATA_HOME=$(XDG_DATA_HOME) XDG_CACHE_HOME=$(XDG_CACHE_HOME) AGDA_EXEC_OPTIONS= AGDA_DATA_DIR=$(AGDA_DATA_DIR)"
+            ∷ ""
+            ∷ "# Use local Agda 2.8.0 if available, otherwise system agda."
+            ∷ "AGDA := $(AGDA_ENV) $(AGDA_BIN)"
+            ∷ ""
+            ∷ "# Common Agda compilation flags"
+            ∷ "AGDA_FLAGS := -i src/agda --include-path=$(AGDA_PRIM_DIR) --no-default-libraries --no-libraries --ghc-flag=-Wno-star-is-type --ghc-flag=-j$(CORES)"
+            ∷ "# Route compiled outputs (MAlonzo + binaries) into build/ by default."
+            ∷ "AGDA_COMPILE_DIR ?= $(BUILD_WORKDIR)/build/agda"
+            ∷ "AGDA_COMPILE := $(AGDA) $(AGDA_FLAGS) --compile --compile-dir=$(AGDA_COMPILE_DIR)"
+            ∷ ""
+            ∷ "# Pytest workers (defaults to CORES or METACATAGORY_WORKERS when set)"
+            ∷ "PYTEST_WORKERS ?= $(if $(METACATAGORY_WORKERS),$(METACATAGORY_WORKERS),$(CORES))"
             ∷ ""
             ∷ "# Dependency decomposition directories (fallback-safe)"
             ∷ "DEPS_DIR ?= $(if $(JSON_DECOMPOSE_FALLBACK_DIR),$(JSON_DECOMPOSE_FALLBACK_DIR),data/deps/)"
@@ -355,15 +438,96 @@ buildArtifact agdaFiles graphEdges =
     intercalate sep (x ∷ []) = x
     intercalate sep (x ∷ xs) = x ++ sep ++ intercalate sep xs
 
--- IO-based main that discovers files, generates Makefile AND Documentation
-postulate
-  _>>=_ : {A B : Set} → IO A → (A → IO B) → IO B
-  return : {A : Set} → A → IO A
-  mapM : {A B : Set} → (A → IO B) → List A → IO (List B)
+-- Render a recipe script from raw recipe lines.
+stripLeadingAt : String → String
+stripLeadingAt s with primStringToList s
+... | [] = s
+... | ('@' ∷ rest) = primStringFromList rest
+... | _ = s
 
-{-# COMPILE GHC _>>=_ = \_ _ -> (>>=) #-}
-{-# COMPILE GHC return = \_ -> return #-}
-{-# COMPILE GHC mapM = \_ _ -> mapM #-}
+replaceAll : String → String → String → String
+replaceAll needle replacement s with primStringSplit needle s
+... | [] = s
+... | parts = joinWith replacement parts
+
+replaceMakeVars : String → String
+replaceMakeVars s =
+  let s1 = replaceAll "$(AGDA_COMPILE)" "$AGDA_COMPILE" s
+      s2 = replaceAll "$(AGDA_COMPILE_DIR)" "$AGDA_COMPILE_DIR" s1
+      s3 = replaceAll "$(AGDA_FLAGS)" "$AGDA_FLAGS" s2
+      s4 = replaceAll "$(AGDA)" "$AGDA" s3
+      s5 = replaceAll "$(VIRTUAL_ENV)" "$VIRTUAL_ENV" s4
+      s6 = replaceAll "$(DEPS_DIR)" "$DEPS_DIR" s5
+      s7 = replaceAll "$(PLANNING_DIR)" "$PLANNING_DIR" s6
+      s8 = replaceAll "$(JSON_DECOMPOSE_FALLBACK_DIR)" "$JSON_DECOMPOSE_FALLBACK_DIR" s7
+      s9 = replaceAll "$(PYTEST_WORKERS)" "$PYTEST_WORKERS" s8
+  in s9
+
+collapseDollars : String → String
+collapseDollars s = primStringFromList (collapse (primStringToList s))
+  where
+    collapse : List Char → List Char
+    collapse [] = []
+    collapse ('$' ∷ '$' ∷ xs) = '$' ∷ collapse xs
+    collapse (c ∷ xs) = c ∷ collapse xs
+
+renderRecipeScript : List String → String
+renderRecipeScript cmds =
+  let body = ifEmptyList cmds (":" ∷ []) (map normalizeLine cmds)
+      preamble =
+        ( "BUILD_WORKDIR=\"${BUILD_WORKDIR:-.}\""
+        ∷ "if [ -n \"${WORKDIR:-}\" ]; then BUILD_WORKDIR=\"$WORKDIR\"; fi"
+        ∷ "if [ -n \"${ACT_WORKDIR:-}\" ]; then BUILD_WORKDIR=\"$ACT_WORKDIR\"; fi"
+        ∷ "export BUILD_WORKDIR"
+        ∷ "export WORKDIR=\"$BUILD_WORKDIR\""
+        ∷ "if [ -n \"${BUILD_CORES:-}\" ]; then CORES=\"$BUILD_CORES\"; else CORES=\"$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)\"; fi"
+        ∷ "export BUILD_CORES=\"$CORES\""
+        ∷ "export CORES"
+        ∷ "export PYTEST_WORKERS=\"${PYTEST_WORKERS:-${METACATAGORY_WORKERS:-$CORES}}\""
+        ∷ "export XDG_DATA_HOME=\"${XDG_DATA_HOME:-$BUILD_WORKDIR/build/xdg-data}\""
+        ∷ "export XDG_CACHE_HOME=\"${XDG_CACHE_HOME:-$BUILD_WORKDIR/build/xdg-cache}\""
+        ∷ "AGDA_BIN=\"${AGDA_BIN:-agda}\""
+        ∷ "export AGDA_BIN"
+        ∷ "export AGDA=\"$AGDA_BIN\""
+        ∷ "export AGDA_EXEC_OPTIONS=\"\""
+        ∷ "AGDA_DATA_DIR=\"$($AGDA_BIN --library-file=/dev/null --no-libraries --no-default-libraries --print-agda-data-dir 2>/dev/null)\""
+        ∷ "export AGDA_DATA_DIR"
+        ∷ "AGDA_PRIM_DIR=\"$AGDA_DATA_DIR/lib/prim\""
+        ∷ "export AGDA_PRIM_DIR"
+        ∷ "export AGDA_FLAGS=\"-i src/agda --include-path=$AGDA_PRIM_DIR --no-default-libraries --no-libraries --ghc-flag=-Wno-star-is-type --ghc-flag=-j$CORES\""
+        ∷ "export AGDA_COMPILE_DIR=\"${AGDA_COMPILE_DIR:-$BUILD_WORKDIR/build/agda}\""
+        ∷ "export AGDA_COMPILE=\"$AGDA $AGDA_FLAGS --compile --compile-dir=$AGDA_COMPILE_DIR\""
+        ∷ "export BUILD_JSON_DECOMPOSE_FALLBACK_DIR=\"${BUILD_JSON_DECOMPOSE_FALLBACK_DIR:-}\""
+        ∷ "export JSON_DECOMPOSE_FALLBACK_DIR=\"${JSON_DECOMPOSE_FALLBACK_DIR:-$BUILD_JSON_DECOMPOSE_FALLBACK_DIR}\""
+        ∷ "if [ -n \"$JSON_DECOMPOSE_FALLBACK_DIR\" ]; then"
+        ∷ "  export DEPS_DIR=\"${DEPS_DIR:-$JSON_DECOMPOSE_FALLBACK_DIR}\""
+        ∷ "  export PLANNING_DIR=\"${PLANNING_DIR:-$JSON_DECOMPOSE_FALLBACK_DIR/planning}\""
+        ∷ "else"
+        ∷ "  export DEPS_DIR=\"${DEPS_DIR:-data/deps/}\""
+        ∷ "  export PLANNING_DIR=\"${PLANNING_DIR:-$DEPS_DIR/planning/}\""
+        ∷ "fi"
+        ∷ "export BUILD_VENV_DIR=\"${BUILD_VENV_DIR:-$BUILD_WORKDIR/build/venv/.venv}\""
+        ∷ "export VIRTUAL_ENV=\"${VIRTUAL_ENV:-$BUILD_VENV_DIR}\""
+        ∷ [])
+  in "#!/usr/bin/env bash\nset -euo pipefail\n" ++ renderLines preamble ++ "\n" ++ renderLines body ++ "\n"
+  where
+    ifEmptyList : ∀ {A : Set} → List A → List A → List A → List A
+    ifEmptyList [] x _ = x
+    ifEmptyList (_ ∷ _) _ y = y
+    normalizeLine : String → String
+    normalizeLine s = collapseDollars (stripLeadingAt (replaceMakeVars s))
+    renderLines : List String → String
+    renderLines [] = ""
+    renderLines (x ∷ []) = x
+    renderLines (x ∷ xs) = x ++ "\n" ++ renderLines xs
+
+writeRecipeScript : MakefileTarget → IO ⊤
+writeRecipeScript t with startsWith? "scripts/recipes/" (recipeScriptPath (MakefileTarget.name t))
+... | true = return tt
+... | false =
+  let path = recipeScriptPath (MakefileTarget.name t)
+      content = renderRecipeScript (MakefileTarget.recipe t)
+  in writeFile path content
 
 -- Helper: check if list is empty
 is_empty : ∀ {A : Set} → List A → Bool
@@ -381,6 +545,7 @@ main =
   readGraphEdges "build/diagrams/agda-deps-full.dot" >>= λ edges →
   let artifact = buildArtifact agdaFiles edges
       content = exportMakefile defaultRenderer artifact
+      allTargets = buildTargets agdaFiles edges
       targets = (regenMakefileTarget ∷ discoveredTargets) 
       docsContent = renderDocs targets
       -- Prepend assumptions and validation notes
@@ -389,7 +554,7 @@ main =
       fullDocsContent = 
         "# Makefile Generation Report\n\n" ++
         "## Generation Assumptions (Verified by ExporterMakefile)\n\n" ++
-        "1. **Agda toolchain**: Available as `$(AGDA)` with `-i src/agda --ghc-flag=-Wno-star-is-type`.\n" ++
+        "1. **Agda toolchain**: Available as `$(AGDA)` with `-i src/agda --include-path=$(AGDA_PRIM_DIR) --no-default-libraries --no-libraries --ghc-flag=-Wno-star-is-type`.\n" ++
         "2. **Dependency graph**: `build/diagrams/agda-deps-full.dot` - Status: " ++ graphStatus ++ "\n" ++
         "3. **Module classification**: Agda.* modules excluded from internal deps; others are internal.\n" ++
         "4. **External tools**: python3, npx, npm, act, docker available on PATH.\n" ++
@@ -401,6 +566,7 @@ main =
       writeFile "build/graph_parsed_state.txt" ("status: " ++ graphStatus ++ "\nedges: " ++ listLengthString edges ++ "\n") >>= λ _ →
      writeFile "docs/automation/makefile_targets_generated.md" fullDocsContent >>= λ _ →
      writeFile "docs/automation/MAKEFILE-TARGETS.md" fullDocsContent >>= λ _ →
+     mapM writeRecipeScript allTargets >>= λ _ →
      (if_empty_else edges
        (writeFile "build/makefile_generation_warning.txt" 
           "WARNING: Empty dependency graph. Consider: make build/diagrams/agda-deps-full.dot\n")

@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Braid-tree structures for composing SPPF nodes and braid events.
 module Core.BraidTree where
 
 open import Agda.Builtin.String using (String; primStringAppend)
@@ -32,8 +33,9 @@ record PropertyNode : Set where
     descriptor : String
 
 mkPropertyNode : String → String → String → PropertyNode
-mkPropertyNode ident title descriptor =
-  record { identifier = ident ; title = title ; descriptor = descriptor }
+-- | Build a property node from identifier, title, and descriptor.
+mkPropertyNode ident title descriptor = record
+  { identifier = ident ; title = title ; descriptor = descriptor }
 
 -- | Convert a property node into the SPPF leaf that seeds the tree.
 propertyToSPPF : PropertyNode → SPPFNode

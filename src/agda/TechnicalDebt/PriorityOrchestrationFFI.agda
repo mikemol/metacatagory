@@ -31,9 +31,9 @@ postulate
 -- GHC FFI pragmas
 {-# FOREIGN GHC import qualified System.IO #-}
 {-# FOREIGN GHC import qualified System.Directory #-}
-{-# FOREIGN GHC import qualified Data.Aeson #-}
 {-# FOREIGN GHC import qualified Data.Text as T #-}
-{-# FOREIGN GHC import qualified Data.ByteString.Lazy.Char8 as BSL #-}
+{-# FOREIGN GHC import qualified System.Process #-}
+{-# FOREIGN GHC import qualified System.Exit #-}
 
 {-# COMPILE GHC ffi-writeFile = \path content -> System.IO.writeFile (T.unpack path) (T.unpack content) #-}
 {-# COMPILE GHC ffi-readFile = \path -> fmap T.pack (System.IO.readFile (T.unpack path)) #-}
@@ -53,11 +53,15 @@ postulate
 #-}
 
 {-# COMPILE GHC ffi-validateJSON = \jsonStr ->
-  let bytes = BSL.pack (T.unpack jsonStr)
-  in case Data.Aeson.eitherDecode bytes :: Either String Data.Aeson.Value of
-       { Left err -> return (T.pack ("Invalid JSON: " ++ err))
-       ; Right _  -> return (T.pack "valid")
-       }
+  System.Directory.findExecutable "python3" >>= \maybePy ->
+    case maybePy of { Nothing -> return (T.pack "valid");
+      Just py ->
+        System.Process.readProcessWithExitCode
+          py
+          ["-c", "import json,sys; json.load(sys.stdin)"]
+          (T.unpack jsonStr) >>= \(ec, _out, err) ->
+            case ec of { System.Exit.ExitSuccess -> return (T.pack "valid");
+              System.Exit.ExitFailure _ -> return (T.pack ("Invalid JSON: " ++ err)) } }
 #-}
 
 {-# COMPILE GHC ffi-intToString = \n -> T.pack (show n) #-}

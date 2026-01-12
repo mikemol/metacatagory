@@ -98,6 +98,7 @@ module JSONTransformationParameterized (P : JSONPrimitives) where
         idx = indexBuild frags
     in mkHierarchical meta frags manifestSpec
     where
+      -- | Local map helper for fragment construction.
       postulate map-list : ∀ {A B : Set} → (A → B) → List A → List B
   
   -- Backward transformation (reconstructs from fragments)
@@ -108,6 +109,7 @@ module JSONTransformationParameterized (P : JSONPrimitives) where
                             empty fragments
     in mkMonolithic merged
     where
+      -- | Local fold helper for fragment recomposition.
       postulate foldl-list : ∀ {A B : Set} → (B → A → B) → B → List A → B
   
   -- Roundtrip property (uses primitive laws)

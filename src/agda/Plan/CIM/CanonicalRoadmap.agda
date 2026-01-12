@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K #-}
 
+-- | Generated canonical roadmap items (do not edit by hand).
 module Plan.CIM.CanonicalRoadmap where
 
 open import Plan.CIM.RoadmapIndex using (RoadmapItem; CanonicalRoadmap)

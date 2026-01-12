@@ -1,4 +1,5 @@
 {-# OPTIONS --without-K #-}
+-- | Makefile targets for rootless Docker builds and GHCR pushes.
 module Examples.Makefile.Targets.Docker where
 
 open import Agda.Builtin.List using (List; _∷_; [])

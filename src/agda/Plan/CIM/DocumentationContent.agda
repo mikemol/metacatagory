@@ -223,7 +223,7 @@ roadmapDoc = record
             OrderedList (
                (plain (text "Edit canonical in src/agda/Plan/CIM/RoadmapIndex.agda" ∷ []) ∷ []) ∷ [] ∷
                (plain (text "Run `make roadmap-merge` to refresh build/canonical_roadmap.json" ∷ []) ∷ []) ∷ [] ∷
-                (plain (text "Run `make roadmap-export-md` to regenerate this file" ∷ []) ∷ []) ∷ []
+                (plain (text "Run `make ROADMAP.md` to regenerate this file" ∷ []) ∷ []) ∷ []
              ) ∷
          []
    ; meta = ""
@@ -239,8 +239,8 @@ deferredTrackingDoc = record
          h 1 (text "Deferred Items Tracking" ∷ []) ∷
 
          h 2 (text "Overview" ∷ []) ∷
-         p (text "Tracks deferred work items identified during the Agda 2.8.0 migration and refactoring efforts. Counts reflect deferred-summary.json snapshots." ∷ []) ∷
-         p (text "Source: deferred-summary.json (auto-generated)" ∷ []) ∷
+         p (text "Tracks deferred work items identified during the Agda 2.8.0 migration and refactoring efforts. Counts reflect build/reports/deferred-summary.json snapshots." ∷ []) ∷
+         p (text "Source: build/reports/deferred-summary.json (auto-generated)" ∷ []) ∷
          bullets ("Totals: 567 items" ∷ "Postulates: 351" ∷ "TODOs: 155" ∷ "Other markers (FIXME/HACK/etc.): 61" ∷ []) ∷
 
          h 2 (text "Tracking Strategy" ∷ []) ∷
@@ -296,7 +296,7 @@ deferredTrackingDoc = record
          h 3 (text "Adding New Deferred Items" ∷ []) ∷
          ul (map (λ s → plain (text s ∷ []) ∷ [])
             ("Add inline marker: -- TODO: [category] description or postulate name : Type" ∷
-             "Run make deferred-items to refresh deferred-summary.json" ∷
+             "Run make deferred-items to refresh build/reports/deferred-summary.json" ∷
              "If high/medium priority, add to sections above" ∷
              "Reference ROADMAP.md if it blocks a phase" ∷ [])) ∷
 
@@ -311,11 +311,11 @@ deferredTrackingDoc = record
          ul (map (λ s → plain (text s ∷ []) ∷ [])
             ("Weekly: review high-priority items and blockers" ∷
              "Monthly: reprioritize medium/low items" ∷
-             "Per milestone: regenerate deferred-summary.json and verify counts" ∷ [])) ∷
+             "Per milestone: regenerate build/reports/deferred-summary.json and verify counts" ∷ [])) ∷
 
          h 2 (text "Tools" ∷ []) ∷
          h 3 (text "Generate Deferred Summary" ∷ []) ∷
-         codeBlock "make deferred-items\n# Outputs: deferred-summary.json" ∷
+         codeBlock "make deferred-items\n# Outputs: build/reports/deferred-summary.json" ∷
 
          h 3 (text "Search for Deferred Items" ∷ []) ∷
          codeBlock "# TODOs\ngrep -r \"TODO\" src/agda/\n\n# Postulates\ngrep -r \"postulate\" src/agda/\n\n# All markers\ngrep -rE \"TODO|FIXME|HACK|XXX|NOTE\" src/agda/" ∷
@@ -327,7 +327,7 @@ deferredTrackingDoc = record
          bullets (
             "Primary roadmap: ROADMAP.md" ∷
             "Worklog: intake/refactoring-roadmap-migration.md" ∷
-            "Generated data: deferred-summary.json (gitignored)" ∷
+            "Generated data: build/reports/deferred-summary.json (gitignored)" ∷
             "Build tasks: .vscode/tasks.json" ∷
             []
          ) ∷
