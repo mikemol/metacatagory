@@ -404,7 +404,9 @@ buildArtifact agdaFiles graphEdges =
             ∷ ""
             ∷ "# Dependency decomposition directories (fallback-safe)"
             ∷ "DEPS_DIR ?= $(if $(JSON_DECOMPOSE_FALLBACK_DIR),$(JSON_DECOMPOSE_FALLBACK_DIR),data/deps/)"
+            ∷ "DEPS_METADATA ?= $(DEPS_DIR)_metadata.json"
             ∷ "PLANNING_DIR ?= $(if $(JSON_DECOMPOSE_FALLBACK_DIR),$(JSON_DECOMPOSE_FALLBACK_DIR)/planning,$(DEPS_DIR)/planning/)"
+            ∷ "PLANNING_METADATA ?= $(PLANNING_DIR)_metadata.json"
             ∷ [])
         }
       phonySection = record { id = "phony" 
@@ -458,10 +460,12 @@ replaceMakeVars s =
       s4 = replaceAll "$(AGDA)" "$AGDA" s3
       s5 = replaceAll "$(VIRTUAL_ENV)" "$VIRTUAL_ENV" s4
       s6 = replaceAll "$(DEPS_DIR)" "$DEPS_DIR" s5
-      s7 = replaceAll "$(PLANNING_DIR)" "$PLANNING_DIR" s6
-      s8 = replaceAll "$(JSON_DECOMPOSE_FALLBACK_DIR)" "$JSON_DECOMPOSE_FALLBACK_DIR" s7
-      s9 = replaceAll "$(PYTEST_WORKERS)" "$PYTEST_WORKERS" s8
-  in s9
+      s7 = replaceAll "$(DEPS_METADATA)" "$DEPS_METADATA" s6
+      s8 = replaceAll "$(PLANNING_DIR)" "$PLANNING_DIR" s7
+      s9 = replaceAll "$(PLANNING_METADATA)" "$PLANNING_METADATA" s8
+      s10 = replaceAll "$(JSON_DECOMPOSE_FALLBACK_DIR)" "$JSON_DECOMPOSE_FALLBACK_DIR" s9
+      s11 = replaceAll "$(PYTEST_WORKERS)" "$PYTEST_WORKERS" s10
+  in s11
 
 collapseDollars : String → String
 collapseDollars s = primStringFromList (collapse (primStringToList s))

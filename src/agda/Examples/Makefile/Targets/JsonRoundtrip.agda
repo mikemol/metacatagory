@@ -13,7 +13,7 @@ jsonRoundtripTargets =
     ("python3 scripts/json_decompose.py data/dependency_graph.json $(DEPS_DIR) --strategy dependency-graph" ∷ [])
   ∷ generatorToTarget mutateCert "json-decompose-prebuilt" "Decompose monolithic JSON using prebuilt inputs" ("data/dependency_graph.json" ∷ [])
     ("python3 scripts/json_decompose.py data/dependency_graph.json $(DEPS_DIR) --strategy dependency-graph" ∷ [])
-  ∷ generatorToFileTarget mutateCert "build/dependency_graph_recomposed.json" "Recompose hierarchical JSON back to monolithic form" ("$(DEPS_DIR)" ∷ [])
+  ∷ generatorToFileTarget mutateCert "build/dependency_graph_recomposed.json" "Recompose hierarchical JSON back to monolithic form" ("json-decompose" ∷ "$(DEPS_METADATA)" ∷ [])
     ("python3 scripts/json_recompose.py $(DEPS_DIR) build/dependency_graph_recomposed.json" ∷ [])
   ∷ generatorToTarget mutateCert "json-roundtrip-validate" "Validate JSON decomposition roundtrip" ("json-decompose" ∷ "build/dependency_graph_recomposed.json" ∷ [])
     ("python3 scripts/validate_json_roundtrip.py" ∷ [])
@@ -29,7 +29,7 @@ jsonRoundtripTargets =
 
   ∷ generatorToTarget mutateCert "json-decompose-planning" "Decompose planning_index.json into plan hierarchy" ("data/planning_index.json" ∷ [])
       ("python3 scripts/json_decompose.py data/planning_index.json $(PLANNING_DIR) --strategy item-array" ∷ [])
-    ∷ generatorToFileTarget mutateCert "build/planning_index_recomposed.json" "Recompose planning items into planning_index.json" ("$(PLANNING_DIR)" ∷ [])
+    ∷ generatorToFileTarget mutateCert "build/planning_index_recomposed.json" "Recompose planning items into planning_index.json" ("json-decompose-planning" ∷ "$(PLANNING_METADATA)" ∷ [])
       ("python3 scripts/json_recompose.py $(PLANNING_DIR) build/planning_index_recomposed.json" ∷ [])
   ∷ generatorToTarget mutateCert "json-roundtrip-validate-planning" "Validate planning roundtrip" ("json-decompose-planning" ∷ "build/planning_index_recomposed.json" ∷ [])
       ("python3 scripts/validate_json_roundtrip.py data/planning_index.json build/planning_index_recomposed.json" ∷ [])
