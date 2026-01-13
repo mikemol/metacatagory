@@ -17,6 +17,7 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      ACTIONS_RUNNER_TEMP: /tmp
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
@@ -90,6 +91,7 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      ACTIONS_RUNNER_TEMP: /tmp
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
@@ -158,6 +160,7 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      ACTIONS_RUNNER_TEMP: /tmp
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
@@ -221,6 +224,7 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      ACTIONS_RUNNER_TEMP: /tmp
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
@@ -281,6 +285,7 @@ jobs:
       contents: read
       issues: write
     env:
+      ACTIONS_RUNNER_TEMP: /tmp
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_REPORT_MODE: "write"
