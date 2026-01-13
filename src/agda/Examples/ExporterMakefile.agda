@@ -512,6 +512,7 @@ renderRecipeScript cmds =
         ∷ "fi"
         ∷ "export BUILD_VENV_DIR=\"${BUILD_VENV_DIR:-$BUILD_WORKDIR/build/venv/.venv}\""
         ∷ "export VIRTUAL_ENV=\"${VIRTUAL_ENV:-$BUILD_VENV_DIR}\""
+        ∷ "export PATH=\"$VIRTUAL_ENV/bin:$PATH\""
         ∷ [])
   in "#!/usr/bin/env bash\nset -euo pipefail\n" ++ renderLines preamble ++ "\n" ++ renderLines body ++ "\n"
   where
