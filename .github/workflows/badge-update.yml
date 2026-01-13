@@ -33,6 +33,7 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_REPORT_MODE: "write"
@@ -41,12 +42,6 @@ jobs:
       MUTATE_OK: "1"
     
     steps:
-      - name: Set DRY_RUN (ACT)
-        if: ${{ env.ACT }}
-        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
-      - name: Set DRY_RUN (GitHub)
-        if: ${{ !env.ACT }}
-        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
       - name: Checkout repository
         uses: actions/checkout@v4
         if: ${{ env.DRY_RUN != 'true' }}
