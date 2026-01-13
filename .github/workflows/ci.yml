@@ -29,6 +29,8 @@ jobs:
       ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
       RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
       RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
@@ -108,6 +110,8 @@ jobs:
       ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
       RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
       RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
@@ -177,6 +181,8 @@ jobs:
       ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
       RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
       RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
@@ -240,6 +246,8 @@ jobs:
       ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
       RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
       RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
