@@ -145,7 +145,7 @@ class DependencyGraphDecomposer(JSONDecomposer):
         for subdir in ("modules", "layers", "cycles"):
             target_dir = self.output_dir / subdir
             if target_dir.exists():
-                shutil.rmtree(target_dir)
+                shutil.rmtree(target_dir, ignore_errors=True)
 
         # Create modules directory structure
         modules_dir = self.output_dir / "modules"

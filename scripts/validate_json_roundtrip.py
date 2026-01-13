@@ -166,6 +166,9 @@ class GenerateRoundtripReportPhase(Phase[Dict[str, Any], bool]):
 def validate_roundtrip(base_dir: Path | None = None) -> bool:
     """Validate decompose → recompose roundtrip (test-friendly)."""
 
+    def log_context(orig: Path, reco: Path) -> None:
+        print(f"[roundtrip] original={orig} recomposed={reco}")
+
     if base_dir is None:
         original_path = Path("build/dependency_graph.json")
         recomposed_path = Path("build/dependency_graph_recomposed.json")
@@ -183,6 +186,8 @@ def validate_roundtrip(base_dir: Path | None = None) -> bool:
         original_path = base_dir / "dependency_graph.json"
         recomposed_path = base_dir / "dependency_graph_recomposed.json"
         original_exists = original_path.exists()
+
+    log_context(original_path, recomposed_path)
 
     if not original_exists:
         print("Original file not found")
@@ -268,6 +273,8 @@ def _count_modules_edges(data: Any) -> Tuple[int, int]:
 
 def validate_roundtrip_with_paths(original_path: Path, recomposed_path: Path) -> bool:
     """Validate roundtrip given explicit paths (CLI helper)."""
+
+    print(f"[roundtrip] original={original_path} recomposed={recomposed_path}")
 
     def load_file(path: Path) -> Dict[str, Any]:
         with open(path, "r", encoding="utf-8") as f:
