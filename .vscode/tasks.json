@@ -1,0 +1,142 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Act: List All Jobs",
+      "type": "shell",
+      "command": "act",
+      "args": ["-l"],
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Act: Run All Workflows",
+      "type": "shell",
+      "command": "act",
+      "args": [],
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Make: CI (containerized)",
+      "type": "shell",
+      "command": "MUTATE_OK=1 mise exec -- make ci",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Make: Badges",
+      "type": "shell",
+      "command": "MUTATE_OK=1 mise exec -- make badges",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Make: Deferred Items",
+      "type": "shell",
+      "command": "MUTATE_OK=1 mise exec -- make deferred-items",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Make: Makefile Validate",
+      "type": "shell",
+      "command": "MUTATE_OK=1 mise exec -- make makefile-validate",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Make: Markdown Auto-Fix",
+      "type": "shell",
+      "command": "MUTATE_OK=1 mise exec -- make md-fix",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Make: Roadmap Sync",
+      "type": "shell",
+      "command": "MUTATE_OK=1 mise exec -- make roadmap-sync",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Docker: Rootless Status",
+      "type": "shell",
+      "command": "docker info --format 'Client: {{.ClientInfo.Name}}\\nRootless: {{join .SecurityOptions \", \\"}}\\nDockerHost: {{.ClientInfo.DaemonHost}}\\nUser: {{.ClientInfo.User}}'",
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Docker: Build Image",
+      "type": "shell",
+      "command": "docker",
+      "args": ["build", "-t", "metacatagory:dev", "."],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

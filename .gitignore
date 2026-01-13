@@ -101,6 +101,7 @@ coverage-*.json
 # Editor / aux
 .idea/
 .vscode/
+!.vscode/tasks.json
 .history/
 
 # Auto-fix workflow temp
