@@ -80,7 +80,9 @@ PYTEST_WORKERS ?= $(if $(METACATAGORY_WORKERS),$(METACATAGORY_WORKERS),$(CORES))
 
 # Dependency decomposition directories (fallback-safe)
 DEPS_DIR ?= $(if $(JSON_DECOMPOSE_FALLBACK_DIR),$(JSON_DECOMPOSE_FALLBACK_DIR),data/deps/)
+DEPS_METADATA ?= $(DEPS_DIR)_metadata.json
 PLANNING_DIR ?= $(if $(JSON_DECOMPOSE_FALLBACK_DIR),$(JSON_DECOMPOSE_FALLBACK_DIR)/planning,$(DEPS_DIR)/planning/)
+PLANNING_METADATA ?= $(PLANNING_DIR)_metadata.json
 .PHONY: regen-makefile graph-status graph-assert-ok python-test python-verified roadmap-merge roadmap-enrich roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-all-enriched md-lint docs-lint md-fix md-normalize docs-modules docs-normalize docs-all docs-validate json-decompose json-decompose-prebuilt json-roundtrip-validate json-roundtrip-validate-light json-decompose-enriched json-roundtrip-validate-enriched json-decompose-planning json-roundtrip-validate-planning intake-lint intake-scan makefile-validate node-deps deferred-items-dirs deferred-items act-list act-ci act-lint act-markdown-fix act-makefile-validate act-roadmap-sync act-deferred act-badges act-all badges priority-strategy-profiles priority-refresh roadmap-index planning-kernel roadmap-sync roadmap-sppf roadmap-deps-graph regen-agda regen-exports regen-roadmap regen-docs regen-badges regen-intake regen-all all debt-check check-infra check-docs check-roadmap check-python check-json check-debt check-all check validate-constructive ci-light ci-preflight docker-rootless-status docker-build docker-build-ghcr docker-push-ghcr docker-all agda-all
 # Regenerate the Makefile from Agda source (Self-Hosting)
 regen-makefile: 
@@ -239,7 +241,7 @@ json-decompose-prebuilt: data/dependency_graph.json
 	$(call require_mutate)
 	scripts/run_profiled.sh 'json-decompose-prebuilt' 'build/recipes/json-decompose-prebuilt.sh'
 # Recompose hierarchical JSON back to monolithic form
-build/dependency_graph_recomposed.json: $(DEPS_DIR)
+build/dependency_graph_recomposed.json: json-decompose $(DEPS_METADATA)
 	$(call require_mutate)
 	scripts/run_profiled.sh 'build/dependency_graph_recomposed.json' 'build/recipes/build/dependency_graph_recomposed.json.sh'
 # Validate JSON decomposition roundtrip
@@ -267,7 +269,7 @@ json-decompose-planning: data/planning_index.json
 	$(call require_mutate)
 	scripts/run_profiled.sh 'json-decompose-planning' 'build/recipes/json-decompose-planning.sh'
 # Recompose planning items into planning_index.json
-build/planning_index_recomposed.json: $(PLANNING_DIR)
+build/planning_index_recomposed.json: json-decompose-planning $(PLANNING_METADATA)
 	$(call require_mutate)
 	scripts/run_profiled.sh 'build/planning_index_recomposed.json' 'build/recipes/build/planning_index_recomposed.json.sh'
 # Validate planning roundtrip
