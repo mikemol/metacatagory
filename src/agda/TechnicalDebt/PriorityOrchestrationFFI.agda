@@ -54,7 +54,7 @@ postulate
 
 {-# COMPILE GHC ffi-validateJSON = \jsonStr ->
   System.Directory.findExecutable "python3" >>= \maybePy ->
-    case maybePy of { Nothing -> return (T.pack "valid");
+    case maybePy of { Nothing -> return (T.pack "Invalid JSON: python3 not found");
       Just py ->
         System.Process.readProcessWithExitCode
           py
