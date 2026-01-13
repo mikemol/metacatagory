@@ -12,13 +12,10 @@ jobs:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
       options: --user root
     env:
-      FILE_CMDS_DIR: ${{ env.ACT == 'true' && format('{0}/.tmp/_runner_file_commands', github.workspace) || '' }}
-      RUNNER_TEMP_DIR: ${{ env.ACT == 'true' && format('{0}/.tmp', github.workspace) || '' }}
-      RUNNER_TOOL_DIR: ${{ env.ACT == 'true' && format('{0}/.tmp/runner_tool_cache', github.workspace) || '' }}
-      ACTIONS_FILE_COMMANDS: ${{ env.ACT == 'true' && env.FILE_CMDS_DIR || '' }}
-      ACTIONS_RUNNER_TEMP: ${{ env.ACT == 'true' && env.RUNNER_TEMP_DIR || '' }}
-      RUNNER_TEMP: ${{ env.ACT == 'true' && env.RUNNER_TEMP_DIR || '' }}
-      RUNNER_TOOL_CACHE: ${{ env.ACT == 'true' && env.RUNNER_TOOL_DIR || '' }}
+      ACTIONS_FILE_COMMANDS: ${{ format('{0}/.tmp/_runner_file_commands', github.workspace) }}
+      ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
+      RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
+      RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_REPORT_MODE: "write"
@@ -28,9 +25,9 @@ jobs:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
-          mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
-                   "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
-          chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
+      ACTIONS_FILE_COMMANDS: ${{ format('{0}/.tmp/_runner_file_commands', github.workspace) }}
+      RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
+      ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
 
       - name: Checkout
         uses: actions/checkout@v4
