@@ -18,18 +18,13 @@ jobs:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
       BUILD_WORKDIR: ${{ github.workspace }}
+      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       MAKEFILE_COVERAGE_SKIP: docs-normalize docs-all md-normalize regen-all all
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
-      - name: Set DRY_RUN (ACT)
-        if: ${{ env.ACT }}
-        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
-      - name: Set DRY_RUN (GitHub)
-        if: ${{ !env.ACT }}
-        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v4
         if: ${{ env.DRY_RUN != 'true' }}
@@ -96,18 +91,13 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
-      - name: Set DRY_RUN (ACT)
-        if: ${{ env.ACT }}
-        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
-      - name: Set DRY_RUN (GitHub)
-        if: ${{ !env.ACT }}
-        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v4
         if: ${{ env.DRY_RUN != 'true' }}
@@ -170,18 +160,13 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
-      - name: Set DRY_RUN (ACT)
-        if: ${{ env.ACT }}
-        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
-      - name: Set DRY_RUN (GitHub)
-        if: ${{ !env.ACT }}
-        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v4
         if: ${{ env.DRY_RUN != 'true' }}
@@ -239,18 +224,13 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
-      - name: Set DRY_RUN (ACT)
-        if: ${{ env.ACT }}
-        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
-      - name: Set DRY_RUN (GitHub)
-        if: ${{ !env.ACT }}
-        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v4
         if: ${{ env.DRY_RUN != 'true' }}
@@ -305,18 +285,13 @@ jobs:
       contents: read
       issues: write
     env:
+      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_REPORT_MODE: "write"
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
-      - name: Set DRY_RUN (ACT)
-        if: ${{ env.ACT }}
-        run: echo "DRY_RUN=true" >> "$GITHUB_ENV"
-      - name: Set DRY_RUN (GitHub)
-        if: ${{ !env.ACT }}
-        run: echo "DRY_RUN=false" >> "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v4
         if: ${{ env.DRY_RUN != 'true' }}
