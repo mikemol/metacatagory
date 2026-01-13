@@ -15,18 +15,17 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
-      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
       - uses: actions/checkout@v4
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         with:
           fetch-depth: 0
       - name: Use ACT workspace
-        if: ${{ env.DRY_RUN == 'true' }}
+        if: ${{ env.ACT == 'true' }}
         shell: bash
         run: |
           if [ -n "${ACT_SRC:-}" ]; then
@@ -38,10 +37,10 @@ jobs:
         with:
           node-version: 20
       - name: Markdown auto-fix
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         run: make md-fix
       - name: Commit changes
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         run: |
           if ! git diff --quiet; then
             git config user.name "github-actions"
@@ -54,7 +53,7 @@ jobs:
       - name: Summary
         run: echo "Auto-fix run complete"
       - name: Upload build reports
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports

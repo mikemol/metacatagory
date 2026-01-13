@@ -14,7 +14,6 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
-      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_REPORT_MODE: "write"
@@ -22,9 +21,9 @@ jobs:
       METACATAGORY_WORKERS: "8"
     steps:
       - uses: actions/checkout@v4
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
       - name: Use ACT workspace
-        if: ${{ env.DRY_RUN == 'true' }}
+        if: ${{ env.ACT == 'true' }}
         shell: bash
         run: |
           if [ -n "${ACT_SRC:-}" ]; then
@@ -43,7 +42,7 @@ jobs:
         if: ${{ success() }}
         run: echo "Markdown lint completed successfully"
       - name: Upload build reports
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports

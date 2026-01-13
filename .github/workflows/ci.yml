@@ -18,7 +18,6 @@ jobs:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
       BUILD_WORKDIR: ${{ github.workspace }}
-      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       MAKEFILE_COVERAGE_SKIP: docs-normalize docs-all md-normalize regen-all all
@@ -27,12 +26,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         with:
           fetch-depth: 0
 
       - name: Use ACT workspace
-        if: ${{ env.DRY_RUN == 'true' }}
+        if: ${{ env.ACT == 'true' }}
         shell: bash
         run: |
           if [ -n "${ACT_SRC:-}" ]; then
@@ -64,7 +63,7 @@ jobs:
         run: python3 -m scripts.makefile_coverage --run-targets
 
       - name: Upload Agda exports
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: agda-exports
@@ -76,7 +75,7 @@ jobs:
           retention-days: 30
 
       - name: Upload build reports
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports
@@ -91,7 +90,6 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
-      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
@@ -100,12 +98,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         with:
           fetch-depth: 0
 
       - name: Use ACT workspace
-        if: ${{ env.DRY_RUN == 'true' }}
+        if: ${{ env.ACT == 'true' }}
         shell: bash
         run: |
           if [ -n "${ACT_SRC:-}" ]; then
@@ -114,7 +112,7 @@ jobs:
           fi
 
       - name: Download Agda exports
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/download-artifact@v4
         with:
           name: agda-exports
@@ -145,7 +143,7 @@ jobs:
         run: MUTATE_OK=1 make check-docs
 
       - name: Upload build reports
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports
@@ -160,7 +158,6 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
-      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
@@ -169,12 +166,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         with:
           fetch-depth: 0
 
       - name: Use ACT workspace
-        if: ${{ env.DRY_RUN == 'true' }}
+        if: ${{ env.ACT == 'true' }}
         shell: bash
         run: |
           if [ -n "${ACT_SRC:-}" ]; then
@@ -183,7 +180,7 @@ jobs:
           fi
 
       - name: Download Agda exports
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/download-artifact@v4
         with:
           name: agda-exports
@@ -209,7 +206,7 @@ jobs:
         run: MUTATE_OK=1 make check-json
 
       - name: Upload build reports
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports
@@ -224,7 +221,6 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
-      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
@@ -233,12 +229,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         with:
           fetch-depth: 0
 
       - name: Prepare ACT workspace
-        if: ${{ env.DRY_RUN == 'true' }}
+        if: ${{ env.ACT == 'true' }}
         shell: bash
         run: |
           if [ -n "${ACT_SRC:-}" ]; then
@@ -247,7 +243,7 @@ jobs:
           fi
 
       - name: Download Agda exports
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/download-artifact@v4
         with:
           name: agda-exports
@@ -267,7 +263,7 @@ jobs:
         run: MUTATE_OK=1 make check-debt
 
       - name: Upload build reports
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports
@@ -285,7 +281,6 @@ jobs:
       contents: read
       issues: write
     env:
-      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_REPORT_MODE: "write"
@@ -294,10 +289,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
 
       - name: Use ACT workspace
-        if: ${{ env.DRY_RUN == 'true' }}
+        if: ${{ env.ACT == 'true' }}
         shell: bash
         run: |
           if [ -n "${ACT_SRC:-}" ]; then
@@ -306,15 +301,15 @@ jobs:
           fi
 
       - name: Make scripts executable
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         run: chmod +x .github/scripts/*.sh
 
       - name: Track Deferred Items
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         run: make deferred-items
 
       - name: Upload deferred items report
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: deferred-items-report
@@ -324,7 +319,7 @@ jobs:
           retention-days: 90
 
       - name: Create or update tracking issue
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         env:
           GH_TOKEN: ${{ github.token }}
           CI_GITHUB_SHA: ${{ github.sha }}
@@ -334,6 +329,6 @@ jobs:
           .github/scripts/create-or-update-tracking-issue.sh
 
       - name: Post summary comment
-        if: ${{ env.DRY_RUN != 'true' && steps.scan.outputs.total > 0 }}
+        if: ${{ env.ACT != 'true' && steps.scan.outputs.total > 0 }}
         run: |
           echo "::notice title=Deferred Items::Found ${{ steps.scan.outputs.total }} deferred items: ${{ steps.scan.outputs.deviation_log }} DeviationLog, ${{ steps.scan.outputs.postulates }} postulates, ${{ steps.scan.outputs.todo }} TODOs, ${{ steps.scan.outputs.planned }} PLANNED, ${{ steps.scan.outputs.fixme }} FIXMEs"

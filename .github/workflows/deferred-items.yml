@@ -17,7 +17,6 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
-      DRY_RUN: ${{ env.ACT == 'true' && 'true' || 'false' }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_REPORT_MODE: "write"
@@ -26,19 +25,19 @@ jobs:
     steps:
       - name: Checkout base branch
         uses: actions/checkout@v4
-        if: ${{ env.DRY_RUN != 'true' && github.event_name == 'pull_request' }}
+        if: ${{ env.ACT != 'true' && github.event_name == 'pull_request' }}
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           path: base
 
       - name: Checkout current branch
         uses: actions/checkout@v4
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         with:
           path: current
 
       - name: Use ACT workspace (current)
-        if: ${{ env.DRY_RUN == 'true' }}
+        if: ${{ env.ACT == 'true' }}
         shell: bash
         run: |
           mkdir -p current
@@ -59,17 +58,17 @@ jobs:
         run: MUTATE_OK=1 make deferred-items
 
       - name: Generate Makefile recipes (base, PR only)
-        if: ${{ env.DRY_RUN != 'true' && github.event_name == 'pull_request' }}
+        if: ${{ env.ACT != 'true' && github.event_name == 'pull_request' }}
         working-directory: base
         run: MUTATE_OK=1 make regen-makefile
 
       - name: Review deferred items (base branch, PR only)
-        if: ${{ env.DRY_RUN != 'true' && github.event_name == 'pull_request' }}
+        if: ${{ env.ACT != 'true' && github.event_name == 'pull_request' }}
         working-directory: base
         run: MUTATE_OK=1 make deferred-items
 
       - name: Compare deferred items (PR only)
-        if: ${{ env.DRY_RUN != 'true' && github.event_name == 'pull_request' }}
+        if: ${{ env.ACT != 'true' && github.event_name == 'pull_request' }}
         id: compare
         run: |
           CURRENT_TOTAL=$(jq -r '.total' current/${CI_REPORT_DIR}/deferred-summary.json)
@@ -92,7 +91,7 @@ jobs:
           fi
 
       - name: Comment on PR
-        if: ${{ env.DRY_RUN != 'true' && github.event_name == 'pull_request' }}
+        if: ${{ env.ACT != 'true' && github.event_name == 'pull_request' }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -161,7 +160,7 @@ jobs:
             }
 
       - name: Upload reports
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: deferred-items-reports
@@ -185,7 +184,7 @@ jobs:
           
           echo "::notice title=Deferred Items Summary::Total: $TOTAL (DeviationLog: $DEVIATION_LOG, Postulates: $POSTULATES, TODO: $TODO, PLANNED: $PLANNED, FIXME: $FIXME)"
       - name: Upload build reports
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports
