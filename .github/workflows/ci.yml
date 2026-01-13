@@ -219,7 +219,9 @@ jobs:
 
       - name: Run roadmap checks
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: MUTATE_OK=1 make check-roadmap
+        run: |
+          MUTATE_OK=1 make regen-makefile
+          MUTATE_OK=1 make check-roadmap
 
       - name: Run JSON checks
         working-directory: ${{ env.BUILD_WORKDIR }}
