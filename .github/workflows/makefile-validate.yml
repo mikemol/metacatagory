@@ -24,6 +24,8 @@ jobs:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
       ACTIONS_RUNNER_TEMP: /tmp
+      RUNNER_TEMP: /tmp
+      RUNNER_TOOL_CACHE: /tmp/runner_tool_cache
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_REPORT_MODE: "write"
