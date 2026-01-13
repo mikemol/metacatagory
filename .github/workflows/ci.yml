@@ -223,7 +223,10 @@ jobs:
 
       - name: Run JSON checks
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: MUTATE_OK=1 make check-json
+        run: |
+          echo "Roundtrip validate planning (explicit paths)" && \
+          python3 -m scripts.validate_json_roundtrip data/planning_index.json build/planning_index_recomposed.json || true
+          MUTATE_OK=1 make check-json
 
       - name: Upload build reports
         if: ${{ env.ACT != 'true' }}
