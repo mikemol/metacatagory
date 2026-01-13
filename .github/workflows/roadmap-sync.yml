@@ -1,12 +1,6 @@
 name: Roadmap Sync
 on:
-  push:
-    paths:
-      - '.github/roadmap/tasks.json'
   workflow_dispatch:
-  schedule:
-    - cron: '0 10 * * 1'
-
 jobs:
   sync:
     runs-on: ubuntu-latest

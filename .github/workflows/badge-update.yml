@@ -1,24 +1,7 @@
 name: Update Badges
 
 on:
-  push:
-    branches: [main, master, stripped]
-    paths:
-      - '.github/roadmap/tasks.json'
-      - 'build/reports/deferred-summary.json'
-      - 'scripts/**/*.py'
-      - 'src/agda/**/*.agda'
-      - 'ROADMAP*.md'
-  pull_request:
-    branches: [main, master, stripped]
-    paths:
-      - '.github/roadmap/tasks.json'
-      - 'build/reports/deferred-summary.json'
-      - 'scripts/**/*.py'
-      - 'src/agda/**/*.agda'
-      - 'ROADMAP*.md'
   workflow_dispatch:
-
 concurrency:
   group: badges-updates
   cancel-in-progress: true

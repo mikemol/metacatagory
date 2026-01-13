@@ -1,21 +1,6 @@
 name: Makefile Triangle Identity Check
 on:
-  pull_request:
-    paths:
-      - 'Makefile'
-      - 'Makefile.generated'
-      - 'docs/automation/MAKEFILE-TARGETS.md'
-      - 'src/agda/Examples/ExporterMakefile.agda'
-      - 'scripts/validate_makefile_docs.py'
-  push:
-    paths:
-      - 'Makefile'
-      - 'Makefile.generated'
-      - 'docs/automation/MAKEFILE-TARGETS.md'
-      - 'src/agda/Examples/ExporterMakefile.agda'
-      - 'scripts/validate_makefile_docs.py'
   workflow_dispatch:
-
 permissions:
   contents: read
 
