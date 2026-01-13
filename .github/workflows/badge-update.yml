@@ -33,6 +33,7 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      ACTIONS_FILE_COMMANDS: /tmp/_runner_file_commands
       ACTIONS_RUNNER_TEMP: /tmp
       RUNNER_TEMP: /tmp
       RUNNER_TOOL_CACHE: /tmp/runner_tool_cache
@@ -47,6 +48,9 @@ jobs:
       - name: Init file command temp (ACT)
         if: ${{ env.ACT == 'true' }}
         run: mkdir -p /__w/_temp/_runner_file_commands && chmod 777 /__w/_temp/_runner_file_commands
+      - name: Ensure file-commands dir (ACT)
+        if: ${{ env.ACT == 'true' }}
+        run: mkdir -p /tmp/_runner_file_commands /tmp/runner_tool_cache && chmod -R 777 /tmp
       - name: Checkout repository
         uses: actions/checkout@v4
         if: ${{ env.ACT != 'true' }}
