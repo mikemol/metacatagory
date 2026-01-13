@@ -249,8 +249,12 @@ def _count_modules_edges(data: Any) -> Tuple[int, int]:
     if isinstance(data, dict):
         if isinstance(data.get("nodes"), list):
             modules = len(data.get("nodes", []))
-        elif isinstance(data.get("modules"), list):
-            modules = len(data.get("modules", []))
+        elif "modules" in data:
+            mods = data.get("modules")
+            if isinstance(mods, list):
+                modules = len(mods)
+            elif isinstance(mods, dict):
+                modules = len(mods)
         elif isinstance(data.get("items"), list):
             modules = len(data.get("items", []))
         elif isinstance(data.get("strategies"), list):
