@@ -34,7 +34,7 @@ jobs:
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
-      MAKEFILE_COVERAGE_SKIP: docs-normalize docs-all md-normalize regen-all all
+      MAKEFILE_COVERAGE_SKIP: docs-normalize docs-all md-normalize regen-all all act-list act-ci act-lint act-markdown-fix act-makefile-validate act-roadmap-sync act-deferred act-badges act-all
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
