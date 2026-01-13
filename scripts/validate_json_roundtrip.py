@@ -236,7 +236,51 @@ def validate_roundtrip(base_dir: Path | None = None) -> bool:
         print(f"   Recomposed: {recomposed_path}")
         print(f"   Modules:    {original_modules} ↔ {recomposed_modules}")
         print(f"   Edges:      {original_edges} ↔ {recomposed_edges}")
+    return True
+
+
+def validate_roundtrip_with_paths(original_path: Path, recomposed_path: Path) -> bool:
+    """Validate roundtrip given explicit paths (CLI helper)."""
+
+    def load_file(path: Path) -> Dict[str, Any]:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    try:
+        original = load_file(original_path)
+    except FileNotFoundError:
+        print(f"Original file not found: {original_path}")
+        return False
+    except json.JSONDecodeError:
+        print(f"JSON parse error in original file: {original_path}")
+        return False
+
+    try:
+        recomposed = load_file(recomposed_path)
+    except FileNotFoundError:
+        print(f"Recomposed file not found: {recomposed_path}")
+        return False
+    except json.JSONDecodeError:
+        print(f"JSON parse error in recomposed file: {recomposed_path}")
+        return False
+
+    original_modules = len(original.get("nodes", []))
+    recomposed_modules = len(recomposed.get("modules", []))
+    original_edges = len(original.get("edges", []))
+    recomposed_edges = len(recomposed.get("edges", []))
+
+    if original_modules == recomposed_modules and original_edges == recomposed_edges:
+        print("✅ JSON decomposition roundtrip PASSED (module count preserved)")
+        print(f"   Original:   {original_path}")
+        print(f"   Recomposed: {recomposed_path}")
+        print(f"   Modules:    {original_modules} ↔ {recomposed_modules}")
+        print(f"   Edges:      {original_edges} ↔ {recomposed_edges}")
         return True
+
+    print("❌ JSON roundtrip validation FAILED (module/edge counts differ)")
+    print(f"   Original:   {original_modules} modules, {original_edges} edges ({original_path})")
+    print(f"   Recomposed: {recomposed_modules} modules, {recomposed_edges} edges ({recomposed_path})")
+    return False
 
     print("❌ JSON roundtrip validation FAILED (module count differs)")
     print(f"   Original:   {original_modules} modules, {original_edges} edges")
@@ -245,5 +289,11 @@ def validate_roundtrip(base_dir: Path | None = None) -> bool:
 
 
 if __name__ == "__main__":
-    success = validate_roundtrip()
+    args = sys.argv[1:]
+    if len(args) == 2:
+        original_arg = Path(args[0])
+        recomposed_arg = Path(args[1])
+        success = validate_roundtrip_with_paths(original_arg, recomposed_arg)
+    else:
+        success = validate_roundtrip()
     sys.exit(0 if success else 1)
