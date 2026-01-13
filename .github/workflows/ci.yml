@@ -29,9 +29,6 @@ jobs:
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
-      - name: Init file command temp (ACT)
-        if: ${{ env.ACT == 'true' }}
-        run: mkdir -p /__w/_temp/_runner_file_commands && chmod 777 /__w/_temp/_runner_file_commands
       - name: Ensure file-commands dir (ACT)
         if: ${{ env.ACT == 'true' }}
         run: mkdir -p /tmp/_runner_file_commands /tmp/runner_tool_cache && chmod -R 777 /tmp
@@ -55,10 +52,7 @@ jobs:
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      # Use container python; setup-python toolcache glibc mismatches inside container
 
       - name: Generate Makefile recipes
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -117,9 +111,6 @@ jobs:
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
-      - name: Init file command temp (ACT)
-        if: ${{ env.ACT == 'true' }}
-        run: mkdir -p /__w/_temp/_runner_file_commands && chmod 777 /__w/_temp/_runner_file_commands
       - name: Ensure file-commands dir (ACT)
         if: ${{ env.ACT == 'true' }}
         run: mkdir -p /tmp/_runner_file_commands /tmp/runner_tool_cache && chmod -R 777 /tmp
@@ -150,10 +141,7 @@ jobs:
           name: agda-exports
           path: .
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      # Use container python; setup-python toolcache glibc mismatches inside container
 
       - name: Install Python dependencies
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -234,10 +222,7 @@ jobs:
           name: agda-exports
           path: .
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      # Use container python; setup-python toolcache glibc mismatches inside container
 
       - name: Install Python dependencies
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -313,10 +298,7 @@ jobs:
           name: agda-exports
           path: .
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      # Use container python; setup-python toolcache glibc mismatches inside container
 
       - name: Run Python tests
         working-directory: ${{ env.BUILD_WORKDIR }}
