@@ -13,6 +13,7 @@ Validates behavior when:
 import pytest
 import json
 import tempfile
+import os
 from pathlib import Path
 from test_utils import (
     malformed_json_string,
@@ -177,6 +178,7 @@ class TestMissingRequiredFields:
         assert has_missing_status, "Expected to find item without status field"
 
 
+@pytest.mark.skipif(os.geteuid() == 0, reason="Permission denial is bypassed when running as root")
 class TestPermissionDeniedRecovery:
     """Test handling of permission denied errors"""
 
