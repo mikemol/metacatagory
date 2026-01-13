@@ -24,6 +24,9 @@ jobs:
       issues: write
       contents: read
     steps:
+      - name: Init file command temp (ACT)
+        if: ${{ env.ACT == 'true' }}
+        run: mkdir -p /__w/_temp/_runner_file_commands && chmod 777 /__w/_temp/_runner_file_commands
       - uses: actions/checkout@v4
         if: ${{ env.ACT != 'true' }}
       - name: Use ACT workspace
