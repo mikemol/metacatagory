@@ -225,10 +225,8 @@ def validate_roundtrip(base_dir: Path | None = None) -> bool:
             print("JSON parse error in recomposed file")
             return False
 
-    original_modules = len(original.get("nodes", []))
-    recomposed_modules = len(recomposed.get("modules", []))
-    original_edges = len(original.get("edges", []))
-    recomposed_edges = len(recomposed.get("edges", []))
+    original_modules, original_edges = _count_modules_edges(original)
+    recomposed_modules, recomposed_edges = _count_modules_edges(recomposed)
 
     if original_modules == recomposed_modules and original_edges == recomposed_edges:
         print("✅ JSON decomposition roundtrip PASSED (module count preserved)")
@@ -237,6 +235,26 @@ def validate_roundtrip(base_dir: Path | None = None) -> bool:
         print(f"   Modules:    {original_modules} ↔ {recomposed_modules}")
         print(f"   Edges:      {original_edges} ↔ {recomposed_edges}")
     return True
+
+
+def _count_modules_edges(data: Any) -> Tuple[int, int]:
+    """Best-effort module/edge count across different schema shapes."""
+    modules = 0
+    edges = 0
+    if isinstance(data, dict):
+        if isinstance(data.get("nodes"), list):
+            modules = len(data.get("nodes", []))
+        elif isinstance(data.get("modules"), list):
+            modules = len(data.get("modules", []))
+        elif isinstance(data.get("items"), list):
+            modules = len(data.get("items", []))
+        elif isinstance(data.get("strategies"), list):
+            modules = len(data.get("strategies", []))
+        if isinstance(data.get("edges"), list):
+            edges = len(data.get("edges", []))
+    elif isinstance(data, list):
+        modules = len(data)
+    return modules, edges
 
 
 def validate_roundtrip_with_paths(original_path: Path, recomposed_path: Path) -> bool:
@@ -264,10 +282,8 @@ def validate_roundtrip_with_paths(original_path: Path, recomposed_path: Path) ->
         print(f"JSON parse error in recomposed file: {recomposed_path}")
         return False
 
-    original_modules = len(original.get("nodes", []))
-    recomposed_modules = len(recomposed.get("modules", []))
-    original_edges = len(original.get("edges", []))
-    recomposed_edges = len(recomposed.get("edges", []))
+    original_modules, original_edges = _count_modules_edges(original)
+    recomposed_modules, recomposed_edges = _count_modules_edges(recomposed)
 
     if original_modules == recomposed_modules and original_edges == recomposed_edges:
         print("✅ JSON decomposition roundtrip PASSED (module count preserved)")
