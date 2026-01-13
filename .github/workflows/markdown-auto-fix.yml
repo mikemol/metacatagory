@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
+      options: --user root
     env:
       ACTIONS_FILE_COMMANDS: /tmp/_runner_file_commands
       ACTIONS_RUNNER_TEMP: /tmp

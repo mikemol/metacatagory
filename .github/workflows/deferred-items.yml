@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
+      options: --user root
     env:
       ACTIONS_FILE_COMMANDS: /tmp/_runner_file_commands
       ACTIONS_RUNNER_TEMP: /tmp
@@ -33,6 +34,11 @@ jobs:
       - name: Ensure file-commands dir (ACT)
         if: ${{ env.ACT == 'true' }}
         run: mkdir -p /tmp/_runner_file_commands /tmp/runner_tool_cache && chmod -R 777 /tmp
+      - name: Ensure writable temp dirs
+        run: |
+          mkdir -p /__w/_temp/_runner_file_commands /tmp/_runner_file_commands /tmp/runner_tool_cache
+          chmod -R 777 /__w/_temp || true
+          chmod -R 777 /tmp
       - name: Checkout base branch
         uses: actions/checkout@v4
         if: ${{ env.ACT != 'true' && github.event_name == 'pull_request' }}
