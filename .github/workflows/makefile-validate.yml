@@ -16,6 +16,9 @@ on:
       - 'scripts/validate_makefile_docs.py'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     name: Validate Makefile Triangle Identity
@@ -24,44 +27,37 @@ jobs:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
       options: --user root
     env:
-      ACTIONS_FILE_COMMANDS: /tmp/_runner_file_commands
-      ACTIONS_RUNNER_TEMP: /tmp
-      RUNNER_TEMP: /tmp
-      RUNNER_TOOL_CACHE: /tmp/runner_tool_cache
+      FILE_CMDS_DIR: ${{ env.ACT == 'true' && format('{0}/.tmp/_runner_file_commands', github.workspace) || '' }}
+      RUNNER_TEMP_DIR: ${{ env.ACT == 'true' && format('{0}/.tmp', github.workspace) || '' }}
+      RUNNER_TOOL_DIR: ${{ env.ACT == 'true' && format('{0}/.tmp/runner_tool_cache', github.workspace) || '' }}
+      ACTIONS_FILE_COMMANDS: ${{ env.ACT == 'true' && env.FILE_CMDS_DIR || '' }}
+      ACTIONS_RUNNER_TEMP: ${{ env.ACT == 'true' && env.RUNNER_TEMP_DIR || '' }}
+      RUNNER_TEMP: ${{ env.ACT == 'true' && env.RUNNER_TEMP_DIR || '' }}
+      RUNNER_TOOL_CACHE: ${{ env.ACT == 'true' && env.RUNNER_TOOL_DIR || '' }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_REPORT_MODE: "write"
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
-      - name: Init file command temp (ACT)
+      - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
-        run: mkdir -p /__w/_temp/_runner_file_commands && chmod 777 /__w/_temp/_runner_file_commands
-      - name: Ensure file-commands dir (ACT)
-        if: ${{ env.ACT == 'true' }}
-        run: mkdir -p /tmp/_runner_file_commands /tmp/runner_tool_cache && chmod -R 777 /tmp
-      - name: Ensure writable temp dirs
         run: |
-          mkdir -p /__w/_temp/_runner_file_commands /tmp/_runner_file_commands /tmp/runner_tool_cache
-          chmod -R 777 /__w/_temp || true
-          chmod -R 777 /tmp
+          mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
+                   "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
+          chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
+
       - name: Checkout
         uses: actions/checkout@v4
         if: ${{ env.ACT != 'true' }}
 
       - name: Use ACT workspace
         if: ${{ env.ACT == 'true' }}
-        shell: bash
         run: |
           if [ -n "${ACT_SRC:-}" ]; then
             rm -rf ./*
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
 
       - name: Generate Makefile recipes
         run: MUTATE_OK=1 make regen-makefile
@@ -74,7 +70,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-reports
-          path: ${{ env.CI_ARTIFACT_DIR }}/**
+          path: ${{ env.CI_ARTIFACT_DIR }}**
           if-no-files-found: ignore
           retention-days: 30
 

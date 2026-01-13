@@ -3,7 +3,7 @@ name: Deferred Items Review
 on:
   pull_request:
     types: [opened, synchronize]
-  workflow_dispatch:  # Allow manual triggering
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -18,27 +18,26 @@ jobs:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
       options: --user root
     env:
-      ACTIONS_FILE_COMMANDS: /tmp/_runner_file_commands
-      ACTIONS_RUNNER_TEMP: /tmp
-      RUNNER_TEMP: /tmp
-      RUNNER_TOOL_CACHE: /tmp/runner_tool_cache
+      FILE_CMDS_DIR: ${{ env.ACT == 'true' && format('{0}/.tmp/_runner_file_commands', github.workspace) || '' }}
+      RUNNER_TEMP_DIR: ${{ env.ACT == 'true' && format('{0}/.tmp', github.workspace) || '' }}
+      RUNNER_TOOL_DIR: ${{ env.ACT == 'true' && format('{0}/.tmp/runner_tool_cache', github.workspace) || '' }}
+      ACTIONS_FILE_COMMANDS: ${{ env.ACT == 'true' && env.FILE_CMDS_DIR || '' }}
+      ACTIONS_RUNNER_TEMP: ${{ env.ACT == 'true' && env.RUNNER_TEMP_DIR || '' }}
+      RUNNER_TEMP: ${{ env.ACT == 'true' && env.RUNNER_TEMP_DIR || '' }}
+      RUNNER_TOOL_CACHE: ${{ env.ACT == 'true' && env.RUNNER_TOOL_DIR || '' }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_REPORT_MODE: "write"
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
-      - name: Init file command temp (ACT)
+      - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
-        run: mkdir -p /__w/_temp/_runner_file_commands && chmod 777 /__w/_temp/_runner_file_commands
-      - name: Ensure file-commands dir (ACT)
-        if: ${{ env.ACT == 'true' }}
-        run: mkdir -p /tmp/_runner_file_commands /tmp/runner_tool_cache && chmod -R 777 /tmp
-      - name: Ensure writable temp dirs
         run: |
-          mkdir -p /__w/_temp/_runner_file_commands /tmp/_runner_file_commands /tmp/runner_tool_cache
-          chmod -R 777 /__w/_temp || true
-          chmod -R 777 /tmp
+          mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
+                   "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
+          chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
+
       - name: Checkout base branch
         uses: actions/checkout@v4
         if: ${{ env.ACT != 'true' && github.event_name == 'pull_request' }}
@@ -54,7 +53,6 @@ jobs:
 
       - name: Use ACT workspace (current)
         if: ${{ env.ACT == 'true' }}
-        shell: bash
         run: |
           mkdir -p current
           if [ -n "${ACT_SRC:-}" ]; then
@@ -69,141 +67,25 @@ jobs:
         working-directory: current
         run: MUTATE_OK=1 make regen-makefile
 
-      - name: Review deferred items (current branch)
-        working-directory: current
-        run: MUTATE_OK=1 make deferred-items
-
-      - name: Generate Makefile recipes (base, PR only)
+      - name: Generate Makefile recipes (base)
         if: ${{ env.ACT != 'true' && github.event_name == 'pull_request' }}
         working-directory: base
         run: MUTATE_OK=1 make regen-makefile
 
-      - name: Review deferred items (base branch, PR only)
-        if: ${{ env.ACT != 'true' && github.event_name == 'pull_request' }}
-        working-directory: base
-        run: MUTATE_OK=1 make deferred-items
-
-      - name: Compare deferred items (PR only)
-        if: ${{ env.ACT != 'true' && github.event_name == 'pull_request' }}
-        id: compare
+      - name: Deferred items comparison
+        if: ${{ github.event_name == 'pull_request' }}
+        working-directory: current
         run: |
-          CURRENT_TOTAL=$(jq -r '.total' current/${CI_REPORT_DIR}/deferred-summary.json)
-          BASE_TOTAL=$(jq -r '.total' base/${CI_REPORT_DIR}/deferred-summary.json)
-          DIFF=$((CURRENT_TOTAL - BASE_TOTAL))
-          
-          echo "current_total=$CURRENT_TOTAL" >> $GITHUB_OUTPUT
-          echo "base_total=$BASE_TOTAL" >> $GITHUB_OUTPUT
-          echo "diff=$DIFF" >> $GITHUB_OUTPUT
-          
-          if [ $DIFF -gt 0 ]; then
-            echo "status=increased" >> $GITHUB_OUTPUT
-            echo "emoji=⚠️" >> $GITHUB_OUTPUT
-          elif [ $DIFF -lt 0 ]; then
-            echo "status=decreased" >> $GITHUB_OUTPUT
-            echo "emoji=✅" >> $GITHUB_OUTPUT
-          else
-            echo "status=unchanged" >> $GITHUB_OUTPUT
-            echo "emoji=➡️" >> $GITHUB_OUTPUT
-          fi
+          mkdir -p ../current ../base
+          cp -r ${{ env.CI_REPORT_DIR }} ../current/${{ env.CI_REPORT_DIR }}
+          cp -r ${{ env.CI_REPORT_DIR }} ../base/${{ env.CI_REPORT_DIR }}
+          python3 .github/scripts/detect-deferred-items.sh ../base ../current
 
-      - name: Comment on PR
-        if: ${{ env.ACT != 'true' && github.event_name == 'pull_request' }}
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const currentTotal = ${{ steps.compare.outputs.current_total }};
-            const baseTotal = ${{ steps.compare.outputs.base_total }};
-            const diff = ${{ steps.compare.outputs.diff }};
-            const emoji = '${{ steps.compare.outputs.emoji }}';
-            const status = '${{ steps.compare.outputs.status }}';
-            
-            let statusMessage = '';
-            if (diff > 0) {
-              statusMessage = `⚠️ This PR **increases** deferred items by **${diff}**`;
-            } else if (diff < 0) {
-              statusMessage = `✅ This PR **reduces** deferred items by **${Math.abs(diff)}** 🎉`;
-            } else {
-              statusMessage = `➡️ This PR does not change the number of deferred items`;
-            }
-            
-            const currentReport = fs.readFileSync(`current/${process.env.CI_REPORT_DIR}/deferred-items.md`, 'utf8');
-            
-            const body = `## ${emoji} Deferred Items Review
-            
-            ${statusMessage}
-            
-            **Current total:** ${currentTotal}  
-            **Base total:** ${baseTotal}
-            
-            <details>
-            <summary>📊 View detailed report</summary>
-            
-            ${currentReport}
-            
-            </details>
-            
-            ---
-            
-            *This is an informational notice only and does not block the PR. Review deferred items and consider addressing them when appropriate.*
-            `;
-            
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-            
-            const botComment = comments.find(comment => 
-              comment.user.type === 'Bot' && 
-              comment.body.includes('Deferred Items Review')
-            );
-            
-            if (botComment) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: botComment.id,
-                body: body
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: body
-              });
-            }
-
-      - name: Upload reports
-        if: ${{ env.ACT != 'true' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: deferred-items-reports
-          path: |
-            current/${{ env.CI_ARTIFACT_DIR }}/deferred-items*.md
-            current/${{ env.CI_ARTIFACT_DIR }}/deferred-summary.json
-            base/${{ env.CI_ARTIFACT_DIR }}/deferred-items*.md
-            base/${{ env.CI_ARTIFACT_DIR }}/deferred-summary.json
-          retention-days: 30
-          if-no-files-found: ignore
-
-      - name: Post summary
-        run: |
-          cd current
-          TOTAL=$(jq -r '.total' "${CI_REPORT_DIR}/deferred-summary.json")
-          DEVIATION_LOG=$(jq -r '.deviation_log' "${CI_REPORT_DIR}/deferred-summary.json")
-          POSTULATES=$(jq -r '.postulates' "${CI_REPORT_DIR}/deferred-summary.json")
-          TODO=$(jq -r '.todo' "${CI_REPORT_DIR}/deferred-summary.json")
-          PLANNED=$(jq -r '.planned' "${CI_REPORT_DIR}/deferred-summary.json")
-          FIXME=$(jq -r '.fixme' "${CI_REPORT_DIR}/deferred-summary.json")
-          
-          echo "::notice title=Deferred Items Summary::Total: $TOTAL (DeviationLog: $DEVIATION_LOG, Postulates: $POSTULATES, TODO: $TODO, PLANNED: $PLANNED, FIXME: $FIXME)"
       - name: Upload build reports
         if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports
-          path: ${{ env.CI_ARTIFACT_DIR }}/**
+          path: ${{ env.CI_ARTIFACT_DIR }}**
           if-no-files-found: ignore
           retention-days: 30

@@ -10,61 +10,59 @@ permissions:
 
 jobs:
   autofix:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
       options: --user root
     env:
-      ACTIONS_FILE_COMMANDS: /tmp/_runner_file_commands
-      ACTIONS_RUNNER_TEMP: /tmp
-      RUNNER_TEMP: /tmp
-      RUNNER_TOOL_CACHE: /tmp/runner_tool_cache
+      FILE_CMDS_DIR: ${{ env.ACT == 'true' && format('{0}/.tmp/_runner_file_commands', github.workspace) || '' }}
+      RUNNER_TEMP_DIR: ${{ env.ACT == 'true' && format('{0}/.tmp', github.workspace) || '' }}
+      RUNNER_TOOL_DIR: ${{ env.ACT == 'true' && format('{0}/.tmp/runner_tool_cache', github.workspace) || '' }}
+      ACTIONS_FILE_COMMANDS: ${{ env.ACT == 'true' && env.FILE_CMDS_DIR || '' }}
+      ACTIONS_RUNNER_TEMP: ${{ env.ACT == 'true' && env.RUNNER_TEMP_DIR || '' }}
+      RUNNER_TEMP: ${{ env.ACT == 'true' && env.RUNNER_TEMP_DIR || '' }}
+      RUNNER_TOOL_CACHE: ${{ env.ACT == 'true' && env.RUNNER_TOOL_DIR || '' }}
       CI_REPORT_DIR: build/reports
       CI_ARTIFACT_DIR: build/reports
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
-      - name: Init file command temp (ACT)
+      - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
-        run: mkdir -p /__w/_temp/_runner_file_commands && chmod 777 /__w/_temp/_runner_file_commands
+        run: |
+          mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
+                   "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
+          chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
+
       - uses: actions/checkout@v4
         if: ${{ env.ACT != 'true' }}
         with:
           fetch-depth: 0
+
       - name: Use ACT workspace
         if: ${{ env.ACT == 'true' }}
-        shell: bash
         run: |
           if [ -n "${ACT_SRC:-}" ]; then
             rm -rf ./*
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+
+      - name: Install Node
+        run: npm ci
+
       - name: Markdown auto-fix
-        if: ${{ env.ACT != 'true' }}
-        run: make md-fix
-      - name: Commit changes
-        if: ${{ env.ACT != 'true' }}
-        run: |
-          if ! git diff --quiet; then
-            git config user.name "github-actions"
-            git config user.email "github-actions@users.noreply.github.com"
-            git add .
-            git commit -m "chore(markdown): auto-format via workflow"
-            git push
-          else
-            echo "No formatting changes"
+        run: MUTATE_OK=1 make md-fix
+
       - name: Summary
-        run: echo "Auto-fix run complete"
+        if: ${{ success() }}
+        run: echo "Markdown auto-fix completed"
+
       - name: Upload build reports
         if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports
-          path: ${{ env.CI_ARTIFACT_DIR }}/**
+          path: ${{ env.CI_ARTIFACT_DIR }}**
           if-no-files-found: ignore
           retention-days: 30
