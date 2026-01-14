@@ -35,6 +35,12 @@ CI artifacts (scoped per job) land under:
 - `build/reports/python` (python/debt job)
 - Combined bundle: `build-reports-all` (collect-reports job)
 
+What’s inside (typical):
+- agda: makefile coverage/validate logs, recipe scripts, dependency graph exports (planning/dependency JSON).
+- docs: markdown lint reports, roadmap AST, doc coverage.
+- roadmap: tasks_enriched.md, dependency_graph.{mmd,dot}, roundtrip logs.
+- python: pytest/test-report outputs, debt checks.
+
 Intermediate Nodes (Documented)
 --------------------------------
 
