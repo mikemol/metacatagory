@@ -110,7 +110,7 @@ class TestValidateRoundtrip:
                 {"name": "ModuleB"}
             ],
             "edges": [
-                {"source": "ModuleA", "target": "ModuleB"}
+                {"from": "ModuleA", "to": "ModuleB"}
             ],
             "layers": [["ModuleB"], ["ModuleA"]]
         }
@@ -252,7 +252,7 @@ class TestValidateRoundtrip:
         }
         recomposed = {
             "modules": [{"name": "A"}, {"name": "B"}],
-            "edges": [{"source": "A", "target": "B"}],
+            "edges": [{"from": "A", "to": "B"}],
             "layers": []
         }
         
@@ -269,6 +269,32 @@ class TestValidateRoundtrip:
         captured = capsys.readouterr()
         assert "Edges:" in captured.out
         assert "1 ↔ 1" in captured.out
+
+    def test_strict_mode_edge_mismatch(self, tmp_path, capsys, monkeypatch):
+        """Strict mode should fail when edge sets differ."""
+        monkeypatch.setenv("METACATAGORY_STRICT_ROUNDTRIP", "true")
+        original = {
+            "nodes": [{"id": "A"}, {"id": "B"}],
+            "edges": [{"from": "A", "to": "B"}]
+        }
+        recomposed = {
+            "modules": [{"name": "A"}, {"name": "B"}],
+            "edges": [{"from": "A", "to": "C"}],  # different edge target
+            "layers": []
+        }
+
+        with patch('scripts.validate_json_roundtrip.Path') as mock_path:
+            mock_path.return_value.exists.side_effect = [True, True]
+
+            with patch('builtins.open', side_effect=[
+                mock_open(read_data=json.dumps(original)).return_value,
+                mock_open(read_data=json.dumps(recomposed)).return_value
+            ]):
+                result = validate_roundtrip()
+
+        assert result is False
+        captured = capsys.readouterr()
+        assert "strict structural mismatch" in captured.out
 
 
 class TestCLI:
