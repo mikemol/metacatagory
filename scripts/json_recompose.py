@@ -41,16 +41,19 @@ class JSONRecomposer:
         if metadata_file.exists():
             with open(metadata_file, "r") as f:
                 return json.load(f)
-        return {}
+        raise ValueError(f"No _metadata.json in {self.hierarchical_dir}")
 
     def _check_expected_count(self, found: int, label: str) -> None:
         """Validate fragment completeness against metadata total_items if present."""
         expected = self.metadata.get("total_items")
-        if isinstance(expected, int) and expected != found:
+        if not isinstance(expected, int):
+            raise ValueError(f"Missing or invalid total_items in {self.metadata_path}")
+        if expected != found:
             raise ValueError(
                 f"Fragment count mismatch for {label}: expected {expected} "
                 f"(from {self.metadata_path}), found {found}"
             )
+        print(f"[recompose] {label}: expected {expected}, found {found} (ok)")
     
     def recompose(self) -> Dict[str, Any]:
         """Recompose hierarchical structure back to monolithic JSON."""
