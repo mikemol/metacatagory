@@ -194,14 +194,14 @@ class ItemArrayRecomposer(JSONRecomposer):
         if not items:
             json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
 
-                def load_path(path: Path) -> Any:
-                    with open(path, "r") as f:
-                        return json.load(f)
+            def load_path(path: Path) -> Any:
+                with open(path, "r") as f:
+                    return json.load(f)
 
-                if parallel and workers > 1 and json_files:
-                    with ThreadPoolExecutor(max_workers=workers) as executor:
-                        items.extend(executor.map(load_path, json_files))
-                else:
+            if parallel and workers > 1 and json_files:
+                with ThreadPoolExecutor(max_workers=workers) as executor:
+                    items.extend(executor.map(load_path, json_files))
+            else:
                     for json_file in json_files:
                         items.append(load_path(json_file))
 
@@ -258,16 +258,16 @@ class RoadmapRecomposer(JSONRecomposer):
         if not items:
             json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
 
-                def load_path(path: Path) -> Any:
-                    with open(path, "r") as f:
-                        return json.load(f)
+            def load_path(path: Path) -> Any:
+                with open(path, "r") as f:
+                    return json.load(f)
 
-                if parallel and workers > 1 and json_files:
-                    with ThreadPoolExecutor(max_workers=workers) as executor:
-                        items.extend(executor.map(load_path, json_files))
-                else:
-                    for json_file in json_files:
-                        items.append(load_path(json_file))
+            if parallel and workers > 1 and json_files:
+                with ThreadPoolExecutor(max_workers=workers) as executor:
+                    items.extend(executor.map(load_path, json_files))
+            else:
+                for json_file in json_files:
+                    items.append(load_path(json_file))
 
         self._check_expected_count(len(items), "items")
         return {"items": items}
