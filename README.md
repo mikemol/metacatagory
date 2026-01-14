@@ -120,4 +120,5 @@ MUTATE_OK=1 make check
 # Or narrower targets:
 # MUTATE_OK=1 make json-roundtrip-validate
 # MUTATE_OK=1 make check-docs
+# For pytest/md targets, install dev deps (`mise run dev-setup`) and note network is required (or use the CI container).
 ```

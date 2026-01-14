@@ -51,6 +51,7 @@ and whether execution is guarded or defaults are provided.
 | `CI_TASKS_FILE` | `roadmap-sync.yml`, `.github/scripts/sync-roadmap-issues.sh` | GitHub Actions runtime | Defaults to `.github/roadmap/tasks.json` when unset | Safe: defaulted |
 | `CI_REPORT_DIR` | `ci.yml` | GitHub Actions runtime | Job-scoped: `build/reports/agda`, `.../docs`, `.../roadmap`, `.../python` | Safe: scoped |
 | `CI_ARTIFACT_DIR` | `ci.yml` | GitHub Actions runtime | Job-scoped: same as `CI_REPORT_DIR` | Safe: scoped |
+| `METACATAGORY_STRICT_ROUNDTRIP` | `ci.yml`, local runs | Default strict structural validation for roundtrip checks | Default `true` | Safe: strict by default |
 | `AGDA_DIR` | `ci.yml` | Job env in `ci.yml` | Set in job `env` | Safe: provided by workflow |
 | `AGDA_EXEC_OPTIONS` | `ci.yml` (exported to `GITHUB_ENV`) | Set in `ci.yml` step | Used indirectly by `agda` | Safe: set by workflow |
 | `AGDA_STDLIB` | `ci.yml` | Job env in `ci.yml` | Set in job `env` | Safe: provided by workflow |

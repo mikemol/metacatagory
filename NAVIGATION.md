@@ -13,6 +13,7 @@
 - `MUTATE_OK=1 make regen-makefile` (regenerate recipes)
 - `MUTATE_OK=1 make check` (full suite; strict roundtrip validation is the default)
 - For narrower runs: `MUTATE_OK=1 make json-roundtrip-validate` or `MUTATE_OK=1 make check-docs`
+- For pytest/md targets, install dev deps (`mise run dev-setup`); network required (or use the CI container).
 
 ## Core Modules
 

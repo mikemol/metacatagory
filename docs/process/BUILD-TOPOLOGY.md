@@ -28,6 +28,13 @@ Gravity Wells (Entry Points)
 | `priority-refresh` | Re-run the priority pipeline (planning index, docs, badge weights). | `data/planning_index.json`, `.github/roadmap/tasks.json`, `.github/badges/weights.json`, `badges` |
 | `regen-docs` | Regenerate documentation exports (markdown only). | `docs-all` |
 
+CI artifacts (scoped per job) land under:
+- `build/reports/agda` (agda-exports job)
+- `build/reports/docs` (docs-checks job)
+- `build/reports/roadmap` (roadmap-json job)
+- `build/reports/python` (python/debt job)
+- Combined bundle: `build-reports-all` (collect-reports job)
+
 Intermediate Nodes (Documented)
 --------------------------------
 
