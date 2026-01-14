@@ -172,7 +172,7 @@ class TestValidateRoundtrip:
         assert result is False
         captured = capsys.readouterr()
         assert "FAILED" in captured.out
-        assert "module count differs" in captured.out
+        assert "strict structural mismatch" in captured.out
 
     def test_missing_original_file(self, capsys):
         """Should fail when original file doesn't exist"""

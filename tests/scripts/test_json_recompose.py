@@ -23,6 +23,17 @@ from json_recompose import (
 )
 
 
+def write_metadata(base: Path, total_items: int, strategy: str = "dependency-graph") -> None:
+    meta = {
+        "timestamp": "2026-01-06T00:00:00",
+        "strategy": strategy,
+        "total_items": total_items,
+        "source_file": "dummy",
+        "fragment_count": total_items
+    }
+    (base / "_metadata.json").write_text(json.dumps(meta), encoding="utf-8")
+
+
 class TestJSONRecomposerBase:
     """Test base JSONRecomposer class."""
     
@@ -44,10 +55,8 @@ class TestJSONRecomposerBase:
     
     def test_load_metadata_missing(self, tmp_path):
         """Test loading metadata when file doesn't exist."""
-        recomposer = DependencyGraphRecomposer(str(tmp_path))
-        
-        # Should return empty dict if metadata missing
-        assert recomposer.metadata == {}
+        with pytest.raises(ValueError):
+            DependencyGraphRecomposer(str(tmp_path))
     
     def test_load_metadata_with_data(self, tmp_path):
         """Test loading metadata from file."""
@@ -76,6 +85,7 @@ class TestDependencyGraphRecomposer:
         # Create hierarchical structure
         modules_dir = tmp_path / "modules"
         modules_dir.mkdir(parents=True)
+        write_metadata(tmp_path, total_items=3)
         
         # Write module files
         module_a_dir = modules_dir / "Module"
@@ -131,6 +141,7 @@ class TestDependencyGraphRecomposer:
         """Test that _index.json files are not treated as modules."""
         modules_dir = tmp_path / "modules"
         modules_dir.mkdir(parents=True)
+        write_metadata(tmp_path, total_items=1)
         
         # Create index file
         with open(modules_dir / "_index.json", "w") as f:
@@ -159,6 +170,7 @@ class TestDependencyGraphRecomposer:
         # Create modules
         modules_dir = tmp_path / "modules"
         modules_dir.mkdir(parents=True)
+        write_metadata(tmp_path, total_items=1)
         
         module_data = {
             "name": "Test.A",
@@ -193,6 +205,7 @@ class TestDependencyGraphRecomposer:
         # Create modules
         modules_dir = tmp_path / "modules"
         modules_dir.mkdir(parents=True)
+        write_metadata(tmp_path, total_items=3)
         
         for name in ["Cycle.A", "Cycle.B", "Cycle.C"]:
             parts = name.split(".")
@@ -230,6 +243,7 @@ class TestDependencyGraphRecomposer:
         # Create minimal structure
         modules_dir = tmp_path / "modules"
         modules_dir.mkdir(parents=True)
+        write_metadata(tmp_path, total_items=0)
         
         with open(modules_dir / "_index.json", "w") as f:
             json.dump([], f)
@@ -245,6 +259,7 @@ class TestDependencyGraphRecomposer:
         """Test that recomposition doesn't create duplicate edges."""
         modules_dir = tmp_path / "modules"
         modules_dir.mkdir(parents=True)
+        write_metadata(tmp_path, total_items=3)
         
         # Create module with duplicate imports (shouldn't happen, but test robustness)
         module_data = {
@@ -290,21 +305,21 @@ class TestRecomposerErrorHandling:
         """Test handling module files without 'name' field."""
         modules_dir = tmp_path / "modules"
         modules_dir.mkdir(parents=True)
+        write_metadata(tmp_path, total_items=1)
         
         # Write module without name field
         with open(modules_dir / "invalid.json", "w") as f:
             json.dump({"imports": [], "imported_by": []}, f)
         
         recomposer = DependencyGraphRecomposer(str(tmp_path))
-        result = recomposer.recompose()
-        
-        # Should skip invalid module, not crash
-        assert result["modules"] == {}
+        with pytest.raises(ValueError):
+            recomposer.recompose()
     
     def test_recompose_with_malformed_json(self, tmp_path):
         """Test handling malformed JSON files."""
         modules_dir = tmp_path / "modules"
         modules_dir.mkdir(parents=True)
+        write_metadata(tmp_path, total_items=1)
         
         # Write malformed JSON
         with open(modules_dir / "malformed.json", "w") as f:
@@ -318,9 +333,10 @@ class TestRecomposerErrorHandling:
     
     def test_recompose_missing_modules_directory(self, tmp_path):
         """Test recomposition when modules directory doesn't exist."""
+        write_metadata(tmp_path, total_items=0)
         recomposer = DependencyGraphRecomposer(str(tmp_path))
         result = recomposer.recompose()
-        
+
         # Should return empty structure, not crash
         assert result["modules"] == {}
         assert result["edges"] == []
@@ -334,6 +350,7 @@ class TestRecomposerRoundtrip:
         # This would require importing json_decompose, which we test separately
         # Here we test that recompose produces consistent output
         
+        write_metadata(tmp_path, total_items=5)
         modules_dir = tmp_path / "modules"
         modules_dir.mkdir(parents=True)
         
@@ -359,6 +376,7 @@ class TestRecomposerRoundtrip:
         """Test that decompose → recompose preserves edge count."""
         modules_dir = tmp_path / "modules"
         modules_dir.mkdir(parents=True)
+        write_metadata(tmp_path, total_items=3)
         
         # Create modules with specific edges
         module_a = {
