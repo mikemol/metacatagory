@@ -615,7 +615,7 @@ echo "STEP 10: REAL-WORLD DATA VALIDATION"
 echo "═══════════════════════════════════════════════════════════════════════════"
 echo ""
 
-PROD_DATA="/home/mikemol/github/metacatagory/build/dependency_graph.json"
+PROD_DATA="/home/mikemol/github/metacatagory/data/dependency_graph.json"
 
 if [ -f "$PROD_DATA" ]; then
     echo "Found production data: $PROD_DATA"

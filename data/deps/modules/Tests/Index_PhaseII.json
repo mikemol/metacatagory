@@ -1,8 +1,0 @@
-{
-  "name": "Tests.Index_PhaseII",
-  "imports": [
-    "Tests.UniversalPropertyTests",
-    "Tests.ConstructiveWitnessTests"
-  ],
-  "imported_by": []
-}

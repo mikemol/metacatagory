@@ -67,8 +67,18 @@ Patterns include:
 
 **File:** `Makefile` (generated from `src/agda/Examples/ExporterMakefile.agda`)
 
-* **AGDA**: Path to Agda compiler (local `.local/agda` or system `agda`)
-* **AGDA_FLAGS**: Common compilation flags (`-i src/agda --ghc-flag=-Wno-star-is-type`)
+* **AGDA**: Path to Agda compiler (defaults to `agda`)
+* **AGDA_FLAGS**: Common compilation flags (`-i src/agda --include-path=$(AGDA_PRIM_DIR) --no-default-libraries --no-libraries --ghc-flag=-Wno-star-is-type`)
+
+### Parallelism Controls
+
+These variables enable opt-in parallelism in Python pipelines and JSON decomposition:
+
+* **METACATAGORY_PARALLEL**: `true` enables parallel execution in pipeline phases that use `ConcurrentPhase`.
+* **METACATAGORY_WORKERS**: Integer worker count for parallel execution and JSON fragment writes.
+
+Pytest parallelism uses the make variable `PYTEST_WORKERS`, which defaults to
+`METACATAGORY_WORKERS` when set, otherwise `CORES`.
 
 All Agda compilation targets use `$(AGDA) $(AGDA_FLAGS)` instead of hardcoded paths and flags.
 

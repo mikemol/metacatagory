@@ -75,7 +75,7 @@ record Fragment : Set where
 record Hierarchical : Set where
   constructor mkHierarchical
   field
-    -- Metadata file (e.g., build/deps/_metadata.json)
+    -- Metadata file (e.g., data/deps/_metadata.json)
     metadata : JSON
     
     -- All fragments (data files + index files)
@@ -177,15 +177,15 @@ record DependencyGraphSchema : Set where
     totalDependencies : Nat
     
     -- Target hierarchical structure:
-    -- build/deps/_metadata.json
-    -- build/deps/modules/{Package}/{Module}.json
-    -- build/deps/layers/layer-{N}.json
-    -- build/deps/cycles/cycle-{N}.json (if any)
+    -- data/deps/_metadata.json
+    -- data/deps/modules/{Package}/{Module}.json
+    -- data/deps/layers/layer-{N}.json
+    -- data/deps/cycles/cycle-{N}.json (if any)
     
-    metadataPath : Filepath  -- "build/deps/_metadata.json"
-    modulesPath : Filepath   -- "build/deps/modules/"
-    layersPath : Filepath    -- "build/deps/layers/"
-    cyclesPath : Filepath    -- "build/deps/cycles/"
+    metadataPath : Filepath  -- "data/deps/_metadata.json"
+    modulesPath : Filepath   -- "data/deps/modules/"
+    layersPath : Filepath    -- "data/deps/layers/"
+    cyclesPath : Filepath    -- "data/deps/cycles/"
 
 -- | Roadmap enrichment schema
 record EnrichmentSchema : Set where
@@ -195,15 +195,15 @@ record EnrichmentSchema : Set where
     totalItems : Nat
     
     -- Target hierarchical structure:
-    -- build/enriched/_metadata.json
-    -- build/enriched/items/{ID}-{slug}.json
-    -- build/enriched/dependencies/{ID}.deps.json
-    -- build/enriched/annotations/{ID}.source.json
+    -- data/enriched/_metadata.json
+    -- data/enriched/items/{ID}-{slug}.json
+    -- data/enriched/dependencies/{ID}.deps.json
+    -- data/enriched/annotations/{ID}.source.json
     
-    metadataPath : Filepath      -- "build/enriched/_metadata.json"
-    itemsPath : Filepath         -- "build/enriched/items/"
-    dependenciesPath : Filepath  -- "build/enriched/dependencies/"
-    annotationsPath : Filepath   -- "build/enriched/annotations/"
+    metadataPath : Filepath      -- "data/enriched/_metadata.json"
+    itemsPath : Filepath         -- "data/enriched/items/"
+    dependenciesPath : Filepath  -- "data/enriched/dependencies/"
+    annotationsPath : Filepath   -- "data/enriched/annotations/"
 
 -- | Planning index schema
 record PlanningSchema : Set where
@@ -216,15 +216,15 @@ record PlanningSchema : Set where
     totalAdapters : Nat
     
     -- Target hierarchical structure:
-    -- build/planning/_metadata.json
-    -- build/planning/items/{category}/{ID}.json
-    -- build/planning/sources/{adapter}.json
-    -- build/planning/artifacts/files.json
+    -- data/planning/_metadata.json
+    -- data/planning/items/{category}/{ID}.json
+    -- data/planning/sources/{adapter}.json
+    -- data/planning/artifacts/files.json
     
-    metadataPath : Filepath   -- "build/planning/_metadata.json"
-    itemsPath : Filepath      -- "build/planning/items/"
-    sourcesPath : Filepath    -- "build/planning/sources/"
-    artifactsPath : Filepath  -- "build/planning/artifacts/"
+    metadataPath : Filepath   -- "data/planning/_metadata.json"
+    itemsPath : Filepath      -- "data/planning/items/"
+    sourcesPath : Filepath    -- "data/planning/sources/"
+    artifactsPath : Filepath  -- "data/planning/artifacts/"
 
 ------------------------------------------------------------------------
 -- Utility: Index manifest generation

@@ -20,4 +20,4 @@
 
 ## Technical debt / status
 
-- Keep deferred-items.md in sync when schema shifts; regen projections (`make roadmap-merge`, `make roadmap-export-md`) after changes.
+- Keep deferred-items.md in sync when schema shifts; regen projections (`make roadmap-merge`, `make ROADMAP.md`) after changes.

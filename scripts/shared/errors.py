@@ -134,7 +134,7 @@ class ValidationError(ScriptError):
     def __init__(self, message: str, field: str = "", value: Any = None, **kwargs):
         # Extract context if provided, merge with field/value
         extra_context = kwargs.pop("context", {})
-        context = {"field": field, "value": value, **kwargs, **extra_context}
+        context = {"field": field, "value": value, **extra_context, **kwargs}
         
         super().__init__(
             message=message,

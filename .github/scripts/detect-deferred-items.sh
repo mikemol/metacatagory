@@ -5,8 +5,17 @@
 
 set -euo pipefail
 
-OUTPUT_FILE="${1:-deferred-items.md}"
-SUMMARY_FILE="deferred-summary.json"
+if [ -n "${CI_REPORT_DIR:-}" ]; then
+  default_report="${CI_REPORT_DIR}/deferred-items.md"
+  default_summary="${CI_REPORT_DIR}/deferred-summary.json"
+else
+  default_report="deferred-items.md"
+  default_summary="deferred-summary.json"
+fi
+
+OUTPUT_FILE="${1:-${CI_DEFERRED_REPORT_FILE:-${default_report}}}"
+SUMMARY_FILE="${CI_DEFERRED_SUMMARY_FILE:-${default_summary}}"
+mkdir -p "$(dirname "$OUTPUT_FILE")" "$(dirname "$SUMMARY_FILE")"
 
 # Color codes for terminal output
 RED='\033[0;31m'
@@ -97,17 +106,16 @@ search_pattern "FIXME" "FIXME Items" "FIXME_COUNT"
 } >> "$OUTPUT_FILE"
 
 # Generate JSON summary for programmatic access
-cat > "$SUMMARY_FILE" <<EOF
-{
-  "total": $TOTAL,
-  "deviation_log": $DEVIATION_LOG_COUNT,
-  "postulates": $POSTULATE_COUNT,
-  "todo": $TODO_COUNT,
-  "planned": $PLANNED_COUNT,
-  "fixme": $FIXME_COUNT,
-  "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-}
-EOF
+jq -nc \
+  --argjson total "$TOTAL" \
+  --argjson deviation_log "$DEVIATION_LOG_COUNT" \
+  --argjson postulates "$POSTULATE_COUNT" \
+  --argjson todo "$TODO_COUNT" \
+  --argjson planned "$PLANNED_COUNT" \
+  --argjson fixme "$FIXME_COUNT" \
+  --arg timestamp "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+  '{total:$total,deviation_log:$deviation_log,postulates:$postulates,todo:$todo,planned:$planned,fixme:$fixme,timestamp:$timestamp}' \
+  > "$SUMMARY_FILE"
 
 # Print summary to console
 echo ""

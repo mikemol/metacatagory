@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-01-07T05:25:25.809846+00:00",
+  "timestamp": "2026-01-11T21:53:11.932620+00:00",
   "strategy": "item-array",
-  "source_file": "build/planning_index.json",
+  "source_file": "data/planning_index.json",
   "total_items": 117,
   "fragment_count": 122,
   "version": "1.0"

@@ -1,9 +1,0 @@
-{
-  "name": "Plan.CIM.CanonicalRoadmap",
-  "imports": [
-    "Plan.CIM.RoadmapIndex"
-  ],
-  "imported_by": [
-    "Plan.CIM.PlanningKernel"
-  ]
-}

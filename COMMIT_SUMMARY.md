@@ -97,7 +97,7 @@ M  docs/automation/MAKEFILE-GENERATION-ENHANCEMENTS.md # Updated with FFI fix no
 ```
 ?? data/deps/modules/**/*.json               # Auto-generated from graph
 ?? build/graph_parsed_state.txt              # Auto-generated debug file
-?? build/makefile_targets_generated.md       # Auto-generated docs
+?? docs/automation/makefile_targets_generated.md       # Auto-generated docs
 ?? Makefile.generated                        # Auto-generated from ExporterMakefile.agda
 ```
 

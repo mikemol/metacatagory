@@ -254,7 +254,7 @@ generateRule source imports =
       targetFile = moduleToInterfacePath source
       importInterfaces = map moduleToInterfacePath imports
       allDeps = sourceFile ∷ importInterfaces
-      recipe = "agda -i src/agda --ghc-flag=-Wno-star-is-type " ++ sourceFile
+      recipe = "$(AGDA) $(AGDA_FLAGS) " ++ sourceFile
   in mkRule targetFile allDeps recipe
 
 -- ==========================================================

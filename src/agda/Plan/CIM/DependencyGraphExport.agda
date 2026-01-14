@@ -53,6 +53,32 @@ _==c_ : Char → Char → Bool
 'x' ==c 'x' = true
 'y' ==c 'y' = true
 'z' ==c 'z' = true
+'A' ==c 'A' = true
+'B' ==c 'B' = true
+'C' ==c 'C' = true
+'D' ==c 'D' = true
+'E' ==c 'E' = true
+'F' ==c 'F' = true
+'G' ==c 'G' = true
+'H' ==c 'H' = true
+'I' ==c 'I' = true
+'J' ==c 'J' = true
+'K' ==c 'K' = true
+'L' ==c 'L' = true
+'M' ==c 'M' = true
+'N' ==c 'N' = true
+'O' ==c 'O' = true
+'P' ==c 'P' = true
+'Q' ==c 'Q' = true
+'R' ==c 'R' = true
+'S' ==c 'S' = true
+'T' ==c 'T' = true
+'U' ==c 'U' = true
+'V' ==c 'V' = true
+'W' ==c 'W' = true
+'X' ==c 'X' = true
+'Y' ==c 'Y' = true
+'Z' ==c 'Z' = true
 '0' ==c '0' = true
 '1' ==c '1' = true
 '2' ==c '2' = true
@@ -144,6 +170,24 @@ reverse (x ∷ xs) = reverse xs ++ˡ (x ∷ [])
 map : ∀ {A B : Set} → (A → B) → List A → List B
 map f [] = []
 map f (x ∷ xs) = f x ∷ map f xs
+
+filter : ∀ {A : Set} → (A → Bool) → List A → List A
+filter p [] = []
+filter p (x ∷ xs) with p x
+... | true = x ∷ filter p xs
+... | false = filter p xs
+
+not : Bool → Bool
+not true = false
+not false = true
+
+_&&_ : Bool → Bool → Bool
+true && b = b
+false && _ = false
+
+_||_ : Bool → Bool → Bool
+true || _ = true
+false || b = b
 
 add : Nat → Nat → Nat
 add m n = _+_ m n
@@ -252,13 +296,32 @@ lookupNode k ((k' , v) ∷ rest) with primStringEquality k k'
 ... | true  = just v
 ... | false = lookupNode k rest
 
+updateEdge : Edge → List (String × NodeDeps) → (List (String × NodeDeps) × Bool) × Bool
+updateEdge _ [] = ([] , false) , false
+updateEdge e ((k , v) ∷ rest) with updateEdge e rest
+... | (rest' , srcFound) , dstFound with primStringEquality k (Edge.src e) | primStringEquality k (Edge.dst e)
+... | true  | true =
+  let newV = mkNodeDeps (Edge.dst e ∷ NodeDeps.imports v) (Edge.src e ∷ NodeDeps.importedBy v)
+  in (((k , newV) ∷ rest') , true) , true
+... | true  | false =
+  let newV = mkNodeDeps (Edge.dst e ∷ NodeDeps.imports v) (NodeDeps.importedBy v)
+  in (((k , newV) ∷ rest') , true) , dstFound
+... | false | true =
+  let newV = mkNodeDeps (NodeDeps.imports v) (Edge.src e ∷ NodeDeps.importedBy v)
+  in (((k , newV) ∷ rest') , srcFound) , true
+... | false | false =
+  (((k , v) ∷ rest') , srcFound) , dstFound
+
 insertEdge : Edge → List (String × NodeDeps) → List (String × NodeDeps)
-insertEdge e [] = (Edge.src e , mkNodeDeps (Edge.dst e ∷ []) []) ∷
-                  (Edge.dst e , mkNodeDeps [] []) ∷ []
-insertEdge e ((k , v) ∷ rest) with primStringEquality k (Edge.src e) | primStringEquality k (Edge.dst e)
-... | true  | _    = (k , mkNodeDeps (Edge.dst e ∷ NodeDeps.imports v) (NodeDeps.importedBy v)) ∷ rest
-... | _     | true = (k , mkNodeDeps (NodeDeps.imports v) (Edge.src e ∷ NodeDeps.importedBy v)) ∷ rest
-... | _     | _    = (k , v) ∷ insertEdge e rest
+insertEdge e acc with updateEdge e acc
+... | (acc' , srcFound) , dstFound with srcFound | dstFound
+... | true  | true  = acc'
+... | false | true  = acc' ++ˡ ((Edge.src e , mkNodeDeps (Edge.dst e ∷ []) []) ∷ [])
+... | true  | false = acc' ++ˡ ((Edge.dst e , mkNodeDeps [] (Edge.src e ∷ [])) ∷ [])
+... | false | false =
+  acc' ++ˡ
+    ((Edge.src e , mkNodeDeps (Edge.dst e ∷ []) []) ∷
+     (Edge.dst e , mkNodeDeps [] (Edge.src e ∷ [])) ∷ [])
 
 foldEdges : List Edge → List (String × NodeDeps) → List (String × NodeDeps)
 foldEdges [] acc = acc
@@ -285,6 +348,22 @@ renderNodes (x ∷ xs) = "[" ++ renderNode x ++ renderRest xs ++ "]"
     renderRest [] = ""
     renderRest (y ∷ ys) = "," ++ renderNode y ++ renderRest ys
 
+renderEdge : Edge → String
+renderEdge e =
+  concatStrings
+    ( "{" ∷
+      "\"from\":" ∷ quoteString (Edge.src e) ∷ "," ∷
+      "\"to\":"   ∷ quoteString (Edge.dst e) ∷
+      "}" ∷ [] )
+
+renderEdges : List Edge → String
+renderEdges [] = "[]"
+renderEdges (x ∷ xs) = "[" ++ renderEdge x ++ renderRest xs ++ "]"
+  where
+    renderRest : List Edge → String
+    renderRest [] = ""
+    renderRest (y ∷ ys) = "," ++ renderEdge y ++ renderRest ys
+
 ------------------------------------------------------------------------
 -- Top-level export
 ------------------------------------------------------------------------
@@ -293,28 +372,25 @@ defaultInPath : String
 defaultInPath = "build/diagrams/agda-deps-full.dot"
 
 defaultOutPath : String
-defaultOutPath = "build/dependency_graph.json"
+defaultOutPath = "data/dependency_graph.json"
 
 count : ∀ {A : Set} → List A → Nat
 count [] = zero
 count (_ ∷ xs) = suc (count xs)
 
-renderJson : List (String × NodeDeps) → String
-renderJson nodes =
+renderJson : List (String × NodeDeps) → List Edge → String
+renderJson nodes edges =
   "{" ++
     "\"metadata\":{" ++
       "\"total_modules\":" ++ natToString (count nodes) ++ "," ++
-      "\"total_dependencies\":" ++ natToString (edgeCount nodes) ++ "," ++
+      "\"total_dependencies\":" ++ natToString (count edges) ++ "," ++
       "\"cycles_detected\":0," ++
       "\"critical_path_length\":0," ++
       "\"dependency_layers\":0," ++
       "\"timestamp\":\"\"}," ++
-    "\"nodes\":" ++ renderNodes nodes ++
+    "\"nodes\":" ++ renderNodes nodes ++ "," ++
+    "\"edges\":" ++ renderEdges edges ++
   "}"
-  where
-    edgeCount : List (String × NodeDeps) → Nat
-    edgeCount [] = zero
-    edgeCount ((k , v) ∷ xs) = add (count (NodeDeps.imports v)) (edgeCount xs)
 
 ------------------------------------------------------------------------
 -- Line-based parsing
@@ -363,6 +439,43 @@ lookupNodeLabel k ((k' , label) ∷ rest) with primStringEquality k k'
 ... | true  = label
 ... | false = lookupNodeLabel k rest
 
+startsWithChars : List Char → List Char → Bool
+startsWithChars [] _ = true
+startsWithChars (_ ∷ _) [] = false
+startsWithChars (p ∷ ps) (c ∷ cs) with p ==c c
+... | true = startsWithChars ps cs
+... | false = false
+
+startsWith : String → String → Bool
+startsWith prefix s = startsWithChars (primStringToList prefix) (primStringToList s)
+
+startsWithAny : List String → String → Bool
+startsWithAny [] _ = false
+startsWithAny (p ∷ ps) s with startsWith p s
+... | true = true
+... | false = startsWithAny ps s
+
+isExternalModule : String → Bool
+isExternalModule name =
+  let stdlibPrefixes =
+        "Agda.Builtin." ∷
+        "Agda.Primitive" ∷
+        "Data." ∷
+        "Function." ∷
+        "Relation." ∷
+        "Level" ∷
+        "IO" ∷
+        "Category" ∷
+        "Reflection" ∷
+        "Codata" ∷
+        "Coinduction" ∷
+        "Text." ∷
+        []
+  in startsWithAny stdlibPrefixes name
+
+isInternalModule : String → Bool
+isInternalModule name = not (isExternalModule name)
+
 main : IO ⊤
 main = do
   dot ← readFile defaultInPath
@@ -371,6 +484,10 @@ main = do
   let labelMap = buildLabelMap dotNodes
   let edgeIds = parseEdgeLines cs
   -- Resolve edge node IDs to module names
-  let edges = map (λ e → mkEdge (lookupNodeLabel (Edge.src e) labelMap) (lookupNodeLabel (Edge.dst e) labelMap)) edgeIds
-  let nodes = foldEdges edges []
-  writeFile defaultOutPath (renderJson nodes)
+  let allEdges = map (λ e → mkEdge (lookupNodeLabel (Edge.src e) labelMap) (lookupNodeLabel (Edge.dst e) labelMap)) edgeIds
+  let edges = filter (λ e → isInternalModule (Edge.src e) && isInternalModule (Edge.dst e)) allEdges
+  let allLabels = map DotNode.label dotNodes
+  let internalLabels = filter isInternalModule allLabels
+  let baseNodes = map (λ l → (l , mkNodeDeps [] [])) internalLabels
+  let nodes = foldEdges edges baseNodes
+  writeFile defaultOutPath (renderJson nodes edges)

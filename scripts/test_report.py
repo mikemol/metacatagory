@@ -22,8 +22,8 @@ Scans src/agda/Tests/*.agda files and extracts:
 - Count per file and per adapter type
 
 Outputs:
-- JSON summary to build/reports/test-report.json
-- Markdown summary to build/reports/test-report.md
+- JSON summary to build/reports/test-report.json (or CI_REPORT_DIR override)
+- Markdown summary to build/reports/test-report.md (or CI_REPORT_DIR override)
 
 Heuristic/static analysis only; does not attempt to parse Agda fully.
 """
@@ -40,6 +40,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parent
 sys.path.insert(0, str(ROOT))
 
+from scripts.shared.paths import REPORTS_DIR
 from scripts.audax_doc import (
     AUDAXDoc,
     Field,
@@ -52,7 +53,7 @@ from scripts.audax_doc import (
     render_doc,
 )
 TESTS_DIR = ROOT / "src" / "agda" / "Tests"
-OUT_DIR = ROOT / "build" / "reports"
+OUT_DIR = REPORTS_DIR
 
 ADAPTER_TYPE_RE = re.compile(r"^\s*([a-zA-Z0-9_\-']+)\s*:\s*A\.([A-Za-z0-9_]+)\b")
 STATUS_ASSERT_RE = re.compile(

@@ -72,7 +72,7 @@ roadmapGp01 = record
 
 def test_export_roadmap_sppf_minimal(tmp_path, monkeypatch):
     repo_root = tmp_path
-    planning = repo_root / "build" / "planning_index.json"
+    planning = repo_root / "data" / "planning_index.json"
     planning.parent.mkdir(parents=True, exist_ok=True)
     planning.write_text(
         json.dumps(

@@ -11,19 +11,27 @@ Showcases full integration of shared components:
 import json
 from pathlib import Path
 import sys
-from typing import Any, Dict, List, Set
+import os
+from typing import Any, Dict, List, Set, Tuple
+from concurrent.futures import ThreadPoolExecutor
 
 # Ensure repository root is importable as a package (scripts.*)
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
-from scripts.shared.paths import REPO_ROOT, BUILD_DIR
+from scripts.shared.parallel import get_parallel_settings
+from scripts.shared.paths import REPO_ROOT, BUILD_DIR, REPORTS_DIR
 from scripts.shared.io import load_json
 from scripts.shared.logging import configure_logging, StructuredLogger
 from scripts.shared.validation import ValidationResult, dict_validator
 from scripts.shared.validated_provenance import ValidatedProvenance
 from scripts.shared.recovery_pipeline import RecoveryPipeline, RecoveryStrategy
+from scripts.shared.config import get_config
+
+
+def allow_report_write() -> bool:
+    return os.environ.get("MUTATE_OK") == "1" and get_config().report_mode == "write"
 from scripts.shared.pipelines import Phase, PhaseResult
 
 
@@ -36,11 +44,25 @@ class LoadJSONFilesPhase(Phase[Path, Dict[str, List[Dict[str, Any]]]]):
         self.logger = logger
 
     def transform(self, input_data: Path, context: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
-        self.logger.info("Loading canonical planning index", file=str(input_data))
-        canonical = load_json(input_data, required=True)
-        
-        self.logger.info("Loading tasks.json", file=str(self.tasks_path))
-        tasks = load_json(self.tasks_path, required=True)
+        parallel, workers = get_parallel_settings()
+
+        def load_file(path: Path) -> Any:
+            return load_json(path, required=True)
+
+        if parallel and workers > 1:
+            self.logger.info("Loading canonical planning index", file=str(input_data), mode="parallel")
+            self.logger.info("Loading tasks.json", file=str(self.tasks_path), mode="parallel")
+            with ThreadPoolExecutor(max_workers=2) as executor:
+                canonical_future = executor.submit(load_file, input_data)
+                tasks_future = executor.submit(load_file, self.tasks_path)
+                canonical = canonical_future.result()
+                tasks = tasks_future.result()
+        else:
+            self.logger.info("Loading canonical planning index", file=str(input_data))
+            canonical = load_json(input_data, required=True)
+            
+            self.logger.info("Loading tasks.json", file=str(self.tasks_path))
+            tasks = load_json(self.tasks_path, required=True)
         
         # Ensure we have lists
         if isinstance(canonical, dict):
@@ -85,31 +107,56 @@ class NormalizeItemsPhase(Phase[Dict[str, List[Dict[str, Any]]], Dict[str, Dict[
         tasks_items = input_data['tasks']
         
         # Normalize canonical (exclude legacy items)
-        canonical_dict = {}
-        for item in canonical_items:
+        parallel, workers = get_parallel_settings()
+        canonical_dict: Dict[str, Dict[str, Any]] = {}
+
+        def normalize_canonical(item: Dict[str, Any]) -> Tuple[str, Dict[str, Any]] | None:
             item_id = item.get("id", "")
-            if not item_id.startswith("LEGACY-"):
-                normalized = self._normalize_item(item)
-                canonical_dict[item_id] = normalized
-                
-                # Track provenance
-                self.provenance.add_validated_record(
-                    artifact_id=f"canonical_{item_id}",
-                    record={
-                        'source_type': 'ingestion',
-                        'source_id': 'planning_index.json',
-                        'source_location': f'item[{item_id}]',
-                        'metadata': {'normalized': True}
-                    }
-                )
+            if item_id.startswith("LEGACY-"):
+                return None
+            return item_id, self._normalize_item(item)
+
+        if parallel and workers > 1 and canonical_items:
+            with ThreadPoolExecutor(max_workers=workers) as executor:
+                results = list(executor.map(normalize_canonical, canonical_items))
+        else:
+            results = [normalize_canonical(item) for item in canonical_items]
+
+        for result in results:
+            if result is None:
+                continue
+            item_id, normalized = result
+            canonical_dict[item_id] = normalized
+
+        for item_id in canonical_dict.keys():
+            # Track provenance
+            self.provenance.add_validated_record(
+                artifact_id=f"canonical_{item_id}",
+                record={
+                    'source_type': 'ingestion',
+                    'source_id': 'planning_index.json',
+                    'source_location': f'item[{item_id}]',
+                    'metadata': {'normalized': True}
+                }
+            )
         
         # Normalize tasks
-        tasks_dict = {}
-        for item in tasks_items:
+        tasks_dict: Dict[str, Dict[str, Any]] = {}
+
+        def normalize_task(item: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             item_id = item.get("id", "")
-            normalized = self._normalize_item(item)
+            return item_id, self._normalize_item(item)
+
+        if parallel and workers > 1 and tasks_items:
+            with ThreadPoolExecutor(max_workers=workers) as executor:
+                task_results = list(executor.map(normalize_task, tasks_items))
+        else:
+            task_results = [normalize_task(item) for item in tasks_items]
+
+        for item_id, normalized in task_results:
             tasks_dict[item_id] = normalized
-            
+
+        for item_id in tasks_dict.keys():
             # Track provenance
             self.provenance.add_validated_record(
                 artifact_id=f"tasks_{item_id}",
@@ -156,20 +203,34 @@ class CompareItemsPhase(Phase[Dict[str, Dict[str, Dict[str, Any]]], Dict[str, An
         
         # Check for content drift in common items
         drifted = []
-        drift_details = {}
-        for item_id in common:
-            if canonical_dict[item_id] != tasks_dict[item_id]:
+        drift_details: Dict[str, Dict[str, Dict[str, Any]]] = {}
+
+        parallel, workers = get_parallel_settings()
+
+        def compare_one(item_id: str) -> Tuple[str, Dict[str, Dict[str, Any]] | None]:
+            if canonical_dict[item_id] == tasks_dict[item_id]:
+                return item_id, None
+            canonical_item = canonical_dict[item_id]
+            tasks_item = tasks_dict[item_id]
+            differences: Dict[str, Dict[str, Any]] = {}
+            for key in canonical_item.keys():
+                if canonical_item.get(key) != tasks_item.get(key):
+                    differences[key] = {
+                        'canonical': canonical_item.get(key),
+                        'tasks': tasks_item.get(key)
+                    }
+            return item_id, differences
+
+        common_ids = sorted(common)
+        if parallel and workers > 1 and common_ids:
+            with ThreadPoolExecutor(max_workers=workers) as executor:
+                results = list(executor.map(compare_one, common_ids))
+        else:
+            results = [compare_one(item_id) for item_id in common_ids]
+
+        for item_id, differences in results:
+            if differences:
                 drifted.append(item_id)
-                # Track what drifted
-                canonical_item = canonical_dict[item_id]
-                tasks_item = tasks_dict[item_id]
-                differences = {}
-                for key in canonical_item.keys():
-                    if canonical_item.get(key) != tasks_item.get(key):
-                        differences[key] = {
-                            'canonical': canonical_item.get(key),
-                            'tasks': tasks_item.get(key)
-                        }
                 drift_details[item_id] = differences
         
         report = {
@@ -248,7 +309,7 @@ class GenerateReportPhase(Phase[Dict[str, Any], int]):
             print(f"✓ tasks.json matches canonical ({report['common_count']} items)")
             return 0
         else:
-            print(f"\n❌ Validation failed: run 'make roadmap-export-json' to sync")
+            print(f"\n❌ Validation failed: run 'make .github/roadmap/tasks.json' to sync")
             return 1
 
 
@@ -263,7 +324,7 @@ def validate():
     strategy = RecoveryStrategy(max_retries=2, backoff_factor=1.0, respect_recoverable=True)
     pipeline = RecoveryPipeline(logger=logger, strategy=strategy, name="ValidateJSON")
     
-    canonical_path = BUILD_DIR / "planning_index.json"
+    canonical_path = REPO_ROOT / "data" / "planning_index.json"
     tasks_path = REPO_ROOT / ".github" / "roadmap" / "tasks.json"
     
     # Build pipeline phases
@@ -276,11 +337,15 @@ def validate():
     result = pipeline.execute(canonical_path)
     
     if result.is_success():
-        # Generate provenance report
-        prov_report_path = BUILD_DIR / "reports" / "validate_json_provenance.json"
-        provenance.generate_validated_report(prov_report_path)
-        logger.info("Generated provenance report", report_path=str(prov_report_path))
-        
+        # Generate provenance report only when explicitly enabled.
+        prov_report_path = REPORTS_DIR / "validate_json_provenance.json"
+        if allow_report_write():
+            provenance.generate_validated_report(prov_report_path)
+            logger.info("Generated provenance report", report_path=str(prov_report_path))
+        else:
+            provenance.generate_validated_report(None)
+            logger.info("Provenance report suppressed (report writing disabled).")
+
         return result.output
     else:
         logger.error("Validation pipeline failed", exception=result.error)

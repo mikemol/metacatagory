@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 """
 Generate markdown documentation from planning index.
-Loads roadmap data from build/planning_index.json instead of hardcoded list.
+Loads roadmap data from data/planning_index.json instead of hardcoded list.
 Generates README.md, NAVIGATION.md, and CONTRIBUTING.md
 """
 
 import json
-import re
 import sys
 from pathlib import Path
+from json import JSONDecodeError
 
 def load_planning_index():
-    """Load roadmap data from build/planning_index.json"""
+    """Load roadmap data from data/planning_index.json"""
     workspace = Path(__file__).parent.parent
-    planning_index = workspace / "build" / "planning_index.json"
+    build_planning = workspace / "build" / "planning_index.json"
+    data_planning = workspace / "data" / "planning_index.json"
+    planning_index = build_planning if build_planning.exists() else data_planning
     
     if not planning_index.exists():
         print(f"Warning: {planning_index} not found, using empty roadmap list", file=sys.stderr)
@@ -48,11 +50,23 @@ def format_roadmap_for_readme(item):
         "tags": ", ".join(item.get("tags", []))
     }
 
-# Load roadmaps from planning index instead of hardcoding
-ROADMAPS = [format_roadmap_for_readme(item) for item in load_planning_index()]
+ROADMAPS: list[dict] = []
+
+
+def _load_default_roadmaps() -> list[dict]:
+    """Lazy-load formatted roadmaps from planning index."""
+    return [format_roadmap_for_readme(item) for item in load_planning_index()]
+
+
+def ensure_roadmaps() -> None:
+    """Populate ROADMAPS if not already set."""
+    global ROADMAPS
+    if not ROADMAPS:
+        ROADMAPS = _load_default_roadmaps()
 
 def generate_readme():
     """Generate README.md content"""
+    ensure_roadmaps()
     content = """# Metacatagory
 
 A composable, formal system for semantic parsing and protocol management using categorical proof-driven architecture and topological semantics.
@@ -288,6 +302,7 @@ Development is guided by RoadmapStep records that encode:
 
 def main():
     """Generate all documentation files"""
+    ensure_roadmaps()
     # Generate README.md
     with open("README.md", "w") as f:
         f.write(generate_readme())

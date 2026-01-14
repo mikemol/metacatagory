@@ -31,10 +31,12 @@ echo "Step 1: Extracting JSON transformation system to Haskell (MAlonzo backend)
 echo "  Command: agda -i src/agda --ghc-flag=-O2 src/agda/Plan/CIM/JSONTransformationContract.agda"
 
 cd "$WORKSPACE"
-if timeout 120 agda -i src/agda --ghc-flag=-O2 src/agda/Plan/CIM/JSONTransformationContract.agda 2>&1 | tee phase3-extract.log | tail -5; then
+REPORT_DIR="${CI_REPORT_DIR:-$BUILD_DIR/reports}"
+mkdir -p "$REPORT_DIR"
+if timeout 120 agda -i src/agda --ghc-flag=-O2 src/agda/Plan/CIM/JSONTransformationContract.agda 2>&1 | tee "$REPORT_DIR/phase3-extract.log" | tail -5; then
     echo "  ✅ Extraction successful"
 else
-    echo "  ⚠️  Extraction may require compilation (see phase3-extract.log)"
+    echo "  ⚠️  Extraction may require compilation (see $REPORT_DIR/phase3-extract.log)"
 fi
 echo ""
 
@@ -100,7 +102,7 @@ echo ""
 echo "Step 6: Next Steps"
 echo ""
 echo "  Phase 3A (Optional - Haskell Compilation):"
-echo "    $ cd src/agda/MAlonzo && ghc -O2 -o json-transform Code/Plan/CIM/JSONTransformationContract.hs"
+echo "    $ cd build/agda/MAlonzo && ghc -O2 -o ../../build/json-transform Code/Plan/CIM/JSONTransformationContract.hs"
 echo ""
 echo "  Phase 3B (Recommended - Continue to Benchmarking):"
 echo "    $ bash scripts/phase3-benchmark.sh"

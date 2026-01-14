@@ -303,8 +303,9 @@ runDeferredItemsScanner = do
   let jsonObj = summaryToJSON summary
   let markdown = renderMarkdownDocument markdownDoc
   let json = renderJSONObject jsonObj
-  writeFile "deferred-items.md" markdown
-  writeFile "deferred-summary.json" json
+  writeFile "build/reports/deferred-items.md" markdown
+  writeFile "docs/status/deferred-items.md" markdown
+  writeFile "build/reports/deferred-summary.json" json
   mOutput ← getGitHubOutput
   writeGitHubOutputs summary mOutput
   return tt

@@ -10,6 +10,7 @@ open import Agda.Builtin.Nat using (Nat; zero; suc; _+_)
 sym : ∀ {A : Set} {x y : A} → x ≡ y → y ≡ x
 sym refl = refl
 
+-- | Minimal truth type for test postulates.
 postulate True : Set
 
 open import Plan.CIM.ProofTraceGeneric using 

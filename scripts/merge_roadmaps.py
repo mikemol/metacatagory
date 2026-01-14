@@ -10,6 +10,7 @@ Sources:
 
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import List, Dict
 
@@ -22,6 +23,7 @@ from shared.normalization import (
     deduplicate_items_by_id,
     ensure_item_fields
 )
+from shared.parallel import get_parallel_settings
 
 # --- Helpers --------------------------------------------------------------
 
@@ -210,9 +212,20 @@ def merge_by_title(items: List[Dict]) -> List[Dict]:
     """
 
     groups: Dict[str, List[Dict]] = {}
-    for item in items:
+    parallel, workers = get_parallel_settings()
+
+    def normalize_entry(item: Dict) -> tuple[str, Dict]:
         ensure_provenance(item)
-        groups.setdefault(normalize_title(item["title"]), []).append(item)
+        return normalize_title(item["title"]), item
+
+    if parallel and workers > 1 and items:
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            results = list(executor.map(normalize_entry, items))
+    else:
+        results = [normalize_entry(item) for item in items]
+
+    for norm_title, item in results:
+        groups.setdefault(norm_title, []).append(item)
 
     merged: List[Dict] = []
     for _, group in groups.items():

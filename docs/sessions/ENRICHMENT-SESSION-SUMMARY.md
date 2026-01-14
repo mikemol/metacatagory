@@ -101,7 +101,7 @@ make roadmap-all-enriched
 * `make roadmap-deps-graph`: Generate Agda dependency graph
 * `make roadmap-merge`: Merge sources into canonical
 * `make roadmap-enrich`: Add semantic fields (needs deps-graph + canonical)
-* `make roadmap-export-enriched`: Human-readable markdown digest
+* `make build/reports/tasks_enriched.md`: Human-readable markdown digest
 * `make roadmap-export-deps`: Dependency graph visualizations
 
 ### All-in-one target

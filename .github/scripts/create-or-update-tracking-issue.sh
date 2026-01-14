@@ -4,8 +4,16 @@
 
 set -euo pipefail
 
-REPORT_FILE="${1:-deferred-items.md}"
-SUMMARY_FILE="${2:-deferred-summary.json}"
+if [ -n "${CI_REPORT_DIR:-}" ]; then
+  default_report="${CI_REPORT_DIR}/deferred-items.md"
+  default_summary="${CI_REPORT_DIR}/deferred-summary.json"
+else
+  default_report="deferred-items.md"
+  default_summary="deferred-summary.json"
+fi
+
+REPORT_FILE="${1:-${CI_DEFERRED_REPORT_FILE:-${default_report}}}"
+SUMMARY_FILE="${2:-${CI_DEFERRED_SUMMARY_FILE:-${default_summary}}}"
 ISSUE_TITLE="🔍 Deferred Items Tracking"
 ISSUE_LABEL="deferred-tracking"
 
@@ -24,11 +32,12 @@ FIXME=$(jq -r '.fixme' "$SUMMARY_FILE")
 TIMESTAMP=$(jq -r '.timestamp' "$SUMMARY_FILE")
 
 # Create issue body
+GITHUB_SHA="${CI_GITHUB_SHA:-${GITHUB_SHA:-}}"
 ISSUE_BODY=$(cat <<EOF
 This issue tracks deferred items in the codebase that need attention.
 
 **Last Updated:** $TIMESTAMP  
-**Commit:** $GITHUB_SHA
+**Commit:** ${GITHUB_SHA:-unknown}
 
 ## Quick Stats
 

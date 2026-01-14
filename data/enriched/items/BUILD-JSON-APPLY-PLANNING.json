@@ -1,14 +1,14 @@
 {
   "id": "BUILD-JSON-APPLY-PLANNING",
   "title": "Apply decomposition to planning_index.json",
-  "description": "Third target: decompose planning index into build/planning/{items,sources,artifacts}/ with natural hierarchical layout.",
+  "description": "Third target: decompose planning index into data/planning/{items,sources,artifacts}/ with natural hierarchical layout.",
   "status": "done",
   "category": "Build Infrastructure",
   "source": "JSONDecomposition",
   "files": [
-    "build/planning/_metadata.json",
-    "build/planning/items/_index.json",
-    "build/planning/sources/_manifest.json"
+    "data/planning/_metadata.json",
+    "data/planning/items/_index.json",
+    "data/planning/sources/_manifest.json"
   ],
   "tags": [
     "JSON",

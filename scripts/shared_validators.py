@@ -7,9 +7,11 @@ Each validator is composable and reusable.
 
 import sys
 from typing import Dict, List, Tuple
+from concurrent.futures import ThreadPoolExecutor
 
 from shared_data import load_planning_index, load_roadmap_markdown
 from shared_yaml import normalize_field_comparison, normalize_dependencies
+from scripts.shared.parallel import get_parallel_settings
 
 
 def validate_descriptions(items: List[Dict]) -> Tuple[int, List[str]]:
@@ -180,8 +182,16 @@ def run_all_validations() -> bool:
     # Load data
     print("Loading data sources...")
     try:
-        json_items = load_planning_index()
-        md_ids, md_frontmatter = load_roadmap_markdown()
+        parallel, workers = get_parallel_settings()
+        if parallel and workers > 1:
+            with ThreadPoolExecutor(max_workers=2) as executor:
+                json_future = executor.submit(load_planning_index)
+                md_future = executor.submit(load_roadmap_markdown)
+                json_items = json_future.result()
+                md_ids, md_frontmatter = md_future.result()
+        else:
+            json_items = load_planning_index()
+            md_ids, md_frontmatter = load_roadmap_markdown()
     except FileNotFoundError as e:
         print(f"✗ {e}")
         return False

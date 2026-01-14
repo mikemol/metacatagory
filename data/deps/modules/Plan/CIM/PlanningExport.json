@@ -1,9 +1,0 @@
-{
-  "name": "Plan.CIM.PlanningExport",
-  "imports": [
-    "qualified",
-    "Plan.CIM.RoadmapIndex",
-    "Plan.CIM.PlanningKernel"
-  ],
-  "imported_by": []
-}

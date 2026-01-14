@@ -54,7 +54,7 @@ make roadmap-merge
 make roadmap-enrich
 
 # 4. Export human-readable reports
-make roadmap-export-enriched roadmap-export-deps
+make build/reports/tasks_enriched.md roadmap-export-deps
 
 # 5. Validate triangle consistency
 make roadmap-validate-triangle
@@ -63,7 +63,7 @@ make roadmap-validate-triangle
 ### Quick rebuild
 
 ```bash
-make roadmap-merge roadmap-enrich roadmap-export-enriched roadmap-export-deps
+make roadmap-merge roadmap-enrich build/reports/tasks_enriched.md roadmap-export-deps
 ```
 
 ## Key Design Decisions

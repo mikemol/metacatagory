@@ -120,7 +120,7 @@ These appear to be **snippets extracted from user conversations**, containing ra
 * Documents tasks needed after Agda 2.8.0 upgrade
 * References Utility-broken.agda recovery (77 roadmap examples)
 * Lists CHIPConformance stubs needing implementation
-* Tracks deferred items (567 in deferred-summary.json)
+* Tracks deferred items (567 in build/reports/deferred-summary.json)
 
 **Current Status:**
 
@@ -136,7 +136,7 @@ These appear to be **snippets extracted from user conversations**, containing ra
 
 2. **Populate ROADMAP.md:** Use recovered roadmap data
     * Currently empty file waiting for content
-    * Should reference deferred-summary.json (567 items)
+    * Should reference build/reports/deferred-summary.json (567 items)
 
 3. **CHIPConformance.agda Stubs:** Implement placeholders
     * `makeSPPFNode` function needs BraidedSPPF type

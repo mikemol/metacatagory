@@ -9,7 +9,7 @@
 
 ## Overview
 
-Phase 2E extracts the verified Agda code to Haskell and validates the complete JSON decomposition/recomposition pipeline on real production data (`build/dependency_graph.json`, 12KB).
+Phase 2E extracts the verified Agda code to Haskell and validates the complete JSON decomposition/recomposition pipeline on real production data (`data/dependency_graph.json`, 12KB).
 
 This phase represents the **transition from formal verification to executable validation**—proving that the type-level guarantees established in Phases 2A-2D translate to correct behavior on real data.
 
@@ -62,21 +62,21 @@ ghc -O2 -o json-transform MAlonzo/Code/Plan/CIM/JSONTransformationExtraction.hs
 
 ### Phase 2E.4: Real-World Validation (Ready to Execute)
 
-**Test Data:** `build/dependency_graph.json` (12 KB)
+**Test Data:** `data/dependency_graph.json` (12 KB)
 
 **Validation Pipeline:**
 
 ```bash
 # Step 1: Decompose JSON to fragments
-./json-transform decompose build/dependency_graph.json build/deps/
-# Output: Directory build/deps/ containing fragments + manifest
+./json-transform decompose data/dependency_graph.json data/deps/
+# Output: Directory data/deps/ containing fragments + manifest
 
 # Step 2: Recompose fragments back to JSON
-./json-transform recompose build/deps/ build/dependency_graph_reconstructed.json
+./json-transform recompose data/deps/ build/dependency_graph_reconstructed.json
 # Output: Reconstructed JSON
 
 # Step 3: Validate roundtrip
-diff build/dependency_graph.json build/dependency_graph_reconstructed.json
+diff data/dependency_graph.json build/dependency_graph_reconstructed.json
 # Expected: No difference (successful roundtrip)
 ```
 
@@ -213,13 +213,13 @@ ghc -O2 -o json-transform MAlonzo/Code/Plan/CIM/JSONTransformationExtraction.hs
 
 ```bash
 # Decompose
-./json-transform decompose build/dependency_graph.json build/deps/
+./json-transform decompose data/dependency_graph.json data/deps/
 
 # Recompose
-./json-transform recompose build/deps/ build/dependency_graph_reconstructed.json
+./json-transform recompose data/deps/ build/dependency_graph_reconstructed.json
 
 # Validate
-diff build/dependency_graph.json build/dependency_graph_reconstructed.json
+diff data/dependency_graph.json build/dependency_graph_reconstructed.json
 ```
 
 **Expected Outcome:**
@@ -232,14 +232,14 @@ diff build/dependency_graph.json build/dependency_graph_reconstructed.json
 
 ```bash
 # Decompose performance
-time ./json-transform decompose build/dependency_graph.json build/deps/
+time ./json-transform decompose data/dependency_graph.json data/deps/
 
 # Recompose performance
-time ./json-transform recompose build/deps/ build/dependency_graph_reconstructed.json
+time ./json-transform recompose data/deps/ build/dependency_graph_reconstructed.json
 
 # Record metrics
-du -sh build/deps/  # Fragment size
-wc -l build/deps/*  # Number of fragments
+du -sh data/deps/  # Fragment size
+wc -l data/deps/*  # Number of fragments
 ```
 
 ## What's Been Verified (Phases 2A-2D)
@@ -383,14 +383,14 @@ agda -i src/agda --ghc-flag=-O2 src/agda/Plan/CIM/JSONTransformationExtraction.a
 ghc -O2 -o json-transform MAlonzo/Code/Plan/CIM/*.hs
 
 # Validation
-./json-transform decompose build/dependency_graph.json build/deps/
-./json-transform recompose build/deps/ output.json
-diff build/dependency_graph.json output.json
+./json-transform decompose data/dependency_graph.json data/deps/
+./json-transform recompose data/deps/ output.json
+diff data/dependency_graph.json output.json
 
 # Performance
-du -sh build/deps/
-time ./json-transform decompose build/dependency_graph.json build/deps/
-time ./json-transform recompose build/deps/ output.json
+du -sh data/deps/
+time ./json-transform decompose data/dependency_graph.json data/deps/
+time ./json-transform recompose data/deps/ output.json
 ```
 
 ---

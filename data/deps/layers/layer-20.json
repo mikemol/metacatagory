@@ -1,7 +1,5 @@
 [
-  "Core.Algorithms.AutomaticEvidence",
-  "Core.Algorithms.InductiveClassification",
-  "Core.Algorithms.Registry",
   "Tests.ProofObligationStatus",
-  "Tests.RealWorldAlgorithmsTests"
+  "Tests.RealWorldAlgorithmsTests",
+  "Core.Algorithms.Registry"
 ]

@@ -153,8 +153,8 @@ adequacy : ∀ (kit : JSONTransformationKit) →
 ```agda
 dependencyGraphKit : JSONTransformationKit
 dependencyGraphKit = record
-  { monolithic  = mkMonolithic (read "build/dependency_graph.json")
-  ; targetRoot  = "build/deps/"
+  { monolithic  = mkMonolithic (read "data/dependency_graph.json")
+  ; targetRoot  = "data/deps/"
   ; strategy    = λ json → 
       -- Extract nodes array, map each to modules/{Package}/{Module}.json
       let nodes = json-array-items (json-get json "nodes")
@@ -166,10 +166,10 @@ dependencyGraphKit = record
   ; metadataGen = λ json →
       json-set (json-set json-empty "total_modules" 
         (json-get json "metadata" >>= json-get "total_modules"))
-        "source_file" "build/dependency_graph.json"
+        "source_file" "data/dependency_graph.json"
   ; indexGen = generateModuleIndex  -- defined in terms of primitives
-  ; manifest = mkManifest "build/deps/_metadata.json" 
-                          ["build/deps/_index.json"] 
+  ; manifest = mkManifest "data/deps/_metadata.json" 
+                          ["data/deps/_index.json"] 
                           "merge-modules-by-manifest"
   }
 ```

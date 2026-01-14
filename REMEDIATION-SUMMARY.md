@@ -20,11 +20,11 @@ All three have been fixed.
 
 **Problem (Potemkin Simulation):**
 - `scripts/generate_docs.py` had hardcoded list with 4 roadmap items
-- Reality: `build/planning_index.json` contains 117 items
+- Reality: `data/planning_index.json` contains 117 items
 - README showed "Clean" reality while masking "Messy" reality
 
 **Solution:**
-- Modified `scripts/generate_docs.py` to load real data from `build/planning_index.json`
+- Modified `scripts/generate_docs.py` to load real data from `data/planning_index.json`
 - Implemented `load_planning_index()` function
 - Changed roadmap loop to use actual data
 - README now shows top 10 most relevant items based on priority

@@ -2,9 +2,9 @@
 
 ## Overview
 
-Tracks deferred work items identified during the Agda 2.8.0 migration and refactoring efforts. Counts reflect deferred-summary.json snapshots.
+Tracks deferred work items identified during the Agda 2.8.0 migration and refactoring efforts. Counts reflect build/reports/deferred-summary.json snapshots.
 
-Source: deferred-summary.json (auto-generated)
+Source: build/reports/deferred-summary.json (auto-generated)
 
 - Totals: 567 items
 
@@ -111,7 +111,7 @@ Other markers (61):
 
 - Add inline marker: -- TODO: [category] description or postulate name : Type
 
-- Run make deferred-items to refresh deferred-summary.json
+- Run make deferred-items to refresh build/reports/deferred-summary.json
 
 - If high/medium priority, add to sections above
 
@@ -133,7 +133,7 @@ Other markers (61):
 
 - Monthly: reprioritize medium/low items
 
-- Per milestone: regenerate deferred-summary.json and verify counts
+- Per milestone: regenerate build/reports/deferred-summary.json and verify counts
 
 ## Tools
 
@@ -141,7 +141,7 @@ Other markers (61):
 
 ```text
 make deferred-items
-# Outputs: deferred-summary.json
+# Outputs: build/reports/deferred-summary.json
 ```
 
 ### Search for Deferred Items
@@ -170,7 +170,7 @@ make Flag Unannotated Technical Debt
 
 - Worklog: intake/refactoring-roadmap-migration.md
 
-- Generated data: deferred-summary.json (gitignored)
+- Generated data: build/reports/deferred-summary.json (gitignored)
 
 - Build tasks: .vscode/tasks.json
 

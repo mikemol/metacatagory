@@ -1,6 +1,5 @@
 [
-  "Core.Algorithms.NumberFields",
-  "Tests.Index_PhaseII",
   "Examples.AlgorithmCorrectnessExamples",
-  "Examples.RealWorldAlgorithms"
+  "Examples.RealWorldAlgorithms",
+  "Core.Algorithms.NumberFields"
 ]

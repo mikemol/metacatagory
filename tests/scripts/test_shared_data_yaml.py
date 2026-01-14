@@ -22,7 +22,7 @@ def test_load_planning_index_variants(tmp_path, monkeypatch):
         shared_data.load_planning_index()
 
     # List form
-    json_path = tmp_path / "build" / "planning_index.json"
+    json_path = tmp_path / "data" / "planning_index.json"
     json_path.parent.mkdir(parents=True, exist_ok=True)
     json_path.write_text(json.dumps([{"id": "GP-1"}]), encoding="utf-8")
     assert shared_data.load_planning_index()[0]["id"] == "GP-1"

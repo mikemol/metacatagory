@@ -1,14 +1,10 @@
 [
+  "Core.AlgorithmCorrectness",
   "Tests.SerializationTests",
-  "Tests.UniversalPropertyTests",
-  "Algorithms.Instrumented",
-  "Core.Algorithms.External",
   "Core.Algorithms.FiniteFields",
-  "Core.Algorithms.FunctionFields",
-  "Examples.ConstructiveWitnessExamples",
-  "Tests.ConstructiveWitnessTests",
-  "Tests.SpecificationValidation",
-  "Tests.WarningAggregatorsTest",
+  "Core.Algorithms.External",
   "Algorithms.Adapters.BundleAdapter",
-  "Core.AlgorithmCorrectness"
+  "Core.Algorithms.FunctionFields",
+  "Tests.UniversalPropertyTests",
+  "Tests.ConstructiveWitnessTests"
 ]

@@ -61,7 +61,7 @@
         "source": "JSONDecomposition",
         "files": [
             "docs/process/JSON-DECOMPOSITION.md",
-            "build/schemas/hierarchy.md"
+            "docs/schemas/hierarchy.md"
         ],
         "tags": [
             "JSON",
@@ -126,14 +126,14 @@
     {
         "id": "BUILD-JSON-APPLY-DEPS",
         "title": "Apply decomposition to dependency_graph.json",
-        "description": "First target: decompose 84-module dependency graph into build/deps/{modules,layers,cycles}/ hierarchy with module-level granularity.",
+        "description": "First target: decompose 84-module dependency graph into data/deps/{modules,layers,cycles}/ hierarchy with module-level granularity.",
         "status": "done",
         "category": "Build Infrastructure",
         "source": "JSONDecomposition",
         "files": [
-            "build/deps/_metadata.json",
-            "build/deps/modules/_index.json",
-            "build/deps/layers/_index.json"
+            "data/deps/_metadata.json",
+            "data/deps/modules/_index.json",
+            "data/deps/layers/_index.json"
         ],
         "tags": [
             "JSON",
@@ -151,14 +151,14 @@
     {
         "id": "BUILD-JSON-APPLY-ENRICHED",
         "title": "Apply decomposition to canonical_enriched.json",
-        "description": "Second target: decompose roadmap enrichment data into build/enriched/{items,dependencies,annotations}/ with per-item granularity.",
+        "description": "Second target: decompose roadmap enrichment data into data/enriched/{items,dependencies,annotations}/ with per-item granularity.",
         "status": "done",
         "category": "Build Infrastructure",
         "source": "JSONDecomposition",
         "files": [
-            "build/enriched/_metadata.json",
-            "build/enriched/items/_index.json",
-            "build/enriched/dependencies/_manifest.json"
+            "data/enriched/_metadata.json",
+            "data/enriched/items/_index.json",
+            "data/enriched/dependencies/_manifest.json"
         ],
         "tags": [
             "JSON",
@@ -176,14 +176,14 @@
     {
         "id": "BUILD-JSON-APPLY-PLANNING",
         "title": "Apply decomposition to planning_index.json",
-        "description": "Third target: decompose planning index into build/planning/{items,sources,artifacts}/ with natural hierarchical layout.",
+        "description": "Third target: decompose planning index into data/planning/{items,sources,artifacts}/ with natural hierarchical layout.",
         "status": "done",
         "category": "Build Infrastructure",
         "source": "JSONDecomposition",
         "files": [
-            "build/planning/_metadata.json",
-            "build/planning/items/_index.json",
-            "build/planning/sources/_manifest.json"
+            "data/planning/_metadata.json",
+            "data/planning/items/_index.json",
+            "data/planning/sources/_manifest.json"
         ],
         "tags": [
             "JSON",

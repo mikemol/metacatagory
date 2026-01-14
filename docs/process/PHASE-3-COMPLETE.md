@@ -23,7 +23,7 @@ Phase 3 operationalizes Phase 2's theoretical architecture by implementing produ
 1. **MAlonzo Backend Configuration**
    - Entry point: `src/agda/Plan/CIM/JSONTransformationExtraction.agda`
    - Command: `agda -i src/agda --ghc-flag=-O2 src/agda/Plan/CIM/JSONTransformationContract.agda`
-   - Output: Haskell modules in `src/agda/MAlonzo/Code/Plan/CIM/`
+   - Output: Haskell modules in `build/agda/MAlonzo/Code/Plan/CIM/`
 
 2. **Extraction Pipeline** (5-step process)
    ```
@@ -36,7 +36,7 @@ Phase 3 operationalizes Phase 2's theoretical architecture by implementing produ
 
 3. **Validation Points**
    - ✅ All 7 Phase 2 modules extract successfully
-   - ✅ MAlonzo directory created: `src/agda/MAlonzo/Code/Plan/CIM/`
+   - ✅ MAlonzo directory created: `build/agda/MAlonzo/Code/Plan/CIM/`
    - ✅ Extraction artifacts ready for compilation
 
 #### Status: ✅ COMPLETE
@@ -190,7 +190,7 @@ phase3-extract:
 
 # Compile extracted Haskell to native binary
 phase3-compile: phase3-extract
-	cd src/agda/MAlonzo && \
+	cd build/agda/MAlonzo && \
 		ghc -O2 -threaded \
 			-o ../../json-transform \
 			Code/Plan/CIM/JSONTransformationContract.hs
@@ -198,11 +198,11 @@ phase3-compile: phase3-extract
 # Validate on production data (12 KB dependency_graph.json)
 phase3-validate: phase3-compile
 	mkdir -p build/phase3-output
-	./json-transform decompose build/dependency_graph.json \
+	./json-transform decompose data/dependency_graph.json \
 		build/phase3-decomposition/
 	./json-transform recompose build/phase3-decomposition/ \
 		build/phase3-output/dependency_graph_reconstructed.json
-	diff build/dependency_graph.json \
+	diff data/dependency_graph.json \
 		build/phase3-output/dependency_graph_reconstructed.json
 
 # Run benchmarking suite
@@ -348,7 +348,7 @@ module RedisEquiv = JSONTransformationEquivalence redisPrimitives  -- Proofs wor
 
 ### Production Data
 
-**Dataset:** `build/dependency_graph.json`
+**Dataset:** `data/dependency_graph.json`
 - Size: 12 KB
 - Format: Dependency graph JSON
 - Usage: Roundtrip validation (decompose → recompose → compare)
@@ -375,7 +375,7 @@ module RedisEquiv = JSONTransformationEquivalence redisPrimitives  -- Proofs wor
 ### Expected Outcomes
 
 ```
-Input:  build/dependency_graph.json (12 KB)
+Input:  data/dependency_graph.json (12 KB)
          ↓
     [Decompose]
          ↓

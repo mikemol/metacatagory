@@ -41,7 +41,7 @@ def validate() -> int:
         print(f"✓ ROADMAP.md matches canonical ({overlap} items)")
     else:
         print(f"\n⚠️  Partial match: {overlap} items overlap")
-        print("❌ Validation failed: run 'make roadmap-export-md' to sync")
+        print("❌ Validation failed: run 'make ROADMAP.md' to sync")
     return exit_code
 
 if __name__ == "__main__":

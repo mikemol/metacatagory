@@ -1,9 +1,0 @@
-{
-  "name": "Examples.FiniteField.GF8",
-  "imports": [
-    "Core",
-    "Metamodel",
-    "Algebra.Index"
-  ],
-  "imported_by": []
-}

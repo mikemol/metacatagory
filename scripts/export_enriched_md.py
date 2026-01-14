@@ -3,17 +3,26 @@
 Export enriched canonical roadmap to human-readable Markdown digest.
 
 Reads build/canonical_enriched.json and outputs build/reports/tasks_enriched.md
+(or CI_REPORT_DIR override).
 with detailed semantic information for each task.
 """
 
 import json
 import yaml
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from typing import List, Dict, Any
+import sys
+from typing import Any, Dict, List, Tuple
 
 REPO_ROOT = Path(__file__).parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.shared.paths import REPORTS_DIR
+from scripts.shared.parallel import get_parallel_settings
+
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
-OUTPUT_MD = REPO_ROOT / "build" / "reports" / "tasks_enriched.md"
+OUTPUT_MD = REPORTS_DIR / "tasks_enriched.md"
 
 def format_list(items: List[str], indent: int = 0) -> str:
     """Format a list of items as Markdown bullet points."""
@@ -266,6 +275,10 @@ def format_task_section(item: Dict, idx: int) -> str:
     
     return "\n".join(lines)
 
+def _format_task_entry(entry: Tuple[Dict, int]) -> str:
+    item, idx = entry
+    return format_task_section(item, idx)
+
 def export_enriched_markdown() -> None:
     """Main export function."""
     if not ENRICHED_JSON.exists():
@@ -301,6 +314,11 @@ def export_enriched_markdown() -> None:
     lines.extend(["", "---", ""])
     
     # Generate sections
+    parallel, workers = get_parallel_settings()
+    executor = None
+    if parallel and workers > 1:
+        executor = ThreadPoolExecutor(max_workers=workers)
+
     task_idx = 1
     for category in sorted(by_category.keys()):
         lines.extend([
@@ -312,9 +330,20 @@ def export_enriched_markdown() -> None:
             ""
         ])
         
+        entries: List[Tuple[Dict, int]] = []
         for item in by_category[category]:
-            lines.append(format_task_section(item, task_idx))
+            entries.append((item, task_idx))
             task_idx += 1
+
+        if executor:
+            sections = list(executor.map(_format_task_entry, entries))
+        else:
+            sections = [format_task_section(item, idx) for item, idx in entries]
+
+        lines.extend(sections)
+
+    if executor:
+        executor.shutdown()
     
     # Statistics
     lines.extend([

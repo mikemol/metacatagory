@@ -1,8 +1,0 @@
-{
-  "name": "Infrastructure.Functor.Adapters.Funext",
-  "imports": [],
-  "imported_by": [
-    "Infrastructure.Functor.Instances.Ambiguity",
-    "Infrastructure.Index"
-  ]
-}

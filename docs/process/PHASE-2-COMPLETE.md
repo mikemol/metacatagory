@@ -277,7 +277,7 @@ module MockTests = JSONTransformationTests mockPrimitives
 ### Phase 2E: Haskell Extraction
 - [ ] Extract via `agda -c`
 - [ ] Compile with GHC
-- [ ] Test on build/dependency_graph.json
+- [ ] Test on data/dependency_graph.json
 - [ ] Validate complete roundtrip on real data
 
 ### Phase 2F: Alternative Backends

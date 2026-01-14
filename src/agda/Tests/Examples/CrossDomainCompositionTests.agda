@@ -7,6 +7,7 @@ module Tests.Examples.CrossDomainCompositionTests where
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Agda.Primitive using (lzero)
 
+-- | Minimal truth type for test postulates.
 postulate True : Set
 
 -- Import types from their source domains

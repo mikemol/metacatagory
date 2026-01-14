@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Validate the Makefile "triangle identity" among:
-1) The Agda exporter (Source of Truth) -> build/makefile_targets_generated.md
+1) The Agda exporter (Source of Truth) -> docs/automation/makefile_targets_generated.md
 2) The Checked-in Documentation -> docs/automation/MAKEFILE-TARGETS.md
 
 The script enforces that the checked-in documentation matches the generated truth.
@@ -9,14 +9,17 @@ The script enforces that the checked-in documentation matches the generated trut
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
-from typing import Dict, Set
+from typing import Dict, Set, TypedDict
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parent
 sys.path.insert(0, str(ROOT))
 
+from scripts.shared.paths import REPORTS_DIR
+from scripts.shared.config import get_config
 from scripts.audax_doc import (
     AUDAXBlock,
     AUDAXDoc,
@@ -30,13 +33,22 @@ from scripts.audax_doc import (
     render_doc,
 )
 
-GENERATED_DOC = ROOT / "build" / "makefile_targets_generated.md"
+GENERATED_DOC = ROOT / "docs" / "automation" / "makefile_targets_generated.md"
 CHECKED_IN_DOC = ROOT / "docs" / "automation" / "MAKEFILE-TARGETS.md"
-REPORT_DOC = ROOT / "build" / "reports" / "makefile-docs.md"
+REPORT_DOC = REPORTS_DIR / "makefile-docs.md"
 
-def parse_markdown_table(text: str) -> Dict[str, str]:
-    """Parse a Markdown table into a {Target: Description} dictionary."""
-    entries = {}
+
+def allow_report_write() -> bool:
+    return os.environ.get("MUTATE_OK") == "1" and get_config().report_mode == "write"
+
+class TargetDoc(TypedDict):
+    description: str
+    mutability: str
+
+
+def parse_markdown_table(text: str) -> Dict[str, TargetDoc]:
+    """Parse a Markdown table into a {Target: {description, mutability}} dictionary."""
+    entries: Dict[str, TargetDoc] = {}
     lines = text.splitlines()
     for line in lines:
         # Matches row: | `target` | Description |
@@ -47,10 +59,14 @@ def parse_markdown_table(text: str) -> Dict[str, str]:
         if len(parts) >= 3:
             target_cell = parts[1]
             desc_cell = parts[2]
+            mut_cell = parts[3] if len(parts) >= 4 else ""
             
             # Extract target name from backticks
             target = target_cell.strip("` ")
-            entries[target] = desc_cell
+            entries[target] = {
+                "description": desc_cell.strip(),
+                "mutability": mut_cell.strip(),
+            }
             
     return entries
 
@@ -92,20 +108,27 @@ def main() -> int:
         valid = False
         
     # Check 2: Content Identity
-    mismatches = []
+    mismatches: list[tuple[str, TargetDoc, TargetDoc]] = []
     for t in gen_set.intersection(checked_set):
-        gen_desc = gen_data[t]
-        checked_desc = checked_data[t]
+        gen_doc = gen_data[t]
+        checked_doc = checked_data[t]
         
-        if gen_desc != checked_desc:
-            mismatches.append((t, gen_desc, checked_desc))
+        if (
+            gen_doc["description"] != checked_doc["description"]
+            or gen_doc["mutability"] != checked_doc["mutability"]
+        ):
+            mismatches.append((t, gen_doc, checked_doc))
             
     if mismatches:
         print(f"✗ Description Mismatches ({len(mismatches)}):")
         for t, gen, checked in mismatches:
             print(f"  Target: {t}")
-            print(f"    Gen: {gen}")
-            print(f"    Doc: {checked}")
+            if gen["description"] != checked["description"]:
+                print(f"    Description Gen: {gen['description']}")
+                print(f"    Description Doc: {checked['description']}")
+            if gen["mutability"] != checked["mutability"]:
+                print(f"    Mutability Gen: {gen['mutability']}")
+                print(f"    Mutability Doc: {checked['mutability']}")
         valid = False
         
     doc = build_validation_doc(
@@ -114,6 +137,7 @@ def main() -> int:
         missing=missing,
         extra=extra,
         mismatches=mismatches,
+        report_enabled=allow_report_write(),
     )
     write_validation_doc(doc)
     if valid:
@@ -129,7 +153,8 @@ def build_validation_doc(
     total: int,
     missing: Set[str],
     extra: Set[str],
-    mismatches: list[tuple[str, str, str]],
+    mismatches: list[tuple[str, TargetDoc, TargetDoc]],
+    report_enabled: bool,
 ) -> AUDAXDoc:
     blocks: list[AUDAXBlock] = [
         Header(1, ListLike([Str("Makefile Documentation Triangle Identity")])),
@@ -157,19 +182,29 @@ def build_validation_doc(
 
     if mismatches:
         blocks.append(Header(2, ListLike([Str("Description Mismatches")])))
-        for target, gen_desc, doc_desc in mismatches:
+        for target, gen_doc, doc_doc in mismatches:
             blocks.append(Field("Target", f"`{target}`"))
-            blocks.append(Field("Generated description", gen_desc))
-            blocks.append(Field("Document description", doc_desc))
+            if gen_doc["description"] != doc_doc["description"]:
+                blocks.append(Field("Generated description", gen_doc["description"]))
+                blocks.append(Field("Document description", doc_doc["description"]))
+            if gen_doc["mutability"] != doc_doc["mutability"]:
+                blocks.append(Field("Generated mutability", gen_doc["mutability"]))
+                blocks.append(Field("Document mutability", doc_doc["mutability"]))
 
-    blocks.append(Raw("Validation log stored under build/reports/makefile-docs.md"))
+    if report_enabled:
+        report_label = str(REPORT_DOC)
+        blocks.append(Raw("Validation log stored under " + report_label))
+    else:
+        blocks.append(Raw("Validation log suppressed (report writing disabled)."))
     return AUDAXDoc(ListLike(blocks))
 
 
 def write_validation_doc(doc: AUDAXDoc) -> None:
+    print(render_doc(doc))
+    if not allow_report_write():
+        return
     REPORT_DOC.parent.mkdir(parents=True, exist_ok=True)
     REPORT_DOC.write_text(render_doc(doc), encoding="utf-8")
-    print(render_doc(doc))
 
 if __name__ == "__main__":
     raise SystemExit(main())

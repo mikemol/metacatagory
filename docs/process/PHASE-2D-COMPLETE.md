@@ -281,14 +281,14 @@ The three layers validate each other:
 
 ## Next Phase: Phase 2E (Haskell Extraction)
 
-**Objective:** Extract verified Agda code to Haskell and validate on build/dependency_graph.json
+**Objective:** Extract verified Agda code to Haskell and validate on data/dependency_graph.json
 
 **Steps:**
 1. Extract via `agda -c src/agda/Plan/CIM/JSONTransformationContract.agda`
 2. Compile Haskell: `ghc -o json-transform MAlonzo/Code/Plan/CIM/*.hs`
-3. Validate roundtrip: `./json-transform decompose build/dependency_graph.json build/deps/`
-4. Recompose: `./json-transform recompose build/deps/ build/dependency_graph_reconstructed.json`
-5. Compare: `diff build/dependency_graph.json build/dependency_graph_reconstructed.json`
+3. Validate roundtrip: `./json-transform decompose data/dependency_graph.json data/deps/`
+4. Recompose: `./json-transform recompose data/deps/ build/dependency_graph_reconstructed.json`
+5. Compare: `diff data/dependency_graph.json build/dependency_graph_reconstructed.json`
 
 ## Key Insights
 
@@ -299,7 +299,7 @@ The synthetic tests don't test actual JSON parsing/manipulation (those are postu
 - Confirm type-level integration of all three layers
 - Demonstrate that natural transformation proves equivalence
 
-Real validation comes when extraction runs on `build/dependency_graph.json`.
+Real validation comes when extraction runs on `data/dependency_graph.json`.
 
 ### 2. ConcreteTestSuite Enables Multi-Backend Testing
 
@@ -342,4 +342,4 @@ Phase 2D establishes a **complete, type-checked testing and validation framework
 - ✅ Ready for Haskell extraction
 - ✅ Ready for alternative backends
 
-**Next:** Phase 2E (Haskell extraction and real-world validation on build/dependency_graph.json)
+**Next:** Phase 2E (Haskell extraction and real-world validation on data/dependency_graph.json)

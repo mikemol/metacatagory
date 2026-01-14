@@ -1,9 +1,0 @@
-{
-  "name": "TechnicalDebt.DeferredItemsDetection",
-  "imports": [],
-  "imported_by": [
-    "TechnicalDebt.DeferredItemsFormatting",
-    "TechnicalDebt.DeferredItemsFormatting_AUDAX",
-    "TechnicalDebt.DeferredItemsOrchestrationFFI"
-  ]
-}

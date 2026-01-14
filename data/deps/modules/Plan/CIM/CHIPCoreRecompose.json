@@ -1,7 +1,0 @@
-{
-  "name": "Plan.CIM.CHIPCoreRecompose",
-  "imports": [
-    "Plan.CIM.Utility"
-  ],
-  "imported_by": []
-}

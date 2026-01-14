@@ -1,8 +1,0 @@
-{
-  "name": "Markdown.ExportProof",
-  "imports": [
-    "Core.Utils",
-    "Markdown.Normalization"
-  ],
-  "imported_by": []
-}

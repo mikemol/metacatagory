@@ -318,6 +318,18 @@ class TestContextAccumulation:
         assert d['context']['dict']['nested'] == "value"
         assert d['context']['none'] is None
 
+    def test_validation_error_context_merge_priority(self):
+        """Test context merge priority between kwargs and context dict."""
+        error = ValidationError(
+            "bad",
+            field="field",
+            value="value",
+            context={"key": "from_context"},
+            key="from_kwargs"
+        )
+        # Desired: explicit kwargs should win over context dict
+        assert error.context["key"] == "from_kwargs"
+
 
 class TestTypeSafetyAtBoundaries:
     """First-Order Syntactic: Type Preservation in Decorators"""

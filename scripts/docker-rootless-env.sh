@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
-# Helper to export rootless Docker environment variables.
-export XDG_RUNTIME_DIR=/run/user/$UID
-export DOCKER_HOST=unix:///run/user/$UID/docker.sock
+#!/usr/bin/env sh
+set -eu
 
-echo "Rootless Docker env set: $DOCKER_HOST"
+script_dir=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+. "$script_dir/ensure_rootless_docker.sh"
+
+echo "Rootless Docker env set: ${DOCKER_HOST:-}"

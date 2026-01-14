@@ -177,7 +177,7 @@ class TestValidateRoundtrip:
     def test_missing_original_file(self, capsys):
         """Should fail when original file doesn't exist"""
         with patch('scripts.validate_json_roundtrip.Path') as mock_path:
-            mock_path.return_value.exists.side_effect = [False, True]
+            mock_path.return_value.exists.side_effect = [False, False]
             
             result = validate_roundtrip()
         

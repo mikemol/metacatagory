@@ -117,7 +117,7 @@
 **Components:**
 - Integration of all layers for Haskell extraction
 - Six-layer validation stack (Agda → Haskell → Compiled → Executed → Validated)
-- Real-world validation pipeline for build/dependency_graph.json (12 KB)
+- Real-world validation pipeline for data/dependency_graph.json (12 KB)
 - Step-by-step execution guide
 
 **Execution Pipeline (Ready to Run):**
@@ -129,9 +129,9 @@ agda -i src/agda --ghc-flag=-O2 src/agda/Plan/CIM/JSONTransformationExtraction.a
 ghc -O2 -o json-transform MAlonzo/Code/Plan/CIM/*.hs
 
 # Step 3: Validate roundtrip
-./json-transform decompose build/dependency_graph.json build/deps/
-./json-transform recompose build/deps/ output.json
-diff build/dependency_graph.json output.json
+./json-transform decompose data/dependency_graph.json data/deps/
+./json-transform recompose data/deps/ output.json
+diff data/dependency_graph.json output.json
 ```
 
 **Validation Metrics:**
@@ -353,9 +353,9 @@ agda -i src/agda --ghc-flag=-O2 src/agda/Plan/CIM/JSONTransformationExtraction.a
 ghc -O2 -o json-transform MAlonzo/Code/Plan/CIM/*.hs
 
 # Validation
-./json-transform decompose build/dependency_graph.json build/deps/
-./json-transform recompose build/deps/ output.json
-diff build/dependency_graph.json output.json
+./json-transform decompose data/dependency_graph.json data/deps/
+./json-transform recompose data/deps/ output.json
+diff data/dependency_graph.json output.json
 ```
 
 ### Phase 2F: Alternative Backends

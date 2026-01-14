@@ -1,21 +1,5 @@
 [
-  "Infrastructure.Axiom.Instance",
-  "Infrastructure.Axiom.Solver",
-  "Core.PhaseCategory",
-  "Core.PhaseCategoryWrapper",
   "Core.PolynomialsF2",
   "Metamodel",
-  "Plan.CIM.PandocProtocols",
-  "Plan.CIM.PandocShowBlock",
-  "Plan.CIM.PlanningKernel",
-  "TechnicalDebt.DeferredItemsFormatting",
-  "TechnicalDebt.DeferredItemsFormatting_AUDAX",
-  "Tests.CoverageReport",
-  "Core.AdapterAutomation",
-  "Core.AdapterReflection",
-  "Core.Rendering",
-  "Infrastructure.Functor.Instances.FunctionCategory",
-  "Infrastructure.Functor.Instances.PathAlgebra",
-  "Plan.CIM.IngestedRoadmaps",
-  "Plan.CIM.MarkdownParse"
+  "Core.PhaseCategory"
 ]

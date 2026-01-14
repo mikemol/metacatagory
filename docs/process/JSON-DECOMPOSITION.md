@@ -31,13 +31,13 @@ This follows the SPPF (Shared Packed Parse Forest) model where:
 
 ## Target Hierarchies
 
-### 1. Dependency Graph (`build/deps/`)
+### 1. Dependency Graph (`data/deps/`)
 
-**Input**: `build/dependency_graph.json` (84 modules, 151 edges)
+**Input**: `data/dependency_graph.json` (84 modules, 151 edges)
 
 **Output Structure**:
 ```
-build/deps/
+data/deps/
 ├── _metadata.json              # { total_modules, total_deps, cycles, layers }
 ├── modules/
 │   ├── _index.json             # [ "Algebra.Groups.Abelian", ... ]
@@ -61,13 +61,13 @@ build/deps/
 - Update: Change one module without rewriting 84-module file
 - Hierarchy: Natural package structure emerges
 
-### 2. Roadmap Enrichment (`build/enriched/`)
+### 2. Roadmap Enrichment (`data/enriched/`)
 
 **Input**: `build/canonical_enriched.json` (roadmap items + semantic annotations)
 
 **Output Structure**:
 ```
-build/enriched/
+data/enriched/
 ├── _metadata.json              # { total_items, categories, sources, timestamp }
 ├── items/
 │   ├── _index.json             # [ {id, category, status}, ... ]
@@ -89,13 +89,13 @@ build/enriched/
 - Modularity: Source annotations separate from item core
 - Traceability: Provenance linkage at granular level
 
-### 3. Planning Index (`build/planning/`)
+### 3. Planning Index (`data/planning/`)
 
-**Input**: `build/planning_index.json` (merged roadmap + metadata)
+**Input**: `data/planning_index.json` (merged roadmap + metadata)
 
 **Output Structure**:
 ```
-build/planning/
+data/planning/
 ├── _metadata.json              # { total_items, categories, adapters, timestamp }
 ├── items/
 │   ├── _index.json             # [ {id, title, category}, ... ]
@@ -196,10 +196,10 @@ Once decomposed, these patterns become efficient:
 
 ```python
 # Query: All modules in Algebra package
-modules_in_algebra = load_index("build/deps/modules/Algebra/_index.json")
+modules_in_algebra = load_index("data/deps/modules/Algebra/_index.json")
 
 # Query: All items in "Infrastructure" category
-items_in_cat = load_index("build/enriched/items/_index.json")
+items_in_cat = load_index("data/enriched/items/_index.json")
 infrastructure = [i for i in items_in_cat if i['category'] == 'Infrastructure']
 
 # Query: Transitive dependencies of module X
@@ -210,7 +210,7 @@ def transitive_deps(module_id):
         m = queue.pop(0)
         if m in visited: continue
         visited.add(m)
-        data = load_json(f"build/deps/modules/{m}.json")
+        data = load_json(f"data/deps/modules/{m}.json")
         queue.extend(data['imports'])
     return visited
 ```
@@ -232,10 +232,10 @@ def transitive_deps(module_id):
 ### Current Makefile
 
 ```makefile
-dependency-graph-json: build/diagrams/agda-deps-full.dot
+data/dependency_graph.json: build/diagrams/agda-deps-full.dot
     $(AGDA) ... --compile src/agda/Plan/CIM/DependencyGraphExport.agda
 
-roadmap-export-json: planning-index-json
+.github/roadmap/tasks.json: data/planning_index.json
     # exports monolithic canonical_enriched.json
 ```
 
@@ -243,16 +243,16 @@ roadmap-export-json: planning-index-json
 
 ```makefile
 # Legacy targets (for backward compatibility)
-dependency-graph-json: build/deps/_metadata.json  # aggregated
-canonical-enriched-json: build/enriched/_metadata.json
+data/dependency_graph.json: data/deps/_metadata.json  # aggregated
+canonical-enriched-json: data/enriched/_metadata.json
 
 # New granular targets
-build/deps/_metadata.json: build/diagrams/agda-deps-full.dot
-    python3 scripts/json_decompose.py --input ... --output build/deps/
+data/deps/_metadata.json: build/diagrams/agda-deps-full.dot
+    python3 scripts/json_decompose.py --input ... --output data/deps/
 
 # Validation: ensure roundtrip
-validate-json-roundtrip: build/deps/_metadata.json
-    python3 scripts/validate_json_roundtrip.py build/deps/
+validate-json-roundtrip: data/deps/_metadata.json
+    python3 scripts/validate_json_roundtrip.py data/deps/
 ```
 
 ## Cross-References

@@ -180,5 +180,6 @@ main =
   ffi-bind (countPattern "FIXME") (\fixme →
     let markdown = buildAndFormatMarkdown dvLog post todo plan fixme
         json = buildAndFormatJSON dvLog post todo plan fixme
-    in ffi-bind (writeFile "deferred-items.md" markdown) (\_ →
-       writeFile "deferred-summary.json" json))))))
+    in ffi-bind (writeFile "build/reports/deferred-items.md" markdown) (\_ →
+       ffi-bind (writeFile "docs/status/deferred-items.md" markdown) (\_ →
+         writeFile "build/reports/deferred-summary.json" json)))))))

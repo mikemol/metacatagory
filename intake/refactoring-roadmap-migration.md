@@ -7,7 +7,7 @@ After Agda 2.8.0 upgrade and full rebuild (140/157 files compiled, 89% complete)
 * Plan.CIM.Utility.agda: clean core version (148 lines), compiles with --safe
 * CHIPConformance.agda: fixed `composeBraids`, all stubs compile
 * Utility-broken.agda: preserved in repo root with 77 machine-actionable roadmap examples (~93KB)
-* ROADMAP.md, DEFERRED-TRACKING.md: empty (deferred-summary.json tracks 567 items)
+* ROADMAP.md, DEFERRED-TRACKING.md: empty (build/reports/deferred-summary.json tracks 567 items)
 
 ## Non-Critical Refactoring (WAL Entry)
 
@@ -26,7 +26,7 @@ After Agda 2.8.0 upgrade and full rebuild (140/157 files compiled, 89% complete)
 
 * **Task**: Add entries for:
 
-  * Utility-broken.agda recovery   \* CHIPConformance.agda stubs (makeSPPFNode, richer adjunction)   \* composeBraids semantic refinement (optional)   \* Cross-reference deferred-summary.json (567 items)
+  * Utility-broken.agda recovery   \* CHIPConformance.agda stubs (makeSPPFNode, richer adjunction)   \* composeBraids semantic refinement (optional)   \* Cross-reference build/reports/deferred-summary.json (567 items)
 
 * **Status**: Awaiting WAL initialization
 
@@ -53,7 +53,7 @@ After Agda 2.8.0 upgrade and full rebuild (140/157 files compiled, 89% complete)
 * Utility.agda: RoadmapStep (line 35), ASTDependent module (line 104)
 * CHIPConformance.agda: composeBraids (line 34), makeSPPFNode (line 42)
 * Utility-broken.agda: 77 example roadmaps (lines ~23–2000)
-* deferred-summary.json: 567 total items, 351 postulates, 155 TODOs
+* build/reports/deferred-summary.json: 567 total items, 351 postulates, 155 TODOs
 
 ## Build Priority
 

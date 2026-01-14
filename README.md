@@ -104,5 +104,8 @@ Target: `nedge_topology/parser.py`
 
 ```text
 make agda-all  # Compile all Agda modules
-make docs            # Generate documentation
+make docs-all  # Generate roadmap AST + module docs
+make ROADMAP.md  # Regenerate roadmap markdown
+make regen-all  # Regenerate all tracked artifacts
+make check-all  # Full validation suite (alias: make check)
 ```

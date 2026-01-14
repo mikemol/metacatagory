@@ -25,27 +25,30 @@ joinWith sep [] = ""
 joinWith sep (x ∷ []) = x
 joinWith sep (x ∷ xs) = x ++ sep ++ joinWith sep xs
 
--- Instrument a recipe to emit wall-clock timing for the target.
--- Shell integrity (set -euo pipefail) is configured via SHELL and .SHELLFLAGS in Makefile header.
--- Each wrapped recipe preserves failure propagation via `rc=$$?; exit $$rc` pattern.
-instrumentRecipe : String → List String → List String
-instrumentRecipe name [] =
-  ( "@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); end=$$(date +%s%N); elapsed_ms=$$(( (end-start)/1000000 )); "
-  ++ "printf '{\"target\":\"%s\",\"start_ns\":%s,\"end_ns\":%s,\"elapsed_ms\":%s,\"status\":\"%s\"}\\n' \""
-  ++ name ++ "\" $$start $$end $$elapsed_ms ok >> $(PROFILE_LOG)" ) ∷ []
-instrumentRecipe name cmds =
-  let scrubbed = map stripAt cmds
-      joined = joinWith " && " scrubbed in
-  ( "@mkdir -p $(PROFILE_DIR); start=$$(date +%s%N); (" ++ joined ++ "); rc=$$?; end=$$(date +%s%N); "
-  ++ "elapsed_ms=$$(( (end-start)/1000000 )); status=$$( [ $$rc -eq 0 ] && echo ok || echo fail ); "
-  ++ "printf '{\"target\":\"%s\",\"start_ns\":%s,\"end_ns\":%s,\"elapsed_ms\":%s,\"status\":\"%s\"}\\n' \""
-  ++ name ++ "\" $$start $$end $$elapsed_ms $$status >> $(PROFILE_LOG); exit $$rc" ) ∷ []
+-- Recipe scripts live under build/recipes except for regen-makefile.
+recipeScriptPath : String → String
+recipeScriptPath n with primStringEquality n "regen-makefile"
+... | true = "scripts/recipes/regen-makefile.sh"
+... | false = "build/recipes/" ++ n ++ ".sh"
+
+escapeSingleQuotes : String → String
+escapeSingleQuotes s = primStringFromList (escapeChars (primStringToList s))
   where
-    stripAt : String → String
-    stripAt s with primStringToList s
-    ... | [] = s
-    ... | ('@' ∷ rest) = primStringFromList rest
-    ... | _ = s
+    escapeChars : List Char → List Char
+    escapeChars [] = []
+    escapeChars ('\'' ∷ xs) = '\'' ∷ '\\' ∷ '\'' ∷ '\'' ∷ escapeChars xs
+    escapeChars (c ∷ xs) = c ∷ escapeChars xs
+
+-- Profiling wrapper injected into Makefile recipes.
+profileRecipe : String → List String
+profileRecipe name =
+  let escapedName = escapeSingleQuotes name
+      escapedPath = escapeSingleQuotes (recipeScriptPath name)
+  in ("scripts/run_profiled.sh '" ++ escapedName ++ "' '" ++ escapedPath ++ "'") ∷ []
+
+-- Store raw recipe lines (profiling wrapper is injected when rendering the Makefile).
+instrumentRecipe : String → List String → List String
+instrumentRecipe _ cmds = cmds
 
 -- ==========================================================
 -- Domain Model: What Transformations Exist?
@@ -111,6 +114,22 @@ data TargetCategory : Set where
 -- Makefile Target Representation
 -- ==========================================================
 
+-- | Mutability classification for targets.
+data Mutability : Set where
+  Mutative : Mutability
+  ReadOnly : Mutability
+
+-- | Certificate required to construct mutating targets.
+record MutateCert : Set where
+  constructor mkMutateCert
+  field
+    reason : String
+    provenance : String
+    scope : String
+
+mutateCert : MutateCert
+mutateCert = mkMutateCert "makefile-targets" "Examples.MakefileTargets" "build/docs/data"
+
 -- | Concrete make target descriptor with dependencies and recipe lines.
 record MakefileTarget : Set where
   constructor mkTarget
@@ -120,6 +139,16 @@ record MakefileTarget : Set where
     dependencies : List String
     recipe : List String
     phony : Bool
+    mutability : Mutability
+
+-- Explicit constructors to enforce mutability certificates where needed.
+mkReadOnlyTarget : String → String → List String → List String → Bool → MakefileTarget
+mkReadOnlyTarget name description deps recipe phony =
+  mkTarget name description deps recipe phony ReadOnly
+
+mkMutativeTarget : MutateCert → String → String → List String → List String → Bool → MakefileTarget
+mkMutativeTarget cert name description deps recipe phony =
+  mkTarget name description deps recipe phony Mutative
 
 -- ==========================================================
 -- Category to Target Conversion
@@ -141,7 +170,7 @@ transformPath _ _ path = path
 -- Generate recipe for transformation
 generateRecipe : SourcePattern → OutputPattern → String → List String
 generateRecipe (agdaSource _) (agdaInterface _) sourcePath =
-  ("agda -i src/agda --ghc-flag=-Wno-star-is-type " ++ sourcePath) ∷ []
+  ("$(AGDA) $(AGDA_FLAGS) " ++ sourcePath) ∷ []
 generateRecipe (agdaSource _) (htmlDoc _) sourcePath =
   ("agda --html --html-dir=build/html -i src/agda " ++ sourcePath) ∷ []
 generateRecipe (markdownSource _) (validationReport _) _ =
@@ -149,9 +178,9 @@ generateRecipe (markdownSource _) (validationReport _) _ =
 generateRecipe _ _ _ = []
 
 -- Convert FileTransform category to concrete target
-fileTransformToTarget : String → String → SourcePattern → OutputPattern → List String → MakefileTarget
-fileTransformToTarget sourcePath targetPath sourcePattern outputPattern extraDeps =
-  mkTarget 
+fileTransformToTarget : MutateCert → String → String → SourcePattern → OutputPattern → List String → MakefileTarget
+fileTransformToTarget cert sourcePath targetPath sourcePattern outputPattern extraDeps =
+  mkMutativeTarget cert
     targetPath 
     ("Compile " ++ sourcePath ++ " to " ++ targetPath)
     (sourcePath ∷ extraDeps)
@@ -159,24 +188,29 @@ fileTransformToTarget sourcePath targetPath sourcePattern outputPattern extraDep
     false
 
 -- Convert Validator to target
-validatorToTarget : String → String → String → List String → MakefileTarget
-validatorToTarget name description outputFile recipe =
-  mkTarget name description [] (instrumentRecipe name recipe) true
+validatorToTarget : String → String → String → List String → List String → MakefileTarget
+validatorToTarget name description outputFile deps recipe =
+  mkReadOnlyTarget name description deps (instrumentRecipe name recipe) true
 
 -- Convert Generator to target
-generatorToTarget : String → String → List String → List String → MakefileTarget
-generatorToTarget name description deps recipe =
-  mkTarget name description deps (instrumentRecipe name recipe) true
+generatorToTarget : MutateCert → String → String → List String → List String → MakefileTarget
+generatorToTarget cert name description deps recipe =
+  mkMutativeTarget cert name description deps (instrumentRecipe name recipe) true
+
+-- Convert Generator to file-producing target (non-phony for incremental builds)
+generatorToFileTarget : MutateCert → String → String → List String → List String → MakefileTarget
+generatorToFileTarget cert name description deps recipe =
+  mkMutativeTarget cert name description deps (instrumentRecipe name recipe) false
 
 -- Convert EnvironmentSetup to target
-environmentSetupToTarget : String → String → List String → MakefileTarget
-environmentSetupToTarget name description recipe =
-  mkTarget name description [] (instrumentRecipe name recipe) true
+environmentSetupToTarget : MutateCert → String → String → List String → MakefileTarget
+environmentSetupToTarget cert name description recipe =
+  mkMutativeTarget cert name description [] (instrumentRecipe name recipe) true
 
 -- Convert Synchronizer to target
-synchronizerToTarget : String → String → List String → List String → MakefileTarget
-synchronizerToTarget name description deps recipe =
-  mkTarget name description deps (instrumentRecipe name recipe) true
+synchronizerToTarget : MutateCert → String → String → List String → List String → MakefileTarget
+synchronizerToTarget cert name description deps recipe =
+  mkMutativeTarget cert name description deps (instrumentRecipe name recipe) true
 
 -- ==========================================================
 -- Discovery and Generation
@@ -187,33 +221,33 @@ agdaToAgdai : String → String
 agdaToAgdai path = path ++ "i"  -- simple append for now
 
 -- Generate targets for discovered Agda files
-generateAgdaTargets : List String → List MakefileTarget
-generateAgdaTargets [] = []
-generateAgdaTargets (path ∷ paths) =
+generateAgdaTargets : MutateCert → List String → List MakefileTarget
+generateAgdaTargets cert [] = []
+generateAgdaTargets cert (path ∷ paths) =
   let target = agdaToAgdai path
-      recipe = ("$(AGDA) -i src/agda --ghc-flag=-Wno-star-is-type " ++ path) ∷ []
-  in mkTarget target ("Compile " ++ path) (path ∷ []) (instrumentRecipe target recipe) false ∷ generateAgdaTargets paths
+      recipe = ("$(AGDA) $(AGDA_FLAGS) " ++ path) ∷ []
+  in mkMutativeTarget cert target ("Compile " ++ path) (path ∷ []) (instrumentRecipe target recipe) false ∷ generateAgdaTargets cert paths
 
 -- Generate HTML documentation targets
-generateDocsTargets : List String → List MakefileTarget  
-generateDocsTargets [] = []
-generateDocsTargets (path ∷ paths) =
+generateDocsTargets : MutateCert → List String → List MakefileTarget  
+generateDocsTargets cert [] = []
+generateDocsTargets cert (path ∷ paths) =
   let htmlTarget = "build/html/" ++ path ++ ".html"
       agdaiDep = agdaToAgdai path
       recipe = ("$(AGDA) --html --html-dir=build/html -i src/agda " ++ path) ∷ []
-  in mkTarget htmlTarget ("Generate HTML for " ++ path) (agdaiDep ∷ []) (instrumentRecipe htmlTarget recipe) false ∷ generateDocsTargets paths
+  in mkMutativeTarget cert htmlTarget ("Generate HTML for " ++ path) (agdaiDep ∷ []) (instrumentRecipe htmlTarget recipe) false ∷ generateDocsTargets cert paths
 
 -- Aggregate target: build all .agdai files
-allAgdaiTarget : List String → MakefileTarget
-allAgdaiTarget agdaFiles =
+allAgdaiTarget : MutateCert → List String → MakefileTarget
+allAgdaiTarget cert agdaFiles =
   let agdaiFiles = map agdaToAgdai agdaFiles
-  in mkTarget "agda-all" "Compile all Agda modules" agdaiFiles (instrumentRecipe "agda-all" []) true
+  in mkMutativeTarget cert "agda-all" "Compile all Agda modules" agdaiFiles (instrumentRecipe "agda-all" []) true
 
 -- Aggregate target: build all HTML docs
-allDocsTarget : List String → MakefileTarget
-allDocsTarget agdaFiles =
+allDocsTarget : MutateCert → List String → MakefileTarget
+allDocsTarget cert agdaFiles =
   let htmlFiles = map (\path → "build/html/" ++ path ++ ".html") agdaFiles
-  in mkTarget "docs-all" "Generate all HTML documentation" htmlFiles (instrumentRecipe "docs-all" []) true
+  in mkMutativeTarget cert "docs-all" "Generate all HTML documentation" htmlFiles (instrumentRecipe "docs-all" []) true
 
 -- ==========================================================
 -- Discovery Functions

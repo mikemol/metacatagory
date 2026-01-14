@@ -107,8 +107,8 @@ exportAllStrategiesAUDAXMarkdown = do
                                                               ∷ [])
   let audaxStr = TechnicalDebt.DeferredItemsFormatting.audaxDocToMarkdown audaxDoc
   putStrLn "Exporting AUDAX Markdown for all strategies..."
-  writeFile "build/priority_strategies_audax.md" audaxStr
-  putStrLn "✓ Generated: build/priority_strategies_audax.md"
+  writeFile "docs/priority/priority_strategies_audax.md" audaxStr
+  putStrLn "✓ Generated: docs/priority/priority_strategies_audax.md"
   reportSuccess "AUDAX Markdown export complete"
 
 generateReferenceConfig : IO ⊤
@@ -124,8 +124,8 @@ generateReferenceConfig = do
   putStrLn ""
   putStrLn "Generating strategy profiles..."
   let jsonOutput = renderRoot "default" strategyEntries
-  writeFile "build/priority_strategy_profiles.json" jsonOutput
-  putStrLn "✓ Generated: build/priority_strategy_profiles.json"
+  writeFile "data/priority_strategy_profiles.json" jsonOutput
+  putStrLn "✓ Generated: data/priority_strategy_profiles.json"
   putStrLn ""
   validationResult ← validateJSON jsonOutput
   putStrLn (PriorityFormatting.concatStr "Validation: " validationResult)
@@ -134,7 +134,7 @@ generateReferenceConfig = do
 
 exportStrategyProfile : String → PriorityStrategy → IO ⊤
 exportStrategyProfile strategyName strategy = do
-  let filename = PriorityFormatting.concatStr (PriorityFormatting.concatStr "build/strategy_" strategyName) ".json"
+  let filename = PriorityFormatting.concatStr (PriorityFormatting.concatStr "data/strategy_" strategyName) ".json"
   putStrLn (PriorityFormatting.concatStr (PriorityFormatting.concatStr "Exporting " strategyName) " strategy...")
   let jsonStr = "{" ⊕ "\"name\":" ⊕ quoteStr strategyName ⊕ ",\"weights\":" ⊕ renderWeights (strategyToWeights strategy) ⊕ "}"
   writeFile filename jsonStr

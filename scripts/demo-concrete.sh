@@ -24,7 +24,7 @@ cat <<'BANNER'
 PHASE 3 CONCRETE DEMONSTRATION
 
 This demonstration shows the complete homotopical contract system working
-on real production data (build/dependency_graph.json). We'll validate the
+on real production data (data/dependency_graph.json). We'll validate the
 core properties and show how the three backends are proven equivalent.
 
 BANNER

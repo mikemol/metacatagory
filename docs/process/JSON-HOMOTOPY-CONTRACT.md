@@ -243,7 +243,7 @@ The natural transformation η witnesses that parameterized and concrete are **ho
 
 3. **Validate on real data:**
    ```
-   build/dependency_graph.json → decompose → build/deps/ → recompose → compare
+   data/dependency_graph.json → decompose → data/deps/ → recompose → compare
    ```
 
 ### Phase 2E: Extraction
@@ -260,9 +260,9 @@ The natural transformation η witnesses that parameterized and concrete are **ho
 
 3. **Run on real data:**
    ```bash
-   ./json-transform decompose build/dependency_graph.json build/deps/
-   ./json-transform recompose build/deps/ build/dependency_graph_reconstructed.json
-   diff build/dependency_graph.json build/dependency_graph_reconstructed.json
+   ./json-transform decompose data/dependency_graph.json data/deps/
+   ./json-transform recompose data/deps/ build/dependency_graph_reconstructed.json
+   diff data/dependency_graph.json build/dependency_graph_reconstructed.json
    ```
 
 ## Comparison: Three Approaches

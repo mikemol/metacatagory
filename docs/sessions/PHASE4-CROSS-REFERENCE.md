@@ -256,7 +256,7 @@ python3 scripts/cross_reference_reporter.py
 ```bash
 python3 -c "
 import json
-data = json.load(open('build/dependency_graph.json'))
+data = json.load(open('data/dependency_graph.json'))
 module = 'Metamodel'
 node = next(n for n in data['nodes'] if n['module'] == module)
 print(f'{module} imported by {node[\"reverse_deps\"]} modules')
@@ -268,7 +268,7 @@ print(f'{module} imported by {node[\"reverse_deps\"]} modules')
 ```bash
 python3 -c "
 import json
-data = json.load(open('build/impact_analysis.json'))
+data = json.load(open('data/impact_analysis.json'))
 for item in data['high_impact_steps'][:10]:
     print(f'{item[\"step_id\"]}: {item[\"affected_count\"]} modules')
 "

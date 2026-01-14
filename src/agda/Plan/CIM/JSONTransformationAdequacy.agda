@@ -165,6 +165,7 @@ fold-merge : List (Σ Filepath (λ _ → JSON)) → JSON
 fold-merge [] = json-empty
 fold-merge ((path , j) ∷ xs) = json-merge j (fold-merge xs)
 
+-- | Adequacy bundle of primitives required for JSON roundtrip.
 record JSONTransformationKit : Set where
   field
     -- Input monolithic structure
@@ -224,6 +225,7 @@ data JSONState : Set where
 -- | Paths are transformation sequences
 -- Using mutual block to define decompose/recompose with internalized coverage
 mutual
+  -- | JSON transformation path constructors.
   data JSONPath : JSONState → JSONState → Set where
     -- Identity: no transformation
     id-path : ∀ {s} → JSONPath s s
@@ -332,6 +334,7 @@ buildHierarchical kit =
       idx = indexGen fragments
   in mkHierarchical metadata fragments manifest
   where
+    -- | Local list map helper used in reconstruction.
     postulate map : ∀ {A B : Set} → (A → B) → List A → List B
 
 -- Note: buildMonolithic is postulated above for use in JSONPath constructors
@@ -353,7 +356,7 @@ postulate
 
 -- | Framed face: roundtrip must be identity
 jsonTransformationFace : JSONTransformationKit → FramedFace jsonTransformationAlgebra
--- Helper to transport recompose-step through the cogenerator equation
+-- | Helper to transport recompose-step through the cogenerator equation.
 mkRecompPath : ∀ (manifest : ManifestSpec) (h : Hierarchical) (m : Monolithic) →
               cogenerateMono h ≡ m → JSONPath (hier h) (mono m)
 mkRecompPath manifest h m refl = recompose-step manifest
@@ -408,15 +411,15 @@ AxiomInstance.solve jsonTransformationAxiomInstance kit =
 -- Concrete kits for each target decomposition
 ------------------------------------------------------------------------
 
--- | Kit for dependency_graph.json → build/deps/
+-- | Kit for dependency_graph.json → data/deps/
 postulate
   dependencyGraphKit : JSONTransformationKit
 
--- | Kit for canonical_enriched.json → build/enriched/  
+-- | Kit for canonical_enriched.json → data/enriched/  
 postulate
   enrichedRoadmapKit : JSONTransformationKit
 
--- | Kit for planning_index.json → build/planning/
+-- | Kit for planning_index.json → data/planning/
 postulate
   planningIndexKit : JSONTransformationKit
 

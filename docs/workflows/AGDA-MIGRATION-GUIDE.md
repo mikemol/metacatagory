@@ -755,7 +755,7 @@ agda --compile --include-path=src/agda \
   src/agda/TechnicalDebt/PriorityOrchestrationFFI.agda
 
 # Run the compiled binary
-./src/agda/TechnicalDebt/PriorityOrchestrationFFI
+./build/agda/TechnicalDebt/PriorityOrchestrationFFI
 ```
 
 ### Testing Each Layer
