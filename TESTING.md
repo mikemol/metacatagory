@@ -52,6 +52,7 @@ MUTATE_OK=1 make check    # strict roundtrip validation is the default
 # Narrower:
 # MUTATE_OK=1 make json-roundtrip-validate
 # MUTATE_OK=1 make check-docs
+# Note: full pytest/markdown lint requires network to install dev deps; use the CI container if offline.
 ```
 
 CI runs with `METACATAGORY_STRICT_ROUNDTRIP=true` and job-scoped report dirs under `build/reports/{agda,docs,roadmap,python}`.
