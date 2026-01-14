@@ -32,8 +32,8 @@ jobs:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
-      CI_REPORT_DIR: build/reports
-      CI_ARTIFACT_DIR: build/reports
+      CI_REPORT_DIR: build/reports/agda
+      CI_ARTIFACT_DIR: build/reports/agda
       MAKEFILE_COVERAGE_SKIP: docs-normalize docs-all md-normalize regen-all all act-list act-ci act-lint act-markdown-fix act-makefile-validate act-roadmap-sync act-deferred act-badges act-all
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
@@ -114,8 +114,8 @@ jobs:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
-      CI_REPORT_DIR: build/reports
-      CI_ARTIFACT_DIR: build/reports
+      CI_REPORT_DIR: build/reports/docs
+      CI_ARTIFACT_DIR: build/reports/docs
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
@@ -186,8 +186,8 @@ jobs:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
-      CI_REPORT_DIR: build/reports
-      CI_ARTIFACT_DIR: build/reports
+      CI_REPORT_DIR: build/reports/roadmap
+      CI_ARTIFACT_DIR: build/reports/roadmap
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:
@@ -256,8 +256,8 @@ jobs:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
-      CI_REPORT_DIR: build/reports
-      CI_ARTIFACT_DIR: build/reports
+      CI_REPORT_DIR: build/reports/python
+      CI_ARTIFACT_DIR: build/reports/python
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
     steps:

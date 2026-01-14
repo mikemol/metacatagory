@@ -33,6 +33,7 @@ class JSONRecomposer:
     def __init__(self, hierarchical_dir: str):
         self.hierarchical_dir = Path(hierarchical_dir)
         self.metadata = self._load_metadata()
+        self.metadata_path = self.hierarchical_dir / "_metadata.json"
     
     def _load_metadata(self) -> Dict[str, Any]:
         """Load metadata from hierarchical structure."""
@@ -41,6 +42,15 @@ class JSONRecomposer:
             with open(metadata_file, "r") as f:
                 return json.load(f)
         return {}
+
+    def _check_expected_count(self, found: int, label: str) -> None:
+        """Validate fragment completeness against metadata total_items if present."""
+        expected = self.metadata.get("total_items")
+        if isinstance(expected, int) and expected != found:
+            raise ValueError(
+                f"Fragment count mismatch for {label}: expected {expected} "
+                f"(from {self.metadata_path}), found {found}"
+            )
     
     def recompose(self) -> Dict[str, Any]:
         """Recompose hierarchical structure back to monolithic JSON."""
@@ -128,6 +138,9 @@ class DependencyGraphRecomposer(JSONRecomposer):
         
         if cycles:
             result["cycles"] = cycles
+
+        # Completeness check against metadata total_items (modules count)
+        self._check_expected_count(len(modules), "modules")
         
         return result
 
@@ -177,9 +190,9 @@ class ItemArrayRecomposer(JSONRecomposer):
                     if item_data is not None:
                         items.append(item_data)
             
-            # Fallback: read all items if index missing
-            if not items:
-                json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
+        # Fallback: read all items if index missing
+        if not items:
+            json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
 
                 def load_path(path: Path) -> Any:
                     with open(path, "r") as f:
@@ -191,7 +204,8 @@ class ItemArrayRecomposer(JSONRecomposer):
                 else:
                     for json_file in json_files:
                         items.append(load_path(json_file))
-        
+
+        self._check_expected_count(len(items), "items")
         return items
 
 
@@ -240,9 +254,9 @@ class RoadmapRecomposer(JSONRecomposer):
                     if item_data is not None:
                         items.append(item_data)
             
-            # Fallback: read all items if index missing
-            if not items:
-                json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
+        # Fallback: read all items if index missing
+        if not items:
+            json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
 
                 def load_path(path: Path) -> Any:
                     with open(path, "r") as f:
@@ -254,7 +268,8 @@ class RoadmapRecomposer(JSONRecomposer):
                 else:
                     for json_file in json_files:
                         items.append(load_path(json_file))
-        
+
+        self._check_expected_count(len(items), "items")
         return {"items": items}
 
 
