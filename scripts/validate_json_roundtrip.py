@@ -164,6 +164,15 @@ class GenerateRoundtripReportPhase(Phase[Dict[str, Any], bool]):
             return False
 
 
+def _strict_flag() -> bool:
+    """Determine if strict structural comparison is enabled."""
+    val = os.environ.get("METACATAGORY_STRICT_ROUNDTRIP")
+    if val is None:
+        # Default to strict
+        return True
+    return val.lower() in ("1", "true", "yes")
+
+
 def validate_roundtrip(base_dir: Path | None = None) -> bool:
     """Validate decompose → recompose roundtrip (test-friendly)."""
 
@@ -234,7 +243,7 @@ def validate_roundtrip(base_dir: Path | None = None) -> bool:
     original_modules, original_edges = _count_modules_edges(original)
     recomposed_modules, recomposed_edges = _count_modules_edges(recomposed)
 
-    strict = os.environ.get("METACATAGORY_STRICT_ROUNDTRIP", "").lower() in ("1", "true", "yes")
+    strict = _strict_flag()
 
     if strict:
         orig_mods, orig_edges_set = _collect_modules_and_edges(original)
@@ -359,7 +368,7 @@ def validate_roundtrip_with_paths(original_path: Path, recomposed_path: Path) ->
     original_modules, original_edges = _count_modules_edges(original)
     recomposed_modules, recomposed_edges = _count_modules_edges(recomposed)
 
-    strict = os.environ.get("METACATAGORY_STRICT_ROUNDTRIP", "").lower() in ("1", "true", "yes")
+    strict = _strict_flag()
     if strict:
         orig_mods, orig_edges_set = _collect_modules_and_edges(original)
         reco_mods, reco_edges_set = _collect_modules_and_edges(recomposed)
