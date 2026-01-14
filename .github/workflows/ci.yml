@@ -309,3 +309,27 @@ jobs:
           path: ${{ env.CI_ARTIFACT_DIR }}**
           if-no-files-found: ignore
           retention-days: 30
+  collect-reports:
+    name: Collect Reports
+    needs:
+      - agda-exports
+      - docs-checks
+      - roadmap-json-checks
+      - python-checks
+    runs-on: ubuntu-latest
+    if: ${{ env.ACT != 'true' }}
+    steps:
+      - name: Download build-reports artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: build/reports/combined
+          pattern: build-reports-*
+          merge-multiple: true
+
+      - name: Upload combined reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-reports-all
+          path: build/reports/combined/**
+          if-no-files-found: ignore
+          retention-days: 30
