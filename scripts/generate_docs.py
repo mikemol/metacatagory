@@ -6,9 +6,9 @@ Generates README.md, NAVIGATION.md, and CONTRIBUTING.md
 """
 
 import json
-import re
 import sys
 from pathlib import Path
+from json import JSONDecodeError
 
 def load_planning_index():
     """Load roadmap data from data/planning_index.json"""
@@ -50,11 +50,23 @@ def format_roadmap_for_readme(item):
         "tags": ", ".join(item.get("tags", []))
     }
 
-# Load roadmaps from planning index instead of hardcoding
-ROADMAPS = [format_roadmap_for_readme(item) for item in load_planning_index()]
+ROADMAPS: list[dict] = []
+
+
+def _load_default_roadmaps() -> list[dict]:
+    """Lazy-load formatted roadmaps from planning index."""
+    return [format_roadmap_for_readme(item) for item in load_planning_index()]
+
+
+def ensure_roadmaps() -> None:
+    """Populate ROADMAPS if not already set."""
+    global ROADMAPS
+    if not ROADMAPS:
+        ROADMAPS = _load_default_roadmaps()
 
 def generate_readme():
     """Generate README.md content"""
+    ensure_roadmaps()
     content = """# Metacatagory
 
 A composable, formal system for semantic parsing and protocol management using categorical proof-driven architecture and topological semantics.
@@ -290,6 +302,7 @@ Development is guided by RoadmapStep records that encode:
 
 def main():
     """Generate all documentation files"""
+    ensure_roadmaps()
     # Generate README.md
     with open("README.md", "w") as f:
         f.write(generate_readme())
