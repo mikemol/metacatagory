@@ -89,11 +89,11 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload build reports
+      - name: Upload build reports (agda)
         if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
-          name: build-reports
+          name: build-reports-agda
           path: ${{ env.CI_ARTIFACT_DIR }}**
           if-no-files-found: ignore
           retention-days: 30
@@ -161,11 +161,11 @@ jobs:
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: MUTATE_OK=1 make check-docs
 
-      - name: Upload build reports
+      - name: Upload build reports (docs)
         if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
-          name: build-reports
+          name: build-reports-docs
           path: ${{ env.CI_ARTIFACT_DIR }}**
           if-no-files-found: ignore
           retention-days: 30
@@ -232,11 +232,11 @@ jobs:
           python3 -m scripts.validate_json_roundtrip data/planning_index.json build/planning_index_recomposed.json || true
           MUTATE_OK=1 make check-json
 
-      - name: Upload build reports
+      - name: Upload build reports (roadmap)
         if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
-          name: build-reports
+          name: build-reports-roadmap
           path: ${{ env.CI_ARTIFACT_DIR }}**
           if-no-files-found: ignore
           retention-days: 30
@@ -297,11 +297,11 @@ jobs:
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: MUTATE_OK=1 make check-debt
 
-      - name: Upload build reports
+      - name: Upload build reports (python)
         if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
-          name: build-reports
+          name: build-reports-python
           path: ${{ env.CI_ARTIFACT_DIR }}**
           if-no-files-found: ignore
           retention-days: 30
