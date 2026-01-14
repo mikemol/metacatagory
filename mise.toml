@@ -51,6 +51,15 @@ mise run check
 echo "Ready. Run 'make' for all targets or 'make check' for quick validation."
 """
 
+# Developer setup (installs dev dependencies)
+dev-setup = """
+set -euo pipefail
+echo \"Installing dev dependencies (pytest, node tools)...\"
+pip install -r requirements-dev.txt
+npm ci
+echo \"Done.\"
+"""
+
 # Help and discovery
 help = """
 echo "MetaCategory Mise Tasks:"

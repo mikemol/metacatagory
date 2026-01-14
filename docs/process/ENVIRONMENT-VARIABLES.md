@@ -49,8 +49,8 @@ and whether execution is guarded or defaults are provided.
 | `CI_DEFERRED_REPORT_FILE` | `ci.yml`, `.github/scripts/create-or-update-tracking-issue.sh`, `.github/scripts/detect-deferred-items.sh` | GitHub Actions runtime | Defaults to `${CI_REPORT_DIR}/deferred-items.md` when `CI_REPORT_DIR` is set, otherwise `deferred-items.md` | Safe: defaulted |
 | `CI_DEFERRED_SUMMARY_FILE` | `ci.yml`, `.github/scripts/create-or-update-tracking-issue.sh`, `.github/scripts/detect-deferred-items.sh` | GitHub Actions runtime | Defaults to `${CI_REPORT_DIR}/deferred-summary.json` when `CI_REPORT_DIR` is set, otherwise `deferred-summary.json` | Safe: defaulted |
 | `CI_TASKS_FILE` | `roadmap-sync.yml`, `.github/scripts/sync-roadmap-issues.sh` | GitHub Actions runtime | Defaults to `.github/roadmap/tasks.json` when unset | Safe: defaulted |
-| `CI_REPORT_DIR` | `ci.yml`, `roadmap-sync.yml`, `markdown-lint.yml`, `markdown-auto-fix.yml`, `makefile-validate.yml`, `deferred-items.yml`, `badge-update.yml`, plus Python report generators via `scripts/shared/paths.py` | GitHub Actions runtime | Defaults to `build/reports` in workflows | Safe: defaulted |
-| `CI_ARTIFACT_DIR` | `ci.yml`, `roadmap-sync.yml`, `markdown-lint.yml`, `markdown-auto-fix.yml`, `makefile-validate.yml`, `deferred-items.yml`, `badge-update.yml` | GitHub Actions runtime | Defaults to `build/reports` in workflows | Safe: defaulted |
+| `CI_REPORT_DIR` | `ci.yml` | GitHub Actions runtime | Job-scoped: `build/reports/agda`, `.../docs`, `.../roadmap`, `.../python` | Safe: scoped |
+| `CI_ARTIFACT_DIR` | `ci.yml` | GitHub Actions runtime | Job-scoped: same as `CI_REPORT_DIR` | Safe: scoped |
 | `AGDA_DIR` | `ci.yml` | Job env in `ci.yml` | Set in job `env` | Safe: provided by workflow |
 | `AGDA_EXEC_OPTIONS` | `ci.yml` (exported to `GITHUB_ENV`) | Set in `ci.yml` step | Used indirectly by `agda` | Safe: set by workflow |
 | `AGDA_STDLIB` | `ci.yml` | Job env in `ci.yml` | Set in job `env` | Safe: provided by workflow |

@@ -37,6 +37,7 @@ jobs:
       MAKEFILE_COVERAGE_SKIP: docs-normalize docs-all md-normalize regen-all all act-list act-ci act-lint act-markdown-fix act-makefile-validate act-roadmap-sync act-deferred act-badges act-all
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
+      METACATAGORY_STRICT_ROUNDTRIP: "true"
     steps:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
@@ -118,6 +119,7 @@ jobs:
       CI_ARTIFACT_DIR: build/reports/docs
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
+      METACATAGORY_STRICT_ROUNDTRIP: "true"
     steps:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
@@ -190,6 +192,7 @@ jobs:
       CI_ARTIFACT_DIR: build/reports/roadmap
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
+      METACATAGORY_STRICT_ROUNDTRIP: "true"
     steps:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
@@ -260,6 +263,7 @@ jobs:
       CI_ARTIFACT_DIR: build/reports/python
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
+      METACATAGORY_STRICT_ROUNDTRIP: "true"
     steps:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
