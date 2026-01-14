@@ -109,3 +109,15 @@ make ROADMAP.md  # Regenerate roadmap markdown
 make regen-all  # Regenerate all tracked artifacts
 make check-all  # Full validation suite (alias: make check)
 ```
+
+## Quickstart
+
+```bash
+mise install
+MUTATE_OK=1 make regen-makefile
+# Full suite (strict roundtrip validation by default)
+MUTATE_OK=1 make check
+# Or narrower targets:
+# MUTATE_OK=1 make json-roundtrip-validate
+# MUTATE_OK=1 make check-docs
+```

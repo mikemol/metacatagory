@@ -8,6 +8,12 @@
 3. Study [src/agda/Plan/CIM/Utility.agda](src/agda/Plan/CIM/Utility.agda) - See concrete RoadmapStep examples
 4. Follow [CONTRIBUTING.md](CONTRIBUTING.md) - Start contributing
 
+**Practical setup**
+- `mise install`
+- `MUTATE_OK=1 make regen-makefile` (regenerate recipes)
+- `MUTATE_OK=1 make check` (full suite; strict roundtrip validation is the default)
+- For narrower runs: `MUTATE_OK=1 make json-roundtrip-validate` or `MUTATE_OK=1 make check-docs`
+
 ## Core Modules
 
 ### Categorical Foundations
