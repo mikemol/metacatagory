@@ -25,6 +25,19 @@ def test_export_tasks_json_filters_legacy(tmp_path):
     assert tasks[0]["id"] == "GP-1"
 
 
+def test_export_tasks_json_accepts_items_dict(tmp_path):
+    source = tmp_path / "planning_index.json"
+    output = tmp_path / "tasks.json"
+    data = {"items": [{"id": "GP-2", "title": "Keep"}]}
+    source.write_text(json.dumps(data), encoding="utf-8")
+
+    mod.export_tasks_json(source, output)
+
+    tasks = json.loads(output.read_text())
+    assert len(tasks) == 1
+    assert tasks[0]["id"] == "GP-2"
+
+
 def test_main_guard_executes(tmp_path):
     script_copy = tmp_path / "scripts" / "export_canonical_json.py"
     script_copy.parent.mkdir(parents=True, exist_ok=True)

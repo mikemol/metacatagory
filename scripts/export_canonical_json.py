@@ -13,10 +13,7 @@ OUTPUT_PATH = shared_data.resolve_tasks_path(repo_root=ROOT)
 
 def export_tasks_json(source_path: Path, output_path: Path):
     """Export planning index to GitHub tasks.json."""
-    with open(source_path) as f:
-        canonical = json.load(f)
-    if isinstance(canonical, dict):
-        canonical = canonical.get("items", [])
+    canonical = shared_data.load_planning_index_from(source_path)
     
     # Filter out legacy items that shouldn't sync to GitHub
     filtered = [
