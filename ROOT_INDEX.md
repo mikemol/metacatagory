@@ -303,7 +303,7 @@ Located in [docs/sessions/](docs/sessions/):
 
 ### For Automation & CI
 
-1. [Makefile](Makefile) → [scripts/](scripts/) → [.github/workflows/](..github/workflows/)
+1. [Makefile](Makefile) → [scripts/](scripts/) → [.github/workflows/](.github/workflows/)
 
 ---
 
