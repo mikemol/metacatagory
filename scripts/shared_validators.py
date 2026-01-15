@@ -165,6 +165,17 @@ def validate_json_to_markdown(
                     messages.append(f"  ... and {len(frontmatter_errors) - 10} more issues")
             else:
                 messages.append(f"✓ Frontmatter matches JSON ({len(md_frontmatter)} items validated)")
+
+        schema_result = shared_data.validate_roadmap_frontmatter(md_frontmatter)
+        if not schema_result.is_valid():
+            valid = False
+            messages.append("✗ Frontmatter schema validation issues:")
+            errors = [str(err) for err in schema_result.errors]
+            messages.extend(errors[:10])
+            if len(errors) > 10:
+                messages.append(f"  ... and {len(errors) - 10} more issues")
+        else:
+            messages.append(f"✓ Frontmatter schema valid ({len(md_frontmatter)} items)")
     
     return valid, messages
 

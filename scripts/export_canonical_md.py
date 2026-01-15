@@ -34,6 +34,7 @@ from scripts.shared.recovery_pipeline import RecoveryPipeline, RecoveryStrategy
 from scripts.shared.pipelines import Phase, PhaseResult, PhaseStatus
 from scripts.shared.markdown import MarkdownBuilder
 from scripts.shared.config import get_config
+from scripts.shared.errors import ValidationError
 from scripts import shared_data
 
 
@@ -199,6 +200,7 @@ class BuildMarkdownPhase(Phase[list[dict], str]):
 
     def transform(self, input_data: list[dict], context: dict[str, Any]) -> str:
         lines: list[str] = [HEADER.strip(), ""]
+        frontmatter_entries: list[dict] = []
         
         # Group by category
         by_category: dict[str, list[dict]] = defaultdict(list)
@@ -232,6 +234,8 @@ class BuildMarkdownPhase(Phase[list[dict], str]):
                 
                 if item.get('files'):
                     frontmatter['files'] = item['files']
+
+                frontmatter_entries.append(frontmatter)
                 
                 # Generate YAML frontmatter block
                 yaml_str = dump_yaml(frontmatter)
@@ -272,6 +276,15 @@ class BuildMarkdownPhase(Phase[list[dict], str]):
             items=items_processed,
             lines=len(lines)
         )
+
+        schema_result = shared_data.validate_roadmap_frontmatter(frontmatter_entries)
+        if not schema_result.is_valid():
+            error_details = "\n".join(str(err) for err in schema_result.errors[:10])
+            raise ValidationError(
+                f"ROADMAP frontmatter schema validation failed:\n{error_details}",
+                field="roadmap_frontmatter",
+                hint=f"{len(schema_result.errors)} constraint(s) violated",
+            )
         
         context['categories_count'] = categories_processed
         context['items_rendered'] = items_processed

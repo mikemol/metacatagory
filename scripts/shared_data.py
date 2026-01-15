@@ -204,3 +204,13 @@ def load_roadmap_markdown() -> Tuple[List[str], List[Dict[str, Any]]]:
     """
     md_path = REPO_ROOT / "ROADMAP.md"
     return load_roadmap_markdown_from(md_path)
+
+
+def validate_roadmap_frontmatter(items: List[Dict[str, Any]]):
+    """Validate roadmap frontmatter against the RoadmapItem schema."""
+    from scripts.shared.validation import roadmap_item_validator, ValidationResult
+
+    result = ValidationResult()
+    for idx, item in enumerate(items):
+        result.merge(roadmap_item_validator(item, path=f"items[{idx}]"))
+    return result

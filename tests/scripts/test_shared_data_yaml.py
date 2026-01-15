@@ -166,6 +166,16 @@ def test_load_tasks_json_variants(tmp_path, monkeypatch):
         shared_data.load_tasks_json()
 
 
+def test_validate_roadmap_frontmatter():
+    valid = [{"id": "GP-1", "title": "Alpha", "status": "in-progress"}]
+    result = shared_data.validate_roadmap_frontmatter(valid)
+    assert result.is_valid()
+
+    invalid = [{"title": "Missing ID"}]
+    result = shared_data.validate_roadmap_frontmatter(invalid)
+    assert not result.is_valid()
+
+
 def test_load_roadmap_markdown_yaml_error(tmp_path, monkeypatch):
     real_yaml = pytest.importorskip("yaml")
     monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)

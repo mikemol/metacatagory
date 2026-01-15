@@ -24,6 +24,7 @@ from shared.normalization import (
     deduplicate_items_by_id,
     ensure_item_fields
 )
+from shared.roadmap_agda import parse_ingested_agda, parse_legacy_agda
 from shared.parallel import get_parallel_settings
 
 # --- Helpers --------------------------------------------------------------
@@ -94,98 +95,6 @@ def load_doclint_json(base_path: Path) -> List[Dict]:
         ensure_provenance(item)
     return items
 
-def parse_ingested_agda(base_path: Path) -> List[Dict]:
-    """Extract roadmap steps from IngestedRoadmaps/*.agda modules."""
-    items = []
-    ingested_dir = base_path / "src/agda/Plan/CIM/IngestedRoadmaps"
-    
-    if not ingested_dir.exists():
-        return items
-    
-    for agda_file in ingested_dir.glob("*.agda"):
-        with open(agda_file) as f:
-            content = f.read()
-        
-        # Pattern: roadmapGpXXX : RoadmapStep
-        # Extract: provenance, step, status, targetModule
-        # Capture string literals that may contain escaped quotes.
-        str_lit = r'"((?:[^"\\\\]|\\\\.)+)"'
-        pattern = (
-            rf'roadmap(Gp\d+) : RoadmapStep\s+roadmap\1 = record\s+\{{[^}}]+'
-            rf'provenance\s+=\s+{str_lit}[^}}]+'
-            rf'step\s+=\s+{str_lit}[^}}]+'
-            rf'status\s+=\s+{str_lit}[^}}]+'
-            rf'targetModule\s+=\s+{str_lit}'
-        )
-        
-        matches = re.finditer(pattern, content, re.DOTALL)
-
-        def unescape(s: str) -> str:
-            try:
-                return bytes(s, "utf-8").decode("unicode_escape")
-            except Exception:
-                return s
-
-        for match in matches:
-            gp_id, provenance, step, status, target = match.groups()
-            provenance = unescape(provenance.strip())
-            step = unescape(step.strip())
-            status = unescape(status.strip())
-            target = unescape(target.strip())
-
-            item = {
-                "id": f"GP-{gp_id}",
-                "title": provenance,
-                "description": step,
-                "status": status,
-                "category": "IngestedGP",
-                "source": f"Plan/CIM/IngestedRoadmaps/{agda_file.name}",
-                "files": [target],
-                "tags": ["GP"],
-                "dependsOn": [],
-                "related": [],
-                "provenance": []
-            }
-            ensure_provenance(item)
-            items.append(item)
-    
-    return items
-
-def parse_legacy_agda(base_path: Path) -> List[Dict]:
-    """Extract items from legacy roadmap-*.agda files."""
-    items = []
-    
-    # These files have various schemas, extract what we can
-    for agda_file in base_path.glob("roadmap-*.agda"):
-        # Simple extraction: look for record definitions or postulates
-        # This is best-effort since schemas vary
-        with open(agda_file) as f:
-            content = f.read()
-        
-        # Skip very large files (likely generated)
-        if len(content) > 100000:
-            continue
-        
-        # Extract record type names as potential items
-        type_pattern = r'data (\w+) : Set where'
-        for match in re.finditer(type_pattern, content):
-            type_name = match.group(1)
-            item = {
-                "id": f"LEGACY-{agda_file.stem}-{type_name}",
-                "title": f"Type: {type_name} from {agda_file.name}",
-                "status": "completed",  # Legacy items assumed done
-                "category": "LegacyAgda",
-                "source": agda_file.name,
-                "files": [str(agda_file)],
-                "tags": ["legacy", "agda"],
-                "dependsOn": [],
-                "related": [],
-                "provenance": []
-            }
-            ensure_provenance(item)
-            items.append(item)
-    
-    return items
 
 def merge_by_title(items: List[Dict]) -> List[Dict]:
     """Merge duplicates that share the same normalized title, preserving provenance.
