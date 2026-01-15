@@ -158,7 +158,7 @@ navigationDoc = record
             "README.md: System overview, axioms, architecture, and ontological stack."
          ∷ "ROADMAP.md: Project roadmap, phase status, and planning."
          ∷ "CONTRIBUTING.md: Contribution guidelines, onboarding, coding standards, and PR process."
-         ∷ "DEFERRED-TRACKING.md: Technical debt and deferred items tracking."
+         ∷ "docs/status/DEFERRED-TRACKING.md: Technical debt and deferred items tracking."
          ∷ ".github/copilot-instructions.md: AI and Copilot integration notes."
          ∷ "CREDITS.md: Contributors and acknowledgments."
          ∷ "ingest.md: Data ingestion notes."
@@ -186,7 +186,7 @@ navigationDoc = record
             "Each major directory contains a README.md with local context and navigation."
          ∷ "Use the Makefile targets for automation, documentation, and reporting (see .github/scripts/README.md)."
          ∷ "For onboarding, start with src/agda/Chapter1/README.md and CONTRIBUTING.md."
-         ∷ "For technical debt and deferred items, see DEFERRED-TRACKING.md and generated reports."
+         ∷ "For technical debt and deferred items, see docs/status/DEFERRED-TRACKING.md and generated reports."
          ∷ "For roadmap and planning, see ROADMAP.md."
          ∷ []) ∷
          p (text "For further questions, see CONTRIBUTING.md or open an issue/discussion on GitHub." ∷ []) ∷
@@ -210,7 +210,7 @@ roadmapDoc = record
          bullets (
             "Agda: 2.8.0 (project setting)" ∷
             "Docs regenerated via make docs" ∷
-            "Deferred items tracked in DEFERRED-TRACKING.md" ∷
+            "Deferred items tracked in docs/status/DEFERRED-TRACKING.md" ∷
             []
          ) ∷
 
