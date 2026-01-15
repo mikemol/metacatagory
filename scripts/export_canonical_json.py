@@ -8,13 +8,7 @@ from scripts import shared_data
 
 
 ROOT = Path(__file__).resolve().parent.parent
-PLANNING_PATH = ROOT / "build" / "planning_index.json"
-DATA_PLANNING_PATH = ROOT / "data" / "planning_index.json"
 OUTPUT_PATH = ROOT / ".github" / "roadmap" / "tasks.json"
-
-
-def resolve_planning_path() -> Path:
-    return shared_data.resolve_planning_path(repo_root=ROOT)
 
 
 def export_tasks_json(source_path: Path, output_path: Path):

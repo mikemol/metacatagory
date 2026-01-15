@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Export roadmap to SPPF JSON format for graph visualization.
-Reads from data/planning_index.json (planning source)
+Reads from the planning index (data preferred, build fallback).
 """
 import json
 from pathlib import Path
