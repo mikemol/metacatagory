@@ -127,6 +127,7 @@ class LoadPlanningIndexPhase(Phase[Path, list[dict]]):
     def transform(self, input_data: Path, context: dict[str, Any]) -> list[dict]:
         # Input path is retained for logging; actual load is delegated to overridable helper
         self.logger.info("Loading planning index", input_file=str(input_data))
+        context["planning_source"] = str(input_data)
         items = load_planning_index()
         self.logger.info("Loaded planning items", count=len(items))
         context['item_count'] = len(items)
@@ -294,8 +295,8 @@ class WriteMarkdownPhase(Phase[str, Path]):
             artifact_id=str(self.output_path),
             record={
                 'source_type': 'transformation',
-                'source_id': str(PLANNING_INDEX_JSON),
-                'source_location': 'planning_index',
+                    'source_id': context.get("planning_source", str(PLANNING_INDEX_JSON)),
+                    'source_location': 'planning_index',
                 'metadata': {
                     'item_count': context.get('item_count', 0),
                     'valid_count': context.get('valid_count', 0),
@@ -319,6 +320,7 @@ def export_markdown(output_path: Path | None = None):
     """Export planning index to ROADMAP.md using composition pipeline."""
     logger = configure_logging("export_canonical_md", structured=False)
     output_path = Path(output_path or ROADMAP_MD)
+    planning_source = shared_data.resolve_planning_path(repo_root=REPO_ROOT)
     
     # Initialize validated provenance tracker
     provenance = ValidatedProvenance(system_id="export_roadmap_md", logger=logger)
@@ -334,7 +336,7 @@ def export_markdown(output_path: Path | None = None):
     pipeline.add_phase(WriteMarkdownPhase(output_path, logger, provenance))
     
     # Execute pipeline
-    result = pipeline.execute(PLANNING_INDEX_JSON)
+    result = pipeline.execute(planning_source)
     
     # Extract context from final result
     context = result.context if result else {}
