@@ -34,7 +34,7 @@
     {
       "label": "Make: CI (containerized)",
       "type": "shell",
-      "command": "MUTATE_OK=1 mise exec -- make ci",
+      "command": "MUTATE_OK=1 mise exec -- make act-ci",
       "group": {
         "kind": "build",
         "isDefault": true
