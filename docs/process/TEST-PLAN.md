@@ -67,6 +67,7 @@ Expected artifacts (subset; grows with dependencies):
 - `build/reports/validate_json_provenance.json`
 - `build/reports/roadmap_export_provenance.json`
 - `build/reports/roundtrip_validation_provenance.json`
+- `build/ingested_metadata.json` (validated for schema if present)
 
 Notes:
 - Network‑dependent step: `build/venv/python_setup.stamp` (pip install).

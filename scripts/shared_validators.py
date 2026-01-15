@@ -12,6 +12,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 from scripts.shared_yaml import normalize_field_comparison, normalize_dependencies
 from scripts.shared.parallel import get_parallel_settings
+from scripts.shared.paths import INGESTED_METADATA_JSON
+from scripts.shared.validation import ingested_metadata_validator
 from scripts import shared_data
 
 
@@ -239,6 +241,23 @@ def run_all_validations(base_dir: Path | None = None) -> bool:
     
     # Summary
     print("=" * 60)
+
+    metadata_valid = True
+    try:
+        metadata_path = INGESTED_METADATA_JSON if base_dir is None else base_dir / "build" / "ingested_metadata.json"
+        if metadata_path.exists():
+            metadata = metadata_path.read_text(encoding="utf-8")
+            metadata_payload = json.loads(metadata)
+            metadata_result = ingested_metadata_validator(metadata_payload, path="ingested_metadata")
+            if not metadata_result.is_valid():
+                metadata_valid = False
+                print("✗ Ingested metadata schema validation failed")
+                print(str(metadata_result))
+            else:
+                print("✓ Ingested metadata schema valid")
+    except Exception as exc:
+        metadata_valid = False
+        print(f"✗ Ingested metadata schema validation error: {exc}")
     
     if missing_desc_count > 0:
         print(f"✗ {missing_desc_count} item(s) are missing descriptions (STRICT ENFORCEMENT).")
@@ -251,7 +270,7 @@ def run_all_validations(base_dir: Path | None = None) -> bool:
         print("✓ All items have valid descriptions")
         descriptions_valid = True
     
-    overall_valid = content_valid and triangle_valid and descriptions_valid
+    overall_valid = content_valid and triangle_valid and descriptions_valid and metadata_valid
     
     if overall_valid:
         print("✓ All validations passed")
