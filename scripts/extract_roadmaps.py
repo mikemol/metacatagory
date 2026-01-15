@@ -17,6 +17,11 @@ from scripts.shared.gp_intake import (
     extract_concepts,
     extract_metadata_from_text,
 )
+from scripts.shared.gp_roadmap_render import (
+    build_implication,
+    render_roadmap_step,
+    sanitize_string,
+)
 
 CONCEPT_CONFIG = load_concept_config(Path(__file__).parent / "extract-concepts-config.json")
 
@@ -165,34 +170,23 @@ open import Plan.CIM.Utility using (RoadmapStep)
 """
     
     for entry in sorted(entries, key=lambda e: e.gp_number):
-        # Escape strings properly
-        def escape_agda_string(s: str) -> str:
-            s = s.replace('\\', '\\\\')
-            s = s.replace('"', '\\"')
-            s = s.replace('\n', ' ')
-            # Remove problematic characters
-            s = re.sub(r'[^\x20-\x7E]', '', s)  # ASCII printable only
-            return s
-        
-        title_safe = escape_agda_string(entry.title)
-        question_safe = escape_agda_string(entry.question)
-        concepts_str = ', '.join(entry.key_concepts[:5])  # Limit concepts
-        related_str = ', '.join(entry.related_gps[:3])  # Limit related
-        
-        record_name = entry.gp_number.lower().replace('gp', 'gp')
-        
-        agda_code += f"""roadmap{record_name.capitalize()} : RoadmapStep
-roadmap{record_name.capitalize()} = record
-    {{ provenance   = "{entry.gp_number}: {title_safe}"
-    ; relatedNodes = []  -- {related_str}
-    ; step         = "{question_safe}"
-    ; implication  = "Concepts: {concepts_str}"
-    ; status       = "not-started"
-    ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
-    ; next         = []
-    }}
+        concepts_str = ', '.join(entry.key_concepts[:5])
+        implication = build_implication({
+            "insight": entry.formal_correction,
+            "gap": "",
+            "fix": "",
+        })
+        if concepts_str:
+            implication = f"{implication} | Concepts: {concepts_str}"
 
-"""
+        agda_code += render_roadmap_step(
+            gp_id=entry.gp_number,
+            title=entry.title,
+            step=entry.question,
+            implication=implication,
+            target_module="src/agda/Plan/CIM/Implementation.agda",
+        )
+        agda_code += "\n"
     
     return agda_code
 

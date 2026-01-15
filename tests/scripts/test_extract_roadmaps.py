@@ -20,3 +20,20 @@ def test_parse_gp_file_uses_shared_metadata(tmp_path: Path):
 
     entry = mod.parse_gp_file(gp_file)
     assert entry.title == "Custom Title"
+
+
+def test_generate_agda_module_uses_shared_renderer(tmp_path: Path):
+    entry = mod.RoadmapEntry(
+        gp_number="GP01",
+        title="Title",
+        category="Foundation",
+        question="Do thing",
+        formal_correction="Correction",
+        key_concepts=[],
+        related_gps=[],
+        manifest_version=None,
+        target_modules=[],
+    )
+
+    module_text = mod.generate_agda_module("Foundation", [entry])
+    assert "roadmapGp01" in module_text

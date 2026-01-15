@@ -10,6 +10,11 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 from scripts.shared.gp_intake import extract_metadata_from_md, strip_base64_images
+from scripts.shared.gp_roadmap_render import (
+    build_implication,
+    render_roadmap_step,
+    sanitize_string,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -55,36 +60,15 @@ def infer_target_module(content: str, title: str, keywords: List[str]) -> str:
     return "src/agda/Plan/CIM/Utility.agda"
 
 
-def sanitize_string(value: str) -> str:
-    """Prepare text to embed inside Agda string literals."""
-    escaped = value.replace('"', "'")
-    escaped = escaped.replace('\\', '\\\\')
-    return ' '.join(escaped.split()).strip()
-
-
 def generate_roadmap_step(gp_id: str, metadata: Dict, file_number: int, full_content: str) -> str:
     """Generate an Agda RoadmapStep record for a GP file.
     
     Uses intelligent module routing (Protocol A) and semantic extraction (Protocol B).
     """
 
-    safe_name = f"gp{gp_id.replace('/', '').lower()}"
-    title = sanitize_string(metadata['title'])[:80]  # Truncate title
+    title = sanitize_string(metadata['title'])[:80]
     summary = sanitize_string(metadata['summary'])
-
-    insight = sanitize_string(metadata.get('insight', ''))
-    gap = sanitize_string(metadata.get('gap', ''))
-    fix = sanitize_string(metadata.get('fix', ''))
-
-    # Build implication from structured sections
-    implication_parts = []
-    if insight:
-        implication_parts.append(f"Insight: {insight[:120]}")
-    if gap:
-        implication_parts.append(f"Gap: {gap[:120]}")
-    if fix:
-        implication_parts.append(f"Fix: {fix[:120]}")
-    implication = " | ".join(implication_parts) if implication_parts else "Implication TBD from intake."
+    implication = build_implication(metadata)
     
     # Intelligent module routing (Protocol A)
     target_module = infer_target_module(
@@ -93,18 +77,13 @@ def generate_roadmap_step(gp_id: str, metadata: Dict, file_number: int, full_con
         keywords=metadata.get('keywords', [])
     )
 
-    record = f'''example{safe_name.capitalize()}Roadmap : RoadmapStep
-example{safe_name.capitalize()}Roadmap = record
-    {{ provenance  = "{gp_id}: {title}"
-    ; relatedNodes = []
-    ; step        = "{summary}"
-    ; implication = "{sanitize_string(implication)}"
-    ; status      = "not-started"
-    ; targetModule = "{target_module}"
-    ; next = []
-    }}
-'''
-    return record
+    return render_roadmap_step(
+        gp_id=gp_id,
+        title=title,
+        step=summary,
+        implication=implication,
+        target_module=target_module,
+    )
 
 def process_gp_directory(intake_dir: str) -> Tuple[List[str], Dict]:
     """Process all GP files and generate roadmap steps."""
