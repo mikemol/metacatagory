@@ -1,6 +1,7 @@
 # Deferred Items Report
 
-Note: Generated snapshot. Run `make deferred-items` to refresh counts.
+Note: Generated snapshot from `make deferred-items`. Counts may differ from
+`docs/status/DEFERRED-TRACKING.md`, which is the canonical tracker.
 
 ## DeviationLog Entries
 

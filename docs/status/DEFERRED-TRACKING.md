@@ -14,6 +14,10 @@ Source: build/reports/deferred-summary.json (auto-generated)
 
 - Other markers (FIXME/HACK/etc.): 61
 
+Note: `docs/status/deferred-items.md` is a separate generated snapshot from a
+different scan; counts can diverge. This file is the canonical tracker for
+decision-making.
+
 ## Tracking Strategy
 
 ### High-Priority Deferred Items
