@@ -122,11 +122,12 @@ undocumented:
 def test_broken_cross_reference():
     markdown = """
 # Documentation
-See [ROADMAP.md](NONEXISTENT.md) for details.
+See &#91;ROADMAP.md&#93;(NONEXISTENT.md) for details.
 """
     errors = validate_triangle_identity(markdown)
     assert any("NONEXISTENT" in str(e) for e in errors)
 ```
+Note: `NONEXISTENT.md` is an intentional placeholder used to verify the detector.
 **Effort:** 15 minutes  
 **Impact:** Prevents broken documentation links  
 
@@ -600,4 +601,3 @@ See test examples in each section.
 
 **Need help with specific script?**  
 Check "Top 10 Untested Critical Codepaths" section.
-

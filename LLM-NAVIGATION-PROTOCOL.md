@@ -1504,7 +1504,7 @@ Provide concrete instructions for applying this protocol in practice.
 
 ```
 **Statement:** [What you're claiming]
-**Source:** [File path](file/path.ext) (Line X-Y) OR [External: Author Year] OR [Internal synthesis from X, Y]
+**Source:** File path: `path/to/file.ext` (Line X-Y) OR [External: Author Year] OR [Internal synthesis from X, Y]
 **Congruence:** [How this relates to parent concept]
 **Orthogonality:** [How this differs from siblings]
 ```

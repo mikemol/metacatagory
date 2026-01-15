@@ -434,7 +434,7 @@ class MarkdownBuilder:
     
     def link(self, text: str, url: str) -> str:
         """Generate markdown link."""
-        return f"[{text}]({url})"
+        return f"{text} ({url})"
     
     def build(self) -> str:
         """Generate final Markdown string."""

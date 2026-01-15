@@ -47,7 +47,7 @@ In Directed Homotopy Type Theory (dHoTT), static geometric shapes are indexed by
 | d^2 \= 0 | Boundariness is derivation consistency | Proof of closure |
 | Simplicial Collapse | Removal of redundant proof steps | Optimization of verification |
 | Nontrivial H^1 | Obstruction to global coordination | Identification of contradictions |
-| k-th Betti Number | Number of k\[span\_17\](start\_span)\[span\_17\](end\_span)-dimensional gaps | Quantification of incompleteness |
+| k-th Betti Number | Number of k-dimensional gaps (span markers omitted) | Quantification of incompleteness |
 
 ## **Hypothesis: Internalized Yoneda and Axiom Explosion**
 
