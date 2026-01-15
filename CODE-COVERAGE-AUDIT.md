@@ -3,6 +3,7 @@
 **Audit Date:** Post-Stage 13 LLM Onboarding  
 **Scope:** Identify codepaths not exercised by `make check`  
 **Status:** Comprehensive gap analysis completed
+**Note:** Historical snapshot; re-run `make check` and consult `TESTING.md` for current coverage expectations.
 
 ---
 

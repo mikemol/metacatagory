@@ -4,6 +4,8 @@
 
 Comprehensive code coverage audit identifying all codepaths NOT validated by `make check`. Three complementary documents provide analysis, actionable steps, and protocol alignment.
 
+Note: This is a historical snapshot. For current testing guidance, see `TESTING.md`.
+
 **Audit Date:** Post-Stage 13 LLM Onboarding  
 **Status:** Complete and ready for Phase 1 implementation  
 **Overall Coverage:** 55-60% validated, 40-45% untested
