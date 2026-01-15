@@ -8,7 +8,6 @@ with detailed semantic information for each task.
 """
 
 import json
-import yaml
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import sys
@@ -19,6 +18,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from scripts.shared.paths import REPORTS_DIR
+from scripts.shared_yaml import dump_yaml
 from scripts.shared.parallel import get_parallel_settings
 
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
@@ -114,7 +114,7 @@ def format_task_section(item: Dict, idx: int) -> str:
         frontmatter['outputs'] = item['outputs']
     
     # Generate YAML frontmatter
-    yaml_str = yaml.dump(frontmatter, default_flow_style=False, sort_keys=False, allow_unicode=True)
+    yaml_str = dump_yaml(frontmatter)
     
     # Header with frontmatter (unique heading to satisfy MD024)
     lines = [
