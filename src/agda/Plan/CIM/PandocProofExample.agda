@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical-compatible --guardedness #-}
+{-# OPTIONS --without-K --cubical --guardedness #-}
 
 -- | Example proof rendered through the Pandoc export pipeline.
 module Plan.CIM.PandocProofExample where
