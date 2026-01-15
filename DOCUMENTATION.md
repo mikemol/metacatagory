@@ -8,6 +8,24 @@ This document provides an index to all project documentation.
 * [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute
 * [CREDITS.md](CREDITS.md) - Attribution and acknowledgments
 
+## Canonical vs Generated
+
+Some documents are hand-edited sources, while others are generated outputs.
+When in doubt, regenerate rather than editing generated artifacts directly.
+
+**Canonical (edit these):**
+- `src/agda/Plan/CIM/Utility.agda` (roadmap sources)
+- `intake/GP/` (intake source files)
+- `docs/**` (architecture/process/status sources)
+
+**Generated (regenerate via Makefile):**
+- `ROADMAP.md` and `docs/planning/ROADMAP.md`
+- `.github/roadmap/tasks.json`
+- `data/planning_index.json`
+- `data/dependency_graph.json`
+
+See `Makefile` and `TESTING.md` for regeneration targets.
+
 ## Documentation Structure
 
 ### Architecture & Design
