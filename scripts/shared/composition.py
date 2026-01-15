@@ -55,8 +55,15 @@ class ReadMarkdownRoadmapTitlesPhase(Phase[Path, Set[str]]):
         self._pattern = re.compile(r'[-*]\s+\*\*(.+?)\*\*')
 
     def transform(self, input_data: Path, context: Dict[str, Any]) -> Set[str]:
-        content = Path(input_data).read_text(encoding='utf-8')
-        titles = {m.group(1).strip() for m in self._pattern.finditer(content)}
+        md_path = Path(input_data)
+        _, frontmatter = shared_data.load_roadmap_markdown_from(md_path)
+        titles = {
+            str(item.get("title", "")).strip()
+            for item in frontmatter
+            if str(item.get("title", "")).strip()
+        }
+        content = md_path.read_text(encoding='utf-8')
+        titles |= {m.group(1).strip() for m in self._pattern.finditer(content)}
         return titles
 
 
