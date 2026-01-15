@@ -599,7 +599,7 @@ The architecture exemplifies **higher-order formal verification**: the contract 
 
 - **JSON-HOMOTOPY-CONTRACT.md:** Theoretical foundation of module parameter architecture
 - **PHASE-2-FINAL-SUMMARY.md:** Complete Phase 2 implementation details
-- **ARCHITECTURE.md:** Overall project architecture and patterns
+- **docs/architecture/ARCHITECTURE.md:** Overall project architecture and patterns
 - **ROADMAP.md:** Project roadmap and milestones
 
 ---
