@@ -16,13 +16,15 @@ When in doubt, regenerate rather than editing generated artifacts directly.
 **Canonical (edit these):**
 - `src/agda/Plan/CIM/Utility.agda` (roadmap sources)
 - `intake/GP/` (intake source files)
-- `docs/**` (architecture/process/status sources)
+- `docs/**` (architecture/process/status sources, except generated outputs listed below)
 
 **Generated (regenerate via Makefile):**
 - `ROADMAP.md` and `docs/planning/ROADMAP.md`
 - `.github/roadmap/tasks.json`
 - `data/planning_index.json`
 - `data/dependency_graph.json`
+- `docs/status/deferred-items.md`
+- `docs/automation/makefile_targets_generated.md`
 
 See `Makefile` and `TESTING.md` for regeneration targets.
 
