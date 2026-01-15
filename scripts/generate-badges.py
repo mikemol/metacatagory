@@ -13,6 +13,13 @@ import os
 from datetime import datetime, timezone
 from typing import Dict, Any, Iterable, List, Tuple
 
+# Ensure repository root is importable as a package (scripts.*)
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from scripts import shared_data
+
 # Constants controlling repository scan behavior
 FILE_SCAN_EXTENSIONS = {".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"}
 EXCLUDED_DIRS = {".git", "venv", "build", ".github/badges"}
@@ -383,16 +390,12 @@ def scan_repository_for_deferred(
                 "weighted_total": weighted_local,
             }
 
-    tasks_file = repo_root / ".github" / "roadmap" / "tasks.json"
     planned = 0
-    if tasks_file.exists():
-        try:
-            with open(tasks_file, "r", encoding="utf-8") as f:
-                tasks_data = json.load(f)
-            if isinstance(tasks_data, list):
-                planned = sum(1 for t in tasks_data if t.get("status") == "planned")
-        except Exception:
-            pass
+    try:
+        tasks_data = shared_data.load_tasks_json(repo_root=repo_root, required=False)
+        planned = sum(1 for t in tasks_data if t.get("status") == "planned")
+    except Exception:
+        pass
 
     total = postulates + todo + fixme + deviation_log
     weighted_total = (
@@ -429,7 +432,6 @@ def main():
     """Main entry point."""
     # Paths
     repo_root = Path(__file__).parent.parent
-    tasks_file = repo_root / ".github" / "roadmap" / "tasks.json"
     report_dir_env = os.getenv("CI_REPORT_DIR")
     if report_dir_env:
         report_dir = Path(report_dir_env)
@@ -448,9 +450,11 @@ def main():
     weights = load_weights(output_dir)
 
     # Load data
-    tasks = load_json_file(tasks_file)
-    if isinstance(tasks, dict):
-        tasks = []  # Handle empty or malformed file
+    tasks = []
+    try:
+        tasks = shared_data.load_tasks_json(repo_root=repo_root, required=False)
+    except Exception:
+        tasks = []
 
     deferred = load_json_file(deferred_summary)
     # If no deferred summary, empty, or missing file details, dynamically compute from source tree

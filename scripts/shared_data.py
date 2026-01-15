@@ -41,6 +41,12 @@ def resolve_planning_path(repo_root: Optional[Path] = None) -> Path:
     return data_path
 
 
+def resolve_tasks_path(repo_root: Optional[Path] = None) -> Path:
+    """Resolve tasks.json path."""
+    root = repo_root or REPO_ROOT
+    return root / ".github" / "roadmap" / "tasks.json"
+
+
 def load_planning_index_from(path: Path) -> List[Dict[str, Any]]:
     """Load planning index from an explicit path."""
     items, state = _load_items(path)
@@ -52,6 +58,30 @@ def load_planning_index_from(path: Path) -> List[Dict[str, Any]]:
     if state == "invalid":
         raise ValueError(f"Unexpected JSON shape in {path}")
     return items or []
+
+
+def load_tasks_json_from(path: Path, required: bool = True) -> List[Dict[str, Any]]:
+    """Load tasks.json from an explicit path."""
+    items, state = _load_items(path)
+    if state == "missing":
+        if not required:
+            return []
+        raise FileNotFoundError(
+            f"tasks.json not found at {path}. "
+            "Run: make .github/roadmap/tasks.json"
+        )
+    if state == "invalid":
+        raise ValueError(f"Unexpected JSON shape in {path}")
+    return items or []
+
+
+def load_tasks_json(
+    repo_root: Optional[Path] = None,
+    required: bool = True,
+) -> List[Dict[str, Any]]:
+    """Load tasks.json from repo root."""
+    path = resolve_tasks_path(repo_root=repo_root)
+    return load_tasks_json_from(path, required=required)
 
 
 def load_planning_index(

@@ -141,6 +141,27 @@ def test_load_roadmap_markdown_missing_file(tmp_path, monkeypatch):
         shared_data.load_roadmap_markdown()
 
 
+def test_load_tasks_json_variants(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    tasks_path = tmp_path / ".github" / "roadmap" / "tasks.json"
+
+    with pytest.raises(FileNotFoundError):
+        shared_data.load_tasks_json()
+
+    assert shared_data.load_tasks_json(required=False) == []
+
+    tasks_path.parent.mkdir(parents=True, exist_ok=True)
+    tasks_path.write_text(json.dumps([{"id": "TASK-1"}]), encoding="utf-8")
+    assert shared_data.load_tasks_json()[0]["id"] == "TASK-1"
+
+    tasks_path.write_text(json.dumps({"items": [{"id": "TASK-2"}]}), encoding="utf-8")
+    assert shared_data.load_tasks_json()[0]["id"] == "TASK-2"
+
+    tasks_path.write_text(json.dumps("oops"), encoding="utf-8")
+    with pytest.raises(ValueError):
+        shared_data.load_tasks_json()
+
+
 def test_load_roadmap_markdown_yaml_error(tmp_path, monkeypatch):
     real_yaml = pytest.importorskip("yaml")
     monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)

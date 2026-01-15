@@ -49,7 +49,7 @@ class LoadJSONFilesPhase(Phase[Path, Dict[str, List[Dict[str, Any]]]]):
         context["planning_source"] = str(input_data)
 
         def load_tasks(path: Path) -> Any:
-            return load_json(path, required=True)
+            return shared_data.load_tasks_json_from(path, required=True)
 
         def load_canonical(path: Path) -> Any:
             return shared_data.load_planning_index_from(path)
@@ -68,9 +68,6 @@ class LoadJSONFilesPhase(Phase[Path, Dict[str, List[Dict[str, Any]]]]):
             
             self.logger.info("Loading tasks.json", file=str(self.tasks_path))
             tasks = load_tasks(self.tasks_path)
-        
-        if isinstance(tasks, dict):
-            tasks = tasks.get('items', [])
         
         self.logger.info("Files loaded", 
                         canonical_count=len(canonical),

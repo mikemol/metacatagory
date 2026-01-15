@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import List, Dict
 
 # Import shared utilities
+import shared_data
 from shared.io import load_json, save_json
 from shared.paths import REPO_ROOT, BUILD_DIR, DOCLINT_ROADMAP_JSON, CANONICAL_ROADMAP_JSON
 from shared.normalization import (
@@ -29,7 +30,10 @@ from shared.parallel import get_parallel_settings
 
 def load_tasks_json(path: Path) -> List[Dict]:
     """Load tasks.json as RoadmapItems."""
-    tasks = load_json(path, default=[])
+    try:
+        tasks = shared_data.load_tasks_json_from(path, required=False)
+    except ValueError:
+        tasks = []
     
     items = []
     for task in tasks:
