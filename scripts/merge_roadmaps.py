@@ -309,7 +309,8 @@ def merge_all_sources(base_path: Path) -> List[Dict]:
     
     # Load from each source
     print("Loading tasks.json...")
-    all_items.extend(load_tasks_json(base_path / ".github/roadmap/tasks.json"))
+    tasks_path = shared_data.resolve_tasks_path(repo_root=base_path)
+    all_items.extend(load_tasks_json(tasks_path))
     
     print("Parsing ROADMAP.md...")
     all_items.extend(parse_roadmap_md(base_path / "ROADMAP.md"))

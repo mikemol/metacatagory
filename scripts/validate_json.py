@@ -324,7 +324,7 @@ def validate():
     pipeline = RecoveryPipeline(logger=logger, strategy=strategy, name="ValidateJSON")
     
     canonical_path = shared_data.resolve_planning_path(repo_root=REPO_ROOT)
-    tasks_path = REPO_ROOT / ".github" / "roadmap" / "tasks.json"
+    tasks_path = shared_data.resolve_tasks_path(repo_root=REPO_ROOT)
     
     # Build pipeline phases
     pipeline.add_phase(LoadJSONFilesPhase(tasks_path, logger))
