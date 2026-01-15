@@ -36,9 +36,10 @@ Consolidated pointers to roadmap-shaped artifacts across the repo.
 * [.github/badges/roadmap-progress.json](.github/badges/roadmap-progress.json)
 * [.github/badges/roadmap-todo.json](.github/badges/roadmap-todo.json)
 * [.github/badges/roadmap-deferred.json](.github/badges/roadmap-deferred.json)
-* [.github/workflows/roadmap-sync.yml](.github/workflows/roadmap-sync.yml)
 * [.github/roadmap/tasks.json](.github/roadmap/tasks.json)
 * [scripts/roadmap\_traverser.py](scripts/roadmap_traverser.py)
+* [scripts/sync-roadmap-issues.sh](.github/scripts/sync-roadmap-issues.sh)
+* `make roadmap-sync`
 
 ## Analyses
 

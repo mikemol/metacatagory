@@ -17,22 +17,8 @@ The goal is consistency: every mutation should have a clear, traceable reason.
 
 ## Workflow Targets and Mutability
 
-This list is derived from the workflows and the Makefile’s mutability graph
+This list is derived from the current CI workflow and the Makefile’s mutability graph
 (direct + transitive dependencies).
-
-### `.github/workflows/markdown-lint.yml`
-
-- `regen-makefile` (mutative)
-  - **Reason:** generates `Makefile.generated` and `build/recipes/**`.
-- `md-lint` (mutative, via deps)
-  - **Reason:** writes `build/reports/md-lint.txt`.
-  - **Source of mutability:** `build/reports/dir.stamp` + output report.
-
-### `.github/workflows/makefile-validate.yml`
-
-- `makefile-validate` (mutative, via deps)
-  - **Reason:** writes `build/reports/makefile-validate.txt`.
-  - **Source of mutability:** `build/reports/dir.stamp` + output report.
 
 ### `.github/workflows/ci.yml`
 
@@ -50,28 +36,11 @@ or derived artifacts:
 - `check-debt` → `deferred-items` + `intake-scan`
   - **Reason:** generates `docs/status/*` and related reports.
 
-### `.github/workflows/roadmap-sync.yml`
-
-- `roadmap-sync` (mutative)
-  - **Reason:** generates `.github/roadmap/tasks.json` and related artifacts.
-
-### `.github/workflows/deferred-items.yml`
-
-- `deferred-items` (mutative)
-  - **Reason:** writes `docs/status/DEFERRED-TRACKING.md` and `build/reports/*`.
-
-### `.github/workflows/badge-update.yml`
-
-- `badges` (mutative)
-  - **Reason:** writes `.github/badges/*` and related outputs.
-
 ## Immediate Inconsistencies Observed During act Runs
 
-1) Workflows call mutative targets without `MUTATE_OK=1`.
-   - Example: `Markdown Lint` runs `make md-lint` without `MUTATE_OK=1`, yet
-     `md-lint` writes to `build/reports/`.
-2) `Roadmap Sync` invokes `make` targets that create `.github/roadmap/*` and
-   build artifacts, but doesn’t grant mutation.
+1) CI steps call mutative targets without `MUTATE_OK=1`.
+   - Example: `check-docs` and `check-json` write reports and recomposed JSON
+     artifacts under `build/`.
 
 These are *expected* mutations; the issue is the missing explicit grant.
 
@@ -96,5 +65,5 @@ for artifact-generation workflows.
 
 - Should “lint” and “validate” targets be classified as mutative because they
   emit reports, or should they be read-only and only emit stdout?
-- Are workflow artifacts (e.g., lint logs) required in all runs, or only in CI?
+- Are report artifacts required in all runs, or only in CI?
 - Which artifacts are essential for local dev vs. CI-only?

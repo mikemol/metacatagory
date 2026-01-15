@@ -39,16 +39,16 @@ and whether execution is guarded or defaults are provided.
 | --- | --- | --- | --- | --- |
 | `ACT` | `.github/workflows/*.yml` conditions | `act` runner | Used in `if` checks with default false | Safe: only used for branching |
 | `GITHUB_ENV` | `scripts/act_prepare_workspace.sh`, `ci.yml` | GitHub Actions runtime | Guarded in `act_prepare_workspace.sh` | Safe when running in Actions/act |
-| `GITHUB_OUTPUT` | `deferred-items.yml`, `badge-update.yml`, `.github/scripts/detect-deferred-items.sh` | GitHub Actions runtime | Guarded in `detect-deferred-items.sh` | Safe in Actions; guarded in script |
-| `CI_GITHUB_TOKEN` | `roadmap-sync.yml`, `.github/scripts/sync-roadmap-issues.sh` | GitHub Actions secrets | Script validates presence (fallback to `GITHUB_TOKEN`) | Safe: guarded before use |
+| `GITHUB_OUTPUT` | `.github/scripts/detect-deferred-items.sh` (invoked via CI or local targets) | GitHub Actions runtime | Guarded in `detect-deferred-items.sh` | Safe in Actions; guarded in script |
+| `CI_GITHUB_TOKEN` | `.github/scripts/sync-roadmap-issues.sh` | GitHub Actions secrets | Script validates presence (fallback to `GITHUB_TOKEN`) | Safe: guarded before use |
 | `GITHUB_TOKEN` | `.github/scripts/sync-roadmap-issues.sh` (legacy alias) | GitHub Actions secrets | Script validates presence | Safe: guarded before use |
 | `GH_TOKEN` | `ci.yml` for `gh` CLI | GitHub Actions secrets | Not validated in `.github/scripts/create-or-update-tracking-issue.sh` | Risk: assumes `gh` is authenticated |
-| `CI_GITHUB_REPOSITORY` | `roadmap-sync.yml`, `.github/scripts/sync-roadmap-issues.sh` | GitHub Actions runtime | Script validates presence (fallback to `GITHUB_REPOSITORY`) | Safe: guarded before use |
+| `CI_GITHUB_REPOSITORY` | `.github/scripts/sync-roadmap-issues.sh` | GitHub Actions runtime | Script validates presence (fallback to `GITHUB_REPOSITORY`) | Safe: guarded before use |
 | `GITHUB_REPOSITORY` | `.github/scripts/sync-roadmap-issues.sh` (legacy alias) | GitHub Actions runtime | Script validates presence | Safe: guarded before use |
 | `CI_GITHUB_SHA` | `ci.yml`, `.github/scripts/create-or-update-tracking-issue.sh` | GitHub Actions runtime | Script defaults to `unknown` if unset | Safe: guarded |
 | `CI_DEFERRED_REPORT_FILE` | `ci.yml`, `.github/scripts/create-or-update-tracking-issue.sh`, `.github/scripts/detect-deferred-items.sh` | GitHub Actions runtime | Defaults to `${CI_REPORT_DIR}/deferred-items.md` when `CI_REPORT_DIR` is set, otherwise `deferred-items.md` | Safe: defaulted |
 | `CI_DEFERRED_SUMMARY_FILE` | `ci.yml`, `.github/scripts/create-or-update-tracking-issue.sh`, `.github/scripts/detect-deferred-items.sh` | GitHub Actions runtime | Defaults to `${CI_REPORT_DIR}/deferred-summary.json` when `CI_REPORT_DIR` is set, otherwise `deferred-summary.json` | Safe: defaulted |
-| `CI_TASKS_FILE` | `roadmap-sync.yml`, `.github/scripts/sync-roadmap-issues.sh` | GitHub Actions runtime | Defaults to `.github/roadmap/tasks.json` when unset | Safe: defaulted |
+| `CI_TASKS_FILE` | `.github/scripts/sync-roadmap-issues.sh` | GitHub Actions runtime | Defaults to `.github/roadmap/tasks.json` when unset | Safe: defaulted |
 | `CI_REPORT_DIR` | `ci.yml` | GitHub Actions runtime | Job-scoped: `build/reports/agda`, `.../docs`, `.../roadmap`, `.../python` | Safe: scoped |
 | `CI_ARTIFACT_DIR` | `ci.yml` | GitHub Actions runtime | Job-scoped: same as `CI_REPORT_DIR` | Safe: scoped |
 | `METACATAGORY_STRICT_ROUNDTRIP` | `ci.yml`, local runs | Default strict structural validation for roundtrip checks | Default `true` | Safe: strict by default |
