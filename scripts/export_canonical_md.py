@@ -26,7 +26,7 @@ from scripts.shared.paths import (
     ROADMAP_MD as _DEFAULT_ROADMAP_MD,
     REPORTS_DIR,
 )
-from scripts.shared.io import load_json, save_markdown
+from scripts.shared.io import save_markdown
 from scripts.shared.logging import StructuredLogger, configure_logging
 from scripts.shared.validation import ValidationResult, string_validator
 from scripts.shared.validated_provenance import ValidatedProvenance
@@ -34,6 +34,7 @@ from scripts.shared.recovery_pipeline import RecoveryPipeline, RecoveryStrategy
 from scripts.shared.pipelines import Phase, PhaseResult, PhaseStatus
 from scripts.shared.markdown import MarkdownBuilder
 from scripts.shared.config import get_config
+from scripts import shared_data
 
 
 def allow_report_write() -> bool:
@@ -78,32 +79,12 @@ else:
     from scripts.shared_yaml import dump_yaml
 
 
-def _load_items_from(path: Path) -> list[dict] | None:
-    try:
-        data = load_json(path, default=None)
-    except FileNotFoundError:
-        return None
-    if isinstance(data, dict):
-        return list(data.get("items", []))
-    if isinstance(data, list):
-        return list(data)
-    return None
-
-
 def load_planning_index() -> list[dict]:
     """Load planning index items, overridable by shared_data in tests."""
 
     if _SHARED_DATA and hasattr(_SHARED_DATA, "load_planning_index"):
         return list(_SHARED_DATA.load_planning_index())
-
-    data_path = REPO_ROOT / "data" / "planning_index.json"
-    build_items = _load_items_from(PLANNING_INDEX_JSON)
-    data_items = _load_items_from(data_path)
-    if build_items:
-        return build_items
-    if data_items:
-        return data_items
-    return build_items or data_items or []
+    return list(shared_data.load_planning_index(repo_root=REPO_ROOT))
 
 HEADER = """# Metacatagory Development Roadmap
 

@@ -10,19 +10,16 @@ import sys
 from pathlib import Path
 from json import JSONDecodeError
 
+from scripts import shared_data
+
 def load_planning_index():
     """Load roadmap data from data/planning_index.json"""
     workspace = Path(__file__).parent.parent
-    build_planning = workspace / "build" / "planning_index.json"
-    data_planning = workspace / "data" / "planning_index.json"
-    planning_index = build_planning if build_planning.exists() else data_planning
-    
-    if not planning_index.exists():
-        print(f"Warning: {planning_index} not found, using empty roadmap list", file=sys.stderr)
+    try:
+        items = shared_data.load_planning_index(repo_root=workspace)
+    except (FileNotFoundError, ValueError, JSONDecodeError) as exc:
+        print(f"Warning: {exc} not found, using empty roadmap list", file=sys.stderr)
         return []
-    
-    with open(planning_index, 'r') as f:
-        items = json.load(f)
     
     # Filter for key roadmaps (those with specific categories or tags)
     # Prioritize: in-progress, then done, then not-started

@@ -4,6 +4,8 @@
 import json
 from pathlib import Path
 
+from scripts import shared_data
+
 
 ROOT = Path(__file__).resolve().parent.parent
 PLANNING_PATH = ROOT / "build" / "planning_index.json"
@@ -11,22 +13,8 @@ DATA_PLANNING_PATH = ROOT / "data" / "planning_index.json"
 OUTPUT_PATH = ROOT / ".github" / "roadmap" / "tasks.json"
 
 
-def _load_items(path: Path):
-    try:
-        data = json.loads(path.read_text())
-    except (FileNotFoundError, json.JSONDecodeError):
-        return None
-    return data if isinstance(data, list) else None
-
-
 def resolve_planning_path() -> Path:
-    data_items = _load_items(DATA_PLANNING_PATH)
-    if data_items:
-        return DATA_PLANNING_PATH
-    build_items = _load_items(PLANNING_PATH)
-    if build_items is not None:
-        return PLANNING_PATH
-    return DATA_PLANNING_PATH
+    return shared_data.resolve_planning_path(repo_root=ROOT)
 
 
 def export_tasks_json(source_path: Path, output_path: Path):

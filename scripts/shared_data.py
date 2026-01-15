@@ -6,16 +6,20 @@ Centralizes data loading patterns to reduce duplication across scripts.
 """
 
 import json
+from json import JSONDecodeError
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Optional
 
 REPO_ROOT = Path(__file__).parent.parent
 
 def _load_items(path: Path) -> Tuple[Optional[List[Dict[str, Any]]], str]:
-    if not path.exists():
+    try:
+        with open(path) as f:
+            data = json.load(f)
+    except FileNotFoundError:
         return None, "missing"
-    with open(path) as f:
-        data = json.load(f)
+    except JSONDecodeError:
+        return None, "invalid"
     if isinstance(data, list):
         return data, "ok"
     if isinstance(data, dict):
@@ -23,7 +27,24 @@ def _load_items(path: Path) -> Tuple[Optional[List[Dict[str, Any]]], str]:
     return None, "invalid"
 
 
-def load_planning_index() -> List[Dict[str, Any]]:
+def resolve_planning_path(repo_root: Optional[Path] = None) -> Path:
+    """Resolve preferred planning index path (data first, then build)."""
+    root = repo_root or REPO_ROOT
+    build_path = root / "build" / "planning_index.json"
+    data_path = root / "data" / "planning_index.json"
+    data_items, _ = _load_items(data_path)
+    if data_items:
+        return data_path
+    build_items, build_state = _load_items(build_path)
+    if build_items is not None or build_state == "ok":
+        return build_path
+    return data_path
+
+
+def load_planning_index(
+    repo_root: Optional[Path] = None,
+    filter_legacy: bool = False,
+) -> List[Dict[str, Any]]:
     """Load planning index from JSON (supports list or {items:[...]}).
     
     Returns:
@@ -32,24 +53,32 @@ def load_planning_index() -> List[Dict[str, Any]]:
     Raises:
         FileNotFoundError: If data/planning_index.json doesn't exist
     """
-    build_path = REPO_ROOT / "build" / "planning_index.json"
-    data_path = REPO_ROOT / "data" / "planning_index.json"
+    root = repo_root or REPO_ROOT
+    build_path = root / "build" / "planning_index.json"
+    data_path = root / "data" / "planning_index.json"
     data_items, data_state = _load_items(data_path)
     build_items, build_state = _load_items(build_path)
     if data_items:
-        return data_items
-    if build_items:
-        return build_items
-    if data_state == "ok":
-        return data_items or []
-    if build_state == "ok":
-        return build_items or []
-    if data_state == "invalid" or build_state == "invalid":
-        raise ValueError(f"Unexpected JSON shape in {data_path}")
-    raise FileNotFoundError(
-        f"Planning index not found at {data_path}. "
-        "Run: make data/planning_index.json"
-    )
+        items = data_items
+    elif build_items:
+        items = build_items
+    elif data_state == "ok":
+        items = data_items or []
+    elif build_state == "ok":
+        items = build_items or []
+    else:
+        if data_state == "invalid" or build_state == "invalid":
+            raise ValueError(f"Unexpected JSON shape in {data_path}")
+        raise FileNotFoundError(
+            f"Planning index not found at {data_path}. "
+            "Run: make data/planning_index.json"
+        )
+    if filter_legacy:
+        items = [
+            item for item in items
+            if not str(item.get("id", "")).startswith("LEGACY-")
+        ]
+    return items
 
 
 def load_roadmap_markdown() -> Tuple[List[str], List[Dict[str, Any]]]:
