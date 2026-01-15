@@ -35,7 +35,7 @@ infraTargets =
       ("@echo \"deferred items output dirs ready\"" ∷ [])
   ∷ generatorToTarget mutateCert "deferred-items" "Scan for TODOs and FIXMEs (Agda FFI binary)"
       ("build/agda/TechnicalDebt/DeferredItemsOrchestrationFFI" ∷ "deferred-items-dirs" ∷ [])
-      ("$(AGDA_COMPILE_DIR)/DeferredItemsOrchestrationFFI" ∷ [])
+      ("bash scripts/run_deferred_items.sh" ∷ [])
   ∷ generatorToTarget mutateCert "act-list" "List available GitHub Actions jobs (act)" ([])
       ("scripts/run_act.sh --no-cache-server -l" ∷ [])
   ∷ generatorToTarget mutateCert "act-ci" "Run CI workflow locally via act" ([])
