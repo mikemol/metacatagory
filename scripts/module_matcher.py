@@ -15,6 +15,8 @@ from typing import Dict, List, Set, Tuple
 from dataclasses import dataclass, field
 from collections import defaultdict
 
+import shared_data
+
 @dataclass
 class AgdaModule:
     """Represents an Agda module with metadata."""
@@ -177,14 +179,7 @@ class ModuleMatcher:
                 data = json.load(f)
             files = data.get('files', {})
         else:
-            fallback_path = Path(self.workspace_root) / "data" / "planning_index.json"
-            try:
-                with open(fallback_path, 'r') as f:
-                    index_items = json.load(f)
-            except json.JSONDecodeError:
-                text = fallback_path.read_text()
-                text = text.replace('\\', '\\\\')
-                index_items = json.loads(text)
+            index_items = shared_data.load_planning_index(repo_root=Path(self.workspace_root))
             for item in index_items:
                 files[item['id']] = {
                     'title': item.get('title', ''),
