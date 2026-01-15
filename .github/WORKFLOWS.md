@@ -1,6 +1,6 @@
 # Local Workflow Execution Guide
 
-Run GitHub Actions workflows locally using [act](https://github.com/nektos/act).
+Run the GitHub Actions CI workflow locally using [act](https://github.com/nektos/act).
 
 ## Configuration
 
@@ -15,21 +15,15 @@ Pull the worker image locally (once per machine):
 docker pull ghcr.io/mikemol/act-ubuntu-agda:latest
 ```
 
-## Available Workflows
+## Available Workflow
 
 | Workflow | Command | Purpose |
 |----------|---------|---------|
-| CI | `make act-ci` or `act -W .github/workflows/ci.yml` | Test & validation pipeline |
-| Markdown Lint | `make act-lint` or `act -W .github/workflows/markdown-lint.yml` | Check markdown formatting |
-| Markdown Auto-Fix | `make act-markdown-fix` or `act -W .github/workflows/markdown-auto-fix.yml` | Auto-format markdown |
-| Makefile Validate | `make act-makefile-validate` or `act -W .github/workflows/makefile-validate.yml` | Validate Makefile |
-| Roadmap Sync | `make act-roadmap-sync` or `act -W .github/workflows/roadmap-sync.yml` | Sync roadmap artifacts |
-| Deferred Items | `make act-deferred` or `act -W .github/workflows/deferred-items.yml` | Process deferred items |
-| Badge Update | `make act-badges` or `act -W .github/workflows/badge-update.yml` | Update badges |
+| CI | `make act-ci` or `act -W .github/workflows/ci.yml` | Full test/validation pipeline |
 
 ## Quick Start
 
-### List all available jobs
+### List available jobs
 
 ```bash
 # Using Makefile
@@ -39,7 +33,7 @@ make act-list
 act -l
 ```
 
-### Run a specific workflow
+### Run CI locally
 
 ```bash
 # Using Makefile
@@ -49,23 +43,13 @@ make act-ci
 act -W .github/workflows/ci.yml
 ```
 
-### Run all workflows
-
-```bash
-# Using Makefile
-make act-all
-
-# Using act directly
-act
-```
-
 ## VS Code Integration
 
-All workflows are available as tasks in VS Code. Access them via:
+CI is available as a VS Code task:
 
 1. **Command Palette**: `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS)
 2. **Type**: `Tasks: Run Task`
-3. **Select**: A workflow task (e.g., "Act: Run CI Workflow")
+3. **Select**: "Act: Run CI Workflow"
 
 Or use the Terminal menu → Run Task.
 
@@ -103,7 +87,7 @@ Edit `.env.local` to set environment variables for workflows. Common variables:
 
 - `GITHUB_TOKEN`: GitHub API token (for authenticated requests)
 - `CI`: Always set to `true` in act
-- Workflow-specific variables as documented in individual workflow files
+- Workflow-specific variables as documented in `.github/workflows/ci.yml`
 
 ## References
 
