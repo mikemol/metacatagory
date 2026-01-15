@@ -19,6 +19,8 @@ from scripts.shared.gp_intake import (
 )
 from scripts.shared.gp_roadmap_render import (
     build_implication,
+    build_implication_from_concepts,
+    build_step_summary,
     render_roadmap_step,
     sanitize_string,
 )
@@ -170,19 +172,19 @@ open import Plan.CIM.Utility using (RoadmapStep)
 """
     
     for entry in sorted(entries, key=lambda e: e.gp_number):
-        concepts_str = ', '.join(entry.key_concepts[:5])
         implication = build_implication({
             "insight": entry.formal_correction,
             "gap": "",
             "fix": "",
         })
-        if concepts_str:
-            implication = f"{implication} | Concepts: {concepts_str}"
+        concept_clause = build_implication_from_concepts(entry.key_concepts)
+        if concept_clause:
+            implication = f"{implication} | {concept_clause}"
 
         agda_code += render_roadmap_step(
             gp_id=entry.gp_number,
             title=entry.title,
-            step=entry.question,
+            step=build_step_summary({"summary": entry.question}),
             implication=implication,
             target_module="src/agda/Plan/CIM/Implementation.agda",
         )

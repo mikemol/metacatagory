@@ -30,6 +30,18 @@ def build_implication(metadata: Dict[str, str]) -> str:
     return " | ".join(parts) if parts else "Implication TBD from intake."
 
 
+def build_step_summary(metadata: Dict[str, str]) -> str:
+    """Use the structured summary for the roadmap step."""
+    return sanitize_string(metadata.get("summary", ""))
+
+
+def build_implication_from_concepts(concepts: List[str]) -> str:
+    """Add a compact concepts clause to the implication string."""
+    if not concepts:
+        return ""
+    return f"Concepts: {', '.join(concepts[:5])}"
+
+
 def record_name_for_gp(gp_id: str) -> str:
     """Normalize GP id to Agda record name suffix."""
     safe = gp_id.replace("/", "").lower()

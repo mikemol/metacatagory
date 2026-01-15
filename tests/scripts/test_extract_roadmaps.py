@@ -29,7 +29,7 @@ def test_generate_agda_module_uses_shared_renderer(tmp_path: Path):
         category="Foundation",
         question="Do thing",
         formal_correction="Correction",
-        key_concepts=[],
+        key_concepts=["Alpha"],
         related_gps=[],
         manifest_version=None,
         target_modules=[],
@@ -37,3 +37,4 @@ def test_generate_agda_module_uses_shared_renderer(tmp_path: Path):
 
     module_text = mod.generate_agda_module("Foundation", [entry])
     assert "roadmapGp01" in module_text
+    assert "Concepts: Alpha" in module_text

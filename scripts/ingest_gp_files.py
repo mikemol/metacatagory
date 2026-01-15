@@ -12,6 +12,8 @@ from typing import Dict, List, Tuple
 from scripts.shared.gp_intake import extract_metadata_from_md, strip_base64_images
 from scripts.shared.gp_roadmap_render import (
     build_implication,
+    build_implication_from_concepts,
+    build_step_summary,
     render_roadmap_step,
     sanitize_string,
 )
@@ -67,8 +69,11 @@ def generate_roadmap_step(gp_id: str, metadata: Dict, file_number: int, full_con
     """
 
     title = sanitize_string(metadata['title'])[:80]
-    summary = sanitize_string(metadata['summary'])
+    summary = build_step_summary(metadata)
     implication = build_implication(metadata)
+    concept_clause = build_implication_from_concepts(metadata.get("keywords", []))
+    if concept_clause:
+        implication = f"{implication} | {concept_clause}"
     
     # Intelligent module routing (Protocol A)
     target_module = infer_target_module(
