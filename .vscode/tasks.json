@@ -17,10 +17,10 @@
       "problemMatcher": []
     },
     {
-      "label": "Act: Run All Workflows",
+      "label": "Act: Run CI Workflow",
       "type": "shell",
       "command": "act",
-      "args": [],
+      "args": ["-W", ".github/workflows/ci.yml"],
       "group": {
         "kind": "test",
         "isDefault": false
@@ -118,7 +118,7 @@
     {
       "label": "Docker: Rootless Status",
       "type": "shell",
-      "command": "docker info --format 'Client: {{.ClientInfo.Name}}\\nRootless: {{join .SecurityOptions \", \\"}}\\nDockerHost: {{.ClientInfo.DaemonHost}}\\nUser: {{.ClientInfo.User}}'",
+      "command": "docker info --format 'Client: {{.ClientInfo.Name}}\\nRootless: {{join .SecurityOptions \", \"}}\\nDockerHost: {{.ClientInfo.DaemonHost}}\\nUser: {{.ClientInfo.User}}'",
       "group": "none",
       "presentation": {
         "reveal": "always",

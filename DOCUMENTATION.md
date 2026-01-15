@@ -42,6 +42,7 @@ See `Makefile` and `TESTING.md` for regeneration targets.
   * [COMPOSITION-PATTERNS.md](docs/automation/COMPOSITION-PATTERNS.md) - Shared pipeline composition patterns for Python scripts
   * [MAKEFILE-TARGETS.md](docs/automation/MAKEFILE-TARGETS.md) - Makefile target reference
   * [MAKEFILE-TRIANGLE-IDENTITY.md](docs/automation/MAKEFILE-TRIANGLE-IDENTITY.md) - Triangle identity validation
+  * [BUILD-TOPOLOGY.md](docs/process/BUILD-TOPOLOGY.md) - Build/CI topology and report layout
 
 ### Planning & Roadmap
 
