@@ -46,6 +46,7 @@ class LoadJSONFilesPhase(Phase[Path, Dict[str, List[Dict[str, Any]]]]):
 
     def transform(self, input_data: Path, context: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
         parallel, workers = get_parallel_settings()
+        context["planning_source"] = str(input_data)
 
         def load_tasks(path: Path) -> Any:
             return load_json(path, required=True)
@@ -135,7 +136,7 @@ class NormalizeItemsPhase(Phase[Dict[str, List[Dict[str, Any]]], Dict[str, Dict[
                 artifact_id=f"canonical_{item_id}",
                 record={
                     'source_type': 'ingestion',
-                    'source_id': 'planning_index.json',
+                    'source_id': context.get('planning_source', 'planning_index.json'),
                     'source_location': f'item[{item_id}]',
                     'metadata': {'normalized': True}
                 }
@@ -325,7 +326,7 @@ def validate():
     strategy = RecoveryStrategy(max_retries=2, backoff_factor=1.0, respect_recoverable=True)
     pipeline = RecoveryPipeline(logger=logger, strategy=strategy, name="ValidateJSON")
     
-    canonical_path = REPO_ROOT / "data" / "planning_index.json"
+    canonical_path = shared_data.resolve_planning_path(repo_root=REPO_ROOT)
     tasks_path = REPO_ROOT / ".github" / "roadmap" / "tasks.json"
     
     # Build pipeline phases
