@@ -37,6 +37,42 @@ def test_load_planning_index_variants(tmp_path, monkeypatch):
         shared_data.load_planning_index()
 
 
+def test_load_planning_index_filter_legacy(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    json_path = tmp_path / "data" / "planning_index.json"
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(
+        json.dumps([{"id": "GP-1"}, {"id": "LEGACY-1"}]),
+        encoding="utf-8",
+    )
+
+    items = shared_data.load_planning_index(filter_legacy=True)
+    assert [item["id"] for item in items] == ["GP-1"]
+
+
+def test_resolve_planning_path_prefers_data(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    data_path = tmp_path / "data" / "planning_index.json"
+    data_path.parent.mkdir(parents=True, exist_ok=True)
+    data_path.write_text(json.dumps([{"id": "GP-1"}]), encoding="utf-8")
+    build_path = tmp_path / "build" / "planning_index.json"
+    build_path.parent.mkdir(parents=True, exist_ok=True)
+    build_path.write_text(json.dumps([{"id": "GP-2"}]), encoding="utf-8")
+
+    resolved = shared_data.resolve_planning_path()
+    assert resolved == data_path
+
+
+def test_resolve_planning_path_falls_back_to_build(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    build_path = tmp_path / "build" / "planning_index.json"
+    build_path.parent.mkdir(parents=True, exist_ok=True)
+    build_path.write_text(json.dumps([{"id": "GP-2"}]), encoding="utf-8")
+
+    resolved = shared_data.resolve_planning_path()
+    assert resolved == build_path
+
+
 def test_load_roadmap_markdown_parses_yaml(tmp_path, monkeypatch):
     monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
     md = tmp_path / "ROADMAP.md"
