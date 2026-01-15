@@ -2,15 +2,17 @@
 
 ## Scope
 
-- Placeholder for CHIP core recomposition work; documents intent only.
+- Core recomposition utilities shared across CHIP document pipelines.
 
 ## Key elements
 
-- Imports `Plan.CIM.Utility`; no concrete definitions yet.
+- Block/document coherence recomposition helpers.
+- Aggregated block/doc witness records.
+- Braid trace composition and metric aggregation utilities.
 
 ## Dependencies
 
-- Will tie into CHIP recomposition architecture when implemented.
+- `Plan.CIM.PandocProtocols`, `Plan.CIM.PandocAST`, `Plan.CIM.PandocToMarkdown`.
 
 ## Update triggers
 
@@ -19,4 +21,4 @@
 
 ## Technical debt / status
 
-- Placeholder; track in deferred-items.md and ROADMAP.md when activated.
+- Active; revisit as CHIP recomposition semantics evolve.
