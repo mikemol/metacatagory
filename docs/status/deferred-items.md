@@ -1,5 +1,7 @@
 # Deferred Items Report
 
+Note: Generated snapshot. Run `make deferred-items` to refresh counts.
+
 ## DeviationLog Entries
 
 DeviationLog: 21
