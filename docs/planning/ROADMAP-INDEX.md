@@ -47,5 +47,5 @@ Consolidated pointers to roadmap-shaped artifacts across the repo.
 
 ## References
 
-* [DEFERRED-TRACKING.md](DEFERRED-TRACKING.md)
+* [docs/status/DEFERRED-TRACKING.md](../status/DEFERRED-TRACKING.md)
 * [CONTRIBUTING.md](CONTRIBUTING.md)

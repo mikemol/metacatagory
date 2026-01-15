@@ -10,7 +10,7 @@ This roadmap is synthesized from tracked work items and structured roadmap steps
 
 - Docs regenerated via make docs-all
 
-- Deferred items tracked in DEFERRED-TRACKING.md
+- Deferred items tracked in docs/status/DEFERRED-TRACKING.md
 
 ## How to Regenerate
 

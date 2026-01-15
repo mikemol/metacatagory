@@ -133,7 +133,7 @@ AUDAX aims to unify all document-producing and reporting pipelines in the metaca
 
 ## Work Plan
 
-See ROADMAP-INDEX.md and DEFERRED-TRACKING.md for integration points and status. The following steps are tracked in the project todo list:
+See ROADMAP-INDEX.md and docs/status/DEFERRED-TRACKING.md for integration points and status. The following steps are tracked in the project todo list:
 
 1. Define AUDAX scope and goals (this document)
 2. Inventory existing document algebras

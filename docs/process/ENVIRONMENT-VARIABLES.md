@@ -37,7 +37,7 @@ and whether execution is guarded or defaults are provided.
 
 | Variable | Consumers | Filled by | Guard / Default | Assumption Check |
 | --- | --- | --- | --- | --- |
-| `ACT` | `.github/workflows/*.yml` conditions | `act` runner | Used in `if` checks with default false | Safe: only used for branching |
+| `ACT` | `.github/workflows/ci.yml` conditions | `act` runner | Used in `if` checks with default false | Safe: only used for branching |
 | `GITHUB_ENV` | `scripts/act_prepare_workspace.sh`, `ci.yml` | GitHub Actions runtime | Guarded in `act_prepare_workspace.sh` | Safe when running in Actions/act |
 | `GITHUB_OUTPUT` | `.github/scripts/detect-deferred-items.sh` (invoked via CI or local targets) | GitHub Actions runtime | Guarded in `detect-deferred-items.sh` | Safe in Actions; guarded in script |
 | `CI_GITHUB_TOKEN` | `.github/scripts/sync-roadmap-issues.sh` | GitHub Actions secrets | Script validates presence (fallback to `GITHUB_TOKEN`) | Safe: guarded before use |
