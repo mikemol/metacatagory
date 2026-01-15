@@ -21,10 +21,11 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.shared.paths import REPO_ROOT, PLANNING_INDEX_JSON, REPORTS_DIR
+from scripts.shared.paths import REPO_ROOT, REPORTS_DIR
+from scripts import shared_data
 
 INTAKE_DIR = REPO_ROOT / "intake"
-CANONICAL_PATH = PLANNING_INDEX_JSON
+CANONICAL_PATH = shared_data.resolve_planning_path(repo_root=REPO_ROOT)
 REPORT_DIR = REPORTS_DIR
 REPORT_JSON = REPORT_DIR / "intake_coverage.json"
 REPORT_MD = REPORT_DIR / "intake_coverage.md"
@@ -38,7 +39,7 @@ def load_canonical_ids() -> set[str]:
         CANONICAL_PATH.write_text("[]")
         return set()
 
-    data = json.loads(CANONICAL_PATH.read_text())
+    data = shared_data.load_planning_index_from(CANONICAL_PATH)
     ids: set[str] = set()
     for entry in data:
         value = entry.get("id") if isinstance(entry, dict) else None
