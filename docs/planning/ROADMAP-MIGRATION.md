@@ -72,10 +72,11 @@ Ensures:
 ### 4. Syncing to GitHub
 
 ```bash
-make roadmap-sync
+MUTATE_OK=1 make roadmap-sync
 ```
 
 Depends on `.github/roadmap/tasks.json` to ensure tasks.json is current before sync.
+This is a local Make target; CI runs the roadmap/JSON job via `ci.yml` (no standalone workflow).
 
 ## Key Files
 
@@ -110,7 +111,7 @@ Depends on `.github/roadmap/tasks.json` to ensure tasks.json is current before s
 | `roadmap-validate-json` | canonical, tasks.json | Validate JSON projection |
 | `roadmap-validate-md` | canonical, ROADMAP.md | Validate Markdown projection |
 | `roadmap-validate-triangle` | validate-json, validate-md | Full triangle check |
-| `roadmap-sync` | `.github/roadmap/tasks.json` | Sync to GitHub |
+| `roadmap-sync` | `.github/roadmap/tasks.json` | Sync to GitHub (local Make target; CI uses `ci.yml`) |
 
 ## Deprecated Files
 

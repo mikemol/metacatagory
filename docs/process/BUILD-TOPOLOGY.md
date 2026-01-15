@@ -50,7 +50,7 @@ want to re-run just that stage.
 
   * `build/canonical_roadmap.json` – JSON synthesized from `intake/` files; every roadmap/badge export depends on it.
   * `data/planning_index.json` / `roadmap-export-*` / `roadmap-validate-*` – export the planning kernel and roadmap from Agda, then validate them.
-  * `roadmap-index`, `planning-kernel`, `roadmap-sppf(-export)`, `roadmap-sync`, etc. – Agda compilations for each Cosmological Roadmap subsystem.
+  * `roadmap-index`, `planning-kernel`, `roadmap-sppf(-export)`, `roadmap-sync`, etc. – Agda compilations for each Cosmological Roadmap subsystem. (`roadmap-sync` is a local Make target; CI uses `ci.yml`.)
   * `build/priority_profile.json` and `.github/badges/weights.json` – priority pipeline outputs; chained under `priority-refresh`.
   * `build/reports/roadmap_ast.txt` / `docs-modules` – Roadmap AST + module exporters that generate markdown; `make check-all` or `regen-docs` pull these in automatically.
   * `md-lint` / `md-fix` / `intake-lint` – Markdown linting tools; the linting nodes already respect Make’s lazy timestamps so they run only when touched, and `md-fix`/`intake-lint` exist mainly for manual cleanup.
