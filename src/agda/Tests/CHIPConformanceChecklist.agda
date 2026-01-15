@@ -6,6 +6,7 @@ module Tests.CHIPConformanceChecklist where
 open import Agda.Builtin.Nat using (Nat; _+_)
 open import Agda.Builtin.String using (String)
 open import Agda.Builtin.Equality using (_≡_; refl)
+open import Agda.Builtin.Sigma using (Σ; _,_)
 
 open import Plan.CIM.Utility using (_×_; _++_; mkMetric)
 open import Plan.CIM.Metricization using (EmergentMetric)
@@ -14,10 +15,13 @@ open import Plan.CIM.CHIPConformance using (composeBraids)
 
 open EmergentMetric
 
+swapNat : Nat × Nat → Nat × Nat
+swapNat (a , b) = b , a
+
 -- Simple braided functors for test composition.
 bif1 : BraidedInheritanceFunctor Nat Nat
 bif1 = record
-  { inheritanceBraid = λ { (a , b) → b , a }
+  { inheritanceBraid = swapNat
   ; coherenceCost = mkMetric 1 2
   ; fromValue = 0
   ; toValue = 1
@@ -26,7 +30,7 @@ bif1 = record
 
 bif2 : BraidedInheritanceFunctor Nat Nat
 bif2 = record
-  { inheritanceBraid = λ { (a , b) → b , a }
+  { inheritanceBraid = swapNat
   ; coherenceCost = mkMetric 2 3
   ; fromValue = 1
   ; toValue = 2
