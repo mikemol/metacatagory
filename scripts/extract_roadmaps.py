@@ -12,27 +12,13 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass, asdict
 
-# Load configuration for mathematical concept extraction
-def load_concept_config():
-    """Load concept patterns and settings from config file."""
-    config_file = Path(__file__).parent / "extract-concepts-config.json"
-    if config_file.exists():
-        with open(config_file) as f:
-            return json.load(f)
-    # Fallback defaults
-    return {
-        "concept_patterns": [
-            "RoPE|SPPF|Stasheff|Associahedron|Polytope|Loday|Yoneda|Sheaf|Cohomology",
-            "Braid|Homotopy|Functor|Adjunction|Manifold|Topology|Geometry",
-            "Lie Group|Group Action|Category Theory|HoTT|Abelian",
-            "Quaternion|Octonion|Complex|Vector Space|Tensor"
-        ],
-        "default_target_module": "src/agda/Plan/CIM/Implementation.agda",
-        "max_concepts": 15,
-        "concept_title_case": True
-    }
+from scripts.shared.gp_intake import (
+    load_concept_config,
+    extract_concepts,
+    extract_metadata_from_text,
+)
 
-CONCEPT_CONFIG = load_concept_config()
+CONCEPT_CONFIG = load_concept_config(Path(__file__).parent / "extract-concepts-config.json")
 
 @dataclass
 class RoadmapEntry:
@@ -90,23 +76,9 @@ def extract_formal_section(content: str) -> str:
         return section
     return "See full GP file"
 
-def extract_concepts(content: str) -> List[str]:
+def extract_concepts_from_content(content: str) -> List[str]:
     """Extract key mathematical concepts from the content."""
-    concepts = set()
-    
-    # Load concept patterns from configuration
-    concept_patterns = [r'\b(' + p + ')' for p in CONCEPT_CONFIG['concept_patterns']]
-    max_concepts = CONCEPT_CONFIG.get('max_concepts', 15)
-    use_title_case = CONCEPT_CONFIG.get('concept_title_case', True)
-    
-    for pattern in concept_patterns:
-        matches = re.findall(pattern, content, re.IGNORECASE)
-        if use_title_case:
-            concepts.update(m.title() for m in matches)
-        else:
-            concepts.update(matches)
-    
-    return sorted(list(concepts))[:max_concepts]
+    return extract_concepts(content, CONCEPT_CONFIG)
 
 def extract_related_gps(content: str) -> List[str]:
     """Find references to other GP files."""
@@ -158,14 +130,15 @@ def parse_gp_file(filepath: Path) -> RoadmapEntry:
     content = filepath.read_text(encoding='utf-8')
     gp_number = filepath.stem  # "GP01", "GP700", etc.
     gp_num = int(re.search(r'\d+', gp_number).group())
+    metadata = extract_metadata_from_text(content, gp_number)
     
     return RoadmapEntry(
         gp_number=gp_number,
-        title=extract_title(content),
+        title=metadata['title'],
         category=categorize_gp(gp_num),
         question=extract_question(content),
         formal_correction=extract_formal_section(content),
-        key_concepts=extract_concepts(content),
+        key_concepts=extract_concepts_from_content(content),
         related_gps=extract_related_gps(content),
         manifest_version=extract_manifest_version(content),
         target_modules=extract_target_modules(content),
