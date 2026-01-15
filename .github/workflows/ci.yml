@@ -34,7 +34,7 @@ jobs:
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports/agda
       CI_ARTIFACT_DIR: build/reports/agda
-      MAKEFILE_COVERAGE_SKIP: docs-normalize docs-all md-normalize regen-all all act-list act-ci act-lint act-markdown-fix act-makefile-validate act-roadmap-sync act-deferred act-badges act-all
+      MAKEFILE_COVERAGE_SKIP: docs-normalize docs-all md-normalize regen-all all act-list act-ci act-lint act-makefile-validate act-roadmap-sync act-deferred act-all
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
       METACATAGORY_STRICT_ROUNDTRIP: "true"
