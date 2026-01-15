@@ -19,6 +19,7 @@ with additional fields:
 """
 
 import json
+from json import JSONDecodeError
 import re
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -31,6 +32,7 @@ CANONICAL_JSON = REPO_ROOT / "data" / "planning_index.json"
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
 
 from shared.parallel import get_parallel_settings
+import shared_data
 
 # Controlled tag vocabulary
 TAG_VOCAB = {
@@ -578,12 +580,11 @@ def enrich_canonical() -> None:
     """
     Main entry point: read canonical, enrich, write enriched.
     """
-    if not CANONICAL_JSON.exists():
-        print(f"Error: {CANONICAL_JSON} not found. Run 'make roadmap-merge' first.")
+    try:
+        canonical = shared_data.load_planning_index(repo_root=REPO_ROOT)
+    except (FileNotFoundError, ValueError, JSONDecodeError) as exc:
+        print(f"Error: {exc}. Run 'make roadmap-merge' first.")
         return
-    
-    with open(CANONICAL_JSON, "r", encoding="utf-8") as f:
-        canonical = json.load(f)
     
     print(f"Enriching {len(canonical)} items...")
     
