@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --cubical #-}
 
 -- | CHIP conformance checks and scaffolding.
 module Plan.CIM.CHIPConformance where
