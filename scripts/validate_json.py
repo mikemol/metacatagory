@@ -28,6 +28,7 @@ from scripts.shared.validation import ValidationResult, dict_validator
 from scripts.shared.validated_provenance import ValidatedProvenance
 from scripts.shared.recovery_pipeline import RecoveryPipeline, RecoveryStrategy
 from scripts.shared.config import get_config
+from scripts import shared_data
 
 
 def allow_report_write() -> bool:
@@ -46,27 +47,27 @@ class LoadJSONFilesPhase(Phase[Path, Dict[str, List[Dict[str, Any]]]]):
     def transform(self, input_data: Path, context: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
         parallel, workers = get_parallel_settings()
 
-        def load_file(path: Path) -> Any:
+        def load_tasks(path: Path) -> Any:
             return load_json(path, required=True)
+
+        def load_canonical(path: Path) -> Any:
+            return shared_data.load_planning_index_from(path)
 
         if parallel and workers > 1:
             self.logger.info("Loading canonical planning index", file=str(input_data), mode="parallel")
             self.logger.info("Loading tasks.json", file=str(self.tasks_path), mode="parallel")
             with ThreadPoolExecutor(max_workers=2) as executor:
-                canonical_future = executor.submit(load_file, input_data)
-                tasks_future = executor.submit(load_file, self.tasks_path)
+                canonical_future = executor.submit(load_canonical, input_data)
+                tasks_future = executor.submit(load_tasks, self.tasks_path)
                 canonical = canonical_future.result()
                 tasks = tasks_future.result()
         else:
             self.logger.info("Loading canonical planning index", file=str(input_data))
-            canonical = load_json(input_data, required=True)
+            canonical = load_canonical(input_data)
             
             self.logger.info("Loading tasks.json", file=str(self.tasks_path))
-            tasks = load_json(self.tasks_path, required=True)
+            tasks = load_tasks(self.tasks_path)
         
-        # Ensure we have lists
-        if isinstance(canonical, dict):
-            canonical = canonical.get('items', [])
         if isinstance(tasks, dict):
             tasks = tasks.get('items', [])
         
