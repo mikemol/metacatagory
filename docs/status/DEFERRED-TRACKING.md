@@ -44,6 +44,11 @@ Groups/rings/modules/fields; Effort: 3-5 days; Ref: ROADMAP.md Phase 3.2
 
 Improves functionality but not blocking major milestones.
 
+- [ ] ModulesChecklist record literals include non-existent `homomorphism` fields
+  - Agda warning: `TooManyFields` in `src/agda/Tests/ModulesChecklist.agda` (kernel/image/cokernel)
+  - Outcome: update record literals to match current `AM.*OfModuleHomomorphism` fields
+  - Trigger: `make agda-all` warnings (2026-01-13)
+
 - [ ] Examples.disabled/ modules (13 modules)
 
 TechnicalDebtRegistry and demonstration examples; Effort: 1-3 days/module; Ref: ROADMAP.md Phase 3.1
