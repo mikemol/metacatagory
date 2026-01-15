@@ -11,7 +11,7 @@ open import Agda.Builtin.Equality using (_≡_)
 open import Agda.Primitive using (Level; lzero; lsuc)
 open import Agda.Builtin.Sigma using (Σ; _,_)
 
-open import Plan.CIM.Utility using (PhaseAmbiguity; TransformationSystem; Path; map; _×_)
+open import Plan.CIM.Utility using (PhaseAmbiguity; TransformationSystem; Path; map; _×_; _++_)
 open import Plan.CIM.FunctorialConstructs using (EmergentMetric; mkMetric; CoherenceWitness; BraidedInheritanceFunctor; BraidedSPPF; packed-node)
 
 -- | Graded vector space with per-grade dimensions and an emergent metric.
@@ -29,15 +29,29 @@ mapGVS f gvs = record
   ; metric = GradedVectorSpace.metric gvs
   }
 
+-- | Combine metrics by summing magnitude and complexity.
+sumMetric : EmergentMetric → EmergentMetric → EmergentMetric
+sumMetric m1 m2 =
+  mkMetric (EmergentMetric.magnitude m1 + EmergentMetric.magnitude m2)
+           (EmergentMetric.complexity m1 + EmergentMetric.complexity m2)
+
 -- | Compose two braided inheritance functors, summing coherence costs.
 composeBraids : ∀ {ℓ} {A B C : Set ℓ} → BraidedInheritanceFunctor A B → BraidedInheritanceFunctor B C → BraidedInheritanceFunctor A C
 composeBraids bif1 bif2 = record
-  { inheritanceBraid = λ { (a , c) → c , a }
-  ; coherenceCost = mkMetric (EmergentMetric.magnitude (BraidedInheritanceFunctor.coherenceCost bif1) + EmergentMetric.magnitude (BraidedInheritanceFunctor.coherenceCost bif2))
-                           (EmergentMetric.magnitude (BraidedInheritanceFunctor.coherenceCost bif1) + EmergentMetric.magnitude (BraidedInheritanceFunctor.coherenceCost bif2))
+  { inheritanceBraid = λ { (a , c) →
+      let
+        b , a' = BraidedInheritanceFunctor.inheritanceBraid bif1 (a , BraidedInheritanceFunctor.toValue bif1)
+        c' , _ = BraidedInheritanceFunctor.inheritanceBraid bif2 (b , c)
+      in
+        c' , a'
+    }
+  ; coherenceCost = sumMetric (BraidedInheritanceFunctor.coherenceCost bif1)
+                              (BraidedInheritanceFunctor.coherenceCost bif2)
   ; fromValue = BraidedInheritanceFunctor.fromValue bif1
   ; toValue   = BraidedInheritanceFunctor.toValue bif2
-  ; description = "Composed braid"
+  ; description =
+      BraidedInheritanceFunctor.description bif1 ++ " ∘ " ++
+      BraidedInheritanceFunctor.description bif2
   }
 
 -- [IMPLEMENTED] SPPF node construction
