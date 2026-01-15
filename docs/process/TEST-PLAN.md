@@ -139,7 +139,8 @@ MUTATE_OK=1 make python-test
 
 ### Known Constraints
 
-- Some workflows (auto‑fix, badges) mutate the repo by design.
+- Some local targets (e.g., `md-fix`, `badges`, `regen-*`) mutate the repo by design.
+- CI is consolidated under `ci.yml`; avoid assuming other workflows exist.
 
 ### Follow‑ups
 

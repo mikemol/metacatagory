@@ -3,7 +3,7 @@
 ## Quick Start
 
 **New to Metacatagory?** Start here:
-1. Read [ARCHITECTURE.md](ARCHITECTURE.md) - Understand the design philosophy
+1. Read [ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) - Understand the design philosophy
 2. Review [README.md](README.md) - Get an overview of key concepts
 3. Study [src/agda/Plan/CIM/Utility.agda](src/agda/Plan/CIM/Utility.agda) - See concrete RoadmapStep examples
 4. Follow [CONTRIBUTING.md](CONTRIBUTING.md) - Start contributing
@@ -51,9 +51,9 @@ See [ROADMAP.md](ROADMAP.md) for the complete development timeline.
 
 ## Documentation
 
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Design principles and categorical patterns
+- **[ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md)** - Design principles and categorical patterns
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute
-- **[COPILOT_SYNERGY.md](COPILOT_SYNERGY.md)** - LLM integration guidance
+- **[copilot-instructions.md](.github/copilot-instructions.md)** - LLM integration guidance
 - **[ROADMAP.md](ROADMAP.md)** - Development phases and timelines
 - **[intake/README.md](intake/README.md)** - Canonical intake sources vs. archives
 
@@ -104,4 +104,4 @@ Development is guided by RoadmapStep records that encode:
 1. **Check examples** in `src/agda/Examples/` and `src/agda/Tests/`
 2. **Review similar code** - Look at related modules for patterns
 3. **Read roadmap nodes** - RoadmapStep records document architectural decisions
-4. **Consult COPILOT_SYNERGY.md** - For integration with LLM systems
+4. **Consult copilot-instructions.md** - For integration with LLM systems

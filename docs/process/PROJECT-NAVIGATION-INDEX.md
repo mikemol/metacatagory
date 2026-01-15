@@ -10,7 +10,7 @@
 
 ### For New Contributors
 
-1. **Read first:** [ARCHITECTURE.md](../../ARCHITECTURE.md)
+1. **Read first:** [ARCHITECTURE.md](../architecture/ARCHITECTURE.md)
    - Project architecture and patterns
    - Module organization
    - Design principles
@@ -326,7 +326,7 @@ docs/
 │       • Face specification
 │       • Solver algorithms
 │
-├── ARCHITECTURE.md
+├── docs/architecture/ARCHITECTURE.md
 │   Overall project architecture
 │   • SPPF modeling
 │   • Compositional patterns
@@ -455,7 +455,7 @@ make phase3-all
 
 ### Related Documentation
 
-- [ARCHITECTURE.md](../../ARCHITECTURE.md) - Project architecture
+- [ARCHITECTURE.md](../architecture/ARCHITECTURE.md) - Project architecture
 - [ROADMAP.md](../../ROADMAP.md) - Project roadmap
 - [JSON-HOMOTOPY-CONTRACT.md](./JSON-HOMOTOPY-CONTRACT.md) - Theoretical foundation
 - [JSON-ADEQUACY.md](./JSON-ADEQUACY.md) - Adequacy framework
@@ -514,7 +514,7 @@ less docs/process/PHASE-3-COMPLETE.md
 
 For questions about:
 
-- **Architecture:** See [ARCHITECTURE.md](../../ARCHITECTURE.md)
+- **Architecture:** See [ARCHITECTURE.md](../architecture/ARCHITECTURE.md)
 - **Phase 2:** See [PHASE-2-FINAL-SUMMARY.md](./PHASE-2-FINAL-SUMMARY.md)
 - **Phase 3:** See [PHASE-3-COMPLETE.md](./PHASE-3-COMPLETE.md)
 - **Homotopical Contracts:** See [JSON-HOMOTOPY-CONTRACT.md](./JSON-HOMOTOPY-CONTRACT.md)

@@ -58,7 +58,7 @@ See `Makefile` and `TESTING.md` for regeneration targets.
 
 * [docs/process/](docs/process/)
   * [QUALITY-FRAMEWORK.md](docs/process/QUALITY-FRAMEWORK.md) - Quality assurance framework
-  * [COPILOT\_SYNERGY.md](docs/process/COPILOT_SYNERGY.md) - AI copilot integration guidelines
+  * [copilot-instructions.md](.github/copilot-instructions.md) - LLM integration guidelines
 
 ### Project Status
 
@@ -110,7 +110,7 @@ See `Makefile` and `TESTING.md` for regeneration targets.
 * **See the roadmap** → Check [ROADMAP.md](docs/planning/ROADMAP.md) and [PROJECT-STATUS.md](docs/status/PROJECT-STATUS.md)
 * **Run enrichment pipeline** → Follow [ENRICHMENT-QUICKSTART.md](docs/workflows/ENRICHMENT-QUICKSTART.md)
 * **Understand the algebra work** → Read [ALGEBRA-PARAMETERIZATION-COMPLETE.md](docs/architecture/ALGEBRA-PARAMETERIZATION-COMPLETE.md)
-* **Work with Copilot** → See [COPILOT\_SYNERGY.md](docs/process/COPILOT_SYNERGY.md)
+* **Work with Copilot** → See [copilot-instructions.md](.github/copilot-instructions.md)
 
 ## Documentation Standards
 

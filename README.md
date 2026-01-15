@@ -95,10 +95,10 @@ Target: `src/agda/Plan/CIM/Elasticity.agda`
 Target: `src/agda/Plan/CIM/PolytopeExpansion.agda`
 
 - **Implement Mitosis Engine...** — Enables dynamic... [status: not-started]
-Target: `nedge_topology/mitosis.py`
+Target: (deferred; historical `nedge_topology/mitosis.py` reference no longer present)
 
 - **Integrate Earley parsing...** — Enables composable geometric... [status: not-started]
-Target: `nedge_topology/parser.py`
+Target: (deferred; historical `nedge_topology/parser.py` reference no longer present)
 
 ## Intake Sources
 

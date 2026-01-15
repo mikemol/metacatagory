@@ -1,6 +1,6 @@
 -- 4 key Roadmap examples extracted and cleaned from Utility-broken.agda
 -- All nested `next` structures simplified to [] for syntactic clarity
--- This represents the 4 referenced in COPILOT_SYNERGY.md plus their dependencies
+-- This represents the 4 referenced in .github/copilot-instructions.md plus their dependencies
 
 exampleUnifiedTopologicalParserRoadmap : RoadmapStep
 exampleUnifiedTopologicalParserRoadmap = record

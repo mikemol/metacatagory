@@ -12,13 +12,13 @@ This document provides a high-level map of the repository's documentation and co
 
 - DEFERRED-TRACKING.md: Technical debt and deferred items tracking.
 
-- COPILOT_SYNERGY.md: AI and Copilot integration notes.
+- .github/copilot-instructions.md: AI and Copilot integration notes.
 
 - CREDITS.md: Contributors and acknowledgments.
 
-- ingest.md: Data ingestion notes.
+- intake/ingest.md: Data ingestion notes.
 
-- testing.md: Testing philosophy and details.
+- intake/testing.md: Testing philosophy and details.
 
 ## Source Atlas & Manuals
 

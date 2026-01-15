@@ -111,7 +111,7 @@
     ├── impact_analyzer.py           (480 lines)
     └── cross_reference_reporter.py  (340 lines)
 
-    build/
+    build/ (ephemeral outputs; use Makefile to regenerate)
     ├── ingested_metadata.json       (29 KB)
     ├── roadmap_traversal_report.json (95 KB)
     ├── module_mappings.json         (~85 KB)

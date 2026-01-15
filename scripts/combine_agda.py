@@ -3,7 +3,7 @@ SPPF-Composable Onboarding Header
 
 Roadmap: src/agda/Plan/CIM/Utility.agda
 Architecture: ARCHITECTURE.md
-Onboarding: COPILOT_SYNERGY.md
+Onboarding: .github/copilot-instructions.md
 
 Constructive Proof Semantics:
 - This script participates in the composable SPPF model, mirroring Agda record patterns for protocol,
