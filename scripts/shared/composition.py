@@ -121,7 +121,11 @@ def run_validate_roadmap_md(base_dir: Path, logger: Optional[StructuredLogger] =
     def extract_canonical_titles(data: Any, ctx: Dict[str, Any]) -> Set[str]:
         return {str(item.get("title", "")).strip() for item in (data or [])}
 
-    pipeline.add_phase(ReadJSONPhase())
+    pipeline.add_phase(CallablePhase(
+        "read_planning_index",
+        lambda path, ctx: shared_data.load_planning_index_from(path),
+        description="Load planning index with shared normalization",
+    ))
     pipeline.add_phase(CallablePhase("extract_canonical_titles", extract_canonical_titles))
     pipeline.add_phase(StoreInContextPhase("canonical_titles"))
 
