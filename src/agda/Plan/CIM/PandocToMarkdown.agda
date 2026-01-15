@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical --guardedness #-}
+{-# OPTIONS --without-K --cubical-compatible --guardedness #-}
 
 -- | Convert Pandoc AST to markdown strings for export.
 module Plan.CIM.PandocToMarkdown where

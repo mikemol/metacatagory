@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --cubical --guardedness #-}
+{-# OPTIONS --without-K --cubical-compatible --guardedness #-}
 
 -- | Protocol definitions for moving between Pandoc AST and CIM structures.
 module Plan.CIM.PandocProtocols where
