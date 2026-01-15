@@ -264,10 +264,10 @@ Key metrics from this analysis:
 
 ### Methodology Validation
 Analysis validated against the very protocol it analyzes:
-- Used 14 Quality Mandates from copilot-instructions.md
-- Applied CHIP-N+1 Recursive Fibration Cycle from copilot-instructions.md
-- Followed SPPF architecture from ARCHITECTURE.md
-- Followed three-order homological expansion from copilot-instructions.md
+- Used 14 Quality Mandates from [copilot-instructions.md](../../.github/copilot-instructions.md)
+- Applied CHIP-N+1 Recursive Fibration Cycle from [copilot-instructions.md](../../.github/copilot-instructions.md)
+- Followed SPPF architecture from [docs/architecture/ARCHITECTURE.md](../architecture/ARCHITECTURE.md)
+- Followed three-order homological expansion from [copilot-instructions.md](../../.github/copilot-instructions.md)
 
 **Result:** Circular validation successful – analysis demonstrates protocol works as designed.
 
