@@ -6,12 +6,13 @@ Each validator is composable and reusable.
 """
 
 import sys
+from pathlib import Path
 from typing import Dict, List, Tuple
 from concurrent.futures import ThreadPoolExecutor
 
-from shared_data import load_planning_index, load_roadmap_markdown
-from shared_yaml import normalize_field_comparison, normalize_dependencies
+from scripts.shared_yaml import normalize_field_comparison, normalize_dependencies
 from scripts.shared.parallel import get_parallel_settings
+from scripts import shared_data
 
 
 def validate_descriptions(items: List[Dict]) -> Tuple[int, List[str]]:
@@ -168,12 +169,13 @@ def validate_json_to_markdown(
     return valid, messages
 
 
-def run_all_validations() -> bool:
+def run_all_validations(base_dir: Path | None = None) -> bool:
     """Run complete triangle identity validation suite.
     
     Returns:
         True if all validations pass, False otherwise
     """
+    base_dir = base_dir or shared_data.REPO_ROOT
     print("=" * 60)
     print("Triangle Identity Validation (Strict Mode)")
     print("=" * 60)
@@ -183,15 +185,21 @@ def run_all_validations() -> bool:
     print("Loading data sources...")
     try:
         parallel, workers = get_parallel_settings()
+        planning_path = shared_data.resolve_planning_path(repo_root=base_dir)
+        roadmap_path = base_dir / "ROADMAP.md"
         if parallel and workers > 1:
             with ThreadPoolExecutor(max_workers=2) as executor:
-                json_future = executor.submit(load_planning_index)
-                md_future = executor.submit(load_roadmap_markdown)
+                json_future = executor.submit(
+                    shared_data.load_planning_index_from, planning_path
+                )
+                md_future = executor.submit(
+                    shared_data.load_roadmap_markdown_from, roadmap_path
+                )
                 json_items = json_future.result()
                 md_ids, md_frontmatter = md_future.result()
         else:
-            json_items = load_planning_index()
-            md_ids, md_frontmatter = load_roadmap_markdown()
+            json_items = shared_data.load_planning_index_from(planning_path)
+            md_ids, md_frontmatter = shared_data.load_roadmap_markdown_from(roadmap_path)
     except FileNotFoundError as e:
         print(f"✗ {e}")
         return False
