@@ -38,3 +38,4 @@ def test_generate_agda_module_uses_shared_renderer(tmp_path: Path):
     module_text = mod.generate_agda_module("Foundation", [entry])
     assert "roadmapGp01" in module_text
     assert "Concepts: Alpha" in module_text
+    assert "targetModule = \"src/agda/Plan/CIM/Implementation.agda\"" in module_text

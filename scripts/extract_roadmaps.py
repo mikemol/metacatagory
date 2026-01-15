@@ -13,6 +13,7 @@ from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass, asdict
 
 from scripts.shared.gp_intake import (
+    infer_target_module,
     load_concept_config,
     extract_concepts,
     extract_metadata_from_text,
@@ -181,12 +182,19 @@ open import Plan.CIM.Utility using (RoadmapStep)
         if concept_clause:
             implication = f"{implication} | {concept_clause}"
 
+        target_module = infer_target_module(
+            content=entry.formal_correction,
+            title=entry.title,
+            keywords=entry.key_concepts,
+            config=CONCEPT_CONFIG,
+        )
+
         agda_code += render_roadmap_step(
             gp_id=entry.gp_number,
             title=entry.title,
             step=build_step_summary({"summary": entry.question}),
             implication=implication,
-            target_module="src/agda/Plan/CIM/Implementation.agda",
+            target_module=target_module,
         )
         agda_code += "\n"
     

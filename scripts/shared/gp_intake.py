@@ -120,6 +120,32 @@ def load_concept_config(config_path: Path) -> Dict:
     }
 
 
+def infer_target_module(content: str, title: str, keywords: List[str], config: Dict) -> str:
+    """Route GP content to an Agda module based on heuristics."""
+    content_lower = content.lower()
+    title_lower = title.lower()
+    all_text = f"{content_lower} {title_lower} {' '.join(keywords).lower()}"
+
+    if re.search(r'\\b(category|functor|morphism|natural transformation)\\b', all_text):
+        return "src/agda/Core/CategoricalAdapter.agda"
+    if re.search(r'\\b(field|algebra|ring|group)\\b', all_text):
+        if re.search(r'\\bf2\\b|\\bfinite field\\b|\\bgalois\\b', all_text):
+            return "src/agda/Algebra/Fields/F2.agda"
+        return "src/agda/Algebra/Fields/GenericField.agda"
+    if re.search(r'\\bpolynomial', all_text):
+        if re.search(r'\\bf2\\b', all_text):
+            return "src/agda/Core/PolynomialsF2.agda"
+        return "src/agda/Algebra/Polynomials.agda"
+    if re.search(r'\\b(matrix|linear|vector|rotation)\\b', all_text):
+        return "src/agda/Algebra/LinearAlgebra.agda"
+    if re.search(r'\\b(storage|persist|serialize|database)\\b', all_text):
+        return "src/agda/Infrastructure/Storage.agda"
+    if re.search(r'\\b(polytope|geometry|visual|diagram|render)\\b', all_text):
+        return "src/agda/Plan/CIM/Polytopes.agda"
+
+    return config.get("default_target_module", "src/agda/Plan/CIM/Implementation.agda")
+
+
 def extract_concepts(content: str, config: Dict) -> List[str]:
     """Extract key mathematical concepts from the content."""
     concepts = set()

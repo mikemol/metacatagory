@@ -9,7 +9,12 @@ import json
 from pathlib import Path
 from typing import Dict, List, Tuple
 
-from scripts.shared.gp_intake import extract_metadata_from_md, strip_base64_images
+from scripts.shared.gp_intake import (
+    extract_metadata_from_md,
+    infer_target_module as infer_target_module_shared,
+    load_concept_config,
+    strip_base64_images,
+)
 from scripts.shared.gp_roadmap_render import (
     build_implication,
     build_implication_from_concepts,
@@ -26,40 +31,8 @@ def infer_target_module(content: str, title: str, keywords: List[str]) -> str:
     Uses pattern matching on content, title, and keywords to determine
     the best target module instead of defaulting to Polytopes.agda.
     """
-    content_lower = content.lower()
-    title_lower = title.lower()
-    all_text = f"{content_lower} {title_lower} {' '.join(keywords).lower()}"
-    
-    # Category theory patterns
-    if re.search(r'\b(category|functor|morphism|natural transformation)\b', all_text):
-        return "src/agda/Core/CategoricalAdapter.agda"
-    
-    # Algebra patterns - Fields
-    if re.search(r'\b(field|algebra|ring|group)\b', all_text):
-        if re.search(r'\bf2\b|\bfinite field\b|\bgalois\b', all_text):
-            return "src/agda/Algebra/Fields/F2.agda"
-        return "src/agda/Algebra/Fields/GenericField.agda"
-    
-    # Polynomial patterns
-    if re.search(r'\bpolynomial', all_text):
-        if re.search(r'\bf2\b', all_text):
-            return "src/agda/Core/PolynomialsF2.agda"
-        return "src/agda/Algebra/Polynomials.agda"
-    
-    # Matrix/Linear algebra
-    if re.search(r'\b(matrix|linear|vector|rotation)\b', all_text):
-        return "src/agda/Algebra/LinearAlgebra.agda"
-    
-    # Storage/Infrastructure
-    if re.search(r'\b(storage|persist|serialize|database)\b', all_text):
-        return "src/agda/Infrastructure/Storage.agda"
-    
-    # Geometry/Visualization (only if explicitly mentioned)
-    if re.search(r'\b(polytope|geometry|visual|diagram|render)\b', all_text):
-        return "src/agda/Plan/CIM/Polytopes.agda"
-    
-    # Default: Planning/CIM for meta-tasks
-    return "src/agda/Plan/CIM/Utility.agda"
+    config = load_concept_config(ROOT / "scripts" / "extract-concepts-config.json")
+    return infer_target_module_shared(content, title, keywords, config)
 
 
 def generate_roadmap_step(gp_id: str, metadata: Dict, file_number: int, full_content: str) -> str:
