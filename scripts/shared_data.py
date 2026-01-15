@@ -124,22 +124,17 @@ def load_planning_index(
     return items
 
 
-def load_roadmap_markdown() -> Tuple[List[str], List[Dict[str, Any]]]:
-    """Extract roadmap item IDs and frontmatter from ROADMAP.md.
-    
-    Returns:
-        (sorted list of IDs, list of frontmatter dicts)
-    """
+def load_roadmap_markdown_from(md_path: Path) -> Tuple[List[str], List[Dict[str, Any]]]:
+    """Extract roadmap item IDs and frontmatter from an explicit path."""
     import re
     try:
         import yaml  # type: ignore
     except ImportError:
         yaml = None
-    
-    md_path = REPO_ROOT / "ROADMAP.md"
+
     if not md_path.exists():
         raise FileNotFoundError(f"ROADMAP.md not found at {md_path}")
-    
+
     content = md_path.read_text()
     
     # Extract YAML frontmatter blocks
@@ -199,3 +194,13 @@ def load_roadmap_markdown() -> Tuple[List[str], List[Dict[str, Any]]]:
         ids.add(match.group(1))
     
     return sorted(ids), frontmatter_items
+
+
+def load_roadmap_markdown() -> Tuple[List[str], List[Dict[str, Any]]]:
+    """Extract roadmap item IDs and frontmatter from ROADMAP.md.
+    
+    Returns:
+        (sorted list of IDs, list of frontmatter dicts)
+    """
+    md_path = REPO_ROOT / "ROADMAP.md"
+    return load_roadmap_markdown_from(md_path)

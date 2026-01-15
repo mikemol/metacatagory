@@ -58,51 +58,31 @@ def parse_roadmap_md(path: Path) -> List[Dict]:
     """Extract roadmap items from ROADMAP.md structured section."""
     if not path.exists():
         return []
-    
-    with open(path) as f:
-        content = f.read()
-    
+
+    _, frontmatter_items = shared_data.load_roadmap_markdown_from(path)
     items = []
-    # Pattern: * **Title** — Description [status: X]
-    # Target: path(s)
-    # Depends on: dep1, dep2
-    
-    pattern = r'\* \*\*(.+?)\*\* — (.+?) \[status: (.+?)\]\s*Target: `(.+?)`'
-    matches = re.finditer(pattern, content, re.MULTILINE)
-    
-    for i, match in enumerate(matches):
-        title, description, status, targets = match.groups()
-        # Generate ID from title
-        item_id = f"ROADMAP-MD-{i+1}"
-        
-        files = [t.strip() for t in targets.split(',')]
-        
+
+    for entry in frontmatter_items:
+        item_id = entry.get("id")
+        if not item_id:
+            continue
         item = {
             "id": item_id,
-            "title": title.strip(),
-            "description": description.strip(),
-            "status": status.strip(),
-            "category": "Roadmap",
+            "title": entry.get("title", "").strip(),
+            "description": entry.get("description", "").strip(),
+            "status": entry.get("status", ""),
+            "category": entry.get("category", "Roadmap"),
             "source": "ROADMAP.md",
-            "files": files,
-            "tags": [],
-            "dependsOn": [],
-            "related": [],
-            "provenance": []
+            "files": entry.get("files", []),
+            "tags": entry.get("tags", []),
+            "dependsOn": entry.get("dependencies", entry.get("dependsOn", [])),
+            "related": entry.get("related", []),
+            "provenance": entry.get("provenance", []),
         }
-        
-        # Try to extract dependencies from next line
-        # Look for "Depends on:" pattern after this match
-        end_pos = match.end()
-        next_section = content[end_pos:end_pos + 500]
-        dep_match = re.search(r'Depends on: `(.+?)`', next_section)
-        if dep_match:
-            deps = [d.strip() for d in dep_match.group(1).split(' — src/agda/')]
-            item["dependsOn"] = [f"ROADMAP-MD-DEP-{d[:50]}" for d in deps if d]
-        
+        ensure_item_fields(item)
         ensure_provenance(item)
         items.append(item)
-    
+
     return items
 
 

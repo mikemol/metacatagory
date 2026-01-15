@@ -107,6 +107,10 @@ status: in-progress
     assert ids == ["GP-1", "GP-2"]
     assert items[0]["id"] == "GP-1"
 
+    ids_from_path, items_from_path = shared_data.load_roadmap_markdown_from(md)
+    assert ids_from_path == ["GP-1", "GP-2"]
+    assert items_from_path[0]["id"] == "GP-1"
+
 
 def test_load_roadmap_markdown_fallback_without_yaml(tmp_path, monkeypatch):
     monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
