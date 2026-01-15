@@ -19,6 +19,7 @@ from .logging import StructuredLogger
 from .errors import ValidationError
 from .recovery_pipeline import RecoveryPipeline, RecoveryStrategy
 from .parallel import get_parallel_settings
+from scripts import shared_data
 
 A = TypeVar('A')
 B = TypeVar('B')
@@ -133,7 +134,7 @@ def run_validate_roadmap_md(base_dir: Path, logger: Optional[StructuredLogger] =
 
     context: Dict[str, Any] = {}
     # Seed inputs: planning_index.json then ROADMAP.md then None
-    planning_path = base_dir / "data" / "planning_index.json"
+    planning_path = shared_data.resolve_planning_path(repo_root=base_dir)
     roadmap_path = base_dir / "ROADMAP.md"
 
     parallel, workers = get_parallel_settings()

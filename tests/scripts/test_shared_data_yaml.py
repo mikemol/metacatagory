@@ -82,6 +82,12 @@ def test_resolve_planning_path_falls_back_to_build(tmp_path, monkeypatch):
     assert resolved == build_path
 
 
+def test_resolve_planning_path_defaults_to_data_when_missing(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    resolved = shared_data.resolve_planning_path()
+    assert resolved == tmp_path / "data" / "planning_index.json"
+
+
 def test_load_roadmap_markdown_parses_yaml(tmp_path, monkeypatch):
     monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
     md = tmp_path / "ROADMAP.md"
