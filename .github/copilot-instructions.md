@@ -499,11 +499,11 @@ This prevents 'undefined name' errors and ensures your code is future-proof and 
 
 > **Note:** GitHub Actions workflows can be executed locally using [act](https://github.com/nektos/act) for rapid iteration and testing before pushing to GitHub. Configuration is already in place via `.actrc`.
 
-* **Documentation**: See [.github/WORKFLOWS.md](.github/WORKFLOWS.md) for comprehensive workflow execution guide.
+* **Documentation**: See [WORKFLOWS.md](WORKFLOWS.md) for comprehensive workflow execution guide.
 * **Quick Commands**:
   - `make act-list` – List all available jobs
   - `make act-ci` – Run CI workflow locally
   - `make act-lint` – Run markdown linting
   - `make act-all` – Run all workflows
 * **VS Code Integration**: All workflows are available as tasks (Ctrl+Shift+P → Tasks: Run Task)
-* **Reference**: [.github/WORKFLOWS.md](.github/WORKFLOWS.md) includes configuration details, troubleshooting, and environment variable setup.
+* **Reference**: [WORKFLOWS.md](WORKFLOWS.md) includes configuration details, troubleshooting, and environment variable setup.

@@ -196,4 +196,4 @@ By making all theorems explicit parameters, we force complete honesty about proo
 
 ## Architecture Documentation
 
-See [THEOREM-PARAMETERIZATION.md](../THEOREM-PARAMETERIZATION.md) for detailed architecture documentation.
+See [THEOREM-PARAMETERIZATION.md](THEOREM-PARAMETERIZATION.md) for detailed architecture documentation.

@@ -3,7 +3,7 @@
 **Date:** 2026-01-04  
 **Pattern:** Abstract duality with automatic dual generation  
 **Files:**
-- [Infrastructure/Adequacy/GenericDual.agda](../../src/agda/Infrastructure/Adequacy/GenericDual.agda) - Framework
+- [Infrastructure/Adequacy.agda](../../src/agda/Infrastructure/Adequacy.agda) - Framework (GenericDual* modules)
 - [Plan/CIM/JSONTransformationGeneric.agda](../../src/agda/Plan/CIM/JSONTransformationGeneric.agda) - Instantiation
 
 ---
@@ -146,7 +146,7 @@ TOTAL CODE DUPLICATION: ~1000 lines of identical structure
 ### After (Generic Framework)
 
 ```
-GenericDual.agda                         - 200 lines (written once)
+Adequacy.agda                            - 200 lines (GenericDual* modules, written once)
   ├── DualityInterface (minimal)
   ├── GenericDualPaths (mutual block, derived)
   ├── GenericDualAlgebra (laws, derived)
@@ -304,7 +304,7 @@ This structure is **polymorphic in** `StateL`, `StateR`, `forward`, `backward`, 
 ## Roadmap Integration
 
 **BUILD-GENERIC-ADEQUACY** (NEW):
-- [ ] Create `Infrastructure/Adequacy/GenericDual.agda` ✅
+- [ ] Use `Infrastructure/Adequacy.agda` for GenericDual modules ✅
 - [ ] Create `Plan/CIM/JSONTransformationGeneric.agda` ✅
 - [ ] Verify compilation and public API
 - [ ] Document extension pattern

@@ -93,4 +93,4 @@ Edit `.env.local` to set environment variables for workflows. Common variables:
 
 - [act Documentation](https://github.com/nektos/act)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Makefile Targets](./../MAKEFILE-TARGETS.md)
+- [Makefile Targets](../docs/automation/MAKEFILE-TARGETS.md)

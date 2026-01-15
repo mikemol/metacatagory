@@ -327,7 +327,7 @@ A: This audit demonstrates Stages 3, 7, 8, 10, 12, 13 of LLM-NAVIGATION-PROTOCOL
 - [ROADMAP.md](ROADMAP.md) - Project roadmap (see "Integration" section)
 - [TESTING.md](TESTING.md) - Testing strategy (will be updated)
 - [LLM-NAVIGATION-PROTOCOL.md](LLM-NAVIGATION-PROTOCOL.md) - Methodology
-- [ARCHITECTURE.md](ARCHITECTURE.md) - System architecture
+- [ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) - System architecture
 - [Makefile](Makefile) - Build system (will be extended)
 
 ---
@@ -335,4 +335,3 @@ A: This audit demonstrates Stages 3, 7, 8, 10, 12, 13 of LLM-NAVIGATION-PROTOCOL
 **Status:** ✅ Complete  
 **Ready for:** Phase 1 Implementation (90 minutes)  
 **Next:** Begin test implementation per PHASE1-ACTION-PLAN.md
-

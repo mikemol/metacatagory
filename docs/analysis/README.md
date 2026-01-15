@@ -56,7 +56,7 @@ Complete terminal-coherence-achieving analysis of the LLM-NAVIGATION-PROTOCOL us
 
 **Methodology Used:** Three-Order Homological Expansion
 
-**Foundation:** CHIP-N+1 Recursive Fibration Cycle (from [.github/copilot-instructions.md](.github/copilot-instructions.md))
+**Foundation:** CHIP-N+1 Recursive Fibration Cycle (from [../../.github/copilot-instructions.md](../../.github/copilot-instructions.md))
 
 **Structure:**
 ```
@@ -195,7 +195,7 @@ Use this checklist to verify any new analysis achieves terminal coherence:
 - [LLM-NAVIGATION-PROTOCOL.md](../../LLM-NAVIGATION-PROTOCOL.md) – Main navigation protocol (1679 lines)
 
 **Foundational Documents:**
-- [.github/copilot-instructions.md](../../.github/copilot-instructions.md) – CHIP-N+1 and quality framework (497 lines)
+- [../../.github/copilot-instructions.md](../../../../.github/copilot-instructions.md) – CHIP-N+1 and quality framework (497 lines)
 - [README.md](../../README.md) – Project axioms (109 lines)
 - [ARCHITECTURE.md](../../docs/architecture/ARCHITECTURE.md) – SPPF-modeled architecture (66 lines)
 

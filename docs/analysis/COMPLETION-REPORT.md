@@ -145,7 +145,7 @@ Protocol defines a state machine for safe navigation:
 ## Deliverables
 
 ### Primary Documentation
-- **[LLM-NAVIGATION-PROTOCOL-THREE-ORDER-EXPANSION.md](docs/analysis/LLM-NAVIGATION-PROTOCOL-THREE-ORDER-EXPANSION.md)** (~1200 lines)
+- **[LLM-NAVIGATION-PROTOCOL-THREE-ORDER-EXPANSION.md](LLM-NAVIGATION-PROTOCOL-THREE-ORDER-EXPANSION.md)** (~1200 lines)
   - Complete three-order expansion analysis
   - All 14 quality mandates verified
   - All 12 flaws eliminated
@@ -153,14 +153,14 @@ Protocol defines a state machine for safe navigation:
   - 3 application domains identified
 
 ### Reference Materials
-- **[docs/analysis/README.md](docs/analysis/README.md)** (Index and navigation guide)
+- **[README.md](README.md)** (Index and navigation guide)
   - How to use the analysis
   - Quick reference to frameworks
   - Verification checklist
   - Cross-references to source documents
 
 ### This Report
-- **[docs/analysis/COMPLETION-REPORT.md](docs/analysis/COMPLETION-REPORT.md)** (This document)
+- **[COMPLETION-REPORT.md](COMPLETION-REPORT.md)** (This document)
   - Executive summary of findings
   - Methodology overview
   - Key discoveries

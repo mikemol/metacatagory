@@ -28,7 +28,7 @@ The roadmap infrastructure has been consolidated into a **canonical index** with
 
 ## Canonical Source
 
-**Location**: [src/agda/Plan/CIM/CanonicalRoadmap.agda](src/agda/Plan/CIM/CanonicalRoadmap.agda)
+**Location**: [../../src/agda/Plan/CIM/CanonicalRoadmap.agda](../../src/agda/Plan/CIM/CanonicalRoadmap.agda)
 
 **Schema**: `RoadmapItem` record (id, title, status, category, source, files, tags, dependsOn, related)
 
@@ -144,7 +144,7 @@ The following files are now **redundant** and can be removed after confirming ca
 
 ### Adding New Items
 
-1. Edit `src/agda/Plan/CIM/CanonicalRoadmap.agda` directly, OR
+1. Edit `../../src/agda/Plan/CIM/CanonicalRoadmap.agda` directly, OR
 2. Edit `tasks.json`, then run `make roadmap-merge` to re-import
 
 ### Updating Projections

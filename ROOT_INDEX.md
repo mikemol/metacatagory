@@ -208,7 +208,7 @@ and `.github/scripts/README.md`).
 
 ### Generic Frameworks
 
-- **[src/agda/Plan/CIM/GenericDualAlgebra.agda](src/agda/Plan/CIM/GenericDualAlgebra.agda)** - Bidirectional transformation framework
+- **[src/agda/Infrastructure/Adequacy.agda](src/agda/Infrastructure/Adequacy.agda)** - Generic duality framework (GenericDualAlgebra/Paths/Adequacy)
 - **[src/agda/Plan/CIM/ABNFParserGeneric.agda](src/agda/Plan/CIM/ABNFParserGeneric.agda)** - ABNF parser adequacy
 - **[src/agda/Plan/CIM/TypeCheckingGeneric.agda](src/agda/Plan/CIM/TypeCheckingGeneric.agda)** - Type checking adequacy
 - **[src/agda/Plan/CIM/ProofTraceGeneric.agda](src/agda/Plan/CIM/ProofTraceGeneric.agda)** - Proof trace adequacy
@@ -256,7 +256,7 @@ Located in [scripts/](scripts/):
 
 ### Decomposed Data Hierarchies
 
-- **[data/planning/](data/planning/)** - Planning index fragments (117 items)
+- **[data/enriched/items/](data/enriched/items/)** - Planning index fragments (117 items)
 - **[data/enriched/](data/enriched/)** - Enriched roadmap fragments (117 items)
 - **[data/deps/](data/deps/)** - Dependency graph fragments (84 modules)
 

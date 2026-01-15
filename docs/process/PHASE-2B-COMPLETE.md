@@ -159,10 +159,10 @@ Used strategic postulates to defer implementation:
 - [JSON-ADEQUACY.md](../process/JSON-ADEQUACY.md) - Adequacy framework approach
 
 **Related Modules:**
-- [JSONTransformation.agda](../CIM/JSONTransformation.agda) - Base types
-- [JSONTransformationAdequacy.agda](../CIM/JSONTransformationAdequacy.agda) - Adequacy framework
-- [JSONTransformationContract.agda](../CIM/JSONTransformationContract.agda) - This contract (updated)
-- [JSONConcrete.agda](../CIM/JSONConcrete.agda) - **NEW**
+- [JSONTransformation.agda](../../src/agda/Plan/CIM/JSONTransformation.agda) - Base types
+- [JSONTransformationAdequacy.agda](../../src/agda/Plan/CIM/JSONTransformationAdequacy.agda) - Adequacy framework
+- [JSONTransformationContract.agda](../../src/agda/Plan/CIM/JSONTransformationContract.agda) - This contract (updated)
+- [JSONConcrete.agda](../../src/agda/Plan/CIM/JSONConcrete.agda) - **NEW**
 
 ---
 
