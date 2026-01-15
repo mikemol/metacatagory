@@ -145,7 +145,7 @@ Current CI is defined in `.github/workflows/ci.yml` and runs a containerized
 multi-job pipeline (Agda exports, docs, roadmap/JSON, Python/debt) plus a final
 report collection job. Reports land under `build/reports/{agda,docs,roadmap,python}`
 and are merged by the `collect-reports` job into a single artifact. See
-`docs/build/BUILD-TOPOLOGY.md` for report inventory.
+`docs/process/BUILD-TOPOLOGY.md` for report inventory.
 
 ### What's Next: Phase 4 Completion
 
