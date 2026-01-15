@@ -15,7 +15,7 @@ from typing import Dict, List, Set, Tuple
 from dataclasses import dataclass, field
 from collections import defaultdict
 
-import shared_data
+from scripts import shared_data
 
 @dataclass
 class AgdaModule:

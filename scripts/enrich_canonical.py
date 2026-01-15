@@ -32,7 +32,7 @@ CANONICAL_JSON = REPO_ROOT / "data" / "planning_index.json"
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
 
 from shared.parallel import get_parallel_settings
-import shared_data
+from scripts import shared_data
 
 # Controlled tag vocabulary
 TAG_VOCAB = {

@@ -37,6 +37,15 @@ def test_load_planning_index_variants(tmp_path, monkeypatch):
         shared_data.load_planning_index()
 
 
+def test_load_planning_index_from_path(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    json_path = tmp_path / "data" / "planning_index.json"
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(json.dumps([{"id": "GP-1"}]), encoding="utf-8")
+
+    items = shared_data.load_planning_index_from(json_path)
+    assert items[0]["id"] == "GP-1"
+
 def test_load_planning_index_filter_legacy(tmp_path, monkeypatch):
     monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
     json_path = tmp_path / "data" / "planning_index.json"

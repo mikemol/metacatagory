@@ -10,6 +10,8 @@ import json
 from pathlib import Path
 from typing import List, Dict
 
+from scripts import shared_data
+
 REPO_ROOT = Path(__file__).parent.parent
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
 CANONICAL_JSON = REPO_ROOT / "data" / "planning_index.json"
@@ -63,8 +65,7 @@ def promote_suggestions() -> None:
     with open(ENRICHED_JSON, "r") as f:
         enriched = json.load(f)
     
-    with open(CANONICAL_JSON, "r") as f:
-        canonical = json.load(f)
+    canonical = shared_data.load_planning_index_from(CANONICAL_JSON)
     
     # Build ID->canonical mapping
     canonical_by_id = {item["id"]: item for item in canonical}

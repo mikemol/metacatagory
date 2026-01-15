@@ -41,6 +41,19 @@ def resolve_planning_path(repo_root: Optional[Path] = None) -> Path:
     return data_path
 
 
+def load_planning_index_from(path: Path) -> List[Dict[str, Any]]:
+    """Load planning index from an explicit path."""
+    items, state = _load_items(path)
+    if state == "missing":
+        raise FileNotFoundError(
+            f"Planning index not found at {path}. "
+            "Run: make data/planning_index.json"
+        )
+    if state == "invalid":
+        raise ValueError(f"Unexpected JSON shape in {path}")
+    return items or []
+
+
 def load_planning_index(
     repo_root: Optional[Path] = None,
     filter_legacy: bool = False,
