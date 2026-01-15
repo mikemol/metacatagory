@@ -1,5 +1,7 @@
 # Semantic Enrichment & Dependency Analysis - Session Summary
 
+Note: Historical snapshot; see `ROADMAP.md` and `docs/status/PROJECT-STATUS.md` for current state.
+
 ## What We Built
 
 A comprehensive pipeline that extracts semantic details from roadmap sources and associates them with tasks using Agda's native dependency tracking.

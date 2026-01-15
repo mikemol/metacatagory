@@ -1,5 +1,7 @@
 # Phase 3: Agentic Roadmap Traversal - COMPLETE ✓
 
+Note: Historical snapshot; see `ROADMAP.md` and `docs/status/PROJECT-STATUS.md` for current state.
+
 ## Overview
 
 Phase 3 focuses on automated processing of roadmap steps through an agentic system that:

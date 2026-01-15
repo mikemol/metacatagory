@@ -1,5 +1,7 @@
 # Phase 4: Cross-Reference Resolution ✓
 
+Note: Historical snapshot; see `ROADMAP.md` and `docs/status/PROJECT-STATUS.md` for current state.
+
 **Status**: COMPLETE\
 **Date**: 2024-12-21
 
