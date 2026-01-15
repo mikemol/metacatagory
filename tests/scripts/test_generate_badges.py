@@ -408,3 +408,33 @@ def test_main_guard_runs_as_script(tmp_path):
     output_dir = repo_root / ".github" / "badges"
     manifest = json.loads((output_dir / "manifest.json").read_text())
     assert "deferred-weighted" in manifest["badges"]
+
+
+def test_scan_repository_for_deferred_reads_tasks(tmp_path):
+    mod = _load_module(SCRIPT_PATH)
+    (tmp_path / "src").mkdir()
+    (tmp_path / "src" / "note.md").write_text("TODO: add more docs", encoding="utf-8")
+
+    tasks_path = tmp_path / ".github" / "roadmap" / "tasks.json"
+    tasks_path.parent.mkdir(parents=True, exist_ok=True)
+    tasks_path.write_text(
+        json.dumps(
+            [
+                {"id": "TASK-1", "status": "planned"},
+                {"id": "TASK-2", "status": "completed"},
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    summary = mod.scan_repository_for_deferred(tmp_path, mod.DEFAULT_WEIGHTS)
+    assert summary["planned"] == 1
+
+
+def test_scan_repository_for_deferred_missing_tasks(tmp_path):
+    mod = _load_module(SCRIPT_PATH)
+    (tmp_path / "src").mkdir()
+    (tmp_path / "src" / "note.md").write_text("TODO: add more docs", encoding="utf-8")
+
+    summary = mod.scan_repository_for_deferred(tmp_path, mod.DEFAULT_WEIGHTS)
+    assert summary["planned"] == 0
