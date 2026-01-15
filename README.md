@@ -100,6 +100,12 @@ Target: `nedge_topology/mitosis.py`
 - **Integrate Earley parsing...** — Enables composable geometric... [status: not-started]
 Target: `nedge_topology/parser.py`
 
+## Intake Sources
+
+Raw intake artifacts live under `intake/`. The canonical source set is
+`intake/GP/`; everything else in `intake/` is archival context and snapshots.
+See `intake/README.md` for guidance.
+
 ## Building
 
 ```text

@@ -55,6 +55,7 @@ See [ROADMAP.md](ROADMAP.md) for the complete development timeline.
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute
 - **[COPILOT_SYNERGY.md](COPILOT_SYNERGY.md)** - LLM integration guidance
 - **[ROADMAP.md](ROADMAP.md)** - Development phases and timelines
+- **[intake/README.md](intake/README.md)** - Canonical intake sources vs. archives
 
 ## Building and Testing
 
