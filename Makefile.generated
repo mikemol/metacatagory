@@ -41,7 +41,7 @@ endif
 PROFILE_LOG ?= $(PROFILE_DIR)/profile-$(PROFILE_RUN).jsonl
 
 # Target mutability groups (exported from Agda typing)
-MUTATIVE_TARGETS := regen-makefile build/graph_parsed_state.txt build/venv/dir.stamp build/venv/requirements-main.stamp build/venv/requirements-dev.stamp build/venv/requirements-inputs.stamp build/venv/venv_created.stamp build/venv/pip_upgraded.stamp build/venv/requirements_installed.stamp build/venv/python_setup.stamp python-test python-verified roadmap-merge build/canonical_enriched.json roadmap-enrich .github/roadmap/tasks.json ROADMAP.md build/reports/tasks_enriched.md roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle build/gp_roadmap_sppf.json roadmap-all-enriched build/reports/docs-lint.json md-fix md-normalize build/agda/Plan/CIM/RoadmapExporterMain build/reports/roadmap_ast.txt build/agda/Plan/CIM/ModuleExporter docs-modules docs-normalize docs-all docs-validate json-decompose json-decompose-prebuilt build/dependency_graph_recomposed.json json-roundtrip-validate json-roundtrip-validate-light json-decompose-enriched build/canonical_enriched_recomposed.json json-roundtrip-validate-enriched json-decompose-planning build/planning_index_recomposed.json json-roundtrip-validate-planning build/dir.stamp build/reports/dir.stamp docs/status/dir.stamp build/canonical_roadmap.json intake-scan node-deps build/agda/TechnicalDebt/DeferredItemsOrchestrationFFI deferred-items-dirs deferred-items act-list act-ci act-lint act-markdown-fix act-makefile-validate act-roadmap-sync act-deferred act-badges act-all badges build/agda/PriorityOrchestrationFFI priority-strategy-profiles .github/badges/weights.json build/priority_profile_inputs.stamp build/agda/Plan/CIM/PriorityProfileExport build/priority_profile.json priority-refresh roadmap-index build/agda/Plan/CIM/PlanningExport data/planning_index.json planning-kernel roadmap-sync roadmap-sppf build/diagrams/dir.stamp build/diagrams/agda-deps-full.dot roadmap-deps-graph build/agda/Plan/CIM/DependencyGraphExport data/dependency_graph.json regen-agda regen-exports regen-roadmap regen-docs regen-badges regen-intake regen-all all debt-check check-infra check-docs check-roadmap check-python check-json check-debt check-all check validate-constructive ci-light ci-preflight docker-rootless-status docker-build docker-build-ghcr docker-push-ghcr docker-all
+MUTATIVE_TARGETS := regen-makefile build/graph_parsed_state.txt build/venv/dir.stamp build/venv/requirements-main.stamp build/venv/requirements-dev.stamp build/venv/requirements-inputs.stamp build/venv/venv_created.stamp build/venv/pip_upgraded.stamp build/venv/requirements_installed.stamp build/venv/python_setup.stamp python-test python-verified roadmap-merge build/canonical_enriched.json roadmap-enrich .github/roadmap/tasks.json ROADMAP.md build/reports/tasks_enriched.md roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle build/gp_roadmap_sppf.json roadmap-all-enriched build/reports/docs-lint.json md-fix md-normalize build/agda/Plan/CIM/RoadmapExporterMain build/reports/roadmap_ast.txt build/agda/Plan/CIM/ModuleExporter docs-modules docs-normalize docs-all docs-validate json-decompose json-decompose-prebuilt build/dependency_graph_recomposed.json json-roundtrip-validate json-roundtrip-validate-light json-decompose-enriched build/canonical_enriched_recomposed.json json-roundtrip-validate-enriched json-decompose-planning build/planning_index_recomposed.json json-roundtrip-validate-planning build/dir.stamp build/reports/dir.stamp docs/status/dir.stamp build/canonical_roadmap.json intake-scan node-deps build/agda/TechnicalDebt/DeferredItemsOrchestrationFFI deferred-items-dirs deferred-items act-list act-ci act-lint act-makefile-validate act-roadmap-sync act-deferred act-all badges build/agda/PriorityOrchestrationFFI priority-strategy-profiles .github/badges/weights.json build/priority_profile_inputs.stamp build/agda/Plan/CIM/PriorityProfileExport build/priority_profile.json priority-refresh roadmap-index build/agda/Plan/CIM/PlanningExport data/planning_index.json planning-kernel roadmap-sync roadmap-sppf build/diagrams/dir.stamp build/diagrams/agda-deps-full.dot roadmap-deps-graph build/agda/Plan/CIM/DependencyGraphExport data/dependency_graph.json regen-agda regen-exports regen-roadmap regen-docs regen-badges regen-intake regen-all all debt-check check-infra check-docs check-roadmap check-python check-json check-debt check-all check validate-constructive ci-light ci-preflight docker-rootless-status docker-build docker-build-ghcr docker-push-ghcr docker-all
 READONLY_TARGETS := graph-status graph-assert-ok md-lint docs-lint intake-lint makefile-validate
 
 # Allow callers (e.g., ACT) to redirect execution to an alternate workspace.
@@ -83,7 +83,7 @@ DEPS_DIR ?= $(if $(JSON_DECOMPOSE_FALLBACK_DIR),$(JSON_DECOMPOSE_FALLBACK_DIR),d
 DEPS_METADATA ?= $(DEPS_DIR)_metadata.json
 PLANNING_DIR ?= $(if $(JSON_DECOMPOSE_FALLBACK_DIR),$(JSON_DECOMPOSE_FALLBACK_DIR)/planning,$(DEPS_DIR)/planning/)
 PLANNING_METADATA ?= $(PLANNING_DIR)_metadata.json
-.PHONY: regen-makefile graph-status graph-assert-ok python-test python-verified roadmap-merge roadmap-enrich roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-all-enriched md-lint docs-lint md-fix md-normalize docs-modules docs-normalize docs-all docs-validate json-decompose json-decompose-prebuilt json-roundtrip-validate json-roundtrip-validate-light json-decompose-enriched json-roundtrip-validate-enriched json-decompose-planning json-roundtrip-validate-planning intake-lint intake-scan makefile-validate node-deps deferred-items-dirs deferred-items act-list act-ci act-lint act-markdown-fix act-makefile-validate act-roadmap-sync act-deferred act-badges act-all badges priority-strategy-profiles priority-refresh roadmap-index planning-kernel roadmap-sync roadmap-sppf roadmap-deps-graph regen-agda regen-exports regen-roadmap regen-docs regen-badges regen-intake regen-all all debt-check check-infra check-docs check-roadmap check-python check-json check-debt check-all check validate-constructive ci-light ci-preflight docker-rootless-status docker-build docker-build-ghcr docker-push-ghcr docker-all agda-all
+.PHONY: regen-makefile graph-status graph-assert-ok python-test python-verified roadmap-merge roadmap-enrich roadmap-export-deps roadmap-validate-json roadmap-validate-md roadmap-validate-triangle roadmap-all-enriched md-lint docs-lint md-fix md-normalize docs-modules docs-normalize docs-all docs-validate json-decompose json-decompose-prebuilt json-roundtrip-validate json-roundtrip-validate-light json-decompose-enriched json-roundtrip-validate-enriched json-decompose-planning json-roundtrip-validate-planning intake-lint intake-scan makefile-validate node-deps deferred-items-dirs deferred-items act-list act-ci act-lint act-makefile-validate act-roadmap-sync act-deferred act-all badges priority-strategy-profiles priority-refresh roadmap-index planning-kernel roadmap-sync roadmap-sppf roadmap-deps-graph regen-agda regen-exports regen-roadmap regen-docs regen-badges regen-intake regen-all all debt-check check-infra check-docs check-roadmap check-python check-json check-debt check-all check validate-constructive ci-light ci-preflight docker-rootless-status docker-build docker-build-ghcr docker-push-ghcr docker-all agda-all
 # Regenerate the Makefile from Agda source (Self-Hosting)
 regen-makefile: 
 	$(call require_mutate)
@@ -325,30 +325,22 @@ act-list:
 act-ci: 
 	$(call require_mutate)
 	scripts/run_profiled.sh 'act-ci' 'build/recipes/act-ci.sh'
-# Run markdown linting workflow locally via act
+# Run docs checks job locally via act
 act-lint: 
 	$(call require_mutate)
 	scripts/run_profiled.sh 'act-lint' 'build/recipes/act-lint.sh'
-# Run markdown auto-fix workflow locally via act
-act-markdown-fix: 
-	$(call require_mutate)
-	scripts/run_profiled.sh 'act-markdown-fix' 'build/recipes/act-markdown-fix.sh'
-# Run makefile validation workflow locally via act
+# Run Agda exports job locally via act
 act-makefile-validate: 
 	$(call require_mutate)
 	scripts/run_profiled.sh 'act-makefile-validate' 'build/recipes/act-makefile-validate.sh'
-# Run roadmap sync workflow locally via act
+# Run roadmap/JSON job locally via act
 act-roadmap-sync: 
 	$(call require_mutate)
 	scripts/run_profiled.sh 'act-roadmap-sync' 'build/recipes/act-roadmap-sync.sh'
-# Run deferred items workflow locally via act
+# Run Python/debt job locally via act
 act-deferred: 
 	$(call require_mutate)
 	scripts/run_profiled.sh 'act-deferred' 'build/recipes/act-deferred.sh'
-# Run badge update workflow locally via act
-act-badges: 
-	$(call require_mutate)
-	scripts/run_profiled.sh 'act-badges' 'build/recipes/act-badges.sh'
 # Run all workflows locally via act
 act-all: 
 	$(call require_mutate)

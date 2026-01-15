@@ -82,12 +82,10 @@ Mutability indicates whether a target is allowed to write artifacts or update th
 | `deferred-items` | Scan for TODOs and FIXMEs (Agda FFI binary) | mutative |
 | `act-list` | List available GitHub Actions jobs (act) | mutative |
 | `act-ci` | Run CI workflow locally via act | mutative |
-| `act-lint` | Run markdown linting workflow locally via act | mutative |
-| `act-markdown-fix` | Run markdown auto-fix workflow locally via act | mutative |
-| `act-makefile-validate` | Run makefile validation workflow locally via act | mutative |
-| `act-roadmap-sync` | Run roadmap sync workflow locally via act | mutative |
-| `act-deferred` | Run deferred items workflow locally via act | mutative |
-| `act-badges` | Run badge update workflow locally via act | mutative |
+| `act-lint` | Run docs checks job locally via act | mutative |
+| `act-makefile-validate` | Run Agda exports job locally via act | mutative |
+| `act-roadmap-sync` | Run roadmap/JSON job locally via act | mutative |
+| `act-deferred` | Run Python/debt job locally via act | mutative |
 | `act-all` | Run all workflows locally via act | mutative |
 | `badges` | Generate status badges | mutative |
 | `build/agda/PriorityOrchestrationFFI` | Compile Agda priority orchestration (MAlonzo + binary) | mutative |
