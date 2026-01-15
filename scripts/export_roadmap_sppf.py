@@ -6,15 +6,13 @@ Reads from data/planning_index.json (planning source)
 import json
 from pathlib import Path
 
+from scripts import shared_data
+
 def main():
     # Read from planning index, not tasks.json
-    build_path = Path("build/planning_index.json")
-    data_path = Path("data/planning_index.json")
-    in_path = build_path if build_path.exists() else data_path
+    repo_root = Path.cwd()
+    items = shared_data.load_planning_index(repo_root=repo_root)
     out_path = Path("build/gp_roadmap_sppf.json")
-
-    with in_path.open('r') as f:
-        items = json.load(f)
 
     nodes = []
     for it in items:
