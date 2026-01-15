@@ -92,6 +92,13 @@ def process_gp_directory(intake_dir: str) -> Tuple[List[str], Dict]:
             # Generate roadmap step with intelligent routing
             record = generate_roadmap_step(gp_id, metadata, idx, full_content)
             roadmap_records.append(record)
+
+            target_module = infer_target_module(
+                content=full_content,
+                title=metadata['title'],
+                keywords=metadata.get('keywords', [])
+            )
+            metadata_map[gp_id]["target_module"] = target_module
             
             print(f"  ✓ {gp_id}: {metadata['title'][:50]}")
         except Exception as e:
