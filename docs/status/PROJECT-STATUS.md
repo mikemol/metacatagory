@@ -1,5 +1,8 @@
 # Project Status: Phase 2 & 3 Complete ✓, Phase 4 In Progress
 
+Note: Snapshot summary. For current status and blockers, see `ROADMAP.md` and
+`docs/status/DEFERRED-TRACKING.md`.
+
 ## Summary of Work Completed
 
 ### Phase 2: Intake Ingestion ✓ COMPLETE
