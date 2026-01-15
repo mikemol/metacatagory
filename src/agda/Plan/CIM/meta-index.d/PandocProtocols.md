@@ -7,6 +7,7 @@
 ## Key elements
 
 - Protocol definitions and adapters for document processing workflows.
+- Block/document protocols use Pandoc transforms to build braid steps/traces.
 
 ## Dependencies
 
