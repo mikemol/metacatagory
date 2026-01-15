@@ -8,7 +8,7 @@ from scripts import shared_data
 
 
 ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_PATH = ROOT / ".github" / "roadmap" / "tasks.json"
+OUTPUT_PATH = shared_data.resolve_tasks_path(repo_root=ROOT)
 
 
 def export_tasks_json(source_path: Path, output_path: Path):
