@@ -8,11 +8,12 @@ Welcome! This guide will help you get started as a contributor to the MetaCatego
 
 - Review the documentation in README.md, ROADMAP.md, and the relevant subdirectory manuals (see src/agda/*/README.md).
 
-- Install dependencies:
+- Install dependencies (recommended):
 
 ```text
-make build/venv/python_setup.stamp
-make node-deps
+mise install
+mise run dev-setup
+MUTATE_OK=1 make regen-makefile
 ```
 
 ## Coding Standards
@@ -31,7 +32,7 @@ make node-deps
 
 - Use the checklist/test philosophy described in src/agda/Tests/README.md.
 
-- Run make python-verified to verify your additions.
+- Run `MUTATE_OK=1 make check` or `MUTATE_OK=1 make check-python` to verify your additions.
 
 - Document the purpose and expected outcome of each test in its file header.
 
