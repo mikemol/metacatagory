@@ -1,5 +1,8 @@
 # Verification Summary: Generic Duality Framework
 
+Note: This report is a dated snapshot (2026-01-04). It is not auto-updated.
+For current verification steps and CI parity, see `TESTING.md`.
+
 ## Status: ✅ ALL TESTS PASS
 
 Generated on: January 4, 2026
