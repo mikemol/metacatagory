@@ -254,9 +254,9 @@ deferredTrackingDoc = record
              p (text "Effort: 50-100 lines semantic impls; Ref: ROADMAP.md Phase 2.3" ∷ []) ∷ []) ∷
             (plain (text "[ ] CHIPConformance.agda stubs (makeSPPFNode, composeBraids refinement)" ∷ []) ∷
              p (text "Effort: 50-80 lines; Ref: ROADMAP.md Phase 2.3" ∷ []) ∷ []) ∷
-            (plain (text "[ ] Core.disabled/ modules (23 modules)" ∷ []) ∷
+            (plain (text "[ ] Core deferred modules (no Core.disabled/ directory; see deferred summary)" ∷ []) ∷
              p (text "Phase theory, categorical foundations, adjunction/limits; Effort: 1-2 weeks; Ref: ROADMAP.md Phase 3.2" ∷ []) ∷ []) ∷
-            (plain (text "[ ] Algebra.disabled/ subset (for Core deps)" ∷ []) ∷
+            (plain (text "[ ] Algebra deferred subset (for Core deps; see deferred summary)" ∷ []) ∷
              p (text "Groups/rings/modules/fields; Effort: 3-5 days; Ref: ROADMAP.md Phase 3.2" ∷ []) ∷ []) ∷
             []
          ) ∷
@@ -264,7 +264,7 @@ deferredTrackingDoc = record
          h 3 (text "Medium-Priority Deferred Items" ∷ []) ∷
          p (text "Improves functionality but not blocking major milestones." ∷ []) ∷
          ul (
-            (plain (text "[ ] Examples.disabled/ modules (13 modules)" ∷ []) ∷
+            (plain (text "[ ] Examples deferred modules (see deferred summary)" ∷ []) ∷
              p (text "TechnicalDebtRegistry and demonstration examples; Effort: 1-3 days/module; Ref: ROADMAP.md Phase 3.1" ∷ []) ∷ []) ∷
             (plain (text "[ ] Plan.CIM integration tests" ∷ []) ∷
              p (text "E2E transformation pipeline, grammar conformance, proof export; Effort: 100-150 lines; Ref: ROADMAP.md Phase 2.2" ∷ []) ∷ []) ∷
@@ -287,7 +287,7 @@ deferredTrackingDoc = record
 
          h 2 (text "Deferred Item Sources" ∷ []) ∷
          h 3 (text "By Module Category" ∷ []) ∷
-         codeBlock "Core.disabled/          : ~80 postulates, ~30 TODOs\nAlgebra.disabled/       : ~45 postulates, ~20 TODOs\nExamples.disabled/      : ~25 postulates, ~15 TODOs\nPlan.CIM/               : ~15 TODOs (stubs)\nScripts/                : ~40 TODOs (improvements)\nDocumentation/          : ~50 TODOs (missing sections)\nOther                   : ~106 postulates, ~35 TODOs" ∷
+         codeBlock "Core (deferred)         : ~80 postulates, ~30 TODOs\nAlgebra (deferred)      : ~45 postulates, ~20 TODOs\nExamples (deferred)     : ~25 postulates, ~15 TODOs\nPlan.CIM/               : ~15 TODOs (stubs)\nScripts/                : ~40 TODOs (improvements)\nDocumentation/          : ~50 TODOs (missing sections)\nOther                   : ~106 postulates, ~35 TODOs" ∷
 
          h 3 (text "By Type" ∷ []) ∷
          codeBlock "Postulates (351):\n  - Unproven theorems awaiting formal proofs\n  - Placeholder functions for disabled modules\n  - Abstract interface requirements\n\nTODOs (155):\n  - Code improvements and refactoring\n  - Missing implementations\n  - Documentation gaps\n\nOther markers (61):\n  - FIXME: Known bugs or issues\n  - HACK: Temporary workarounds\n  - NOTE: Important context or warnings" ∷

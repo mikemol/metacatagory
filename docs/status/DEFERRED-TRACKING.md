@@ -32,11 +32,11 @@ Effort: 50-100 lines semantic impls; Ref: ROADMAP.md Phase 2.3
 
 Effort: 50-80 lines; Ref: ROADMAP.md Phase 2.3
 
-- [ ] Core.disabled/ modules (23 modules)
+- [ ] Core deferred modules (no Core.disabled/ directory; see deferred summary)
 
 Phase theory, categorical foundations, adjunction/limits; Effort: 1-2 weeks; Ref: ROADMAP.md Phase 3.2
 
-- [ ] Algebra.disabled/ subset (for Core deps)
+- [ ] Algebra deferred subset (for Core deps; see deferred summary)
 
 Groups/rings/modules/fields; Effort: 3-5 days; Ref: ROADMAP.md Phase 3.2
 
@@ -49,7 +49,7 @@ Improves functionality but not blocking major milestones.
   - Outcome: update record literals to match current `AM.*OfModuleHomomorphism` fields
   - Trigger: `make agda-all` warnings (2026-01-13)
 
-- [ ] Examples.disabled/ modules (13 modules)
+- [ ] Examples deferred modules (see deferred summary)
 
 TechnicalDebtRegistry and demonstration examples; Effort: 1-3 days/module; Ref: ROADMAP.md Phase 3.1
 
@@ -82,9 +82,9 @@ Ambiguity detection, transformation metrics, coherence validation; Research 1-2 
 ### By Module Category
 
 ```text
-Core.disabled/          : ~80 postulates, ~30 TODOs
-Algebra.disabled/       : ~45 postulates, ~20 TODOs
-Examples.disabled/      : ~25 postulates, ~15 TODOs
+Core (deferred)         : ~80 postulates, ~30 TODOs
+Algebra (deferred)      : ~45 postulates, ~20 TODOs
+Examples (deferred)     : ~25 postulates, ~15 TODOs
 Plan.CIM/               : ~15 TODOs (stubs)
 Scripts/                : ~40 TODOs (improvements)
 Documentation/          : ~50 TODOs (missing sections)
