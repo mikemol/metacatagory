@@ -8,8 +8,9 @@ The goal is consistency: every mutation should have a clear, traceable reason.
 
 - The mutability gates are working as intended: they fail when a target (or any
   of its dependencies) writes artifacts.
-- The current act workflow failures are explained by missing `MUTATE_OK=1` in
-  workflow steps that call make targets which write to `build/` or `docs/`.
+- The act failures that exposed mutative behavior are resolved by explicitly
+  granting mutation (`MUTATE_OK=1`) in CI steps that write reports or derived
+  artifacts.
 - The core issue is not incorrect behavior, but implicit assumptions. These
   need to be made explicit by either (a) setting `MUTATE_OK=1` in steps that
   are expected to emit artifacts, or (b) splitting out read-only variants that
@@ -38,15 +39,16 @@ or derived artifacts:
 
 ## Immediate Inconsistencies Observed During act Runs
 
-1) CI steps call mutative targets without `MUTATE_OK=1`.
+1) Historical: CI steps called mutative targets without `MUTATE_OK=1`.
    - Example: `check-docs` and `check-json` write reports and recomposed JSON
      artifacts under `build/`.
 
-These are *expected* mutations; the issue is the missing explicit grant.
+These are *expected* mutations; the issue has been addressed by adding explicit
+grants in `ci.yml`.
 
 ## Recommendations (Pick One Policy)
 
-### Policy A — Explicit mutation grants in workflows
+### Policy A — Explicit mutation grants in workflows (Implemented)
 
 Add `MUTATE_OK=1` to workflow steps that are expected to write artifacts. This
 keeps mutation explicit and preserves the safety gate.

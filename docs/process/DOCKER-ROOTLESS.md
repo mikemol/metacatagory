@@ -85,6 +85,8 @@ Notes:
 - If `act` reports `permission denied` to the socket, the rootless daemon needs
   to be started with a group mapping that includes your primary gid.
 - Always use `MUTATE_OK=1` for `act-*` targets.
+- Local `act` runs remap GitHub actions (checkout/upload/download) to a no-op
+  action via `scripts/run_act.sh` to avoid network dependencies.
 
 ## Notes
 
