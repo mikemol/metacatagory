@@ -18,12 +18,19 @@ import json
 import textwrap
 
 try:
-    from ..shared_yaml import dump_yaml as shared_dump_yaml
+    from ..shared_yaml import (
+        dump_yaml as shared_dump_yaml,
+        safe_load as shared_safe_load,
+    )
 except ImportError:
     try:
-        from scripts.shared_yaml import dump_yaml as shared_dump_yaml  # type: ignore
+        from scripts.shared_yaml import (  # type: ignore
+            dump_yaml as shared_dump_yaml,
+            safe_load as shared_safe_load,
+        )
     except ImportError:
         shared_dump_yaml = None
+        shared_safe_load = None
 try:
     import yaml  # type: ignore
 except ImportError:
@@ -215,7 +222,9 @@ class MarkdownParser:
             # Dedent to handle indented test strings
             raw = textwrap.dedent(raw)
             try:
-                if yaml is not None:
+                if shared_safe_load is not None:
+                    data = shared_safe_load(raw) or {}
+                elif yaml is not None:
                     data = yaml.safe_load(raw) or {}
                 else:
                     data = {}  # Fallback: no parsing without yaml module
