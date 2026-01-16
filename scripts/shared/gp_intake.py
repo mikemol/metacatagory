@@ -96,6 +96,66 @@ def extract_metadata_from_text(content: str, fallback_title: str) -> Dict:
     }
 
 
+def extract_question(content: str) -> str:
+    """Extract the actionable 'Would you like...' question."""
+    lines = content.split('\n')
+    for line in lines[:5]:
+        if line.strip().startswith('Would you like'):
+            question = line.strip()
+            question = re.sub(r'\*\*(.+?)\*\*', r'\1', question)
+            return question[:500]
+    return "See full GP file for details"
+
+
+def extract_formal_section(content: str) -> str:
+    """Extract the formal correction/analysis section."""
+    pattern = r'### \*?\*?I\. Formal (?:Correction|Analysis).*?\n\n(.+?)(?=\n###|\Z)'
+    match = re.search(pattern, content, re.MULTILINE | re.DOTALL)
+    if match:
+        section = match.group(1).strip()
+        if len(section) > 1000:
+            section = section[:1000] + "..."
+        return section
+    return "See full GP file"
+
+
+def extract_related_gps(content: str) -> List[str]:
+    """Find references to other GP files."""
+    related = set()
+    gp_refs = re.findall(r'GP(\d+)', content)
+    related.update(f"GP{num}" for num in gp_refs)
+    return sorted(list(related))
+
+
+def extract_manifest_version(content: str) -> Optional[str]:
+    """Check if this GP introduces a new manifest version."""
+    match = re.search(r'Manifest \(v([\d.]+)\)', content)
+    return f"v{match.group(1)}" if match else None
+
+
+def extract_target_modules(content: str) -> List[str]:
+    """Find mentions of target implementation modules."""
+    modules = set()
+    agda_refs = re.findall(r'(\w+\.agda)', content)
+    py_refs = re.findall(r'(\w+\.py)', content)
+    modules.update(agda_refs)
+    modules.update(py_refs)
+    return sorted(list(modules))
+
+
+def categorize_gp(gp_num: int) -> str:
+    """Determine category based on GP number."""
+    if gp_num <= 111:
+        return "Foundation"
+    if 200 <= gp_num < 400:
+        return "Geometry"
+    if 400 <= gp_num < 600:
+        return "Corrections"
+    if 699 <= gp_num < 800:
+        return "Polytopes"
+    return "Analysis"
+
+
 def extract_metadata_from_md(filepath: Path | str) -> Dict:
     """Extract metadata from a markdown file."""
     path = Path(filepath)

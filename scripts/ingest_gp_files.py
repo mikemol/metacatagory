@@ -18,6 +18,13 @@ from scripts.shared.gp_intake import (
     infer_target_module as infer_target_module_shared,
     load_concept_config,
     strip_base64_images,
+    extract_question,
+    extract_formal_section,
+    extract_related_gps,
+    extract_manifest_version,
+    extract_target_modules,
+    categorize_gp,
+    extract_concepts,
 )
 from scripts.shared.gp_roadmap_render import (
     build_implication,
@@ -78,6 +85,7 @@ def process_gp_directory(intake_dir: str) -> Tuple[List[str], Dict]:
     metadata_map = {}
     
     gp_files = sorted([f for f in os.listdir(gp_dir) if f.endswith('.md')])
+    concept_config = load_concept_config(ROOT / "scripts" / "extract-concepts-config.json")
     print(f"Found {len(gp_files)} GP files")
     
     for idx, gp_file in enumerate(gp_files):
@@ -90,7 +98,17 @@ def process_gp_directory(intake_dir: str) -> Tuple[List[str], Dict]:
                 full_content = f.read()
             
             metadata = extract_metadata_from_md(filepath)
-            metadata_map[gp_id] = metadata
+            gp_num = int(re.search(r'\d+', gp_id).group())
+            metadata_map[gp_id] = {
+                **metadata,
+                "category": categorize_gp(gp_num),
+                "question": extract_question(full_content),
+                "formal_correction": extract_formal_section(full_content),
+                "related_gps": extract_related_gps(full_content),
+                "manifest_version": extract_manifest_version(full_content),
+                "target_modules": extract_target_modules(full_content),
+                "key_concepts": extract_concepts(full_content, concept_config),
+            }
             
             # Generate roadmap step with intelligent routing
             record = generate_roadmap_step(gp_id, metadata, idx, full_content)
