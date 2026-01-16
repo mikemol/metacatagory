@@ -32,6 +32,7 @@ from scripts.audax_doc import (
     Table,
     render_doc,
 )
+from scripts.shared.io import load_markdown
 
 GENERATED_DOC = ROOT / "docs" / "automation" / "makefile_targets_generated.md"
 CHECKED_IN_DOC = ROOT / "docs" / "automation" / "MAKEFILE-TARGETS.md"
@@ -83,8 +84,8 @@ def main() -> int:
         print(f"✗ Checked-in docs not found at {CHECKED_IN_DOC}")
         return 1
         
-    gen_data = parse_markdown_table(GENERATED_DOC.read_text())
-    checked_data = parse_markdown_table(CHECKED_IN_DOC.read_text())
+    gen_data = parse_markdown_table(load_markdown(GENERATED_DOC))
+    checked_data = parse_markdown_table(load_markdown(CHECKED_IN_DOC))
     
     gen_set = set(gen_data.keys())
     checked_set = set(checked_data.keys())
