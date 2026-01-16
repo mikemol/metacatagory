@@ -66,7 +66,7 @@ jobs:
       - name: Generate Agda exports
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: |
-          MUTATE_OK=1 make \
+          MUTATE_LEVEL=repo make \
             build/diagrams/agda-deps-full.dot \
             data/planning_index.json \
             data/dependency_graph.json \
@@ -75,7 +75,7 @@ jobs:
 
       - name: Run makefile coverage verification
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: python3 -m scripts.makefile_coverage --run-targets
+        run: MUTATE_LEVEL=repo python3 -m scripts.makefile_coverage --run-targets
 
       - name: Upload Agda exports
         if: ${{ env.ACT != 'true' }}
@@ -169,7 +169,7 @@ jobs:
 
       - name: Run docs checks
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: MUTATE_OK=1 make check-docs
+        run: MUTATE_LEVEL=report make check-docs
 
       - name: Upload build reports (docs)
         if: ${{ env.ACT != 'true' }}
@@ -248,15 +248,15 @@ jobs:
       - name: Run roadmap checks
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: |
-          MUTATE_OK=1 make regen-makefile
-          MUTATE_OK=1 make check-roadmap
+          MUTATE_LEVEL=repo make regen-makefile
+          MUTATE_LEVEL=repo make check-roadmap
 
       - name: Run JSON checks
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: |
           echo "Roundtrip validate planning (explicit paths)" && \
           python3 -m scripts.validate_json_roundtrip data/planning_index.json build/planning_index_recomposed.json
-          MUTATE_OK=1 make check-json
+          MUTATE_LEVEL=repo make check-json
 
       - name: Upload build reports (roadmap)
         if: ${{ env.ACT != 'true' }}
@@ -333,11 +333,11 @@ jobs:
 
       - name: Run Python tests
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: MUTATE_OK=1 make check-python
+        run: MUTATE_LEVEL=repo make check-python
 
       - name: Run debt checks
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: MUTATE_OK=1 make check-debt
+        run: MUTATE_LEVEL=repo make check-debt
 
       - name: Upload build reports (python)
         if: ${{ env.ACT != 'true' }}
