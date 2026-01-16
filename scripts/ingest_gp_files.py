@@ -5,7 +5,6 @@ Ingest GP files from intake directory and generate RoadmapStep records.
 
 import os
 import re
-import json
 import sys
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -27,6 +26,7 @@ from scripts.shared.gp_roadmap_render import (
     render_roadmap_step,
     sanitize_string,
 )
+from scripts.shared.io import save_json
 
 def infer_target_module(content: str, title: str, keywords: List[str]) -> str:
     """Intelligently route GP content to appropriate Agda module.
@@ -157,13 +157,10 @@ def main():
     
     # Save metadata for reference
     metadata_path = str(ROOT / 'build/ingested_metadata.json')
-    os.makedirs(os.path.dirname(metadata_path), exist_ok=True)
-    
-    with open(metadata_path, 'w') as f:
-        json.dump({
-            'total_files': len(metadata),
-            'files': metadata
-        }, f, indent=2)
+    save_json(metadata_path, {
+        'total_files': len(metadata),
+        'files': metadata
+    })
     
     print(f"✓ Saved metadata to: {metadata_path}")
     print("\n" + "=" * 70)

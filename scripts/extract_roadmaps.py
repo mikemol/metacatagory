@@ -7,7 +7,6 @@ Preserves mathematical coherence and dependency relationships.
 """
 
 import re
-import json
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass, asdict
@@ -25,6 +24,7 @@ from scripts.shared.gp_roadmap_render import (
     render_roadmap_step,
     sanitize_string,
 )
+from scripts.shared.io import save_json
 
 CONCEPT_CONFIG = load_concept_config(Path(__file__).parent / "extract-concepts-config.json")
 
@@ -263,8 +263,7 @@ open import Plan.CIM.IngestedRoadmaps.Analysis public
     }
     
     summary_file = Path("build/roadmap_extraction_summary.json")
-    summary_file.parent.mkdir(parents=True, exist_ok=True)
-    summary_file.write_text(json.dumps(summary, indent=2), encoding='utf-8')
+    save_json(summary_file, summary)
     print(f"✓ Generated {summary_file}")
 
 if __name__ == "__main__":
