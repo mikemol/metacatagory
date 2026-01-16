@@ -483,7 +483,8 @@ replaceMakeVars s =
       s9 = replaceAll "$(PLANNING_METADATA)" "$PLANNING_METADATA" s8
       s10 = replaceAll "$(JSON_DECOMPOSE_FALLBACK_DIR)" "$JSON_DECOMPOSE_FALLBACK_DIR" s9
       s11 = replaceAll "$(PYTEST_WORKERS)" "$PYTEST_WORKERS" s10
-  in s11
+      s12 = replaceAll "$(MAKE)" "$MAKE" s11
+  in s12
 
 collapseDollars : String → String
 collapseDollars s = primStringFromList (collapse (primStringToList s))
@@ -535,6 +536,7 @@ renderRecipeScript cmds =
         ∷ "if [ -n \"${VIRTUAL_ENV:-}\" ] && [ ! -d \"$VIRTUAL_ENV\" ]; then VIRTUAL_ENV=\"$BUILD_VENV_DIR\"; fi"
         ∷ "export VIRTUAL_ENV=\"${VIRTUAL_ENV:-$BUILD_VENV_DIR}\""
         ∷ "export PATH=\"$VIRTUAL_ENV/bin:$PATH\""
+        ∷ "export MAKE=\"${MAKE:-make}\""
         ∷ [])
   in "#!/usr/bin/env bash\nset -euo pipefail\n" ++ renderLines preamble ++ "\n" ++ renderLines body ++ "\n"
   where

@@ -50,7 +50,7 @@ compositeTargets =
     ("@echo \"check-all complete\"" ∷ [])
   ∷ mkReadOnlyTarget "check" "Run all validation checks (alias)"
     []
-    ("MUTATE_LEVEL=repo make check-all" ∷ "@echo \"check complete\"" ∷ [])
+    ("MUTATE_LEVEL=repo $MAKE check-all" ∷ "@echo \"check complete\"" ∷ [])
     true
   ∷ generatorToTarget mutateCert "validate-constructive" "Regenerate and validate all artifacts" ("regen-all" ∷ "check-all" ∷ [])
     ("@echo \"✓ Constructive validation complete\"" ∷ [])
