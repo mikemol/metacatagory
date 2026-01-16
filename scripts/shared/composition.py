@@ -11,7 +11,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Generic, Optional, Set, Tuple, TypeVar, Callable
 from concurrent.futures import ThreadPoolExecutor
-import json
 import re
 
 from .pipelines import Phase, PhaseResult, PhaseStatus, PipelineContext
@@ -19,6 +18,7 @@ from .logging import StructuredLogger
 from .errors import ValidationError
 from .recovery_pipeline import RecoveryPipeline, RecoveryStrategy
 from .parallel import get_parallel_settings
+from .io import load_json
 from scripts import shared_data
 
 A = TypeVar('A')
@@ -43,8 +43,7 @@ class ReadJSONPhase(Phase[Path, Any]):
         super().__init__(name)
 
     def transform(self, input_data: Path, context: Dict[str, Any]) -> Any:
-        data = json.loads(Path(input_data).read_text(encoding='utf-8'))
-        return data
+        return load_json(input_data)
 
 
 class ReadMarkdownRoadmapTitlesPhase(Phase[Path, Set[str]]):
