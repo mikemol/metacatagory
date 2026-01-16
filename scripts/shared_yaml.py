@@ -104,6 +104,11 @@ def safe_load(text: str) -> Any:
     return yaml.safe_load(text)
 
 
+def has_yaml() -> bool:
+    """Return True if PyYAML is available."""
+    return yaml is not None
+
+
 def safe_load_file(path: Path) -> Any:
     """Parse YAML from a file path."""
     return safe_load(path.read_text(encoding="utf-8"))
