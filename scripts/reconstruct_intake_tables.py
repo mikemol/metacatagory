@@ -8,6 +8,8 @@ import re
 import sys
 from pathlib import Path
 
+from scripts.shared.io import load_markdown, save_markdown
+
 def reconstruct_table_section(lines, start_idx):
     """
     Reconstruct a table from collapsed format.
@@ -75,12 +77,12 @@ def reconstruct_component_table(lines):
     """Reconstruct component/operation tables."""
     return lines
 
-def process_file(filepath):
+def process_file(filepath: Path) -> None:
     """Process a single markdown file to fix table corruption."""
     print(f"Processing {filepath}")
     
-    with open(filepath, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
+    content = load_markdown(filepath)
+    lines = content.splitlines(keepends=True)
     
     new_lines = []
     i = 0
@@ -98,16 +100,20 @@ def process_file(filepath):
             i += 1
     
     # Write back
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.writelines(new_lines)
+    save_markdown(filepath, "".join(new_lines))
     
     print(f"  ✓ Processed {filepath}")
 
-def main():
+def list_intake_files(intake_dir: Path) -> list[Path]:
+    """List numbered intake files."""
+    return sorted(intake_dir.glob("__[0-9]*.md"))
+
+
+def main() -> None:
     intake_dir = Path("intake")
     
     # Process all numbered intake files
-    files = sorted(intake_dir.glob("__([0-9]*.md"))
+    files = list_intake_files(intake_dir)
     
     for filepath in files:
         process_file(filepath)
