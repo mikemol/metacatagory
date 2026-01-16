@@ -5,6 +5,7 @@ Provides composable YAML dumping and normalization for consistent
 serialization across all scripts.
 """
 
+from pathlib import Path
 from typing import Any, Dict, Tuple
 
 try:
@@ -94,3 +95,15 @@ def normalize_dependencies(fm_deps: Any, json_deps: Any) -> Tuple[set, set]:
     fm_set = set(fm_deps or [])
     json_set = set(json_deps or [])
     return fm_set, json_set
+
+
+def safe_load(text: str) -> Any:
+    """Parse YAML content with PyYAML or raise if unavailable."""
+    if yaml is None:
+        raise RuntimeError("PyYAML is required to parse YAML content.")
+    return yaml.safe_load(text)
+
+
+def safe_load_file(path: Path) -> Any:
+    """Parse YAML from a file path."""
+    return safe_load(path.read_text(encoding="utf-8"))
