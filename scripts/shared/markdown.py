@@ -343,6 +343,60 @@ def parse_yaml_fenced_blocks(content: str, include_errors: bool = False) -> List
             if include_errors:
                 parsed.append({"__parse_error__": str(exc)})
     return parsed
+
+
+def parse_simple_yaml_block(block: str) -> Dict[str, Any]:
+    """Parse a minimal YAML block without a YAML parser."""
+    entry: Dict[str, Any] = {}
+    current_key: str | None = None
+    for line in block.splitlines():
+        raw = line.rstrip()
+        if not raw.strip():
+            continue
+        if raw.lstrip().startswith("- "):
+            if current_key is None:
+                continue
+            item = raw.lstrip()[2:].strip()
+            if item.startswith('"') and item.endswith('"'):
+                item = item[1:-1]
+            entry.setdefault(current_key, []).append(item)
+            continue
+        if ":" in raw:
+            key, value = raw.split(":", 1)
+            key = key.strip()
+            value = value.strip()
+            if key.startswith('"') and key.endswith('"'):
+                key = key[1:-1]
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1]
+            if value == "":
+                entry[key] = []
+                current_key = key
+            else:
+                entry[key] = value
+                current_key = None
+    return entry
+
+
+def parse_yaml_fenced_blocks_fallback(content: str) -> List[Dict[str, Any]]:
+    """Parse fenced YAML blocks with a simple fallback parser."""
+    parsed = parse_yaml_fenced_blocks(content, include_errors=False)
+    if parsed:
+        return parsed
+    if shared_safe_load is not None or yaml is not None:
+        return []
+    fallback: List[Dict[str, Any]] = []
+    for yaml_block in FENCED_YAML_PATTERN.findall(content):
+        entry = parse_simple_yaml_block(yaml_block)
+        if entry:
+            fallback.append(entry)
+    return fallback
+
+
+def extract_bracketed_ids(content: str, pattern: str = r"\[([A-Z]+-\d+)\]") -> List[str]:
+    """Extract bracketed IDs like [PHASE-123] from content."""
+    ids = {match.group(1) for match in re.finditer(pattern, content)}
+    return sorted(ids)
     
     def get_links(self) -> List[Tuple[str, str]]:
         """Extract all links from document.

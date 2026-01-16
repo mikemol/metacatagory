@@ -4,9 +4,14 @@
 import pytest
 import tempfile
 from pathlib import Path
+from scripts.shared import markdown as markdown_module
 from scripts.shared.markdown import (
-    FrontMatter, MarkdownParser, MarkdownBuilder,
+    FrontMatter,
+    MarkdownParser,
+    MarkdownBuilder,
     MarkdownValidator,
+    extract_bracketed_ids,
+    parse_yaml_fenced_blocks_fallback,
 )
 
 
@@ -467,3 +472,25 @@ Content.
         
         # At minimum, should parse without catastrophic errors
         assert isinstance(report, dict)
+
+
+def test_extract_bracketed_ids() -> None:
+    content = "Some [GP-1] and [PHASE-12] plus [OTHER-999]."
+    ids = extract_bracketed_ids(content)
+    assert ids == ["GP-1", "OTHER-999", "PHASE-12"]
+
+
+def test_parse_yaml_fenced_blocks_fallback(monkeypatch):
+    content = """\
+```yaml
+id: GP-3
+status: not-started
+tags:
+  - alpha
+```
+"""
+    monkeypatch.setattr(markdown_module, "shared_safe_load", None)
+    monkeypatch.setattr(markdown_module, "yaml", None)
+
+    items = parse_yaml_fenced_blocks_fallback(content)
+    assert items == [{"id": "GP-3", "status": "not-started", "tags": ["alpha"]}]

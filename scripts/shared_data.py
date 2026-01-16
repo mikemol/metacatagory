@@ -126,57 +126,21 @@ def load_planning_index(
 
 def load_roadmap_markdown_from(md_path: Path) -> Tuple[List[str], List[Dict[str, Any]]]:
     """Extract roadmap item IDs and frontmatter from an explicit path."""
-    import re
-    from scripts.shared_yaml import has_yaml, safe_load
-    from scripts.shared.markdown import parse_yaml_fenced_blocks
+    from scripts.shared.markdown import (
+        extract_bracketed_ids,
+        parse_yaml_fenced_blocks_fallback,
+    )
 
     if not md_path.exists():
         raise FileNotFoundError(f"ROADMAP.md not found at {md_path}")
 
     content = md_path.read_text()
     
-    # Extract YAML frontmatter blocks
-    frontmatter_items = []
-    yaml_blocks = re.findall(r'```yaml\n(.*?)\n```', content, re.DOTALL)
-
-    if has_yaml():
-        for data in parse_yaml_fenced_blocks(content, include_errors=False):
-            if data and isinstance(data, dict):
-                frontmatter_items.append(data)
-    else:
-        # Robust fallback: parse key/value scalars and basic list blocks.
-        # Supports list values under keys like dependencies/tags/files.
-        for yaml_block in yaml_blocks:
-            entry: Dict[str, Any] = {}
-            current_key: str | None = None
-            for line in yaml_block.splitlines():
-                raw = line.rstrip()
-                if not raw.strip():
-                    continue
-                if raw.lstrip().startswith("- "):
-                    if current_key is None:
-                        continue
-                    item = raw.lstrip()[2:].strip()
-                    if item.startswith('"') and item.endswith('"'):
-                        item = item[1:-1]
-                    entry.setdefault(current_key, []).append(item)
-                    continue
-                if ":" in raw:
-                    key, value = raw.split(":", 1)
-                    key = key.strip()
-                    value = value.strip()
-                    if key.startswith('"') and key.endswith('"'):
-                        key = key[1:-1]
-                    if value.startswith('"') and value.endswith('"'):
-                        value = value[1:-1]
-                    if value == "":
-                        entry[key] = []
-                        current_key = key
-                    else:
-                        entry[key] = value
-                        current_key = None
-            if entry:
-                frontmatter_items.append(entry)
+    # Extract YAML frontmatter blocks (with fallback parsing)
+    frontmatter_items: List[Dict[str, Any]] = []
+    for data in parse_yaml_fenced_blocks_fallback(content):
+        if data and isinstance(data, dict):
+            frontmatter_items.append(data)
     
     # Extract IDs from frontmatter and text fallback
     ids = set()
@@ -184,8 +148,8 @@ def load_roadmap_markdown_from(md_path: Path) -> Tuple[List[str], List[Dict[str,
         if 'id' in item and isinstance(item['id'], str):
             ids.add(item['id'])
     
-    for match in re.finditer(r'\[([A-Z]+-\d+)\]', content):
-        ids.add(match.group(1))
+    for item_id in extract_bracketed_ids(content):
+        ids.add(item_id)
     
     return sorted(ids), frontmatter_items
 
