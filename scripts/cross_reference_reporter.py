@@ -13,6 +13,8 @@ from pathlib import Path
 from typing import Dict, List
 from datetime import datetime
 
+from scripts.shared.io import save_json
+
 ROOT = Path(__file__).resolve().parent.parent
 
 class CrossReferenceReporter:
@@ -121,8 +123,7 @@ class CrossReferenceReporter:
         
         # Write report
         output_path = Path(self.workspace_root) / output_file
-        with open(output_path, 'w') as f:
-            json.dump(report, f, indent=2)
+        save_json(output_path, report)
         
         print(f"   ✓ Report saved to: {output_file}")
         

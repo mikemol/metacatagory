@@ -18,6 +18,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.shared.paths import REPORTS_DIR
+from scripts.shared.io import save_json
 from scripts.shared.config import get_config
 
 
@@ -98,8 +99,7 @@ def main() -> int:
 
     if not ok:
         if allow_report_write():
-            REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-            (REPORTS_DIR / "docs-lint.json").write_text(json.dumps(report, indent=2))
+            save_json(REPORTS_DIR / "docs-lint.json", report)
         else:
             print(json.dumps(report, indent=2))
             print("docs-lint report suppressed (report writing disabled).")
@@ -107,8 +107,7 @@ def main() -> int:
 
     print(f"✓ Doc lint passed ({len(agda_files)} files checked)")
     if allow_report_write():
-        REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-        (REPORTS_DIR / "docs-lint.json").write_text(json.dumps(report, indent=2))
+        save_json(REPORTS_DIR / "docs-lint.json", report)
     else:
         print(json.dumps(report, indent=2))
         print("docs-lint report suppressed (report writing disabled).")
