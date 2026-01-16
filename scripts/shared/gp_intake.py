@@ -68,7 +68,7 @@ def extract_metadata_from_text(content: str, fallback_title: str) -> Dict:
         summary = ' | '.join(summary_parts)[:200]
     else:
         clean_content = re.sub(r'[#\\*_`\\[\\]]', '', content)
-        lines = [l.strip() for l in clean_content.split('\\n') if l.strip()]
+        lines = [l.strip() for l in clean_content.splitlines() if l.strip()]
         declarative_lines = [l for l in lines if not l.endswith('?')]
         filtered_lines = [
             l for l in declarative_lines
