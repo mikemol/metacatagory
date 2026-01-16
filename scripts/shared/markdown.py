@@ -397,6 +397,51 @@ def extract_bracketed_ids(content: str, pattern: str = r"\[([A-Z]+-\d+)\]") -> L
     """Extract bracketed IDs like [PHASE-123] from content."""
     ids = {match.group(1) for match in re.finditer(pattern, content)}
     return sorted(ids)
+
+
+def extract_markdown_section_from_content(
+    content: str,
+    heading_pattern: str,
+) -> Dict[str, str] | None:
+    """Extract a markdown section by heading substring (case-insensitive)."""
+    heading = None
+    heading_line = 0
+    content_lines: list[str] = []
+    in_section = False
+
+    for i, line in enumerate(content.splitlines(), start=1):
+        if re.match(r"^#+\s+", line):
+            if heading_pattern.lower() in line.lower():
+                heading = line.strip()
+                heading_line = i
+                in_section = True
+                continue
+            if in_section:
+                break
+        if in_section:
+            stripped = line.strip()
+            if stripped and not stripped.startswith("```"):
+                content_lines.append(stripped)
+
+    if heading and content_lines:
+        text = " ".join(content_lines)
+        return {
+            "heading": heading,
+            "text": text,
+            "line_start": heading_line,
+        }
+    return None
+
+
+def extract_markdown_section(
+    md_path: Path,
+    heading_pattern: str,
+) -> Dict[str, str] | None:
+    """Extract a markdown section from a file by heading substring."""
+    if not md_path.exists():
+        return None
+    content = md_path.read_text(encoding="utf-8")
+    return extract_markdown_section_from_content(content, heading_pattern)
     
     def get_links(self) -> List[Tuple[str, str]]:
         """Extract all links from document.
