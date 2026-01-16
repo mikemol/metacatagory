@@ -128,6 +128,7 @@ def load_roadmap_markdown_from(md_path: Path) -> Tuple[List[str], List[Dict[str,
     """Extract roadmap item IDs and frontmatter from an explicit path."""
     import re
     from scripts.shared_yaml import has_yaml, safe_load
+    from scripts.shared.markdown import parse_yaml_fenced_blocks
 
     if not md_path.exists():
         raise FileNotFoundError(f"ROADMAP.md not found at {md_path}")
@@ -139,13 +140,9 @@ def load_roadmap_markdown_from(md_path: Path) -> Tuple[List[str], List[Dict[str,
     yaml_blocks = re.findall(r'```yaml\n(.*?)\n```', content, re.DOTALL)
 
     if has_yaml():
-        for yaml_block in yaml_blocks:
-            try:
-                data = safe_load(yaml_block)
-                if data and isinstance(data, dict):
-                    frontmatter_items.append(data)
-            except Exception:
-                pass  # Skip malformed blocks
+        for data in parse_yaml_fenced_blocks(content, include_errors=False):
+            if data and isinstance(data, dict):
+                frontmatter_items.append(data)
     else:
         # Robust fallback: parse key/value scalars and basic list blocks.
         # Supports list values under keys like dependencies/tags/files.

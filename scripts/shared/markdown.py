@@ -309,6 +309,40 @@ class MarkdownParser:
             code = match.group(2)
             blocks.append((language, code))
         return blocks
+
+
+FENCED_YAML_PATTERN = re.compile(r'```yaml\n(.*?)\n```', re.DOTALL)
+
+
+def parse_yaml_fenced_blocks(content: str, include_errors: bool = False) -> List[Dict[str, Any]]:
+    """Parse fenced ```yaml blocks into dicts.
+
+    Args:
+        content: Markdown content to scan.
+        include_errors: When True, include parse errors as dicts with
+            __parse_error__ keys instead of skipping.
+
+    Returns:
+        List of parsed dicts (and optional error dicts).
+    """
+    parsed: List[Dict[str, Any]] = []
+    blocks = FENCED_YAML_PATTERN.findall(content)
+    for block in blocks:
+        try:
+            if shared_safe_load is not None:
+                data = shared_safe_load(block)
+            elif yaml is not None:
+                data = yaml.safe_load(block)
+            else:
+                data = None
+            if isinstance(data, dict):
+                parsed.append(data)
+            elif include_errors:
+                parsed.append({"__parse_error__": "non-dict yaml block"})
+        except Exception as exc:
+            if include_errors:
+                parsed.append({"__parse_error__": str(exc)})
+    return parsed
     
     def get_links(self) -> List[Tuple[str, str]]:
         """Extract all links from document.
