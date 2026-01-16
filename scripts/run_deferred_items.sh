@@ -12,15 +12,27 @@ AGDA_COMPILE_DIR="${AGDA_COMPILE_DIR:-build/agda}"
 
 REPORT_ROOT="build/reports"
 CORE_LIST="$REPORT_ROOT/deferred-core-algebra-modules.md"
-core_count="$(rg -l -g '*.agda' -e 'postulate|TODO|FIXME|PLANNED|DeviationLog' src/agda/Core | wc -l | tr -d ' ')"
-alg_count="$(rg -l -g '*.agda' -e 'postulate|TODO|FIXME|PLANNED|DeviationLog' src/agda/Algebra | wc -l | tr -d ' ')"
+
+search_agda_markers() {
+  local target="$1"
+  if command -v rg >/dev/null 2>&1; then
+    rg -l -g '*.agda' -e 'postulate|TODO|FIXME|PLANNED|DeviationLog' "$target" || true
+  else
+    grep -R -l --include='*.agda' -E 'postulate|TODO|FIXME|PLANNED|DeviationLog' "$target" || true
+  fi
+}
+
+core_files="$(search_agda_markers src/agda/Core)"
+alg_files="$(search_agda_markers src/agda/Algebra)"
+core_count="$(printf "%s\n" "$core_files" | sed '/^$/d' | wc -l | tr -d ' ')"
+alg_count="$(printf "%s\n" "$alg_files" | sed '/^$/d' | wc -l | tr -d ' ')"
 {
   printf "%s\n\n" "# Deferred Core/Algebra Modules"
   printf "%s\n\n" "Generated from TODO/postulate/FIXME/PLANNED/DeviationLog markers."
   printf "## Core (%s)\n" "$core_count"
-  rg -l -g '*.agda' -e 'postulate|TODO|FIXME|PLANNED|DeviationLog' src/agda/Core | sort | sed 's/^/ - /'
+  printf "%s\n" "$core_files" | sed '/^$/d' | sort | sed 's/^/ - /'
   printf "\n## Algebra (%s)\n" "$alg_count"
-  rg -l -g '*.agda' -e 'postulate|TODO|FIXME|PLANNED|DeviationLog' src/agda/Algebra | sort | sed 's/^/ - /'
+  printf "%s\n" "$alg_files" | sed '/^$/d' | sort | sed 's/^/ - /'
 } > "$CORE_LIST"
 
 if [ -n "${CI_REPORT_DIR:-}" ]; then
