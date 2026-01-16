@@ -8,7 +8,7 @@ open import Agda.Builtin.String using (String; primStringAppend; primStringEqual
 open import Agda.Builtin.Bool using (Bool; true; false)
 open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 open import Agda.Builtin.IO using (IO)
-open import Agda.Builtin.Char using (Char)
+open import Agda.Builtin.Char using (Char; primCharEquality)
 
 infixr 20 _++_
 _++_ : String → String → String
@@ -49,6 +49,16 @@ profileRecipe name =
 -- Store raw recipe lines (profiling wrapper is injected when rendering the Makefile).
 instrumentRecipe : String → List String → List String
 instrumentRecipe _ cmds = cmds
+
+startsWith? : String → String → Bool
+startsWith? prefix str = startsWithChars (primStringToList prefix) (primStringToList str)
+  where
+    startsWithChars : List Char → List Char → Bool
+    startsWithChars [] _ = true
+    startsWithChars (_ ∷ _) [] = false
+    startsWithChars (p ∷ ps) (s ∷ ss) with primCharEquality p s
+    ... | true = startsWithChars ps ss
+    ... | false = false
 
 -- ==========================================================
 -- Domain Model: What Transformations Exist?
@@ -114,10 +124,12 @@ data TargetCategory : Set where
 -- Makefile Target Representation
 -- ==========================================================
 
--- | Mutability classification for targets.
+-- | Mutability classification for targets (graded).
 data Mutability : Set where
-  Mutative : Mutability
   ReadOnly : Mutability
+  ReportOnly : Mutability
+  BuildOnly : Mutability
+  RepoWrite : Mutability
 
 -- | Certificate required to construct mutating targets.
 record MutateCert : Set where
@@ -128,7 +140,7 @@ record MutateCert : Set where
     scope : String
 
 mutateCert : MutateCert
-mutateCert = mkMutateCert "makefile-targets" "Examples.MakefileTargets" "build/docs/data"
+mutateCert = mkMutateCert "makefile-targets" "Examples.MakefileTargets" "build"
 
 -- | Concrete make target descriptor with dependencies and recipe lines.
 record MakefileTarget : Set where
@@ -140,15 +152,38 @@ record MakefileTarget : Set where
     recipe : List String
     phony : Bool
     mutability : Mutability
+    scope : String
 
 -- Explicit constructors to enforce mutability certificates where needed.
 mkReadOnlyTarget : String → String → List String → List String → Bool → MakefileTarget
 mkReadOnlyTarget name description deps recipe phony =
-  mkTarget name description deps recipe phony ReadOnly
+  mkTarget name description deps recipe phony ReadOnly ""
+
+mutabilityForTargetName : String → Mutability
+mutabilityForTargetName name with startsWith? "build/reports/" name
+... | true = ReportOnly
+... | false with startsWith? "build/reports/profiles.d/" name
+...   | true = ReportOnly
+...   | false with startsWith? "build/" name
+...     | true = BuildOnly
+...     | false = RepoWrite
+
+scopeForTargetName : String → String
+scopeForTargetName name with startsWith? "build/reports/" name
+... | true = "reports"
+... | false with startsWith? "build/reports/profiles.d/" name
+...   | true = "reports"
+...   | false with startsWith? "build/" name
+...     | true = "build"
+...     | false with startsWith? "data/" name
+...       | true = "data"
+...       | false with startsWith? "docs/" name
+...         | true = "docs"
+...         | false = "repo"
 
 mkMutativeTarget : MutateCert → String → String → List String → List String → Bool → MakefileTarget
 mkMutativeTarget cert name description deps recipe phony =
-  mkTarget name description deps recipe phony Mutative
+  mkTarget name description deps recipe phony (mutabilityForTargetName name) (scopeForTargetName name)
 
 -- ==========================================================
 -- Category to Target Conversion
@@ -190,7 +225,9 @@ fileTransformToTarget cert sourcePath targetPath sourcePattern outputPattern ext
 -- Convert Validator to target
 validatorToTarget : String → String → String → List String → List String → MakefileTarget
 validatorToTarget name description outputFile deps recipe =
-  mkReadOnlyTarget name description deps (instrumentRecipe name recipe) true
+  mkTarget name description deps (instrumentRecipe name recipe) true
+    (mutabilityForTargetName outputFile)
+    (scopeForTargetName outputFile)
 
 -- Convert Generator to target
 generatorToTarget : MutateCert → String → String → List String → List String → MakefileTarget

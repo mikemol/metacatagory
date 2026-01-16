@@ -96,7 +96,7 @@ postulate
 open import Metamodel
 open import Examples.AgdaMakefileDeps using (_++_; ModuleName; primStringEquality; primStringSplit;
   moduleToInterfacePath; joinWith; parseModuleName; isInternalModule; filter; startsWith?; _||_)
-open import Examples.MakefileTargets using (MakefileTarget; TargetCategory; Mutability; Mutative; ReadOnly; MutateCert; mutateCert; allCategories; 
+open import Examples.MakefileTargets using (MakefileTarget; TargetCategory; Mutability; ReadOnly; ReportOnly; BuildOnly; RepoWrite; MutateCert; mutateCert; allCategories; 
   validatorToTarget; generatorToTarget; nodeSetupCategory; badgeCategory; mdLintCategory;
   discoverAgdaFiles; generateAgdaTargets; generateDocsTargets; allAgdaiTarget; allDocsTarget;
   environmentSetupToTarget; synchronizerToTarget; mkMutativeTarget; mkReadOnlyTarget; instrumentRecipe; profileRecipe; recipeScriptPath)
@@ -180,13 +180,10 @@ targetToSection target = record
              ∷ map ("\t" ++_) (guardLines +++ profileRecipe (MakefileTarget.name target))
   }
   where
-    safeTarget : Bool
-    safeTarget = startsWith? "data/" (MakefileTarget.name target) || startsWith? "docs/" (MakefileTarget.name target)
     guardLines : List String
-    guardLines with MakefileTarget.mutability target | safeTarget
-    ... | Mutative | true = []
-    ... | Mutative | false = "$(call require_mutate)" ∷ []
-    ... | ReadOnly | _ = []
+    guardLines with MakefileTarget.mutability target
+    ... | ReadOnly = []
+    ... | _ = ("$(call require_mutate_scope," ++ MakefileTarget.scope target ++ ")") ∷ []
     intercalate : String → List String → String
     intercalate sep [] = ""
     intercalate sep (x ∷ []) = x
@@ -206,8 +203,10 @@ regenMakefileTarget = mkMutativeTarget mutateCert
 -- Documentation Renderer: Generates Markdown table of targets with dependency graph info
 -- Enhanced: now includes orchestration dependencies and assumptions preamble
 mutabilityLabel : Mutability → String
-mutabilityLabel Mutative = "mutative"
 mutabilityLabel ReadOnly = "read-only"
+mutabilityLabel ReportOnly = "report-only"
+mutabilityLabel BuildOnly = "build-only"
+mutabilityLabel RepoWrite = "repo-write"
 
 renderDocs : List MakefileTarget → String
 renderDocs targets = 
@@ -334,11 +333,30 @@ buildArtifact agdaFiles graphEdges =
             ∷ "SKIP_GHC_BACKEND ?= $(BUILD_SKIP_GHC_BACKEND)"
             ∷ "export SKIP_GHC_BACKEND"
             ∷ ""
-            ∷ "# Guard for targets that write outside docs/ or data/ (default deny)."
+            ∷ "# Guard for targets that write outside read-only scope (default deny)."
             ∷ "BUILD_MUTATE_OK ?= 0"
             ∷ "MUTATE_OK ?= $(BUILD_MUTATE_OK)"
-            ∷ "define require_mutate"
-            ∷ "\t@if [ \"$(MUTATE_OK)\" != \"1\" ]; then echo \"Mutative target requires MUTATE_OK=1\"; exit 1; fi"
+            ∷ "BUILD_MUTATE_LEVEL ?= none"
+            ∷ "MUTATE_LEVEL ?= $(BUILD_MUTATE_LEVEL)"
+            ∷ "ifeq ($(MUTATE_LEVEL),none)"
+            ∷ "ifneq ($(strip $(MUTATE_OK)),)"
+            ∷ "ifneq ($(MUTATE_OK),0)"
+            ∷ "MUTATE_LEVEL := repo"
+            ∷ "endif"
+            ∷ "endif"
+            ∷ "endif"
+            ∷ "define require_mutate_scope"
+            ∷ "\t@scope=\"$(1)\"; level=\"$(MUTATE_LEVEL)\"; req=\"repo\"; \\"
+            ∷ "\tcase \"$$scope\" in \\"
+            ∷ "\t  reports) req=\"report\" ;; \\"
+            ∷ "\t  build) req=\"build\" ;; \\"
+            ∷ "\t  data|docs|repo) req=\"repo\" ;; \\"
+            ∷ "\tesac; \\"
+            ∷ "\trank() { case \"$$1\" in report) echo 1 ;; build) echo 2 ;; repo) echo 3 ;; *) echo 0 ;; esac; }; \\"
+            ∷ "\tif [ \"$$(rank \"$$level\")\" -lt \"$$(rank \"$$req\")\" ]; then \\"
+            ∷ "\t  echo \"Target requires MUTATE_LEVEL=$$req (scope=$$scope). Set MUTATE_LEVEL=report|build|repo.\"; \\"
+            ∷ "\t  exit 1; \\"
+            ∷ "\tfi"
             ∷ "endef"
             ∷ ""
             ∷ "# Optional override for decomposed JSON staging (kept empty by default to silence"
@@ -356,7 +374,7 @@ buildArtifact agdaFiles graphEdges =
             ∷ "VIRTUAL_ENV ?= $(BUILD_VENV_DIR)"
             ∷ ""
             ∷ "# Profiling output (JSONL). New file per make invocation for history."
-            ∷ "BUILD_PROFILE_DIR ?= $(BUILD_WORKDIR)/build/profiles.d"
+            ∷ "BUILD_PROFILE_DIR ?= $(BUILD_WORKDIR)/build/reports/profiles.d"
             ∷ "PROFILE_DIR ?= $(BUILD_PROFILE_DIR)"
             ∷ "ifndef PROFILE_RUN"
             ∷ "BUILD_PROFILE_RUN := $(shell sh -c \"echo $$(date +%Y%m%dT%H%M%S%z)-$$$$\")"
@@ -423,12 +441,12 @@ buildArtifact agdaFiles graphEdges =
     ... | _ = false
     isMutative : MakefileTarget → Bool
     isMutative t with MakefileTarget.mutability t
-    ... | Mutative = true
     ... | ReadOnly = false
+    ... | _ = true
     isReadOnly : MakefileTarget → Bool
     isReadOnly t with MakefileTarget.mutability t
-    ... | Mutative = false
     ... | ReadOnly = true
+    ... | _ = false
     depsFor : String → List String
     depsFor lbl = map (second lbl) (filter (hasSrc lbl) graphEdges)
     zipWith : {A B C : Set} → (A → B → C) → List A → List B → List C

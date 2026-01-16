@@ -11,15 +11,17 @@ and whether execution is guarded or defaults are provided.
 | `BUILD_WORKDIR` | `Makefile`, `Makefile.generated`, `scripts/recipes/regen-makefile.sh`, `scripts/export_cnf_grammar.sh`, `ci.yml` | Defaults to `.` in Makefile, overridden by `ACT_WORKDIR` or `WORKDIR` | `BUILD_WORKDIR ?= .` with guarded overrides | Safe: defaulted before use |
 | `WORKDIR` | `Makefile`, `Makefile.generated` (legacy alias) | User shell or `act_prepare_workspace.sh` | Aliased to `BUILD_WORKDIR` when unset | Safe: legacy compatibility |
 | `ACT_WORKDIR` | `Makefile`, `Makefile.generated` | `scripts/act_prepare_workspace.sh` via `GITHUB_ENV`, or user shell | Used only if non-empty; overrides `BUILD_WORKDIR` | Safe: guarded |
-| `BUILD_MUTATE_OK` | `Makefile` guard `require_mutate` | User/CI when running mutative targets | Default `0` in Makefile | Safe: guard fails if not set |
-| `MUTATE_OK` | `Makefile` guard `require_mutate` (legacy alias) | User/CI | Aliased to `BUILD_MUTATE_OK` when unset | Safe: legacy compatibility |
+| `BUILD_MUTATE_OK` | `Makefile` guard `require_mutate_scope` (legacy fallback) | User/CI when running mutative targets | Default `0` in Makefile | Safe: guard fails if not set |
+| `MUTATE_OK` | `Makefile` guard `require_mutate_scope` (legacy alias) | User/CI | When set, upgrades `MUTATE_LEVEL` to `repo` if unset | Safe: legacy compatibility |
+| `BUILD_MUTATE_LEVEL` | `Makefile` guard `require_mutate_scope` | User/CI when running mutative targets | Default `none` in Makefile | Safe: guard fails if insufficient |
+| `MUTATE_LEVEL` | `Makefile` guard `require_mutate_scope` | User/CI | Aliased to `BUILD_MUTATE_LEVEL` when unset | Safe: guard fails if insufficient |
 | `BUILD_SKIP_GHC_BACKEND` | Agda build targets in `src/agda/Examples/Makefile/Targets/AgdaBuild.agda` and `Docs.agda` | User/CI env or Makefile default | Default empty; aliased into `SKIP_GHC_BACKEND` | Safe: empty means "do not skip" |
 | `SKIP_GHC_BACKEND` | Agda build targets (legacy alias) | User/CI env | Aliased to `BUILD_SKIP_GHC_BACKEND` when unset | Safe: legacy compatibility |
 | `BUILD_JSON_DECOMPOSE_FALLBACK_DIR` | `Makefile`, `Makefile.generated` | User/CI env | Default empty; aliased into `JSON_DECOMPOSE_FALLBACK_DIR` | Safe: empty falls back to `data/deps` |
 | `JSON_DECOMPOSE_FALLBACK_DIR` | `Makefile`, `Makefile.generated` (legacy alias) | User/CI env | Aliased to `BUILD_JSON_DECOMPOSE_FALLBACK_DIR` | Safe: legacy compatibility |
 | `BUILD_CORES` | `Makefile` parallelism | Shell (nproc/sysctl) or env | Default computed; aliased into `CORES` | Safe: default computed |
 | `CORES` | `Makefile` parallelism (legacy alias) | Shell or env | Aliased to `BUILD_CORES` when unset | Safe: legacy compatibility |
-| `BUILD_PROFILE_DIR` | `Makefile`, `scripts/run_profiled.sh` | Default `$(BUILD_WORKDIR)/build/profiles.d` | Aliased into `PROFILE_DIR` | Safe: defaulted |
+| `BUILD_PROFILE_DIR` | `Makefile`, `scripts/run_profiled.sh` | Default `$(BUILD_WORKDIR)/build/reports/profiles.d` | Aliased into `PROFILE_DIR` | Safe: defaulted |
 | `PROFILE_DIR` | `Makefile`, `scripts/run_profiled.sh` (legacy alias) | Env or Makefile | Aliased to `BUILD_PROFILE_DIR` when unset | Safe: legacy compatibility |
 | `BUILD_PROFILE_RUN` | `Makefile` | Default timestamp | Aliased into `PROFILE_RUN` | Safe: defaulted |
 | `PROFILE_RUN` | `Makefile` (legacy alias) | Env or Makefile | Aliased to `BUILD_PROFILE_RUN` when unset | Safe: legacy compatibility |
