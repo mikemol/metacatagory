@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
+      options: --user 1001:1001
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
@@ -35,6 +36,12 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Diagnose runner IDs
+        run: |
+          id
+          id runner || true
+          stat -c '%u:%g %A %n' /__w /__w/_temp || true
+
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
@@ -116,6 +123,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
+      options: --user 1001:1001
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
@@ -127,6 +135,12 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Diagnose runner IDs
+        run: |
+          id
+          id runner || true
+          stat -c '%u:%g %A %n' /__w /__w/_temp || true
+
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
@@ -209,6 +223,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
+      options: --user 1001:1001
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
@@ -220,6 +235,12 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Diagnose runner IDs
+        run: |
+          id
+          id runner || true
+          stat -c '%u:%g %A %n' /__w /__w/_temp || true
+
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
@@ -306,6 +327,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
+      options: --user 1001:1001
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
@@ -317,6 +339,12 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Diagnose runner IDs
+        run: |
+          id
+          id runner || true
+          stat -c '%u:%g %A %n' /__w /__w/_temp || true
+
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
