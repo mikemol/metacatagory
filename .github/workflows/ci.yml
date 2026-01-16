@@ -201,7 +201,7 @@ jobs:
 
       - name: Run docs checks
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: MUTATE_LEVEL=build make check-docs
+        run: MUTATE_LEVEL=repo make check-docs
 
       - name: Stage build reports
         if: ${{ env.ACT != 'true' }}
