@@ -72,7 +72,7 @@ Ensures:
 ### 4. Syncing to GitHub
 
 ```bash
-MUTATE_OK=1 make roadmap-sync
+MUTATE_LEVEL=repo make roadmap-sync
 ```
 
 Depends on `.github/roadmap/tasks.json` to ensure tasks.json is current before sync.

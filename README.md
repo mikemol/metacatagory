@@ -120,11 +120,11 @@ make check-all  # Full validation suite (alias: make check)
 
 ```bash
 mise install
-MUTATE_OK=1 make regen-makefile
+MUTATE_LEVEL=repo make regen-makefile
 # Full suite (strict roundtrip validation by default)
-MUTATE_OK=1 make check
+MUTATE_LEVEL=repo make check
 # Or narrower targets:
-# MUTATE_OK=1 make json-roundtrip-validate
-# MUTATE_OK=1 make check-docs
+# MUTATE_LEVEL=repo make json-roundtrip-validate
+# MUTATE_LEVEL=report make check-docs
 # For pytest/md targets, install dev deps (`mise run dev-setup`) and note network is required (or use the CI container).
 ```

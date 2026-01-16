@@ -9,10 +9,10 @@ The goal is consistency: every mutation should have a clear, traceable reason.
 - The mutability gates are working as intended: they fail when a target (or any
   of its dependencies) writes artifacts.
 - The act failures that exposed mutative behavior are resolved by explicitly
-  granting mutation (`MUTATE_OK=1`) in CI steps that write reports or derived
+  granting mutation (`MUTATE_LEVEL=report|build|repo`) in CI steps that write reports or derived
   artifacts.
 - The core issue is not incorrect behavior, but implicit assumptions. These
-  need to be made explicit by either (a) setting `MUTATE_OK=1` in steps that
+  need to be made explicit by either (a) setting `MUTATE_LEVEL=report|build|repo` in steps that
   are expected to emit artifacts, or (b) splitting out read-only variants that
   do not write to disk.
 
@@ -39,7 +39,7 @@ or derived artifacts:
 
 ## Immediate Inconsistencies Observed During act Runs
 
-1) Historical: CI steps called mutative targets without `MUTATE_OK=1`.
+1) Historical: CI steps called mutative targets without `MUTATE_LEVEL` set.
    - Example: `check-docs` and `check-json` write reports and recomposed JSON
      artifacts under `build/`.
 
@@ -50,7 +50,7 @@ grants in `ci.yml`.
 
 ### Policy A — Explicit mutation grants in workflows (Implemented)
 
-Add `MUTATE_OK=1` to workflow steps that are expected to write artifacts. This
+Add `MUTATE_LEVEL=report|build|repo` to workflow steps that are expected to write artifacts. This
 keeps mutation explicit and preserves the safety gate.
 
 ### Policy B — Read-only variants for lint/validation

@@ -24,8 +24,8 @@
    ```bash
    mise install
    mise run dev-setup
-   MUTATE_OK=1 make regen-makefile
-   MUTATE_OK=1 make check
+   MUTATE_LEVEL=repo make regen-makefile
+   MUTATE_LEVEL=repo make check
    ```
 
 ### For CI and Reporting

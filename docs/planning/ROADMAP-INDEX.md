@@ -39,7 +39,7 @@ Consolidated pointers to roadmap-shaped artifacts across the repo.
 * [.github/roadmap/tasks.json](../../.github/roadmap/tasks.json)
 * [scripts/roadmap\_traverser.py](../../scripts/roadmap_traverser.py)
 * [scripts/sync-roadmap-issues.sh](../../.github/scripts/sync-roadmap-issues.sh)
-* `MUTATE_OK=1 make roadmap-sync` (local Make target; CI uses `ci.yml`)
+* `MUTATE_LEVEL=repo make roadmap-sync` (local Make target; CI uses `ci.yml`)
 
 ## Analyses
 

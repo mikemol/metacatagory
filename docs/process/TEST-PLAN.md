@@ -9,7 +9,7 @@ opportunities).
 - Prefer the Makefile entry points for local verification to match CI.
 - Run read-only targets first to catch structural issues before mutation.
 - Separate network-dependent steps; they will fail in restricted environments.
-- Use `MUTATE_OK=1` explicitly for mutative targets.
+- Use `MUTATE_LEVEL=report|build|repo` explicitly for mutative targets.
 
 ### Local Make Targets
 
@@ -38,8 +38,8 @@ Expected artifacts:
 #### 2) Dependency graph roundtrip (mutative)
 
 ```bash
-MUTATE_OK=1 make json-decompose
-MUTATE_OK=1 make json-roundtrip-validate
+MUTATE_LEVEL=repo make json-decompose
+MUTATE_LEVEL=repo make json-roundtrip-validate
 ```
 
 Expected:
@@ -55,7 +55,7 @@ Expected artifacts:
 #### 3) Full validation sweep (mutative)
 
 ```bash
-MUTATE_OK=1 make check-all
+MUTATE_LEVEL=repo make check-all
 ```
 
 Expected:
@@ -76,8 +76,8 @@ Notes:
 #### 4) Regeneration (mutative)
 
 ```bash
-MUTATE_OK=1 make regen-makefile
-MUTATE_OK=1 make regen-all
+MUTATE_LEVEL=repo make regen-makefile
+MUTATE_LEVEL=repo make regen-all
 ```
 
 Expected:
@@ -108,7 +108,7 @@ Value:
 - High. Single source of truth for CI gates and report outputs.
 
 Local parity:
-- `MUTATE_OK=1 make check` for core validation logic.
+- `MUTATE_LEVEL=repo make check` for core validation logic.
 - `make act-ci` for full workflow emulation (requires act).
 
 Cleanup opportunities:
@@ -132,11 +132,11 @@ Smallest local target set that mirrors CI’s critical gates:
 make graph-assert-ok
 make makefile-validate
 make md-lint
-MUTATE_OK=1 make json-roundtrip-validate
+MUTATE_LEVEL=repo make json-roundtrip-validate
 ```
 
 ```bash
-MUTATE_OK=1 make python-test
+MUTATE_LEVEL=repo make python-test
 ```
 
 ### Known Constraints
