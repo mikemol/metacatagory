@@ -17,6 +17,7 @@ STATUS_ASSERT_RE = re.compile(
     r"^\s*([a-zA-Z0-9_\-']+)\s*:\s*A\.[A-Za-z0-9_]+\s+[a-zA-Z0-9_\-']+\s*≡\s*(?:B\.)?true\s*$"
 )
 TOTAL_ASSERTIONS_RE = re.compile(r"totalAssertions ≡ (\d+)")
+CHECKLIST_ADAPTER_RE = re.compile(r"(\w+)-adapter\s*:\s*A\.(\w+)", re.MULTILINE)
 
 
 @dataclass
@@ -61,3 +62,22 @@ def parse_total_assertions(content: str) -> int | None:
     if not match:
         return None
     return int(match.group(1))
+
+
+def iter_checklist_adapters(content: str) -> list[tuple[str, str, int]]:
+    """Return checklist adapter name/type/position triples."""
+    return [
+        (match.group(1), match.group(2), match.start())
+        for match in CHECKLIST_ADAPTER_RE.finditer(content)
+    ]
+
+
+def infer_section_from_preceding(preceding_text: str) -> str:
+    """Infer section number from preceding context."""
+    level_matches = re.findall(r"Level\d+sub(\d+)", preceding_text)
+    if level_matches:
+        return level_matches[-1]
+    chk_matches = re.findall(r"chk\d+s(\d+)", preceding_text)
+    if chk_matches:
+        return chk_matches[-1]
+    return "0"

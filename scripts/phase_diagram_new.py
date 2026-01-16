@@ -21,8 +21,8 @@ Analyzes test adapters to identify phase boundaries exercised:
 Outputs:
 """
 
-import re
 import json
+import re
 from pathlib import Path
 from collections import defaultdict
 from dataclasses import dataclass, field
@@ -34,6 +34,7 @@ from graphviz import Digraph
 from rich.console import Console
 
 from scripts.shared.io import save_json
+from scripts.shared.agda_tests import iter_checklist_adapters, infer_section_from_preceding
 
 console = Console()
 
@@ -119,16 +120,10 @@ class PhaseDiagramGenerator:
                     )
 
             # Find adapters
-            adapter_pattern = re.compile(r"(\w+)-adapter\s*:\s*A\.(\w+)", re.MULTILINE)
-
-            for match in adapter_pattern.finditer(content):
-                adapter_name = match.group(1)
-                adapter_type = match.group(2)
-
+            for adapter_name, adapter_type, adapter_pos in iter_checklist_adapters(content):
                 # Infer section from context
-                adapter_pos = match.start()
                 preceding = content[:adapter_pos]
-                section_num = self._infer_section(preceding)
+                section_num = infer_section_from_preceding(preceding)
 
                 adapter_id = f"{chapter}.{section_num}.{adapter_name}"
                 section_id = f"{chapter}.{section_num}"
@@ -178,20 +173,6 @@ class PhaseDiagramGenerator:
 
         except Exception as e:
             console.print(f"[yellow]Warning: Error parsing {filepath}: {e}[/yellow]")
-
-    def _infer_section(self, preceding_text: str) -> str:
-        """Infer section number from preceding context."""
-        # Look for Level markers
-        level_match = re.search(r"Level\d+sub(\d+)", preceding_text[::-1])
-        if level_match:
-            return level_match.group(1)[::-1]
-
-        # Look for chk markers
-        chk_match = re.search(r"chk\d+s(\d+)", preceding_text[::-1])
-        if chk_match:
-            return chk_match.group(1)[::-1]
-
-        return "0"
 
     def build_graph(self) -> None:
         """Build NetworkX graph from nodes and edges."""
