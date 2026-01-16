@@ -3,7 +3,7 @@
 
 [env]
 # Python environment activation
-VIRTUAL_ENV = "{env:HOME}/.venv"
+VIRTUAL_ENV = "${HOME}/.venv"
 PYTHONPATH = "{root}/src:{root}/scripts"
 
 [tools]
