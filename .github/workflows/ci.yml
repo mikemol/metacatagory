@@ -23,12 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-      options: --user root
     env:
-      ACTIONS_FILE_COMMANDS: ${{ format('{0}/.tmp/_runner_file_commands', github.workspace) }}
-      ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
@@ -42,6 +37,10 @@ jobs:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
+          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
+          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
           mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
                    "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
           chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
@@ -106,12 +105,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-      options: --user root
     env:
-      ACTIONS_FILE_COMMANDS: ${{ format('{0}/.tmp/_runner_file_commands', github.workspace) }}
-      ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
@@ -124,6 +118,10 @@ jobs:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
+          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
+          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
           mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
                    "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
           chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
@@ -179,12 +177,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-      options: --user root
     env:
-      ACTIONS_FILE_COMMANDS: ${{ format('{0}/.tmp/_runner_file_commands', github.workspace) }}
-      ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
@@ -197,6 +190,10 @@ jobs:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
+          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
+          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
           mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
                    "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
           chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
@@ -232,7 +229,7 @@ jobs:
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: |
           echo "Roundtrip validate planning (explicit paths)" && \
-          python3 -m scripts.validate_json_roundtrip data/planning_index.json build/planning_index_recomposed.json || true
+          python3 -m scripts.validate_json_roundtrip data/planning_index.json build/planning_index_recomposed.json
           MUTATE_OK=1 make check-json
 
       - name: Upload build reports (roadmap)
@@ -250,12 +247,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-      options: --user root
     env:
-      ACTIONS_FILE_COMMANDS: ${{ format('{0}/.tmp/_runner_file_commands', github.workspace) }}
-      ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
@@ -268,6 +260,10 @@ jobs:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
+          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
+          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
           mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
                    "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
           chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
