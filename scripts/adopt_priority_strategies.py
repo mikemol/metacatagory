@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, Optional, Tuple
 
-from scripts.shared.io import save_json
+from scripts.shared.io import save_json, load_json
 CATEGORY_NORMALIZATION: Dict[str, float] = {
     "postulate": 100.0,
     "todo": 50.0,
@@ -149,19 +149,18 @@ def load_agda_output(path: Path) -> Dict[str, Any]:
         raise FileNotFoundError(f"Agda priority output not found: {path}")
 
     text = path.read_text()
+    if "placeholder" in text.lower():
+        print(
+            f"⚠️  Agda priority output contained a placeholder string ({path}); using default profiles.",
+            file=sys.stderr,
+        )
+        return default_profiles()
     try:
-        data = json.loads(text)
+        data = load_json(path)
     except json.JSONDecodeError:
         # Fallback: Agda export sometimes emits a placeholder; use a minimal default.
         print(
             f"⚠️  Agda priority output is not valid JSON ({path}); using default profiles.",
-            file=sys.stderr,
-        )
-        return default_profiles()
-
-    if isinstance(data, str) and "placeholder" in data.lower():
-        print(
-            f"⚠️  Agda priority output contained a placeholder string ({path}); using default profiles.",
             file=sys.stderr,
         )
         return default_profiles()
