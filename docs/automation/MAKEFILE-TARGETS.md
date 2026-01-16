@@ -35,6 +35,7 @@ Mutability indicates whether a target is allowed to write artifacts or update th
 | `python-test` | Run Python tests (includes pytest suite) | mutative |
 | `python-verified` | Witness target: test suite contracted | mutative |
 | `roadmap-merge` | Merge ingestion streams | mutative |
+| `build/ingested_metadata.json` | Ingest GP metadata | mutative |
 | `build/canonical_enriched.json` | Enrich canonical roadmap | mutative |
 | `roadmap-enrich` | Enrich roadmap with graph data | mutative |
 | `.github/roadmap/tasks.json` | Export canonical roadmap to JSON | mutative |
