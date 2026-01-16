@@ -12,7 +12,7 @@ from scripts.makefile_graph import (
     parse_phony_targets,
     reachable_nodes,
 )
-from scripts.shared.io import save_json
+from scripts.shared.io import save_json, load_json
 
 DEFAULT_ROOTS: List[str] = ["check", "regen-makefile"]
 FAILURES_PATH = Path("build/reports/last_failures.json")
@@ -22,7 +22,7 @@ def load_failures() -> list[str]:
     if not FAILURES_PATH.exists():
         return []
     try:
-        data = json.loads(FAILURES_PATH.read_text(encoding="utf-8"))
+        data = load_json(FAILURES_PATH)
     except json.JSONDecodeError:
         return []
     return [item for item in data if isinstance(item, str)]

@@ -11,7 +11,7 @@ import os
 from pathlib import Path
 import sys
 
-from scripts.shared.io import save_json
+from scripts.shared.io import save_json, load_json
 
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
@@ -49,7 +49,7 @@ def main() -> int:
         print(f"docs-lint report not found at {REPORT}. Run lint first.")
         return 1
 
-    data = json.loads(REPORT.read_text())
+    data = load_json(REPORT)
     items = []
 
     for path in data.get("missing_module", []):
