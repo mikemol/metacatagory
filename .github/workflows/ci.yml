@@ -94,7 +94,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-reports-agda
-          path: ${{ env.CI_ARTIFACT_DIR }}**
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
           if-no-files-found: ignore
           retention-days: 30
           overwrite: true
@@ -176,7 +176,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-reports-docs
-          path: ${{ env.CI_ARTIFACT_DIR }}**
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
           if-no-files-found: ignore
           retention-days: 30
           overwrite: true
@@ -263,7 +263,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-reports-roadmap
-          path: ${{ env.CI_ARTIFACT_DIR }}**
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
           if-no-files-found: ignore
           retention-days: 30
 
@@ -344,7 +344,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-reports-python
-          path: ${{ env.CI_ARTIFACT_DIR }}**
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
           if-no-files-found: ignore
           retention-days: 30
   collect-reports:
