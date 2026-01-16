@@ -399,7 +399,7 @@ jobs:
       - roadmap-json-checks
       - python-checks
     runs-on: ubuntu-latest
-    if: ${{ env.ACT != 'true' }}
+    if: ${{ github.actor != 'nektos/act' }}
     steps:
       - name: Download build-reports artifacts
         uses: actions/download-artifact@v4
