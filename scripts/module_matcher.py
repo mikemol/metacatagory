@@ -16,6 +16,8 @@ from dataclasses import dataclass, field
 from collections import defaultdict
 
 from scripts import shared_data
+from scripts.shared.agda import AgdaParser
+from scripts.shared.agda_declarations import scan_agda_declarations
 from scripts.shared.io import save_json
 
 @dataclass
@@ -52,6 +54,9 @@ class ModuleMatcher:
         self.workspace_root = workspace_root
         self.agda_modules: Dict[str, AgdaModule] = {}
         self.category_keywords = self._define_category_keywords()
+        self.agda_parser = AgdaParser(
+            Path(self.workspace_root) / "src" / "agda"
+        )
         
     def _define_category_keywords(self) -> Dict[str, Set[str]]:
         """Define keywords for different module categories."""
@@ -87,17 +92,20 @@ class ModuleMatcher:
         """Analyze a single Agda module."""
         rel_path = str(file_path.relative_to(self.workspace_root))
         
-        # Extract module name from file
-        module_name = file_path.stem
-        
-        # Read file to extract imports and keywords
+        # Read file to extract keywords
         try:
             content = file_path.read_text(encoding='utf-8')
-            imports = self._extract_imports(content)
-            keywords = self._extract_keywords(content)
+            keywords = self._extract_keywords(content, file_path)
         except Exception:
-            imports = []
             keywords = set()
+
+        parsed_module = self.agda_parser.parse_file(file_path)
+        if parsed_module is not None:
+            module_name = parsed_module.name
+            imports = self._filter_imports(parsed_module.imports)
+        else:
+            module_name = file_path.stem
+            imports = []
         
         # Determine category based on path
         category = self._determine_category(rel_path)
@@ -110,21 +118,15 @@ class ModuleMatcher:
             category=category
         )
     
-    def _extract_imports(self, content: str) -> List[str]:
-        """Extract import statements from Agda file."""
-        imports = []
-        import_pattern = re.compile(r'^\s*(?:open )?import\s+([\w.]+)', re.MULTILINE)
-        
-        for match in import_pattern.finditer(content):
-            module_name = match.group(1)
-            # Filter out Agda.Builtin imports
-            if not module_name.startswith('Agda.Builtin') and \
-               not module_name.startswith('Agda.Primitive'):
-                imports.append(module_name)
-        
-        return imports
-    
-    def _extract_keywords(self, content: str) -> Set[str]:
+    def _filter_imports(self, imports: Set[str]) -> List[str]:
+        """Filter imports for analysis."""
+        return sorted(
+            name for name in imports
+            if not name.startswith("Agda.Builtin")
+            and not name.startswith("Agda.Primitive")
+        )
+
+    def _extract_keywords(self, content: str, file_path: Path) -> Set[str]:
         """Extract keywords from module content."""
         keywords = set()
         
@@ -134,10 +136,10 @@ class ModuleMatcher:
             words = match.group(1).lower().split()
             keywords.update(w.strip('.,;:()[]{}') for w in words if len(w) > 3)
         
-        # Extract from record/data type definitions
-        type_pattern = re.compile(r'(?:record|data)\s+(\w+)', re.MULTILINE)
-        for match in type_pattern.finditer(content):
-            keywords.add(match.group(1).lower())
+        # Extract from record/data type declarations
+        for decl in scan_agda_declarations(file_path):
+            if decl.name:
+                keywords.add(decl.name.lower())
         
         return keywords
     
