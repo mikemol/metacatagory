@@ -2,6 +2,8 @@ import importlib.util
 import json
 from pathlib import Path
 
+from scripts.shared_yaml import dump_yaml
+
 
 def load_module(name: str, path: Path):
     spec = importlib.util.spec_from_file_location(name, path)
@@ -36,7 +38,15 @@ def test_merge_roadmaps_minimal(tmp_path):
     )
 
     roadmap_md = repo_root / "ROADMAP.md"
-    roadmap_md.write_text("* **Task Beta** — Beta description [status: planned]\nTarget: `src/beta.agda`\n")
+    fm = {
+        "id": "RM-1",
+        "title": "Task Beta",
+        "description": "Beta description",
+        "status": "planned",
+        "category": "demo",
+        "files": ["src/beta.agda"],
+    }
+    roadmap_md.write_text(f"```yaml\n{dump_yaml(fm)}\n```\n")
 
     ingested_dir = repo_root / "src" / "agda" / "Plan" / "CIM" / "IngestedRoadmaps"
     ingested_dir.mkdir(parents=True, exist_ok=True)

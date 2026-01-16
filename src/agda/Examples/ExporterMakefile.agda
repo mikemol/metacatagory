@@ -511,6 +511,9 @@ renderRecipeScript cmds =
         ∷ "  export PLANNING_DIR=\"${PLANNING_DIR:-$DEPS_DIR/planning/}\""
         ∷ "fi"
         ∷ "export BUILD_VENV_DIR=\"${BUILD_VENV_DIR:-$BUILD_WORKDIR/build/venv/.venv}\""
+        ∷ "case \"${VIRTUAL_ENV:-}\" in"
+        ∷ "  *\"{env:\"* ) VIRTUAL_ENV=\"$BUILD_VENV_DIR\" ;;"
+        ∷ "esac"
         ∷ "export VIRTUAL_ENV=\"${VIRTUAL_ENV:-$BUILD_VENV_DIR}\""
         ∷ "export PATH=\"$VIRTUAL_ENV/bin:$PATH\""
         ∷ [])

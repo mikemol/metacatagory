@@ -29,20 +29,23 @@ This document is a projection from the planning kernel. To update:
 ## Build Infrastructure
 
 ```yaml
-id: BUILD-JSON-DECOMPOSITION
-title: Decompose large JSON artifacts via natural transformations
-description: Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency.
-status: done
-category: Build Infrastructure
-tags:
-  - JSON
-  - NaturalTransformation
-  - SPPF
-  - Build
-files:
-  - src/agda/Plan/CIM/JSONTransformation.agda
-  - scripts/json_decompose.py
-  - scripts/json_recompose.py
+"id": "BUILD-JSON-DECOMPOSITION"
+"title": "Decompose large JSON artifacts via natural transformations"
+"description": "Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json,\
+  \ canonical_enriched.json, etc.) using category-theoretic natural transformations.\
+  \ Preserve losslessness and structure while improving granularity, diffability,\
+  \ and parallel build efficiency."
+"status": "done"
+"category": "Build Infrastructure"
+"tags":
+- "JSON"
+- "NaturalTransformation"
+- "SPPF"
+- "Build"
+"files":
+- "src/agda/Plan/CIM/JSONTransformation.agda"
+- "scripts/json_decompose.py"
+- "scripts/json_recompose.py"
 ```
 
 - **Decompose large JSON artifacts via natural transformations** — Implement hierarchical decomposition of monolithic build JSONs (dependency_graph.json, canonical_enriched.json, etc.) using category-theoretic natural transformations. Preserve losslessness and structure while improving granularity, diffability, and parallel build efficiency. [status: done]
@@ -51,22 +54,26 @@ files:
   Tags: JSON, NaturalTransformation, SPPF, Build
 
 ```yaml
-id: BUILD-JSON-SCHEMA
-title: Formalize JSON transformation schema in Agda
-description: Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward ∘ forward ≡ id and structure preservation. Extended with adequacy framework: synthesize transformations from compositional primitives (json-get, json-set, json-merge) instead of monolithic Python FFI.
-status: in-progress
-category: Build Infrastructure
-dependencies:
-  - BUILD-JSON-DECOMPOSITION
-tags:
-  - JSON
-  - FormalizationProof
-  - CategoryTheory
-  - Adequacy
-files:
-  - src/agda/Plan/CIM/JSONTransformation.agda
-  - src/agda/Plan/CIM/JSONTransformationAdequacy.agda
-  - src/agda/Plan/CIM/JSONTransformationProofs.agda
+"id": "BUILD-JSON-SCHEMA"
+"title": "Formalize JSON transformation schema in Agda"
+"description": "Define record types for Monolithic and Hierarchical JSON representations,\
+  \ along with natural transformation laws. Prove isomorphism: backward ∘ forward\
+  \ ≡ id and structure preservation. Extended with adequacy framework: synthesize\
+  \ transformations from compositional primitives (json-get, json-set, json-merge)\
+  \ instead of monolithic Python FFI."
+"status": "in-progress"
+"category": "Build Infrastructure"
+"dependencies":
+- "BUILD-JSON-DECOMPOSITION"
+"tags":
+- "JSON"
+- "FormalizationProof"
+- "CategoryTheory"
+- "Adequacy"
+"files":
+- "src/agda/Plan/CIM/JSONTransformation.agda"
+- "src/agda/Plan/CIM/JSONTransformationAdequacy.agda"
+- "src/agda/Plan/CIM/JSONTransformationProofs.agda"
 ```
 
 - **Formalize JSON transformation schema in Agda** — Define record types for Monolithic and Hierarchical JSON representations, along with natural transformation laws. Prove isomorphism: backward ∘ forward ≡ id and structure preservation. Extended with adequacy framework: synthesize transformations from compositional primitives (json-get, json-set, json-merge) instead of monolithic Python FFI. [status: in-progress]
@@ -76,20 +83,22 @@ files:
   Depends on: `BUILD-JSON-DECOMPOSITION`
 
 ```yaml
-id: BUILD-JSON-HIERARCHY
-title: Design hierarchical JSON directory structure
-description: Document and implement the target hierarchy: dependency_graph → deps/, canonical_enriched → enriched/, planning_index → planning/ with _index.json manifests, metadata files, and aggregation rules.
-status: done
-category: Build Infrastructure
-dependencies:
-  - BUILD-JSON-DECOMPOSITION
-tags:
-  - JSON
-  - Documentation
-  - Schema
-files:
-  - docs/process/JSON-DECOMPOSITION.md
-  - docs/schemas/hierarchy.md
+"id": "BUILD-JSON-HIERARCHY"
+"title": "Design hierarchical JSON directory structure"
+"description": "Document and implement the target hierarchy: dependency_graph → deps/,\
+  \ canonical_enriched → enriched/, planning_index → planning/ with _index.json manifests,\
+  \ metadata files, and aggregation rules."
+"status": "done"
+"category": "Build Infrastructure"
+"dependencies":
+- "BUILD-JSON-DECOMPOSITION"
+"tags":
+- "JSON"
+- "Documentation"
+- "Schema"
+"files":
+- "docs/process/JSON-DECOMPOSITION.md"
+- "docs/schemas/hierarchy.md"
 ```
 
 - **Design hierarchical JSON directory structure** — Document and implement the target hierarchy: dependency_graph → deps/, canonical_enriched → enriched/, planning_index → planning/ with _index.json manifests, metadata files, and aggregation rules. [status: done]
@@ -99,20 +108,23 @@ files:
   Depends on: `BUILD-JSON-DECOMPOSITION`
 
 ```yaml
-id: BUILD-JSON-FORWARD
-title: Implement monolithic → hierarchical forward transformation
-description: Synthesize forward transformation from adequacy kit primitives (json-get, json-set, extractItems, generateIndexManifest). Kit provides decomposition strategy + primitive operations; adequacy proof witnesses sufficiency. Extract to Haskell/Python or implement primitives directly in Agda.
-status: not-started
-category: Build Infrastructure
-dependencies:
-  - BUILD-JSON-SCHEMA
-  - BUILD-JSON-HIERARCHY
-tags:
-  - JSON
-  - Implementation
-  - Python
-files:
-  - scripts/json_decompose.py
+"id": "BUILD-JSON-FORWARD"
+"title": "Implement monolithic → hierarchical forward transformation"
+"description": "Synthesize forward transformation from adequacy kit primitives (json-get,\
+  \ json-set, extractItems, generateIndexManifest). Kit provides decomposition strategy\
+  \ + primitive operations; adequacy proof witnesses sufficiency. Extract to Haskell/Python\
+  \ or implement primitives directly in Agda."
+"status": "not-started"
+"category": "Build Infrastructure"
+"dependencies":
+- "BUILD-JSON-SCHEMA"
+- "BUILD-JSON-HIERARCHY"
+"tags":
+- "JSON"
+- "Implementation"
+- "Python"
+"files":
+- "scripts/json_decompose.py"
 ```
 
 - **Implement monolithic → hierarchical forward transformation** — Synthesize forward transformation from adequacy kit primitives (json-get, json-set, extractItems, generateIndexManifest). Kit provides decomposition strategy + primitive operations; adequacy proof witnesses sufficiency. Extract to Haskell/Python or implement primitives directly in Agda. [status: not-started]
@@ -122,19 +134,20 @@ files:
   Depends on: `BUILD-JSON-SCHEMA`, `BUILD-JSON-HIERARCHY`
 
 ```yaml
-id: BUILD-JSON-BACKWARD
-title: Implement hierarchical → monolithic backward transformation
-description: Write inverse transformer that reconstructs original monolithic JSON from hierarchical fragments, with roundtrip verification for CI.
-status: not-started
-category: Build Infrastructure
-dependencies:
-  - BUILD-JSON-FORWARD
-tags:
-  - JSON
-  - Implementation
-  - Python
-files:
-  - scripts/json_recompose.py
+"id": "BUILD-JSON-BACKWARD"
+"title": "Implement hierarchical → monolithic backward transformation"
+"description": "Write inverse transformer that reconstructs original monolithic JSON\
+  \ from hierarchical fragments, with roundtrip verification for CI."
+"status": "not-started"
+"category": "Build Infrastructure"
+"dependencies":
+- "BUILD-JSON-FORWARD"
+"tags":
+- "JSON"
+- "Implementation"
+- "Python"
+"files":
+- "scripts/json_recompose.py"
 ```
 
 - **Implement hierarchical → monolithic backward transformation** — Write inverse transformer that reconstructs original monolithic JSON from hierarchical fragments, with roundtrip verification for CI. [status: not-started]
@@ -144,21 +157,22 @@ files:
   Depends on: `BUILD-JSON-FORWARD`
 
 ```yaml
-id: BUILD-JSON-APPLY-DEPS
-title: Apply decomposition to dependency_graph.json
-description: First target: decompose 84-module dependency graph into data/deps/{modules,layers,cycles}/ hierarchy with module-level granularity.
-status: done
-category: Build Infrastructure
-dependencies:
-  - BUILD-JSON-BACKWARD
-tags:
-  - JSON
-  - DependencyGraph
-  - Phase1
-files:
-  - data/deps/_metadata.json
-  - data/deps/modules/_index.json
-  - data/deps/layers/_index.json
+"id": "BUILD-JSON-APPLY-DEPS"
+"title": "Apply decomposition to dependency_graph.json"
+"description": "First target: decompose 84-module dependency graph into data/deps/{modules,layers,cycles}/\
+  \ hierarchy with module-level granularity."
+"status": "done"
+"category": "Build Infrastructure"
+"dependencies":
+- "BUILD-JSON-BACKWARD"
+"tags":
+- "JSON"
+- "DependencyGraph"
+- "Phase1"
+"files":
+- "data/deps/_metadata.json"
+- "data/deps/modules/_index.json"
+- "data/deps/layers/_index.json"
 ```
 
 - **Apply decomposition to dependency_graph.json** — First target: decompose 84-module dependency graph into data/deps/{modules,layers,cycles}/ hierarchy with module-level granularity. [status: done]
@@ -168,21 +182,22 @@ files:
   Depends on: `BUILD-JSON-BACKWARD`
 
 ```yaml
-id: BUILD-JSON-APPLY-ENRICHED
-title: Apply decomposition to canonical_enriched.json
-description: Second target: decompose roadmap enrichment data into data/enriched/{items,dependencies,annotations}/ with per-item granularity.
-status: done
-category: Build Infrastructure
-dependencies:
-  - BUILD-JSON-BACKWARD
-tags:
-  - JSON
-  - RoadmapEnrichment
-  - Phase1
-files:
-  - data/enriched/_metadata.json
-  - data/enriched/items/_index.json
-  - data/enriched/dependencies/_manifest.json
+"id": "BUILD-JSON-APPLY-ENRICHED"
+"title": "Apply decomposition to canonical_enriched.json"
+"description": "Second target: decompose roadmap enrichment data into data/enriched/{items,dependencies,annotations}/\
+  \ with per-item granularity."
+"status": "done"
+"category": "Build Infrastructure"
+"dependencies":
+- "BUILD-JSON-BACKWARD"
+"tags":
+- "JSON"
+- "RoadmapEnrichment"
+- "Phase1"
+"files":
+- "data/enriched/_metadata.json"
+- "data/enriched/items/_index.json"
+- "data/enriched/dependencies/_manifest.json"
 ```
 
 - **Apply decomposition to canonical_enriched.json** — Second target: decompose roadmap enrichment data into data/enriched/{items,dependencies,annotations}/ with per-item granularity. [status: done]
@@ -192,21 +207,22 @@ files:
   Depends on: `BUILD-JSON-BACKWARD`
 
 ```yaml
-id: BUILD-JSON-APPLY-PLANNING
-title: Apply decomposition to planning_index.json
-description: Third target: decompose planning index into data/planning/{items,sources,artifacts}/ with natural hierarchical layout.
-status: done
-category: Build Infrastructure
-dependencies:
-  - BUILD-JSON-BACKWARD
-tags:
-  - JSON
-  - PlanningIndex
-  - Phase1
-files:
-  - data/planning/_metadata.json
-  - data/planning/items/_index.json
-  - data/planning/sources/_manifest.json
+"id": "BUILD-JSON-APPLY-PLANNING"
+"title": "Apply decomposition to planning_index.json"
+"description": "Third target: decompose planning index into data/planning/{items,sources,artifacts}/\
+  \ with natural hierarchical layout."
+"status": "done"
+"category": "Build Infrastructure"
+"dependencies":
+- "BUILD-JSON-BACKWARD"
+"tags":
+- "JSON"
+- "PlanningIndex"
+- "Phase1"
+"files":
+- "data/planning/_metadata.json"
+- "data/planning/items/_index.json"
+- "data/planning/sources/_manifest.json"
 ```
 
 - **Apply decomposition to planning_index.json** — Third target: decompose planning index into data/planning/{items,sources,artifacts}/ with natural hierarchical layout. [status: done]
@@ -216,22 +232,24 @@ files:
   Depends on: `BUILD-JSON-BACKWARD`
 
 ```yaml
-id: BUILD-JSON-QUERY-LAYER
-title: Implement query layer for hierarchical JSON
-description: Build Python/Agda utilities for querying decomposed JSON: by-category, by-module, transitive-deps, etc., using _index.json for efficient lookups without scanning filesystem.
-status: not-started
-category: Build Infrastructure
-dependencies:
-  - BUILD-JSON-APPLY-DEPS
-  - BUILD-JSON-APPLY-ENRICHED
-  - BUILD-JSON-APPLY-PLANNING
-tags:
-  - JSON
-  - Query
-  - Performance
-files:
-  - scripts/query_json_hierarchy.py
-  - src/agda/Plan/CIM/JSONQuery.agda
+"id": "BUILD-JSON-QUERY-LAYER"
+"title": "Implement query layer for hierarchical JSON"
+"description": "Build Python/Agda utilities for querying decomposed JSON: by-category,\
+  \ by-module, transitive-deps, etc., using _index.json for efficient lookups without\
+  \ scanning filesystem."
+"status": "not-started"
+"category": "Build Infrastructure"
+"dependencies":
+- "BUILD-JSON-APPLY-DEPS"
+- "BUILD-JSON-APPLY-ENRICHED"
+- "BUILD-JSON-APPLY-PLANNING"
+"tags":
+- "JSON"
+- "Query"
+- "Performance"
+"files":
+- "scripts/query_json_hierarchy.py"
+- "src/agda/Plan/CIM/JSONQuery.agda"
 ```
 
 - **Implement query layer for hierarchical JSON** — Build Python/Agda utilities for querying decomposed JSON: by-category, by-module, transitive-deps, etc., using _index.json for efficient lookups without scanning filesystem. [status: not-started]
@@ -241,19 +259,20 @@ files:
   Depends on: `BUILD-JSON-APPLY-DEPS`, `BUILD-JSON-APPLY-ENRICHED`, `BUILD-JSON-APPLY-PLANNING`
 
 ```yaml
-id: BUILD-JSON-VALIDATION
-title: Implement CI validation for roundtrip equivalence
-description: Add Makefile target to validate: decompose → recompose yields original JSON bit-for-bit, ensuring losslessness.
-status: not-started
-category: Build Infrastructure
-dependencies:
-  - BUILD-JSON-BACKWARD
-tags:
-  - JSON
-  - CI
-  - Validation
-files:
-  - scripts/validate_json_roundtrip.py
+"id": "BUILD-JSON-VALIDATION"
+"title": "Implement CI validation for roundtrip equivalence"
+"description": "Add Makefile target to validate: decompose → recompose yields original\
+  \ JSON bit-for-bit, ensuring losslessness."
+"status": "not-started"
+"category": "Build Infrastructure"
+"dependencies":
+- "BUILD-JSON-BACKWARD"
+"tags":
+- "JSON"
+- "CI"
+- "Validation"
+"files":
+- "scripts/validate_json_roundtrip.py"
 ```
 
 - **Implement CI validation for roundtrip equivalence** — Add Makefile target to validate: decompose → recompose yields original JSON bit-for-bit, ensuring losslessness. [status: not-started]
@@ -265,16 +284,17 @@ files:
 ## Infrastructure
 
 ```yaml
-id: LOCAL-DEF-DICT
-title: Implement Definition Dictionary adequacy module
-description: Package the Definition Dictionary adequacy module so downstream proofs rely on a canonical definition space.
-status: done
-category: Infrastructure
-tags:
-  - Definition
-  - Adequacy
-files:
-  - src/agda/Infrastructure/Definitions/Dictionary.agda
+"id": "LOCAL-DEF-DICT"
+"title": "Implement Definition Dictionary adequacy module"
+"description": "Package the Definition Dictionary adequacy module so downstream proofs\
+  \ rely on a canonical definition space."
+"status": "done"
+"category": "Infrastructure"
+"tags":
+- "Definition"
+- "Adequacy"
+"files":
+- "src/agda/Infrastructure/Definitions/Dictionary.agda"
 ```
 
 - **Implement Definition Dictionary adequacy module** — Package the Definition Dictionary adequacy module so downstream proofs rely on a canonical definition space. [status: done]
@@ -283,25 +303,26 @@ files:
   Tags: Definition, Adequacy
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR
-title: Introduce generic functor interface for protocol bundles
-description: Establish the generic functor interface for protocol bundles so adapters share a single abstraction.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-DEF-DICT
-tags:
-  - Functor
-  - Interface
-files:
-  - src/agda/Infrastructure/Functor/Interface.agda
-  - src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda
-  - src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda
-  - src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda
-  - src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda
-  - src/agda/Infrastructure/Functor/Instances/Ambiguity.agda
-  - src/agda/Infrastructure/Functor/Compose.agda
-  - src/agda/Core/PhaseCategoryWrapper.agda
+"id": "LOCAL-GENERIC-FUNCTOR"
+"title": "Introduce generic functor interface for protocol bundles"
+"description": "Establish the generic functor interface for protocol bundles so adapters\
+  \ share a single abstraction."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-DEF-DICT"
+"tags":
+- "Functor"
+- "Interface"
+"files":
+- "src/agda/Infrastructure/Functor/Interface.agda"
+- "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda"
+- "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda"
+- "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda"
+- "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda"
+- "src/agda/Infrastructure/Functor/Instances/Ambiguity.agda"
+- "src/agda/Infrastructure/Functor/Compose.agda"
+- "src/agda/Core/PhaseCategoryWrapper.agda"
 ```
 
 - **Introduce generic functor interface for protocol bundles** — Establish the generic functor interface for protocol bundles so adapters share a single abstraction. [status: done]
@@ -311,18 +332,19 @@ files:
   Depends on: `LOCAL-DEF-DICT`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS
-title: Complete generic functor interface laws and helpers
-description: Complete the generic functor interface laws and helpers to provide the coherence proofs downstream components expect.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR
-tags:
-  - Functor
-  - Interface
-files:
-  - src/agda/Infrastructure/Functor/Interface.agda
+"id": "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
+"title": "Complete generic functor interface laws and helpers"
+"description": "Complete the generic functor interface laws and helpers to provide\
+  \ the coherence proofs downstream components expect."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR"
+"tags":
+- "Functor"
+- "Interface"
+"files":
+- "src/agda/Infrastructure/Functor/Interface.agda"
 ```
 
 - **Complete generic functor interface laws and helpers** — Complete the generic functor interface laws and helpers to provide the coherence proofs downstream components expect. [status: done]
@@ -332,19 +354,20 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-INTERFACE-CONVENIENCE-LAWS
-title: Add convenience lemmas for map-id/compose congruence
-description: Add map-id and compose convenience lemmas so reasoning about the interface stays manageable.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS
-tags:
-  - Functor
-  - Interface
-  - Law
-files:
-  - src/agda/Infrastructure/Functor/Interface.agda
+"id": "LOCAL-GENERIC-FUNCTOR-INTERFACE-CONVENIENCE-LAWS"
+"title": "Add convenience lemmas for map-id/compose congruence"
+"description": "Add map-id and compose convenience lemmas so reasoning about the interface\
+  \ stays manageable."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
+"tags":
+- "Functor"
+- "Interface"
+- "Law"
+"files":
+- "src/agda/Infrastructure/Functor/Interface.agda"
 ```
 
 - **Add convenience lemmas for map-id/compose congruence** — Add map-id and compose convenience lemmas so reasoning about the interface stays manageable. [status: done]
@@ -354,18 +377,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-INTERFACE-DOCUMENTATION
-title: Document interface laws and usage in code comments
-description: Document the interface laws and usage so the new functor API stays discoverable.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS
-tags:
-  - Functor
-  - Documentation
-files:
-  - src/agda/Infrastructure/Functor/Interface.agda
+"id": "LOCAL-GENERIC-FUNCTOR-INTERFACE-DOCUMENTATION"
+"title": "Document interface laws and usage in code comments"
+"description": "Document the interface laws and usage so the new functor API stays\
+  \ discoverable."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS"
+"tags":
+- "Functor"
+- "Documentation"
+"files":
+- "src/agda/Infrastructure/Functor/Interface.agda"
 ```
 
 - **Document interface laws and usage in code comments** — Document the interface laws and usage so the new functor API stays discoverable. [status: done]
@@ -375,22 +399,23 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-INTERFACE-COMPLETENESS`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION
-title: Normalize existing functor instances onto shared interface
-description: Normalize existing functor instances onto the shared interface to keep implementations aligned.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR
-tags:
-  - Functor
-  - Refactor
-files:
-  - src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda
-  - src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda
-  - src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda
-  - src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda
-  - src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda
+"id": "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+"title": "Normalize existing functor instances onto shared interface"
+"description": "Normalize existing functor instances onto the shared interface to\
+  \ keep implementations aligned."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR"
+"tags":
+- "Functor"
+- "Refactor"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda"
+- "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda"
+- "src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda"
+- "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda"
+- "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda"
 ```
 
 - **Normalize existing functor instances onto shared interface** — Normalize existing functor instances onto the shared interface to keep implementations aligned. [status: done]
@@ -400,18 +425,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCTION
-title: Normalize FunctionCategory functor instance
-description: Align the FunctionCategory instance with the generic functor interface so generic algorithms see a consistent surface.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION
-tags:
-  - Functor
-  - Refactor
-files:
-  - src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda
+"id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCTION"
+"title": "Normalize FunctionCategory functor instance"
+"description": "Align the FunctionCategory instance with the generic functor interface\
+  \ so generic algorithms see a consistent surface."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+"tags":
+- "Functor"
+- "Refactor"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/FunctionCategory.agda"
 ```
 
 - **Normalize FunctionCategory functor instance** — Align the FunctionCategory instance with the generic functor interface so generic algorithms see a consistent surface. [status: done]
@@ -421,18 +447,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCPATH
-title: Normalize FunctionPathCategory functor instance
-description: Normalize the FunctionPathCategory functor instance so path-based functors also obey the shared interface.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION
-tags:
-  - Functor
-  - Refactor
-files:
-  - src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda
+"id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-FUNCPATH"
+"title": "Normalize FunctionPathCategory functor instance"
+"description": "Normalize the FunctionPathCategory functor instance so path-based\
+  \ functors also obey the shared interface."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+"tags":
+- "Functor"
+- "Refactor"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda"
 ```
 
 - **Normalize FunctionPathCategory functor instance** — Normalize the FunctionPathCategory functor instance so path-based functors also obey the shared interface. [status: done]
@@ -442,18 +469,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-NORMALIZE-TRANSFORMATION
-title: Normalize TransformationSystem functor instance
-description: Normalize the TransformationSystem functor instance so rewriting follows the unified functor pattern.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION
-tags:
-  - Functor
-  - Refactor
-files:
-  - src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda
+"id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-TRANSFORMATION"
+"title": "Normalize TransformationSystem functor instance"
+"description": "Normalize the TransformationSystem functor instance so rewriting follows\
+  \ the unified functor pattern."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+"tags":
+- "Functor"
+- "Refactor"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda"
 ```
 
 - **Normalize TransformationSystem functor instance** — Normalize the TransformationSystem functor instance so rewriting follows the unified functor pattern. [status: done]
@@ -463,18 +491,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-NORMALIZE-PATHALGEBRA
-title: Normalize PathAlgebra functor instance
-description: Normalize the PathAlgebra functor instance so algebraic paths reuse the same categorical structure.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION
-tags:
-  - Functor
-  - Refactor
-files:
-  - src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda
+"id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-PATHALGEBRA"
+"title": "Normalize PathAlgebra functor instance"
+"description": "Normalize the PathAlgebra functor instance so algebraic paths reuse\
+  \ the same categorical structure."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+"tags":
+- "Functor"
+- "Refactor"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/PathAlgebra.agda"
 ```
 
 - **Normalize PathAlgebra functor instance** — Normalize the PathAlgebra functor instance so algebraic paths reuse the same categorical structure. [status: done]
@@ -484,18 +513,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-NORMALIZE-PHASE
-title: Normalize PhaseCategory functor instance
-description: Normalize the PhaseCategory functor instance so phases can be treated uniformly under the interface.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION
-tags:
-  - Functor
-  - Refactor
-files:
-  - src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda
+"id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-PHASE"
+"title": "Normalize PhaseCategory functor instance"
+"description": "Normalize the PhaseCategory functor instance so phases can be treated\
+  \ uniformly under the interface."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+"tags":
+- "Functor"
+- "Refactor"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/PhaseCategory.agda"
 ```
 
 - **Normalize PhaseCategory functor instance** — Normalize the PhaseCategory functor instance so phases can be treated uniformly under the interface. [status: done]
@@ -505,18 +535,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-NORMALIZE-AMBIGUITY
-title: Normalize Ambiguity functor instance
-description: Normalize the Ambiguity functor instance so branching semantics align with the shared abstraction.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION
-tags:
-  - Functor
-  - Refactor
-files:
-  - src/agda/Infrastructure/Functor/Instances/Ambiguity.agda
+"id": "LOCAL-GENERIC-FUNCTOR-NORMALIZE-AMBIGUITY"
+"title": "Normalize Ambiguity functor instance"
+"description": "Normalize the Ambiguity functor instance so branching semantics align\
+  \ with the shared abstraction."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION"
+"tags":
+- "Functor"
+- "Refactor"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/Ambiguity.agda"
 ```
 
 - **Normalize Ambiguity functor instance** — Normalize the Ambiguity functor instance so branching semantics align with the shared abstraction. [status: done]
@@ -526,18 +557,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-INSTANCE-NORMALIZATION`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY
-title: Ensure adequacy kits follow standardized pattern
-description: Ensure adequacy kits follow the standardized pattern so adequacy proofs stay consistent.
-status: not-started
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR
-tags:
-  - Functor
-  - Adequacy
-files:
-  - src/agda/Infrastructure/Functor/Instances
+"id": "LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY"
+"title": "Ensure adequacy kits follow standardized pattern"
+"description": "Ensure adequacy kits follow the standardized pattern so adequacy proofs\
+  \ stay consistent."
+"status": "not-started"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR"
+"tags":
+- "Functor"
+- "Adequacy"
+"files":
+- "src/agda/Infrastructure/Functor/Instances"
 ```
 
 - **Ensure adequacy kits follow standardized pattern** — Ensure adequacy kits follow the standardized pattern so adequacy proofs stay consistent. [status: not-started]
@@ -547,18 +579,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-ADEQUACY-FUNCPATH
-title: Confirm FunctionPath adequacy follows shared kit pattern
-description: Confirm FunctionPath adequacy follows the shared kit pattern to keep path-level correctness continuous.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY
-tags:
-  - Functor
-  - Adequacy
-files:
-  - src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda
+"id": "LOCAL-GENERIC-FUNCTOR-ADEQUACY-FUNCPATH"
+"title": "Confirm FunctionPath adequacy follows shared kit pattern"
+"description": "Confirm FunctionPath adequacy follows the shared kit pattern to keep\
+  \ path-level correctness continuous."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY"
+"tags":
+- "Functor"
+- "Adequacy"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda"
 ```
 
 - **Confirm FunctionPath adequacy follows shared kit pattern** — Confirm FunctionPath adequacy follows the shared kit pattern to keep path-level correctness continuous. [status: done]
@@ -568,18 +601,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-ADEQUACY-TRANSFORMATION
-title: Confirm TransformationSystem adequacy follows shared kit pattern
-description: Confirm the TransformationSystem adequacy follows the shared kit pattern so rewrites stay sound.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY
-tags:
-  - Functor
-  - Adequacy
-files:
-  - src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda
+"id": "LOCAL-GENERIC-FUNCTOR-ADEQUACY-TRANSFORMATION"
+"title": "Confirm TransformationSystem adequacy follows shared kit pattern"
+"description": "Confirm the TransformationSystem adequacy follows the shared kit pattern\
+  \ so rewrites stay sound."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY"
+"tags":
+- "Functor"
+- "Adequacy"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda"
 ```
 
 - **Confirm TransformationSystem adequacy follows shared kit pattern** — Confirm the TransformationSystem adequacy follows the shared kit pattern so rewrites stay sound. [status: done]
@@ -589,18 +623,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-ADEQUACY-AMBIGUITY
-title: Confirm Ambiguity adequacy follows shared kit pattern
-description: Confirm Ambiguity adequacy follows the shared kit pattern so alternative parses remain justified.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY
-tags:
-  - Functor
-  - Adequacy
-files:
-  - src/agda/Infrastructure/Functor/Instances/Ambiguity.agda
+"id": "LOCAL-GENERIC-FUNCTOR-ADEQUACY-AMBIGUITY"
+"title": "Confirm Ambiguity adequacy follows shared kit pattern"
+"description": "Confirm Ambiguity adequacy follows the shared kit pattern so alternative\
+  \ parses remain justified."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY"
+"tags":
+- "Functor"
+- "Adequacy"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/Ambiguity.agda"
 ```
 
 - **Confirm Ambiguity adequacy follows shared kit pattern** — Confirm Ambiguity adequacy follows the shared kit pattern so alternative parses remain justified. [status: done]
@@ -610,19 +645,20 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-ADEQUACY-CONSISTENCY`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS
-title: Align functor composition adapters with interface
-description: Build adapters so existing structures interoperate through the new generic functor interface.
-status: not-started
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR
-tags:
-  - Functor
-  - Interop
-files:
-  - src/agda/Infrastructure/Functor/Compose.agda
-  - src/agda/Core/PhaseCategoryWrapper.agda
+"id": "LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS"
+"title": "Align functor composition adapters with interface"
+"description": "Build adapters so existing structures interoperate through the new\
+  \ generic functor interface."
+"status": "not-started"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR"
+"tags":
+- "Functor"
+- "Interop"
+"files":
+- "src/agda/Infrastructure/Functor/Compose.agda"
+- "src/agda/Core/PhaseCategoryWrapper.agda"
 ```
 
 - **Align functor composition adapters with interface** — Build adapters so existing structures interoperate through the new generic functor interface. [status: not-started]
@@ -632,18 +668,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-INTEROP-COMPOSE
-title: Refine compose helper proofs for reuse
-description: Verify compose helper proofs so adapters retain interoperability when chained.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS
-tags:
-  - Functor
-  - Interop
-files:
-  - src/agda/Infrastructure/Functor/Compose.agda
+"id": "LOCAL-GENERIC-FUNCTOR-INTEROP-COMPOSE"
+"title": "Refine compose helper proofs for reuse"
+"description": "Verify compose helper proofs so adapters retain interoperability when\
+  \ chained."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS"
+"tags":
+- "Functor"
+- "Interop"
+"files":
+- "src/agda/Infrastructure/Functor/Compose.agda"
 ```
 
 - **Refine compose helper proofs for reuse** — Verify compose helper proofs so adapters retain interoperability when chained. [status: done]
@@ -653,18 +690,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-INTEROP-PHASE-WRAPPER
-title: Ensure PhaseCategoryWrapper matches interface helpers
-description: Ensure the PhaseCategoryWrapper matches interface helpers so interoperable functors can be staged per phase.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS
-tags:
-  - Functor
-  - Interop
-files:
-  - src/agda/Core/PhaseCategoryWrapper.agda
+"id": "LOCAL-GENERIC-FUNCTOR-INTEROP-PHASE-WRAPPER"
+"title": "Ensure PhaseCategoryWrapper matches interface helpers"
+"description": "Ensure the PhaseCategoryWrapper matches interface helpers so interoperable\
+  \ functors can be staged per phase."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS"
+"tags":
+- "Functor"
+- "Interop"
+"files":
+- "src/agda/Core/PhaseCategoryWrapper.agda"
 ```
 
 - **Ensure PhaseCategoryWrapper matches interface helpers** — Ensure the PhaseCategoryWrapper matches interface helpers so interoperable functors can be staged per phase. [status: done]
@@ -674,18 +712,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR-INTEROP-ADAPTERS`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-EXAMPLES
-title: Add regression examples exercising functor identity/compose
-description: Add regression examples to demonstrate how the generic functor interface simplifies identity and compose reasoning.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR
-tags:
-  - Functor
-  - Example
-files:
-  - src/agda/Examples/FunctorComposition.agda
+"id": "LOCAL-GENERIC-FUNCTOR-EXAMPLES"
+"title": "Add regression examples exercising functor identity/compose"
+"description": "Add regression examples to demonstrate how the generic functor interface\
+  \ simplifies identity and compose reasoning."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR"
+"tags":
+- "Functor"
+- "Example"
+"files":
+- "src/agda/Examples/FunctorComposition.agda"
 ```
 
 - **Add regression examples exercising functor identity/compose** — Add regression examples to demonstrate how the generic functor interface simplifies identity and compose reasoning. [status: done]
@@ -695,19 +734,20 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-DOCS
-title: Document generic functor interface and upgrade guide
-description: Document the generic functor interface and upgrade guide so contributors understand the migration path.
-status: not-started
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR
-tags:
-  - Functor
-  - Documentation
-files:
-  - ROADMAP.md
-  - docs/process
+"id": "LOCAL-GENERIC-FUNCTOR-DOCS"
+"title": "Document generic functor interface and upgrade guide"
+"description": "Document the generic functor interface and upgrade guide so contributors\
+  \ understand the migration path."
+"status": "not-started"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR"
+"tags":
+- "Functor"
+- "Documentation"
+"files":
+- "ROADMAP.md"
+- "docs/process"
 ```
 
 - **Document generic functor interface and upgrade guide** — Document the generic functor interface and upgrade guide so contributors understand the migration path. [status: not-started]
@@ -717,18 +757,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR`
 
 ```yaml
-id: DOCS-AGDA-DOCCOMMENT-PIPELINE
-title: Extend module exporter to surface Agda doc comments
-description: Describe the doc-comment pipeline so Agda declarations stay annotated and downstream tools can export them.
-status: done
-category: Infrastructure
-tags:
-  - Documentation
-  - Pipeline
-  - Agda
-files:
-  - src/agda/Plan/CIM/ModuleExporter.agda
-  - docs/automation
+"id": "DOCS-AGDA-DOCCOMMENT-PIPELINE"
+"title": "Extend module exporter to surface Agda doc comments"
+"description": "Describe the doc-comment pipeline so Agda declarations stay annotated\
+  \ and downstream tools can export them."
+"status": "done"
+"category": "Infrastructure"
+"tags":
+- "Documentation"
+- "Pipeline"
+- "Agda"
+"files":
+- "src/agda/Plan/CIM/ModuleExporter.agda"
+- "docs/automation"
 ```
 
 - **Extend module exporter to surface Agda doc comments** — Describe the doc-comment pipeline so Agda declarations stay annotated and downstream tools can export them. [status: done]
@@ -737,20 +778,21 @@ files:
   Tags: Documentation, Pipeline, Agda
 
 ```yaml
-id: DOCS-AGDA-DECL-DOCS
-title: Export declaration docstrings (records/data) into docs
-description: Export declaration docstrings so records and data constructors carry human-readable intent.
-status: done
-category: Infrastructure
-dependencies:
-  - DOCS-AGDA-DOCCOMMENT-PIPELINE
-tags:
-  - Documentation
-  - Pipeline
-  - Agda
-files:
-  - src/agda/Plan/CIM/ModuleExporter.agda
-  - docs/automation
+"id": "DOCS-AGDA-DECL-DOCS"
+"title": "Export declaration docstrings (records/data) into docs"
+"description": "Export declaration docstrings so records and data constructors carry\
+  \ human-readable intent."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "DOCS-AGDA-DOCCOMMENT-PIPELINE"
+"tags":
+- "Documentation"
+- "Pipeline"
+- "Agda"
+"files":
+- "src/agda/Plan/CIM/ModuleExporter.agda"
+- "docs/automation"
 ```
 
 - **Export declaration docstrings (records/data) into docs** — Export declaration docstrings so records and data constructors carry human-readable intent. [status: done]
@@ -760,20 +802,21 @@ files:
   Depends on: `DOCS-AGDA-DOCCOMMENT-PIPELINE`
 
 ```yaml
-id: DOCS-AGDA-FIELD-DOCS
-title: Export field/argument docstrings into docs
-description: Export field and argument docstrings so data carriers are explained in generated docs.
-status: not-started
-category: Infrastructure
-dependencies:
-  - DOCS-AGDA-DECL-DOCS
-tags:
-  - Documentation
-  - Pipeline
-  - Agda
-files:
-  - src/agda/Plan/CIM/ModuleExporter.agda
-  - docs/automation
+"id": "DOCS-AGDA-FIELD-DOCS"
+"title": "Export field/argument docstrings into docs"
+"description": "Export field and argument docstrings so data carriers are explained\
+  \ in generated docs."
+"status": "not-started"
+"category": "Infrastructure"
+"dependencies":
+- "DOCS-AGDA-DECL-DOCS"
+"tags":
+- "Documentation"
+- "Pipeline"
+- "Agda"
+"files":
+- "src/agda/Plan/CIM/ModuleExporter.agda"
+- "docs/automation"
 ```
 
 - **Export field/argument docstrings into docs** — Export field and argument docstrings so data carriers are explained in generated docs. [status: not-started]
@@ -783,20 +826,21 @@ files:
   Depends on: `DOCS-AGDA-DECL-DOCS`
 
 ```yaml
-id: DOCS-AGDA-LINT
-title: Add lint to enforce module-level docstrings
-description: Add lint that enforces module-level docstrings to maintain documentation coverage.
-status: in-progress
-category: Infrastructure
-dependencies:
-  - DOCS-AGDA-DOCCOMMENT-PIPELINE
-tags:
-  - Documentation
-  - Lint
-  - Agda
-files:
-  - scripts
-  - docs/automation
+"id": "DOCS-AGDA-LINT"
+"title": "Add lint to enforce module-level docstrings"
+"description": "Add lint that enforces module-level docstrings to maintain documentation\
+  \ coverage."
+"status": "in-progress"
+"category": "Infrastructure"
+"dependencies":
+- "DOCS-AGDA-DOCCOMMENT-PIPELINE"
+"tags":
+- "Documentation"
+- "Lint"
+- "Agda"
+"files":
+- "scripts"
+- "docs/automation"
 ```
 
 - **Add lint to enforce module-level docstrings** — Add lint that enforces module-level docstrings to maintain documentation coverage. [status: in-progress]
@@ -806,18 +850,19 @@ files:
   Depends on: `DOCS-AGDA-DOCCOMMENT-PIPELINE`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-FUNCPATH-ADEQUACY
-title: Add adequacy kit for FunctionPathCategory
-description: Add an adequacy kit for FunctionPathCategory so path-level operations retain their invariants.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR
-tags:
-  - Functor
-  - Adequacy
-files:
-  - src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda
+"id": "LOCAL-GENERIC-FUNCTOR-FUNCPATH-ADEQUACY"
+"title": "Add adequacy kit for FunctionPathCategory"
+"description": "Add an adequacy kit for FunctionPathCategory so path-level operations\
+  \ retain their invariants."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR"
+"tags":
+- "Functor"
+- "Adequacy"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/FunctionPathCategory.agda"
 ```
 
 - **Add adequacy kit for FunctionPathCategory** — Add an adequacy kit for FunctionPathCategory so path-level operations retain their invariants. [status: done]
@@ -827,18 +872,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-TRANSFORMATION-ADEQUACY
-title: Add adequacy hook for TransformationSystem functor
-description: Add an adequacy hook for the TransformationSystem functor so rewrites have constructive guarantees.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR
-tags:
-  - Functor
-  - Adequacy
-files:
-  - src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda
+"id": "LOCAL-GENERIC-FUNCTOR-TRANSFORMATION-ADEQUACY"
+"title": "Add adequacy hook for TransformationSystem functor"
+"description": "Add an adequacy hook for the TransformationSystem functor so rewrites\
+  \ have constructive guarantees."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR"
+"tags":
+- "Functor"
+- "Adequacy"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/TransformationSystem.agda"
 ```
 
 - **Add adequacy hook for TransformationSystem functor** — Add an adequacy hook for the TransformationSystem functor so rewrites have constructive guarantees. [status: done]
@@ -848,18 +894,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR`
 
 ```yaml
-id: LOCAL-GENERIC-FUNCTOR-AMBIGUITY-ADEQUACY
-title: Add adequacy hook for Ambiguity functor
-description: Add an adequacy hook for the Ambiguity functor so divergent parses stay justified.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-GENERIC-FUNCTOR
-tags:
-  - Functor
-  - Adequacy
-files:
-  - src/agda/Infrastructure/Functor/Instances/Ambiguity.agda
+"id": "LOCAL-GENERIC-FUNCTOR-AMBIGUITY-ADEQUACY"
+"title": "Add adequacy hook for Ambiguity functor"
+"description": "Add an adequacy hook for the Ambiguity functor so divergent parses\
+  \ stay justified."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-GENERIC-FUNCTOR"
+"tags":
+- "Functor"
+- "Adequacy"
+"files":
+- "src/agda/Infrastructure/Functor/Instances/Ambiguity.agda"
 ```
 
 - **Add adequacy hook for Ambiguity functor** — Add an adequacy hook for the Ambiguity functor so divergent parses stay justified. [status: done]
@@ -869,18 +916,19 @@ files:
   Depends on: `LOCAL-GENERIC-FUNCTOR`
 
 ```yaml
-id: LOCAL-DEF-DICT-EXAMPLE
-title: Add DefinitionDictionary adequacy example
-description: Add a DefinitionDictionary adequacy example to document how adequacy proofs are structured.
-status: done
-category: Infrastructure
-dependencies:
-  - LOCAL-DEF-DICT
-tags:
-  - Definition
-  - Example
-files:
-  - src/agda/Examples/DefinitionDictionaryAdequacy.agda
+"id": "LOCAL-DEF-DICT-EXAMPLE"
+"title": "Add DefinitionDictionary adequacy example"
+"description": "Add a DefinitionDictionary adequacy example to document how adequacy\
+  \ proofs are structured."
+"status": "done"
+"category": "Infrastructure"
+"dependencies":
+- "LOCAL-DEF-DICT"
+"tags":
+- "Definition"
+- "Example"
+"files":
+- "src/agda/Examples/DefinitionDictionaryAdequacy.agda"
 ```
 
 - **Add DefinitionDictionary adequacy example** — Add a DefinitionDictionary adequacy example to document how adequacy proofs are structured. [status: done]
@@ -892,16 +940,17 @@ files:
 ## IngestedGP
 
 ```yaml
-id: GP-Gp400
-title: GP400: The "Elasticity" of Meaning
-description: GP400: The "Elasticity" of Meaning. Source: Plan/CIM/IngestedRoadmaps/Corrections.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: done
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Elasticity.agda
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp400"
+"title": "GP400: The \"Elasticity\" of Meaning"
+"description": "GP400: The \"Elasticity\" of Meaning. Source: Plan/CIM/IngestedRoadmaps/Corrections.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "done"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Elasticity.agda"
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP400: The "Elasticity" of Meaning** — GP400: The "Elasticity" of Meaning. Source: Plan/CIM/IngestedRoadmaps/Corrections.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: done]
@@ -910,15 +959,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp500
-title: GP500: Dimensional Relief
-description: GP500: Dimensional Relief. Source: Plan/CIM/IngestedRoadmaps/Corrections.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp500"
+"title": "GP500: Dimensional Relief"
+"description": "GP500: Dimensional Relief. Source: Plan/CIM/IngestedRoadmaps/Corrections.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP500: Dimensional Relief** — GP500: Dimensional Relief. Source: Plan/CIM/IngestedRoadmaps/Corrections.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -927,15 +977,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp501
-title: GP501: The Topological Diagram (II)
-description: GP501: The Topological Diagram (II). Source: Plan/CIM/IngestedRoadmaps/Corrections.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp501"
+"title": "GP501: The Topological Diagram (II)"
+"description": "GP501: The Topological Diagram (II). Source: Plan/CIM/IngestedRoadmaps/Corrections.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP501: The Topological Diagram (II)** — GP501: The Topological Diagram (II). Source: Plan/CIM/IngestedRoadmaps/Corrections.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -944,15 +995,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp800
-title: GP800: The Missing Morphisms
-description: GP800: The Missing Morphisms. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp800"
+"title": "GP800: The Missing Morphisms"
+"description": "GP800: The Missing Morphisms. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP800: The Missing Morphisms** — GP800: The Missing Morphisms. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -961,15 +1013,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp801
-title: GP801: The Exterior Algebra of Meaning
-description: GP801: The Exterior Algebra of Meaning. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp801"
+"title": "GP801: The Exterior Algebra of Meaning"
+"description": "GP801: The Exterior Algebra of Meaning. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP801: The Exterior Algebra of Meaning** — GP801: The Exterior Algebra of Meaning. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -978,15 +1031,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp802
-title: GP802: The Fundamental Group of the Grammar
-description: GP802: The Fundamental Group of the Grammar. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp802"
+"title": "GP802: The Fundamental Group of the Grammar"
+"description": "GP802: The Fundamental Group of the Grammar. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP802: The Fundamental Group of the Grammar** — GP802: The Fundamental Group of the Grammar. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -995,15 +1049,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp803
-title: GP803: The Holographic Manifest (v11.0)
-description: GP803: The Holographic Manifest (v11.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp803"
+"title": "GP803: The Holographic Manifest (v11.0)"
+"description": "GP803: The Holographic Manifest (v11.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP803: The Holographic Manifest (v11.0)** — GP803: The Holographic Manifest (v11.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1012,15 +1067,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp804
-title: GP804: The Missing Algebraic Topology
-description: GP804: The Missing Algebraic Topology. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp804"
+"title": "GP804: The Missing Algebraic Topology"
+"description": "GP804: The Missing Algebraic Topology. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP804: The Missing Algebraic Topology** — GP804: The Missing Algebraic Topology. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1029,15 +1085,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp805
-title: GP805: The Discovery of "Dark Matter"
-description: GP805: The Discovery of "Dark Matter". Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp805"
+"title": "GP805: The Discovery of \"Dark Matter\""
+"description": "GP805: The Discovery of \"Dark Matter\". Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP805: The Discovery of "Dark Matter"** — GP805: The Discovery of "Dark Matter". Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1046,15 +1103,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp806
-title: GP806: The Geometry of Inference
-description: GP806: The Geometry of Inference. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp806"
+"title": "GP806: The Geometry of Inference"
+"description": "GP806: The Geometry of Inference. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP806: The Geometry of Inference** — GP806: The Geometry of Inference. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1063,15 +1121,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp807
-title: GP807: The Logic of Exclusion
-description: GP807: The Logic of Exclusion. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp807"
+"title": "GP807: The Logic of Exclusion"
+"description": "GP807: The Logic of Exclusion. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP807: The Logic of Exclusion** — GP807: The Logic of Exclusion. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1080,15 +1139,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp808
-title: GP808: The Arithmetic Foundation
-description: GP808: The Arithmetic Foundation. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp808"
+"title": "GP808: The Arithmetic Foundation"
+"description": "GP808: The Arithmetic Foundation. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP808: The Arithmetic Foundation** — GP808: The Arithmetic Foundation. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1097,15 +1157,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp809
-title: GP809: The Logarithmic Isomorphism
-description: GP809: The Logarithmic Isomorphism. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp809"
+"title": "GP809: The Logarithmic Isomorphism"
+"description": "GP809: The Logarithmic Isomorphism. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP809: The Logarithmic Isomorphism** — GP809: The Logarithmic Isomorphism. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1114,15 +1175,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp810
-title: GP810: The Spectral Manifest (v16.0)
-description: GP810: The Spectral Manifest (v16.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp810"
+"title": "GP810: The Spectral Manifest (v16.0)"
+"description": "GP810: The Spectral Manifest (v16.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP810: The Spectral Manifest (v16.0)** — GP810: The Spectral Manifest (v16.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1131,15 +1193,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp811
-title: GP811: The Free Energy Principle
-description: GP811: The Free Energy Principle. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp811"
+"title": "GP811: The Free Energy Principle"
+"description": "GP811: The Free Energy Principle. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP811: The Free Energy Principle** — GP811: The Free Energy Principle. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1148,15 +1211,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp812
-title: GP812: The Unified Manifest (v17.0)
-description: GP812: The Unified Manifest (v17.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp812"
+"title": "GP812: The Unified Manifest (v17.0)"
+"description": "GP812: The Unified Manifest (v17.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP812: The Unified Manifest (v17.0)** — GP812: The Unified Manifest (v17.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1165,15 +1229,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp813
-title: GP813: The Missing Cohomology
-description: GP813: The Missing Cohomology. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp813"
+"title": "GP813: The Missing Cohomology"
+"description": "GP813: The Missing Cohomology. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP813: The Missing Cohomology** — GP813: The Missing Cohomology. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1182,15 +1247,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp814
-title: GP814: The Cohomological Manifest (v18.0)
-description: GP814: The Cohomological Manifest (v18.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp814"
+"title": "GP814: The Cohomological Manifest (v18.0)"
+"description": "GP814: The Cohomological Manifest (v18.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP814: The Cohomological Manifest (v18.0)** — GP814: The Cohomological Manifest (v18.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1199,15 +1265,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp815
-title: GP815: The Isomorphism of Process
-description: GP815: The Isomorphism of Process. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp815"
+"title": "GP815: The Isomorphism of Process"
+"description": "GP815: The Isomorphism of Process. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP815: The Isomorphism of Process** — GP815: The Isomorphism of Process. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1216,15 +1283,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp816
-title: GP816: The Homotopy of Morphology
-description: GP816: The Homotopy of Morphology. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp816"
+"title": "GP816: The Homotopy of Morphology"
+"description": "GP816: The Homotopy of Morphology. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP816: The Homotopy of Morphology** — GP816: The Homotopy of Morphology. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1233,15 +1301,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp817
-title: GP817: The Local-to-Global Principle
-description: GP817: The Local-to-Global Principle. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp817"
+"title": "GP817: The Local-to-Global Principle"
+"description": "GP817: The Local-to-Global Principle. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP817: The Local-to-Global Principle** — GP817: The Local-to-Global Principle. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1250,15 +1319,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp818
-title: GP818: The Abelian Sheaf
-description: GP818: The Abelian Sheaf. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp818"
+"title": "GP818: The Abelian Sheaf"
+"description": "GP818: The Abelian Sheaf. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP818: The Abelian Sheaf** — GP818: The Abelian Sheaf. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1267,15 +1337,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp819
-title: GP819: The Plus Construction
-description: GP819: The Plus Construction. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp819"
+"title": "GP819: The Plus Construction"
+"description": "GP819: The Plus Construction. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP819: The Plus Construction** — GP819: The Plus Construction. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1284,15 +1355,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp820
-title: GP820: The Fractal Sheaf
-description: GP820: The Fractal Sheaf. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp820"
+"title": "GP820: The Fractal Sheaf"
+"description": "GP820: The Fractal Sheaf. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP820: The Fractal Sheaf** — GP820: The Fractal Sheaf. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1301,15 +1373,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp821
-title: GP821: Recursive Self-Substitution
-description: GP821: Recursive Self-Substitution. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp821"
+"title": "GP821: Recursive Self-Substitution"
+"description": "GP821: Recursive Self-Substitution. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP821: Recursive Self-Substitution** — GP821: Recursive Self-Substitution. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1318,15 +1391,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp822
-title: GP822: The Fractal Manifest (v22.0)
-description: GP822: The Fractal Manifest (v22.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp822"
+"title": "GP822: The Fractal Manifest (v22.0)"
+"description": "GP822: The Fractal Manifest (v22.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP822: The Fractal Manifest (v22.0)** — GP822: The Fractal Manifest (v22.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1335,15 +1409,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp823
-title: GP823: The Descent to the Boolean Layer
-description: GP823: The Descent to the Boolean Layer. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp823"
+"title": "GP823: The Descent to the Boolean Layer"
+"description": "GP823: The Descent to the Boolean Layer. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP823: The Descent to the Boolean Layer** — GP823: The Descent to the Boolean Layer. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1352,15 +1427,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp824
-title: GP824: The Quantum Manifold
-description: GP824: The Quantum Manifold. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp824"
+"title": "GP824: The Quantum Manifold"
+"description": "GP824: The Quantum Manifold. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP824: The Quantum Manifold** — GP824: The Quantum Manifold. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1369,15 +1445,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp825
-title: GP825: Dynamic Gauge Symmetry
-description: GP825: Dynamic Gauge Symmetry. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp825"
+"title": "GP825: Dynamic Gauge Symmetry"
+"description": "GP825: Dynamic Gauge Symmetry. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP825: Dynamic Gauge Symmetry** — GP825: Dynamic Gauge Symmetry. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1386,15 +1463,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp826
-title: GP826: The Self-Defining Manifold
-description: GP826: The Self-Defining Manifold. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp826"
+"title": "GP826: The Self-Defining Manifold"
+"description": "GP826: The Self-Defining Manifold. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP826: The Self-Defining Manifold** — GP826: The Self-Defining Manifold. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1403,15 +1481,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp827
-title: GP827: The Cost of Gauge Coherence
-description: GP827: The Cost of Gauge Coherence. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp827"
+"title": "GP827: The Cost of Gauge Coherence"
+"description": "GP827: The Cost of Gauge Coherence. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP827: The Cost of Gauge Coherence** — GP827: The Cost of Gauge Coherence. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1420,15 +1499,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp828
-title: GP828: The Recursive Clifford Lift
-description: GP828: The Recursive Clifford Lift. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp828"
+"title": "GP828: The Recursive Clifford Lift"
+"description": "GP828: The Recursive Clifford Lift. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP828: The Recursive Clifford Lift** — GP828: The Recursive Clifford Lift. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1437,15 +1517,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp829
-title: GP829: The Fuzzy Boundary
-description: GP829: The Fuzzy Boundary. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp829"
+"title": "GP829: The Fuzzy Boundary"
+"description": "GP829: The Fuzzy Boundary. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP829: The Fuzzy Boundary** — GP829: The Fuzzy Boundary. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1454,15 +1535,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp830
-title: GP830: The Latent Dynamic SPPF
-description: GP830: The Latent Dynamic SPPF. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp830"
+"title": "GP830: The Latent Dynamic SPPF"
+"description": "GP830: The Latent Dynamic SPPF. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP830: The Latent Dynamic SPPF** — GP830: The Latent Dynamic SPPF. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1471,15 +1553,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp831
-title: GP831: The Causal Dimension
-description: GP831: The Causal Dimension. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp831"
+"title": "GP831: The Causal Dimension"
+"description": "GP831: The Causal Dimension. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP831: The Causal Dimension** — GP831: The Causal Dimension. Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1488,15 +1571,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp832
-title: GP832: The Self-Defining Manifest (v26.0)
-description: GP832: The Self-Defining Manifest (v26.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp832"
+"title": "GP832: The Self-Defining Manifest (v26.0)"
+"description": "GP832: The Self-Defining Manifest (v26.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP832: The Self-Defining Manifest (v26.0)** — GP832: The Self-Defining Manifest (v26.0). Source: Plan/CIM/IngestedRoadmaps/Analysis.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1505,15 +1589,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp699
-title: GP699: The Unified Topological Parser
-description: GP699: The Unified Topological Parser. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp699"
+"title": "GP699: The Unified Topological Parser"
+"description": "GP699: The Unified Topological Parser. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP699: The Unified Topological Parser** — GP699: The Unified Topological Parser. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1522,15 +1607,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp700
-title: GP700: The Simplex vs. The Associahedron
-description: GP700: The Simplex vs. The Associahedron. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp700"
+"title": "GP700: The Simplex vs. The Associahedron"
+"description": "GP700: The Simplex vs. The Associahedron. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP700: The Simplex vs. The Associahedron** — GP700: The Simplex vs. The Associahedron. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1539,15 +1625,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp701
-title: GP701: The Polytope Visualization
-description: GP701: The Polytope Visualization. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp701"
+"title": "GP701: The Polytope Visualization"
+"description": "GP701: The Polytope Visualization. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP701: The Polytope Visualization** — GP701: The Polytope Visualization. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1556,15 +1643,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp702
-title: GP702: The Loday Realization
-description: GP702: The Loday Realization. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp702"
+"title": "GP702: The Loday Realization"
+"description": "GP702: The Loday Realization. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP702: The Loday Realization** — GP702: The Loday Realization. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1573,15 +1661,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp703
-title: GP703: The Loday-Stasheff Manifest (v6.0)
-description: GP703: The Loday-Stasheff Manifest (v6.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp703"
+"title": "GP703: The Loday-Stasheff Manifest (v6.0)"
+"description": "GP703: The Loday-Stasheff Manifest (v6.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP703: The Loday-Stasheff Manifest (v6.0)** — GP703: The Loday-Stasheff Manifest (v6.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1590,15 +1679,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp704
-title: GP704: The Geometry of Choice
-description: GP704: The Geometry of Choice. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp704"
+"title": "GP704: The Geometry of Choice"
+"description": "GP704: The Geometry of Choice. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP704: The Geometry of Choice** — GP704: The Geometry of Choice. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1607,15 +1697,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp705
-title: GP705: The Polytope Storage
-description: GP705: The Polytope Storage. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp705"
+"title": "GP705: The Polytope Storage"
+"description": "GP705: The Polytope Storage. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP705: The Polytope Storage** — GP705: The Polytope Storage. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1624,15 +1715,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp706
-title: GP706: The Operational Velocity
-description: GP706: The Operational Velocity. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp706"
+"title": "GP706: The Operational Velocity"
+"description": "GP706: The Operational Velocity. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP706: The Operational Velocity** — GP706: The Operational Velocity. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1641,15 +1733,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp707
-title: GP707: The Knight's Move (Topological Surgery)
-description: GP707: The Knight's Move (Topological Surgery). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp707"
+"title": "GP707: The Knight's Move (Topological Surgery)"
+"description": "GP707: The Knight's Move (Topological Surgery). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP707: The Knight's Move (Topological Surgery)** — GP707: The Knight's Move (Topological Surgery). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1658,15 +1751,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp708
-title: GP708: The Knight's Move Manifest (v8.0)
-description: GP708: The Knight's Move Manifest (v8.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp708"
+"title": "GP708: The Knight's Move Manifest (v8.0)"
+"description": "GP708: The Knight's Move Manifest (v8.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP708: The Knight's Move Manifest (v8.0)** — GP708: The Knight's Move Manifest (v8.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1675,15 +1769,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp709
-title: GP709: The Operadic Tiling
-description: GP709: The Operadic Tiling. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp709"
+"title": "GP709: The Operadic Tiling"
+"description": "GP709: The Operadic Tiling. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP709: The Operadic Tiling** — GP709: The Operadic Tiling. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1692,15 +1787,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp710
-title: GP710: The Operadic Manifest (v9.0)
-description: GP710: The Operadic Manifest (v9.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp710"
+"title": "GP710: The Operadic Manifest (v9.0)"
+"description": "GP710: The Operadic Manifest (v9.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP710: The Operadic Manifest (v9.0)** — GP710: The Operadic Manifest (v9.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1709,15 +1805,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp711
-title: GP711: The Stable Interface Principle
-description: GP711: The Stable Interface Principle. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp711"
+"title": "GP711: The Stable Interface Principle"
+"description": "GP711: The Stable Interface Principle. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP711: The Stable Interface Principle** — GP711: The Stable Interface Principle. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1726,15 +1823,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp712
-title: GP712: The Prediction of Topology
-description: GP712: The Prediction of Topology. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp712"
+"title": "GP712: The Prediction of Topology"
+"description": "GP712: The Prediction of Topology. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP712: The Prediction of Topology** — GP712: The Prediction of Topology. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1743,15 +1841,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp713
-title: GP713: The Vacuum State
-description: GP713: The Vacuum State. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp713"
+"title": "GP713: The Vacuum State"
+"description": "GP713: The Vacuum State. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP713: The Vacuum State** — GP713: The Vacuum State. Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1760,15 +1859,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp714
-title: GP714: The Self-Defining Manifest (v26.0)
-description: GP714: The Self-Defining Manifest (v26.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp714"
+"title": "GP714: The Self-Defining Manifest (v26.0)"
+"description": "GP714: The Self-Defining Manifest (v26.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP714: The Self-Defining Manifest (v26.0)** — GP714: The Self-Defining Manifest (v26.0). Source: Plan/CIM/IngestedRoadmaps/Polytopes.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1777,15 +1877,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp01
-title: GP01: The RotationalTransport Property
-description: GP01: The RotationalTransport Property. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp01"
+"title": "GP01: The RotationalTransport Property"
+"description": "GP01: The RotationalTransport Property. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP01: The RotationalTransport Property** — GP01: The RotationalTransport Property. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1794,15 +1895,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp010
-title: GP010: The Deployment Substrate
-description: GP010: The Deployment Substrate. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp010"
+"title": "GP010: The Deployment Substrate"
+"description": "GP010: The Deployment Substrate. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP010: The Deployment Substrate** — GP010: The Deployment Substrate. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1811,15 +1913,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp02
-title: GP02: The Geometric Alignment
-description: GP02: The Geometric Alignment. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp02"
+"title": "GP02: The Geometric Alignment"
+"description": "GP02: The Geometric Alignment. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP02: The Geometric Alignment** — GP02: The Geometric Alignment. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1828,15 +1931,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp03
-title: GP03: The PackedNode Aggregation Logic
-description: GP03: The PackedNode Aggregation Logic. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp03"
+"title": "GP03: The PackedNode Aggregation Logic"
+"description": "GP03: The PackedNode Aggregation Logic. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP03: The PackedNode Aggregation Logic** — GP03: The PackedNode Aggregation Logic. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1845,15 +1949,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp04
-title: GP04: The Topological Diagram (I)
-description: GP04: The Topological Diagram (I). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp04"
+"title": "GP04: The Topological Diagram (I)"
+"description": "GP04: The Topological Diagram (I). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP04: The Topological Diagram (I)** — GP04: The Topological Diagram (I). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1862,15 +1967,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp05
-title: GP05: The Vectorized Earley Item
-description: GP05: The Vectorized Earley Item. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp05"
+"title": "GP05: The Vectorized Earley Item"
+"description": "GP05: The Vectorized Earley Item. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP05: The Vectorized Earley Item** — GP05: The Vectorized Earley Item. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1879,15 +1985,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp06
-title: GP06: The Visualization Module
-description: GP06: The Visualization Module. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp06"
+"title": "GP06: The Visualization Module"
+"description": "GP06: The Visualization Module. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP06: The Visualization Module** — GP06: The Visualization Module. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1896,15 +2003,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp07
-title: GP07: The Visual Semantics
-description: GP07: The Visual Semantics. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp07"
+"title": "GP07: The Visual Semantics"
+"description": "GP07: The Visual Semantics. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP07: The Visual Semantics** — GP07: The Visual Semantics. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1913,15 +2021,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp09
-title: GP09: The Active Observer
-description: GP09: The Active Observer. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp09"
+"title": "GP09: The Active Observer"
+"description": "GP09: The Active Observer. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP09: The Active Observer** — GP09: The Active Observer. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1930,15 +2039,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp100
-title: GP100: The Semantic Gating (I)
-description: GP100: The Semantic Gating (I). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp100"
+"title": "GP100: The Semantic Gating (I)"
+"description": "GP100: The Semantic Gating (I). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP100: The Semantic Gating (I)** — GP100: The Semantic Gating (I). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1947,15 +2057,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp101
-title: GP101: The Semantic Gating (II)
-description: GP101: The Semantic Gating (II). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp101"
+"title": "GP101: The Semantic Gating (II)"
+"description": "GP101: The Semantic Gating (II). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP101: The Semantic Gating (II)** — GP101: The Semantic Gating (II). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1964,15 +2075,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp102
-title: GP102: The Operational Integration
-description: GP102: The Operational Integration. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp102"
+"title": "GP102: The Operational Integration"
+"description": "GP102: The Operational Integration. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP102: The Operational Integration** — GP102: The Operational Integration. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1981,15 +2093,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp103
-title: GP103: The Type-Theoretic Gate
-description: GP103: The Type-Theoretic Gate. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp103"
+"title": "GP103: The Type-Theoretic Gate"
+"description": "GP103: The Type-Theoretic Gate. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP103: The Type-Theoretic Gate** — GP103: The Type-Theoretic Gate. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -1998,15 +2111,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp104
-title: GP104: The Algebraic Structure of Ambiguity
-description: GP104: The Algebraic Structure of Ambiguity. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp104"
+"title": "GP104: The Algebraic Structure of Ambiguity"
+"description": "GP104: The Algebraic Structure of Ambiguity. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP104: The Algebraic Structure of Ambiguity** — GP104: The Algebraic Structure of Ambiguity. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -2015,15 +2129,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp105
-title: GP105: The "Fast Clock" Paradox
-description: GP105: The "Fast Clock" Paradox. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp105"
+"title": "GP105: The \"Fast Clock\" Paradox"
+"description": "GP105: The \"Fast Clock\" Paradox. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP105: The "Fast Clock" Paradox** — GP105: The "Fast Clock" Paradox. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -2032,15 +2147,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp106
-title: GP106: The Persistence of Potentiality
-description: GP106: The Persistence of Potentiality. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp106"
+"title": "GP106: The Persistence of Potentiality"
+"description": "GP106: The Persistence of Potentiality. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP106: The Persistence of Potentiality** — GP106: The Persistence of Potentiality. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -2049,15 +2165,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp107
-title: GP107: The Gödelian Manifest
-description: GP107: The Gödelian Manifest. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp107"
+"title": "GP107: The Gödelian Manifest"
+"description": "GP107: The Gödelian Manifest. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP107: The Gödelian Manifest** — GP107: The Gödelian Manifest. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -2066,15 +2183,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp108
-title: GP108: The "Homological Defect"
-description: GP108: The "Homological Defect". Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp108"
+"title": "GP108: The \"Homological Defect\""
+"description": "GP108: The \"Homological Defect\". Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP108: The "Homological Defect"** — GP108: The "Homological Defect". Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -2083,15 +2201,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp109
-title: GP109: The Hebbian Drift
-description: GP109: The Hebbian Drift. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp109"
+"title": "GP109: The Hebbian Drift"
+"description": "GP109: The Hebbian Drift. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP109: The Hebbian Drift** — GP109: The Hebbian Drift. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -2100,15 +2219,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp110
-title: GP110: The Control Plane
-description: GP110: The Control Plane. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp110"
+"title": "GP110: The Control Plane"
+"description": "GP110: The Control Plane. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP110: The Control Plane** — GP110: The Control Plane. Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -2117,15 +2237,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp111
-title: GP111: The Unified Manifest (v2.0)
-description: GP111: The Unified Manifest (v2.0). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp111"
+"title": "GP111: The Unified Manifest (v2.0)"
+"description": "GP111: The Unified Manifest (v2.0). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP111: The Unified Manifest (v2.0)** — GP111: The Unified Manifest (v2.0). Source: Plan/CIM/IngestedRoadmaps/Foundation.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -2134,15 +2255,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp200
-title: GP200: The Geometry of Associativity
-description: GP200: The Geometry of Associativity. Source: Plan/CIM/IngestedRoadmaps/Geometry.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp200"
+"title": "GP200: The Geometry of Associativity"
+"description": "GP200: The Geometry of Associativity. Source: Plan/CIM/IngestedRoadmaps/Geometry.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP200: The Geometry of Associativity** — GP200: The Geometry of Associativity. Source: Plan/CIM/IngestedRoadmaps/Geometry.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -2151,15 +2273,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp201
-title: GP201: The Non-Abelian Manifold
-description: GP201: The Non-Abelian Manifold. Source: Plan/CIM/IngestedRoadmaps/Geometry.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp201"
+"title": "GP201: The Non-Abelian Manifold"
+"description": "GP201: The Non-Abelian Manifold. Source: Plan/CIM/IngestedRoadmaps/Geometry.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP201: The Non-Abelian Manifold** — GP201: The Non-Abelian Manifold. Source: Plan/CIM/IngestedRoadmaps/Geometry.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -2168,15 +2291,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp300
-title: GP300: The Fiber Bundle Architecture
-description: GP300: The Fiber Bundle Architecture. Source: Plan/CIM/IngestedRoadmaps/Geometry.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp300"
+"title": "GP300: The Fiber Bundle Architecture"
+"description": "GP300: The Fiber Bundle Architecture. Source: Plan/CIM/IngestedRoadmaps/Geometry.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP300: The Fiber Bundle Architecture** — GP300: The Fiber Bundle Architecture. Source: Plan/CIM/IngestedRoadmaps/Geometry.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -2185,15 +2309,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp302
-title: GP302: The Operationalized Adjunction
-description: GP302: The Operationalized Adjunction. Source: Plan/CIM/IngestedRoadmaps/Geometry.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp302"
+"title": "GP302: The Operationalized Adjunction"
+"description": "GP302: The Operationalized Adjunction. Source: Plan/CIM/IngestedRoadmaps/Geometry.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP302: The Operationalized Adjunction** — GP302: The Operationalized Adjunction. Source: Plan/CIM/IngestedRoadmaps/Geometry.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
@@ -2202,15 +2327,16 @@ files:
   Tags: GP
 
 ```yaml
-id: GP-Gp303
-title: GP303: The Adjoint Manifest (v3.0)
-description: GP303: The Adjoint Manifest (v3.0). Source: Plan/CIM/IngestedRoadmaps/Geometry.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda
-status: not-started
-category: IngestedGP
-tags:
-  - GP
-files:
-  - src/agda/Plan/CIM/Implementation.agda
+"id": "GP-Gp303"
+"title": "GP303: The Adjoint Manifest (v3.0)"
+"description": "GP303: The Adjoint Manifest (v3.0). Source: Plan/CIM/IngestedRoadmaps/Geometry.agda.\
+  \ Category: IngestedGP. Tags: GP. Affects: Implementation.agda"
+"status": "not-started"
+"category": "IngestedGP"
+"tags":
+- "GP"
+"files":
+- "src/agda/Plan/CIM/Implementation.agda"
 ```
 
 - **GP303: The Adjoint Manifest (v3.0)** — GP303: The Adjoint Manifest (v3.0). Source: Plan/CIM/IngestedRoadmaps/Geometry.agda. Category: IngestedGP. Tags: GP. Affects: Implementation.agda [status: not-started]
