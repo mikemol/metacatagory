@@ -12,6 +12,7 @@ USAGE
 
 workflow_name="CI"
 branch_name=""
+wait_seconds="${CI_WATCH_DELAY:-5}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -45,4 +46,5 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
 fi
 
 git push origin "$branch_name"
+sleep "$wait_seconds"
 exec scripts/ci_watch.sh --workflow "$workflow_name" --branch "$branch_name"
