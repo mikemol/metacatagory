@@ -18,6 +18,9 @@ STATUS_ASSERT_RE = re.compile(
 )
 TOTAL_ASSERTIONS_RE = re.compile(r"totalAssertions ≡ (\d+)")
 CHECKLIST_ADAPTER_RE = re.compile(r"(\w+)-adapter\s*:\s*A\.(\w+)", re.MULTILINE)
+CHAPTER_NAME_RE = re.compile(r"(Chapter\d+)")
+SECTION_HEADER_RE = re.compile(r"^-+\s*\n--\s+Level\d+sub(\d+)", re.MULTILINE)
+LINK_ASSERT_RE = re.compile(r"(\w+)-\w+-link\s*:\s*.*?≡\s*([\w.]+)", re.MULTILINE)
 
 
 @dataclass
@@ -69,6 +72,26 @@ def iter_checklist_adapters(content: str) -> list[tuple[str, str, int]]:
     return [
         (match.group(1), match.group(2), match.start())
         for match in CHECKLIST_ADAPTER_RE.finditer(content)
+    ]
+
+
+def extract_chapter_from_filename(filename: str) -> str | None:
+    """Extract ChapterN from a filename."""
+    match = CHAPTER_NAME_RE.match(filename)
+    return match.group(1) if match else None
+
+
+def extract_sections_from_content(content: str) -> list[str]:
+    """Extract section numbers from checklist content."""
+    sections = {match.group(1) for match in SECTION_HEADER_RE.finditer(content)}
+    return sorted(sections, key=int)
+
+
+def iter_checklist_links(content: str) -> list[tuple[str, str]]:
+    """Return source adapter names and target references for checklist links."""
+    return [
+        (match.group(1), match.group(2))
+        for match in LINK_ASSERT_RE.finditer(content)
     ]
 
 

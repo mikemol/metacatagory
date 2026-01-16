@@ -22,7 +22,6 @@ Outputs:
 """
 
 import json
-import re
 from pathlib import Path
 from collections import defaultdict
 from dataclasses import dataclass, field
@@ -34,7 +33,13 @@ from graphviz import Digraph
 from rich.console import Console
 
 from scripts.shared.io import save_json
-from scripts.shared.agda_tests import iter_checklist_adapters, infer_section_from_preceding
+from scripts.shared.agda_tests import (
+    extract_chapter_from_filename,
+    extract_sections_from_content,
+    infer_section_from_preceding,
+    iter_checklist_adapters,
+    iter_checklist_links,
+)
 
 console = Console()
 
@@ -75,11 +80,10 @@ class PhaseDiagramGenerator:
     def _parse_chapter_file(self, filepath: Path) -> None:
         """Parse a single chapter checklist file."""
         filename = filepath.stem
-        chapter_match = re.match(r"(Chapter\d+)", filename)
-        if not chapter_match:
+        chapter = extract_chapter_from_filename(filename)
+        if not chapter:
             return
 
-        chapter = chapter_match.group(1)
         chapter_id = f"{chapter}"
 
         # Add chapter node
@@ -96,11 +100,7 @@ class PhaseDiagramGenerator:
             content = filepath.read_text(encoding="utf-8")
 
             # Find section boundaries (e.g., "-- Level1sub3")
-            section_pattern = re.compile(r"^-+\s*\n--\s+Level\d+sub(\d+)", re.MULTILINE)
-            sections = set()
-            for match in section_pattern.finditer(content):
-                subsection = match.group(1)
-                sections.add(subsection)
+            sections = extract_sections_from_content(content)
 
             # Add section nodes and edges
             for section in sections:
@@ -150,13 +150,7 @@ class PhaseDiagramGenerator:
                         )
 
             # Find link assertions to identify dependencies
-            link_pattern = re.compile(
-                r"(\w+)-\w+-link\s*:\s*.*?≡\s*([\w.]+)", re.MULTILINE
-            )
-
-            for match in link_pattern.finditer(content):
-                source_adapter = match.group(1)
-                target_ref = match.group(2)
+            for source_adapter, target_ref in iter_checklist_links(content):
 
                 # Try to find corresponding adapter nodes
                 source_nodes = [nid for nid in self.nodes if source_adapter in nid]
