@@ -16,6 +16,8 @@ from dataclasses import dataclass, asdict
 from enum import Enum
 from pathlib import Path
 
+from scripts.shared.io import save_json
+
 class Status(Enum):
     """Roadmap step status."""
     NOT_STARTED = "not-started"
@@ -322,9 +324,7 @@ class RoadmapTraverser:
                      for gp_id, checklist in self.checklists.items()},
         }
         
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
-        with open(output_path, 'w') as f:
-            json.dump(report, f, indent=2)
+        save_json(output_path, report)
         
         return report
 

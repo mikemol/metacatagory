@@ -33,6 +33,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 from scripts.shared.parallel import get_parallel_settings
+from scripts.shared.io import save_json
 
 
 @dataclass
@@ -65,8 +66,7 @@ class JSONDecomposer:
             total_items=total_items,
             fragment_count=fragment_count
         )
-        with open(self.output_dir / "_metadata.json", "w") as f:
-            json.dump(asdict(self.metadata), f, indent=2)
+        save_json(self.output_dir / "_metadata.json", asdict(self.metadata))
     
     def strategy_name(self) -> str:
         """Return strategy name."""
@@ -74,9 +74,7 @@ class JSONDecomposer:
     
     def write_json(self, path: Path, data: Any) -> None:
         """Write JSON file with proper formatting."""
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with open(path, "w") as f:
-            json.dump(data, f, indent=2)
+        save_json(path, data)
 
 
 def _write_many(writer: JSONDecomposer, tasks: Iterable[Tuple[Path, Any]]) -> None:

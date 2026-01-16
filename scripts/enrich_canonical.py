@@ -36,6 +36,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from scripts.shared.parallel import get_parallel_settings
+from scripts.shared.io import save_json
 from scripts import shared_data
 
 # Controlled tag vocabulary
@@ -620,9 +621,7 @@ def enrich_canonical() -> None:
         enriched = [enrich_item(item, module_to_tasks, dep_graph) for item in canonical]
     
     # Write enriched output
-    ENRICHED_JSON.parent.mkdir(parents=True, exist_ok=True)
-    with open(ENRICHED_JSON, "w", encoding="utf-8") as f:
-        json.dump(enriched, f, indent=4, ensure_ascii=False)
+    save_json(ENRICHED_JSON, enriched, indent=4, ensure_ascii=False)
     
     # Count suggested dependencies
     total_suggested = sum(len(item.get("suggestedDependencies", [])) for item in enriched)

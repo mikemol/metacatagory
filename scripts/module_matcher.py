@@ -16,6 +16,7 @@ from dataclasses import dataclass, field
 from collections import defaultdict
 
 from scripts import shared_data
+from scripts.shared.io import save_json
 
 @dataclass
 class AgdaModule:
@@ -391,10 +392,7 @@ class ModuleMatcher:
         
         # Write report
         output_path = Path(self.workspace_root) / output_file
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        with open(output_path, 'w') as f:
-            json.dump(report, f, indent=2)
+        save_json(output_path, report)
         
         print(f"   ✓ Report saved to: {output_file}")
         

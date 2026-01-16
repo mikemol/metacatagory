@@ -23,6 +23,7 @@ from enum import Enum
 from datetime import datetime
 import json
 
+from scripts.shared.io import save_json
 # CHIP-N+1: Import enhanced modules with fallback for graceful degradation
 try:
     from scripts.shared.errors import ScriptError, FileOperationError, ValidationError as ScriptValidationError
@@ -456,7 +457,7 @@ class ProvenanceTracker:
         
         if output_path:
             try:
-                output_path.write_text(json.dumps(report, indent=2, default=str))
+                save_json(output_path, report, default=str)
             except (IOError, OSError) as e:
                 if FileOperationError != IOError:
                     raise FileOperationError(f"Failed to write report: {e}", path=output_path)

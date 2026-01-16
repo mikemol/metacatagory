@@ -19,6 +19,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 from scripts import shared_data
+from scripts.shared.io import save_json
 
 # Constants controlling repository scan behavior
 FILE_SCAN_EXTENSIONS = {".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"}
@@ -106,8 +107,7 @@ def load_weights(output_dir: Path) -> Dict[str, float]:
         except Exception as e:
             print(f"Error loading weights: {e}, using defaults", file=sys.stderr)
     # Write default weights if not present
-    with open(weights_file, "w") as wf:
-        json.dump(DEFAULT_WEIGHTS, wf, indent=2)
+    save_json(weights_file, DEFAULT_WEIGHTS)
     print(f"Initialized default weights: {weights_file}")
     return DEFAULT_WEIGHTS.copy()
 
@@ -526,15 +526,13 @@ def main():
     all_badges['last-updated'] = generate_build_badge()
 
     # Persist history
-    with open(history_file, "w") as hf:
-        json.dump(history, hf, indent=2)
+    save_json(history_file, history)
     print(f"Updated history: {history_file} entries={len(history)}")
 
     # Write individual badge JSON files
     for badge_name, badge_data in all_badges.items():
         output_file = output_dir / f'{badge_name}.json'
-        with open(output_file, 'w') as f:
-            json.dump(badge_data, f, indent=2)
+        save_json(output_file, badge_data)
         print(f"Generated: {output_file}")
     
     # Write manifest file listing all badges
@@ -543,21 +541,18 @@ def main():
         "badges": list(all_badges.keys())
     }
     manifest_file = output_dir / 'manifest.json'
-    with open(manifest_file, 'w') as f:
-        json.dump(manifest, f, indent=2)
+    save_json(manifest_file, manifest)
 
     # Write per-file deferred counts for downstream tools (priority export, doc lint)
     detailed_file = output_dir / "deferred-files.json"
-    with open(detailed_file, "w") as df:
-        json.dump(deferred.get("files", {}), df, indent=2)
+    save_json(detailed_file, deferred.get("files", {}))
     print(f"Wrote detailed deferred file map: {detailed_file}")
     print(f"Generated: {manifest_file}")
     
     print(f"\n✅ Generated {len(all_badges)} badge JSON files in {output_dir}")
     # Optionally write back a refreshed deferred summary for future runs
     refreshed_summary = report_dir / "deferred-summary.json"
-    with open(refreshed_summary, "w") as f:
-        json.dump({k: v for k, v in deferred.items() if k != "files"}, f, indent=2)
+    save_json(refreshed_summary, {k: v for k, v in deferred.items() if k != "files"})
     print(
         f"Refreshed {refreshed_summary} "
         f"postulates={deferred.get('postulates')} "
@@ -572,8 +567,7 @@ def main():
         key=lambda x: (x[1].get("weighted_total", 0), x[1]["total"]),
         reverse=True,
     )
-    with open(detailed_file, "w") as f:
-        json.dump({fn: data for fn, data in files_sorted}, f, indent=2)
+    save_json(detailed_file, {fn: data for fn, data in files_sorted})
     print(f"Generated: {detailed_file} (per-file counts)")
 
     # Top offenders markdown (top 15)

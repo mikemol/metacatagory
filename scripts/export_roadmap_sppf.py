@@ -3,10 +3,10 @@
 Export roadmap to SPPF JSON format for graph visualization.
 Reads from the planning index (data preferred, build fallback).
 """
-import json
 from pathlib import Path
 
 from scripts import shared_data
+from scripts.shared.io import save_json
 
 def main():
     # Read from planning index, not tasks.json
@@ -27,9 +27,7 @@ def main():
             'parents': [],
         })
 
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    with out_path.open('w') as f:
-        json.dump({'nodes': nodes}, f, indent=2)
+    save_json(out_path, {'nodes': nodes})
 
 if __name__ == '__main__':
     main()

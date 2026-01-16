@@ -25,6 +25,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 from scripts.shared.parallel import get_parallel_settings
+from scripts.shared.io import save_json
 
 
 class JSONRecomposer:
@@ -355,8 +356,7 @@ def main():
     # Output
     if output_file:
         try:
-            with open(output_file, "w") as f:
-                json.dump(recomposed, f, indent=2)
+            save_json(Path(output_file), recomposed)
             print(f"✓ Recomposed {hierarchical_dir} → {output_file}")
             
             # Validate roundtrip if original available

@@ -15,6 +15,7 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, Optional, Tuple
 
+from scripts.shared.io import save_json
 CATEGORY_NORMALIZATION: Dict[str, float] = {
     "postulate": 100.0,
     "todo": 50.0,
@@ -212,10 +213,7 @@ def convert_agda_profiles(
 
 def write_json(path: Path, data: Dict[str, Any]) -> None:
     """Persist JSON with stable formatting."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w") as handle:
-        json.dump(data, handle, indent=2)
-        handle.write("\n")
+    save_json(path, data)
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(

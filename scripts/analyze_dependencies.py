@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import List, Dict
 
 from scripts import shared_data
+from scripts.shared.io import save_json
 
 REPO_ROOT = Path(__file__).parent.parent
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
@@ -91,8 +92,7 @@ def promote_suggestions() -> None:
                 promoted_count += 1
     
     # Write back
-    with open(CANONICAL_JSON, "w") as f:
-        json.dump(canonical, f, indent=4, ensure_ascii=False)
+    save_json(CANONICAL_JSON, canonical, indent=4, ensure_ascii=False)
     
     print(f"✓ Promoted {promoted_count} dependencies to canonical")
     print(f"  Updated: {CANONICAL_JSON}")

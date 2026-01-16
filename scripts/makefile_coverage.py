@@ -12,6 +12,7 @@ from scripts.makefile_graph import (
     parse_phony_targets,
     reachable_nodes,
 )
+from scripts.shared.io import save_json
 
 DEFAULT_ROOTS: List[str] = ["check", "regen-makefile"]
 FAILURES_PATH = Path("build/reports/last_failures.json")
@@ -28,10 +29,7 @@ def load_failures() -> list[str]:
 
 
 def save_failures(targets: list[str]) -> None:
-    FAILURES_PATH.parent.mkdir(parents=True, exist_ok=True)
-    FAILURES_PATH.write_text(
-        json.dumps(targets, indent=2) + "\n", encoding="utf-8"
-    )
+    save_json(FAILURES_PATH, targets)
 
 
 def clear_failures() -> None:

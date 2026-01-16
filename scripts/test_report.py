@@ -41,6 +41,7 @@ ROOT = SCRIPT_DIR.parent
 sys.path.insert(0, str(ROOT))
 
 from scripts.shared.paths import REPORTS_DIR
+from scripts.shared.io import save_json
 from scripts.audax_doc import (
     AUDAXDoc,
     Field,
@@ -135,9 +136,7 @@ def build_test_report_doc(summary: dict[str, Any]) -> AUDAXDoc:
 
 def write_outputs(summary: dict[str, Any], out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "test-report.json").write_text(
-        json.dumps(summary, indent=2), encoding="utf-8"
-    )
+    save_json(out_dir / "test-report.json", summary)
     doc = build_test_report_doc(summary)
     (out_dir / "test-report.md").write_text(render_doc(doc), encoding="utf-8")
 

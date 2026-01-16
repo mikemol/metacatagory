@@ -20,6 +20,7 @@ import re
 import subprocess
 from typing import Any
 
+from scripts.shared.io import save_json
 def is_json_input(text: str) -> bool:
     text = text.lstrip()
     return text.startswith("{") or text.startswith("[")
@@ -98,14 +99,14 @@ def get_markdown_from_ast(ast: Any) -> str:
     import tempfile
 
     with tempfile.NamedTemporaryFile("w+", delete=False, suffix=".json") as tmp:
-        json.dump(ast, tmp)
-        tmp.flush()
-        result = subprocess.run(
-            ["pandoc", tmp.name, "-f", "json", "-t", "markdown"],
-            capture_output=True,
-            text=True,
-        )
-        return result.stdout
+        tmp_path = Path(tmp.name)
+    save_json(tmp_path, ast)
+    result = subprocess.run(
+        ["pandoc", str(tmp_path), "-f", "json", "-t", "markdown"],
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout
 
 def postprocess_markdown(md: str) -> str:
     md = remove_multiple_blank_lines(md)

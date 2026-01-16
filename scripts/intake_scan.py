@@ -23,6 +23,7 @@ if str(ROOT) not in sys.path:
 
 from scripts.shared.paths import REPO_ROOT, REPORTS_DIR
 from scripts import shared_data
+from scripts.shared.io import save_json
 
 INTAKE_DIR = REPO_ROOT / "intake"
 CANONICAL_PATH = shared_data.resolve_planning_path(repo_root=REPO_ROOT)
@@ -135,8 +136,7 @@ def build_coverage(canonical_ids: set[str], files: list[Path]) -> dict[str, Any]
     }
 
 def write_json_report(payload: dict) -> None:
-    REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    REPORT_JSON.write_text(json.dumps(payload, indent=2))
+    save_json(REPORT_JSON, payload)
 
 def write_markdown_report(payload: dict, canonical_ids: set[str]) -> None:
     coverage = payload["canonical_coverage"]

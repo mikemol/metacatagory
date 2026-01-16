@@ -33,6 +33,8 @@ import networkx as nx
 from graphviz import Digraph
 from rich.console import Console
 
+from scripts.shared.io import save_json
+
 console = Console()
 
 @dataclass
@@ -318,7 +320,7 @@ class PhaseDiagramGenerator:
             ],
         }
 
-        output_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+        save_json(output_path, data)
         console.print(f"[green]✓[/green] JSON export written to {output_path}")
 
 def main() -> None:
