@@ -13,72 +13,11 @@ This script:
 4. Updates constructors to initialize the categorical field
 """
 
-import re
 import sys
 from pathlib import Path
-from dataclasses import dataclass
 from typing import Optional
 
-@dataclass
-class AdapterRecord:
-    """Represents an Agda adapter record definition."""
-
-    name: str
-    decl_field: str
-    decl_type: str
-    has_status: bool
-    fields: list[str]
-    constructor_name: str
-    start_line: int
-    end_line: int
-
-def parse_adapter_record(lines: list[str], start_idx: int) -> Optional[AdapterRecord]:
-    """Parse an adapter record definition from Agda source."""
-    # Look for: record XxxAdapter : Set₁ where
-    record_match = re.match(r"record\s+(\w+Adapter)\s*:", lines[start_idx])
-    if not record_match:
-        return None
-
-    adapter_name = record_match.group(1)
-
-    # Find fields
-    fields = []
-    decl_field = None
-    decl_type = None
-    has_status = False
-
-    i = start_idx + 1
-    while i < len(lines) and not lines[i].strip().startswith("mk"):
-        line = lines[i].strip()
-
-        # Parse field declarations
-        field_match = re.match(r"(\w+)\s*:\s*(.+)", line)
-        if field_match:
-            field_name = field_match.group(1)
-            field_type = field_match.group(2)
-            fields.append((field_name, field_type))
-
-            if field_name == "decl":
-                decl_field = field_name
-                decl_type = field_type
-            elif field_name == "status":
-                has_status = True
-
-        i += 1
-
-    # Find constructor
-    constructor_name = f"mk{adapter_name}"
-
-    return AdapterRecord(
-        name=adapter_name,
-        decl_field=decl_field or "decl",
-        decl_type=decl_type or "Unknown",
-        has_status=has_status,
-        fields=fields,
-        constructor_name=constructor_name,
-        start_line=start_idx,
-        end_line=i,
-    )
+from scripts.shared.agda_adapters import AdapterRecord, parse_adapter_record, count_adapter_records
 
 def generate_categorical_field(adapter: AdapterRecord) -> str:
     """Generate the categorical adapter field definition."""
@@ -210,7 +149,7 @@ def generate_migration_report(adapter_dir: Path) -> None:
         )
 
         # Count adapters
-        adapter_count = len(re.findall(r"record\s+\w+Adapter\s*:", content))
+        adapter_count = count_adapter_records(content)
 
         report.append(
             {
