@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-      options: --user 1001:1001
+      options: --user 1001:1001 --tmpfs /home/runner/.cabal
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
@@ -66,16 +66,6 @@ jobs:
             rm -rf ./*
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
-
-      - name: Configure cabal cache (GitHub)
-        if: ${{ env.ACT != 'true' }}
-        run: |
-          mkdir -p /__w/_temp/.home /__w/_temp/.cabal /__w/_temp/.cache
-          {
-            echo "HOME=/__w/_temp/.home"
-            echo "CABAL_DIR=/__w/_temp/.cabal"
-            echo "XDG_CACHE_HOME=/__w/_temp/.cache"
-          } >> "$GITHUB_ENV"
 
       - name: Generate Makefile recipes
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -133,7 +123,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-      options: --user 1001:1001
+      options: --user 1001:1001 --tmpfs /home/runner/.cabal
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
@@ -176,15 +166,6 @@ jobs:
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
 
-      - name: Configure cabal cache (GitHub)
-        if: ${{ env.ACT != 'true' }}
-        run: |
-          mkdir -p /__w/_temp/.home /__w/_temp/.cabal /__w/_temp/.cache
-          {
-            echo "HOME=/__w/_temp/.home"
-            echo "CABAL_DIR=/__w/_temp/.cabal"
-            echo "XDG_CACHE_HOME=/__w/_temp/.cache"
-          } >> "$GITHUB_ENV"
 
       - name: Download Agda exports
         if: ${{ env.ACT != 'true' }}
@@ -243,7 +224,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-      options: --user 1001:1001
+      options: --user 1001:1001 --tmpfs /home/runner/.cabal
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
@@ -286,15 +267,6 @@ jobs:
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
 
-      - name: Configure cabal cache (GitHub)
-        if: ${{ env.ACT != 'true' }}
-        run: |
-          mkdir -p /__w/_temp/.home /__w/_temp/.cabal /__w/_temp/.cache
-          {
-            echo "HOME=/__w/_temp/.home"
-            echo "CABAL_DIR=/__w/_temp/.cabal"
-            echo "XDG_CACHE_HOME=/__w/_temp/.cache"
-          } >> "$GITHUB_ENV"
 
       - name: Download Agda exports
         if: ${{ env.ACT != 'true' }}
@@ -357,7 +329,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-      options: --user 1001:1001
+      options: --user 1001:1001 --tmpfs /home/runner/.cabal
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
@@ -400,15 +372,6 @@ jobs:
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
 
-      - name: Configure cabal cache (GitHub)
-        if: ${{ env.ACT != 'true' }}
-        run: |
-          mkdir -p /__w/_temp/.home /__w/_temp/.cabal /__w/_temp/.cache
-          {
-            echo "HOME=/__w/_temp/.home"
-            echo "CABAL_DIR=/__w/_temp/.cabal"
-            echo "XDG_CACHE_HOME=/__w/_temp/.cache"
-          } >> "$GITHUB_ENV"
 
       - name: Download Agda exports
         if: ${{ env.ACT != 'true' }}
