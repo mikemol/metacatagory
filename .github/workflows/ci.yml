@@ -26,6 +26,10 @@ jobs:
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
+      ACTIONS_FILE_COMMANDS: /github/home/.tmp/_runner_file_commands
+      ACTIONS_RUNNER_TEMP: /github/home/.tmp
+      RUNNER_TEMP: /github/home/.tmp
+      RUNNER_TOOL_CACHE: /github/home/.tmp/runner_tool_cache
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports/agda
       CI_ARTIFACT_DIR: build/reports/agda
@@ -40,6 +44,11 @@ jobs:
           id
           id runner || true
           stat -c '%u:%g %A %n' /__w /__w/_temp || true
+
+      - name: Ensure temp dirs (GitHub)
+        if: ${{ env.ACT != 'true' }}
+        run: |
+          mkdir -p "${ACTIONS_FILE_COMMANDS}" "${RUNNER_TOOL_CACHE}"
 
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
@@ -125,6 +134,10 @@ jobs:
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
+      ACTIONS_FILE_COMMANDS: /github/home/.tmp/_runner_file_commands
+      ACTIONS_RUNNER_TEMP: /github/home/.tmp
+      RUNNER_TEMP: /github/home/.tmp
+      RUNNER_TOOL_CACHE: /github/home/.tmp/runner_tool_cache
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports/docs
       CI_ARTIFACT_DIR: build/reports/docs
@@ -138,6 +151,11 @@ jobs:
           id
           id runner || true
           stat -c '%u:%g %A %n' /__w /__w/_temp || true
+
+      - name: Ensure temp dirs (GitHub)
+        if: ${{ env.ACT != 'true' }}
+        run: |
+          mkdir -p "${ACTIONS_FILE_COMMANDS}" "${RUNNER_TOOL_CACHE}"
 
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
@@ -224,6 +242,10 @@ jobs:
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
+      ACTIONS_FILE_COMMANDS: /github/home/.tmp/_runner_file_commands
+      ACTIONS_RUNNER_TEMP: /github/home/.tmp
+      RUNNER_TEMP: /github/home/.tmp
+      RUNNER_TOOL_CACHE: /github/home/.tmp/runner_tool_cache
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports/roadmap
       CI_ARTIFACT_DIR: build/reports/roadmap
@@ -237,6 +259,11 @@ jobs:
           id
           id runner || true
           stat -c '%u:%g %A %n' /__w /__w/_temp || true
+
+      - name: Ensure temp dirs (GitHub)
+        if: ${{ env.ACT != 'true' }}
+        run: |
+          mkdir -p "${ACTIONS_FILE_COMMANDS}" "${RUNNER_TOOL_CACHE}"
 
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
@@ -327,6 +354,10 @@ jobs:
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
+      ACTIONS_FILE_COMMANDS: /github/home/.tmp/_runner_file_commands
+      ACTIONS_RUNNER_TEMP: /github/home/.tmp
+      RUNNER_TEMP: /github/home/.tmp
+      RUNNER_TOOL_CACHE: /github/home/.tmp/runner_tool_cache
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports/python
       CI_ARTIFACT_DIR: build/reports/python
@@ -340,6 +371,11 @@ jobs:
           id
           id runner || true
           stat -c '%u:%g %A %n' /__w /__w/_temp || true
+
+      - name: Ensure temp dirs (GitHub)
+        if: ${{ env.ACT != 'true' }}
+        run: |
+          mkdir -p "${ACTIONS_FILE_COMMANDS}" "${RUNNER_TOOL_CACHE}"
 
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
