@@ -201,7 +201,7 @@ jobs:
 
       - name: Run docs checks
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: MUTATE_LEVEL=report make check-docs
+        run: MUTATE_LEVEL=build make check-docs
 
       - name: Stage build reports
         if: ${{ env.ACT != 'true' }}
@@ -310,6 +310,7 @@ jobs:
       - name: Run JSON checks
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: |
+          MUTATE_LEVEL=repo make build/planning_index_recomposed.json
           echo "Roundtrip validate planning (explicit paths)" && \
           python3 -m scripts.validate_json_roundtrip data/planning_index.json build/planning_index_recomposed.json
           MUTATE_LEVEL=repo make check-json
