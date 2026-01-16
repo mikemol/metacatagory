@@ -12,7 +12,7 @@ docTargets : List MakefileTarget
 docTargets =
   validatorToTarget "md-lint" "Lint all markdown files (fail on error)" "build/reports/md-lint.txt"
     []
-    ("if [ \"$${MUTATE_OK:-}\" = \"1\" ] && [ \"$${METACATAGORY_REPORT_MODE:-stdout}\" = \"write\" ]; then mkdir -p build/reports && npx markdownlint-cli2 --config .markdownlint.json \"docs/modules/**/*.md\" \"docs/planning/ROADMAP.md\" \"src/agda/Plan/CIM/meta-index.d/*.md\" > build/reports/md-lint.txt 2>&1; else npx markdownlint-cli2 --config .markdownlint.json \"docs/modules/**/*.md\" \"docs/planning/ROADMAP.md\" \"src/agda/Plan/CIM/meta-index.d/*.md\"; fi" ∷ [])
+    ("if [ \"$${METACATAGORY_REPORT_MODE:-stdout}\" = \"write\" ]; then case \"$${MUTATE_LEVEL:-none}\" in report|build|repo) mkdir -p build/reports && npx markdownlint-cli2 --config .markdownlint.json \"docs/modules/**/*.md\" \"docs/planning/ROADMAP.md\" \"src/agda/Plan/CIM/meta-index.d/*.md\" > build/reports/md-lint.txt 2>&1 ;; *) npx markdownlint-cli2 --config .markdownlint.json \"docs/modules/**/*.md\" \"docs/planning/ROADMAP.md\" \"src/agda/Plan/CIM/meta-index.d/*.md\" ;; esac; else npx markdownlint-cli2 --config .markdownlint.json \"docs/modules/**/*.md\" \"docs/planning/ROADMAP.md\" \"src/agda/Plan/CIM/meta-index.d/*.md\"; fi" ∷ [])
   ∷ generatorToFileTarget mutateCert "build/reports/docs-lint.json" "Emit Agda docs lint report"
     []
     ("METACATAGORY_REPORT_MODE=write python3 scripts/lint_agda_docs.py" ∷ [])

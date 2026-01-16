@@ -33,6 +33,7 @@ jobs:
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
       METACATAGORY_STRICT_ROUNDTRIP: "true"
+      METACATAGORY_REPORT_MODE: "write"
     steps:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
@@ -114,6 +115,7 @@ jobs:
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
       METACATAGORY_STRICT_ROUNDTRIP: "true"
+      METACATAGORY_REPORT_MODE: "write"
     steps:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
@@ -165,7 +167,7 @@ jobs:
 
       - name: Install Node dependencies
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: npm ci
+        run: MUTATE_LEVEL=repo make node-deps
 
       - name: Run docs checks
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -196,6 +198,7 @@ jobs:
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
       METACATAGORY_STRICT_ROUNDTRIP: "true"
+      METACATAGORY_REPORT_MODE: "write"
     steps:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
@@ -282,6 +285,7 @@ jobs:
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
       METACATAGORY_STRICT_ROUNDTRIP: "true"
+      METACATAGORY_REPORT_MODE: "write"
     steps:
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
