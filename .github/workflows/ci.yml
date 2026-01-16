@@ -147,11 +147,21 @@ jobs:
           name: agda-exports
           path: .
 
+      - name: Ensure Makefile recipes
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: bash scripts/recipes/regen-makefile.sh
+
       - name: Install Python dependencies
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Verify Agda export artifacts
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          test -f data/planning_index.json
+          test -f data/dependency_graph.json
 
       - name: Install Node dependencies
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -218,6 +228,22 @@ jobs:
         with:
           name: agda-exports
           path: .
+
+      - name: Ensure Makefile recipes
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: bash scripts/recipes/regen-makefile.sh
+
+      - name: Install Python dependencies
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Verify Agda export artifacts
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          test -f data/planning_index.json
+          test -f data/dependency_graph.json
 
       - name: Run roadmap checks
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -288,6 +314,22 @@ jobs:
         with:
           name: agda-exports
           path: .
+
+      - name: Ensure Makefile recipes
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: bash scripts/recipes/regen-makefile.sh
+
+      - name: Install Python dependencies
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Verify Agda export artifacts
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          test -f data/planning_index.json
+          test -f data/dependency_graph.json
 
       - name: Run Python tests
         working-directory: ${{ env.BUILD_WORKDIR }}
