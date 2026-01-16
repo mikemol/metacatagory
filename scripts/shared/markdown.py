@@ -618,3 +618,61 @@ class MarkdownValidator:
             Dictionary with validation results
         """
         return self.validate()
+
+
+def is_json_input(text: str) -> bool:
+    """Check if input looks like JSON."""
+    stripped = text.lstrip()
+    return stripped.startswith("{") or stripped.startswith("[")
+
+
+def fix_list_markers(md: str) -> str:
+    """Normalize list markers to asterisks with consistent spacing."""
+    def repl(match: re.Match) -> str:
+        indent = match.group(1) or ""
+        content = match.group(3)
+        indent_level = len(indent) // 2 if indent else 0
+        return ("  " * indent_level) + "* " + content
+
+    pattern = re.compile(r"^( *)([-*]) +(.+)$", re.MULTILINE)
+    return pattern.sub(repl, md)
+
+
+def remove_multiple_blank_lines(md: str) -> str:
+    """Collapse multiple blank lines and trim leading blanks."""
+    md = re.sub(r"^(\s*\n)+", "", md)
+    lines = md.splitlines()
+    while lines and lines[0].strip() == "":
+        lines.pop(0)
+    md = "\n".join(lines)
+    return re.sub(r"\n{3,}", "\n\n", md)
+
+
+def fix_horizontal_rules(md: str) -> str:
+    """Normalize horizontal rule lines."""
+    return re.sub(r"^[- ]{5,}$", "-" * 79, md, flags=re.MULTILINE)
+
+
+def fix_headings(md: str) -> str:
+    """Convert setext headings to atx headings."""
+    lines = md.split("\n")
+    out = []
+    i = 0
+    while i < len(lines):
+        if i + 1 < len(lines) and re.match(r"^(=+|-+)$", lines[i + 1]):
+            level = 1 if lines[i + 1].startswith("=") else 2
+            out.append("#" * level + " " + lines[i].strip())
+            i += 2
+        else:
+            out.append(lines[i])
+            i += 1
+    return "\n".join(out)
+
+
+def postprocess_markdown(md: str) -> str:
+    """Apply standard markdown cleanup passes."""
+    md = remove_multiple_blank_lines(md)
+    md = fix_list_markers(md)
+    md = fix_horizontal_rules(md)
+    md = fix_headings(md)
+    return md
