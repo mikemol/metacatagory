@@ -27,6 +27,9 @@ jobs:
     env:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
+      HOME: ${{ github.workspace }}/.home
+      CABAL_DIR: ${{ github.workspace }}/.cabal
+      XDG_CACHE_HOME: ${{ github.workspace }}/.cache
       BUILD_WORKDIR: ${{ github.workspace }}
       CI_REPORT_DIR: build/reports/agda
       CI_ARTIFACT_DIR: build/reports/agda
@@ -66,6 +69,10 @@ jobs:
             rm -rf ./*
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
+
+      - name: Ensure cabal cache dirs
+        run: |
+          mkdir -p "${HOME}" "${CABAL_DIR}" "${XDG_CACHE_HOME}"
 
       - name: Generate Makefile recipes
         working-directory: ${{ env.BUILD_WORKDIR }}
