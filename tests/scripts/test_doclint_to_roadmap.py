@@ -44,6 +44,7 @@ def test_main_generates_items(tmp_path, monkeypatch):
 
 
 def test_main_guard_runs(tmp_path, monkeypatch):
+    monkeypatch.setenv("CI_REPORT_DIR", "build/reports")
     # Run a copy so __main__ writes within the temp root
     script_copy = tmp_path / "scripts" / "doclint_to_roadmap.py"
     script_copy.parent.mkdir(parents=True, exist_ok=True)
@@ -63,7 +64,8 @@ def test_main_guard_runs(tmp_path, monkeypatch):
     assert items[0]["id"].startswith("DOC-LINT::src/A.agda")
 
 
-def test_main_guard_original_paths(tmp_path):
+def test_main_guard_original_paths(tmp_path, monkeypatch):
+    monkeypatch.setenv("CI_REPORT_DIR", "build/reports")
     report = mod.REPORT
     out = mod.OUT
 
