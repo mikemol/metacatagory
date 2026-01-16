@@ -150,6 +150,12 @@ report collection job. Reports land under `build/reports/{agda,docs,roadmap,pyth
 and are merged by the `collect-reports` job into a single artifact. See
 `docs/process/BUILD-TOPOLOGY.md` for report inventory.
 
+### Operational State (2026-01)
+
+- Primary entrypoint: `MUTATE_OK=1 make check-all` (strict roundtrip validation enabled).
+- Makefile/recipes are generated; use `MUTATE_OK=1 make regen-makefile` after target edits.
+- Offline runs can skip pip installs with `PYTHON_OFFLINE=1` (requires preinstalled deps).
+
 ### What's Next: Phase 4 Completion
 
 **Cross-Reference Resolution**

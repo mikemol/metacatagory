@@ -16,6 +16,14 @@ from typing import List, Dict, Optional, Tuple, Any
 import re
 import json
 import textwrap
+
+try:
+    from ..shared_yaml import dump_yaml as shared_dump_yaml
+except ImportError:
+    try:
+        from scripts.shared_yaml import dump_yaml as shared_dump_yaml  # type: ignore
+    except ImportError:
+        shared_dump_yaml = None
 try:
     import yaml  # type: ignore
 except ImportError:
@@ -425,7 +433,10 @@ class MarkdownBuilder:
         # Add frontmatter
         if self.frontmatter:
             if yaml is not None:
-                fm_content = yaml.dump(self.frontmatter, default_flow_style=False)
+                if shared_dump_yaml is not None:
+                    fm_content = shared_dump_yaml(self.frontmatter)
+                else:
+                    fm_content = yaml.dump(self.frontmatter, default_flow_style=False)
                 lines.append("---")
                 lines.append(fm_content.rstrip())
                 lines.append("---")

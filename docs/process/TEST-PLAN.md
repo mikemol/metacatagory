@@ -71,6 +71,7 @@ Expected artifacts (subset; grows with dependencies):
 
 Notes:
 - Network‑dependent step: `build/venv/python_setup.stamp` (pip install).
+- Offline mode: set `PYTHON_OFFLINE=1` to skip pip install and require deps already present.
 
 #### 4) Regeneration (mutative)
 
