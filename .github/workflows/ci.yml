@@ -24,6 +24,10 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      ACTIONS_FILE_COMMANDS: ${{ github.workspace }}/.tmp/_runner_file_commands
+      ACTIONS_RUNNER_TEMP: ${{ github.workspace }}/.tmp
+      RUNNER_TEMP: ${{ github.workspace }}/.tmp
+      RUNNER_TOOL_CACHE: ${{ github.workspace }}/.tmp/runner_tool_cache
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
@@ -35,6 +39,12 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Ensure workspace temp dirs (GitHub)
+        if: ${{ github.actor != 'nektos/act' }}
+        run: |
+          mkdir -p "${ACTIONS_FILE_COMMANDS}" "${RUNNER_TOOL_CACHE}"
+          chmod -R 777 "${ACTIONS_RUNNER_TEMP}"
+
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
@@ -117,6 +127,10 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      ACTIONS_FILE_COMMANDS: ${{ github.workspace }}/.tmp/_runner_file_commands
+      ACTIONS_RUNNER_TEMP: ${{ github.workspace }}/.tmp
+      RUNNER_TEMP: ${{ github.workspace }}/.tmp
+      RUNNER_TOOL_CACHE: ${{ github.workspace }}/.tmp/runner_tool_cache
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
@@ -127,6 +141,12 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Ensure workspace temp dirs (GitHub)
+        if: ${{ github.actor != 'nektos/act' }}
+        run: |
+          mkdir -p "${ACTIONS_FILE_COMMANDS}" "${RUNNER_TOOL_CACHE}"
+          chmod -R 777 "${ACTIONS_RUNNER_TEMP}"
+
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
@@ -210,6 +230,10 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      ACTIONS_FILE_COMMANDS: ${{ github.workspace }}/.tmp/_runner_file_commands
+      ACTIONS_RUNNER_TEMP: ${{ github.workspace }}/.tmp
+      RUNNER_TEMP: ${{ github.workspace }}/.tmp
+      RUNNER_TOOL_CACHE: ${{ github.workspace }}/.tmp/runner_tool_cache
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
@@ -220,6 +244,12 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Ensure workspace temp dirs (GitHub)
+        if: ${{ github.actor != 'nektos/act' }}
+        run: |
+          mkdir -p "${ACTIONS_FILE_COMMANDS}" "${RUNNER_TOOL_CACHE}"
+          chmod -R 777 "${ACTIONS_RUNNER_TEMP}"
+
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
@@ -307,6 +337,10 @@ jobs:
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
     env:
+      ACTIONS_FILE_COMMANDS: ${{ github.workspace }}/.tmp/_runner_file_commands
+      ACTIONS_RUNNER_TEMP: ${{ github.workspace }}/.tmp
+      RUNNER_TEMP: ${{ github.workspace }}/.tmp
+      RUNNER_TOOL_CACHE: ${{ github.workspace }}/.tmp/runner_tool_cache
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
@@ -317,6 +351,12 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Ensure workspace temp dirs (GitHub)
+        if: ${{ github.actor != 'nektos/act' }}
+        run: |
+          mkdir -p "${ACTIONS_FILE_COMMANDS}" "${RUNNER_TOOL_CACHE}"
+          chmod -R 777 "${ACTIONS_RUNNER_TEMP}"
+
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
