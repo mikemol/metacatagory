@@ -15,7 +15,7 @@ from scripts.shared.io import save_json
 
 def main():
     # Read from planning index, not tasks.json
-    repo_root = ROOT
+    repo_root = Path.cwd()
     items = shared_data.load_planning_index(repo_root=repo_root)
     out_path = Path("build/gp_roadmap_sppf.json")
 
