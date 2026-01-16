@@ -31,7 +31,6 @@ Heuristic/static analysis only; does not attempt to parse Agda fully.
 from __future__ import annotations
 import argparse
 import json
-import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -42,6 +41,12 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.shared.paths import REPORTS_DIR
 from scripts.shared.io import save_json
+from scripts.shared.agda_tests import (
+    scan_agda_test_file,
+    ADAPTER_TYPE_RE,
+    MODULE_RE,
+    STATUS_ASSERT_RE,
+)
 from scripts.audax_doc import (
     AUDAXDoc,
     Field,
@@ -56,33 +61,13 @@ from scripts.audax_doc import (
 TESTS_DIR = ROOT / "src" / "agda" / "Tests"
 OUT_DIR = REPORTS_DIR
 
-ADAPTER_TYPE_RE = re.compile(r"^\s*([a-zA-Z0-9_\-']+)\s*:\s*A\.([A-Za-z0-9_]+)\b")
-STATUS_ASSERT_RE = re.compile(
-    r"^\s*([a-zA-Z0-9_\-']+)\s*:\s*A\.[A-Za-z0-9_]+\s+[a-zA-Z0-9_\-']+\s*≡\s*(?:B\.)?true\s*$"
-)
-MODULE_RE = re.compile(r"^\s*module\s+([A-Za-z0-9_.]+)\s+where\s*$")
-
-# Allow True/False variants some files use
-ALT_TRUE_RE = re.compile(r"\b(?:B\.)?true\b|\bTrue\b")
-
 def scan_file(path: Path) -> dict[str, Any]:
-    adapters = []  # list of (name, type)
-    statuses = 0
-    module_name = None
-    for line in path.read_text(encoding="utf-8").splitlines():
-        m = MODULE_RE.match(line)
-        if m:
-            module_name = m.group(1)
-        m = ADAPTER_TYPE_RE.match(line)
-        if m:
-            adapters.append((m.group(1), m.group(2)))
-        if STATUS_ASSERT_RE.match(line):
-            statuses += 1
+    scan = scan_agda_test_file(path)
     return {
         "file": str(path.relative_to(ROOT)),
-        "module": module_name,
-        "adapters": adapters,
-        "status_assertions": statuses,
+        "module": scan.module,
+        "adapters": scan.adapters,
+        "status_assertions": scan.status_assertions,
     }  # type: dict[str, Any]
 
 def summarize(file_reports: list[dict[str, Any]]) -> dict[str, Any]:
