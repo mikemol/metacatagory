@@ -15,6 +15,7 @@ from scripts.shared_yaml import normalize_field_comparison, normalize_dependenci
 from scripts.shared.io import load_json
 from scripts.shared.parallel import get_parallel_settings
 from scripts.shared.paths import INGESTED_METADATA_JSON
+from scripts.shared.composition import run_validate_roadmap_md
 from scripts.shared.validation import ingested_metadata_validator
 from scripts import shared_data
 
@@ -236,7 +237,28 @@ def run_all_validations(base_dir: Path | None = None) -> bool:
     
     # Validate triangle identity
     print("Validating triangle identity (JSON ↔ Markdown)...")
-    triangle_valid, triangle_msgs = validate_json_to_markdown(json_items, md_ids, md_frontmatter)
+    if not md_ids and not md_frontmatter:
+        print("No markdown IDs/frontmatter found; falling back to title validation.")
+        exit_code, context = run_validate_roadmap_md(base_dir, strict=True)
+        report = context.get("validation_report", {})
+        triangle_msgs: List[str] = []
+        if exit_code == 0:
+            triangle_msgs.append(
+                f"✓ Triangle identity: JSON ↔ Markdown titles ({len(json_items)} items match)"
+            )
+        else:
+            missing = report.get("missing_count", 0)
+            extra = report.get("extra_count", 0)
+            triangle_msgs.append(
+                f"✗ ROADMAP title mismatch (missing: {missing}, extra: {extra})"
+            )
+            for title in report.get("missing_sample", []):
+                triangle_msgs.append(f"    - missing: {title}")
+            for title in report.get("extra_sample", []):
+                triangle_msgs.append(f"    - extra: {title}")
+        triangle_valid = exit_code == 0
+    else:
+        triangle_valid, triangle_msgs = validate_json_to_markdown(json_items, md_ids, md_frontmatter)
     for msg in triangle_msgs:
         print(msg)
     print()
