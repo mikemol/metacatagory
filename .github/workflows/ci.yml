@@ -78,7 +78,7 @@ jobs:
         run: python3 -m scripts.makefile_coverage --run-targets
 
       - name: Upload Agda exports
-        if: ${{ github.actor != 'nektos/act' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: agda-exports
@@ -90,7 +90,7 @@ jobs:
           retention-days: 30
 
       - name: Upload build reports (agda)
-        if: ${{ github.actor != 'nektos/act' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports-agda
@@ -141,7 +141,7 @@ jobs:
           fi
 
       - name: Download Agda exports
-        if: ${{ github.actor != 'nektos/act' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/download-artifact@v4
         with:
           name: agda-exports
@@ -162,7 +162,7 @@ jobs:
         run: MUTATE_OK=1 make check-docs
 
       - name: Upload build reports (docs)
-        if: ${{ github.actor != 'nektos/act' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports-docs
@@ -213,7 +213,7 @@ jobs:
           fi
 
       - name: Download Agda exports
-        if: ${{ github.actor != 'nektos/act' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/download-artifact@v4
         with:
           name: agda-exports
@@ -233,7 +233,7 @@ jobs:
           MUTATE_OK=1 make check-json
 
       - name: Upload build reports (roadmap)
-        if: ${{ github.actor != 'nektos/act' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports-roadmap
@@ -283,7 +283,7 @@ jobs:
           fi
 
       - name: Download Agda exports
-        if: ${{ github.actor != 'nektos/act' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/download-artifact@v4
         with:
           name: agda-exports
@@ -298,7 +298,7 @@ jobs:
         run: MUTATE_OK=1 make check-debt
 
       - name: Upload build reports (python)
-        if: ${{ github.actor != 'nektos/act' }}
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports-python
@@ -313,7 +313,7 @@ jobs:
       - roadmap-json-checks
       - python-checks
     runs-on: ubuntu-latest
-    if: ${{ github.actor != 'nektos/act' }}
+    if: ${{ env.ACT != 'true' }}
     steps:
       - name: Download build-reports artifacts
         uses: actions/download-artifact@v4
