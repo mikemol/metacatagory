@@ -10,11 +10,16 @@ Sources:
 
 import json
 import re
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import List, Dict
 
 # Import shared utilities
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 import shared_data
 from shared.io import load_json, save_json
 from shared.paths import REPO_ROOT, BUILD_DIR, DOCLINT_ROADMAP_JSON, CANONICAL_ROADMAP_JSON
