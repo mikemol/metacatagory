@@ -148,75 +148,9 @@ echo ""
 # Create fragments directory
 mkdir -p "$DEMO_DIR/fragments"
 
-# REAL decomposition: write Python script to analyze and decompose JSON
-cat > "$DEMO_DIR/decompose.py" <<'PYEOF'
-import json
-import sys
-import hashlib
-from pathlib import Path
-
-def extract_fragments(data, path="", depth=0):
-    """Recursively extract and write JSON fragments"""
-    fragments = []
-    
-    if isinstance(data, dict):
-        for key, value in data.items():
-            current_path = f"{path}.{key}" if path else key
-            
-            # Write fragment for this subtree
-            fragment_name = current_path.replace(".", "_").replace("[", "_").replace("]", "_")
-            fragment_file = f"fragments/{fragment_name}.json"
-            
-            with open(fragment_file, 'w') as f:
-                json.dump(value, f, indent=2)
-            
-            fragments.append({
-                "path": current_path,
-                "type": type(value).__name__,
-                "size": len(json.dumps(value)),
-                "file": fragment_file
-            })
-            
-            # Recurse
-            fragments.extend(extract_fragments(value, current_path, depth+1))
-    
-    elif isinstance(data, list):
-        for i, item in enumerate(data):
-            current_path = f"{path}[{i}]"
-            if isinstance(item, (dict, list)):
-                fragments.extend(extract_fragments(item, current_path, depth+1))
-    
-    return fragments
-
-# Load input JSON
-with open(sys.argv[1], 'r') as f:
-    data = json.load(f)
-
-# Extract fragments
-fragments = extract_fragments(data)
-
-# Write manifest
-manifest = {
-    "input_file": sys.argv[1],
-    "total_fragments": len(fragments),
-    "fragments": fragments,
-    "input_hash": hashlib.md5(json.dumps(data, sort_keys=True).encode()).hexdigest()
-}
-
-with open("fragments/MANIFEST.json", 'w') as f:
-    json.dump(manifest, f, indent=2)
-
-# Print summary
-print(f"Extracted {len(fragments)} fragments")
-for frag in fragments[:5]:
-    print(f"  • {frag['path']} ({frag['type']}, {frag['size']} bytes)")
-if len(fragments) > 5:
-    print(f"  ... and {len(fragments)-5} more")
-PYEOF
-
 # Run decomposition
 cd "$DEMO_DIR"
-if python3 decompose.py "$DEMO_JSON" > decomposition_output.txt 2>&1; then
+if python3 "$WORKSPACE/scripts/demo_json_decompose.py" "$DEMO_JSON" "$DEMO_DIR/fragments" > decomposition_output.txt 2>&1; then
     cat decomposition_output.txt
     echo ""
     
@@ -252,52 +186,10 @@ echo ""
 echo "Performing ACTUAL recomposition: rebuilding JSON from extracted fragments..."
 echo ""
 
-# REAL recomposition: write Python script to merge fragments back
-cat > "$DEMO_DIR/recompose.py" <<'PYEOF'
-import json
-import sys
-from pathlib import Path
-
-# Read manifest to know what was extracted
-with open("fragments/MANIFEST.json", 'r') as f:
-    manifest = json.load(f)
-
-# Reconstruct from the largest fragment (usually root)
-largest_fragment = max(manifest["fragments"], key=lambda f: f["size"])
-main_fragment_file = largest_fragment["file"]
-
-print(f"Reconstructing from main fragment: {main_fragment_file}")
-
-with open(main_fragment_file, 'r') as f:
-    recomposed = json.load(f)
-
-# Validate structure
-recomposed_json = json.dumps(recomposed, sort_keys=True)
-original_json = open(sys.argv[1], 'r').read()
-original_data = json.loads(original_json)
-original_json_canonical = json.dumps(original_data, sort_keys=True)
-
-# Check if structure matches
-if json.loads(recomposed_json) == json.loads(original_json_canonical):
-    print("✓ Structure verified: Reconstructed data matches original")
-    result = "VERIFIED"
-else:
-    print("⚠ Structure differs (checking normalization...)")
-    result = "DIFFERENT"
-
-# Write recomposed version
-output_file = sys.argv[2]
-with open(output_file, 'w') as f:
-    json.dump(recomposed, f, indent=2)
-
-print(f"Recomposed JSON written: {output_file}")
-print(f"Result: {result}")
-PYEOF
-
 RECOMPOSED_JSON="$DEMO_DIR/recomposed.json"
 
 cd "$DEMO_DIR"
-if python3 recompose.py "$DEMO_JSON" "$RECOMPOSED_JSON" > recompose_output.txt 2>&1; then
+if python3 "$WORKSPACE/scripts/demo_json_recompose.py" "$DEMO_DIR/fragments" "$RECOMPOSED_JSON" > recompose_output.txt 2>&1; then
     cat recompose_output.txt
 else
     echo "⚠️  Recomposition with Python failed"
@@ -314,73 +206,9 @@ echo ""
 echo "Verifying roundtrip property: backward (forward strat m) ≡ m"
 echo ""
 
-# Write Python script to verify roundtrip with JSON structural comparison
-cat > "$DEMO_DIR/verify_roundtrip.py" <<'PYEOF'
-import json
-import hashlib
-import sys
-
-original_file = sys.argv[1]
-recomposed_file = sys.argv[2]
-
-# Load both JSON files
-with open(original_file, 'r') as f:
-    original_data = json.load(f)
-
-with open(recomposed_file, 'r') as f:
-    recomposed_data = json.load(f)
-
-# Create canonical JSON strings (sorted keys) for comparison
-original_canon = json.dumps(original_data, sort_keys=True, separators=(',', ':'))
-recomposed_canon = json.dumps(recomposed_data, sort_keys=True, separators=(',', ':'))
-
-# Calculate hashes
-original_md5 = hashlib.md5(original_canon.encode()).hexdigest()
-recomposed_md5 = hashlib.md5(recomposed_canon.encode()).hexdigest()
-
-print(f"Original JSON hash:   {original_md5}")
-print(f"Recomposed JSON hash: {recomposed_md5}")
-
-# Verify structural equality
-if original_data == recomposed_data:
-    print("\n✅ ROUNDTRIP PROPERTY VERIFIED")
-    print("   backward (forward strat m) ≡ m HOLDS")
-    print("\n   This proves:")
-    print("   • No information loss during decomposition")
-    print("   • Recomposition reconstructs original exactly")
-    print("   • Contract laws preserved throughout")
-else:
-    print("\n⚠️  Structural difference detected")
-    print("   Checking if difference is significant...")
-    
-    # Deep comparison
-    if len(original_data) == len(recomposed_data):
-        print("   ✓ Top-level structure preserved")
-PYEOF
-
 cd "$DEMO_DIR"
-python3 verify_roundtrip.py "$DEMO_JSON" "$RECOMPOSED_JSON"
+python3 "$WORKSPACE/scripts/demo_json_verify_roundtrip.py" "$DEMO_JSON" "$RECOMPOSED_JSON"
 cd - > /dev/null
-
-    echo ""
-    echo "   This proves:"
-    echo "   • No information loss during decomposition"
-    echo "   • Recomposition reconstructs original exactly"
-    echo "   • Contract laws preserved throughout"
-else
-    echo "⚠️  Checksums differ (expected for normalized JSON)"
-    echo "   Performing structural comparison..."
-    
-    # Try to parse and compare structure if jq available
-    if command -v jq &> /dev/null; then
-        ORIGINAL_KEYS=$(jq -S 'keys' "$DEMO_JSON" 2>/dev/null || echo "[]")
-        RECOMPOSED_KEYS=$(jq -S 'keys' "$RECOMPOSED_JSON" 2>/dev/null || echo "[]")
-        
-        if [ "$ORIGINAL_KEYS" = "$RECOMPOSED_KEYS" ]; then
-            echo "   ✓ Structure identical (keys match)"
-        fi
-    fi
-fi
 
 echo ""
 echo "═══════════════════════════════════════════════════════════════════════════"
