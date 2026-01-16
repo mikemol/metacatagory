@@ -97,9 +97,13 @@ def main() -> int:
             locs = ", ".join(str(n) for n in missing_decls[p])
             print(f"  - {p}: lines {locs}")
 
+    canonical_report = ROOT / "build" / "reports" / "docs-lint.json"
+
     if not ok:
         if allow_report_write():
             save_json(REPORTS_DIR / "docs-lint.json", report)
+            if REPORTS_DIR != canonical_report.parent:
+                save_json(canonical_report, report)
         else:
             print(json.dumps(report, indent=2))
             print("docs-lint report suppressed (report writing disabled).")
@@ -108,6 +112,8 @@ def main() -> int:
     print(f"✓ Doc lint passed ({len(agda_files)} files checked)")
     if allow_report_write():
         save_json(REPORTS_DIR / "docs-lint.json", report)
+        if REPORTS_DIR != canonical_report.parent:
+            save_json(canonical_report, report)
     else:
         print(json.dumps(report, indent=2))
         print("docs-lint report suppressed (report writing disabled).")
