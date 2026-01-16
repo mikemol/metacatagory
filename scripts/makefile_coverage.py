@@ -16,6 +16,7 @@ from scripts.shared.io import save_json, load_json
 
 DEFAULT_ROOTS: List[str] = ["check", "regen-makefile"]
 FAILURES_PATH = Path("build/reports/last_failures.json")
+EXECUTION_PRIORITY: List[str] = ["regen-makefile"]
 
 
 def load_failures() -> list[str]:
@@ -55,6 +56,9 @@ def run_targets(targets: Iterable[str], prioritize_failures: bool = True) -> Non
         if item.strip()
     }
     target_list = list(targets)
+    if EXECUTION_PRIORITY:
+        prioritized = [t for t in EXECUTION_PRIORITY if t in target_list]
+        target_list = prioritized + [t for t in target_list if t not in prioritized]
     if prioritize_failures:
         failures = load_failures()
         failed_first = [t for t in failures if t in target_list]
