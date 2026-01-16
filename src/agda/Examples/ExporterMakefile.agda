@@ -532,6 +532,7 @@ renderRecipeScript cmds =
         ∷ "case \"${VIRTUAL_ENV:-}\" in"
         ∷ "  *\"{env:\"* ) VIRTUAL_ENV=\"$BUILD_VENV_DIR\" ;;"
         ∷ "esac"
+        ∷ "if [ -n \"${VIRTUAL_ENV:-}\" ] && [ ! -d \"$VIRTUAL_ENV\" ]; then VIRTUAL_ENV=\"$BUILD_VENV_DIR\"; fi"
         ∷ "export VIRTUAL_ENV=\"${VIRTUAL_ENV:-$BUILD_VENV_DIR}\""
         ∷ "export PATH=\"$VIRTUAL_ENV/bin:$PATH\""
         ∷ [])

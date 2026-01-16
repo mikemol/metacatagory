@@ -124,7 +124,7 @@ Mutability indicates whether a target is allowed to write artifacts or update th
 | `check-json` | Validate JSON roundtrip outputs | repo-write |
 | `check-debt` | Validate deferred items + intake scan | repo-write |
 | `check-all` | Run full validation suite | repo-write |
-| `check` | Run all validation checks (alias) | repo-write |
+| `check` | Run all validation checks (alias) | read-only |
 | `validate-constructive` | Regenerate and validate all artifacts | repo-write |
 | `ci-light` | Lightweight CI target (no GHC backend) | repo-write |
 | `ci-preflight` | Fast guard: graph + makefile docs | repo-write |
