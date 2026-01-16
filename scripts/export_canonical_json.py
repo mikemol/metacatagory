@@ -2,12 +2,16 @@
 """Export unified planning index to tasks.json format."""
 
 import json
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from scripts import shared_data
 
 
-ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_PATH = shared_data.resolve_tasks_path(repo_root=ROOT)
 
 

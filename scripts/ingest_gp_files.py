@@ -6,8 +6,13 @@ Ingest GP files from intake directory and generate RoadmapStep records.
 import os
 import re
 import json
+import sys
 from pathlib import Path
 from typing import Dict, List, Tuple
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from scripts.shared.gp_intake import (
     extract_metadata_from_md,
@@ -22,8 +27,6 @@ from scripts.shared.gp_roadmap_render import (
     render_roadmap_step,
     sanitize_string,
 )
-
-ROOT = Path(__file__).resolve().parent.parent
 
 def infer_target_module(content: str, title: str, keywords: List[str]) -> str:
     """Intelligently route GP content to appropriate Agda module.

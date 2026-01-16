@@ -436,7 +436,7 @@ def roadmap_item_validator(value: Any, path: str = "") -> ValidationResult:
             "id": string_validator(non_empty=True),
             "title": string_validator(non_empty=True),
             "description": string_validator(),
-            "status": one_of_validator(["not-started", "in-progress", "completed", "blocked", "deferred"]),
+            "status": one_of_validator(["not-started", "in-progress", "completed", "blocked", "deferred", "done"]),
             "category": string_validator(),
             "source": string_validator(),
             "files": list_validator(item_validator=string_validator()),
