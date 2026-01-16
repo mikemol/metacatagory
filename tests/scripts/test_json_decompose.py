@@ -32,13 +32,11 @@ class TestDecompositionMetadata:
     def test_metadata_creation(self):
         """Test creating metadata object."""
         metadata = DecompositionMetadata(
-            timestamp="2026-01-06T00:00:00",
             strategy="test-strategy",
             source_file="test.json",
             total_items=10,
             fragment_count=5
         )
-        assert metadata.timestamp == "2026-01-06T00:00:00"
         assert metadata.strategy == "test-strategy"
         assert metadata.version == "1.0"
     
@@ -46,7 +44,6 @@ class TestDecompositionMetadata:
         """Test converting metadata to dict."""
         from dataclasses import asdict
         metadata = DecompositionMetadata(
-            timestamp="2026-01-06T00:00:00",
             strategy="test-strategy",
             source_file="test.json",
             total_items=10,
@@ -100,7 +97,6 @@ class TestJSONDecomposerBase:
         assert metadata["fragment_count"] == 5
         assert metadata["strategy"] == "dependency-graph"
         assert metadata["source_file"] == "test.json"
-        assert "timestamp" in metadata
 
 
 class TestDependencyGraphDecomposer:

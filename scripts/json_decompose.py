@@ -25,7 +25,6 @@ import shutil
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Iterable, Tuple
 from dataclasses import dataclass, asdict
-from datetime import datetime, timezone
 from concurrent.futures import ThreadPoolExecutor
 
 # Ensure repository root is importable as a package (scripts.*)
@@ -39,7 +38,6 @@ from scripts.shared.parallel import get_parallel_settings
 @dataclass
 class DecompositionMetadata:
     """Metadata written to all hierarchical outputs."""
-    timestamp: str
     strategy: str
     source_file: str
     total_items: int
@@ -62,7 +60,6 @@ class JSONDecomposer:
     def write_metadata(self, total_items: int, fragment_count: int) -> None:
         """Write metadata file."""
         self.metadata = DecompositionMetadata(
-            timestamp=datetime.now(timezone.utc).isoformat(),
             strategy=self.strategy_name(),
             source_file=self.source_file,
             total_items=total_items,

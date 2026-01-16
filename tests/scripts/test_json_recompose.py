@@ -25,7 +25,6 @@ from json_recompose import (
 
 def write_metadata(base: Path, total_items: int, strategy: str = "dependency-graph") -> None:
     meta = {
-        "timestamp": "2026-01-06T00:00:00",
         "strategy": strategy,
         "total_items": total_items,
         "source_file": "dummy",
@@ -41,7 +40,6 @@ class TestJSONRecomposerBase:
         """Test recomposer initializes correctly."""
         # Create minimal hierarchical structure
         (tmp_path / "_metadata.json").write_text(json.dumps({
-            "timestamp": "2026-01-06T00:00:00",
             "strategy": "test",
             "total_items": 0,
             "fragment_count": 0
@@ -61,7 +59,6 @@ class TestJSONRecomposerBase:
     def test_load_metadata_with_data(self, tmp_path):
         """Test loading metadata from file."""
         metadata = {
-            "timestamp": "2026-01-06T00:00:00",
             "strategy": "dependency-graph",
             "source_file": "test.json",
             "total_items": 10,
