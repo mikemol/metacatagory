@@ -25,7 +25,6 @@ This is more robust than pure regex while being immediately implementable.
 """
 
 from pathlib import Path
-import re
 import sys
 from typing import Any, Optional, Tuple
 
@@ -34,6 +33,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.shared.paths import REPORTS_DIR
+from scripts.shared.agda_tests import parse_total_assertions
 
 TESTS_DIR = ROOT / "src" / "agda" / "Tests"
 COVERAGE_REPORT_FILE = TESTS_DIR / "CoverageReport.agda"
@@ -55,9 +55,8 @@ def parse_coverage_metadata() -> Optional[dict[str, Any]]:
 
     # Extract the expected total from the type-checked equality
     # This line MUST match reality or Agda compilation fails
-    total_match = re.search(r"totalAssertions ≡ (\d+)", content)
-    if total_match:
-        expected_total = int(total_match.group(1))
+    expected_total = parse_total_assertions(content)
+    if expected_total is not None:
         print(f"Agda-verified expected total: {expected_total}")
         return {"expected_total": expected_total}
 

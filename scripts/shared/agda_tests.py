@@ -16,6 +16,7 @@ ADAPTER_TYPE_RE = re.compile(r"^\s*([a-zA-Z0-9_\-']+)\s*:\s*A\.([A-Za-z0-9_]+)\b
 STATUS_ASSERT_RE = re.compile(
     r"^\s*([a-zA-Z0-9_\-']+)\s*:\s*A\.[A-Za-z0-9_]+\s+[a-zA-Z0-9_\-']+\s*≡\s*(?:B\.)?true\s*$"
 )
+TOTAL_ASSERTIONS_RE = re.compile(r"totalAssertions ≡ (\d+)")
 
 
 @dataclass
@@ -52,3 +53,11 @@ def scan_agda_test_file(path: Path) -> AgdaTestScan:
         adapters=adapters,
         status_assertions=status_assertions,
     )
+
+
+def parse_total_assertions(content: str) -> int | None:
+    """Parse totalAssertions value from CoverageReport.agda content."""
+    match = TOTAL_ASSERTIONS_RE.search(content)
+    if not match:
+        return None
+    return int(match.group(1))
