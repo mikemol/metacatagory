@@ -25,6 +25,11 @@ infraTargets =
   ∷ validatorToTarget "makefile-validate" "Validate Makefile consistency" "build/reports/makefile-validate.txt"
       []
       ("python3 scripts/validate_makefile_docs.py" ∷ [])
+  ∷ generatorToTarget mutateCert "check-makefile-generated" "Fail if Makefile.generated is stale"
+      ([])
+      ("if [ ! -f Makefile.generated ]; then echo \"Missing Makefile.generated; run make regen-makefile\"; exit 1; fi" ∷
+       "if ! cmp -s Makefile.generated Makefile; then echo \"Makefile.generated is stale; run make regen-makefile\"; exit 1; fi" ∷
+       [])
   ∷ environmentSetupToTarget mutateCert "node-deps" "Install Node.js dependencies"
       ("npm install" ∷ [])
   ∷ generatorToFileTarget mutateCert "build/agda/TechnicalDebt/DeferredItemsOrchestrationFFI" "Compile deferred items scanner (MAlonzo + binary)"

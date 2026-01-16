@@ -45,7 +45,7 @@ compositeTargets =
   ∷ generatorToTarget mutateCert "check-debt" "Validate deferred items + intake scan" ("debt-check" ∷ [])
     ("@echo \"check-debt complete\"" ∷ [])
   ∷ generatorToTarget mutateCert "check-all" "Run full validation suite" (
-        "check-infra" ∷ "check-docs" ∷ "check-roadmap" ∷ "check-python" ∷ "check-json" ∷ "check-debt" ∷ [])
+        "check-makefile-generated" ∷ "check-infra" ∷ "check-docs" ∷ "check-roadmap" ∷ "check-python" ∷ "check-json" ∷ "check-debt" ∷ [])
     ("@echo \"check-all complete\"" ∷ [])
   ∷ generatorToTarget mutateCert "check" "Run all validation checks (alias)" ("check-all" ∷ [])
     ("@echo \"check complete\"" ∷ [])

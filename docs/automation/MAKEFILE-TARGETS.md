@@ -77,6 +77,7 @@ Mutability indicates whether a target is allowed to write artifacts or update th
 | `build/canonical_roadmap.json` | Generate canonical roadmap JSON from intake | mutative |
 | `intake-scan` | Scan intake directory for new files | mutative |
 | `makefile-validate` | Validate Makefile consistency | read-only |
+| `check-makefile-generated` | Fail if Makefile.generated is stale | mutative |
 | `node-deps` | Install Node.js dependencies | mutative |
 | `build/agda/TechnicalDebt/DeferredItemsOrchestrationFFI` | Compile deferred items scanner (MAlonzo + binary) | mutative |
 | `deferred-items-dirs` | Ensure deferred items output directories exist | mutative |
