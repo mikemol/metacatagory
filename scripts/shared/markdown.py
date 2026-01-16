@@ -310,6 +310,42 @@ class MarkdownParser:
             blocks.append((language, code))
         return blocks
 
+    def get_links(self) -> List[Tuple[str, str]]:
+        """Extract all links from document.
+        
+        Returns:
+            List of (text, url) tuples
+        """
+        link_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
+        links = []
+        for match in link_pattern.finditer(self.body):
+            text = match.group(1)
+            url = match.group(2)
+            links.append((text, url))
+        return links
+
+    def get_table_of_contents(self) -> str:
+        """Generate table of contents from headings.
+        
+        Returns:
+            Markdown formatted TOC
+        """
+        headings = self.get_headings()
+        
+        if not headings:
+            return ""
+        
+        lines = ["## Table of Contents\n"]
+        
+        for level, text in headings:
+            if level > 1:  # Skip h1
+                indent = "  " * (level - 2)
+                # Convert heading to anchor
+                anchor = text.lower().replace(" ", "-").replace("`", "")
+                lines.append(f"{indent}- [{text}](#{anchor})")
+        
+        return "\n".join(lines) + "\n"
+
 
 FENCED_YAML_PATTERN = re.compile(r'```yaml\n(.*?)\n```', re.DOTALL)
 
@@ -442,43 +478,6 @@ def extract_markdown_section(
         return None
     content = md_path.read_text(encoding="utf-8")
     return extract_markdown_section_from_content(content, heading_pattern)
-    
-    def get_links(self) -> List[Tuple[str, str]]:
-        """Extract all links from document.
-        
-        Returns:
-            List of (text, url) tuples
-        """
-        link_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
-        links = []
-        for match in link_pattern.finditer(self.body):
-            text = match.group(1)
-            url = match.group(2)
-            links.append((text, url))
-        return links
-    
-    def get_table_of_contents(self) -> str:
-        """Generate table of contents from headings.
-        
-        Returns:
-            Markdown formatted TOC
-        """
-        headings = self.get_headings()
-        
-        if not headings:
-            return ""
-        
-        lines = ["## Table of Contents\n"]
-        current_level = 1
-        
-        for level, text in headings:
-            if level > 1:  # Skip h1
-                indent = "  " * (level - 2)
-                # Convert heading to anchor
-                anchor = text.lower().replace(" ", "-").replace("`", "")
-                lines.append(f"{indent}- [{text}](#{anchor})")
-        
-        return "\n".join(lines) + "\n"
 
 
 class MarkdownBuilder:
