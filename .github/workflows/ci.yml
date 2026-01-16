@@ -78,6 +78,16 @@ jobs:
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: MUTATE_LEVEL=repo python3 -m scripts.makefile_coverage --run-targets
 
+      - name: Stage build reports
+        if: ${{ env.ACT != 'true' }}
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          if [ -d build/reports ]; then
+            mkdir -p "${CI_REPORT_DIR}"
+            rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
+              build/reports/ "${CI_REPORT_DIR}/"
+          fi
+
       - name: Upload Agda exports
         if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
@@ -173,6 +183,16 @@ jobs:
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: MUTATE_LEVEL=report make check-docs
 
+      - name: Stage build reports
+        if: ${{ env.ACT != 'true' }}
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          if [ -d build/reports ]; then
+            mkdir -p "${CI_REPORT_DIR}"
+            rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
+              build/reports/ "${CI_REPORT_DIR}/"
+          fi
+
       - name: Upload build reports (docs)
         if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
@@ -261,6 +281,16 @@ jobs:
           python3 -m scripts.validate_json_roundtrip data/planning_index.json build/planning_index_recomposed.json
           MUTATE_LEVEL=repo make check-json
 
+      - name: Stage build reports
+        if: ${{ env.ACT != 'true' }}
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          if [ -d build/reports ]; then
+            mkdir -p "${CI_REPORT_DIR}"
+            rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
+              build/reports/ "${CI_REPORT_DIR}/"
+          fi
+
       - name: Upload build reports (roadmap)
         if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
@@ -342,6 +372,16 @@ jobs:
       - name: Run debt checks
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: MUTATE_LEVEL=repo make check-debt
+
+      - name: Stage build reports
+        if: ${{ env.ACT != 'true' }}
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          if [ -d build/reports ]; then
+            mkdir -p "${CI_REPORT_DIR}"
+            rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
+              build/reports/ "${CI_REPORT_DIR}/"
+          fi
 
       - name: Upload build reports (python)
         if: ${{ env.ACT != 'true' }}
