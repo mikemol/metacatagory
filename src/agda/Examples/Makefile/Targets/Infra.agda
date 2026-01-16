@@ -17,7 +17,7 @@ infraTargets =
       ("mkdir -p docs/status && touch docs/status/dir.stamp" ∷ [])
   ∷ validatorToTarget "intake-lint" "Lint intake files specifically" "build/reports/intake-md-lint.txt"
     []
-    ("if [ \"$${MUTATE_OK:-}\" = \"1\" ] && [ \"$${METACATAGORY_REPORT_MODE:-stdout}\" = \"write\" ]; then mkdir -p build/reports && printf \"intake lint suppressed (too much legacy noise)\\n\" > build/reports/intake-md-lint.txt; else printf \"intake lint suppressed (too much legacy noise)\\n\"; fi" ∷ [])
+    ("if [ \"$${METACATAGORY_REPORT_MODE:-stdout}\" = \"write\" ]; then mkdir -p build/reports && printf \"intake lint suppressed (too much legacy noise)\\n\" > build/reports/intake-md-lint.txt; else printf \"intake lint suppressed (too much legacy noise)\\n\"; fi" ∷ [])
   ∷ generatorToFileTarget mutateCert "build/canonical_roadmap.json" "Generate canonical roadmap JSON from intake" ([]) 
       ("python3 scripts/intake_scan.py" ∷ [])
   ∷ generatorToTarget mutateCert "intake-scan" "Scan intake directory for new files" ("data/planning_index.json" ∷ [])
@@ -31,7 +31,7 @@ infraTargets =
        "if ! cmp -s Makefile.generated Makefile; then echo \"Makefile.generated is stale; run make regen-makefile\"; exit 1; fi" ∷
        [])
   ∷ environmentSetupToTarget mutateCert "node-deps" "Install Node.js dependencies"
-      ("npm install" ∷ [])
+      ("if [ -f package-lock.json ]; then npm ci; else npm install; fi" ∷ [])
   ∷ generatorToFileTarget mutateCert "build/agda/TechnicalDebt/DeferredItemsOrchestrationFFI" "Compile deferred items scanner (MAlonzo + binary)"
       ("build/dir.stamp" ∷ "src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda" ∷ [])
       ("$(AGDA_COMPILE) src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda" ∷ [])
