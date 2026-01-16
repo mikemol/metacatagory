@@ -31,7 +31,11 @@ REPO_ROOT = Path(__file__).parent.parent
 CANONICAL_JSON = REPO_ROOT / "data" / "planning_index.json"
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
 
-from shared.parallel import get_parallel_settings
+import sys
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.shared.parallel import get_parallel_settings
 from scripts import shared_data
 
 # Controlled tag vocabulary

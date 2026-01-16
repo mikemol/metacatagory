@@ -35,7 +35,9 @@ composeBraidTraces blocks mblocks = record
     buildSteps [] [] = []
     buildSteps [] (_ ∷ _) = []
     buildSteps (_ ∷ _) [] = []
+    -- | Build a braid step for a single block recomposition.
     buildSteps (b ∷ bs) (mb ∷ mbs) =
+      -- | Single braid step for a block recomposition.
       record { fromBlock = b ; toBlock = mb ; description = "block recomposition" } ∷
       buildSteps bs mbs
 
@@ -65,13 +67,13 @@ recomposeDocCoherence doc mdoc = record
 -- Compose Multiple Transformation Witnesses
 ------------------------------------------------------------------------
 
--- Aggregate metrics from multiple transformation steps
+-- | Aggregate metrics from multiple transformation steps.
 aggregateMetrics : List EmergentMetric → EmergentMetric
 aggregateMetrics [] = mkMetric 0 0
 aggregateMetrics (m ∷ ms) = mkMetric (EmergentMetric.magnitude m + EmergentMetric.magnitude (aggregateMetrics ms))
                                      (EmergentMetric.magnitude m + EmergentMetric.magnitude (aggregateMetrics ms))
 
--- Compose transformation paths into a single path
+-- | Compose transformation paths into a single path.
 composePaths : ∀ {ℓ} {A B : Set ℓ} → (sys : TransformationSystem {ℓ} A B) → List (Path sys) → Path sys
 composePaths sys [] = refl-path
 composePaths sys (p ∷ []) = p
@@ -90,6 +92,7 @@ record AggregatedBlockWitness : Set₁ where
     coherence : CoherenceWitness blockAmb blockTransSys
     totalCost : Nat
 
+-- | Aggregate document-level coherence witnesses and metadata.
 record AggregatedDocWitness : Set₁ where
   field
     sourceDoc : PandocDoc
