@@ -206,7 +206,7 @@ def run_all_validations(base_dir: Path | None = None) -> bool:
         if parallel and workers > 1:
             with ThreadPoolExecutor(max_workers=2) as executor:
                 json_future = executor.submit(
-                    shared_data.load_planning_index_from, planning_path
+                    shared_data.load_planning_index_validated_from, planning_path
                 )
                 md_future = executor.submit(
                     shared_data.load_roadmap_markdown_from, roadmap_path
@@ -214,7 +214,7 @@ def run_all_validations(base_dir: Path | None = None) -> bool:
                 json_items = json_future.result()
                 md_ids, md_frontmatter = md_future.result()
         else:
-            json_items = shared_data.load_planning_index_from(planning_path)
+            json_items = shared_data.load_planning_index_validated_from(planning_path)
             md_ids, md_frontmatter = shared_data.load_roadmap_markdown_from(roadmap_path)
     except FileNotFoundError as e:
         print(f"✗ {e}")

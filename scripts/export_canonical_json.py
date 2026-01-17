@@ -17,7 +17,7 @@ OUTPUT_PATH = shared_data.resolve_tasks_path(repo_root=ROOT)
 
 def export_tasks_json(source_path: Path, output_path: Path):
     """Export planning index to GitHub tasks.json."""
-    canonical = shared_data.load_planning_index_from(source_path)
+    canonical = shared_data.load_planning_index_validated_from(source_path)
     
     # Filter out legacy items that shouldn't sync to GitHub
     filtered = [

@@ -129,7 +129,7 @@ def run_validate_roadmap_md(base_dir: Path, logger: Optional[StructuredLogger] =
 
     pipeline.add_phase(CallablePhase(
         "read_planning_index",
-        lambda path, ctx: shared_data.load_planning_index_from(path),
+        lambda path, ctx: shared_data.load_planning_index_validated_from(path),
         description="Load planning index with shared normalization",
     ))
     pipeline.add_phase(CallablePhase("extract_canonical_titles", extract_canonical_titles))
