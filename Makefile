@@ -27,7 +27,7 @@ define require_mutate_scope
 	case "$$scope" in \
 	  reports) req="report" ;; \
 	  build) req="build" ;; \
-	  data|docs|repo) req="repo" ;; \
+	  data|docs|github|repo) req="repo" ;; \
 	esac; \
 	rank() { case "$$1" in report) echo 1 ;; build) echo 2 ;; repo) echo 3 ;; *) echo 0 ;; esac; }; \
 	if [ "$$(rank "$$level")" -lt "$$(rank "$$req")" ]; then \
@@ -187,11 +187,11 @@ roadmap-enrich: build/canonical_enriched.json
 	scripts/run_profiled.sh 'roadmap-enrich' 'build/recipes/roadmap-enrich.sh'
 # Export canonical roadmap to JSON
 .github/roadmap/tasks.json: data/planning_index.json scripts/export_canonical_json.py
-	$(call require_mutate_scope,repo)
+	$(call require_mutate_scope,github)
 	scripts/run_profiled.sh '.github/roadmap/tasks.json' 'build/recipes/.github/roadmap/tasks.json.sh'
 # Export canonical roadmap to Markdown
 ROADMAP.md: data/planning_index.json scripts/export_canonical_md.py
-	$(call require_mutate_scope,repo)
+	$(call require_mutate_scope,docs)
 	scripts/run_profiled.sh 'ROADMAP.md' 'build/recipes/ROADMAP.md.sh'
 # Export enriched roadmap
 build/reports/tasks_enriched.md: build/canonical_enriched.json scripts/export_enriched_md.py
@@ -399,7 +399,7 @@ priority-strategy-profiles: build/agda/PriorityOrchestrationFFI
 	scripts/run_profiled.sh 'priority-strategy-profiles' 'build/recipes/priority-strategy-profiles.sh'
 # Normalize Agda strategy profiles into badge weights
 .github/badges/weights.json: priority-strategy-profiles
-	$(call require_mutate_scope,repo)
+	$(call require_mutate_scope,github)
 	scripts/run_profiled.sh '.github/badges/weights.json' 'build/recipes/.github/badges/weights.json.sh'
 # Track priority profile inputs
 build/priority_profile_inputs.stamp: data/planning_index.json build/reports/docs-lint.json

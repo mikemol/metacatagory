@@ -179,7 +179,17 @@ scopeForTargetName name with startsWith? "build/reports/" name
 ...       | true = "data"
 ...       | false with startsWith? "docs/" name
 ...         | true = "docs"
-...         | false = "repo"
+...         | false with startsWith? ".github/" name
+...           | true = "github"
+...           | false with primStringEquality name "ROADMAP.md"
+...             | true = "docs"
+...             | false with primStringEquality name "README.md"
+...               | true = "docs"
+...               | false with primStringEquality name "NAVIGATION.md"
+...                 | true = "docs"
+...                 | false with primStringEquality name "CONTRIBUTING.md"
+...                   | true = "docs"
+...                   | false = "repo"
 
 mkMutativeTarget : MutateCert → String → String → List String → List String → Bool → MakefileTarget
 mkMutativeTarget cert name description deps recipe phony =

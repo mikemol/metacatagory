@@ -350,7 +350,7 @@ buildArtifact agdaFiles graphEdges =
             ∷ "\tcase \"$$scope\" in \\"
             ∷ "\t  reports) req=\"report\" ;; \\"
             ∷ "\t  build) req=\"build\" ;; \\"
-            ∷ "\t  data|docs|repo) req=\"repo\" ;; \\"
+            ∷ "\t  data|docs|github|repo) req=\"repo\" ;; \\"
             ∷ "\tesac; \\"
             ∷ "\trank() { case \"$$1\" in report) echo 1 ;; build) echo 2 ;; repo) echo 3 ;; *) echo 0 ;; esac; }; \\"
             ∷ "\tif [ \"$$(rank \"$$level\")\" -lt \"$$(rank \"$$req\")\" ]; then \\"
