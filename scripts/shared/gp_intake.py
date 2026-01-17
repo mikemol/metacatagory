@@ -163,6 +163,34 @@ def extract_metadata_from_md(filepath: Path | str) -> Dict:
     return extract_metadata_from_text(content, path.stem)
 
 
+def build_gp_metadata(content: str, gp_id: str, config: Dict | None = None) -> Dict:
+    """Build a canonical metadata map for a GP entry."""
+    config = config or load_concept_config(
+        Path(__file__).resolve().parent.parent / "extract-concepts-config.json"
+    )
+    metadata = extract_metadata_from_text(content, gp_id)
+    match = re.search(r"\d+", gp_id)
+    gp_num = int(match.group()) if match else 0
+    key_concepts = extract_concepts(content, config)
+
+    return {
+        **metadata,
+        "category": categorize_gp(gp_num),
+        "question": extract_question(content),
+        "formal_correction": extract_formal_section(content),
+        "related_gps": extract_related_gps(content),
+        "manifest_version": extract_manifest_version(content),
+        "target_modules": extract_target_modules(content),
+        "key_concepts": key_concepts,
+        "target_module": infer_target_module(
+            content=content,
+            title=metadata.get("title", gp_id),
+            keywords=metadata.get("keywords", []),
+            config=config,
+        ),
+    }
+
+
 def load_concept_config(config_path: Path) -> Dict:
     """Load concept patterns and settings from config file."""
     if config_path.exists():

@@ -14,17 +14,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.shared.gp_intake import (
-    extract_metadata_from_md,
+    build_gp_metadata,
     infer_target_module as infer_target_module_shared,
     load_concept_config,
-    strip_base64_images,
-    extract_question,
-    extract_formal_section,
-    extract_related_gps,
-    extract_manifest_version,
-    extract_target_modules,
-    categorize_gp,
-    extract_concepts,
 )
 from scripts.shared.gp_roadmap_render import (
     build_implication,
@@ -59,11 +51,13 @@ def generate_roadmap_step(gp_id: str, metadata: Dict, file_number: int, full_con
         implication = f"{implication} | {concept_clause}"
     
     # Intelligent module routing (Protocol A)
-    target_module = infer_target_module(
-        content=full_content,
-        title=metadata['title'],
-        keywords=metadata.get('keywords', [])
-    )
+    target_module = metadata.get("target_module")
+    if not target_module:
+        target_module = infer_target_module(
+            content=full_content,
+            title=metadata['title'],
+            keywords=metadata.get('keywords', [])
+        )
 
     return render_roadmap_step(
         gp_id=gp_id,
@@ -97,30 +91,15 @@ def process_gp_directory(intake_dir: str) -> Tuple[List[str], Dict]:
             with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
                 full_content = f.read()
             
-            metadata = extract_metadata_from_md(filepath)
-            gp_num = int(re.search(r'\d+', gp_id).group())
-            metadata_map[gp_id] = {
-                **metadata,
-                "category": categorize_gp(gp_num),
-                "question": extract_question(full_content),
-                "formal_correction": extract_formal_section(full_content),
-                "related_gps": extract_related_gps(full_content),
-                "manifest_version": extract_manifest_version(full_content),
-                "target_modules": extract_target_modules(full_content),
-                "key_concepts": extract_concepts(full_content, concept_config),
-            }
+            metadata = build_gp_metadata(full_content, gp_id, concept_config)
+            metadata_map[gp_id] = metadata
             
             # Generate roadmap step with intelligent routing
             record = generate_roadmap_step(gp_id, metadata, idx, full_content)
             roadmap_records.append(record)
 
-            target_module = infer_target_module(
-                content=full_content,
-                title=metadata['title'],
-                keywords=metadata.get('keywords', [])
-            )
-            metadata_map[gp_id]["target_module"] = target_module
-            
+            metadata_map[gp_id]["target_module"] = metadata.get("target_module", "")
+
             print(f"  ✓ {gp_id}: {metadata['title'][:50]}")
         except Exception as e:
             print(f"  ✗ {gp_id}: {e}")

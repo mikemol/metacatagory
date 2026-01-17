@@ -33,6 +33,7 @@ def test_generate_agda_module_uses_shared_renderer(tmp_path: Path):
         related_gps=[],
         manifest_version=None,
         target_modules=[],
+        target_module="src/agda/Plan/CIM/Implementation.agda",
     )
 
     module_text = mod.generate_agda_module("Foundation", [entry])

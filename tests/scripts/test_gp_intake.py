@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """Tests for shared GP intake parsing."""
 
-from scripts.shared.gp_intake import extract_metadata_from_text, infer_target_module, load_concept_config
+from scripts.shared.gp_intake import (
+    build_gp_metadata,
+    extract_metadata_from_text,
+    infer_target_module,
+    load_concept_config,
+)
 
 
 def test_extract_metadata_from_text_prefers_structured_sections():
@@ -29,6 +34,17 @@ def test_infer_target_module_category_routing(tmp_path):
     config = load_concept_config(tmp_path / "missing.json")
     module = infer_target_module("functor morphism", "category", [], config)
     assert module == "src/agda/Core/CategoricalAdapter.agda"
+
+
+def test_build_gp_metadata_includes_target_module(tmp_path):
+    config = load_concept_config(tmp_path / "missing.json")
+    content = "# Title\n\nSome text about functor.\n"
+
+    metadata = build_gp_metadata(content, "GP01", config)
+
+    assert metadata["title"] == "Title"
+    assert metadata["category"] == "Foundation"
+    assert metadata["target_module"] == "src/agda/Core/CategoricalAdapter.agda"
 
 
 def test_ingest_metadata_includes_target_module(tmp_path):
