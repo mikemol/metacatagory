@@ -30,6 +30,7 @@ Makefile.generated
 
 # Build outputs (but track witness/reference files for CI)
 build/
+docs/automation/MAKEFILE-TARGETS.md
 !build/makefile_targets_generated.md
 !build/dependency_graph.json
 !build/impact_analysis.json

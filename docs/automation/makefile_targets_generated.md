@@ -34,8 +34,11 @@ Mutability indicates whether a target is allowed to write artifacts or update th
 | `build/venv/python_setup.stamp` | Create Python venv and install dependencies | build-only |
 | `python-test` | Run Python tests (includes pytest suite) | repo-write |
 | `python-verified` | Witness target: test suite contracted | repo-write |
+| `build/canonical_roadmap.json` | Merge ingestion streams into canonical roadmap JSON | build-only |
 | `roadmap-merge` | Merge ingestion streams | repo-write |
 | `build/ingested_metadata.json` | Ingest GP metadata | build-only |
+| `ingested-metadata-validate` | Validate ingested metadata schema | repo-write |
+| `canonical-roadmap-validate` | Validate canonical roadmap schema | repo-write |
 | `build/canonical_enriched.json` | Enrich canonical roadmap | build-only |
 | `roadmap-enrich` | Enrich roadmap with graph data | repo-write |
 | `.github/roadmap/tasks.json` | Export canonical roadmap to JSON | repo-write |
@@ -74,7 +77,6 @@ Mutability indicates whether a target is allowed to write artifacts or update th
 | `build/reports/dir.stamp` | Ensure build/reports exists | report-only |
 | `docs/status/dir.stamp` | Ensure docs/status exists | repo-write |
 | `intake-lint` | Lint intake files specifically | report-only |
-| `build/canonical_roadmap.json` | Generate canonical roadmap JSON from intake | build-only |
 | `intake-scan` | Scan intake directory for new files | repo-write |
 | `makefile-validate` | Validate Makefile consistency | report-only |
 | `check-makefile-generated` | Fail if Makefile.generated is stale | repo-write |
