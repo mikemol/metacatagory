@@ -45,7 +45,7 @@ class TestSPPFExport:
             {
                 "id": "TASK-002",
                 "title": "Another Task",
-                "status": "planned",
+                "status": "not-started",
                 "category": "testing",
                 "source": "roadmap",
                 "files": [],
@@ -90,7 +90,7 @@ class TestSPPFExport:
         planning_file.parent.mkdir(parents=True)
         
         with open(planning_file, "w") as f:
-            json.dump([{"id": "T1", "title": "Test", "status": "planned", 
+            json.dump([{"id": "T1", "title": "Test", "status": "not-started",
                        "category": "dev", "source": "test", "files": [], "tags": []}], f)
         
         # Remove output path if exists
@@ -133,8 +133,9 @@ class TestSPPFExport:
         # Item with minimal fields
         planning_index = [
             {
-                "id": "T1"
-                # Missing: title, status, category, source, files, tags
+                "id": "T1",
+                "title": "Test"
+                # Missing: status, category, source, files, tags
             }
         ]
         
@@ -150,7 +151,7 @@ class TestSPPFExport:
         
         node = sppf_data["nodes"][0]
         assert node["id"] == "T1"
-        assert node["title"] == ""
+        assert node["title"] == "Test"
         assert node["status"] == ""
         assert node["files"] == []
         assert node["tags"] == []
@@ -167,7 +168,7 @@ class TestSPPFExport:
             {
                 "id": "TASK-001",
                 "title": "Test",
-                "status": "planned",
+                "status": "not-started",
                 "category": "dev",
                 "source": "github",
                 "files": ["file1.py", "file2.py"],
@@ -255,7 +256,7 @@ class TestIntegration:
             {
                 "id": "PHASE2-002",
                 "title": "Add validation tests",
-                "status": "planned",
+                "status": "not-started",
                 "category": "testing",
                 "source": "github-tasks",
                 "files": ["tests/test_core.py"],

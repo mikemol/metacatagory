@@ -90,7 +90,7 @@ def test_export_roadmap_sppf_minimal(tmp_path, monkeypatch):
                 {
                     "id": "N1",
                     "title": "Node One",
-                    "status": "planned",
+                    "status": "not-started",
                     "category": "demo",
                     "source": "fixture",
                     "files": ["src/one.agda"],
