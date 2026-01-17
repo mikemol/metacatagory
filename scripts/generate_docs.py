@@ -5,10 +5,8 @@ Loads roadmap data from data/planning_index.json instead of hardcoded list.
 Generates README.md, NAVIGATION.md, and CONTRIBUTING.md
 """
 
-import json
 import sys
 from pathlib import Path
-from json import JSONDecodeError
 
 from scripts import shared_data
 
@@ -16,8 +14,11 @@ def load_planning_index():
     """Load roadmap data from data/planning_index.json"""
     workspace = Path(__file__).parent.parent
     try:
-        items = shared_data.load_planning_index(repo_root=workspace)
-    except (FileNotFoundError, ValueError, JSONDecodeError) as exc:
+        items = shared_data.load_planning_index_validated(
+            repo_root=workspace,
+            allow_missing=True,
+        )
+    except Exception as exc:
         print(f"Warning: {exc} not found, using empty roadmap list", file=sys.stderr)
         return []
     

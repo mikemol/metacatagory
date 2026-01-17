@@ -124,6 +124,28 @@ def load_planning_index(
     return items
 
 
+def load_planning_index_validated(
+    repo_root: Optional[Path] = None,
+    filter_legacy: bool = False,
+    allow_missing: bool = False,
+) -> List[Dict[str, Any]]:
+    """Load planning index and validate against the roadmap item schema."""
+    try:
+        items = load_planning_index(repo_root=repo_root, filter_legacy=filter_legacy)
+    except (FileNotFoundError, ValueError):
+        if allow_missing:
+            return []
+        raise
+
+    from scripts.shared.validation import ValidationResult, roadmap_item_validator
+
+    result = ValidationResult()
+    for idx, item in enumerate(items):
+        result.merge(roadmap_item_validator(item, path=f"items[{idx}]"))
+    result.raise_if_invalid("Planning index schema validation failed")
+    return items
+
+
 def load_roadmap_markdown_from(md_path: Path) -> Tuple[List[str], List[Dict[str, Any]]]:
     """Extract roadmap item IDs and frontmatter from an explicit path."""
     from scripts.shared.markdown import (

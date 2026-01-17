@@ -33,7 +33,10 @@ def export_tasks_json(source_path: Path, output_path: Path):
 
 def export_tasks_from_planning(output_path: Path, repo_root: Path | None = None) -> None:
     """Export tasks.json using the shared planning loader."""
-    items = shared_data.load_planning_index(repo_root=repo_root or ROOT, filter_legacy=True)
+    items = shared_data.load_planning_index_validated(
+        repo_root=repo_root or ROOT,
+        filter_legacy=True,
+    )
     save_json(output_path, items, indent=4)
     print(f"Exported {len(items)} items to {output_path}")
 
