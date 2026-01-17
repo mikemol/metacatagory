@@ -205,6 +205,32 @@ def load_roadmap_markdown_from(md_path: Path) -> Tuple[List[str], List[Dict[str,
     return sorted(ids), frontmatter_items
 
 
+def load_ingested_metadata_from(path: Path, required: bool = True) -> Dict[str, Any]:
+    """Load ingested_metadata.json and validate schema."""
+    if not path.exists():
+        if required:
+            raise FileNotFoundError(f"ingested_metadata.json not found at {path}")
+        return {"total_files": 0, "files": {}}
+
+    with open(path) as f:
+        payload = json.load(f)
+
+    from scripts.shared.validation import ingested_metadata_validator
+
+    result = ingested_metadata_validator(payload, path="ingested_metadata")
+    result.raise_if_invalid("Ingested metadata schema validation failed")
+    return payload
+
+
+def load_ingested_metadata(repo_root: Optional[Path] = None, required: bool = True) -> Dict[str, Any]:
+    """Load ingested_metadata.json from the repo build dir."""
+    from scripts.shared.paths import INGESTED_METADATA_JSON
+
+    root = repo_root or REPO_ROOT
+    path = INGESTED_METADATA_JSON if root == REPO_ROOT else root / "build" / "ingested_metadata.json"
+    return load_ingested_metadata_from(path, required=required)
+
+
 def load_roadmap_markdown() -> Tuple[List[str], List[Dict[str, Any]]]:
     """Extract roadmap item IDs and frontmatter from ROADMAP.md.
     

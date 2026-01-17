@@ -270,7 +270,7 @@ def run_all_validations(base_dir: Path | None = None) -> bool:
     try:
         metadata_path = INGESTED_METADATA_JSON if base_dir is None else base_dir / "build" / "ingested_metadata.json"
         if metadata_path.exists():
-            metadata_payload = load_json(metadata_path)
+            metadata_payload = shared_data.load_ingested_metadata_from(metadata_path)
             metadata_result = ingested_metadata_validator(metadata_payload, path="ingested_metadata")
             if not metadata_result.is_valid():
                 metadata_valid = False

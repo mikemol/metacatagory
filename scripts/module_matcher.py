@@ -178,8 +178,7 @@ class ModuleMatcher:
         files = {}
         metadata_path = Path(self.workspace_root) / metadata_file
         if metadata_path.exists():
-            with open(metadata_path, 'r') as f:
-                data = json.load(f)
+            data = shared_data.load_ingested_metadata_from(metadata_path)
             files = data.get('files', {})
         else:
             index_items = shared_data.load_planning_index_validated(

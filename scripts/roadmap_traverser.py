@@ -16,6 +16,7 @@ from dataclasses import dataclass, asdict
 from enum import Enum
 from pathlib import Path
 
+from scripts import shared_data
 from scripts.shared.io import save_json
 
 class Status(Enum):
@@ -92,8 +93,7 @@ class RoadmapTraverser:
     
     def _load_metadata(self):
         """Load metadata from JSON."""
-        with open(self.metadata_path, 'r') as f:
-            data = json.load(f)
+        data = shared_data.load_ingested_metadata_from(Path(self.metadata_path))
         
         for gp_id, meta in data['files'].items():
             step = RoadmapStep(
@@ -103,7 +103,7 @@ class RoadmapTraverser:
                 summary=meta.get('summary', ''),
                 implication='Extends the roadmap',
                 status=Status.NOT_STARTED,
-                target_module='src/agda/Plan/CIM/Polytopes.agda',
+                target_module=meta.get('target_module', 'src/agda/Plan/CIM/Implementation.agda'),
                 keywords=meta.get('keywords', []),
             )
             self.steps[gp_id] = step

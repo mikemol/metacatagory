@@ -7,7 +7,8 @@ from pathlib import Path
 from typing import Dict, List
 
 # Import shared utilities
-from scripts.shared.io import load_json, load_markdown, save_markdown
+from scripts import shared_data
+from scripts.shared.io import load_markdown, save_markdown
 from scripts.shared.config import Config
 
 def generate_markdown_section(metadata: Dict) -> str:
@@ -78,7 +79,7 @@ def main(config: Config | None = None):
     
     # Load metadata using shared utility
     try:
-        metadata = load_json(metadata_path, required=True)
+        metadata = shared_data.load_ingested_metadata_from(metadata_path)
     except (FileNotFoundError, SystemExit):
         print("Metadata file not found: " + str(metadata_path))
         return
