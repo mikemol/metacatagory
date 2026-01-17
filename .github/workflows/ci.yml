@@ -36,36 +36,8 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
-      - name: Diagnose runner IDs
-        run: |
-          id
-          id runner || true
-          stat -c '%u:%g %A %n' /__w /__w/_temp || true
-
-      - name: Ensure workspace temp dirs (ACT)
-        if: ${{ env.ACT == 'true' }}
-        run: |
-          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
-          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
-          mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
-                   "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
-          chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
-
-      - name: Checkout
-        uses: actions/checkout@v4
-        if: ${{ env.ACT != 'true' }}
-        with:
-          fetch-depth: 0
-
-      - name: Use ACT workspace
-        if: ${{ env.ACT == 'true' }}
-        run: |
-          if [ -n "${ACT_SRC:-}" ]; then
-            rm -rf ./*
-            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
-          fi
+      - name: Prepare workspace
+        uses: ./.github/actions/ci-workspace-setup
 
       - name: Generate Makefile recipes
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -140,36 +112,8 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
-      - name: Diagnose runner IDs
-        run: |
-          id
-          id runner || true
-          stat -c '%u:%g %A %n' /__w /__w/_temp || true
-
-      - name: Ensure workspace temp dirs (ACT)
-        if: ${{ env.ACT == 'true' }}
-        run: |
-          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
-          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
-          mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
-                   "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
-          chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
-
-      - name: Checkout
-        uses: actions/checkout@v4
-        if: ${{ env.ACT != 'true' }}
-        with:
-          fetch-depth: 0
-
-      - name: Use ACT workspace
-        if: ${{ env.ACT == 'true' }}
-        run: |
-          if [ -n "${ACT_SRC:-}" ]; then
-            rm -rf ./*
-            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
-          fi
+      - name: Prepare workspace
+        uses: ./.github/actions/ci-workspace-setup
 
 
       - name: Download Agda exports
@@ -179,21 +123,9 @@ jobs:
           name: agda-exports
           path: .
 
-      - name: Ensure Makefile recipes
+      - name: Prepare Python environment
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: bash scripts/recipes/regen-makefile.sh
-
-      - name: Install Python dependencies
-        working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Verify Agda export artifacts
-        working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          test -f data/planning_index.json
-          test -f data/dependency_graph.json
+        run: bash scripts/ci_prepare_job.sh
 
       - name: Install Node dependencies
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -246,36 +178,8 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
-      - name: Diagnose runner IDs
-        run: |
-          id
-          id runner || true
-          stat -c '%u:%g %A %n' /__w /__w/_temp || true
-
-      - name: Ensure workspace temp dirs (ACT)
-        if: ${{ env.ACT == 'true' }}
-        run: |
-          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
-          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
-          mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
-                   "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
-          chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
-
-      - name: Checkout
-        uses: actions/checkout@v4
-        if: ${{ env.ACT != 'true' }}
-        with:
-          fetch-depth: 0
-
-      - name: Use ACT workspace
-        if: ${{ env.ACT == 'true' }}
-        run: |
-          if [ -n "${ACT_SRC:-}" ]; then
-            rm -rf ./*
-            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
-          fi
+      - name: Prepare workspace
+        uses: ./.github/actions/ci-workspace-setup
 
 
       - name: Download Agda exports
@@ -285,21 +189,9 @@ jobs:
           name: agda-exports
           path: .
 
-      - name: Ensure Makefile recipes
+      - name: Prepare Python environment
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: bash scripts/recipes/regen-makefile.sh
-
-      - name: Install Python dependencies
-        working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Verify Agda export artifacts
-        working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          test -f data/planning_index.json
-          test -f data/dependency_graph.json
+        run: bash scripts/ci_prepare_job.sh
 
       - name: Run roadmap checks
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -357,36 +249,8 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
-      - name: Diagnose runner IDs
-        run: |
-          id
-          id runner || true
-          stat -c '%u:%g %A %n' /__w /__w/_temp || true
-
-      - name: Ensure workspace temp dirs (ACT)
-        if: ${{ env.ACT == 'true' }}
-        run: |
-          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
-          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
-          mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
-                   "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
-          chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
-
-      - name: Checkout
-        uses: actions/checkout@v4
-        if: ${{ env.ACT != 'true' }}
-        with:
-          fetch-depth: 0
-
-      - name: Use ACT workspace
-        if: ${{ env.ACT == 'true' }}
-        run: |
-          if [ -n "${ACT_SRC:-}" ]; then
-            rm -rf ./*
-            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
-          fi
+      - name: Prepare workspace
+        uses: ./.github/actions/ci-workspace-setup
 
 
       - name: Download Agda exports
@@ -396,21 +260,9 @@ jobs:
           name: agda-exports
           path: .
 
-      - name: Ensure Makefile recipes
+      - name: Prepare Python environment
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: bash scripts/recipes/regen-makefile.sh
-
-      - name: Install Python dependencies
-        working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Verify Agda export artifacts
-        working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          test -f data/planning_index.json
-          test -f data/dependency_graph.json
+        run: bash scripts/ci_prepare_job.sh
 
       - name: Run Python tests
         working-directory: ${{ env.BUILD_WORKDIR }}
