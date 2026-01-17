@@ -1,12 +1,6 @@
 name: CI Workspace Setup
 description: Prepare workspace for GitHub Actions or act runs.
 
-inputs:
-  fetch-depth:
-    description: Fetch depth for checkout
-    required: false
-    default: "0"
-
 runs:
   using: composite
   steps:
@@ -28,18 +22,3 @@ runs:
         mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
                  "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
         chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
-
-    - name: Checkout
-      if: ${{ env.ACT != 'true' }}
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: ${{ inputs.fetch-depth }}
-
-    - name: Use ACT workspace
-      if: ${{ env.ACT == 'true' }}
-      shell: bash
-      run: |
-        if [ -n "${ACT_SRC:-}" ]; then
-          rm -rf ./*
-          tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
-        fi

@@ -36,6 +36,20 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        if: ${{ env.ACT != 'true' }}
+        with:
+          fetch-depth: 0
+
+      - name: Use ACT workspace
+        if: ${{ env.ACT == 'true' }}
+        run: |
+          if [ -n "${ACT_SRC:-}" ]; then
+            rm -rf ./*
+            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
+          fi
+
       - name: Prepare workspace
         uses: ./.github/actions/ci-workspace-setup
 
@@ -112,6 +126,20 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        if: ${{ env.ACT != 'true' }}
+        with:
+          fetch-depth: 0
+
+      - name: Use ACT workspace
+        if: ${{ env.ACT == 'true' }}
+        run: |
+          if [ -n "${ACT_SRC:-}" ]; then
+            rm -rf ./*
+            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
+          fi
+
       - name: Prepare workspace
         uses: ./.github/actions/ci-workspace-setup
 
@@ -178,6 +206,20 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        if: ${{ env.ACT != 'true' }}
+        with:
+          fetch-depth: 0
+
+      - name: Use ACT workspace
+        if: ${{ env.ACT == 'true' }}
+        run: |
+          if [ -n "${ACT_SRC:-}" ]; then
+            rm -rf ./*
+            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
+          fi
+
       - name: Prepare workspace
         uses: ./.github/actions/ci-workspace-setup
 
@@ -249,6 +291,20 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        if: ${{ env.ACT != 'true' }}
+        with:
+          fetch-depth: 0
+
+      - name: Use ACT workspace
+        if: ${{ env.ACT == 'true' }}
+        run: |
+          if [ -n "${ACT_SRC:-}" ]; then
+            rm -rf ./*
+            tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
+          fi
+
       - name: Prepare workspace
         uses: ./.github/actions/ci-workspace-setup
 
