@@ -182,7 +182,9 @@ class ModuleMatcher:
                 data = json.load(f)
             files = data.get('files', {})
         else:
-            index_items = shared_data.load_planning_index(repo_root=Path(self.workspace_root))
+            index_items = shared_data.load_planning_index_validated(
+                repo_root=Path(self.workspace_root)
+            )
             for item in index_items:
                 files[item['id']] = {
                     'title': item.get('title', ''),
