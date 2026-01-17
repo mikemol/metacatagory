@@ -26,8 +26,8 @@ def test_load_planning_index_present(tmp_path):
     plan = tmp_path / "data" / "planning_index.json"
     plan.parent.mkdir(parents=True, exist_ok=True)
     data = [
-        {"id": "GP-2", "status": "done", "description": "B"},
-        {"id": "GP-1", "status": "in-progress", "description": "Longer desc"},
+        {"id": "GP-2", "title": "Done", "status": "done", "description": "B"},
+        {"id": "GP-1", "title": "In Progress", "status": "in-progress", "description": "Longer desc"},
     ]
     plan.write_text(json.dumps(data), encoding="utf-8")
 

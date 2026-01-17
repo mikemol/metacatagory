@@ -45,7 +45,7 @@ def test_main_guard_executes(tmp_path):
 
     planning = tmp_path / "data" / "planning_index.json"
     planning.parent.mkdir(parents=True, exist_ok=True)
-    planning.write_text(json.dumps([{"id": "GP-1"}]), encoding="utf-8")
+    planning.write_text(json.dumps([{"id": "GP-1", "title": "Keep"}]), encoding="utf-8")
 
     output = tmp_path / ".github" / "roadmap" / "tasks.json"
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -63,7 +63,10 @@ def test_main_guard_original_module(tmp_path, monkeypatch):
 
     planning = tmp_path / "data" / "planning_index.json"
     planning.parent.mkdir(parents=True, exist_ok=True)
-    planning.write_text(json.dumps([{"id": "GP-1"}, {"id": "LEGACY-1"}]), encoding="utf-8")
+    planning.write_text(json.dumps([
+        {"id": "GP-1", "title": "Keep"},
+        {"id": "LEGACY-1", "title": "Drop"},
+    ]), encoding="utf-8")
 
     output = tmp_path / ".github" / "roadmap" / "tasks.json"
     output.parent.mkdir(parents=True, exist_ok=True)

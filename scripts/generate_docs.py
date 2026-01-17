@@ -13,11 +13,12 @@ from scripts import shared_data
 def load_planning_index():
     """Load roadmap data from data/planning_index.json"""
     workspace = Path(__file__).parent.parent
+    planning_path = shared_data.resolve_planning_path(repo_root=workspace)
+    if not planning_path.exists():
+        print(f"Warning: {planning_path} not found, using empty roadmap list", file=sys.stderr)
+        return []
     try:
-        items = shared_data.load_planning_index_validated(
-            repo_root=workspace,
-            allow_missing=True,
-        )
+        items = shared_data.load_planning_index_validated(repo_root=workspace)
     except Exception as exc:
         print(f"Warning: {exc} not found, using empty roadmap list", file=sys.stderr)
         return []
