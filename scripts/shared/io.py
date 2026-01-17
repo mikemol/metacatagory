@@ -75,7 +75,14 @@ def save_json(
     path = Path(path)
     
     if create_parents:
-        path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+        except FileExistsError:
+            if path.parent.is_file():
+                path.parent.unlink()
+                path.parent.mkdir(parents=True, exist_ok=True)
+            else:
+                raise
     
     with open(path, 'w', encoding=encoding) as f:
         if default is None:

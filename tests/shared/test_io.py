@@ -81,6 +81,20 @@ class TestSaveJSON:
         
         assert output.exists()
         assert output.parent.exists()
+
+    def test_save_handles_parent_file_conflict(self, tmp_path):
+        """Should replace a parent file when a directory is required."""
+        conflict = tmp_path / "nested"
+        conflict.write_text("not a dir")
+        output = conflict / "output.json"
+        data = {"fixed": True}
+
+        save_json(output, data)
+
+        assert output.exists()
+        with open(output) as f:
+            loaded = json.load(f)
+        assert loaded == data
     
     def test_save_custom_indent(self, tmp_path):
         """Should respect custom indentation."""
