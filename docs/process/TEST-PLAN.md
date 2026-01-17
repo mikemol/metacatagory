@@ -110,6 +110,7 @@ Value:
 Local parity:
 - `MUTATE_LEVEL=repo make check` for core validation logic.
 - `make act-ci` for full workflow emulation (requires act).
+- `scripts/ci_local.sh` for a local CI-style run without artifact uploads.
 
 Cleanup opportunities:
 - Keep CI consolidated; avoid reintroducing single-purpose workflows unless they

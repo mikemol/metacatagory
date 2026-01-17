@@ -57,6 +57,10 @@ jobs:
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: bash scripts/recipes/regen-makefile.sh
 
+      - name: Validate Makefile.generated
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: MUTATE_LEVEL=repo make check-makefile-generated
+
       - name: Generate Agda exports
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: |

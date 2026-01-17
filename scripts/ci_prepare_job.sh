@@ -5,7 +5,9 @@ WORKDIR="${BUILD_WORKDIR:-.}"
 
 cd "$WORKDIR"
 
-bash scripts/recipes/regen-makefile.sh
+if [ "${CI_SKIP_REGEN_MAKEFILE:-0}" != "1" ]; then
+  bash scripts/recipes/regen-makefile.sh
+fi
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 
