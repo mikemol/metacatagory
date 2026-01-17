@@ -211,7 +211,7 @@ files:
 id: GP-2
 title: Second Item
 description: Second description
-status: planned
+status: not-started
 category: Docs
 tags:
   - Docs
@@ -294,7 +294,7 @@ class TestDeduplication:
             {
                 "id": "TEST-001",
                 "title": "",
-                "status": "planned",
+                "status": "not-started",
                 "category": "",
                 "source": "github",
                 "dependsOn": [],
@@ -330,7 +330,7 @@ class TestMergeByTitle:
                 "id": "TEST-001",
                 "title": "Unique Task 1",
                 "description": "Description 1",
-                "status": "planned",
+                "status": "not-started",
                 "category": "dev",
                 "source": "github",
                 "files": [],
@@ -343,7 +343,7 @@ class TestMergeByTitle:
                 "id": "TEST-002",
                 "title": "Unique Task 2",
                 "description": "Description 2",
-                "status": "planned",
+                "status": "not-started",
                 "category": "dev",
                 "source": "github",
                 "files": [],
@@ -377,7 +377,7 @@ class TestMergeByTitle:
                 "id": "ROADMAP-MD-001",
                 "title": "Test Task",
                 "description": "From ROADMAP.md",
-                "status": "planned",
+                "status": "not-started",
                 "category": "dev",
                 "source": "roadmap",
                 "files": ["file2.py"],
@@ -407,7 +407,7 @@ class TestMergeByTitle:
                 "id": "ROADMAP-MD-001",
                 "title": "Test Task",
                 "description": "Desc",
-                "status": "planned",
+                "status": "not-started",
                 "category": "dev",
                 "source": "roadmap",
                 "files": [],
@@ -508,7 +508,7 @@ class TestExport:
                 "id": "TEST-001",
                 "title": "Test",
                 "description": "Description",
-                "status": "planned",
+                "status": "not-started",
                 "category": "dev",
                 "source": "github",
                 "files": [],
@@ -537,7 +537,7 @@ class TestExport:
                 "id": "TEST-001",
                 "title": "Test Task",
                 "description": "Description",
-                "status": "planned",
+                "status": "not-started",
                 "category": "development",
                 "source": "github",
                 "files": ["test.py"],
@@ -571,7 +571,7 @@ class TestExport:
                 "id": "TEST-001",
                 "title": 'Test with "quotes" and \\backslash',
                 "description": "Description\nwith\nnewlines",
-                "status": "planned",
+                "status": "not-started",
                 "category": "dev",
                 "source": "github",
                 "files": [],
