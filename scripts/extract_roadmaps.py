@@ -32,6 +32,11 @@ class RoadmapEntry:
     """Represents a single GP roadmap entry with full context."""
     gp_number: str           # "GP01", "GP700", etc.
     title: str               # Main section header
+    summary: str             # Extracted summary
+    keywords: List[str]      # Metadata keywords
+    insight: str             # Insight section
+    gap: str                 # Gap section
+    fix: str                 # Fix section
     category: str            # Foundation/Geometry/Polytopes/Analysis
     question: str            # The "Would you like..." actionable question
     formal_correction: str   # The "I. Formal Correction" section content
@@ -68,6 +73,11 @@ def parse_gp_file(filepath: Path) -> RoadmapEntry:
     return RoadmapEntry(
         gp_number=gp_number,
         title=metadata['title'],
+        summary=metadata.get('summary', ''),
+        keywords=metadata.get('keywords', []),
+        insight=metadata.get('insight', ''),
+        gap=metadata.get('gap', ''),
+        fix=metadata.get('fix', ''),
         category=metadata['category'],
         question=metadata['question'],
         formal_correction=metadata['formal_correction'],
@@ -77,6 +87,39 @@ def parse_gp_file(filepath: Path) -> RoadmapEntry:
         target_modules=metadata['target_modules'],
         target_module=metadata['target_module'],
     )
+
+
+def build_extraction_summary(entries_by_category: Dict[str, List[RoadmapEntry]]) -> Dict:
+    """Build ingested_metadata-style summary payload."""
+    files: Dict[str, Dict] = {}
+    by_category: Dict[str, List[str]] = {}
+
+    for category, entries in entries_by_category.items():
+        by_category[category] = []
+        for entry in entries:
+            files[entry.gp_number] = {
+                "title": entry.title,
+                "summary": entry.summary,
+                "keywords": entry.keywords,
+                "insight": entry.insight,
+                "gap": entry.gap,
+                "fix": entry.fix,
+                "target_module": entry.target_module,
+                "category": entry.category,
+                "question": entry.question,
+                "formal_correction": entry.formal_correction,
+                "related_gps": entry.related_gps,
+                "manifest_version": entry.manifest_version,
+                "target_modules": entry.target_modules,
+                "key_concepts": entry.key_concepts,
+            }
+            by_category[category].append(entry.gp_number)
+
+    return {
+        "total_files": len(files),
+        "files": files,
+        "by_category": by_category,
+    }
 
 def generate_agda_module(category: str, entries: List[RoadmapEntry]) -> str:
     """Generate an Agda module for a category."""
@@ -183,10 +226,7 @@ open import Plan.CIM.IngestedRoadmaps.Analysis public
     print(f"✓ Generated {index_file}")
     
     # Generate JSON summary for documentation
-    summary = {
-        category: [asdict(e) for e in entries]
-        for category, entries in entries_by_category.items()
-    }
+    summary = build_extraction_summary(entries_by_category)
     
     summary_file = Path("build/roadmap_extraction_summary.json")
     save_json(summary_file, summary)
