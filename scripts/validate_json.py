@@ -52,7 +52,7 @@ class LoadJSONFilesPhase(Phase[Path, Dict[str, List[Dict[str, Any]]]]):
             return shared_data.load_tasks_json_from(path, required=True)
 
         def load_canonical(path: Path) -> Any:
-            return shared_data.load_planning_index_from(path)
+            return shared_data.load_planning_index_validated_from(path)
 
         if parallel and workers > 1:
             self.logger.info("Loading canonical planning index", file=str(input_data), mode="parallel")
