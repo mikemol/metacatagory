@@ -214,7 +214,7 @@ The triangle balances automation, accessibility, and human oversight.
 The triangle validation is integrated into the CI/CD pipeline:
 
 * **Makefile target**: `make makefile-validate` (runs validation, writes report)
-* **CI workflow**: Run in GitHub Actions as part of "Typecheck and Docs" workflow
+* **CI workflow**: Run in GitHub Actions via `.github/workflows/ci.yml`
 * **Check target**: `make check` depends on `makefile-validate`
 
 This prevents broken triangles from being committed.

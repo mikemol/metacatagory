@@ -117,7 +117,8 @@ Cleanup opportunities:
 
 ### Workflow Test Matrix (Local)
 
-Use `act` only if available and configured (uses container image).
+Use `act` only if available and configured (uses container image). Prefer
+`mise exec -- make act-ci` with rootless Docker; see `docs/process/DOCKER-ROOTLESS.md`.
 
 ```bash
 make act-list
