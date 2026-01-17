@@ -85,7 +85,7 @@ def load_planning_index() -> list[dict]:
 
     if _SHARED_DATA and hasattr(_SHARED_DATA, "load_planning_index"):
         return list(_SHARED_DATA.load_planning_index())
-    return list(shared_data.load_planning_index(repo_root=REPO_ROOT))
+    return list(shared_data.load_planning_index_validated(repo_root=REPO_ROOT))
 
 HEADER = """# Metacatagory Development Roadmap
 
@@ -135,60 +135,29 @@ class LoadPlanningIndexPhase(Phase[Path, list[dict]]):
         return items
 
 
-class ValidatePlanningItemsPhase(Phase[list[dict], list[dict]]):
-    """Phase: Validate planning items schema."""
-    
+class CapturePlanningProvenancePhase(Phase[list[dict], list[dict]]):
+    """Phase: Record validated planning items for provenance."""
+
     def __init__(self, logger: StructuredLogger, provenance: ValidatedProvenance):
-        super().__init__("validate_items", "Validate item schemas")
+        super().__init__("capture_provenance", "Capture planning provenance")
         self.logger = logger
         self.provenance = provenance
 
     def transform(self, input_data: list[dict], context: dict[str, Any]) -> list[dict]:
-        validate_string = string_validator(non_empty=True)
-        valid_items = []
-        
         for idx, item in enumerate(input_data):
-            result = ValidationResult()
-            
-            # Required fields
-            required_fields = ['id', 'title', 'description', 'status', 'category']
-            for field in required_fields:
-                if field not in item:
-                    result.add_error(field, "required field missing", None, f"Item at index {idx}")
-            
-            # Type checks for string fields
-            for field in ['id', 'title', 'description', 'status', 'category']:
-                if field in item:
-                    field_result = validate_string(item[field], field)
-                    result.merge(field_result)
-            
-            if result.is_valid():
-                # Add validated record to provenance
-                item_id = item.get('id', f'item_{idx}')
-                self.provenance.add_validated_record(
-                    artifact_id=item_id,
-                    record={
-                        'source_type': 'ingestion',
-                        'source_id': str(PLANNING_INDEX_JSON),
-                        'source_location': f'item[{idx}]',
-                        'metadata': {'category': item.get('category')}
-                    }
-                )
-                valid_items.append(item)
-            else:
-                self.logger.warning("Skipping invalid item", item_index=idx, errors=[str(e) for e in result.errors[:3]])
-        
-        self.logger.progress(
-            "Validated planning items",
-            current=len(valid_items),
-            total=len(input_data),
-            succeeded=len(valid_items),
-            failed=len(input_data) - len(valid_items)
-        )
-        
-        context['valid_count'] = len(valid_items)
-        context['invalid_count'] = len(input_data) - len(valid_items)
-        return valid_items
+            item_id = item.get("id", f"item_{idx}")
+            self.provenance.add_validated_record(
+                artifact_id=item_id,
+                record={
+                    "source_type": "ingestion",
+                    "source_id": str(PLANNING_INDEX_JSON),
+                    "source_location": f"item[{idx}]",
+                    "metadata": {"category": item.get("category")},
+                },
+            )
+        context["valid_count"] = len(input_data)
+        context["invalid_count"] = 0
+        return input_data
 
 
 class BuildMarkdownPhase(Phase[list[dict], str]):
@@ -344,7 +313,7 @@ def export_markdown(output_path: Path | None = None):
     
     # Build pipeline phases
     pipeline.add_phase(LoadPlanningIndexPhase(logger))
-    pipeline.add_phase(ValidatePlanningItemsPhase(logger, provenance))
+    pipeline.add_phase(CapturePlanningProvenancePhase(logger, provenance))
     pipeline.add_phase(BuildMarkdownPhase(logger))
     pipeline.add_phase(WriteMarkdownPhase(output_path, logger, provenance))
     
