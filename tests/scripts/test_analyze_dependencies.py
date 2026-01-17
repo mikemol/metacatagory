@@ -60,8 +60,8 @@ class TestPromoteSuggestions:
             {"id": "T2", "suggestedDependencies": ["B"]},
         ]
         canonical = [
-            {"id": "T1", "dependsOn": ["A"]},
-            {"id": "T2", "dependsOn": []},
+            {"id": "T1", "title": "Task One", "status": "not-started", "dependsOn": ["A"]},
+            {"id": "T2", "title": "Task Two", "status": "not-started", "dependsOn": []},
         ]
         _write_json(enriched_path, enriched)
         _write_json(canonical_path, canonical)

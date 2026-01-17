@@ -37,7 +37,7 @@ def load_canonical_ids() -> set[str]:
         CANONICAL_PATH.write_text("[]")
         return set()
 
-    data = shared_data.load_planning_index_from(CANONICAL_PATH)
+    data = shared_data.load_planning_index_validated_from(CANONICAL_PATH)
     ids: set[str] = set()
     for entry in data:
         value = entry.get("id") if isinstance(entry, dict) else None

@@ -66,7 +66,7 @@ def promote_suggestions() -> None:
     with open(ENRICHED_JSON, "r") as f:
         enriched = json.load(f)
     
-    canonical = shared_data.load_planning_index_from(CANONICAL_JSON)
+    canonical = shared_data.load_planning_index_validated_from(CANONICAL_JSON)
     
     # Build ID->canonical mapping
     canonical_by_id = {item["id"]: item for item in canonical}

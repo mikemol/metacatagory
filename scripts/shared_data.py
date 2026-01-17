@@ -60,6 +60,35 @@ def load_planning_index_from(path: Path) -> List[Dict[str, Any]]:
     return items or []
 
 
+def load_planning_index_validated_from(
+    path: Path,
+    *,
+    allow_missing: bool = False,
+    filter_legacy: bool = False,
+) -> List[Dict[str, Any]]:
+    """Load planning index from an explicit path and validate schema."""
+    try:
+        items = load_planning_index_from(path)
+    except FileNotFoundError:
+        if allow_missing:
+            return []
+        raise
+
+    if filter_legacy:
+        items = [
+            item for item in items
+            if not str(item.get("id", "")).startswith("LEGACY-")
+        ]
+
+    from scripts.shared.validation import ValidationResult, roadmap_item_validator
+
+    result = ValidationResult()
+    for idx, item in enumerate(items):
+        result.merge(roadmap_item_validator(item, path=f"items[{idx}]"))
+    result.raise_if_invalid("Planning index schema validation failed")
+    return items
+
+
 def load_tasks_json_from(path: Path, required: bool = True) -> List[Dict[str, Any]]:
     """Load tasks.json from an explicit path."""
     items, state = _load_items(path)

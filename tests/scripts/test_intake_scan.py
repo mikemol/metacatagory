@@ -59,7 +59,14 @@ def test_main_writes_reports(tmp_path, monkeypatch, capsys):
 
     canonical_path = root / "data" / "planning_index.json"
     canonical_path.parent.mkdir(parents=True, exist_ok=True)
-    canonical_path.write_text(json.dumps([{"id": "GP-1"}, {"id": "GP-2"}]))
+    canonical_path.write_text(
+        json.dumps(
+            [
+                {"id": "GP-1", "title": "First", "status": "not-started"},
+                {"id": "GP-2", "title": "Second", "status": "not-started"},
+            ]
+        )
+    )
 
     report_dir = root / "build" / "reports"
     monkeypatch.setattr(mod, "ROOT", root)
