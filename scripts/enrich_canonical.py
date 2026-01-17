@@ -39,6 +39,7 @@ from scripts.shared.parallel import get_parallel_settings
 from scripts.shared.io import save_json
 from scripts.shared.dot import parse_dependency_graph
 from scripts.shared.markdown import extract_markdown_section as shared_extract_markdown_section
+from scripts.shared.errors import ValidationError
 from scripts import shared_data
 
 # Controlled tag vocabulary
@@ -523,8 +524,8 @@ def enrich_canonical() -> None:
     Main entry point: read canonical, enrich, write enriched.
     """
     try:
-        canonical = shared_data.load_planning_index(repo_root=REPO_ROOT)
-    except (FileNotFoundError, ValueError, JSONDecodeError) as exc:
+        canonical = shared_data.load_planning_index_validated(repo_root=REPO_ROOT)
+    except (FileNotFoundError, ValueError, JSONDecodeError, ValidationError) as exc:
         print(f"Error: {exc}. Run 'make roadmap-merge' first.")
         return
     
