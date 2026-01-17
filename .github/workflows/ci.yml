@@ -74,17 +74,7 @@ jobs:
       - name: Stage build reports
         if: ${{ env.ACT != 'true' }}
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          if [ -d build/reports ]; then
-            mkdir -p "${CI_REPORT_DIR}"
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
-                build/reports/ "${CI_REPORT_DIR}/"
-            else
-              (cd build/reports && tar --exclude='agda' --exclude='docs' --exclude='roadmap' --exclude='python' -cf - .) \
-                | tar -C "${CI_REPORT_DIR}" -xf -
-            fi
-          fi
+        run: bash scripts/ci_stage_reports.sh
 
       - name: Upload Agda exports
         if: ${{ env.ACT != 'true' }}
@@ -166,17 +156,7 @@ jobs:
       - name: Stage build reports
         if: ${{ env.ACT != 'true' }}
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          if [ -d build/reports ]; then
-            mkdir -p "${CI_REPORT_DIR}"
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
-                build/reports/ "${CI_REPORT_DIR}/"
-            else
-              (cd build/reports && tar --exclude='agda' --exclude='docs' --exclude='roadmap' --exclude='python' -cf - .) \
-                | tar -C "${CI_REPORT_DIR}" -xf -
-            fi
-          fi
+        run: bash scripts/ci_stage_reports.sh
 
       - name: Upload build reports (docs)
         if: ${{ env.ACT != 'true' }}
@@ -252,17 +232,7 @@ jobs:
       - name: Stage build reports
         if: ${{ env.ACT != 'true' }}
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          if [ -d build/reports ]; then
-            mkdir -p "${CI_REPORT_DIR}"
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
-                build/reports/ "${CI_REPORT_DIR}/"
-            else
-              (cd build/reports && tar --exclude='agda' --exclude='docs' --exclude='roadmap' --exclude='python' -cf - .) \
-                | tar -C "${CI_REPORT_DIR}" -xf -
-            fi
-          fi
+        run: bash scripts/ci_stage_reports.sh
 
       - name: Upload build reports (roadmap)
         if: ${{ env.ACT != 'true' }}
@@ -331,17 +301,7 @@ jobs:
       - name: Stage build reports
         if: ${{ env.ACT != 'true' }}
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          if [ -d build/reports ]; then
-            mkdir -p "${CI_REPORT_DIR}"
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
-                build/reports/ "${CI_REPORT_DIR}/"
-            else
-              (cd build/reports && tar --exclude='agda' --exclude='docs' --exclude='roadmap' --exclude='python' -cf - .) \
-                | tar -C "${CI_REPORT_DIR}" -xf -
-            fi
-          fi
+        run: bash scripts/ci_stage_reports.sh
 
       - name: Upload build reports (python)
         if: ${{ env.ACT != 'true' }}
