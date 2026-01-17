@@ -8,8 +8,8 @@ runs:
       shell: bash
       run: |
         id
-        id runner || true
-        stat -c '%u:%g %A %n' /__w /__w/_temp || true
+        id runner
+        stat -c '%u:%g %A %n' /__w /__w/_temp
 
     - name: Ensure workspace temp dirs (ACT)
       if: ${{ env.ACT == 'true' }}
