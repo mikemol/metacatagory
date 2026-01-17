@@ -66,6 +66,8 @@ def parse_roadmap_md(path: Path) -> List[Dict]:
         return []
 
     _, frontmatter_items = shared_data.load_roadmap_markdown_from(path)
+    validation = shared_data.validate_roadmap_frontmatter(frontmatter_items)
+    validation.raise_if_invalid("ROADMAP.md frontmatter schema validation failed")
     items = []
 
     for entry in frontmatter_items:

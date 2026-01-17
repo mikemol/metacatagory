@@ -18,7 +18,10 @@ def load_planning_index():
         print(f"Warning: {planning_path} not found, using empty roadmap list", file=sys.stderr)
         return []
     try:
-        items = shared_data.load_planning_index_validated(repo_root=workspace)
+        items = shared_data.load_planning_index_validated_from(
+            planning_path,
+            allow_missing=True,
+        )
     except Exception as exc:
         print(f"Warning: {exc} not found, using empty roadmap list", file=sys.stderr)
         return []
