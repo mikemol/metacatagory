@@ -12,6 +12,7 @@ open import Metamodel as M
 -- Universal Construction Kernel
 -- ============================================================================
 
+-- | High-level kind tags for universal constructions.
 data ConstructionKind : Set where
   limit : ConstructionKind
   colimit : ConstructionKind
@@ -19,6 +20,7 @@ data ConstructionKind : Set where
   kanExtension : ConstructionKind
   universalProperty : ConstructionKind
 
+-- | Canonical signature describing a universal construction.
 record ConstructionSignature : Set₁ where
   field
     constructionId : M.Identifier
@@ -107,4 +109,3 @@ kanExtensionSignature C D = record
   ; morphisms = []
   ; propertyId = M.mkId "KanExtensionProperty"
   }
-
