@@ -1,5 +1,4 @@
 {
-  "timestamp": "2026-01-11T21:53:12.080924+00:00",
   "strategy": "dependency-graph",
   "source_file": "data/dependency_graph.json",
   "total_items": 126,

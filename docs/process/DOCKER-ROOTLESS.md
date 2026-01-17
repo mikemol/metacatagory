@@ -75,16 +75,18 @@ the user `docker.sock` (not the `dockerd-rootless/api.sock`, which returns
 export DOCKER_HOST="unix:///run/user/$(id -u)/docker.sock"
 
 # List available workflows
-MUTATE_OK=1 mise exec -- make act-list
+MUTATE_LEVEL=repo mise exec -- make act-list
 
 # Run CI workflow locally (requires container image pull)
-MUTATE_OK=1 mise exec -- make act-ci
+MUTATE_LEVEL=repo mise exec -- make act-ci
 ```
 
 Notes:
 - If `act` reports `permission denied` to the socket, the rootless daemon needs
   to be started with a group mapping that includes your primary gid.
-- Always use `MUTATE_OK=1` for `act-*` targets.
+- Always use `MUTATE_LEVEL=repo` for `act-*` targets.
+- Local `act` runs remap GitHub actions (checkout/upload/download) to a no-op
+  action via `scripts/run_act.sh` to avoid network dependencies.
 
 ## Notes
 

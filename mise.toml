@@ -3,7 +3,7 @@
 
 [env]
 # Python environment activation
-VIRTUAL_ENV = "{env:HOME}/.venv"
+VIRTUAL_ENV = "${HOME}/.venv"
 PYTHONPATH = "{root}/src:{root}/scripts"
 
 [tools]
@@ -49,6 +49,15 @@ set -euo pipefail
 echo "Starting development environment..."
 mise run check
 echo "Ready. Run 'make' for all targets or 'make check' for quick validation."
+"""
+
+# Developer setup (installs dev dependencies)
+dev-setup = """
+set -euo pipefail
+echo \"Installing dev dependencies (pytest, node tools)...\"
+pip install -r requirements-dev.txt
+npm ci
+echo \"Done.\"
 """
 
 # Help and discovery

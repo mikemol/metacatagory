@@ -425,5 +425,5 @@ After processing, the intake folder should contain:
 ***
 
 **Document Status:** ✅ Complete\
-**Related:** [CIM-ROADMAP-SYMMETRIC-DIFFERENCE.md](intake/CIM-ROADMAP-SYMMETRIC-DIFFERENCE.md)\
+**Related:** [CIM-ROADMAP-SYMMETRIC-DIFFERENCE.md](CIM-ROADMAP-SYMMETRIC-DIFFERENCE.md)\
 **Last Updated:** December 21, 2025

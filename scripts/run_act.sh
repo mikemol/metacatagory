@@ -17,7 +17,15 @@ mkdir -p "$ACT_CACHE_DIR" "$ACT_TMP_HOST"
 TMPDIR="${TMPDIR:-$ACT_TMP_HOST}"
 export TMPDIR
 
-act_args=(--action-cache-path "$ACT_CACHE_DIR" --bind --container-options "-u 0:0")
+ACT_NOOP_ACTION="$REPO_ROOT/.github/actions/act-noop"
+act_args=(
+  --action-cache-path "$ACT_CACHE_DIR"
+  --bind
+  --container-options "-u 0:0"
+  --local-repository "actions/upload-artifact@v4=$ACT_NOOP_ACTION"
+  --local-repository "actions/download-artifact@v4=$ACT_NOOP_ACTION"
+  --local-repository "actions/checkout@v4=$ACT_NOOP_ACTION"
+)
 if [ -n "${MUTATE_OK:-}" ]; then
   act_args+=(--env "MUTATE_OK=$MUTATE_OK")
 fi

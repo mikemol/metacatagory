@@ -38,6 +38,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.shared.paths import REPO_ROOT, AGDA_DIR, BUILD_DIR, REPORTS_DIR
+from scripts.shared.io import load_json
 from scripts.shared.io import load_json, save_json
 from scripts.shared.logging import configure_logging, StructuredLogger
 from scripts.shared.agda import AgdaParser, DependencyAnalyzer
@@ -65,7 +66,7 @@ class DependencyGraphBuilder:
         """Load module_mappings.json from the workspace build directory."""
 
         mapping_path = Path(self.workspace_root) / "build" / "module_mappings.json"
-        data = json.loads(mapping_path.read_text())
+        data = load_json(mapping_path)
         module_index: Dict[str, Dict[str, Any]] = data.get("module_index", {})
 
         for module_name, module_data in module_index.items():

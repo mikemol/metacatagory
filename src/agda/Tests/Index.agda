@@ -31,6 +31,9 @@ import Tests.ErrorHandlingTests
 -- Validates: Stable identifiers and their generic consumption
 import Tests.PropertyRegistryTests
 
+-- CHIP conformance braid composition sanity checks
+import Tests.CHIPConformanceChecklist
+
 -- Phase abstraction usage examples (informational)
 import Tests.PhaseExamples
 

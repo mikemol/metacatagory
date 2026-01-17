@@ -1,5 +1,7 @@
 # Intake Document Ingestion - Phase 2 Complete ✓
 
+Note: Historical snapshot; see `ROADMAP.md` and `docs/status/PROJECT-STATUS.md` for current state.
+
 ## Summary
 
 Successfully ingested **78 GP roadmap files** (3.3MB) from the `/intake/GP/` directory into the project's mechanical roadmap generation system.

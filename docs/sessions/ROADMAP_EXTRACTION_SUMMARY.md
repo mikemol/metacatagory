@@ -1,5 +1,7 @@
 # Roadmap Extraction and Integration Summary
 
+Note: Historical snapshot; see `ROADMAP.md` and `docs/status/PROJECT-STATUS.md` for current state.
+
 ## Problem Statement
 
 The file `Utility-broken.agda` contained 77 RoadmapStep example records with complex nested structures. These needed to be extracted and integrated into the active `src/agda/Plan/CIM/Utility.agda`, but syntax errors in the nested `next` fields (complex list-of-records structures) prevented successful compilation.

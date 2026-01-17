@@ -311,9 +311,9 @@ The architecture scales to multiple backends without duplication.
 - [PHASE-2B-COMPLETE.md](../process/PHASE-2B-COMPLETE.md)
 
 **Related Modules:**
-- [JSONTransformation.agda](../CIM/JSONTransformation.agda) - Base types
-- [JSONConcrete.agda](../CIM/JSONConcrete.agda) - Concrete primitives
-- [JSONTransformationContract.agda](../CIM/JSONTransformationContract.agda) - **UPDATED** (natural transformation complete)
+- [JSONTransformation.agda](../../src/agda/Plan/CIM/JSONTransformation.agda) - Base types
+- [JSONConcrete.agda](../../src/agda/Plan/CIM/JSONConcrete.agda) - Concrete primitives
+- [JSONTransformationContract.agda](../../src/agda/Plan/CIM/JSONTransformationContract.agda) - **UPDATED** (natural transformation complete)
 
 ---
 

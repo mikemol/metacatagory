@@ -75,10 +75,10 @@ def test_exports_markdown_structure(tmp_path, monkeypatch):
 
     # Task sections and frontmatter
     assert "### Task 1: T1 — Alpha" in md
-    assert "id: T1" in md
-    assert "status: in-progress" in md
-    assert "dependencies:\n- T0" in md
-    assert "tags:\n- x\n- y" in md
+    assert "\"id\": \"T1\"" in md
+    assert "\"status\": \"in-progress\"" in md
+    assert "\"dependencies\":\n- \"T0\"" in md
+    assert "\"tags\":\n- \"x\"\n- \"y\"" in md
     assert "Agda Modules" in md
     assert "**Suggested dependencies (from imports):** S1, S2, S3, S4, S5 (+ 1 more)" in md
     assert "Evidence — T1" in md and "**md** (L1)" in md and "> evidence line" in md

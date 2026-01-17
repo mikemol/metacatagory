@@ -23,24 +23,32 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-      options: --user root
+      options: --user 1001:1001 --tmpfs /home/runner/.cabal
     env:
-      ACTIONS_FILE_COMMANDS: ${{ format('{0}/.tmp/_runner_file_commands', github.workspace) }}
-      ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
-      CI_REPORT_DIR: build/reports
-      CI_ARTIFACT_DIR: build/reports
-      MAKEFILE_COVERAGE_SKIP: docs-normalize docs-all md-normalize regen-all all act-list act-ci act-lint act-markdown-fix act-makefile-validate act-roadmap-sync act-deferred act-badges act-all
+      CI_REPORT_DIR: build/reports/agda
+      CI_ARTIFACT_DIR: build/reports/agda
+      MAKEFILE_COVERAGE_SKIP: docs-normalize docs-all md-normalize regen-all all act-list act-ci act-lint act-makefile-validate act-roadmap-sync act-deferred act-all
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
+      METACATAGORY_STRICT_ROUNDTRIP: "true"
+      METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Diagnose runner IDs
+        run: |
+          id
+          id runner || true
+          stat -c '%u:%g %A %n' /__w /__w/_temp || true
+
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
+          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
+          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
           mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
                    "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
           chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
@@ -66,7 +74,7 @@ jobs:
       - name: Generate Agda exports
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: |
-          MUTATE_OK=1 make \
+          MUTATE_LEVEL=repo make \
             build/diagrams/agda-deps-full.dot \
             data/planning_index.json \
             data/dependency_graph.json \
@@ -75,7 +83,22 @@ jobs:
 
       - name: Run makefile coverage verification
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: python3 -m scripts.makefile_coverage --run-targets
+        run: MUTATE_LEVEL=repo python3 -m scripts.makefile_coverage --run-targets
+
+      - name: Stage build reports
+        if: ${{ env.ACT != 'true' }}
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          if [ -d build/reports ]; then
+            mkdir -p "${CI_REPORT_DIR}"
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
+                build/reports/ "${CI_REPORT_DIR}/"
+            else
+              (cd build/reports && tar --exclude='agda' --exclude='docs' --exclude='roadmap' --exclude='python' -cf - .) \
+                | tar -C "${CI_REPORT_DIR}" -xf -
+            fi
+          fi
 
       - name: Upload Agda exports
         if: ${{ env.ACT != 'true' }}
@@ -94,7 +117,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-reports-agda
-          path: ${{ env.CI_ARTIFACT_DIR }}**
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
           if-no-files-found: ignore
           retention-days: 30
           overwrite: true
@@ -105,23 +128,31 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-      options: --user root
+      options: --user 1001:1001 --tmpfs /home/runner/.cabal
     env:
-      ACTIONS_FILE_COMMANDS: ${{ format('{0}/.tmp/_runner_file_commands', github.workspace) }}
-      ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
-      CI_REPORT_DIR: build/reports
-      CI_ARTIFACT_DIR: build/reports
+      CI_REPORT_DIR: build/reports/docs
+      CI_ARTIFACT_DIR: build/reports/docs
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
+      METACATAGORY_STRICT_ROUNDTRIP: "true"
+      METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Diagnose runner IDs
+        run: |
+          id
+          id runner || true
+          stat -c '%u:%g %A %n' /__w /__w/_temp || true
+
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
+          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
+          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
           mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
                    "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
           chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
@@ -140,6 +171,7 @@ jobs:
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
 
+
       - name: Download Agda exports
         if: ${{ env.ACT != 'true' }}
         uses: actions/download-artifact@v4
@@ -147,26 +179,51 @@ jobs:
           name: agda-exports
           path: .
 
+      - name: Ensure Makefile recipes
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: bash scripts/recipes/regen-makefile.sh
+
       - name: Install Python dependencies
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Verify Agda export artifacts
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          test -f data/planning_index.json
+          test -f data/dependency_graph.json
+
       - name: Install Node dependencies
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: npm ci
+        run: MUTATE_LEVEL=repo make node-deps
 
       - name: Run docs checks
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: MUTATE_OK=1 make check-docs
+        run: MUTATE_LEVEL=repo make check-docs
+
+      - name: Stage build reports
+        if: ${{ env.ACT != 'true' }}
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          if [ -d build/reports ]; then
+            mkdir -p "${CI_REPORT_DIR}"
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
+                build/reports/ "${CI_REPORT_DIR}/"
+            else
+              (cd build/reports && tar --exclude='agda' --exclude='docs' --exclude='roadmap' --exclude='python' -cf - .) \
+                | tar -C "${CI_REPORT_DIR}" -xf -
+            fi
+          fi
 
       - name: Upload build reports (docs)
         if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports-docs
-          path: ${{ env.CI_ARTIFACT_DIR }}**
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
           if-no-files-found: ignore
           retention-days: 30
           overwrite: true
@@ -177,23 +234,31 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-      options: --user root
+      options: --user 1001:1001 --tmpfs /home/runner/.cabal
     env:
-      ACTIONS_FILE_COMMANDS: ${{ format('{0}/.tmp/_runner_file_commands', github.workspace) }}
-      ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
-      CI_REPORT_DIR: build/reports
-      CI_ARTIFACT_DIR: build/reports
+      CI_REPORT_DIR: build/reports/roadmap
+      CI_ARTIFACT_DIR: build/reports/roadmap
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
+      METACATAGORY_STRICT_ROUNDTRIP: "true"
+      METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Diagnose runner IDs
+        run: |
+          id
+          id runner || true
+          stat -c '%u:%g %A %n' /__w /__w/_temp || true
+
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
+          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
+          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
           mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
                    "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
           chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
@@ -212,6 +277,7 @@ jobs:
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
 
+
       - name: Download Agda exports
         if: ${{ env.ACT != 'true' }}
         uses: actions/download-artifact@v4
@@ -219,25 +285,57 @@ jobs:
           name: agda-exports
           path: .
 
+      - name: Ensure Makefile recipes
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: bash scripts/recipes/regen-makefile.sh
+
+      - name: Install Python dependencies
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Verify Agda export artifacts
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          test -f data/planning_index.json
+          test -f data/dependency_graph.json
+
       - name: Run roadmap checks
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: |
-          MUTATE_OK=1 make regen-makefile
-          MUTATE_OK=1 make check-roadmap
+          MUTATE_LEVEL=repo make regen-makefile
+          MUTATE_LEVEL=repo make check-roadmap
 
       - name: Run JSON checks
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: |
+          MUTATE_LEVEL=repo make build/planning_index_recomposed.json
           echo "Roundtrip validate planning (explicit paths)" && \
-          python3 -m scripts.validate_json_roundtrip data/planning_index.json build/planning_index_recomposed.json || true
-          MUTATE_OK=1 make check-json
+          python3 -m scripts.validate_json_roundtrip data/planning_index.json build/planning_index_recomposed.json
+          MUTATE_LEVEL=repo make check-json
+
+      - name: Stage build reports
+        if: ${{ env.ACT != 'true' }}
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          if [ -d build/reports ]; then
+            mkdir -p "${CI_REPORT_DIR}"
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
+                build/reports/ "${CI_REPORT_DIR}/"
+            else
+              (cd build/reports && tar --exclude='agda' --exclude='docs' --exclude='roadmap' --exclude='python' -cf - .) \
+                | tar -C "${CI_REPORT_DIR}" -xf -
+            fi
+          fi
 
       - name: Upload build reports (roadmap)
         if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports-roadmap
-          path: ${{ env.CI_ARTIFACT_DIR }}**
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
           if-no-files-found: ignore
           retention-days: 30
 
@@ -247,23 +345,31 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/mikemol/act-ubuntu-agda:latest
-      options: --user root
+      options: --user 1001:1001 --tmpfs /home/runner/.cabal
     env:
-      ACTIONS_FILE_COMMANDS: ${{ format('{0}/.tmp/_runner_file_commands', github.workspace) }}
-      ACTIONS_RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TEMP: ${{ format('{0}/.tmp', github.workspace) }}
-      RUNNER_TOOL_CACHE: ${{ format('{0}/.tmp/runner_tool_cache', github.workspace) }}
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
       BUILD_WORKDIR: ${{ github.workspace }}
-      CI_REPORT_DIR: build/reports
-      CI_ARTIFACT_DIR: build/reports
+      CI_REPORT_DIR: build/reports/python
+      CI_ARTIFACT_DIR: build/reports/python
       METACATAGORY_PARALLEL: "true"
       METACATAGORY_WORKERS: "8"
+      METACATAGORY_STRICT_ROUNDTRIP: "true"
+      METACATAGORY_REPORT_MODE: "write"
     steps:
+      - name: Diagnose runner IDs
+        run: |
+          id
+          id runner || true
+          stat -c '%u:%g %A %n' /__w /__w/_temp || true
+
       - name: Ensure workspace temp dirs (ACT)
         if: ${{ env.ACT == 'true' }}
         run: |
+          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
+          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
           mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
                    "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
           chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
@@ -282,6 +388,7 @@ jobs:
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
 
+
       - name: Download Agda exports
         if: ${{ env.ACT != 'true' }}
         uses: actions/download-artifact@v4
@@ -289,19 +396,74 @@ jobs:
           name: agda-exports
           path: .
 
+      - name: Ensure Makefile recipes
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: bash scripts/recipes/regen-makefile.sh
+
+      - name: Install Python dependencies
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Verify Agda export artifacts
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          test -f data/planning_index.json
+          test -f data/dependency_graph.json
+
       - name: Run Python tests
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: MUTATE_OK=1 make check-python
+        run: MUTATE_LEVEL=repo make check-python
 
       - name: Run debt checks
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: MUTATE_OK=1 make check-debt
+        run: MUTATE_LEVEL=repo make check-debt
+
+      - name: Stage build reports
+        if: ${{ env.ACT != 'true' }}
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: |
+          if [ -d build/reports ]; then
+            mkdir -p "${CI_REPORT_DIR}"
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
+                build/reports/ "${CI_REPORT_DIR}/"
+            else
+              (cd build/reports && tar --exclude='agda' --exclude='docs' --exclude='roadmap' --exclude='python' -cf - .) \
+                | tar -C "${CI_REPORT_DIR}" -xf -
+            fi
+          fi
 
       - name: Upload build reports (python)
         if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: build-reports-python
-          path: ${{ env.CI_ARTIFACT_DIR }}**
+          path: ${{ env.CI_ARTIFACT_DIR }}/**
+          if-no-files-found: ignore
+          retention-days: 30
+  collect-reports:
+    name: Collect Reports
+    needs:
+      - agda-exports
+      - docs-checks
+      - roadmap-json-checks
+      - python-checks
+    runs-on: ubuntu-latest
+    if: ${{ github.actor != 'nektos/act' }}
+    steps:
+      - name: Download build-reports artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: build/reports/combined
+          pattern: build-reports-*
+          merge-multiple: true
+
+      - name: Upload combined reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-reports-all
+          path: build/reports/combined/**
           if-no-files-found: ignore
           retention-days: 30

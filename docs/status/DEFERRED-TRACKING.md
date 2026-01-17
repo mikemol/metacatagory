@@ -14,6 +14,10 @@ Source: build/reports/deferred-summary.json (auto-generated)
 
 - Other markers (FIXME/HACK/etc.): 61
 
+Note: `docs/status/deferred-items.md` is a separate generated snapshot from a
+different scan; counts can diverge. This file is the canonical tracker for
+decision-making.
+
 ## Tracking Strategy
 
 ### High-Priority Deferred Items
@@ -32,19 +36,56 @@ Effort: 50-100 lines semantic impls; Ref: ROADMAP.md Phase 2.3
 
 Effort: 50-80 lines; Ref: ROADMAP.md Phase 2.3
 
-- [ ] Core.disabled/ modules (23 modules)
+- [ ] Core deferred modules (no Core.disabled/ directory; see deferred summary)
 
 Phase theory, categorical foundations, adjunction/limits; Effort: 1-2 weeks; Ref: ROADMAP.md Phase 3.2
 
-- [ ] Algebra.disabled/ subset (for Core deps)
+- [ ] Algebra deferred subset (for Core deps; see deferred summary)
 
 Groups/rings/modules/fields; Effort: 3-5 days; Ref: ROADMAP.md Phase 3.2
+
+### Core/Algebra Cleanup Plan (Phase 3.2)
+
+Goal: restore Core and Algebra modules so Plan.CIM can rely on real
+definitions rather than postulates.
+
+1) Inventory
+   - Re-run `make deferred-items` and extract Core/Algebra buckets from
+     `build/reports/deferred-summary.json`.
+   - Produce a short module list grouped by directory (Core, Algebra/*).
+
+2) Dependency layering
+   - Identify the minimal Core base (Phase, PhaseCategory, BraidTree,
+     UniversalProperties).
+   - Stage dependent modules (limits/adjunctions, fibrations, algorithms).
+
+3) Core re-enable pass
+   - Replace postulates with constructive definitions where possible.
+   - Convert placeholders into TODOs with explicit types if proofs are
+     deferred to later phases.
+
+4) Algebra re-enable pass
+   - Start with Types/Basic modules (Groups, Rings, Fields, Modules).
+   - Then fill in properties/instances that rely on Core proofs.
+
+5) Verification
+   - Run `make agda-all` and `make agda-test` after each batch.
+   - Clear ModulesChecklist warnings once record shapes stabilize.
+
+6) Tracking updates
+   - Update this file with cleared items and new TODO counts.
+   - Add a short status note to `docs/status/PROJECT-STATUS.md`.
 
 ### Medium-Priority Deferred Items
 
 Improves functionality but not blocking major milestones.
 
-- [ ] Examples.disabled/ modules (13 modules)
+- [ ] ModulesChecklist record literals include non-existent `homomorphism` fields
+  - Agda warning: `TooManyFields` in `src/agda/Tests/ModulesChecklist.agda` (kernel/image/cokernel)
+  - Outcome: update record literals to match current `AM.*OfModuleHomomorphism` fields
+  - Trigger: `make agda-all` warnings (2026-01-13)
+
+- [ ] Examples deferred modules (see deferred summary)
 
 TechnicalDebtRegistry and demonstration examples; Effort: 1-3 days/module; Ref: ROADMAP.md Phase 3.1
 
@@ -77,9 +118,9 @@ Ambiguity detection, transformation metrics, coherence validation; Research 1-2 
 ### By Module Category
 
 ```text
-Core.disabled/          : ~80 postulates, ~30 TODOs
-Algebra.disabled/       : ~45 postulates, ~20 TODOs
-Examples.disabled/      : ~25 postulates, ~15 TODOs
+Core (deferred)         : ~80 postulates, ~30 TODOs
+Algebra (deferred)      : ~45 postulates, ~20 TODOs
+Examples (deferred)     : ~25 postulates, ~15 TODOs
 Plan.CIM/               : ~15 TODOs (stubs)
 Scripts/                : ~40 TODOs (improvements)
 Documentation/          : ~50 TODOs (missing sections)

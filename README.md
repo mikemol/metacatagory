@@ -95,10 +95,16 @@ Target: `src/agda/Plan/CIM/Elasticity.agda`
 Target: `src/agda/Plan/CIM/PolytopeExpansion.agda`
 
 - **Implement Mitosis Engine...** — Enables dynamic... [status: not-started]
-Target: `nedge_topology/mitosis.py`
+Target: (deferred; historical `nedge_topology/mitosis.py` reference no longer present)
 
 - **Integrate Earley parsing...** — Enables composable geometric... [status: not-started]
-Target: `nedge_topology/parser.py`
+Target: (deferred; historical `nedge_topology/parser.py` reference no longer present)
+
+## Intake Sources
+
+Raw intake artifacts live under `intake/`. The canonical source set is
+`intake/GP/`; everything else in `intake/` is archival context and snapshots.
+See `intake/README.md` for guidance.
 
 ## Building
 
@@ -108,4 +114,17 @@ make docs-all  # Generate roadmap AST + module docs
 make ROADMAP.md  # Regenerate roadmap markdown
 make regen-all  # Regenerate all tracked artifacts
 make check-all  # Full validation suite (alias: make check)
+```
+
+## Quickstart
+
+```bash
+mise install
+MUTATE_LEVEL=repo make regen-makefile
+# Full suite (strict roundtrip validation by default)
+MUTATE_LEVEL=repo make check
+# Or narrower targets:
+# MUTATE_LEVEL=repo make json-roundtrip-validate
+# MUTATE_LEVEL=report make check-docs
+# For pytest/md targets, install dev deps (`mise run dev-setup`) and note network is required (or use the CI container).
 ```

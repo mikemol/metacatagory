@@ -28,6 +28,7 @@ from scripts.shared.validation import ValidationResult, dict_validator
 from scripts.shared.validated_provenance import ValidatedProvenance
 from scripts.shared.recovery_pipeline import RecoveryPipeline, RecoveryStrategy
 from scripts.shared.config import get_config
+from scripts import shared_data
 
 
 def allow_report_write() -> bool:
@@ -45,30 +46,28 @@ class LoadJSONFilesPhase(Phase[Path, Dict[str, List[Dict[str, Any]]]]):
 
     def transform(self, input_data: Path, context: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
         parallel, workers = get_parallel_settings()
+        context["planning_source"] = str(input_data)
 
-        def load_file(path: Path) -> Any:
-            return load_json(path, required=True)
+        def load_tasks(path: Path) -> Any:
+            return shared_data.load_tasks_json_from(path, required=True)
+
+        def load_canonical(path: Path) -> Any:
+            return shared_data.load_planning_index_from(path)
 
         if parallel and workers > 1:
             self.logger.info("Loading canonical planning index", file=str(input_data), mode="parallel")
             self.logger.info("Loading tasks.json", file=str(self.tasks_path), mode="parallel")
             with ThreadPoolExecutor(max_workers=2) as executor:
-                canonical_future = executor.submit(load_file, input_data)
-                tasks_future = executor.submit(load_file, self.tasks_path)
+                canonical_future = executor.submit(load_canonical, input_data)
+                tasks_future = executor.submit(load_tasks, self.tasks_path)
                 canonical = canonical_future.result()
                 tasks = tasks_future.result()
         else:
             self.logger.info("Loading canonical planning index", file=str(input_data))
-            canonical = load_json(input_data, required=True)
+            canonical = load_canonical(input_data)
             
             self.logger.info("Loading tasks.json", file=str(self.tasks_path))
-            tasks = load_json(self.tasks_path, required=True)
-        
-        # Ensure we have lists
-        if isinstance(canonical, dict):
-            canonical = canonical.get('items', [])
-        if isinstance(tasks, dict):
-            tasks = tasks.get('items', [])
+            tasks = load_tasks(self.tasks_path)
         
         self.logger.info("Files loaded", 
                         canonical_count=len(canonical),
@@ -134,7 +133,7 @@ class NormalizeItemsPhase(Phase[Dict[str, List[Dict[str, Any]]], Dict[str, Dict[
                 artifact_id=f"canonical_{item_id}",
                 record={
                     'source_type': 'ingestion',
-                    'source_id': 'planning_index.json',
+                    'source_id': context.get('planning_source', 'planning_index.json'),
                     'source_location': f'item[{item_id}]',
                     'metadata': {'normalized': True}
                 }
@@ -324,8 +323,8 @@ def validate():
     strategy = RecoveryStrategy(max_retries=2, backoff_factor=1.0, respect_recoverable=True)
     pipeline = RecoveryPipeline(logger=logger, strategy=strategy, name="ValidateJSON")
     
-    canonical_path = REPO_ROOT / "data" / "planning_index.json"
-    tasks_path = REPO_ROOT / ".github" / "roadmap" / "tasks.json"
+    canonical_path = shared_data.resolve_planning_path(repo_root=REPO_ROOT)
+    tasks_path = shared_data.resolve_tasks_path(repo_root=REPO_ROOT)
     
     # Build pipeline phases
     pipeline.add_phase(LoadJSONFilesPhase(tasks_path, logger))

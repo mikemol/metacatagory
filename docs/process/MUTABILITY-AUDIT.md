@@ -8,31 +8,18 @@ The goal is consistency: every mutation should have a clear, traceable reason.
 
 - The mutability gates are working as intended: they fail when a target (or any
   of its dependencies) writes artifacts.
-- The current act workflow failures are explained by missing `MUTATE_OK=1` in
-  workflow steps that call make targets which write to `build/` or `docs/`.
+- The act failures that exposed mutative behavior are resolved by explicitly
+  granting mutation (`MUTATE_LEVEL=report|build|repo`) in CI steps that write reports or derived
+  artifacts.
 - The core issue is not incorrect behavior, but implicit assumptions. These
-  need to be made explicit by either (a) setting `MUTATE_OK=1` in steps that
+  need to be made explicit by either (a) setting `MUTATE_LEVEL=report|build|repo` in steps that
   are expected to emit artifacts, or (b) splitting out read-only variants that
   do not write to disk.
 
 ## Workflow Targets and Mutability
 
-This list is derived from the workflows and the Makefile’s mutability graph
+This list is derived from the current CI workflow and the Makefile’s mutability graph
 (direct + transitive dependencies).
-
-### `.github/workflows/markdown-lint.yml`
-
-- `regen-makefile` (mutative)
-  - **Reason:** generates `Makefile.generated` and `build/recipes/**`.
-- `md-lint` (mutative, via deps)
-  - **Reason:** writes `build/reports/md-lint.txt`.
-  - **Source of mutability:** `build/reports/dir.stamp` + output report.
-
-### `.github/workflows/makefile-validate.yml`
-
-- `makefile-validate` (mutative, via deps)
-  - **Reason:** writes `build/reports/makefile-validate.txt`.
-  - **Source of mutability:** `build/reports/dir.stamp` + output report.
 
 ### `.github/workflows/ci.yml`
 
@@ -50,36 +37,20 @@ or derived artifacts:
 - `check-debt` → `deferred-items` + `intake-scan`
   - **Reason:** generates `docs/status/*` and related reports.
 
-### `.github/workflows/roadmap-sync.yml`
-
-- `roadmap-sync` (mutative)
-  - **Reason:** generates `.github/roadmap/tasks.json` and related artifacts.
-
-### `.github/workflows/deferred-items.yml`
-
-- `deferred-items` (mutative)
-  - **Reason:** writes `docs/status/DEFERRED-TRACKING.md` and `build/reports/*`.
-
-### `.github/workflows/badge-update.yml`
-
-- `badges` (mutative)
-  - **Reason:** writes `.github/badges/*` and related outputs.
-
 ## Immediate Inconsistencies Observed During act Runs
 
-1) Workflows call mutative targets without `MUTATE_OK=1`.
-   - Example: `Markdown Lint` runs `make md-lint` without `MUTATE_OK=1`, yet
-     `md-lint` writes to `build/reports/`.
-2) `Roadmap Sync` invokes `make` targets that create `.github/roadmap/*` and
-   build artifacts, but doesn’t grant mutation.
+1) Historical: CI steps called mutative targets without `MUTATE_LEVEL` set.
+   - Example: `check-docs` and `check-json` write reports and recomposed JSON
+     artifacts under `build/`.
 
-These are *expected* mutations; the issue is the missing explicit grant.
+These are *expected* mutations; the issue has been addressed by adding explicit
+grants in `ci.yml`.
 
 ## Recommendations (Pick One Policy)
 
-### Policy A — Explicit mutation grants in workflows
+### Policy A — Explicit mutation grants in workflows (Implemented)
 
-Add `MUTATE_OK=1` to workflow steps that are expected to write artifacts. This
+Add `MUTATE_LEVEL=report|build|repo` to workflow steps that are expected to write artifacts. This
 keeps mutation explicit and preserves the safety gate.
 
 ### Policy B — Read-only variants for lint/validation
@@ -96,5 +67,5 @@ for artifact-generation workflows.
 
 - Should “lint” and “validate” targets be classified as mutative because they
   emit reports, or should they be read-only and only emit stdout?
-- Are workflow artifacts (e.g., lint logs) required in all runs, or only in CI?
+- Are report artifacts required in all runs, or only in CI?
 - Which artifacts are essential for local dev vs. CI-only?

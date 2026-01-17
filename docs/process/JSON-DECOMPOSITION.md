@@ -38,7 +38,7 @@ This follows the SPPF (Shared Packed Parse Forest) model where:
 **Output Structure**:
 ```
 data/deps/
-├── _metadata.json              # { total_modules, total_deps, cycles, layers }
+├── _metadata.json              # { total_items, total_deps, cycles, layers, source_file }
 ├── modules/
 │   ├── _index.json             # [ "Algebra.Groups.Abelian", ... ]
 │   ├── Algebra/
@@ -68,7 +68,7 @@ data/deps/
 **Output Structure**:
 ```
 data/enriched/
-├── _metadata.json              # { total_items, categories, sources, timestamp }
+├── _metadata.json              # { total_items, categories, sources, timestamp, source_file }
 ├── items/
 │   ├── _index.json             # [ {id, category, status}, ... ]
 │   ├── 001-item-name.json      # Full item record
@@ -250,7 +250,7 @@ canonical-enriched-json: data/enriched/_metadata.json
 data/deps/_metadata.json: build/diagrams/agda-deps-full.dot
     python3 scripts/json_decompose.py --input ... --output data/deps/
 
-# Validation: ensure roundtrip
+# Validation: ensure roundtrip (strict by default; requires metadata with total_items)
 validate-json-roundtrip: data/deps/_metadata.json
     python3 scripts/validate_json_roundtrip.py data/deps/
 ```
@@ -268,4 +268,3 @@ validate-json-roundtrip: data/deps/_metadata.json
 2. **Index format**: Manifest files JSON or YAML? JSON for consistency with data.
 3. **Versioning strategy**: Git tracks all fragments or snapshots? All fragments (fine-grained history).
 4. **Query performance**: Use indices or Agda query types? Both: Python for ad-hoc, Agda for formal queries.
-

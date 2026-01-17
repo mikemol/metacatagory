@@ -25,6 +25,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 from scripts.shared.parallel import get_parallel_settings
+from scripts.shared.io import save_json
 
 
 class JSONRecomposer:
@@ -33,6 +34,7 @@ class JSONRecomposer:
     def __init__(self, hierarchical_dir: str):
         self.hierarchical_dir = Path(hierarchical_dir)
         self.metadata = self._load_metadata()
+        self.metadata_path = self.hierarchical_dir / "_metadata.json"
     
     def _load_metadata(self) -> Dict[str, Any]:
         """Load metadata from hierarchical structure."""
@@ -40,7 +42,19 @@ class JSONRecomposer:
         if metadata_file.exists():
             with open(metadata_file, "r") as f:
                 return json.load(f)
-        return {}
+        raise ValueError(f"No _metadata.json in {self.hierarchical_dir}")
+
+    def _check_expected_count(self, found: int, label: str) -> None:
+        """Validate fragment completeness against metadata total_items if present."""
+        expected = self.metadata.get("total_items")
+        if not isinstance(expected, int):
+            raise ValueError(f"Missing or invalid total_items in {self.metadata_path}")
+        if expected != found:
+            raise ValueError(
+                f"Fragment count mismatch for {label}: expected {expected} "
+                f"(from {self.metadata_path}), found {found}"
+            )
+        print(f"[recompose] {label}: expected {expected}, found {found} (ok)")
     
     def recompose(self) -> Dict[str, Any]:
         """Recompose hierarchical structure back to monolithic JSON."""
@@ -128,6 +142,9 @@ class DependencyGraphRecomposer(JSONRecomposer):
         
         if cycles:
             result["cycles"] = cycles
+
+        # Completeness check against metadata total_items (modules count)
+        self._check_expected_count(len(modules), "modules")
         
         return result
 
@@ -177,21 +194,22 @@ class ItemArrayRecomposer(JSONRecomposer):
                     if item_data is not None:
                         items.append(item_data)
             
-            # Fallback: read all items if index missing
-            if not items:
-                json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
+        # Fallback: read all items if index missing
+        if not items:
+            json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
 
-                def load_path(path: Path) -> Any:
-                    with open(path, "r") as f:
-                        return json.load(f)
+            def load_path(path: Path) -> Any:
+                with open(path, "r") as f:
+                    return json.load(f)
 
-                if parallel and workers > 1 and json_files:
-                    with ThreadPoolExecutor(max_workers=workers) as executor:
-                        items.extend(executor.map(load_path, json_files))
-                else:
+            if parallel and workers > 1 and json_files:
+                with ThreadPoolExecutor(max_workers=workers) as executor:
+                    items.extend(executor.map(load_path, json_files))
+            else:
                     for json_file in json_files:
                         items.append(load_path(json_file))
-        
+
+        self._check_expected_count(len(items), "items")
         return items
 
 
@@ -240,21 +258,22 @@ class RoadmapRecomposer(JSONRecomposer):
                     if item_data is not None:
                         items.append(item_data)
             
-            # Fallback: read all items if index missing
-            if not items:
-                json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
+        # Fallback: read all items if index missing
+        if not items:
+            json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
 
-                def load_path(path: Path) -> Any:
-                    with open(path, "r") as f:
-                        return json.load(f)
+            def load_path(path: Path) -> Any:
+                with open(path, "r") as f:
+                    return json.load(f)
 
-                if parallel and workers > 1 and json_files:
-                    with ThreadPoolExecutor(max_workers=workers) as executor:
-                        items.extend(executor.map(load_path, json_files))
-                else:
-                    for json_file in json_files:
-                        items.append(load_path(json_file))
-        
+            if parallel and workers > 1 and json_files:
+                with ThreadPoolExecutor(max_workers=workers) as executor:
+                    items.extend(executor.map(load_path, json_files))
+            else:
+                for json_file in json_files:
+                    items.append(load_path(json_file))
+
+        self._check_expected_count(len(items), "items")
         return {"items": items}
 
 
@@ -337,8 +356,7 @@ def main():
     # Output
     if output_file:
         try:
-            with open(output_file, "w") as f:
-                json.dump(recomposed, f, indent=2)
+            save_json(Path(output_file), recomposed)
             print(f"✓ Recomposed {hierarchical_dir} → {output_file}")
             
             # Validate roundtrip if original available

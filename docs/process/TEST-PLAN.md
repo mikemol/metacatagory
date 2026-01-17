@@ -9,7 +9,7 @@ opportunities).
 - Prefer the Makefile entry points for local verification to match CI.
 - Run read-only targets first to catch structural issues before mutation.
 - Separate network-dependent steps; they will fail in restricted environments.
-- Use `MUTATE_OK=1` explicitly for mutative targets.
+- Use `MUTATE_LEVEL=report|build|repo` explicitly for mutative targets.
 
 ### Local Make Targets
 
@@ -38,8 +38,8 @@ Expected artifacts:
 #### 2) Dependency graph roundtrip (mutative)
 
 ```bash
-MUTATE_OK=1 make json-decompose
-MUTATE_OK=1 make json-roundtrip-validate
+MUTATE_LEVEL=repo make json-decompose
+MUTATE_LEVEL=repo make json-roundtrip-validate
 ```
 
 Expected:
@@ -55,7 +55,7 @@ Expected artifacts:
 #### 3) Full validation sweep (mutative)
 
 ```bash
-MUTATE_OK=1 make check-all
+MUTATE_LEVEL=repo make check-all
 ```
 
 Expected:
@@ -67,15 +67,17 @@ Expected artifacts (subset; grows with dependencies):
 - `build/reports/validate_json_provenance.json`
 - `build/reports/roadmap_export_provenance.json`
 - `build/reports/roundtrip_validation_provenance.json`
+- `build/ingested_metadata.json` (validated for schema if present)
 
 Notes:
 - Network‑dependent step: `build/venv/python_setup.stamp` (pip install).
+- Offline mode: set `PYTHON_OFFLINE=1` to skip pip install and require deps already present.
 
 #### 4) Regeneration (mutative)
 
 ```bash
-MUTATE_OK=1 make regen-makefile
-MUTATE_OK=1 make regen-all
+MUTATE_LEVEL=repo make regen-makefile
+MUTATE_LEVEL=repo make regen-all
 ```
 
 Expected:
@@ -88,116 +90,30 @@ Expected artifacts:
 - `docs/automation/MAKEFILE-TARGETS.md`
 - `docs/automation/makefile_targets_generated.md`
 
-### Workflow Audit: What Each Workflow Does
+### Workflow Audit: Current CI
 
 #### `.github/workflows/ci.yml`
 
 Purpose:
-- Core CI validation: Agda typechecking, docs, JSON checks, and coverage.
+- Core CI validation: Agda exports, docs, JSON checks, Python/debt checks, and report collection.
 
 Jobs:
-- `build`: checkout, configure Agda, install Python/Node, `make check`, run `scripts/makefile_coverage.py --run-targets`, upload reports.
-- `deferred-items-check` (push on main): runs `make deferred-items`, uploads reports, creates/updates tracking issue.
+- `agda-exports`: regen Makefile recipes, export planning/dependency artifacts, run makefile coverage.
+- `docs-checks`: docs/markdown lint + module docs checks.
+- `roadmap-json-checks`: roadmap exports and JSON roundtrip checks.
+- `python-checks`: pytest + debt checks.
+- `collect-reports`: merge report artifacts from per-job report dirs.
 
 Value:
-- High. Provides the primary correctness gate for build + docs + JSON checks.
+- High. Single source of truth for CI gates and report outputs.
 
 Local parity:
-- `make check` for build logic.
+- `MUTATE_LEVEL=repo make check` for core validation logic.
 - `make act-ci` for full workflow emulation (requires act).
 
 Cleanup opportunities:
-- None obvious; primary CI flow is consolidated in `build`.
-
-#### `.github/workflows/makefile-validate.yml`
-
-Purpose:
-- Verifies Makefile/Agda/Docs triangle consistency when relevant files change.
-
-Value:
-- High. Keeps Makefile generation and docs in sync.
-
-Local parity:
-- `make makefile-validate`
-- `make act-makefile-validate`
-
-Cleanup opportunities:
-- None obvious; scope is narrow and targeted.
-
-#### `.github/workflows/markdown-lint.yml`
-
-Purpose:
-- Markdown linting on `.md` changes.
-
-Value:
-- Medium. Helps maintain doc quality.
-
-Local parity:
-- `make md-lint`
-- `make act-lint`
-
-Cleanup opportunities:
-- None obvious; low maintenance.
-
-#### `.github/workflows/markdown-auto-fix.yml`
-
-Purpose:
-- Auto-fixes markdown in PRs (same-repo only), commits and pushes.
-
-Value:
-- Medium. Automates style fixes.
-
-Local parity:
-- `make md-fix`
-- `make act-markdown-fix`
-
-Cleanup opportunities:
-- Consider moving the auto‑commit into a separate bot/branch workflow if commit noise is undesirable.
-
-#### `.github/workflows/roadmap-sync.yml`
-
-Purpose:
-- Syncs `.github/roadmap/tasks.json` to GitHub issues (scheduled or on change).
-
-Value:
-- High for issue tracking alignment.
-
-Local parity:
-- `make roadmap-sync`
-- `make act-roadmap-sync`
-
-Cleanup opportunities:
-- Ensure issue write permissions are only enabled where needed (already scoped).
-
-#### `.github/workflows/deferred-items.yml`
-
-Purpose:
-- Compares deferred items in PR base vs head and posts a comment.
-
-Value:
-- Medium/High. Helps keep debt tracking visible.
-
-Local parity:
-- `make deferred-items` in both base and current, plus compare.
-- `make act-deferred` for workflow emulation.
-
-Cleanup opportunities:
-- The workflow runs `make deferred-items` twice; could cache the base report or avoid regenerating if artifact exists.
-
-#### `.github/workflows/badge-update.yml`
-
-Purpose:
-- Regenerates badges on roadmap/report/script/Agda changes; commits if changes.
-
-Value:
-- Medium. Keeps badges accurate.
-
-Local parity:
-- `make badges`
-- `make act-badges`
-
-Cleanup opportunities:
-- Consider skipping badge updates on PRs if badge commits are noisy.
+- Keep CI consolidated; avoid reintroducing single-purpose workflows unless they
+  serve a distinct gate or permission boundary.
 
 ### Workflow Test Matrix (Local)
 
@@ -206,12 +122,6 @@ Use `act` only if available and configured (uses container image).
 ```bash
 make act-list
 make act-ci
-make act-makefile-validate
-make act-lint
-make act-markdown-fix
-make act-roadmap-sync
-make act-deferred
-make act-badges
 ```
 
 ### Minimum CI Parity (Local)
@@ -222,16 +132,17 @@ Smallest local target set that mirrors CI’s critical gates:
 make graph-assert-ok
 make makefile-validate
 make md-lint
-MUTATE_OK=1 make json-roundtrip-validate
+MUTATE_LEVEL=repo make json-roundtrip-validate
 ```
 
 ```bash
-MUTATE_OK=1 make python-test
+MUTATE_LEVEL=repo make python-test
 ```
 
 ### Known Constraints
 
-- Some workflows (auto‑fix, badges) mutate the repo by design.
+- Some local targets (e.g., `md-fix`, `badges`, `regen-*`) mutate the repo by design.
+- CI is consolidated under `ci.yml`; avoid assuming other workflows exist.
 
 ### Follow‑ups
 

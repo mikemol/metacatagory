@@ -124,9 +124,8 @@ class TestTasksJSONLoading:
         with open(tasks_file, "w") as f:
             f.write("{invalid json")
         
-        # Implementation doesn't catch JSON errors
-        with pytest.raises(json.JSONDecodeError):
-            load_tasks_json(tasks_file)
+        items = load_tasks_json(tasks_file)
+        assert items == []
 
 
 class TestRoadmapMDParsing:
@@ -188,6 +187,48 @@ class TestRoadmapMDParsing:
         """Test parsing non-existent ROADMAP.md."""
         items = parse_roadmap_md(tmp_path / "nonexistent.md")
         assert items == []
+
+    def test_parse_roadmap_md_frontmatter(self, tmp_path):
+        """Test parsing YAML frontmatter blocks in ROADMAP.md."""
+        roadmap_file = tmp_path / "ROADMAP.md"
+        roadmap_content = """# Roadmap
+
+```yaml
+id: GP-1
+title: First Item
+description: First description
+status: in-progress
+category: Build
+dependencies:
+  - GP-0
+tags:
+  - JSON
+files:
+  - src/agda/Plan/CIM/JSONTransformation.agda
+```
+
+```yaml
+id: GP-2
+title: Second Item
+description: Second description
+status: planned
+category: Docs
+tags:
+  - Docs
+```
+"""
+        roadmap_file.write_text(roadmap_content, encoding="utf-8")
+
+        items = parse_roadmap_md(roadmap_file)
+        assert [item["id"] for item in items] == ["GP-1", "GP-2"]
+        first = items[0]
+        assert first["title"] == "First Item"
+        assert first["description"] == "First description"
+        assert first["status"] == "in-progress"
+        assert first["category"] == "Build"
+        assert first["dependsOn"] == ["GP-0"]
+        assert first["tags"] == ["JSON"]
+        assert first["files"] == ["src/agda/Plan/CIM/JSONTransformation.agda"]
 
 
 class TestDeduplication:

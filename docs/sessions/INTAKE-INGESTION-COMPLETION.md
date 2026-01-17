@@ -1,5 +1,7 @@
 # Intake Ingestion Completion Report
 
+Note: Historical snapshot; see `ROADMAP.md` and `docs/status/PROJECT-STATUS.md` for current state.
+
 ## Executive Summary
 
 **Status**: ✓ **COMPLETE**

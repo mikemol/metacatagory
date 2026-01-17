@@ -607,7 +607,7 @@ IF unsure THEN
 - `build/canonical_enriched.json` - Enriched roadmap  
 - `data/dependency_graph.json` - Module dependencies
 - `.github/roadmap/tasks.json` - Machine-readable roadmap
-- `data/planning/`, `data/enriched/`, `data/deps/` - Decomposed hierarchies
+- `data/enriched/`, `data/deps/` - Decomposed hierarchies
 
 ---
 
@@ -1116,7 +1116,7 @@ Demonstrate full three-order expansion for key repository concepts.
 
 **1.3. Metadata Preservation:**
 - **Statement:** _metadata.json files track decomposition provenance
-- **Source:** [data/planning/_metadata.json](data/planning/_metadata.json), [scripts/json_decompose.py](scripts/json_decompose.py)
+- **Source:** [data/enriched/_metadata.json](data/enriched/_metadata.json), [scripts/json_decompose.py](scripts/json_decompose.py)
 - **Congruence:** Enables reconstruction and validation
 - **Orthogonality to siblings:**
   - vs. Natural Transformation: Practical necessity vs. theoretical property
@@ -1134,7 +1134,7 @@ Demonstrate full three-order expansion for key repository concepts.
 
 **1.1.2. Forward Transformation → Index Generation:**
 - **Statement:** _index.json files created to catalog all fragments
-- **Source:** [data/planning/items/_index.json](data/planning/items/_index.json)
+- **Source:** [data/enriched/items/_index.json](data/enriched/items/_index.json)
 - **Congruence:** Enables efficient lookup and reconstruction
 - **Orthogonality:**
   - vs. 1.1.1 (Decomposition Strategy): Cataloging vs. partitioning
@@ -1142,7 +1142,7 @@ Demonstrate full three-order expansion for key repository concepts.
 
 **1.1.3. Forward Transformation → Fragment Naming:**
 - **Statement:** Fragments named by unique identifier (id field or derived key)
-- **Source:** [data/planning/items/BUILD-JSON-DECOMPOSITION.json](data/planning/items/BUILD-JSON-DECOMPOSITION.json) example
+- **Source:** [data/enriched/items/BUILD-JSON-DECOMPOSITION.json](data/enriched/items/BUILD-JSON-DECOMPOSITION.json) example
 - **Congruence:** Human-readable filenames for git-friendly diffs
 - **Orthogonality:**
   - vs. 1.1.1 (Decomposition Strategy): Naming vs. partitioning
@@ -1504,7 +1504,7 @@ Provide concrete instructions for applying this protocol in practice.
 
 ```
 **Statement:** [What you're claiming]
-**Source:** [File path](file/path.ext) (Line X-Y) OR [External: Author Year] OR [Internal synthesis from X, Y]
+**Source:** File path: `path/to/file.ext` (Line X-Y) OR [External: Author Year] OR [Internal synthesis from X, Y]
 **Congruence:** [How this relates to parent concept]
 **Orthogonality:** [How this differs from siblings]
 ```
@@ -1552,7 +1552,7 @@ Provide concrete instructions for applying this protocol in practice.
 | **Natural Transformation** | Category-theoretic structure-preserving mapping between functors; used for JSON transformations | Category theory; [src/agda/Plan/CIM/JSONTransformation.agda](src/agda/Plan/CIM/JSONTransformation.agda) | Stage 7 |
 | **Terminal Coherence** | Quality mandate 13: Stable, reusable understanding that converges | [.github/copilot-instructions.md](.github/copilot-instructions.md) | Stage 0, 12 |
 | **Functorial Integrity** | Quality mandate 14: Preservation of compositional structure across transformations | [.github/copilot-instructions.md](.github/copilot-instructions.md) | Stage 0, 12 |
-| **GenericDualAlgebra** | Agda framework for bidirectional transformations with adequacy witnesses | [src/agda/Plan/CIM/GenericDualAlgebra.agda](src/agda/Plan/CIM/GenericDualAlgebra.agda) | Stage 8 |
+| **GenericDualAlgebra** | Agda framework for bidirectional transformations with adequacy witnesses | [src/agda/Infrastructure/Adequacy.agda](src/agda/Infrastructure/Adequacy.agda) | Stage 8 |
 | **Orthogonality** | Independence of implications; knowing one doesn't determine another | Category theory; internal synthesis | Stage 1, 11 |
 | **Congruence** | Alignment with parent concept; maintains semantic relationship | Mathematical logic; internal synthesis | Stage 1, 11 |
 | **Three-Order Expansion** | Recursive implication structure: 3 first-order → 9 second-order → 27 third-order implications | [.github/copilot-instructions.md](.github/copilot-instructions.md) | Stage 0.5, 11 |

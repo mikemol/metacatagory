@@ -5,7 +5,7 @@ SPPF-Composable Onboarding Header
 
 Roadmap: src/agda/Plan/CIM/Utility.agda
 Architecture: ARCHITECTURE.md
-Onboarding: COPILOT_SYNERGY.md
+Onboarding: .github/copilot-instructions.md
 
 Constructive Proof Semantics:
 - This script participates in the composable SPPF model, mirroring Agda record patterns for protocol,
@@ -21,7 +21,6 @@ Analyzes test adapters to identify phase boundaries exercised:
 Outputs:
 """
 
-import re
 import json
 from pathlib import Path
 from collections import defaultdict
@@ -32,6 +31,15 @@ from typing import Any
 import networkx as nx
 from graphviz import Digraph
 from rich.console import Console
+
+from scripts.shared.io import save_json
+from scripts.shared.agda_tests import (
+    extract_chapter_from_filename,
+    extract_sections_from_content,
+    infer_section_from_preceding,
+    iter_checklist_adapters,
+    iter_checklist_links,
+)
 
 console = Console()
 
@@ -72,11 +80,10 @@ class PhaseDiagramGenerator:
     def _parse_chapter_file(self, filepath: Path) -> None:
         """Parse a single chapter checklist file."""
         filename = filepath.stem
-        chapter_match = re.match(r"(Chapter\d+)", filename)
-        if not chapter_match:
+        chapter = extract_chapter_from_filename(filename)
+        if not chapter:
             return
 
-        chapter = chapter_match.group(1)
         chapter_id = f"{chapter}"
 
         # Add chapter node
@@ -93,11 +100,7 @@ class PhaseDiagramGenerator:
             content = filepath.read_text(encoding="utf-8")
 
             # Find section boundaries (e.g., "-- Level1sub3")
-            section_pattern = re.compile(r"^-+\s*\n--\s+Level\d+sub(\d+)", re.MULTILINE)
-            sections = set()
-            for match in section_pattern.finditer(content):
-                subsection = match.group(1)
-                sections.add(subsection)
+            sections = extract_sections_from_content(content)
 
             # Add section nodes and edges
             for section in sections:
@@ -117,16 +120,10 @@ class PhaseDiagramGenerator:
                     )
 
             # Find adapters
-            adapter_pattern = re.compile(r"(\w+)-adapter\s*:\s*A\.(\w+)", re.MULTILINE)
-
-            for match in adapter_pattern.finditer(content):
-                adapter_name = match.group(1)
-                adapter_type = match.group(2)
-
+            for adapter_name, adapter_type, adapter_pos in iter_checklist_adapters(content):
                 # Infer section from context
-                adapter_pos = match.start()
                 preceding = content[:adapter_pos]
-                section_num = self._infer_section(preceding)
+                section_num = infer_section_from_preceding(preceding)
 
                 adapter_id = f"{chapter}.{section_num}.{adapter_name}"
                 section_id = f"{chapter}.{section_num}"
@@ -153,13 +150,7 @@ class PhaseDiagramGenerator:
                         )
 
             # Find link assertions to identify dependencies
-            link_pattern = re.compile(
-                r"(\w+)-\w+-link\s*:\s*.*?≡\s*([\w.]+)", re.MULTILINE
-            )
-
-            for match in link_pattern.finditer(content):
-                source_adapter = match.group(1)
-                target_ref = match.group(2)
+            for source_adapter, target_ref in iter_checklist_links(content):
 
                 # Try to find corresponding adapter nodes
                 source_nodes = [nid for nid in self.nodes if source_adapter in nid]
@@ -176,20 +167,6 @@ class PhaseDiagramGenerator:
 
         except Exception as e:
             console.print(f"[yellow]Warning: Error parsing {filepath}: {e}[/yellow]")
-
-    def _infer_section(self, preceding_text: str) -> str:
-        """Infer section number from preceding context."""
-        # Look for Level markers
-        level_match = re.search(r"Level\d+sub(\d+)", preceding_text[::-1])
-        if level_match:
-            return level_match.group(1)[::-1]
-
-        # Look for chk markers
-        chk_match = re.search(r"chk\d+s(\d+)", preceding_text[::-1])
-        if chk_match:
-            return chk_match.group(1)[::-1]
-
-        return "0"
 
     def build_graph(self) -> None:
         """Build NetworkX graph from nodes and edges."""
@@ -318,7 +295,7 @@ class PhaseDiagramGenerator:
             ],
         }
 
-        output_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+        save_json(output_path, data)
         console.print(f"[green]✓[/green] JSON export written to {output_path}")
 
 def main() -> None:

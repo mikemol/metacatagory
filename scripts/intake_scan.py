@@ -11,7 +11,6 @@ Reports:
 from __future__ import annotations
 
 import json
-import re
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -21,16 +20,16 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.shared.paths import REPO_ROOT, PLANNING_INDEX_JSON, REPORTS_DIR
+from scripts.shared.paths import REPO_ROOT, REPORTS_DIR
+from scripts import shared_data
+from scripts.shared.io import save_json
+from scripts.shared.intake import classify_intake_filename, find_roadmap_ids
 
 INTAKE_DIR = REPO_ROOT / "intake"
-CANONICAL_PATH = PLANNING_INDEX_JSON
+CANONICAL_PATH = shared_data.resolve_planning_path(repo_root=REPO_ROOT)
 REPORT_DIR = REPORTS_DIR
 REPORT_JSON = REPORT_DIR / "intake_coverage.json"
 REPORT_MD = REPORT_DIR / "intake_coverage.md"
-
-ID_PATTERN = re.compile(r"\b(?:PHASE-[A-Za-z0-9.\-]+|ROADMAP-MD-\d+|GP-[A-Za-z0-9.\-]+)\b")
-SHARD_PATTERN = re.compile(r"__(\(\d+\))?\.md$")  # Matches __.md, __(1).md, __(2).md, etc.
 
 def load_canonical_ids() -> set[str]:
     if not CANONICAL_PATH.exists():
@@ -38,7 +37,7 @@ def load_canonical_ids() -> set[str]:
         CANONICAL_PATH.write_text("[]")
         return set()
 
-    data = json.loads(CANONICAL_PATH.read_text())
+    data = shared_data.load_planning_index_from(CANONICAL_PATH)
     ids: set[str] = set()
     for entry in data:
         value = entry.get("id") if isinstance(entry, dict) else None
@@ -57,22 +56,7 @@ def relative(path: Path) -> str:
 
 def classify_intake_file(path: Path) -> str:
     """Classify intake file as shard, candidate, or substrate"""
-    name = path.name
-    
-    # Atomic shards: __.md, __(1).md, etc.
-    if SHARD_PATTERN.search(name):
-        return "shard"
-    
-    # Semi-structured candidates: contain "candidate" or "draft"
-    if "candidate" in name.lower() or "draft" in name.lower():
-        return "candidate"
-    
-    # Contextual substrates: large context files
-    if any(keyword in name.lower() for keyword in ["context", "summary", "enrichment", "session", "codex"]):
-        return "substrate"
-    
-    # Default: treat as GP/formalized
-    return "formalized"
+    return classify_intake_filename(path.name)
 
 def build_coverage(canonical_ids: set[str], files: list[Path]) -> dict[str, Any]:
     coverage: dict[str, list[str]] = defaultdict(list)
@@ -94,7 +78,7 @@ def build_coverage(canonical_ids: set[str], files: list[Path]) -> dict[str, Any]
 
     for path in files:
         text = path.read_text(errors="ignore")
-        matches = set(ID_PATTERN.findall(text))
+        matches = find_roadmap_ids(text)
         canonical_matches = sorted(matches & canonical_ids)
         unknown_matches = sorted(matches - canonical_ids)
 
@@ -134,8 +118,7 @@ def build_coverage(canonical_ids: set[str], files: list[Path]) -> dict[str, Any]
     }
 
 def write_json_report(payload: dict) -> None:
-    REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    REPORT_JSON.write_text(json.dumps(payload, indent=2))
+    save_json(REPORT_JSON, payload)
 
 def write_markdown_report(payload: dict, canonical_ids: set[str]) -> None:
     coverage = payload["canonical_coverage"]

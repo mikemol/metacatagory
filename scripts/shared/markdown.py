@@ -16,6 +16,21 @@ from typing import List, Dict, Optional, Tuple, Any
 import re
 import json
 import textwrap
+
+try:
+    from ..shared_yaml import (
+        dump_yaml as shared_dump_yaml,
+        safe_load as shared_safe_load,
+    )
+except ImportError:
+    try:
+        from scripts.shared_yaml import (  # type: ignore
+            dump_yaml as shared_dump_yaml,
+            safe_load as shared_safe_load,
+        )
+    except ImportError:
+        shared_dump_yaml = None
+        shared_safe_load = None
 try:
     import yaml  # type: ignore
 except ImportError:
@@ -207,7 +222,9 @@ class MarkdownParser:
             # Dedent to handle indented test strings
             raw = textwrap.dedent(raw)
             try:
-                if yaml is not None:
+                if shared_safe_load is not None:
+                    data = shared_safe_load(raw) or {}
+                elif yaml is not None:
                     data = yaml.safe_load(raw) or {}
                 else:
                     data = {}  # Fallback: no parsing without yaml module
@@ -292,7 +309,7 @@ class MarkdownParser:
             code = match.group(2)
             blocks.append((language, code))
         return blocks
-    
+
     def get_links(self) -> List[Tuple[str, str]]:
         """Extract all links from document.
         
@@ -306,7 +323,7 @@ class MarkdownParser:
             url = match.group(2)
             links.append((text, url))
         return links
-    
+
     def get_table_of_contents(self) -> str:
         """Generate table of contents from headings.
         
@@ -319,7 +336,6 @@ class MarkdownParser:
             return ""
         
         lines = ["## Table of Contents\n"]
-        current_level = 1
         
         for level, text in headings:
             if level > 1:  # Skip h1
@@ -329,6 +345,139 @@ class MarkdownParser:
                 lines.append(f"{indent}- [{text}](#{anchor})")
         
         return "\n".join(lines) + "\n"
+
+
+FENCED_YAML_PATTERN = re.compile(r'```yaml\n(.*?)\n```', re.DOTALL)
+
+
+def parse_yaml_fenced_blocks(content: str, include_errors: bool = False) -> List[Dict[str, Any]]:
+    """Parse fenced ```yaml blocks into dicts.
+
+    Args:
+        content: Markdown content to scan.
+        include_errors: When True, include parse errors as dicts with
+            __parse_error__ keys instead of skipping.
+
+    Returns:
+        List of parsed dicts (and optional error dicts).
+    """
+    parsed: List[Dict[str, Any]] = []
+    blocks = FENCED_YAML_PATTERN.findall(content)
+    for block in blocks:
+        try:
+            if shared_safe_load is not None:
+                data = shared_safe_load(block)
+            elif yaml is not None:
+                data = yaml.safe_load(block)
+            else:
+                data = None
+            if isinstance(data, dict):
+                parsed.append(data)
+            elif include_errors:
+                parsed.append({"__parse_error__": "non-dict yaml block"})
+        except Exception as exc:
+            if include_errors:
+                parsed.append({"__parse_error__": str(exc)})
+    return parsed
+
+
+def parse_simple_yaml_block(block: str) -> Dict[str, Any]:
+    """Parse a minimal YAML block without a YAML parser."""
+    entry: Dict[str, Any] = {}
+    current_key: str | None = None
+    for line in block.splitlines():
+        raw = line.rstrip()
+        if not raw.strip():
+            continue
+        if raw.lstrip().startswith("- "):
+            if current_key is None:
+                continue
+            item = raw.lstrip()[2:].strip()
+            if item.startswith('"') and item.endswith('"'):
+                item = item[1:-1]
+            entry.setdefault(current_key, []).append(item)
+            continue
+        if ":" in raw:
+            key, value = raw.split(":", 1)
+            key = key.strip()
+            value = value.strip()
+            if key.startswith('"') and key.endswith('"'):
+                key = key[1:-1]
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1]
+            if value == "":
+                entry[key] = []
+                current_key = key
+            else:
+                entry[key] = value
+                current_key = None
+    return entry
+
+
+def parse_yaml_fenced_blocks_fallback(content: str) -> List[Dict[str, Any]]:
+    """Parse fenced YAML blocks with a simple fallback parser."""
+    parsed = parse_yaml_fenced_blocks(content, include_errors=False)
+    if parsed:
+        return parsed
+    if shared_safe_load is not None or yaml is not None:
+        return []
+    fallback: List[Dict[str, Any]] = []
+    for yaml_block in FENCED_YAML_PATTERN.findall(content):
+        entry = parse_simple_yaml_block(yaml_block)
+        if entry:
+            fallback.append(entry)
+    return fallback
+
+
+def extract_bracketed_ids(content: str, pattern: str = r"\[([A-Z]+-\d+)\]") -> List[str]:
+    """Extract bracketed IDs like [PHASE-123] from content."""
+    ids = {match.group(1) for match in re.finditer(pattern, content)}
+    return sorted(ids)
+
+
+def extract_markdown_section_from_content(
+    content: str,
+    heading_pattern: str,
+) -> Dict[str, str] | None:
+    """Extract a markdown section by heading substring (case-insensitive)."""
+    heading = None
+    heading_line = 0
+    content_lines: list[str] = []
+    in_section = False
+
+    for i, line in enumerate(content.splitlines(), start=1):
+        if re.match(r"^#+\s+", line):
+            if heading_pattern.lower() in line.lower():
+                heading = line.strip()
+                heading_line = i
+                in_section = True
+                continue
+            if in_section:
+                break
+        if in_section:
+            stripped = line.strip()
+            if stripped and not stripped.startswith("```"):
+                content_lines.append(stripped)
+
+    if heading and content_lines:
+        text = " ".join(content_lines)
+        return {
+            "heading": heading,
+            "text": text,
+            "line_start": heading_line,
+        }
+    return None
+
+
+def extract_markdown_section(
+    md_path: Path,
+    heading_pattern: str,
+) -> Dict[str, str] | None:
+    """Extract a markdown section from a file by heading substring."""
+    if not md_path.exists():
+        return None
+    content = md_path.read_text(encoding="utf-8")
+    return extract_markdown_section_from_content(content, heading_pattern)
 
 
 class MarkdownBuilder:
@@ -425,7 +574,10 @@ class MarkdownBuilder:
         # Add frontmatter
         if self.frontmatter:
             if yaml is not None:
-                fm_content = yaml.dump(self.frontmatter, default_flow_style=False)
+                if shared_dump_yaml is not None:
+                    fm_content = shared_dump_yaml(self.frontmatter)
+                else:
+                    fm_content = yaml.dump(self.frontmatter, default_flow_style=False)
                 lines.append("---")
                 lines.append(fm_content.rstrip())
                 lines.append("---")
@@ -564,3 +716,61 @@ class MarkdownValidator:
             Dictionary with validation results
         """
         return self.validate()
+
+
+def is_json_input(text: str) -> bool:
+    """Check if input looks like JSON."""
+    stripped = text.lstrip()
+    return stripped.startswith("{") or stripped.startswith("[")
+
+
+def fix_list_markers(md: str) -> str:
+    """Normalize list markers to asterisks with consistent spacing."""
+    def repl(match: re.Match) -> str:
+        indent = match.group(1) or ""
+        content = match.group(3)
+        indent_level = len(indent) // 2 if indent else 0
+        return ("  " * indent_level) + "* " + content
+
+    pattern = re.compile(r"^( *)([-*]) +(.+)$", re.MULTILINE)
+    return pattern.sub(repl, md)
+
+
+def remove_multiple_blank_lines(md: str) -> str:
+    """Collapse multiple blank lines and trim leading blanks."""
+    md = re.sub(r"^(\s*\n)+", "", md)
+    lines = md.splitlines()
+    while lines and lines[0].strip() == "":
+        lines.pop(0)
+    md = "\n".join(lines)
+    return re.sub(r"\n{3,}", "\n\n", md)
+
+
+def fix_horizontal_rules(md: str) -> str:
+    """Normalize horizontal rule lines."""
+    return re.sub(r"^[- ]{5,}$", "-" * 79, md, flags=re.MULTILINE)
+
+
+def fix_headings(md: str) -> str:
+    """Convert setext headings to atx headings."""
+    lines = md.split("\n")
+    out = []
+    i = 0
+    while i < len(lines):
+        if i + 1 < len(lines) and re.match(r"^(=+|-+)$", lines[i + 1]):
+            level = 1 if lines[i + 1].startswith("=") else 2
+            out.append("#" * level + " " + lines[i].strip())
+            i += 2
+        else:
+            out.append(lines[i])
+            i += 1
+    return "\n".join(out)
+
+
+def postprocess_markdown(md: str) -> str:
+    """Apply standard markdown cleanup passes."""
+    md = remove_multiple_blank_lines(md)
+    md = fix_list_markers(md)
+    md = fix_horizontal_rules(md)
+    md = fix_headings(md)
+    return md

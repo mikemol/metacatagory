@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 """
 Export roadmap to SPPF JSON format for graph visualization.
-Reads from data/planning_index.json (planning source)
+Reads from the planning index (data preferred, build fallback).
 """
-import json
 from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts import shared_data
+from scripts.shared.io import save_json
 
 def main():
     # Read from planning index, not tasks.json
-    build_path = Path("build/planning_index.json")
-    data_path = Path("data/planning_index.json")
-    in_path = build_path if build_path.exists() else data_path
+    repo_root = Path.cwd()
+    items = shared_data.load_planning_index(repo_root=repo_root)
     out_path = Path("build/gp_roadmap_sppf.json")
-
-    with in_path.open('r') as f:
-        items = json.load(f)
 
     nodes = []
     for it in items:
@@ -29,9 +32,7 @@ def main():
             'parents': [],
         })
 
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    with out_path.open('w') as f:
-        json.dump({'nodes': nodes}, f, indent=2)
+    save_json(out_path, {'nodes': nodes})
 
 if __name__ == '__main__':
     main()

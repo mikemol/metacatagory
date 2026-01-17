@@ -1,5 +1,9 @@
 # FFI Graph Parsing & Automation Guard Implementation
 
+Note: This is a historical snapshot (2026-01-06). It is not auto-updated.
+For current status and validation guidance, see `docs/status/PROJECT-STATUS.md`
+and `TESTING.md`.
+
 **Date**: 2026-01-06  
 **Objective**: Debug FFI edge extraction, eliminate false negatives, and establish trustworthy automation pipelines.
 

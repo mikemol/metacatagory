@@ -8,6 +8,26 @@ This document provides an index to all project documentation.
 * [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute
 * [CREDITS.md](CREDITS.md) - Attribution and acknowledgments
 
+## Canonical vs Generated
+
+Some documents are hand-edited sources, while others are generated outputs.
+When in doubt, regenerate rather than editing generated artifacts directly.
+
+**Canonical (edit these):**
+- `src/agda/Plan/CIM/Utility.agda` (roadmap sources)
+- `intake/GP/` (intake source files)
+- `docs/**` (architecture/process/status sources, except generated outputs listed below)
+
+**Generated (regenerate via Makefile):**
+- `ROADMAP.md` and `docs/planning/ROADMAP.md`
+- `.github/roadmap/tasks.json`
+- `data/planning_index.json`
+- `data/dependency_graph.json`
+- `docs/status/deferred-items.md`
+- `docs/automation/makefile_targets_generated.md`
+
+See `Makefile` and `TESTING.md` for regeneration targets.
+
 ## Documentation Structure
 
 ### Architecture & Design
@@ -24,6 +44,7 @@ This document provides an index to all project documentation.
   * [COMPOSITION-PATTERNS.md](docs/automation/COMPOSITION-PATTERNS.md) - Shared pipeline composition patterns for Python scripts
   * [MAKEFILE-TARGETS.md](docs/automation/MAKEFILE-TARGETS.md) - Makefile target reference
   * [MAKEFILE-TRIANGLE-IDENTITY.md](docs/automation/MAKEFILE-TRIANGLE-IDENTITY.md) - Triangle identity validation
+  * [BUILD-TOPOLOGY.md](docs/process/BUILD-TOPOLOGY.md) - Build/CI topology and report layout
 
 ### Planning & Roadmap
 
@@ -39,7 +60,7 @@ This document provides an index to all project documentation.
 
 * [docs/process/](docs/process/)
   * [QUALITY-FRAMEWORK.md](docs/process/QUALITY-FRAMEWORK.md) - Quality assurance framework
-  * [COPILOT\_SYNERGY.md](docs/process/COPILOT_SYNERGY.md) - AI copilot integration guidelines
+  * [copilot-instructions.md](.github/copilot-instructions.md) - LLM integration guidelines
 
 ### Project Status
 
@@ -91,7 +112,7 @@ This document provides an index to all project documentation.
 * **See the roadmap** → Check [ROADMAP.md](docs/planning/ROADMAP.md) and [PROJECT-STATUS.md](docs/status/PROJECT-STATUS.md)
 * **Run enrichment pipeline** → Follow [ENRICHMENT-QUICKSTART.md](docs/workflows/ENRICHMENT-QUICKSTART.md)
 * **Understand the algebra work** → Read [ALGEBRA-PARAMETERIZATION-COMPLETE.md](docs/architecture/ALGEBRA-PARAMETERIZATION-COMPLETE.md)
-* **Work with Copilot** → See [COPILOT\_SYNERGY.md](docs/process/COPILOT_SYNERGY.md)
+* **Work with Copilot** → See [copilot-instructions.md](.github/copilot-instructions.md)
 
 ## Documentation Standards
 

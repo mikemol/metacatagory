@@ -16,8 +16,9 @@ sections:
 """
 
 import sys
-import yaml
 from pathlib import Path
+
+from scripts.shared_yaml import safe_load_file
 
 def render_meta_index(mi: dict) -> str:
     title = mi.get("title", "").strip()
@@ -35,7 +36,7 @@ def render_meta_index(mi: dict) -> str:
     return "\n".join(out).strip() + "\n"
 
 def load_yaml(path: Path) -> dict:
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    return safe_load_file(path) or {}
 
 def export_file(yaml_path: Path):
     mi = load_yaml(yaml_path)
@@ -64,4 +65,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -28,7 +28,7 @@ The roadmap infrastructure has been consolidated into a **canonical index** with
 
 ## Canonical Source
 
-**Location**: [src/agda/Plan/CIM/CanonicalRoadmap.agda](src/agda/Plan/CIM/CanonicalRoadmap.agda)
+**Location**: [../../src/agda/Plan/CIM/CanonicalRoadmap.agda](../../src/agda/Plan/CIM/CanonicalRoadmap.agda)
 
 **Schema**: `RoadmapItem` record (id, title, status, category, source, files, tags, dependsOn, related)
 
@@ -72,10 +72,11 @@ Ensures:
 ### 4. Syncing to GitHub
 
 ```bash
-make roadmap-sync
+MUTATE_LEVEL=repo make roadmap-sync
 ```
 
 Depends on `.github/roadmap/tasks.json` to ensure tasks.json is current before sync.
+This is a local Make target; CI runs the roadmap/JSON job via `ci.yml` (no standalone workflow).
 
 ## Key Files
 
@@ -110,7 +111,7 @@ Depends on `.github/roadmap/tasks.json` to ensure tasks.json is current before s
 | `roadmap-validate-json` | canonical, tasks.json | Validate JSON projection |
 | `roadmap-validate-md` | canonical, ROADMAP.md | Validate Markdown projection |
 | `roadmap-validate-triangle` | validate-json, validate-md | Full triangle check |
-| `roadmap-sync` | `.github/roadmap/tasks.json` | Sync to GitHub |
+| `roadmap-sync` | `.github/roadmap/tasks.json` | Sync to GitHub (local Make target; CI uses `ci.yml`) |
 
 ## Deprecated Files
 
@@ -144,7 +145,7 @@ The following files are now **redundant** and can be removed after confirming ca
 
 ### Adding New Items
 
-1. Edit `src/agda/Plan/CIM/CanonicalRoadmap.agda` directly, OR
+1. Edit `../../src/agda/Plan/CIM/CanonicalRoadmap.agda` directly, OR
 2. Edit `tasks.json`, then run `make roadmap-merge` to re-import
 
 ### Updating Projections

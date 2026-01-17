@@ -37,6 +37,57 @@ def test_load_planning_index_variants(tmp_path, monkeypatch):
         shared_data.load_planning_index()
 
 
+def test_load_planning_index_from_path(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    json_path = tmp_path / "data" / "planning_index.json"
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(json.dumps([{"id": "GP-1"}]), encoding="utf-8")
+
+    items = shared_data.load_planning_index_from(json_path)
+    assert items[0]["id"] == "GP-1"
+
+def test_load_planning_index_filter_legacy(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    json_path = tmp_path / "data" / "planning_index.json"
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(
+        json.dumps([{"id": "GP-1"}, {"id": "LEGACY-1"}]),
+        encoding="utf-8",
+    )
+
+    items = shared_data.load_planning_index(filter_legacy=True)
+    assert [item["id"] for item in items] == ["GP-1"]
+
+
+def test_resolve_planning_path_prefers_data(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    data_path = tmp_path / "data" / "planning_index.json"
+    data_path.parent.mkdir(parents=True, exist_ok=True)
+    data_path.write_text(json.dumps([{"id": "GP-1"}]), encoding="utf-8")
+    build_path = tmp_path / "build" / "planning_index.json"
+    build_path.parent.mkdir(parents=True, exist_ok=True)
+    build_path.write_text(json.dumps([{"id": "GP-2"}]), encoding="utf-8")
+
+    resolved = shared_data.resolve_planning_path()
+    assert resolved == data_path
+
+
+def test_resolve_planning_path_falls_back_to_build(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    build_path = tmp_path / "build" / "planning_index.json"
+    build_path.parent.mkdir(parents=True, exist_ok=True)
+    build_path.write_text(json.dumps([{"id": "GP-2"}]), encoding="utf-8")
+
+    resolved = shared_data.resolve_planning_path()
+    assert resolved == build_path
+
+
+def test_resolve_planning_path_defaults_to_data_when_missing(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    resolved = shared_data.resolve_planning_path()
+    assert resolved == tmp_path / "data" / "planning_index.json"
+
+
 def test_load_roadmap_markdown_parses_yaml(tmp_path, monkeypatch):
     monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
     md = tmp_path / "ROADMAP.md"
@@ -55,6 +106,10 @@ status: in-progress
     ids, items = shared_data.load_roadmap_markdown()
     assert ids == ["GP-1", "GP-2"]
     assert items[0]["id"] == "GP-1"
+
+    ids_from_path, items_from_path = shared_data.load_roadmap_markdown_from(md)
+    assert ids_from_path == ["GP-1", "GP-2"]
+    assert items_from_path[0]["id"] == "GP-1"
 
 
 def test_load_roadmap_markdown_fallback_without_yaml(tmp_path, monkeypatch):
@@ -88,6 +143,37 @@ def test_load_roadmap_markdown_missing_file(tmp_path, monkeypatch):
     monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
     with pytest.raises(FileNotFoundError):
         shared_data.load_roadmap_markdown()
+
+
+def test_load_tasks_json_variants(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    tasks_path = tmp_path / ".github" / "roadmap" / "tasks.json"
+
+    with pytest.raises(FileNotFoundError):
+        shared_data.load_tasks_json()
+
+    assert shared_data.load_tasks_json(required=False) == []
+
+    tasks_path.parent.mkdir(parents=True, exist_ok=True)
+    tasks_path.write_text(json.dumps([{"id": "TASK-1"}]), encoding="utf-8")
+    assert shared_data.load_tasks_json()[0]["id"] == "TASK-1"
+
+    tasks_path.write_text(json.dumps({"items": [{"id": "TASK-2"}]}), encoding="utf-8")
+    assert shared_data.load_tasks_json()[0]["id"] == "TASK-2"
+
+    tasks_path.write_text(json.dumps("oops"), encoding="utf-8")
+    with pytest.raises(ValueError):
+        shared_data.load_tasks_json()
+
+
+def test_validate_roadmap_frontmatter():
+    valid = [{"id": "GP-1", "title": "Alpha", "status": "in-progress"}]
+    result = shared_data.validate_roadmap_frontmatter(valid)
+    assert result.is_valid()
+
+    invalid = [{"title": "Missing ID"}]
+    result = shared_data.validate_roadmap_frontmatter(invalid)
+    assert not result.is_valid()
 
 
 def test_load_roadmap_markdown_yaml_error(tmp_path, monkeypatch):

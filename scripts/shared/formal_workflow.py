@@ -20,6 +20,7 @@ from .errors import ValidationError
 from .agda import AgdaParser, DependencyAnalyzer, ModuleCoverage, AgdaModule
 from .provenance import ProvenanceTracker, ProvenanceSource
 from .logging import StructuredLogger
+from .io import save_json
 
 
 @dataclass
@@ -103,8 +104,7 @@ class FormalWorkflow:
         if output_path is not None:
             json_path = output_path.with_suffix(".json") if output_path.suffix != ".json" else output_path
             try:
-                import json as _json
-                json_path.write_text(_json.dumps(report, indent=2, default=str))
+                save_json(json_path, report, default=str)
             except Exception as e:
                 raise ValidationError("Failed to write formal report", field="output", value=str(json_path), context={"error": str(e)})
 

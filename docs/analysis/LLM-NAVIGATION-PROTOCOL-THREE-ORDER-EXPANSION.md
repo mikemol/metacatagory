@@ -13,7 +13,7 @@
 
 ## Executive Summary: The Unified View
 
-The LLM-NAVIGATION-PROTOCOL.md encodes a **self-describing, maximally coherent system** for navigating complex knowledge repositories. The system comprises three interlocking subsystems:
+The ../../LLM-NAVIGATION-PROTOCOL.md encodes a **self-describing, maximally coherent system** for navigating complex knowledge repositories. The system comprises three interlocking subsystems:
 
 1. **Notion 1: Navigation Protocol** (Pedagogical + Structural + Operational) - How to traverse knowledge space safely
 2. **Notion 2: Quality Mandates** (14 criteria in 3 layers) - What constitutes valid knowledge states
@@ -34,7 +34,7 @@ The analysis demonstrates that this protocol is **isomorphic to cascade control 
 
 **Definition:** A self-referential, recursively applicable meta-protocol guiding LLM agents through structured comprehension of complex repositories.
 
-**Source:** [LLM-NAVIGATION-PROTOCOL.md](LLM-NAVIGATION-PROTOCOL.md) (complete document), implementing [.github/copilot-instructions.md](.github/copilot-instructions.md) CHIP-N+1 Recursive Fibration Cycle
+**Source:** [../../LLM-NAVIGATION-PROTOCOL.md](../../LLM-NAVIGATION-PROTOCOL.md) (complete document), implementing [../../.github/copilot-instructions.md](../../.github/copilot-instructions.md) CHIP-N+1 Recursive Fibration Cycle
 
 **Provenance Chain:**
 ```
@@ -42,7 +42,7 @@ Project Philosophy (copilot-instructions.md)
   ↓ operationalized as ↓
 Quality Mandates & Correction Protocol (copilot-instructions.md lines 22-50)
   ↓ instantiated through ↓
-Navigation Stages (LLM-NAVIGATION-PROTOCOL.md lines 58-1679)
+Navigation Stages (../../LLM-NAVIGATION-PROTOCOL.md lines 58-1679)
   ↓ unified in ↓
 Three-Order Homological Expansion (this document)
 ```
@@ -53,7 +53,7 @@ Three-Order Homological Expansion (this document)
 
 **Definition:** Fourteen orthogonal quality criteria every response, analysis, or synthesis must exhibit.
 
-**Explicit List (from LLM-NAVIGATION-PROTOCOL.md lines 9-26):**
+**Explicit List (from ../../LLM-NAVIGATION-PROTOCOL.md lines 9-26):**
 
 1. **Completeness** – All relevant aspects covered without omission
 2. **Correctness** – Factual accuracy with traceable sources
@@ -584,7 +584,7 @@ Monotonic growth (N → N+1) ←→ Strict enablement (Layer N → Layer N+1)
 | Q | Mandate | Status | Verification Summary |
 |---|---------|--------|---|
 | Q1 | Completeness | ✅ | All 3 notions, 9 first-order implications, 18 second-order implications, 3 third-order critical path nodes, 6 cross-notion interplays, 3 recursive revisitings, final integration = comprehensive coverage |
-| Q2 | Correctness | ✅ | Every statement sourced to LLM-NAVIGATION-PROTOCOL.md with line numbers OR copilot-instructions.md OR marked "Internal synthesis from X" |
+| Q2 | Correctness | ✅ | Every statement sourced to ../../LLM-NAVIGATION-PROTOCOL.md with line numbers OR copilot-instructions.md OR marked "Internal synthesis from X" |
 | Q3 | Concreteness | ✅ | Concrete examples throughout: cascade sequences, verification chains, state machines, morphologies, recovery strategies |
 | Q4 | Depth | ✅ | Three orders of expansion; mathematical frameworks (phase transitions, topological sorting, state machines, threshold dynamics, resonance); four-order and five-order previews |
 | Q5 | Compliance | ✅ | Follows CHIP-N+1 cycle, respects SPPF architecture, uses three-order homological expansion methodology, maintains quality mandates throughout |
@@ -631,7 +631,7 @@ Monotonic growth (N → N+1) ←→ Strict enablement (Layer N → Layer N+1)
 
 **Terminal Coherence:** ✅ **ACHIEVED**
 
-The LLM-NAVIGATION-PROTOCOL.md is understood at **maximum coherence level** where all quality mandates are satisfied, all flaws are eliminated, understanding is stable and reusable, and system is ready for application to other domains.
+The ../../LLM-NAVIGATION-PROTOCOL.md is understood at **maximum coherence level** where all quality mandates are satisfied, all flaws are eliminated, understanding is stable and reusable, and system is ready for application to other domains.
 
 ---
 
@@ -796,8 +796,8 @@ This analysis demonstrates that rigorous application of three-order homological 
 
 **Document Metadata:**
 - **Total Analysis Time:** ~8-10 hours (5 turns)
-- **Primary Source:** [LLM-NAVIGATION-PROTOCOL.md](LLM-NAVIGATION-PROTOCOL.md) (1679 lines)
-- **Secondary Source:** [.github/copilot-instructions.md](.github/copilot-instructions.md) (497 lines)
+- **Primary Source:** [../../LLM-NAVIGATION-PROTOCOL.md](../../LLM-NAVIGATION-PROTOCOL.md) (1679 lines)
+- **Secondary Source:** [../../.github/copilot-instructions.md](../../.github/copilot-instructions.md) (497 lines)
 - **Analysis Depth:** 3 orders + recursive revisiting
 - **Notions Analyzed:** 3 primary
 - **Implications Generated:** 30 (9 first-order, 18 second-order, 3 third-order)

@@ -58,6 +58,8 @@ def save_json(
     path: Union[str, Path],
     data: Any,
     indent: int = 2,
+    ensure_ascii: bool = True,
+    default: Any | None = None,
     create_parents: bool = True,
     encoding: str = 'utf-8'
 ) -> None:
@@ -76,7 +78,16 @@ def save_json(
         path.parent.mkdir(parents=True, exist_ok=True)
     
     with open(path, 'w', encoding=encoding) as f:
-        json.dump(data, f, indent=indent)
+        if default is None:
+            json.dump(data, f, indent=indent, ensure_ascii=ensure_ascii)
+        else:
+            json.dump(
+                data,
+                f,
+                indent=indent,
+                ensure_ascii=ensure_ascii,
+                default=default,
+            )
 
 
 def load_markdown(

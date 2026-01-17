@@ -15,42 +15,25 @@ from __future__ import annotations
 import argparse
 import shutil
 import subprocess
-import re
 from pathlib import Path
 from typing import Any
+
+from scripts.shared.agda_tests import scan_agda_test_file
 
 ROOT = Path(__file__).resolve().parents[1]
 TESTS_DIR = ROOT / "src" / "agda" / "Tests"
 OUT_DIR = ROOT / "build" / "diagrams"
-
-MODULE_RE = re.compile(r"^\s*module\s+([A-Za-z0-9_.]+)\s+where\s*$")
-# E.g., `chk2s2B : S2.KernelPairDeclaration`
-RECORD_DECL_RE = re.compile(r"^\s*([A-Za-z0-9_']+)\s*:\s*([A-Za-z0-9_.]+)\.([A-Za-z0-9_]+)\s*$")
-# E.g., `foo : A.KernelPairAdapter`
-ADAPTER_DECL_RE = re.compile(r"^\s*([A-Za-z0-9_']+)\s*:\s*A\.([A-Za-z0-9_]+)\s*$")
 
 def parse_tests() -> dict[str, Any]:
     graph: dict[str, Any] = {
         "modules": {},  # mod -> {records:set(), adapters:set()}
     }
     for path in sorted(TESTS_DIR.glob("*.agda")):
-        mod: str | None = None
-        records: set[str] = set()
-        adapters: set[str] = set()
-        for line in path.read_text(encoding="utf-8").splitlines():
-            m = MODULE_RE.match(line)
-            if m:
-                mod = m.group(1)
-            m = RECORD_DECL_RE.match(line)
-            if m:
-                records.add(m.group(3))
-            m = ADAPTER_DECL_RE.match(line)
-            if m:
-                adapters.add(m.group(2))
-        key: str = mod or path.stem
+        scan = scan_agda_test_file(path)
+        key: str = scan.module or path.stem
         graph["modules"][key] = {
-            "records": sorted(records),
-            "adapters": sorted(adapters),
+            "records": scan.records,
+            "adapters": sorted({adapter for _, adapter in scan.adapters}),
         }
     return graph
 

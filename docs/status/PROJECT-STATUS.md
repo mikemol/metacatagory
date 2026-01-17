@@ -1,4 +1,7 @@
-# Project Status: Phase 2 & 3 Complete ✓
+# Project Status: Phase 2 & 3 Complete ✓, Phase 4 In Progress
+
+Note: Snapshot summary. For current status and blockers, see `ROADMAP.md` and
+`docs/status/DEFERRED-TRACKING.md`.
 
 ## Summary of Work Completed
 
@@ -38,7 +41,7 @@
 
 **Status**: Execution plan generated with optimizations
 
-### Phase 4: Cross-Reference Resolution ✓ COMPLETE
+### Phase 4: Cross-Reference Resolution (In Progress)
 
 * **Input**: Module mappings, dependency graphs, impact assessments
 * **Processing**: Cross-reference analysis and integrated planning
@@ -56,7 +59,7 @@
 * `scripts/cross_reference_reporter.py` - Generates integrated report
 * `PHASE4-CROSS-REFERENCE.md` - Phase 4 documentation
 
-**Status**: All 78 steps mapped to modules, execution plan optimized
+**Status**: Core artifacts generated; remaining Phase 4 items tracked below
 
 ## Key Metrics
 
@@ -111,7 +114,7 @@
     ├── impact_analyzer.py           (480 lines)
     └── cross_reference_reporter.py  (340 lines)
 
-    build/
+    build/ (ephemeral outputs; use Makefile to regenerate)
     ├── ingested_metadata.json       (29 KB)
     ├── roadmap_traversal_report.json (95 KB)
     ├── module_mappings.json         (~85 KB)
@@ -139,7 +142,21 @@
 ✓ Progress tracking system implemented\
 ✓ Mechanical generation pipeline operational
 
-### What's Next: Phase 4
+### CI and Reporting Reality
+
+Current CI is defined in `.github/workflows/ci.yml` and runs a containerized
+multi-job pipeline (Agda exports, docs, roadmap/JSON, Python/debt) plus a final
+report collection job. Reports land under `build/reports/{agda,docs,roadmap,python}`
+and are merged by the `collect-reports` job into a single artifact. See
+`docs/process/BUILD-TOPOLOGY.md` for report inventory.
+
+### Operational State (2026-01)
+
+- Primary entrypoint: `MUTATE_LEVEL=repo make check-all` (strict roundtrip validation enabled).
+- Makefile/recipes are generated; use `MUTATE_LEVEL=repo make regen-makefile` after target edits.
+- Offline runs can skip pip installs with `PYTHON_OFFLINE=1` (requires preinstalled deps).
+
+### What's Next: Phase 4 Completion
 
 **Cross-Reference Resolution**
 
@@ -149,6 +166,12 @@
 * Optimize execution sequencing
 
 **Estimated Timeline**: 1-2 weeks
+
+### Deferred Items Tracking
+
+Known technical debt and stubs are tracked in `docs/status/DEFERRED-TRACKING.md`
+(generated from `build/reports/deferred-summary.json`). Use that ledger to
+prioritize remaining Phase 4 follow-through and postulate/TODO cleanup.
 
 ## How to Use
 
@@ -255,8 +278,7 @@ Phase 4:
 * ✓ Optimize for minimal rework
 
 ## Conclusion
-
-**Phases 2, 3, and 4 are complete and fully operational.**
+**Phases 2 and 3 are complete. Phase 4 is in progress with core artifacts in place.**
 
 The system has successfully:
 

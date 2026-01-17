@@ -166,7 +166,7 @@ Metaprogramming and reflection infrastructure
 
 - Core.GrowthMetrics
 
-- src/python/nedge_topology
+- External `nedge_topology` (not currently in this repo)
 
 **Provides:**
 

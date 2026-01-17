@@ -10,11 +10,17 @@ Sources:
 
 import json
 import re
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import List, Dict
 
 # Import shared utilities
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+import shared_data
 from shared.io import load_json, save_json
 from shared.paths import REPO_ROOT, BUILD_DIR, DOCLINT_ROADMAP_JSON, CANONICAL_ROADMAP_JSON
 from shared.normalization import (
@@ -23,13 +29,17 @@ from shared.normalization import (
     deduplicate_items_by_id,
     ensure_item_fields
 )
+from shared.roadmap_agda import parse_ingested_agda, parse_legacy_agda
 from shared.parallel import get_parallel_settings
 
 # --- Helpers --------------------------------------------------------------
 
 def load_tasks_json(path: Path) -> List[Dict]:
     """Load tasks.json as RoadmapItems."""
-    tasks = load_json(path, default=[])
+    try:
+        tasks = shared_data.load_tasks_json_from(path, required=False)
+    except ValueError:
+        tasks = []
     
     items = []
     for task in tasks:
@@ -54,51 +64,31 @@ def parse_roadmap_md(path: Path) -> List[Dict]:
     """Extract roadmap items from ROADMAP.md structured section."""
     if not path.exists():
         return []
-    
-    with open(path) as f:
-        content = f.read()
-    
+
+    _, frontmatter_items = shared_data.load_roadmap_markdown_from(path)
     items = []
-    # Pattern: * **Title** — Description [status: X]
-    # Target: path(s)
-    # Depends on: dep1, dep2
-    
-    pattern = r'\* \*\*(.+?)\*\* — (.+?) \[status: (.+?)\]\s*Target: `(.+?)`'
-    matches = re.finditer(pattern, content, re.MULTILINE)
-    
-    for i, match in enumerate(matches):
-        title, description, status, targets = match.groups()
-        # Generate ID from title
-        item_id = f"ROADMAP-MD-{i+1}"
-        
-        files = [t.strip() for t in targets.split(',')]
-        
+
+    for entry in frontmatter_items:
+        item_id = entry.get("id")
+        if not item_id:
+            continue
         item = {
             "id": item_id,
-            "title": title.strip(),
-            "description": description.strip(),
-            "status": status.strip(),
-            "category": "Roadmap",
+            "title": entry.get("title", "").strip(),
+            "description": entry.get("description", "").strip(),
+            "status": entry.get("status", ""),
+            "category": entry.get("category", "Roadmap"),
             "source": "ROADMAP.md",
-            "files": files,
-            "tags": [],
-            "dependsOn": [],
-            "related": [],
-            "provenance": []
+            "files": entry.get("files", []),
+            "tags": entry.get("tags", []),
+            "dependsOn": entry.get("dependencies", entry.get("dependsOn", [])),
+            "related": entry.get("related", []),
+            "provenance": entry.get("provenance", []),
         }
-        
-        # Try to extract dependencies from next line
-        # Look for "Depends on:" pattern after this match
-        end_pos = match.end()
-        next_section = content[end_pos:end_pos + 500]
-        dep_match = re.search(r'Depends on: `(.+?)`', next_section)
-        if dep_match:
-            deps = [d.strip() for d in dep_match.group(1).split(' — src/agda/')]
-            item["dependsOn"] = [f"ROADMAP-MD-DEP-{d[:50]}" for d in deps if d]
-        
+        ensure_item_fields(item)
         ensure_provenance(item)
         items.append(item)
-    
+
     return items
 
 
@@ -110,98 +100,6 @@ def load_doclint_json(base_path: Path) -> List[Dict]:
         ensure_provenance(item)
     return items
 
-def parse_ingested_agda(base_path: Path) -> List[Dict]:
-    """Extract roadmap steps from IngestedRoadmaps/*.agda modules."""
-    items = []
-    ingested_dir = base_path / "src/agda/Plan/CIM/IngestedRoadmaps"
-    
-    if not ingested_dir.exists():
-        return items
-    
-    for agda_file in ingested_dir.glob("*.agda"):
-        with open(agda_file) as f:
-            content = f.read()
-        
-        # Pattern: roadmapGpXXX : RoadmapStep
-        # Extract: provenance, step, status, targetModule
-        # Capture string literals that may contain escaped quotes.
-        str_lit = r'"((?:[^"\\\\]|\\\\.)+)"'
-        pattern = (
-            rf'roadmap(Gp\d+) : RoadmapStep\s+roadmap\1 = record\s+\{{[^}}]+'
-            rf'provenance\s+=\s+{str_lit}[^}}]+'
-            rf'step\s+=\s+{str_lit}[^}}]+'
-            rf'status\s+=\s+{str_lit}[^}}]+'
-            rf'targetModule\s+=\s+{str_lit}'
-        )
-        
-        matches = re.finditer(pattern, content, re.DOTALL)
-
-        def unescape(s: str) -> str:
-            try:
-                return bytes(s, "utf-8").decode("unicode_escape")
-            except Exception:
-                return s
-
-        for match in matches:
-            gp_id, provenance, step, status, target = match.groups()
-            provenance = unescape(provenance.strip())
-            step = unescape(step.strip())
-            status = unescape(status.strip())
-            target = unescape(target.strip())
-
-            item = {
-                "id": f"GP-{gp_id}",
-                "title": provenance,
-                "description": step,
-                "status": status,
-                "category": "IngestedGP",
-                "source": f"Plan/CIM/IngestedRoadmaps/{agda_file.name}",
-                "files": [target],
-                "tags": ["GP"],
-                "dependsOn": [],
-                "related": [],
-                "provenance": []
-            }
-            ensure_provenance(item)
-            items.append(item)
-    
-    return items
-
-def parse_legacy_agda(base_path: Path) -> List[Dict]:
-    """Extract items from legacy roadmap-*.agda files."""
-    items = []
-    
-    # These files have various schemas, extract what we can
-    for agda_file in base_path.glob("roadmap-*.agda"):
-        # Simple extraction: look for record definitions or postulates
-        # This is best-effort since schemas vary
-        with open(agda_file) as f:
-            content = f.read()
-        
-        # Skip very large files (likely generated)
-        if len(content) > 100000:
-            continue
-        
-        # Extract record type names as potential items
-        type_pattern = r'data (\w+) : Set where'
-        for match in re.finditer(type_pattern, content):
-            type_name = match.group(1)
-            item = {
-                "id": f"LEGACY-{agda_file.stem}-{type_name}",
-                "title": f"Type: {type_name} from {agda_file.name}",
-                "status": "completed",  # Legacy items assumed done
-                "category": "LegacyAgda",
-                "source": agda_file.name,
-                "files": [str(agda_file)],
-                "tags": ["legacy", "agda"],
-                "dependsOn": [],
-                "related": [],
-                "provenance": []
-            }
-            ensure_provenance(item)
-            items.append(item)
-    
-    return items
 
 def merge_by_title(items: List[Dict]) -> List[Dict]:
     """Merge duplicates that share the same normalized title, preserving provenance.
@@ -305,7 +203,8 @@ def merge_all_sources(base_path: Path) -> List[Dict]:
     
     # Load from each source
     print("Loading tasks.json...")
-    all_items.extend(load_tasks_json(base_path / ".github/roadmap/tasks.json"))
+    tasks_path = shared_data.resolve_tasks_path(repo_root=base_path)
+    all_items.extend(load_tasks_json(tasks_path))
     
     print("Parsing ROADMAP.md...")
     all_items.extend(parse_roadmap_md(base_path / "ROADMAP.md"))

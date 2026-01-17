@@ -4,7 +4,7 @@ SPPF-Composable Onboarding Header
 
 Roadmap: src/agda/Plan/CIM/Utility.agda
 Architecture: ARCHITECTURE.md
-Onboarding: COPILOT_SYNERGY.md
+Onboarding: .github/copilot-instructions.md
 
 Constructive Proof Semantics:
 - This script participates in the composable SPPF model, mirroring Agda record patterns for protocol,
@@ -22,32 +22,24 @@ Usage:
 """
 from __future__ import annotations
 import argparse
-import re
 from pathlib import Path
 from typing import Any
 
-DECL_RE = re.compile(r'^\s*(?:record|data|postulate|module)\b.*$|^\s*constructor\s+[A-Za-z0-9_]+\b.*$', re.MULTILINE)
-NAME_CAPTURE_RE = re.compile(r'^\s*record\s+([A-Za-z0-9_]+)\b|^\s*constructor\s+([A-Za-z0-9_]+)\b')
+from scripts.shared.agda_declarations import scan_agda_declarations
 
 def index_paths(root: Path) -> list[dict[str, Any]]:
     files = sorted(root.rglob("*.agda"))
     entries: list[dict[str, Any]] = []
     for p in files:
-        text = p.read_text(encoding="utf-8", errors="ignore")
-        for i, line in enumerate(text.splitlines(), start=1):
-            if DECL_RE.match(line):
-                name: str | None = None
-                m = NAME_CAPTURE_RE.match(line)
-                if m:
-                    name = m.group(1) or m.group(2)
-                entries.append(
-                    {
-                        "file": str(p),
-                        "line": i,
-                        "text": line.strip(),
-                        "name": name,
-                    }
-                )
+        for decl in scan_agda_declarations(p):
+            entries.append(
+                {
+                    "file": decl.file,
+                    "line": decl.line,
+                    "text": decl.text,
+                    "name": decl.name,
+                }
+            )
     return entries
 
 def query(entries: list[dict[str, Any]], q: str) -> list[dict[str, Any]]:

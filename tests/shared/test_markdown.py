@@ -4,9 +4,15 @@
 import pytest
 import tempfile
 from pathlib import Path
+from scripts.shared import markdown as markdown_module
 from scripts.shared.markdown import (
-    FrontMatter, MarkdownParser, MarkdownBuilder,
+    FrontMatter,
+    MarkdownParser,
+    MarkdownBuilder,
     MarkdownValidator,
+    extract_bracketed_ids,
+    extract_markdown_section,
+    parse_yaml_fenced_blocks_fallback,
 )
 
 
@@ -467,3 +473,46 @@ Content.
         
         # At minimum, should parse without catastrophic errors
         assert isinstance(report, dict)
+
+
+def test_extract_bracketed_ids() -> None:
+    content = "Some [GP-1] and [PHASE-12] plus [OTHER-999]."
+    ids = extract_bracketed_ids(content)
+    assert ids == ["GP-1", "OTHER-999", "PHASE-12"]
+
+
+def test_parse_yaml_fenced_blocks_fallback(monkeypatch):
+    content = """\
+```yaml
+id: GP-3
+status: not-started
+tags:
+  - alpha
+```
+"""
+    monkeypatch.setattr(markdown_module, "shared_safe_load", None)
+    monkeypatch.setattr(markdown_module, "yaml", None)
+
+    items = parse_yaml_fenced_blocks_fallback(content)
+    assert items == [{"id": "GP-3", "status": "not-started", "tags": ["alpha"]}]
+
+
+def test_extract_markdown_section(tmp_path: Path) -> None:
+    content = """\
+## Target Section
+
+Content line one.
+Content line two.
+
+## Next Section
+
+Ignored content.
+"""
+    md_path = tmp_path / "sample.md"
+    md_path.write_text(content, encoding="utf-8")
+
+    section = extract_markdown_section(md_path, "Target")
+    assert section is not None
+    assert "Target Section" in section["heading"]
+    assert "Content line one" in section["text"]
+    assert "Ignored content" not in section["text"]

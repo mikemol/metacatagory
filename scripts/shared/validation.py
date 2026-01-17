@@ -436,7 +436,7 @@ def roadmap_item_validator(value: Any, path: str = "") -> ValidationResult:
             "id": string_validator(non_empty=True),
             "title": string_validator(non_empty=True),
             "description": string_validator(),
-            "status": one_of_validator(["not-started", "in-progress", "completed", "blocked", "deferred"]),
+            "status": one_of_validator(["not-started", "in-progress", "completed", "blocked", "deferred", "done"]),
             "category": string_validator(),
             "source": string_validator(),
             "files": list_validator(item_validator=string_validator()),
@@ -447,5 +447,41 @@ def roadmap_item_validator(value: Any, path: str = "") -> ValidationResult:
         },
         required_fields=["id", "title"],
         allow_extra=True
+    )
+    return schema(value, path)
+
+
+def ingested_metadata_validator(value: Any, path: str = "") -> ValidationResult:
+    """Validate ingested_metadata.json structure."""
+    file_schema = dict_validator(
+        field_validators={
+            "title": string_validator(non_empty=True),
+            "summary": string_validator(),
+            "keywords": list_validator(item_validator=string_validator()),
+            "insight": string_validator(),
+            "gap": string_validator(),
+            "fix": string_validator(),
+            "target_module": string_validator(non_empty=True),
+        },
+        required_fields=["title", "summary", "target_module"],
+        allow_extra=True,
+    )
+
+    def file_map_validator(value: Any, path: str = "") -> ValidationResult:
+        result = ValidationResult()
+        if not isinstance(value, dict):
+            result.add_error(path, "must be dict", value)
+            return result
+        for key, item in value.items():
+            item_path = f"{path}.{key}" if path else str(key)
+            result.merge(file_schema(item, item_path))
+        return result
+    schema = dict_validator(
+        field_validators={
+            "total_files": type_validator(int),
+            "files": file_map_validator,
+        },
+        required_fields=["total_files", "files"],
+        allow_extra=True,
     )
     return schema(value, path)

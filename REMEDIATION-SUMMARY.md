@@ -1,5 +1,8 @@
 # Integration Audit Remediation - Complete ✅
 
+Note: Historical snapshot of the remediation effort. For current status, see
+`docs/status/PROJECT-STATUS.md` and `docs/status/DEFERRED-TRACKING.md`.
+
 **Date:** 2026-01-04  
 **Source:** intake/integration-audit.md  
 **Status:** All prescribed remediation tasks completed
@@ -218,4 +221,3 @@ The "Functorial Disconnect" and "Metabolic Starvation" have been remediated.
 1. Install pytest: `pip install pytest` to enable `test-python` execution
 2. Monitor intake buffer: Run `make debt-check` regularly to track digestion rate
 3. Validate roundtrip: Verify `README.md` stays synchronized with `planning_index.json`
-

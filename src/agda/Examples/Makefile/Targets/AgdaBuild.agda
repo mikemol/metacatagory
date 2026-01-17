@@ -24,7 +24,7 @@ agdaTargets =
   ∷ generatorToFileTarget mutateCert "build/diagrams/dir.stamp" "Ensure build/diagrams exists" ("build/dir.stamp" ∷ [])
     ("mkdir -p build/diagrams && touch build/diagrams/dir.stamp" ∷ [])
   ∷ generatorToFileTarget mutateCert "build/diagrams/agda-deps-full.dot" "Generate dependency graph" ("build/diagrams/dir.stamp" ∷ [])
-    ("if [ -n \"$${SKIP_GHC_BACKEND}\" ]; then echo \"digraph G {}\" > build/diagrams/agda-deps-full.dot; else $(AGDA) --dependency-graph=build/diagrams/agda-deps-full.dot $(AGDA_FLAGS) src/agda/Tests/Index.agda 2>&1 | (grep -E \"(Checking|Error)\" || true) | awk 'NR<=20{print}'; fi" ∷ [])
+    ("mkdir -p build/diagrams && if [ -n \"$${SKIP_GHC_BACKEND}\" ]; then echo \"digraph G {}\" > build/diagrams/agda-deps-full.dot; else $(AGDA) --dependency-graph=build/diagrams/agda-deps-full.dot $(AGDA_FLAGS) src/agda/Tests/Index.agda 2>&1 | (grep -E \"(Checking|Error)\" || true) | awk 'NR<=20{print}'; fi" ∷ [])
   ∷ generatorToTarget mutateCert "roadmap-deps-graph" "Generate dependency graph" ("build/diagrams/agda-deps-full.dot" ∷ [])
     ("@echo \"agda dependency graph generated\"" ∷ [])
   ∷ generatorToFileTarget mutateCert "build/agda/Plan/CIM/DependencyGraphExport" "Compile DependencyGraphExport (MAlonzo + binary)" ("src/agda/Plan/CIM/DependencyGraphExport.agda" ∷ [])

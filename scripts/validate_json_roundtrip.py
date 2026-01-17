@@ -10,6 +10,7 @@ Showcases full integration of shared components:
 
 import json
 import sys
+import os
 from pathlib import Path
 from typing import Any, Dict, Tuple
 from concurrent.futures import ThreadPoolExecutor
@@ -163,6 +164,21 @@ class GenerateRoundtripReportPhase(Phase[Dict[str, Any], bool]):
             return False
 
 
+def _strict_flag() -> bool:
+    """Determine if strict structural comparison is enabled."""
+    val = os.environ.get("METACATAGORY_STRICT_ROUNDTRIP")
+    if val is None:
+        # Default to strict
+        return True
+    return val.lower() in ("1", "true", "yes")
+
+
+def _deep_strict_flag() -> bool:
+    """Determine if deep strict comparison (edge labels) is enabled."""
+    val = os.environ.get("METACATAGORY_DEEP_STRICT_ROUNDTRIP")
+    return isinstance(val, str) and val.lower() in ("1", "true", "yes")
+
+
 def validate_roundtrip(base_dir: Path | None = None) -> bool:
     """Validate decompose → recompose roundtrip (test-friendly)."""
 
@@ -233,6 +249,34 @@ def validate_roundtrip(base_dir: Path | None = None) -> bool:
     original_modules, original_edges = _count_modules_edges(original)
     recomposed_modules, recomposed_edges = _count_modules_edges(recomposed)
 
+    strict = _strict_flag()
+
+    if strict:
+        orig_mods, orig_edges_set, orig_labeled = _collect_modules_and_edges(original)
+        reco_mods, reco_edges_set, reco_labeled = _collect_modules_and_edges(recomposed)
+        deep = _deep_strict_flag()
+        edges_match = orig_edges_set == reco_edges_set
+        if deep:
+            edges_match = edges_match and orig_labeled == reco_labeled
+
+        if orig_mods == reco_mods and edges_match:
+            print("✅ JSON decomposition roundtrip PASSED (strict structural match)")
+            print(f"   Original:   {original_path}")
+            print(f"   Recomposed: {recomposed_path}")
+            print(f"   Modules:    {len(orig_mods)} ↔ {len(reco_mods)}")
+            if deep:
+                print(f"   Edges:      {len(orig_labeled)} ↔ {len(reco_labeled)} (labeled)")
+            else:
+                print(f"   Edges:      {len(orig_edges_set)} ↔ {len(reco_edges_set)}")
+            return True
+        print("❌ JSON roundtrip validation FAILED (strict structural mismatch)")
+        print(f"   Modules:    {len(orig_mods)} vs {len(reco_mods)} (set compare)")
+        if deep:
+            print(f"   Edges:      {len(orig_labeled)} vs {len(reco_labeled)} (labeled set compare)")
+        else:
+            print(f"   Edges:      {len(orig_edges_set)} vs {len(reco_edges_set)} (set compare)")
+        return False
+
     if original_modules == recomposed_modules and original_edges == recomposed_edges:
         print("✅ JSON decomposition roundtrip PASSED (module count preserved)")
         print(f"   Original:   {original_path}")
@@ -271,6 +315,50 @@ def _count_modules_edges(data: Any) -> Tuple[int, int]:
     return modules, edges
 
 
+def _collect_modules_and_edges(data: Any) -> Tuple[set[str], set[tuple[str, str]], set[tuple[str, str]]]:
+    """Collect module names and edge tuples (names + (name,label)) for structural comparison."""
+    modules: set[str] = set()
+    edges: set[tuple[str, str]] = set()
+    labeled_edges: set[tuple[str, str, str]] = set()
+
+    if isinstance(data, dict):
+        if isinstance(data.get("nodes"), list):
+            for node in data.get("nodes", []):
+                name = node.get("module") or node.get("id")
+                if isinstance(name, str):
+                    modules.add(name)
+                for imported in node.get("imports", []):
+                    if isinstance(imported, str) and isinstance(name, str):
+                        edges.add((name, imported))
+        elif "modules" in data:
+            mods = data.get("modules")
+            if isinstance(mods, dict):
+                modules.update(m for m in mods.keys() if isinstance(m, str))
+            elif isinstance(mods, list):
+                for m in mods:
+                    if isinstance(m, dict):
+                        name = m.get("name") or m.get("id")
+                        if isinstance(name, str):
+                            modules.add(name)
+                    elif isinstance(m, str):
+                        modules.add(m)
+        if isinstance(data.get("edges"), list):
+            for e in data.get("edges", []):
+                if isinstance(e, dict):
+                    a = e.get("from")
+                    b = e.get("to")
+                    lbl = e.get("label") or e.get("name") or e.get("id") or e.get("weight")
+                    if isinstance(a, str) and isinstance(b, str):
+                        edges.add((a, b))
+                        if isinstance(lbl, str):
+                            labeled_edges.add((a, b, lbl))
+    elif isinstance(data, list):
+        # Planning list schema: just count items, no edges
+        modules.update(str(i) for i in range(len(data)))
+
+    return modules, edges, labeled_edges
+
+
 def validate_roundtrip_with_paths(original_path: Path, recomposed_path: Path) -> bool:
     """Validate roundtrip given explicit paths (CLI helper)."""
 
@@ -300,6 +388,33 @@ def validate_roundtrip_with_paths(original_path: Path, recomposed_path: Path) ->
 
     original_modules, original_edges = _count_modules_edges(original)
     recomposed_modules, recomposed_edges = _count_modules_edges(recomposed)
+
+    strict = _strict_flag()
+    if strict:
+        orig_mods, orig_edges_set, orig_labeled = _collect_modules_and_edges(original)
+        reco_mods, reco_edges_set, reco_labeled = _collect_modules_and_edges(recomposed)
+        deep = _deep_strict_flag()
+        edges_match = orig_edges_set == reco_edges_set
+        if deep:
+            edges_match = edges_match and orig_labeled == reco_labeled
+
+        if orig_mods == reco_mods and edges_match:
+            print("✅ JSON decomposition roundtrip PASSED (strict structural match)")
+            print(f"   Original:   {original_path}")
+            print(f"   Recomposed: {recomposed_path}")
+            print(f"   Modules:    {len(orig_mods)} ↔ {len(reco_mods)}")
+            if deep:
+                print(f"   Edges:      {len(orig_labeled)} ↔ {len(reco_labeled)} (labeled)")
+            else:
+                print(f"   Edges:      {len(orig_edges_set)} ↔ {len(reco_edges_set)}")
+            return True
+        print("❌ JSON roundtrip validation FAILED (strict structural mismatch)")
+        print(f"   Original:   {len(orig_mods)} modules, {len(orig_edges_set)} edges ({original_path})")
+        if deep:
+            print(f"   Recomposed: {len(reco_mods)} modules, {len(reco_labeled)} edges (labeled) ({recomposed_path})")
+        else:
+            print(f"   Recomposed: {len(reco_mods)} modules, {len(reco_edges_set)} edges ({recomposed_path})")
+        return False
 
     if original_modules == recomposed_modules and original_edges == recomposed_edges:
         print("✅ JSON decomposition roundtrip PASSED (module count preserved)")

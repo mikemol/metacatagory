@@ -11,6 +11,7 @@ from datetime import datetime
 from typing import Dict, List, Optional
 from pathlib import Path
 
+from scripts.shared.io import save_json
 class ProgressTracker:
     """Track progress on roadmap steps."""
     
@@ -41,9 +42,7 @@ class ProgressTracker:
     def _save_state(self):
         """Save progress state to file."""
         self.state['updated'] = datetime.now().isoformat()
-        os.makedirs(os.path.dirname(self.state_path), exist_ok=True)
-        with open(self.state_path, 'w') as f:
-            json.dump(self.state, f, indent=2)
+        save_json(self.state_path, self.state)
     
     def update_step(self, gp_id: str, status: str, notes: str = '', 
                    subtasks_completed: int = 0, subtasks_total: int = 5):
@@ -116,9 +115,7 @@ class ProgressTracker:
             }
         }
         
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
-        with open(output_path, 'w') as f:
-            json.dump(report, f, indent=2)
+        save_json(output_path, report)
         
         return report
 

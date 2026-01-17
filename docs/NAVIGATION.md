@@ -10,15 +10,16 @@ This document provides a high-level map of the repository's documentation and co
 
 - CONTRIBUTING.md: Contribution guidelines, onboarding, coding standards, and PR process.
 
-- DEFERRED-TRACKING.md: Technical debt and deferred items tracking.
+- docs/status/DEFERRED-TRACKING.md: Technical debt and deferred items tracking.
 
-- COPILOT_SYNERGY.md: AI and Copilot integration notes.
+- .github/copilot-instructions.md: AI and Copilot integration notes.
 
 - CREDITS.md: Contributors and acknowledgments.
 
-- ingest.md: Data ingestion notes.
+- intake/ingest.md: Data ingestion notes.
 
-- testing.md: Testing philosophy and details.
+- TESTING.md: Testing philosophy and CI parity guidance.
+- intake/testing.md: Intake-specific testing notes and experiments.
 
 ## Source Atlas & Manuals
 
@@ -50,7 +51,7 @@ This document provides a high-level map of the repository's documentation and co
 
 - For onboarding, start with src/agda/Chapter1/README.md and CONTRIBUTING.md.
 
-- For technical debt and deferred items, see DEFERRED-TRACKING.md and generated reports.
+- For technical debt and deferred items, see docs/status/DEFERRED-TRACKING.md and generated reports.
 
 - For roadmap and planning, see ROADMAP.md.
 

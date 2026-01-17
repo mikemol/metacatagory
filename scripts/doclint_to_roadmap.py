@@ -11,6 +11,8 @@ import os
 from pathlib import Path
 import sys
 
+from scripts.shared.io import save_json, load_json
+
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -47,7 +49,7 @@ def main() -> int:
         print(f"docs-lint report not found at {REPORT}. Run lint first.")
         return 1
 
-    data = json.loads(REPORT.read_text())
+    data = load_json(REPORT)
     items = []
 
     for path in data.get("missing_module", []):
@@ -56,8 +58,7 @@ def main() -> int:
     for path, lines in data.get("missing_decls", {}).items():
         items.append(make_item(path, f"DeclDocs@{','.join(map(str, lines))}"))
 
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(items, indent=2))
+    save_json(OUT, items)
     print(f"Wrote {len(items)} doc-lint roadmap items to {OUT}")
     return 0
 

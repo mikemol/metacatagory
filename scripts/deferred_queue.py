@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import List
 
+from scripts.shared.io import save_json
+
 BADGE_DIR = Path(".github/badges")
 OUTPUT_PATH = Path(".github/deferred-queue.json")
 
@@ -60,9 +62,7 @@ def main() -> None:
         raise SystemExit(f"Missing badge data at {source}")
 
     queue = sorted_queue(load_deferred_files(source), args.limit)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    with args.output.open("w", encoding="utf-8") as fh:
-        json.dump({"queue": queue}, fh, indent=2)
+    save_json(args.output, {"queue": queue})
     print(f"Wrote queue snapshot to {args.output}")
 
 

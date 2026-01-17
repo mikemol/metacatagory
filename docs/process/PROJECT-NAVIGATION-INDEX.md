@@ -1,7 +1,7 @@
 # Comprehensive Project Navigation Index
 
 **Date:** 2026-01-04  
-**Status:** Phase 3 Complete, Production-Ready  
+**Status:** Phase 2–3 complete, Phase 4 in progress  
 **Architecture:** Homotopical Contract with Natural Transformations
 
 ---
@@ -10,7 +10,7 @@
 
 ### For New Contributors
 
-1. **Read first:** [ARCHITECTURE.md](../../ARCHITECTURE.md)
+1. **Read first:** [ARCHITECTURE.md](../architecture/ARCHITECTURE.md)
    - Project architecture and patterns
    - Module organization
    - Design principles
@@ -20,29 +20,19 @@
    - Milestones and dependencies
    - Current status
 
-3. **Get hands-on:** Run the scripts
+3. **Get hands-on:** Run the Makefile targets
    ```bash
-   # Phase 3 validation
-   bash scripts/phase3-validate.sh
-   
-   # Backend benchmarking
-   bash scripts/phase3-benchmark.sh
-   
-   # Build system integration
-   bash scripts/phase3-integration.sh
+   mise install
+   mise run dev-setup
+   MUTATE_LEVEL=repo make regen-makefile
+   MUTATE_LEVEL=repo make check
    ```
 
-### For Production Deployment
+### For CI and Reporting
 
-1. **Review architecture:** [PHASE-3-COMPLETE.md](#phase-3-production-integration)
-2. **Select backend:** Concrete (validation) | FFI (production) | Mock (testing)
-3. **Extract and compile:**
-   ```bash
-   make phase3-extract
-   make phase3-compile
-   make phase3-validate
-   ```
-4. **Deploy:** `json-transform` binary ready for production
+1. **Review CI pipeline:** `.github/workflows/ci.yml`
+2. **Report inventory:** `docs/process/BUILD-TOPOLOGY.md`
+3. **Project status:** `docs/status/PROJECT-STATUS.md`
 
 ---
 
@@ -336,7 +326,7 @@ docs/
 │       • Face specification
 │       • Solver algorithms
 │
-├── ARCHITECTURE.md
+├── docs/architecture/ARCHITECTURE.md
 │   Overall project architecture
 │   • SPPF modeling
 │   • Compositional patterns
@@ -465,7 +455,7 @@ make phase3-all
 
 ### Related Documentation
 
-- [ARCHITECTURE.md](../../ARCHITECTURE.md) - Project architecture
+- [ARCHITECTURE.md](../architecture/ARCHITECTURE.md) - Project architecture
 - [ROADMAP.md](../../ROADMAP.md) - Project roadmap
 - [JSON-HOMOTOPY-CONTRACT.md](./JSON-HOMOTOPY-CONTRACT.md) - Theoretical foundation
 - [JSON-ADEQUACY.md](./JSON-ADEQUACY.md) - Adequacy framework
@@ -524,7 +514,7 @@ less docs/process/PHASE-3-COMPLETE.md
 
 For questions about:
 
-- **Architecture:** See [ARCHITECTURE.md](../../ARCHITECTURE.md)
+- **Architecture:** See [ARCHITECTURE.md](../architecture/ARCHITECTURE.md)
 - **Phase 2:** See [PHASE-2-FINAL-SUMMARY.md](./PHASE-2-FINAL-SUMMARY.md)
 - **Phase 3:** See [PHASE-3-COMPLETE.md](./PHASE-3-COMPLETE.md)
 - **Homotopical Contracts:** See [JSON-HOMOTOPY-CONTRACT.md](./JSON-HOMOTOPY-CONTRACT.md)

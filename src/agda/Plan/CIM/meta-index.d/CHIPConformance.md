@@ -7,7 +7,8 @@
 ## Key elements
 
 - `GradedVectorSpace` record (dimensions, `EmergentMetric`).
-- Helpers: `mapGVS`, `composeBraids`, `makeSPPFNode`.
+- Helpers: `mapGVS`, `sumMetric`, `composeBraids`, `makeSPPFNode`.
+- `composeBraids` composes braid inheritance and aggregates metrics.
 - Uses PhaseAmbiguity, TransformationSystem, BraidedSPPF utilities.
 
 ## Dependencies

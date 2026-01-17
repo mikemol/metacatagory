@@ -1,0 +1,7 @@
+name: Act Noop
+description: Local act placeholder for GitHub-hosted actions.
+runs:
+  using: composite
+  steps:
+    - run: echo "act noop action"
+      shell: bash

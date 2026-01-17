@@ -11,7 +11,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Generic, Optional, Set, Tuple, TypeVar, Callable
 from concurrent.futures import ThreadPoolExecutor
-import json
 import re
 
 from .pipelines import Phase, PhaseResult, PhaseStatus, PipelineContext
@@ -19,6 +18,8 @@ from .logging import StructuredLogger
 from .errors import ValidationError
 from .recovery_pipeline import RecoveryPipeline, RecoveryStrategy
 from .parallel import get_parallel_settings
+from .io import load_json
+from scripts import shared_data
 
 A = TypeVar('A')
 B = TypeVar('B')
@@ -42,8 +43,7 @@ class ReadJSONPhase(Phase[Path, Any]):
         super().__init__(name)
 
     def transform(self, input_data: Path, context: Dict[str, Any]) -> Any:
-        data = json.loads(Path(input_data).read_text(encoding='utf-8'))
-        return data
+        return load_json(input_data)
 
 
 class ReadMarkdownRoadmapTitlesPhase(Phase[Path, Set[str]]):
@@ -54,8 +54,15 @@ class ReadMarkdownRoadmapTitlesPhase(Phase[Path, Set[str]]):
         self._pattern = re.compile(r'[-*]\s+\*\*(.+?)\*\*')
 
     def transform(self, input_data: Path, context: Dict[str, Any]) -> Set[str]:
-        content = Path(input_data).read_text(encoding='utf-8')
-        titles = {m.group(1).strip() for m in self._pattern.finditer(content)}
+        md_path = Path(input_data)
+        _, frontmatter = shared_data.load_roadmap_markdown_from(md_path)
+        titles = {
+            str(item.get("title", "")).strip()
+            for item in frontmatter
+            if str(item.get("title", "")).strip()
+        }
+        content = md_path.read_text(encoding='utf-8')
+        titles |= {m.group(1).strip() for m in self._pattern.finditer(content)}
         return titles
 
 
@@ -120,7 +127,11 @@ def run_validate_roadmap_md(base_dir: Path, logger: Optional[StructuredLogger] =
     def extract_canonical_titles(data: Any, ctx: Dict[str, Any]) -> Set[str]:
         return {str(item.get("title", "")).strip() for item in (data or [])}
 
-    pipeline.add_phase(ReadJSONPhase())
+    pipeline.add_phase(CallablePhase(
+        "read_planning_index",
+        lambda path, ctx: shared_data.load_planning_index_from(path),
+        description="Load planning index with shared normalization",
+    ))
     pipeline.add_phase(CallablePhase("extract_canonical_titles", extract_canonical_titles))
     pipeline.add_phase(StoreInContextPhase("canonical_titles"))
 
@@ -133,7 +144,7 @@ def run_validate_roadmap_md(base_dir: Path, logger: Optional[StructuredLogger] =
 
     context: Dict[str, Any] = {}
     # Seed inputs: planning_index.json then ROADMAP.md then None
-    planning_path = base_dir / "data" / "planning_index.json"
+    planning_path = shared_data.resolve_planning_path(repo_root=base_dir)
     roadmap_path = base_dir / "ROADMAP.md"
 
     parallel, workers = get_parallel_settings()

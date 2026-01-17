@@ -65,7 +65,7 @@ We explore the system through three foundational Notions derived from the audit.
 
 * **A.2.1 The Stale Artifact Risk (Operational):** Generated files (`deferred-items.md`) are snapshots of the past. Acting on them without re-running the projection leads to errors.
 * *A.2.1.1 The Merge Conflict Trap:* Two branches updating JSON might produce compatible JSON but conflicting generated Markdown.
-* *A.2.1.2 The CI Dependency:* Truth is now a function of the Continuous Integration pipeline (`.github/workflows/roadmap-sync.yml`).
+* *A.2.1.2 The CI Dependency:* Truth is now a function of the Continuous Integration pipeline (`.github/workflows/ci.yml`).
 * *A.2.1.3 The Local Blindness:* A developer without the build tools installed cannot see the current state of the project.
 
 

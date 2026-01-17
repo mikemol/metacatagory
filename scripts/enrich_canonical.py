@@ -19,6 +19,7 @@ with additional fields:
 """
 
 import json
+from json import JSONDecodeError
 import re
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -30,7 +31,15 @@ REPO_ROOT = Path(__file__).parent.parent
 CANONICAL_JSON = REPO_ROOT / "data" / "planning_index.json"
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
 
-from shared.parallel import get_parallel_settings
+import sys
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.shared.parallel import get_parallel_settings
+from scripts.shared.io import save_json
+from scripts.shared.dot import parse_dependency_graph
+from scripts.shared.markdown import extract_markdown_section as shared_extract_markdown_section
+from scripts import shared_data
 
 # Controlled tag vocabulary
 TAG_VOCAB = {
@@ -58,45 +67,7 @@ def extract_markdown_section(md_path: Path, heading_pattern: str) -> Optional[Di
     Find heading matching pattern and extract following content until next heading.
     Returns {heading, text, line_start}.
     """
-    if not md_path.exists():
-        return None
-    
-    with open(md_path, "r", encoding="utf-8") as f:
-        lines = f.readlines()
-    
-    heading = None
-    heading_line = 0
-    content_lines = []
-    in_section = False
-    
-    for i, line in enumerate(lines, start=1):
-        # Check for heading match
-        if re.match(r"^#+\s+", line):
-            if heading_pattern.lower() in line.lower():
-                heading = line.strip()
-                heading_line = i
-                in_section = True
-                continue
-            elif in_section:
-                # Hit next heading at same or higher level, stop
-                break
-        
-        # Collect content lines after heading
-        if in_section:
-            stripped = line.strip()
-            if stripped and not stripped.startswith("```"):
-                content_lines.append(stripped)
-            # Allow multiple paragraphs separated by blank lines
-    
-    if heading and content_lines:
-        # Join lines, preserving paragraph breaks
-        text = " ".join(content_lines)
-        return {
-            "heading": heading,
-            "text": text,
-            "line_start": heading_line
-        }
-    return None
+    return shared_extract_markdown_section(md_path, heading_pattern)
 
 def extract_evidence_from_markdown(item: Dict) -> List[Dict[str, str]]:
     """
@@ -206,34 +177,7 @@ def parse_dot_dependency_graph(dot_path: Path) -> Dict[str, List[str]]:
     Parse Agda --dependency-graph DOT file.
     Returns dict mapping module name to list of modules it depends on.
     """
-    if not dot_path.exists():
-        return {}
-    
-    with open(dot_path, "r", encoding="utf-8") as f:
-        content = f.read()
-    
-    # Build node ID to module name mapping
-    node_labels = {}
-    for match in re.finditer(r'm(\d+)\[label="([^"]+)"\]', content):
-        node_id = f"m{match.group(1)}"
-        module_name = match.group(2)
-        node_labels[node_id] = module_name
-    
-    # Build dependency graph (edges)
-    dependencies: Dict[str, List[str]] = {}
-    for match in re.finditer(r'm(\d+)\s*->\s*m(\d+)', content):
-        src_id = f"m{match.group(1)}"
-        dst_id = f"m{match.group(2)}"
-        
-        src_module = node_labels.get(src_id)
-        dst_module = node_labels.get(dst_id)
-        
-        if src_module and dst_module:
-            # Filter out Agda builtins/stdlib
-            if not dst_module.startswith(("Agda.", "Data.", "Relation.", "Function.")):
-                dependencies.setdefault(src_module, []).append(dst_module)
-    
-    return dependencies
+    return parse_dependency_graph(dot_path)
 
 def build_module_to_tasks_map(items: List[Dict]) -> Dict[str, List[str]]:
     """
@@ -578,12 +522,11 @@ def enrich_canonical() -> None:
     """
     Main entry point: read canonical, enrich, write enriched.
     """
-    if not CANONICAL_JSON.exists():
-        print(f"Error: {CANONICAL_JSON} not found. Run 'make roadmap-merge' first.")
+    try:
+        canonical = shared_data.load_planning_index(repo_root=REPO_ROOT)
+    except (FileNotFoundError, ValueError, JSONDecodeError) as exc:
+        print(f"Error: {exc}. Run 'make roadmap-merge' first.")
         return
-    
-    with open(CANONICAL_JSON, "r", encoding="utf-8") as f:
-        canonical = json.load(f)
     
     print(f"Enriching {len(canonical)} items...")
     
@@ -615,9 +558,7 @@ def enrich_canonical() -> None:
         enriched = [enrich_item(item, module_to_tasks, dep_graph) for item in canonical]
     
     # Write enriched output
-    ENRICHED_JSON.parent.mkdir(parents=True, exist_ok=True)
-    with open(ENRICHED_JSON, "w", encoding="utf-8") as f:
-        json.dump(enriched, f, indent=4, ensure_ascii=False)
+    save_json(ENRICHED_JSON, enriched, indent=4, ensure_ascii=False)
     
     # Count suggested dependencies
     total_suggested = sum(len(item.get("suggestedDependencies", [])) for item in enriched)

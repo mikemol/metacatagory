@@ -12,26 +12,25 @@ from scripts.makefile_graph import (
     parse_phony_targets,
     reachable_nodes,
 )
+from scripts.shared.io import save_json, load_json
 
 DEFAULT_ROOTS: List[str] = ["check", "regen-makefile"]
 FAILURES_PATH = Path("build/reports/last_failures.json")
+EXECUTION_PRIORITY: List[str] = ["regen-makefile"]
 
 
 def load_failures() -> list[str]:
     if not FAILURES_PATH.exists():
         return []
     try:
-        data = json.loads(FAILURES_PATH.read_text(encoding="utf-8"))
+        data = load_json(FAILURES_PATH)
     except json.JSONDecodeError:
         return []
     return [item for item in data if isinstance(item, str)]
 
 
 def save_failures(targets: list[str]) -> None:
-    FAILURES_PATH.parent.mkdir(parents=True, exist_ok=True)
-    FAILURES_PATH.write_text(
-        json.dumps(targets, indent=2) + "\n", encoding="utf-8"
-    )
+    save_json(FAILURES_PATH, targets)
 
 
 def clear_failures() -> None:
@@ -57,6 +56,9 @@ def run_targets(targets: Iterable[str], prioritize_failures: bool = True) -> Non
         if item.strip()
     }
     target_list = list(targets)
+    if EXECUTION_PRIORITY:
+        prioritized = [t for t in EXECUTION_PRIORITY if t in target_list]
+        target_list = prioritized + [t for t in target_list if t not in prioritized]
     if prioritize_failures:
         failures = load_failures()
         failed_first = [t for t in failures if t in target_list]

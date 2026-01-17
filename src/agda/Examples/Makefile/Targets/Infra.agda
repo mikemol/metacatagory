@@ -17,7 +17,7 @@ infraTargets =
       ("mkdir -p docs/status && touch docs/status/dir.stamp" ∷ [])
   ∷ validatorToTarget "intake-lint" "Lint intake files specifically" "build/reports/intake-md-lint.txt"
     []
-    ("if [ \"$${MUTATE_OK:-}\" = \"1\" ] && [ \"$${METACATAGORY_REPORT_MODE:-stdout}\" = \"write\" ]; then mkdir -p build/reports && printf \"intake lint suppressed (too much legacy noise)\\n\" > build/reports/intake-md-lint.txt; else printf \"intake lint suppressed (too much legacy noise)\\n\"; fi" ∷ [])
+    ("if [ \"$${METACATAGORY_REPORT_MODE:-stdout}\" = \"write\" ]; then mkdir -p build/reports && printf \"intake lint suppressed (too much legacy noise)\\n\" > build/reports/intake-md-lint.txt; else printf \"intake lint suppressed (too much legacy noise)\\n\"; fi" ∷ [])
   ∷ generatorToFileTarget mutateCert "build/canonical_roadmap.json" "Generate canonical roadmap JSON from intake" ([]) 
       ("python3 scripts/intake_scan.py" ∷ [])
   ∷ generatorToTarget mutateCert "intake-scan" "Scan intake directory for new files" ("data/planning_index.json" ∷ [])
@@ -25,8 +25,13 @@ infraTargets =
   ∷ validatorToTarget "makefile-validate" "Validate Makefile consistency" "build/reports/makefile-validate.txt"
       []
       ("python3 scripts/validate_makefile_docs.py" ∷ [])
+  ∷ generatorToTarget mutateCert "check-makefile-generated" "Fail if Makefile.generated is stale"
+      ([])
+      ("if [ ! -f Makefile.generated ]; then echo \"Missing Makefile.generated; run make regen-makefile\"; exit 1; fi" ∷
+       "if ! cmp -s Makefile.generated Makefile; then echo \"Makefile.generated is stale; run make regen-makefile\"; exit 1; fi" ∷
+       [])
   ∷ environmentSetupToTarget mutateCert "node-deps" "Install Node.js dependencies"
-      ("npm install" ∷ [])
+      ("if [ -f package-lock.json ]; then npm ci; else npm install; fi" ∷ [])
   ∷ generatorToFileTarget mutateCert "build/agda/TechnicalDebt/DeferredItemsOrchestrationFFI" "Compile deferred items scanner (MAlonzo + binary)"
       ("build/dir.stamp" ∷ "src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda" ∷ [])
       ("$(AGDA_COMPILE) src/agda/TechnicalDebt/DeferredItemsOrchestrationFFI.agda" ∷ [])
@@ -35,23 +40,19 @@ infraTargets =
       ("@echo \"deferred items output dirs ready\"" ∷ [])
   ∷ generatorToTarget mutateCert "deferred-items" "Scan for TODOs and FIXMEs (Agda FFI binary)"
       ("build/agda/TechnicalDebt/DeferredItemsOrchestrationFFI" ∷ "deferred-items-dirs" ∷ [])
-      ("$(AGDA_COMPILE_DIR)/DeferredItemsOrchestrationFFI" ∷ [])
+      ("bash scripts/run_deferred_items.sh" ∷ [])
   ∷ generatorToTarget mutateCert "act-list" "List available GitHub Actions jobs (act)" ([])
       ("scripts/run_act.sh --no-cache-server -l" ∷ [])
   ∷ generatorToTarget mutateCert "act-ci" "Run CI workflow locally via act" ([])
       ("scripts/run_act.sh --no-cache-server -W .github/workflows/ci.yml" ∷ [])
-  ∷ generatorToTarget mutateCert "act-lint" "Run markdown linting workflow locally via act" ([])
-      ("scripts/run_act.sh --no-cache-server -W .github/workflows/markdown-lint.yml" ∷ [])
-  ∷ generatorToTarget mutateCert "act-markdown-fix" "Run markdown auto-fix workflow locally via act" ([])
-      ("scripts/run_act.sh --no-cache-server -W .github/workflows/markdown-auto-fix.yml" ∷ [])
-  ∷ generatorToTarget mutateCert "act-makefile-validate" "Run makefile validation workflow locally via act" ([])
-      ("scripts/run_act.sh --no-cache-server -W .github/workflows/makefile-validate.yml" ∷ [])
-  ∷ generatorToTarget mutateCert "act-roadmap-sync" "Run roadmap sync workflow locally via act" ([])
-      ("scripts/run_act.sh --no-cache-server -W .github/workflows/roadmap-sync.yml" ∷ [])
-  ∷ generatorToTarget mutateCert "act-deferred" "Run deferred items workflow locally via act" ([])
-      ("scripts/run_act.sh --no-cache-server -W .github/workflows/deferred-items.yml" ∷ [])
-  ∷ generatorToTarget mutateCert "act-badges" "Run badge update workflow locally via act" ([])
-      ("scripts/run_act.sh --no-cache-server -W .github/workflows/badge-update.yml" ∷ [])
+  ∷ generatorToTarget mutateCert "act-lint" "Run docs checks job locally via act" ([])
+      ("scripts/run_act.sh --no-cache-server -W .github/workflows/ci.yml -j docs-checks" ∷ [])
+  ∷ generatorToTarget mutateCert "act-makefile-validate" "Run Agda exports job locally via act" ([])
+      ("scripts/run_act.sh --no-cache-server -W .github/workflows/ci.yml -j agda-exports" ∷ [])
+  ∷ generatorToTarget mutateCert "act-roadmap-sync" "Run roadmap/JSON job locally via act" ([])
+      ("scripts/run_act.sh --no-cache-server -W .github/workflows/ci.yml -j roadmap-json-checks" ∷ [])
+  ∷ generatorToTarget mutateCert "act-deferred" "Run Python/debt job locally via act" ([])
+      ("scripts/run_act.sh --no-cache-server -W .github/workflows/ci.yml -j python-checks" ∷ [])
   ∷ generatorToTarget mutateCert "act-all" "Run all workflows locally via act" ([])
       ("scripts/run_act.sh --no-cache-server" ∷ [])
   ∷ []

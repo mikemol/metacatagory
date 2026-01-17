@@ -120,8 +120,8 @@ module GroupsViaCategory = Algebra.Groups.BasicWithTheorems
 
 **Implementation**:
 
-* [Algebra/Rings/Theorems/Classical.agda](src/agda/Algebra/Rings/Theorems/Classical.agda) (18 theorems)
-* [Algebra/Rings/BasicWithTheorems.agda](src/agda/Algebra/Rings/BasicWithTheorems.agda) (reference)
+* [Algebra/Rings/Theorems/Classical.agda](../../src/agda/Algebra/Rings/Theorems/Classical.agda) (18 theorems)
+* [Algebra/Rings/BasicWithTheorems.agda](../../src/agda/Algebra/Rings/BasicWithTheorems.agda) (reference)
 
 **Theorems Centralized**:
 
@@ -148,8 +148,8 @@ module GroupsViaCategory = Algebra.Groups.BasicWithTheorems
 
 **Implementation**:
 
-* [Algebra/Fields/Theorems/Classical.agda](src/agda/Algebra/Fields/Theorems/Classical.agda) (6 theorems)
-* [Algebra/Fields/BasicWithTheorems.agda](src/agda/Algebra/Fields/BasicWithTheorems.agda) (reference)
+* [Algebra/Fields/Theorems/Classical.agda](../../src/agda/Algebra/Fields/Theorems/Classical.agda) (6 theorems)
+* [Algebra/Fields/BasicWithTheorems.agda](../../src/agda/Algebra/Fields/BasicWithTheorems.agda) (reference)
 
 **Theorems Centralized**:
 
@@ -165,8 +165,8 @@ module GroupsViaCategory = Algebra.Groups.BasicWithTheorems
 
 **Implementation**:
 
-* [Algebra/Modules/Theorems/Classical.agda](src/agda/Algebra/Modules/Theorems/Classical.agda) (11 theorems)
-* [Algebra/Modules/BasicWithTheorems.agda](src/agda/Algebra/Modules/BasicWithTheorems.agda) (reference)
+* [Algebra/Modules/Theorems/Classical.agda](../../src/agda/Algebra/Modules/Theorems/Classical.agda) (11 theorems)
+* [Algebra/Modules/BasicWithTheorems.agda](../../src/agda/Algebra/Modules/BasicWithTheorems.agda) (reference)
 
 **Theorems Centralized**:
 

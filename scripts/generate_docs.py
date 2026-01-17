@@ -10,19 +10,16 @@ import sys
 from pathlib import Path
 from json import JSONDecodeError
 
+from scripts import shared_data
+
 def load_planning_index():
     """Load roadmap data from data/planning_index.json"""
     workspace = Path(__file__).parent.parent
-    build_planning = workspace / "build" / "planning_index.json"
-    data_planning = workspace / "data" / "planning_index.json"
-    planning_index = build_planning if build_planning.exists() else data_planning
-    
-    if not planning_index.exists():
-        print(f"Warning: {planning_index} not found, using empty roadmap list", file=sys.stderr)
+    try:
+        items = shared_data.load_planning_index(repo_root=workspace)
+    except (FileNotFoundError, ValueError, JSONDecodeError) as exc:
+        print(f"Warning: {exc} not found, using empty roadmap list", file=sys.stderr)
         return []
-    
-    with open(planning_index, 'r') as f:
-        items = json.load(f)
     
     # Filter for key roadmaps (those with specific categories or tags)
     # Prioritize: in-progress, then done, then not-started
@@ -137,7 +134,7 @@ internal planning machinery.
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Detailed architectural documentation and design patterns
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines and coding standards
 - **[ROADMAP.md](ROADMAP.md)** - Development roadmap and phase timeline
-- **[COPILOT_SYNERGY.md](COPILOT_SYNERGY.md)** - LLM integration guidance
+- **[.github/copilot-instructions.md](.github/copilot-instructions.md)** - LLM integration guidance
 
 ## License
 
@@ -198,7 +195,7 @@ def generate_contributing():
 
 ## Questions?
 
-- Check [COPILOT_SYNERGY.md](COPILOT_SYNERGY.md) for LLM integration and context guidance
+- Check [.github/copilot-instructions.md](.github/copilot-instructions.md) for LLM integration and context guidance
 - Review examples in [src/agda/Examples/](src/agda/Examples/) for patterns and idioms
 - Consult roadmap nodes in [src/agda/Plan/CIM/Utility.agda](src/agda/Plan/CIM/Utility.agda) for integration context
 """
@@ -253,7 +250,7 @@ See [ROADMAP.md](ROADMAP.md) for the complete development timeline.
 
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Design principles and categorical patterns
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute
-- **[COPILOT_SYNERGY.md](COPILOT_SYNERGY.md)** - LLM integration guidance
+- **[.github/copilot-instructions.md](.github/copilot-instructions.md)** - LLM integration guidance
 - **[ROADMAP.md](ROADMAP.md)** - Development phases and timelines
 
 ## Building and Testing
@@ -297,7 +294,7 @@ Development is guided by RoadmapStep records that encode:
 1. **Check examples** in `src/agda/Examples/` and `src/agda/Tests/`
 2. **Review similar code** - Look at related modules for patterns
 3. **Read roadmap nodes** - RoadmapStep records document architectural decisions
-4. **Consult COPILOT_SYNERGY.md** - For integration with LLM systems
+4. **Consult .github/copilot-instructions.md** - For integration with LLM systems
 """
 
 def main():

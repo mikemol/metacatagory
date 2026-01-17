@@ -37,6 +37,20 @@ def test_load_planning_index_present(tmp_path):
     mod.__file__ = ORIGINAL_FILE
 
 
+def test_load_planning_index_invalid_json(tmp_path, capsys):
+    mod.__file__ = str(tmp_path / "scripts" / "generate_docs.py")
+    plan = tmp_path / "data" / "planning_index.json"
+    plan.parent.mkdir(parents=True, exist_ok=True)
+    plan.write_text("oops", encoding="utf-8")
+
+    result = mod.load_planning_index()
+    captured = capsys.readouterr()
+    assert result == []
+    assert "Warning:" in captured.err
+    assert "using empty roadmap list" in captured.err
+    mod.__file__ = ORIGINAL_FILE
+
+
 def test_generate_readme_and_main(tmp_path, monkeypatch):
     sample = [
         {"id": "GP-1", "title": "Alpha", "description": "Desc", "status": "in-progress", "category": "Cat", "files": ["a"], "tags": ["t"]},

@@ -6,11 +6,11 @@ DeviationLog: 21
 
 ## Postulates
 
-Postulates: 490
+Postulates: 488
 
 ## TODO Items
 
-TODO: 101
+TODO: 102
 
 ## PLANNED Items
 
@@ -25,8 +25,8 @@ FIXME: 17
 | Category | Count |
 |---|---|
 | DeviationLog | 21 |
-| Postulates | 490 |
-| TODO | 101 |
+| Postulates | 488 |
+| TODO | 102 |
 | PLANNED | 10 |
 | FIXME | 17 |
-| Total | 639 |
+| Total | 638 |

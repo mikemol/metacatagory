@@ -40,7 +40,22 @@ We validate the adequacy framework using three complementary test suites:
 - When transformations are computable functions
 - When you can provide concrete examples that exercise all code paths
 
----
+--- 
+
+## Quickstart (Local)
+
+```bash
+mise install
+mise run dev-setup        # installs pytest + node deps (markdown tools)
+MUTATE_OK=1 make regen-makefile
+MUTATE_OK=1 make check    # strict roundtrip validation is the default
+# Narrower:
+# MUTATE_OK=1 make json-roundtrip-validate
+# MUTATE_OK=1 make check-docs
+# Note: full pytest/markdown lint requires network to install dev deps; use the CI container if offline.
+```
+
+CI runs with `METACATAGORY_STRICT_ROUNDTRIP=true` and job-scoped report dirs under `build/reports/{agda,docs,roadmap,python}`.
 
 #### 2. **ABNF Parser Tests** (`Tests/Plan/CIM/ABNFParserGenericTests.agda`)
 

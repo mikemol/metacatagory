@@ -21,7 +21,7 @@ pythonTargets =
   ∷ generatorToFileTarget mutateCert "build/venv/pip_upgraded.stamp" "Upgrade pip in virtualenv" ("build/venv/venv_created.stamp" ∷ [])
     ("\"$(VIRTUAL_ENV)/bin/python\" -m pip install --upgrade pip && touch build/venv/pip_upgraded.stamp" ∷ [])
   ∷ generatorToFileTarget mutateCert "build/venv/requirements_installed.stamp" "Install Python dependencies" ("build/venv/pip_upgraded.stamp" ∷ "build/venv/requirements-inputs.stamp" ∷ [])
-    ("\"$(VIRTUAL_ENV)/bin/python\" -m pip install -r requirements.txt -r requirements-dev.txt && touch build/venv/requirements_installed.stamp" ∷ [])
+    ("if [ \"${PYTHON_OFFLINE:-}\" = \"1\" ]; then \"$(VIRTUAL_ENV)/bin/python\" -c \"import yaml, networkx, graphviz, rich, pytest\"; else \"$(VIRTUAL_ENV)/bin/python\" -m pip install -r requirements.txt -r requirements-dev.txt; fi && touch build/venv/requirements_installed.stamp" ∷ [])
   ∷ generatorToFileTarget mutateCert "build/venv/python_setup.stamp" "Create Python venv and install dependencies" ("build/venv/requirements_installed.stamp" ∷ [])
     ("touch build/venv/python_setup.stamp" ∷ [])
   ∷ generatorToTarget mutateCert "python-test" "Run Python tests (includes pytest suite)" ("build/venv/python_setup.stamp" ∷ [])

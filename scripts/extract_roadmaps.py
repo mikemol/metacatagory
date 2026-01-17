@@ -7,32 +7,32 @@ Preserves mathematical coherence and dependency relationships.
 """
 
 import re
-import json
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass, asdict
 
-# Load configuration for mathematical concept extraction
-def load_concept_config():
-    """Load concept patterns and settings from config file."""
-    config_file = Path(__file__).parent / "extract-concepts-config.json"
-    if config_file.exists():
-        with open(config_file) as f:
-            return json.load(f)
-    # Fallback defaults
-    return {
-        "concept_patterns": [
-            "RoPE|SPPF|Stasheff|Associahedron|Polytope|Loday|Yoneda|Sheaf|Cohomology",
-            "Braid|Homotopy|Functor|Adjunction|Manifold|Topology|Geometry",
-            "Lie Group|Group Action|Category Theory|HoTT|Abelian",
-            "Quaternion|Octonion|Complex|Vector Space|Tensor"
-        ],
-        "default_target_module": "src/agda/Plan/CIM/Implementation.agda",
-        "max_concepts": 15,
-        "concept_title_case": True
-    }
+from scripts.shared.gp_intake import (
+    infer_target_module,
+    load_concept_config,
+    extract_concepts,
+    extract_metadata_from_text,
+    extract_question,
+    extract_formal_section,
+    extract_related_gps,
+    extract_manifest_version,
+    extract_target_modules,
+    categorize_gp,
+)
+from scripts.shared.gp_roadmap_render import (
+    build_implication,
+    build_implication_from_concepts,
+    build_step_summary,
+    render_roadmap_step,
+    sanitize_string,
+)
+from scripts.shared.io import save_json
 
-CONCEPT_CONFIG = load_concept_config()
+CONCEPT_CONFIG = load_concept_config(Path(__file__).parent / "extract-concepts-config.json")
 
 @dataclass
 class RoadmapEntry:
@@ -65,107 +65,24 @@ def extract_title(content: str) -> str:
             return match.group(1).strip()
     return "Unknown Title"
 
-def extract_question(content: str) -> str:
-    """Extract the actionable 'Would you like...' question."""
-    # First line usually has the question
-    lines = content.split('\n')
-    for line in lines[:5]:  # Check first 5 lines
-        if line.strip().startswith('Would you like'):
-            # Clean up markdown
-            question = line.strip()
-            question = re.sub(r'\*\*(.+?)\*\*', r'\1', question)  # Remove bold
-            return question[:500]  # Truncate if too long
-    return "See full GP file for details"
-
-def extract_formal_section(content: str) -> str:
-    """Extract the formal correction/analysis section."""
-    # Find the section starting with "I. Formal Correction" or "I. Formal Analysis"
-    pattern = r'### \*?\*?I\. Formal (?:Correction|Analysis).*?\n\n(.+?)(?=\n###|\Z)'
-    match = re.search(pattern, content, re.MULTILINE | re.DOTALL)
-    if match:
-        section = match.group(1).strip()
-        # Limit length but preserve mathematical content
-        if len(section) > 1000:
-            section = section[:1000] + "..."
-        return section
-    return "See full GP file"
-
-def extract_concepts(content: str) -> List[str]:
+def extract_concepts_from_content(content: str) -> List[str]:
     """Extract key mathematical concepts from the content."""
-    concepts = set()
-    
-    # Load concept patterns from configuration
-    concept_patterns = [r'\b(' + p + ')' for p in CONCEPT_CONFIG['concept_patterns']]
-    max_concepts = CONCEPT_CONFIG.get('max_concepts', 15)
-    use_title_case = CONCEPT_CONFIG.get('concept_title_case', True)
-    
-    for pattern in concept_patterns:
-        matches = re.findall(pattern, content, re.IGNORECASE)
-        if use_title_case:
-            concepts.update(m.title() for m in matches)
-        else:
-            concepts.update(matches)
-    
-    return sorted(list(concepts))[:max_concepts]
-
-def extract_related_gps(content: str) -> List[str]:
-    """Find references to other GP files."""
-    # Look for "Nov 7", "Nov 26", "GP\d+" patterns
-    related = set()
-    
-    # Direct GP references
-    gp_refs = re.findall(r'GP(\d+)', content)
-    related.update(f"GP{num}" for num in gp_refs)
-    
-    # Date references (map to GPs if we have metadata)
-    # Nov 7 might be GP800, etc.
-    
-    return sorted(list(related))
-
-def extract_manifest_version(content: str) -> Optional[str]:
-    """Check if this GP introduces a new manifest version."""
-    match = re.search(r'Manifest \(v([\d.]+)\)', content)
-    return f"v{match.group(1)}" if match else None
-
-def extract_target_modules(content: str) -> List[str]:
-    """Find mentions of target implementation modules."""
-    modules = set()
-    
-    # Look for .agda and .py file references
-    agda_refs = re.findall(r'(\w+\.agda)', content)
-    py_refs = re.findall(r'(\w+\.py)', content)
-    
-    modules.update(agda_refs)
-    modules.update(py_refs)
-    
-    return sorted(list(modules))
-
-def categorize_gp(gp_num: int) -> str:
-    """Determine category based on GP number."""
-    if gp_num <= 111:
-        return "Foundation"
-    elif 200 <= gp_num < 400:
-        return "Geometry"
-    elif 400 <= gp_num < 600:
-        return "Corrections"
-    elif 699 <= gp_num < 800:
-        return "Polytopes"
-    else:
-        return "Analysis"
+    return extract_concepts(content, CONCEPT_CONFIG)
 
 def parse_gp_file(filepath: Path) -> RoadmapEntry:
     """Parse a single GP markdown file."""
     content = filepath.read_text(encoding='utf-8')
     gp_number = filepath.stem  # "GP01", "GP700", etc.
     gp_num = int(re.search(r'\d+', gp_number).group())
+    metadata = extract_metadata_from_text(content, gp_number)
     
     return RoadmapEntry(
         gp_number=gp_number,
-        title=extract_title(content),
+        title=metadata['title'],
         category=categorize_gp(gp_num),
         question=extract_question(content),
         formal_correction=extract_formal_section(content),
-        key_concepts=extract_concepts(content),
+        key_concepts=extract_concepts_from_content(content),
         related_gps=extract_related_gps(content),
         manifest_version=extract_manifest_version(content),
         target_modules=extract_target_modules(content),
@@ -192,34 +109,30 @@ open import Plan.CIM.Utility using (RoadmapStep)
 """
     
     for entry in sorted(entries, key=lambda e: e.gp_number):
-        # Escape strings properly
-        def escape_agda_string(s: str) -> str:
-            s = s.replace('\\', '\\\\')
-            s = s.replace('"', '\\"')
-            s = s.replace('\n', ' ')
-            # Remove problematic characters
-            s = re.sub(r'[^\x20-\x7E]', '', s)  # ASCII printable only
-            return s
-        
-        title_safe = escape_agda_string(entry.title)
-        question_safe = escape_agda_string(entry.question)
-        concepts_str = ', '.join(entry.key_concepts[:5])  # Limit concepts
-        related_str = ', '.join(entry.related_gps[:3])  # Limit related
-        
-        record_name = entry.gp_number.lower().replace('gp', 'gp')
-        
-        agda_code += f"""roadmap{record_name.capitalize()} : RoadmapStep
-roadmap{record_name.capitalize()} = record
-    {{ provenance   = "{entry.gp_number}: {title_safe}"
-    ; relatedNodes = []  -- {related_str}
-    ; step         = "{question_safe}"
-    ; implication  = "Concepts: {concepts_str}"
-    ; status       = "not-started"
-    ; targetModule = "src/agda/Plan/CIM/Implementation.agda"
-    ; next         = []
-    }}
+        implication = build_implication({
+            "insight": entry.formal_correction,
+            "gap": "",
+            "fix": "",
+        })
+        concept_clause = build_implication_from_concepts(entry.key_concepts)
+        if concept_clause:
+            implication = f"{implication} | {concept_clause}"
 
-"""
+        target_module = infer_target_module(
+            content=entry.formal_correction,
+            title=entry.title,
+            keywords=entry.key_concepts,
+            config=CONCEPT_CONFIG,
+        )
+
+        agda_code += render_roadmap_step(
+            gp_id=entry.gp_number,
+            title=entry.title,
+            step=build_step_summary({"summary": entry.question}),
+            implication=implication,
+            target_module=target_module,
+        )
+        agda_code += "\n"
     
     return agda_code
 
@@ -286,8 +199,7 @@ open import Plan.CIM.IngestedRoadmaps.Analysis public
     }
     
     summary_file = Path("build/roadmap_extraction_summary.json")
-    summary_file.parent.mkdir(parents=True, exist_ok=True)
-    summary_file.write_text(json.dumps(summary, indent=2), encoding='utf-8')
+    save_json(summary_file, summary)
     print(f"✓ Generated {summary_file}")
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ Generated: 2026-01-06
 Purpose: Collect all parts of the current system into a single, coherently structured document that applies third-order implications to define the “homology” of our architecture: roadmap ↔ architecture ↔ Agda nodes ↔ modules ↔ composites ↔ tests. Each notion is examined via three congruent but orthogonal implications; each implication expands into second-order implications; each of those expands into third-order implications. Each item is traced to implementation and tests.
 
 References (internal synthesis):
-- Architecture: [ARCHITECTURE.md](../../ARCHITECTURE.md)
+- Architecture: [ARCHITECTURE.md](../architecture/ARCHITECTURE.md)
 - Roadmap: [ROADMAP.md](../../ROADMAP.md)
 - Agda Nodes: examples in [roadmap-*.agda](../../) and [src/agda](../../src/agda)
 - Synergy map: [docs/analysis/CROSS-MODULE-SYNERGY-MAP.md](CROSS-MODULE-SYNERGY-MAP.md)

@@ -3,7 +3,8 @@
 module Examples.Makefile.Targets.Composite where
 
 open import Agda.Builtin.List using (List; _∷_; [])
-open import Examples.MakefileTargets using (MakefileTarget; generatorToTarget; mutateCert)
+open import Agda.Builtin.Bool using (Bool; true; false)
+open import Examples.MakefileTargets using (MakefileTarget; generatorToTarget; mkReadOnlyTarget; mutateCert)
 
 -- Composite/witness targets tying families together
 
@@ -45,10 +46,12 @@ compositeTargets =
   ∷ generatorToTarget mutateCert "check-debt" "Validate deferred items + intake scan" ("debt-check" ∷ [])
     ("@echo \"check-debt complete\"" ∷ [])
   ∷ generatorToTarget mutateCert "check-all" "Run full validation suite" (
-        "check-infra" ∷ "check-docs" ∷ "check-roadmap" ∷ "check-python" ∷ "check-json" ∷ "check-debt" ∷ [])
+        "check-makefile-generated" ∷ "check-infra" ∷ "check-docs" ∷ "check-roadmap" ∷ "check-python" ∷ "check-json" ∷ "check-debt" ∷ [])
     ("@echo \"check-all complete\"" ∷ [])
-  ∷ generatorToTarget mutateCert "check" "Run all validation checks (alias)" ("check-all" ∷ [])
-    ("@echo \"check complete\"" ∷ [])
+  ∷ mkReadOnlyTarget "check" "Run all validation checks (alias)"
+    []
+    ("MUTATE_LEVEL=repo $MAKE check-all" ∷ "@echo \"check complete\"" ∷ [])
+    true
   ∷ generatorToTarget mutateCert "validate-constructive" "Regenerate and validate all artifacts" ("regen-all" ∷ "check-all" ∷ [])
     ("@echo \"✓ Constructive validation complete\"" ∷ [])
   ∷ generatorToTarget mutateCert "ci-light" "Lightweight CI target (no GHC backend)" (

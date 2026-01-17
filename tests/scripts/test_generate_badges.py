@@ -227,6 +227,7 @@ def test_load_weights_writes_default(tmp_path):
 
 def test_main_writes_badges_and_history(tmp_path, monkeypatch):
     mod = _load_module(SCRIPT_PATH)
+    monkeypatch.setenv("CI_REPORT_DIR", "build/reports")
 
     repo_root = tmp_path
     scripts_dir = repo_root / "scripts"
@@ -287,8 +288,9 @@ def test_main_writes_badges_and_history(tmp_path, monkeypatch):
     assert "files" not in refreshed  # stripped when refreshed
 
 
-def test_main_scans_trims_and_updates_history(tmp_path):
+def test_main_scans_trims_and_updates_history(tmp_path, monkeypatch):
     mod = _load_module(SCRIPT_PATH)
+    monkeypatch.setenv("CI_REPORT_DIR", "build/reports")
 
     repo_root = tmp_path
     scripts_dir = repo_root / "scripts"
@@ -332,8 +334,9 @@ def test_main_scans_trims_and_updates_history(tmp_path):
     assert (output_dir / "top-offenders.md").exists()
 
 
-def test_main_recovers_from_corrupt_history(tmp_path):
+def test_main_recovers_from_corrupt_history(tmp_path, monkeypatch):
     mod = _load_module(SCRIPT_PATH)
+    monkeypatch.setenv("CI_REPORT_DIR", "build/reports")
 
     repo_root = tmp_path
     scripts_dir = repo_root / "scripts"
@@ -370,8 +373,9 @@ def test_main_recovers_from_corrupt_history(tmp_path):
     assert len(history) >= 1
 
 
-def test_main_guard_runs_as_script(tmp_path):
+def test_main_guard_runs_as_script(tmp_path, monkeypatch):
     script_source = SCRIPT_PATH.read_text()
+    monkeypatch.setenv("CI_REPORT_DIR", "build/reports")
     repo_root = tmp_path
 
     tasks_file = repo_root / ".github" / "roadmap" / "tasks.json"
@@ -408,3 +412,33 @@ def test_main_guard_runs_as_script(tmp_path):
     output_dir = repo_root / ".github" / "badges"
     manifest = json.loads((output_dir / "manifest.json").read_text())
     assert "deferred-weighted" in manifest["badges"]
+
+
+def test_scan_repository_for_deferred_reads_tasks(tmp_path):
+    mod = _load_module(SCRIPT_PATH)
+    (tmp_path / "src").mkdir()
+    (tmp_path / "src" / "note.md").write_text("TODO: add more docs", encoding="utf-8")
+
+    tasks_path = tmp_path / ".github" / "roadmap" / "tasks.json"
+    tasks_path.parent.mkdir(parents=True, exist_ok=True)
+    tasks_path.write_text(
+        json.dumps(
+            [
+                {"id": "TASK-1", "status": "planned"},
+                {"id": "TASK-2", "status": "completed"},
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    summary = mod.scan_repository_for_deferred(tmp_path, mod.DEFAULT_WEIGHTS)
+    assert summary["planned"] == 1
+
+
+def test_scan_repository_for_deferred_missing_tasks(tmp_path):
+    mod = _load_module(SCRIPT_PATH)
+    (tmp_path / "src").mkdir()
+    (tmp_path / "src" / "note.md").write_text("TODO: add more docs", encoding="utf-8")
+
+    summary = mod.scan_repository_for_deferred(tmp_path, mod.DEFAULT_WEIGHTS)
+    assert summary["planned"] == 0

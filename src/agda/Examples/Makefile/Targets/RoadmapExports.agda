@@ -9,6 +9,7 @@ open import Examples.MakefileTargets using (MakefileTarget; generatorToTarget; g
 roadmapExportTargets : List MakefileTarget
 roadmapExportTargets =
   generatorToTarget mutateCert "roadmap-merge" "Merge ingestion streams" ([]) ("python3 scripts/merge_roadmaps.py" ∷ [])
+  ∷ generatorToFileTarget mutateCert "build/ingested_metadata.json" "Ingest GP metadata" ([]) ("python3 scripts/ingest_gp_files.py" ∷ [])
   ∷ generatorToFileTarget mutateCert "build/canonical_enriched.json" "Enrich canonical roadmap" ("data/planning_index.json" ∷ "build/diagrams/agda-deps-full.dot" ∷ [])
       ("python3 scripts/enrich_canonical.py" ∷ [])
   ∷ generatorToTarget mutateCert "roadmap-enrich" "Enrich roadmap with graph data" ("build/canonical_enriched.json" ∷ [])
@@ -25,7 +26,7 @@ roadmapExportTargets =
       ("python3 scripts/validate_json.py" ∷ [])
   ∷ generatorToTarget mutateCert "roadmap-validate-md" "Validate canonical Markdown" ("ROADMAP.md" ∷ [])
       ("python3 scripts/validate_md.py" ∷ [])
-  ∷ generatorToTarget mutateCert "roadmap-validate-triangle" "Verify Triangle Identity (Agda <-> JSON <-> MD)" ("roadmap-validate-json" ∷ "roadmap-validate-md" ∷ [])
+  ∷ generatorToTarget mutateCert "roadmap-validate-triangle" "Verify Triangle Identity (Agda <-> JSON <-> MD)" ("roadmap-validate-json" ∷ "roadmap-validate-md" ∷ "build/ingested_metadata.json" ∷ [])
       ("@echo \"✓ Triangle validation complete\"" ∷ [])
   ∷ generatorToFileTarget mutateCert "build/gp_roadmap_sppf.json" "Export SPPF structure" ("data/planning_index.json" ∷ [])
       ("python3 scripts/export_roadmap_sppf.py" ∷ [])

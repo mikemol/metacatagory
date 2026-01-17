@@ -9,7 +9,7 @@ fi
 target="$1"
 script="$2"
 
-profile_dir="${PROFILE_DIR:-${BUILD_PROFILE_DIR:-build/profiles.d}}"
+profile_dir="${PROFILE_DIR:-${BUILD_PROFILE_DIR:-build/reports/profiles.d}}"
 profile_log="${PROFILE_LOG:-${profile_dir}/profile-$(date +%Y%m%dT%H%M%S%z)-$$.jsonl}"
 
 mkdir -p "$profile_dir"
