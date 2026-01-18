@@ -8,3 +8,5 @@ This index summarizes the decomposed JSON hierarchies tracked under `data/`.
   - `docs/schemas/enriched-roadmap-hierarchy.md`
 - `data/planning/` → planning index fragments
   - `docs/schemas/planning-index-hierarchy.md`
+- `data/formalisms/` → universal construction adapter specs
+  - `docs/schemas/formalism-adapter.md`

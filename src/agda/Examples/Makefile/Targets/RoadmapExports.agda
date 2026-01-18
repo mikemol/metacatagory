@@ -47,6 +47,9 @@ roadmapExportTargets =
   ∷ generatorToFileTarget mutateCert "build/gp_roadmap_sppf.json" "Export SPPF structure"
       ("data/planning_index.json" ∷ "scripts/export_roadmap_sppf.py" ∷ [])
       ("python3 scripts/export_roadmap_sppf.py" ∷ [])
+  ∷ generatorToFileTarget mutateCert "build/formalisms/canonical_constructions.json" "Ingest formalism adapter spec"
+      ("data/formalisms/formalism_adapter.json" ∷ "scripts/formalism_ingest.py" ∷ "scripts/shared/formalism_adapter.py" ∷ [])
+      ("python3 scripts/formalism_ingest.py" ∷ [])
   ∷ generatorToTarget mutateCert "roadmap-all-enriched" "Build all enriched artifacts" ("build/reports/tasks_enriched.md" ∷ "roadmap-export-deps" ∷ [])
       ("@echo \"roadmap all enriched complete\"" ∷ [])
   ∷ []

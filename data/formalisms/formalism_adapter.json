@@ -1,0 +1,18 @@
+{
+  "formalism_id": "example-formalism",
+  "version": "1.0",
+  "constructions": [
+    {
+      "construction_id": "Product",
+      "kind": "limit",
+      "objects": ["A", "B"],
+      "morphisms": [],
+      "property_id": "ProductProperty",
+      "notes": "Minimal product signature",
+      "sources": ["docs/schemas/formalism-adapter.md"]
+    }
+  ],
+  "metadata": {
+    "owner": "core"
+  }
+}
