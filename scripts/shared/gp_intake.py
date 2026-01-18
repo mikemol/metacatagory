@@ -156,6 +156,33 @@ def categorize_gp(gp_num: int) -> str:
     return "Analysis"
 
 
+def extract_gp_number(gp_id: str) -> int:
+    """Extract the numeric portion of a GP identifier."""
+    match = re.search(r"\d+", gp_id)
+    return int(match.group()) if match else 0
+
+
+def categorize_gp_phase(gp_num: int) -> str:
+    """Categorize GP number into phase buckets for routing."""
+    if gp_num < 100:
+        return "foundational"
+    if gp_num < 200:
+        return "structural"
+    if gp_num < 300:
+        return "geometric"
+    if gp_num < 400:
+        return "topological"
+    if gp_num < 500:
+        return "homological"
+    if gp_num < 600:
+        return "polytope"
+    if gp_num < 700:
+        return "coherence"
+    if gp_num < 800:
+        return "analysis"
+    return "unified"
+
+
 def extract_metadata_from_md(filepath: Path | str) -> Dict:
     """Extract metadata from a markdown file."""
     path = Path(filepath)
@@ -169,8 +196,7 @@ def build_gp_metadata(content: str, gp_id: str, config: Dict | None = None) -> D
         Path(__file__).resolve().parent.parent / "extract-concepts-config.json"
     )
     metadata = extract_metadata_from_text(content, gp_id)
-    match = re.search(r"\d+", gp_id)
-    gp_num = int(match.group()) if match else 0
+    gp_num = extract_gp_number(gp_id)
     key_concepts = extract_concepts(content, config)
 
     return {

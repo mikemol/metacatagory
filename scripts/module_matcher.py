@@ -19,6 +19,7 @@ from scripts import shared_data
 from scripts.shared.agda import AgdaParser
 from scripts.shared.agda_declarations import scan_agda_declarations
 from scripts.shared.io import save_json
+from scripts.shared.gp_intake import categorize_gp_phase, extract_gp_number
 
 @dataclass
 class AgdaModule:
@@ -226,9 +227,8 @@ class ModuleMatcher:
         keywords = set(item.get('keywords', []))
         
         # Extract category from step_id (e.g., GP700 -> analysis phase)
-        match = re.search(r'\d+', step_id)
-        gp_number = int(match.group()) if match else 0
-        step_category = self._categorize_gp_number(gp_number)
+        gp_number = extract_gp_number(step_id)
+        step_category = categorize_gp_phase(gp_number)
         
         # Score all modules
         module_scores = []
@@ -266,27 +266,6 @@ class ModuleMatcher:
             confidence=confidence,
             rationale=rationale
         )
-    
-    def _categorize_gp_number(self, gp_number: int) -> str:
-        """Categorize GP number into phase."""
-        if gp_number < 100:
-            return 'foundational'
-        elif gp_number < 200:
-            return 'structural'
-        elif gp_number < 300:
-            return 'geometric'
-        elif gp_number < 400:
-            return 'topological'
-        elif gp_number < 500:
-            return 'homological'
-        elif gp_number < 600:
-            return 'polytope'
-        elif gp_number < 700:
-            return 'coherence'
-        elif gp_number < 800:
-            return 'analysis'
-        else:
-            return 'unified'
     
     def _calculate_match_score(
         self,

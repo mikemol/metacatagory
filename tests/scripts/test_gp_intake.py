@@ -3,7 +3,9 @@
 
 from scripts.shared.gp_intake import (
     build_gp_metadata,
+    categorize_gp_phase,
     extract_metadata_from_text,
+    extract_gp_number,
     infer_target_module,
     load_concept_config,
 )
@@ -34,6 +36,24 @@ Second declarative line.
     meta = extract_metadata_from_text(content, "Fallback")
     assert "Would you like" not in meta["summary"]
     assert "Here is a declarative line." in meta["summary"]
+
+
+def test_extract_gp_number_parses_id():
+    assert extract_gp_number("GP01") == 1
+    assert extract_gp_number("GP830") == 830
+    assert extract_gp_number("UNKNOWN") == 0
+
+
+def test_categorize_gp_phase_buckets():
+    assert categorize_gp_phase(1) == "foundational"
+    assert categorize_gp_phase(150) == "structural"
+    assert categorize_gp_phase(250) == "geometric"
+    assert categorize_gp_phase(350) == "topological"
+    assert categorize_gp_phase(450) == "homological"
+    assert categorize_gp_phase(550) == "polytope"
+    assert categorize_gp_phase(650) == "coherence"
+    assert categorize_gp_phase(750) == "analysis"
+    assert categorize_gp_phase(850) == "unified"
 
 
 def test_infer_target_module_defaults(tmp_path):
