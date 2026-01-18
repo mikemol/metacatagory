@@ -124,9 +124,10 @@ class PhaseDiagramGenerator:
             scan = scan_agda_test_file(filepath)
 
             for adapter_name, adapter_type in scan.adapters:
-                section_num = scan.section_by_adapter.get(adapter_name, "Unknown")
+                base_name = adapter_name.removesuffix("-adapter")
+                section_num = scan.section_by_adapter.get(base_name, "Unknown")
 
-                adapter_id = f"{chapter}.{section_num}.{adapter_name}"
+                adapter_id = f"{chapter}.{section_num}.{base_name}"
                 section_id = f"{chapter}.{section_num}"
 
                 # Add adapter node

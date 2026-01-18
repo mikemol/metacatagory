@@ -82,8 +82,11 @@ def load_json_file(filepath: Path) -> Dict[str, Any]:
     if not filepath.exists():
         print(f"Warning: {filepath} not found", file=sys.stderr)
         return {}
-
-    return load_json(filepath, required=True)
+    try:
+        return load_json(filepath, required=False)
+    except json.JSONDecodeError:
+        print(f"Warning: Invalid JSON in {filepath}", file=sys.stderr)
+        return {}
 
 
 def load_weights(output_dir: Path) -> Dict[str, float]:
@@ -464,7 +467,7 @@ def main():
     history: List[Dict[str, Any]] = []
     if history_file.exists():
         try:
-            data = load_json(history_file, required=True)
+            data = load_json(history_file, required=False)
             if isinstance(data, list):
                 history = data
         except Exception:

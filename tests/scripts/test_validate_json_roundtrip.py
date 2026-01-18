@@ -12,7 +12,7 @@ Coverage targets:
 import json
 import sys
 from pathlib import Path
-from unittest.mock import mock_open, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -127,16 +127,7 @@ class TestValidateRoundtrip:
         original_path.write_text(json.dumps(sample_original))
         recomposed_path.write_text(json.dumps(sample_recomposed))
         
-        # Patch Path to use our tmp_path
-        with patch('scripts.validate_json_roundtrip.Path') as mock_path:
-            mock_path.return_value.exists.side_effect = [True, True]
-            
-            # Mock file opening
-            with patch('builtins.open', side_effect=[
-                mock_open(read_data=json.dumps(sample_original)).return_value,
-                mock_open(read_data=json.dumps(sample_recomposed)).return_value
-            ]):
-                result = validate_roundtrip()
+        result = validate_roundtrip(build_dir)
         
         assert result is True
         captured = capsys.readouterr()
@@ -160,85 +151,68 @@ class TestValidateRoundtrip:
         original_path.write_text(json.dumps(sample_original))
         recomposed_path.write_text(json.dumps(mismatched_recomposed))
         
-        with patch('scripts.validate_json_roundtrip.Path') as mock_path:
-            mock_path.return_value.exists.side_effect = [True, True]
-            
-            with patch('builtins.open', side_effect=[
-                mock_open(read_data=json.dumps(sample_original)).return_value,
-                mock_open(read_data=json.dumps(mismatched_recomposed)).return_value
-            ]):
-                result = validate_roundtrip()
+        result = validate_roundtrip(build_dir)
         
         assert result is False
         captured = capsys.readouterr()
         assert "FAILED" in captured.out
         assert "strict structural mismatch" in captured.out
 
-    def test_missing_original_file(self, capsys):
+    def test_missing_original_file(self, tmp_path, capsys):
         """Should fail when original file doesn't exist"""
-        with patch('scripts.validate_json_roundtrip.Path') as mock_path:
-            mock_path.return_value.exists.side_effect = [False, False]
-            
-            result = validate_roundtrip()
+        build_dir = tmp_path / "build"
+        build_dir.mkdir(parents=True, exist_ok=True)
+        result = validate_roundtrip(build_dir)
         
         assert result is False
         captured = capsys.readouterr()
         assert "Original file not found" in captured.out
 
-    def test_missing_recomposed_file(self, capsys):
+    def test_missing_recomposed_file(self, tmp_path, capsys):
         """Should fail when recomposed file doesn't exist"""
-        with patch('scripts.validate_json_roundtrip.Path') as mock_path:
-            mock_path.return_value.exists.side_effect = [True, False]
-            
-            result = validate_roundtrip()
+        build_dir = tmp_path / "build"
+        build_dir.mkdir(parents=True, exist_ok=True)
+        (build_dir / "dependency_graph.json").write_text(json.dumps({"nodes": [], "edges": []}))
+        result = validate_roundtrip(build_dir)
         
         assert result is False
         captured = capsys.readouterr()
         assert "Recomposed file not found" in captured.out
 
-    def test_invalid_json_original(self, capsys):
+    def test_invalid_json_original(self, tmp_path, capsys):
         """Should handle JSON parse errors in original file"""
-        with patch('scripts.validate_json_roundtrip.Path') as mock_path:
-            mock_path.return_value.exists.side_effect = [True, True]
-            
-            with patch('builtins.open', side_effect=[
-                mock_open(read_data="invalid json{").return_value,
-                mock_open(read_data="{}").return_value
-            ]):
-                result = validate_roundtrip()
+        build_dir = tmp_path / "build"
+        build_dir.mkdir(parents=True, exist_ok=True)
+        (build_dir / "dependency_graph.json").write_text("invalid json{")
+        (build_dir / "dependency_graph_recomposed.json").write_text("{}")
+        result = validate_roundtrip(build_dir)
         
         assert result is False
         captured = capsys.readouterr()
         assert "JSON parse error" in captured.out
 
-    def test_invalid_json_recomposed(self, capsys):
+    def test_invalid_json_recomposed(self, tmp_path, capsys):
         """Should handle JSON parse errors in recomposed file"""
-        with patch('scripts.validate_json_roundtrip.Path') as mock_path:
-            mock_path.return_value.exists.side_effect = [True, True]
-            
-            with patch('builtins.open', side_effect=[
-                mock_open(read_data='{"nodes": []}').return_value,
-                mock_open(read_data="invalid json{").return_value
-            ]):
-                result = validate_roundtrip()
+        build_dir = tmp_path / "build"
+        build_dir.mkdir(parents=True, exist_ok=True)
+        (build_dir / "dependency_graph.json").write_text('{"nodes": []}')
+        (build_dir / "dependency_graph_recomposed.json").write_text("invalid json{")
+        result = validate_roundtrip(build_dir)
         
         assert result is False
         captured = capsys.readouterr()
         assert "JSON parse error" in captured.out
 
-    def test_empty_graphs(self, capsys):
+    def test_empty_graphs(self, tmp_path, capsys):
         """Should handle empty dependency graphs"""
         empty_original = {"nodes": [], "edges": []}
         empty_recomposed = {"modules": [], "edges": [], "layers": []}
         
-        with patch('scripts.validate_json_roundtrip.Path') as mock_path:
-            mock_path.return_value.exists.side_effect = [True, True]
-            
-            with patch('builtins.open', side_effect=[
-                mock_open(read_data=json.dumps(empty_original)).return_value,
-                mock_open(read_data=json.dumps(empty_recomposed)).return_value
-            ]):
-                result = validate_roundtrip()
+        build_dir = tmp_path / "build"
+        build_dir.mkdir(parents=True, exist_ok=True)
+        (build_dir / "dependency_graph.json").write_text(json.dumps(empty_original))
+        (build_dir / "dependency_graph_recomposed.json").write_text(json.dumps(empty_recomposed))
+        result = validate_roundtrip(build_dir)
         
         assert result is True
         captured = capsys.readouterr()
@@ -256,14 +230,11 @@ class TestValidateRoundtrip:
             "layers": []
         }
         
-        with patch('scripts.validate_json_roundtrip.Path') as mock_path:
-            mock_path.return_value.exists.side_effect = [True, True]
-            
-            with patch('builtins.open', side_effect=[
-                mock_open(read_data=json.dumps(original)).return_value,
-                mock_open(read_data=json.dumps(recomposed)).return_value
-            ]):
-                result = validate_roundtrip()
+        build_dir = tmp_path / "build"
+        build_dir.mkdir(parents=True, exist_ok=True)
+        (build_dir / "dependency_graph.json").write_text(json.dumps(original))
+        (build_dir / "dependency_graph_recomposed.json").write_text(json.dumps(recomposed))
+        result = validate_roundtrip(build_dir)
         
         assert result is True
         captured = capsys.readouterr()
@@ -283,14 +254,11 @@ class TestValidateRoundtrip:
             "layers": []
         }
 
-        with patch('scripts.validate_json_roundtrip.Path') as mock_path:
-            mock_path.return_value.exists.side_effect = [True, True]
-
-            with patch('builtins.open', side_effect=[
-                mock_open(read_data=json.dumps(original)).return_value,
-                mock_open(read_data=json.dumps(recomposed)).return_value
-            ]):
-                result = validate_roundtrip()
+        build_dir = tmp_path / "build"
+        build_dir.mkdir(parents=True, exist_ok=True)
+        (build_dir / "dependency_graph.json").write_text(json.dumps(original))
+        (build_dir / "dependency_graph_recomposed.json").write_text(json.dumps(recomposed))
+        result = validate_roundtrip(build_dir)
 
         assert result is False
         captured = capsys.readouterr()

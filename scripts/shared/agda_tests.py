@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .agda import extract_module_name
+from .agda import MODULE_NAME_PATTERN, extract_module_name
 # E.g., `chk2s2B : S2.KernelPairDeclaration`
 RECORD_DECL_RE = re.compile(r"^\s*([A-Za-z0-9_']+)\s*:\s*([A-Za-z0-9_.]+)\.([A-Za-z0-9_]+)\s*$")
 # E.g., `foo : A.KernelPairAdapter` (also matches status lines in tests)
@@ -21,6 +21,7 @@ CHECKLIST_ADAPTER_RE = re.compile(r"(\w+)-adapter\s*:\s*A\.(\w+)", re.MULTILINE)
 CHAPTER_NAME_RE = re.compile(r"(Chapter\d+)")
 SECTION_HEADER_RE = re.compile(r"^-+\s*\n--\s+Level\d+sub(\d+)", re.MULTILINE)
 LINK_ASSERT_RE = re.compile(r"(\w+)-\w+-link\s*:\s*.*?≡\s*([\w.]+)", re.MULTILINE)
+MODULE_RE = MODULE_NAME_PATTERN
 
 
 @dataclass
