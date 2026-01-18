@@ -17,6 +17,7 @@ REPO_ROOT = Path(__file__).parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from scripts.shared.io import load_json
 from scripts.shared.paths import REPORTS_DIR
 from scripts.shared.parallel import get_parallel_settings
 
@@ -234,8 +235,7 @@ def export_dependency_graphs() -> None:
         print(f"Error: {ENRICHED_JSON} not found. Run 'make roadmap-enrich' first.")
         return
     
-    with open(ENRICHED_JSON, "r", encoding="utf-8") as f:
-        items = json.load(f)
+    items = load_json(ENRICHED_JSON, required=True)
     
     print(f"Generating dependency graphs for {len(items)} tasks...")
     
