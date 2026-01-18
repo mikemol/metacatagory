@@ -434,7 +434,7 @@ def parse_yaml_fenced_blocks_fallback(content: str) -> List[Dict[str, Any]]:
     return fallback
 
 
-def extract_bracketed_ids(content: str, pattern: str = r"\[([A-Z]+-\d+)\]") -> List[str]:
+def extract_bracketed_ids(content: str, pattern: str = r"\[([A-Z]+-\d+|GP\d+)\]") -> List[str]:
     """Extract bracketed IDs like [PHASE-123] from content."""
     ids = {match.group(1) for match in re.finditer(pattern, content)}
     return sorted(ids)
