@@ -29,6 +29,7 @@ record ConstructionSignature : Set₁ where
     morphisms : List M.Identifier
     propertyId : M.Identifier
 
+-- | Signature paired with a concrete witness for a universal property.
 record UniversalConstruction : Set₁ where
   field
     signature : ConstructionSignature
