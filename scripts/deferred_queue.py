@@ -2,19 +2,21 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 from typing import List
 
-from scripts.shared.io import save_json
+from scripts.shared.io import load_json, save_json
 
 BADGE_DIR = Path(".github/badges")
 OUTPUT_PATH = Path(".github/deferred-queue.json")
 
 
 def load_deferred_files(path: Path) -> dict[str, dict]:
-    with path.open("r", encoding="utf-8") as fh:
-        return json.load(fh)
+    return load_json(
+        path,
+        required=True,
+        error_msg=f"Missing deferred files data: {path}",
+    )
 
 
 def sorted_queue(
