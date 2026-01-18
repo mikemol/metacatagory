@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 import sys
 from typing import Any, Dict, List
@@ -13,6 +12,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.shared.formalism_adapter import formalism_adapter_validator
+from scripts.shared.io import load_json
 
 
 def _collect_duplicates(values: List[str]) -> List[str]:
@@ -62,10 +62,11 @@ def validate_payload(payload: Dict[str, Any], source: str) -> bool:
 
 def main() -> int:
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "build" / "formalisms" / "canonical_constructions.json"
-    if not path.exists():
-        print(f"❌ Missing formalism constructions: {path}")
-        return 1
-    payload = json.loads(path.read_text())
+    payload = load_json(
+        path,
+        required=True,
+        error_msg=f"Missing formalism constructions: {path}",
+    )
     return 0 if validate_payload(payload, str(path)) else 1
 
 
