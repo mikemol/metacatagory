@@ -381,6 +381,11 @@ def parse_yaml_fenced_blocks(content: str, include_errors: bool = False) -> List
     return parsed
 
 
+def parse_yaml_fenced_blocks_with_errors(content: str) -> List[Dict[str, Any]]:
+    """Parse fenced YAML blocks and include parse errors as sentinel dicts."""
+    return parse_yaml_fenced_blocks(content, include_errors=True)
+
+
 def parse_simple_yaml_block(block: str) -> Dict[str, Any]:
     """Parse a minimal YAML block without a YAML parser."""
     entry: Dict[str, Any] = {}
@@ -435,6 +440,30 @@ def extract_bracketed_ids(content: str, pattern: str = r"\[([A-Z]+-\d+)\]") -> L
     return sorted(ids)
 
 
+def extract_bold_list_item_titles(content: str) -> List[str]:
+    """Extract bolded list item titles like '- **Title**' from content."""
+    pattern = re.compile(r'[-*]\s+\*\*(.+?)\*\*')
+    titles = {match.group(1).strip() for match in pattern.finditer(content)}
+    return sorted(title for title in titles if title)
+
+
+def extract_roadmap_frontmatter_and_ids(content: str) -> Tuple[List[str], List[Dict[str, Any]]]:
+    """Extract roadmap frontmatter entries and referenced IDs from markdown."""
+    frontmatter_items: List[Dict[str, Any]] = []
+    for data in parse_yaml_fenced_blocks_fallback(content):
+        if data and isinstance(data, dict):
+            frontmatter_items.append(data)
+
+    ids = set()
+    for item in frontmatter_items:
+        item_id = item.get("id")
+        if isinstance(item_id, str):
+            ids.add(item_id)
+
+    ids.update(extract_bracketed_ids(content))
+    return sorted(ids), frontmatter_items
+
+
 def extract_markdown_section_from_content(
     content: str,
     heading_pattern: str,
@@ -478,6 +507,27 @@ def extract_markdown_section(
         return None
     content = md_path.read_text(encoding="utf-8")
     return extract_markdown_section_from_content(content, heading_pattern)
+
+
+def parse_markdown_table_rows(text: str) -> List[List[str]]:
+    """Parse markdown table rows into cell lists.
+
+    Skips separator rows composed of dashes/colons.
+    """
+    rows: List[List[str]] = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            continue
+        # Drop leading/trailing pipes, then split cells.
+        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+        if not cells:
+            continue
+        # Skip separator rows like | --- | ---: |
+        if all(re.fullmatch(r":?-{3,}:?", cell or "-") for cell in cells):
+            continue
+        rows.append(cells)
+    return rows
 
 
 class MarkdownBuilder:

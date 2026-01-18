@@ -10,8 +10,12 @@ from scripts.shared.markdown import (
     MarkdownParser,
     MarkdownBuilder,
     MarkdownValidator,
+    extract_roadmap_frontmatter_and_ids,
+    extract_bold_list_item_titles,
     extract_bracketed_ids,
     extract_markdown_section,
+    parse_yaml_fenced_blocks_with_errors,
+    parse_markdown_table_rows,
     parse_yaml_fenced_blocks_fallback,
 )
 
@@ -210,6 +214,58 @@ And [another one](/local/path).
         assert len(toc) > 0
         # TOC should contain markdown links
         assert "-" in toc or "#" in toc
+
+    def test_parse_markdown_table_rows(self):
+        """Parse markdown table rows while skipping separators."""
+        content = """\
+| Target | Description | Mutability |
+| --- | --- | --- |
+| `alpha` | First target | immutable |
+| `beta` | Second target | mutable |
+"""
+        rows = parse_markdown_table_rows(content)
+        assert rows == [
+            ["Target", "Description", "Mutability"],
+            ["`alpha`", "First target", "immutable"],
+            ["`beta`", "Second target", "mutable"],
+        ]
+
+    def test_parse_yaml_fenced_blocks_with_errors(self):
+        content = """\
+```yaml
+key: value
+```
+
+```yaml
+key: [unterminated
+```
+"""
+        blocks = parse_yaml_fenced_blocks_with_errors(content)
+        assert isinstance(blocks, list)
+        assert any("__parse_error__" in block for block in blocks)
+
+    def test_extract_bold_list_item_titles(self):
+        content = """\
+- **First Title**: details
+* **Second Title**
+- not bold
+"""
+        titles = extract_bold_list_item_titles(content)
+        assert titles == ["First Title", "Second Title"]
+
+    def test_extract_roadmap_frontmatter_and_ids(self):
+        content = """\
+```yaml
+id: GP123
+title: Sample
+```
+
+- **Title** — Description [status: draft]
+[GP200]
+"""
+        ids, frontmatter = extract_roadmap_frontmatter_and_ids(content)
+        assert ids == ["GP123", "GP200"]
+        assert frontmatter == [{"id": "GP123", "title": "Sample"}]
 
 
 class TestMarkdownBuilder:

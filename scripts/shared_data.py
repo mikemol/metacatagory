@@ -177,32 +177,14 @@ def load_planning_index_validated(
 
 def load_roadmap_markdown_from(md_path: Path) -> Tuple[List[str], List[Dict[str, Any]]]:
     """Extract roadmap item IDs and frontmatter from an explicit path."""
-    from scripts.shared.markdown import (
-        extract_bracketed_ids,
-        parse_yaml_fenced_blocks_fallback,
-    )
+    from scripts.shared.markdown import extract_roadmap_frontmatter_and_ids
 
     if not md_path.exists():
         raise FileNotFoundError(f"ROADMAP.md not found at {md_path}")
 
     content = md_path.read_text()
-    
-    # Extract YAML frontmatter blocks (with fallback parsing)
-    frontmatter_items: List[Dict[str, Any]] = []
-    for data in parse_yaml_fenced_blocks_fallback(content):
-        if data and isinstance(data, dict):
-            frontmatter_items.append(data)
-    
-    # Extract IDs from frontmatter and text fallback
-    ids = set()
-    for item in frontmatter_items:
-        if 'id' in item and isinstance(item['id'], str):
-            ids.add(item['id'])
-    
-    for item_id in extract_bracketed_ids(content):
-        ids.add(item_id)
-    
-    return sorted(ids), frontmatter_items
+    ids, frontmatter_items = extract_roadmap_frontmatter_and_ids(content)
+    return ids, frontmatter_items
 
 
 def load_ingested_metadata_from(path: Path, required: bool = True) -> Dict[str, Any]:

@@ -19,6 +19,7 @@ from .errors import ValidationError
 from .recovery_pipeline import RecoveryPipeline, RecoveryStrategy
 from .parallel import get_parallel_settings
 from .io import load_json
+from .markdown import extract_bold_list_item_titles
 from scripts import shared_data
 
 A = TypeVar('A')
@@ -51,7 +52,6 @@ class ReadMarkdownRoadmapTitlesPhase(Phase[Path, Set[str]]):
 
     def __init__(self, name: str = "read_md_titles"):
         super().__init__(name)
-        self._pattern = re.compile(r'[-*]\s+\*\*(.+?)\*\*')
 
     def transform(self, input_data: Path, context: Dict[str, Any]) -> Set[str]:
         md_path = Path(input_data)
@@ -62,7 +62,7 @@ class ReadMarkdownRoadmapTitlesPhase(Phase[Path, Set[str]]):
             if str(item.get("title", "")).strip()
         }
         content = md_path.read_text(encoding='utf-8')
-        titles |= {m.group(1).strip() for m in self._pattern.finditer(content)}
+        titles |= set(extract_bold_list_item_titles(content))
         return titles
 
 
