@@ -49,6 +49,9 @@ Mutability indicates whether a target is allowed to write artifacts or update th
 | `roadmap-validate-md` | Validate canonical Markdown | repo-write |
 | `roadmap-validate-triangle` | Verify Triangle Identity (Agda <-> JSON <-> MD) | repo-write |
 | `build/gp_roadmap_sppf.json` | Export SPPF structure | build-only |
+| `build/formalisms/canonical_constructions.json` | Ingest formalism adapter spec | build-only |
+| `formalism-validate` | Validate formalism constructions | repo-write |
+| `build/formalisms/construction_templates.agda` | Generate formalism Agda templates | build-only |
 | `roadmap-all-enriched` | Build all enriched artifacts | repo-write |
 | `md-lint` | Lint all markdown files (fail on error) | report-only |
 | `build/reports/docs-lint.json` | Emit Agda docs lint report | report-only |

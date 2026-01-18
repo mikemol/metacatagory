@@ -36,7 +36,7 @@ compositeTargets =
     ("@echo \"check-infra complete\"" ∷ [])
   ∷ generatorToTarget mutateCert "check-docs" "Validate documentation outputs" ("md-lint" ∷ "docs-lint" ∷ "docs-validate" ∷ [])
     ("@echo \"check-docs complete\"" ∷ [])
-  ∷ generatorToTarget mutateCert "check-roadmap" "Validate roadmap exports" ("roadmap-validate-triangle" ∷ [])
+  ∷ generatorToTarget mutateCert "check-roadmap" "Validate roadmap exports" ("roadmap-validate-triangle" ∷ "formalism-validate" ∷ [])
     ("@echo \"check-roadmap complete\"" ∷ [])
   ∷ generatorToTarget mutateCert "check-python" "Validate Python test suite" ("python-verified" ∷ [])
     ("@echo \"check-python complete\"" ∷ [])
