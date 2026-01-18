@@ -20,8 +20,8 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
-from scripts.shared.parallel import get_parallel_settings
 from scripts.shared.io import load_json
+from scripts.shared.parallel import get_parallel_settings
 from scripts.shared.logging import configure_logging, StructuredLogger
 from scripts.shared.validation import ValidationResult
 from scripts.shared.validated_provenance import ValidatedProvenance
@@ -215,8 +215,7 @@ def validate_roundtrip(base_dir: Path | None = None) -> bool:
 
     try:
         def load_file(path: Path) -> Dict[str, Any]:
-            with open(path, "r", encoding="utf-8") as f:
-                return json.load(f)
+            return load_json(path)
 
         parallel, workers = get_parallel_settings()
         if parallel and workers > 1:
@@ -365,8 +364,7 @@ def validate_roundtrip_with_paths(original_path: Path, recomposed_path: Path) ->
     print(f"[roundtrip] original={original_path} recomposed={recomposed_path}")
 
     def load_file(path: Path) -> Dict[str, Any]:
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
+        return load_json(path)
 
     try:
         original = load_file(original_path)
