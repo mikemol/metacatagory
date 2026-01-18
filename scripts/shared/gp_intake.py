@@ -98,7 +98,7 @@ def extract_metadata_from_text(content: str, fallback_title: str) -> Dict:
 
 def extract_question(content: str) -> str:
     """Extract the actionable 'Would you like...' question."""
-    lines = content.split('\n')
+    lines = content.splitlines()
     for line in lines[:5]:
         if line.strip().startswith('Would you like'):
             question = line.strip()

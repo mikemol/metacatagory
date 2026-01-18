@@ -4,6 +4,7 @@
 from scripts.shared.gp_intake import (
     build_gp_metadata,
     categorize_gp_phase,
+    extract_question,
     extract_metadata_from_text,
     extract_gp_number,
     infer_target_module,
@@ -36,6 +37,16 @@ Second declarative line.
     meta = extract_metadata_from_text(content, "Fallback")
     assert "Would you like" not in meta["summary"]
     assert "Here is a declarative line." in meta["summary"]
+
+
+def test_extract_question_splits_lines():
+    content = (
+        "Preface line\r\n"
+        "Would you like me to proceed?\r\n"
+        "Second line.\n"
+        "Third line.\n"
+    )
+    assert extract_question(content) == "Would you like me to proceed?"
 
 
 def test_extract_gp_number_parses_id():
