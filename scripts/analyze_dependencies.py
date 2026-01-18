@@ -6,12 +6,11 @@ Shows which tasks have import-based dependency suggestions,
 and provides a tool to promote them to explicit dependsOn in the canonical roadmap.
 """
 
-import json
 from pathlib import Path
 from typing import List, Dict
 
 from scripts import shared_data
-from scripts.shared.io import save_json
+from scripts.shared.io import load_json, save_json
 
 REPO_ROOT = Path(__file__).parent.parent
 ENRICHED_JSON = REPO_ROOT / "build" / "canonical_enriched.json"
@@ -23,8 +22,7 @@ def analyze_suggestions() -> None:
         print("Error: canonical_enriched.json not found. Run 'make roadmap-all-enriched' first.")
         return
     
-    with open(ENRICHED_JSON, "r") as f:
-        enriched = json.load(f)
+    enriched = load_json(ENRICHED_JSON, required=True)
     
     # Group by task
     tasks_with_suggestions = []
@@ -63,8 +61,7 @@ def promote_suggestions() -> None:
         print("Error: Missing enriched or canonical JSON. Run 'make roadmap-all-enriched' first.")
         return
     
-    with open(ENRICHED_JSON, "r") as f:
-        enriched = json.load(f)
+    enriched = load_json(ENRICHED_JSON, required=True)
     
     canonical = shared_data.load_planning_index_validated_from(CANONICAL_JSON)
     
@@ -105,8 +102,7 @@ def show_task_suggestions(task_id: str) -> None:
         print("Error: canonical_enriched.json not found. Run 'make roadmap-all-enriched' first.")
         return
     
-    with open(ENRICHED_JSON, "r") as f:
-        enriched = json.load(f)
+    enriched = load_json(ENRICHED_JSON, required=True)
     
     item = next((i for i in enriched if i.get("id") == task_id), None)
     
