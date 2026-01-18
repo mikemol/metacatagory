@@ -54,6 +54,25 @@ def load_json(
         raise
 
 
+def load_json_text(
+    text: str,
+    default: Optional[Any] = None,
+    error_msg: Optional[str] = None,
+    required: bool = False,
+) -> Any:
+    """Parse JSON from a string with consistent error handling."""
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError as e:
+        msg = error_msg or f"Invalid JSON input: {e}"
+        print(f"Error: {msg}", file=sys.stderr)
+        if default is not None:
+            return default
+        if required:
+            sys.exit(1)
+        raise
+
+
 def save_json(
     path: Union[str, Path],
     data: Any,
