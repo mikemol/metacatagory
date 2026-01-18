@@ -13,13 +13,14 @@ module Plan.CIM.JSONTransformationContract where
 
 open import Agda.Primitive using (Level; lzero; lsuc)
 open import Agda.Builtin.Equality using (_≡_; refl)
-open import Agda.Builtin.String using (String)
+open import Agda.Builtin.String using (String; primStringToList)
 open import Agda.Builtin.List using (List; []; _∷_)
 open import Agda.Builtin.Maybe using (Maybe; just; nothing)
 open import Agda.Builtin.Nat using (Nat)
 open import Agda.Builtin.Bool using (Bool; true; false)
 open import Agda.Builtin.Sigma using (_,_; Σ)
 
+open import Plan.CIM.JSONConcrete using (_≢c_)
 open import Plan.CIM.JSONTransformation
   using (JSON; Filepath; Monolithic; Hierarchical; Fragment; ManifestSpec;
          mkMonolithic; mkHierarchical; mkFragment)
@@ -29,7 +30,8 @@ open import Plan.CIM.JSONTransformation
 ------------------------------------------------------------------------
 
 -- | String inequality (helper for contract laws)
-postulate _≢ₛ_ : String → String → Set
+_≢ₛ_ : String → String → Set
+_≢ₛ_ = _≢c_
 
 -- | Record of primitive operations required for JSON transformation
 -- This is the CONTRACT - any implementation must provide these
@@ -67,6 +69,14 @@ record JSONPrimitives : Set where
 -- This is the ABSTRACT version - works for ANY correct primitive implementation
 module JSONTransformationParameterized (P : JSONPrimitives) where
   open JSONPrimitives P
+
+  map-list : ∀ {A B : Set} → (A → B) → List A → List B
+  map-list f [] = []
+  map-list f (x ∷ xs) = f x ∷ map-list f xs
+
+  foldl-list : ∀ {A B : Set} → (B → A → B) → B → List A → B
+  foldl-list f acc [] = acc
+  foldl-list f acc (x ∷ xs) = foldl-list f (f acc x) xs
   
   -- Derived operations (built from contract primitives)
   extractMetadata : JSON → JSON
@@ -97,9 +107,6 @@ module JSONTransformationParameterized (P : JSONPrimitives) where
         meta = metadataExtract content
         idx = indexBuild frags
     in mkHierarchical meta frags manifestSpec
-    where
-      -- | Local map helper for fragment construction.
-      postulate map-list : ∀ {A B : Set} → (A → B) → List A → List B
   
   -- Backward transformation (reconstructs from fragments)
   backward : Hierarchical → Monolithic
@@ -108,9 +115,6 @@ module JSONTransformationParameterized (P : JSONPrimitives) where
         merged = foldl-list (λ acc frag → merge acc (Fragment.content frag))
                             empty fragments
     in mkMonolithic merged
-    where
-      -- | Local fold helper for fragment recomposition.
-      postulate foldl-list : ∀ {A B : Set} → (B → A → B) → B → List A → B
   
   -- Roundtrip property (uses primitive laws)
   postulate
@@ -147,9 +151,10 @@ module JSONPrimitivesConcrete where
   get-set-same-witness = concrete-get-set-same
   
   -- Wrapper for get-set-diff that adapts the inequality type
-  postulate
-    get-set-diff-witness : ∀ j k₁ k₂ v → k₁ ≢ₛ k₂ → 
-      json-get-concrete (json-set-concrete j k₁ v) k₂ ≡ json-get-concrete j k₂
+  get-set-diff-witness : ∀ j k₁ k₂ v → k₁ ≢ₛ k₂ →
+    json-get-concrete (json-set-concrete j k₁ v) k₂ ≡ json-get-concrete j k₂
+  get-set-diff-witness j k₁ k₂ v k₁≢k₂ =
+    concrete-get-set-diff j k₁ k₂ v k₁≢k₂
   
   merge-empty-witness = concrete-merge-empty
   parse-serialize-witness = concrete-parse-serialize
@@ -242,16 +247,42 @@ module JSONTransformationEquivalence where
 module JSONTransformationTests (P : JSONPrimitives) where
   open JSONPrimitives P
   open JSONTransformationParameterized P
+
+  _&&_ : Bool → Bool → Bool
+  true && b = b
+  false && _ = false
+
+  is-nonempty-string : String → Bool
+  is-nonempty-string s with primStringToList s
+  ... | [] = false
+  ... | _ = true
+
+  cong : ∀ {A B : Set} → (f : A → B) → {x y : A} → x ≡ y → f x ≡ f y
+  cong f refl = refl
   
   -- Test: roundtrip preserves content
-  postulate
-    test-roundtrip-preserves : ∀ (strat : TransformationStrategy) (m : Monolithic) →
-      Monolithic.content (backward (forward strat m)) ≡ Monolithic.content m
+  test-roundtrip-preserves : ∀ (strat : TransformationStrategy) (m : Monolithic) →
+    Monolithic.content (backward (forward strat m)) ≡ Monolithic.content m
+  test-roundtrip-preserves strat m =
+    cong Monolithic.content (roundtrip strat m)
   
-  -- Test: decomposition creates valid fragments  
-  postulate
-    all : ∀ {A : Set} → (A → Bool) → List A → Bool
-    is-valid-fragment : Fragment → Bool
+  all : ∀ {A : Set} → (A → Bool) → List A → Bool
+  all p [] = true
+  all p (x ∷ xs) with p x
+  ... | true = all p xs
+  ... | false = false
+
+  roundtrip-ok : JSON → Bool
+  roundtrip-ok j with parse (serialize j)
+  ... | just parsed = equiv parsed j
+  ... | nothing = false
+
+  -- Test: decomposition creates valid fragments
+  is-valid-fragment : Fragment → Bool
+  is-valid-fragment frag =
+    let path-ok = is-nonempty-string (Fragment.path frag)
+        content = Fragment.content frag
+    in path-ok && roundtrip-ok content
     
   postulate
     test-fragments-valid : ∀ (strat : TransformationStrategy) (m : Monolithic) →

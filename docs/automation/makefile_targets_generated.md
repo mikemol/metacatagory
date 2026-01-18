@@ -76,6 +76,9 @@ Mutability indicates whether a target is allowed to write artifacts or update th
 | `json-decompose-planning` | Decompose planning_index.json into plan hierarchy | repo-write |
 | `build/planning_index_recomposed.json` | Recompose planning items into planning_index.json | build-only |
 | `json-roundtrip-validate-planning` | Validate planning roundtrip | repo-write |
+| `json-roundtrip-validate-all` | Validate JSON roundtrip (deps + planning) | repo-write |
+| `json-contract-validate` | Validate JSON transformation contract (Agda) | repo-write |
+| `json-real-validate` | Validate real JSON data (Agda contract + Python validators) | repo-write |
 | `build/dir.stamp` | Ensure build/ exists | build-only |
 | `build/reports/dir.stamp` | Ensure build/reports exists | report-only |
 | `docs/status/dir.stamp` | Ensure docs/status exists | repo-write |
