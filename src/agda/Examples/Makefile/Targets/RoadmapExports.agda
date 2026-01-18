@@ -50,6 +50,9 @@ roadmapExportTargets =
   ∷ generatorToFileTarget mutateCert "build/formalisms/canonical_constructions.json" "Ingest formalism adapter spec"
       ("data/formalisms/formalism_adapter.json" ∷ "scripts/formalism_ingest.py" ∷ "scripts/shared/formalism_adapter.py" ∷ [])
       ("python3 scripts/formalism_ingest.py" ∷ [])
+  ∷ generatorToFileTarget mutateCert "build/formalisms/construction_templates.agda" "Generate formalism Agda templates"
+      ("data/formalisms/formalism_adapter.json" ∷ "scripts/formalism_template.py" ∷ "scripts/shared/formalism_adapter.py" ∷ [])
+      ("python3 scripts/formalism_template.py" ∷ [])
   ∷ generatorToTarget mutateCert "roadmap-all-enriched" "Build all enriched artifacts" ("build/reports/tasks_enriched.md" ∷ "roadmap-export-deps" ∷ [])
       ("@echo \"roadmap all enriched complete\"" ∷ [])
   ∷ []
