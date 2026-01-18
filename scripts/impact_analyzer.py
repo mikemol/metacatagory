@@ -259,9 +259,12 @@ class ImpactAnalyzer:
         """Find steps on the critical path (high impact, high dependencies)."""
         # Load critical path from dependency graph
         graph_path = Path(self.workspace_root) / "data/dependency_graph.json"
-        with open(graph_path, 'r') as f:
-            graph_data = json.load(f)
-            critical_modules = set(graph_data['critical_path'])
+        graph_data = load_json(
+            graph_path,
+            required=True,
+            error_msg=f"Missing dependency graph: {graph_path}",
+        )
+        critical_modules = set(graph_data['critical_path'])
         
         # Find steps that modify critical path modules
         critical_steps = [
