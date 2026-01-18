@@ -5,7 +5,6 @@ Generates JSON endpoints for Shields.io dynamic badges based on roadmap tasks an
 Outputs badge data files that can be served via GitHub Pages or committed to the repo.
 """
 
-import json
 import sys
 import re
 from pathlib import Path
@@ -19,7 +18,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 from scripts import shared_data
-from scripts.shared.io import save_json
+from scripts.shared.io import load_json, save_json
 
 # Constants controlling repository scan behavior
 FILE_SCAN_EXTENSIONS = {".agda", ".md", ".txt", ".py", ".sh", ".json", ".yml", ".yaml"}
@@ -83,9 +82,8 @@ def load_json_file(filepath: Path) -> Dict[str, Any]:
     if not filepath.exists():
         print(f"Warning: {filepath} not found", file=sys.stderr)
         return {}
-    
-    with open(filepath, 'r') as f:
-        return json.load(f)
+
+    return load_json(filepath, required=True)
 
 
 def load_weights(output_dir: Path) -> Dict[str, float]:
@@ -466,10 +464,9 @@ def main():
     history: List[Dict[str, Any]] = []
     if history_file.exists():
         try:
-            with open(history_file, "r") as hf:
-                data = json.load(hf)
-                if isinstance(data, list):
-                    history = data
+            data = load_json(history_file, required=True)
+            if isinstance(data, list):
+                history = data
         except Exception:
             history = []
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
