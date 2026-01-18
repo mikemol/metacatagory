@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-MODULE_RE = re.compile(r"^\s*module\s+([A-Za-z0-9_.]+)\s+where\s*$")
+from .agda import extract_module_name
 # E.g., `chk2s2B : S2.KernelPairDeclaration`
 RECORD_DECL_RE = re.compile(r"^\s*([A-Za-z0-9_']+)\s*:\s*([A-Za-z0-9_.]+)\.([A-Za-z0-9_]+)\s*$")
 # E.g., `foo : A.KernelPairAdapter` (also matches status lines in tests)
@@ -33,15 +33,13 @@ class AgdaTestScan:
 
 def scan_agda_test_file(path: Path) -> AgdaTestScan:
     """Scan an Agda test file for module, record, adapter, and status assertions."""
-    module_name: str | None = None
+    content = path.read_text(encoding="utf-8")
+    module_name = extract_module_name(content)
     records: set[str] = set()
     adapters: list[tuple[str, str]] = []
     status_assertions = 0
 
-    for line in path.read_text(encoding="utf-8").splitlines():
-        mod_match = MODULE_RE.match(line)
-        if mod_match:
-            module_name = mod_match.group(1)
+    for line in content.splitlines():
         record_match = RECORD_DECL_RE.match(line)
         if record_match:
             records.add(record_match.group(3))

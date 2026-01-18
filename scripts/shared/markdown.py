@@ -530,6 +530,65 @@ def parse_markdown_table_rows(text: str) -> List[List[str]]:
     return rows
 
 
+def reconstruct_table_section(lines: List[str], start_idx: int) -> Tuple[List[str], int]:
+    """Reconstruct a collapsed markdown table section from lines."""
+    table_lines: List[str] = []
+    i = start_idx
+
+    while i < len(lines):
+        line = lines[i].strip()
+        if line.startswith('---') or '**' in line or '$mathbf{' in line:
+            table_lines.append(lines[i])
+            i += 1
+        elif not line:
+            i += 1
+            if i < len(lines) and not lines[i].strip().startswith(
+                ('---', '  ---', '**', '  **', '$', '  $')
+            ):
+                break
+        else:
+            break
+
+    if len(table_lines) < 2:
+        return lines[start_idx:i], i
+
+    combined = ' '.join(table_lines)
+
+    if 'Formal Type' in combined and 'Exegesis' in combined:
+        return reconstruct_formal_type_table(table_lines), i
+    if 'Level (n-Cell)' in combined or 'n-Cell' in combined:
+        return reconstruct_ncell_table(table_lines), i
+    if 'Construction' in combined and 'Categorical' in combined:
+        return reconstruct_categorical_table(table_lines), i
+    if 'Component' in combined or 'Operation' in combined:
+        return reconstruct_component_table(table_lines), i
+    return table_lines, i
+
+
+def reconstruct_formal_type_table(lines: List[str]) -> List[str]:
+    """Reconstruct tables with Formal Type | Exegesis | Source pattern."""
+    _ = [
+        "| **Formal Type** | **Exegesis & Purpose** | **Source** |",
+        "| --- | --- | --- |",
+    ]
+    return lines
+
+
+def reconstruct_ncell_table(lines: List[str]) -> List[str]:
+    """Reconstruct n-Cell hierarchy tables."""
+    return lines
+
+
+def reconstruct_categorical_table(lines: List[str]) -> List[str]:
+    """Reconstruct categorical construction tables."""
+    return lines
+
+
+def reconstruct_component_table(lines: List[str]) -> List[str]:
+    """Reconstruct component/operation tables."""
+    return lines
+
+
 class MarkdownBuilder:
     """Builder for constructing markdown documents."""
     

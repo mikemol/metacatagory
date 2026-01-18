@@ -6,7 +6,6 @@ Parses intake/GP/*.md files to generate properly structured Agda roadmap modules
 Preserves mathematical coherence and dependency relationships.
 """
 
-import re
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass, asdict
@@ -45,25 +44,6 @@ class RoadmapEntry:
     manifest_version: Optional[str]  # If this introduces a manifest (v2.0, etc.)
     target_modules: List[str]  # Agda/Python modules to implement
     target_module: str       # Routed primary module
-    
-def extract_section(content: str, pattern: str) -> Optional[str]:
-    """Extract a section matching the given pattern."""
-    match = re.search(pattern, content, re.MULTILINE | re.DOTALL)
-    return match.group(1).strip() if match else None
-
-def extract_title(content: str) -> str:
-    """Extract the main title from section headers."""
-    # Look for "I. Formal Correction:" or "I. Formal Analysis:" patterns
-    patterns = [
-        r'### \*\*I\. Formal (?:Correction|Analysis): (.+?)\*\*',
-        r'### I\. Formal (?:Correction|Analysis): (.+?)$',
-    ]
-    for pattern in patterns:
-        match = re.search(pattern, content, re.MULTILINE)
-        if match:
-            return match.group(1).strip()
-    return "Unknown Title"
-
 def parse_gp_file(filepath: Path) -> RoadmapEntry:
     """Parse a single GP markdown file."""
     content = filepath.read_text(encoding='utf-8')

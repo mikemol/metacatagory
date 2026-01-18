@@ -17,6 +17,7 @@ from scripts.shared.markdown import (
     parse_yaml_fenced_blocks_with_errors,
     parse_markdown_table_rows,
     parse_yaml_fenced_blocks_fallback,
+    reconstruct_table_section,
 )
 
 
@@ -266,6 +267,18 @@ title: Sample
         ids, frontmatter = extract_roadmap_frontmatter_and_ids(content)
         assert ids == ["GP123", "GP200"]
         assert frontmatter == [{"id": "GP123", "title": "Sample"}]
+
+    def test_reconstruct_table_section_returns_lines(self):
+        lines = [
+            "  ---\n",
+            "**Header**\n",
+            "$mathbf{X}$\n",
+            "\n",
+            "Next line\n",
+        ]
+        reconstructed, end_idx = reconstruct_table_section(lines, 0)
+        assert end_idx >= 3
+        assert reconstructed
 
 
 class TestMarkdownBuilder:

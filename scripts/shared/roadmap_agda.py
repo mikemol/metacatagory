@@ -7,14 +7,7 @@ import re
 from pathlib import Path
 from typing import Dict, List
 
-from .normalization import ensure_provenance
-
-
-def _unescape_string(value: str) -> str:
-    try:
-        return bytes(value, "utf-8").decode("unicode_escape")
-    except Exception:
-        return value
+from .normalization import ensure_provenance, unescape_string
 
 
 def parse_ingested_agda(base_path: Path) -> List[Dict]:
@@ -42,12 +35,12 @@ def parse_ingested_agda(base_path: Path) -> List[Dict]:
             gp_id, provenance, step, status, target = match.groups()
             item = {
                 "id": f"GP-{gp_id}",
-                "title": _unescape_string(provenance.strip()),
-                "description": _unescape_string(step.strip()),
-                "status": _unescape_string(status.strip()),
+                "title": unescape_string(provenance.strip()),
+                "description": unescape_string(step.strip()),
+                "status": unescape_string(status.strip()),
                 "category": "IngestedGP",
                 "source": f"Plan/CIM/IngestedRoadmaps/{agda_file.name}",
-                "files": [_unescape_string(target.strip())],
+                "files": [unescape_string(target.strip())],
                 "tags": ["GP"],
                 "dependsOn": [],
                 "related": [],

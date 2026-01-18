@@ -758,3 +758,13 @@ def extract_definition_names(file_path: Path, limit: int | None = None) -> list[
             if limit is not None and len(names) >= limit:
                 break
     return names
+MODULE_NAME_PATTERN = re.compile(
+    r'^\s*module\s+([A-Za-z0-9_.]+)(?:\s*\(([^)]+)\))?\s+where\s*$',
+    re.MULTILINE
+)
+
+
+def extract_module_name(content: str) -> str | None:
+    """Extract the module name from Agda source content."""
+    match = MODULE_NAME_PATTERN.search(content)
+    return match.group(1) if match else None

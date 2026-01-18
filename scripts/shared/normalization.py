@@ -203,3 +203,11 @@ def clean_empty_strings(data: Any) -> Any:
         return [clean_empty_strings(item) for item in data if item != '']
     else:
         return data
+
+
+def unescape_string(value: str) -> str:
+    """Best-effort unescape of escaped sequences in strings."""
+    try:
+        return bytes(value, "utf-8").decode("unicode_escape")
+    except Exception:
+        return value

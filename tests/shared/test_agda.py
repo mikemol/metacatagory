@@ -9,6 +9,7 @@ from scripts.shared.agda import (
     DependencyAnalyzer,
     extract_module_header,
     extract_definition_names,
+    extract_module_name,
 )
 
 
@@ -448,3 +449,8 @@ class TestAgdaHelpers:
         )
         names = extract_definition_names(agda_file, limit=2)
         assert names == ["foo", "bar"]
+
+
+def test_extract_module_name():
+    content = "module Foo.Bar where\n\npostulate X : Set"
+    assert extract_module_name(content) == "Foo.Bar"
