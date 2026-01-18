@@ -7,7 +7,6 @@ Reads build/canonical_enriched.json and outputs build/reports/tasks_enriched.md
 with detailed semantic information for each task.
 """
 
-import json
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import sys
@@ -17,6 +16,7 @@ REPO_ROOT = Path(__file__).parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from scripts.shared.io import load_json
 from scripts.shared.paths import REPORTS_DIR
 from scripts.shared_yaml import dump_yaml
 from scripts.shared.parallel import get_parallel_settings
@@ -285,8 +285,7 @@ def export_enriched_markdown() -> None:
         print(f"Error: {ENRICHED_JSON} not found. Run 'make roadmap-enrich' first.")
         return
     
-    with open(ENRICHED_JSON, "r", encoding="utf-8") as f:
-        items = json.load(f)
+    items = load_json(ENRICHED_JSON, required=True)
     
     # Group by category
     by_category: Dict[str, List[Dict]] = {}
