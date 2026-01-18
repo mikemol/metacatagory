@@ -20,6 +20,7 @@ from inspect import signature
 from contextvars import ContextVar
 import warnings
 from .errors import FileOperationError, ValidationError
+from .io import load_json
 
 
 @dataclass
@@ -162,8 +163,14 @@ class Config:
         if not path_obj.exists():
             raise FileOperationError("Configuration file not found", path=path_obj)
         
-        with open(path_obj) as f:
-            data = json.load(f)
+        try:
+            data = load_json(path_obj)
+        except json.JSONDecodeError as exc:
+            raise FileOperationError(
+                "Invalid configuration JSON",
+                path=path_obj,
+                detail=str(exc),
+            ) from exc
         
         # Update config from file data
         for key, value in data.items():

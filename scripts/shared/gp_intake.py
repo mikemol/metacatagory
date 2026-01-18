@@ -8,6 +8,7 @@ import re
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from scripts.shared.io import load_json
 
 def strip_base64_images(text: str) -> str:
     """Remove Base64-encoded images from text to prevent pollution."""
@@ -219,10 +220,7 @@ def build_gp_metadata(content: str, gp_id: str, config: Dict | None = None) -> D
 
 def load_concept_config(config_path: Path) -> Dict:
     """Load concept patterns and settings from config file."""
-    if config_path.exists():
-        with open(config_path) as f:
-            return json.load(f)
-    return {
+    default_config = {
         "concept_patterns": [
             "RoPE|SPPF|Stasheff|Associahedron|Polytope|Loday|Yoneda|Sheaf|Cohomology",
             "Braid|Homotopy|Functor|Adjunction|Manifold|Topology|Geometry",
@@ -233,6 +231,7 @@ def load_concept_config(config_path: Path) -> Dict:
         "max_concepts": 15,
         "concept_title_case": True,
     }
+    return load_json(config_path, default=default_config)
 
 
 def infer_target_module(content: str, title: str, keywords: List[str], config: Dict) -> str:

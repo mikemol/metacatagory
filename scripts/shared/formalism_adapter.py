@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from scripts.shared.io import load_json
 from scripts.shared.validation import ValidationResult
 from scripts.shared.validation import (
     dict_validator,
@@ -101,7 +102,7 @@ def formalism_adapter_validator(value: Any, path: str = "") -> ValidationResult:
 
 
 def load_formalism_adapter(path: Path) -> FormalismAdapter:
-    payload = json.loads(path.read_text())
+    payload = load_json(path)
     result = formalism_adapter_validator(payload, path=str(path))
     result.raise_if_invalid("Formalism adapter schema validation failed")
     return FormalismAdapter.from_dict(payload)
