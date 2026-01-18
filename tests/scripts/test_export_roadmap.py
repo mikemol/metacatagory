@@ -46,7 +46,7 @@ class TestGenerateMarkdownSection:
             },
         }
         md = mod.generate_markdown_section(metadata)
-        assert "### Other" in md
+        assert "### Unified (800-899)" in md
         assert "GP999" in md
 
     def test_additional_categories(self):
@@ -63,7 +63,7 @@ class TestGenerateMarkdownSection:
         md = mod.generate_markdown_section(metadata)
 
         assert "Structural (100-199)" in md
-        assert "Semantic (400-499)" in md
+        assert "Homological (400-499)" in md
         assert "Polytope (500-599)" in md
 
 
