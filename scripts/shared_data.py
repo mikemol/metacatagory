@@ -5,21 +5,17 @@ Provides unified access to planning index, markdown, and YAML data.
 Centralizes data loading patterns to reduce duplication across scripts.
 """
 
-import json
-from json import JSONDecodeError
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Optional
+
+from scripts.shared.io import load_json, try_load_json
 
 REPO_ROOT = Path(__file__).parent.parent
 
 def _load_items(path: Path) -> Tuple[Optional[List[Dict[str, Any]]], str]:
-    try:
-        with open(path) as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        return None, "missing"
-    except JSONDecodeError:
-        return None, "invalid"
+    data, state = try_load_json(path)
+    if state != "ok":
+        return None, state
     if isinstance(data, list):
         return data, "ok"
     if isinstance(data, dict):
@@ -194,8 +190,7 @@ def load_ingested_metadata_from(path: Path, required: bool = True) -> Dict[str, 
             raise FileNotFoundError(f"ingested_metadata.json not found at {path}")
         return {"total_files": 0, "files": {}}
 
-    with open(path) as f:
-        payload = json.load(f)
+    payload = load_json(path)
 
     from scripts.shared.validation import ingested_metadata_validator
 

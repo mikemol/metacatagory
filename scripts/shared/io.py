@@ -8,7 +8,7 @@ path management, and encoding.
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 
 def load_json(
@@ -59,18 +59,40 @@ def load_json_text(
     default: Optional[Any] = None,
     error_msg: Optional[str] = None,
     required: bool = False,
+    log_errors: bool = True,
 ) -> Any:
     """Parse JSON from a string with consistent error handling."""
     try:
         return json.loads(text)
     except json.JSONDecodeError as e:
         msg = error_msg or f"Invalid JSON input: {e}"
-        print(f"Error: {msg}", file=sys.stderr)
+        if log_errors:
+            print(f"Error: {msg}", file=sys.stderr)
         if default is not None:
             return default
         if required:
             sys.exit(1)
         raise
+
+
+def try_load_json(path: Union[str, Path]) -> Tuple[Optional[Any], str]:
+    """Load JSON and return (data, state) for soft-failure contexts."""
+    path = Path(path)
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f), "ok"
+    except FileNotFoundError:
+        return None, "missing"
+    except json.JSONDecodeError:
+        return None, "invalid"
+
+
+def try_load_json_text(text: str) -> Tuple[Optional[Any], str]:
+    """Parse JSON and return (data, state) for soft-failure contexts."""
+    try:
+        return json.loads(text), "ok"
+    except json.JSONDecodeError:
+        return None, "invalid"
 
 
 def save_json(

@@ -171,7 +171,7 @@ class AgdaParser:
         
         try:
             content = file_path.read_text(encoding='utf-8')
-            lines = content.split('\n')
+            lines = content.splitlines()
             
             # Extract module name and exports
             module_match = self.MODULE_PATTERN.search(content)

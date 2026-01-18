@@ -18,6 +18,10 @@ import json
 import textwrap
 
 try:
+    from .io import try_load_json_text
+except ImportError:
+    from scripts.shared.io import try_load_json_text  # type: ignore
+try:
     from ..shared_yaml import (
         dump_yaml as shared_dump_yaml,
         safe_load as shared_safe_load,
@@ -237,23 +241,19 @@ class MarkdownParser:
         if match:
             raw = match.group(1)
             raw = textwrap.dedent(raw)  # Dedent for indented content
-            try:
-                data = json.loads(raw)
+            data, state = try_load_json_text(raw)
+            if state == "ok" and data is not None:
                 return FrontMatter(data_or_raw=raw, data=data, format="json")
-            except Exception:
-                pass
         
         # Try bare JSON frontmatter (for test compatibility)
         match = self.FRONTMATTER_JSON_BARE_PATTERN.match(self.content)
         if match:
             raw = match.group(1)
             raw = textwrap.dedent(raw)  # Dedent for indented content
-            try:
-                data = json.loads(raw)
+            data, state = try_load_json_text(raw)
+            if state == "ok" and data is not None:
                 # Find where JSON ends to extract properly
                 return FrontMatter(data_or_raw=raw, data=data, format="json")
-            except Exception:
-                pass
         
         return FrontMatter()
     
