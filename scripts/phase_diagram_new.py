@@ -40,6 +40,7 @@ from scripts.shared.agda_tests import (
     infer_section_from_preceding,
     iter_checklist_adapters,
     iter_checklist_links,
+    scan_agda_test_file,
 )
 
 console = Console()
@@ -120,11 +121,10 @@ class PhaseDiagramGenerator:
                         )
                     )
 
-            # Find adapters
-            for adapter_name, adapter_type, adapter_pos in iter_checklist_adapters(content):
-                # Infer section from context
-                preceding = content[:adapter_pos]
-                section_num = infer_section_from_preceding(preceding)
+            scan = scan_agda_test_file(filepath)
+
+            for adapter_name, adapter_type in scan.adapters:
+                section_num = scan.section_by_adapter.get(adapter_name, "Unknown")
 
                 adapter_id = f"{chapter}.{section_num}.{adapter_name}"
                 section_id = f"{chapter}.{section_num}"

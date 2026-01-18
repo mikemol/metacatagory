@@ -29,6 +29,7 @@ class AgdaTestScan:
     records: list[str]
     adapters: list[tuple[str, str]]
     status_assertions: int
+    section_by_adapter: dict[str, str]
 
 
 def scan_agda_test_file(path: Path) -> AgdaTestScan:
@@ -38,6 +39,7 @@ def scan_agda_test_file(path: Path) -> AgdaTestScan:
     records: set[str] = set()
     adapters: list[tuple[str, str]] = []
     status_assertions = 0
+    section_by_adapter: dict[str, str] = {}
 
     for line in content.splitlines():
         record_match = RECORD_DECL_RE.match(line)
@@ -49,11 +51,15 @@ def scan_agda_test_file(path: Path) -> AgdaTestScan:
         if STATUS_ASSERT_RE.match(line):
             status_assertions += 1
 
+    for name, _typ, pos in iter_checklist_adapters(content):
+        section_by_adapter[name] = infer_section_from_preceding(content[:pos])
+
     return AgdaTestScan(
         module=module_name,
         records=sorted(records),
         adapters=adapters,
         status_assertions=status_assertions,
+        section_by_adapter=section_by_adapter,
     )
 
 
