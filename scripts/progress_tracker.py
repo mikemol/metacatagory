@@ -5,13 +5,12 @@ RoadmapProgressTracker: Track and report progress on roadmap items.
 Maintains progress state and generates progress reports.
 """
 
-import json
 import os
 from datetime import datetime
 from typing import Dict, List, Optional
 from pathlib import Path
 
-from scripts.shared.io import save_json
+from scripts.shared.io import load_json, save_json
 class ProgressTracker:
     """Track progress on roadmap steps."""
     
@@ -23,8 +22,7 @@ class ProgressTracker:
     def _load_state(self) -> Dict:
         """Load progress state from file."""
         if os.path.exists(self.state_path):
-            with open(self.state_path, 'r') as f:
-                return json.load(f)
+            return load_json(self.state_path, required=True)
         
         return {
             'created': datetime.now().isoformat(),

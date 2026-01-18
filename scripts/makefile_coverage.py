@@ -7,7 +7,7 @@ import subprocess
 from pathlib import Path
 from typing import Iterable, List
 
-from scripts.makefile_graph import (
+from scripts.shared.makefile import (
     parse_make_database,
     parse_phony_targets,
     reachable_nodes,

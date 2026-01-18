@@ -13,7 +13,9 @@ def test_validate_roadmap_md_accepts_items_dict(tmp_path):
     data_dir.mkdir(parents=True, exist_ok=True)
     planning_path = data_dir / "planning_index.json"
     planning_path.write_text(
-        json.dumps({"items": [{"title": "Alpha"}]}),
+        json.dumps(
+            {"items": [{"id": "GP-1", "title": "Alpha", "status": "not-started"}]}
+        ),
         encoding="utf-8",
     )
 
@@ -36,7 +38,14 @@ def test_validate_roadmap_md_frontmatter_titles(tmp_path):
     data_dir.mkdir(parents=True, exist_ok=True)
     planning_path = data_dir / "planning_index.json"
     planning_path.write_text(
-        json.dumps({"items": [{"title": "Alpha"}, {"title": "Beta"}]}),
+        json.dumps(
+            {
+                "items": [
+                    {"id": "GP-1", "title": "Alpha", "status": "not-started"},
+                    {"id": "GP-2", "title": "Beta", "status": "not-started"},
+                ]
+            }
+        ),
         encoding="utf-8",
     )
 

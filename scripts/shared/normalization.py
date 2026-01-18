@@ -203,3 +203,17 @@ def clean_empty_strings(data: Any) -> Any:
         return [clean_empty_strings(item) for item in data if item != '']
     else:
         return data
+
+
+def unescape_string(value: str) -> str:
+    """Best-effort unescape of escaped sequences in strings."""
+    try:
+        return bytes(value, "utf-8").decode("unicode_escape")
+    except Exception:
+        return value
+
+
+def extract_keywords_from_text(text: str, *, min_len: int = 4) -> Set[str]:
+    """Extract lowercase keywords from free-form text."""
+    words = re.split(r"\W+", text.lower())
+    return {word for word in words if len(word) >= min_len}

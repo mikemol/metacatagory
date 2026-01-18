@@ -8,6 +8,12 @@ import re
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from scripts.shared.io import load_json
+
+
+def load_gp_text(path: Path) -> str:
+    """Load GP markdown content with consistent encoding handling."""
+    return path.read_text(encoding="utf-8", errors="ignore")
 
 def strip_base64_images(text: str) -> str:
     """Remove Base64-encoded images from text to prevent pollution."""
@@ -98,7 +104,7 @@ def extract_metadata_from_text(content: str, fallback_title: str) -> Dict:
 
 def extract_question(content: str) -> str:
     """Extract the actionable 'Would you like...' question."""
-    lines = content.split('\n')
+    lines = content.splitlines()
     for line in lines[:5]:
         if line.strip().startswith('Would you like'):
             question = line.strip()
@@ -156,19 +162,70 @@ def categorize_gp(gp_num: int) -> str:
     return "Analysis"
 
 
+def extract_gp_number(gp_id: str) -> int:
+    """Extract the numeric portion of a GP identifier."""
+    match = re.search(r"\d+", gp_id)
+    return int(match.group()) if match else 0
+
+
+def categorize_gp_phase(gp_num: int) -> str:
+    """Categorize GP number into phase buckets for routing."""
+    if gp_num < 100:
+        return "foundational"
+    if gp_num < 200:
+        return "structural"
+    if gp_num < 300:
+        return "geometric"
+    if gp_num < 400:
+        return "topological"
+    if gp_num < 500:
+        return "homological"
+    if gp_num < 600:
+        return "polytope"
+    if gp_num < 700:
+        return "coherence"
+    if gp_num < 800:
+        return "analysis"
+    return "unified"
+
+
 def extract_metadata_from_md(filepath: Path | str) -> Dict:
     """Extract metadata from a markdown file."""
     path = Path(filepath)
-    content = path.read_text(encoding="utf-8", errors="ignore")
+    content = load_gp_text(path)
     return extract_metadata_from_text(content, path.stem)
+
+
+def build_gp_metadata(content: str, gp_id: str, config: Dict | None = None) -> Dict:
+    """Build a canonical metadata map for a GP entry."""
+    config = config or load_concept_config(
+        Path(__file__).resolve().parent.parent / "extract-concepts-config.json"
+    )
+    metadata = extract_metadata_from_text(content, gp_id)
+    gp_num = extract_gp_number(gp_id)
+    key_concepts = extract_concepts(content, config)
+
+    return {
+        **metadata,
+        "category": categorize_gp(gp_num),
+        "question": extract_question(content),
+        "formal_correction": extract_formal_section(content),
+        "related_gps": extract_related_gps(content),
+        "manifest_version": extract_manifest_version(content),
+        "target_modules": extract_target_modules(content),
+        "key_concepts": key_concepts,
+        "target_module": infer_target_module(
+            content=content,
+            title=metadata.get("title", gp_id),
+            keywords=metadata.get("keywords", []),
+            config=config,
+        ),
+    }
 
 
 def load_concept_config(config_path: Path) -> Dict:
     """Load concept patterns and settings from config file."""
-    if config_path.exists():
-        with open(config_path) as f:
-            return json.load(f)
-    return {
+    default_config = {
         "concept_patterns": [
             "RoPE|SPPF|Stasheff|Associahedron|Polytope|Loday|Yoneda|Sheaf|Cohomology",
             "Braid|Homotopy|Functor|Adjunction|Manifold|Topology|Geometry",
@@ -179,6 +236,7 @@ def load_concept_config(config_path: Path) -> Dict:
         "max_concepts": 15,
         "concept_title_case": True,
     }
+    return load_json(config_path, default=default_config)
 
 
 def infer_target_module(content: str, title: str, keywords: List[str], config: Dict) -> str:

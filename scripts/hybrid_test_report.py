@@ -68,10 +68,20 @@ def scan_checklists_with_validation(
     """
     Scan actual checklist files and validate against Agda metadata
     """
-    from scripts.test_report import scan_file  # Import existing scanner
+    from scripts.shared.agda_tests import scan_agda_test_file
 
     checklist_files = sorted(TESTS_DIR.glob("*Checklist.agda"))
-    file_reports = [scan_file(f) for f in checklist_files]
+    file_reports = []
+    for checklist_file in checklist_files:
+        scan = scan_agda_test_file(checklist_file)
+        file_reports.append(
+            {
+                "file": str(checklist_file.relative_to(ROOT)),
+                "module": scan.module,
+                "adapters": scan.adapters,
+                "status_assertions": scan.status_assertions,
+            }
+        )
 
     status_assertion_values = []
     for fr in file_reports:

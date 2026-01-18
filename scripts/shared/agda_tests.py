@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-MODULE_RE = re.compile(r"^\s*module\s+([A-Za-z0-9_.]+)\s+where\s*$")
+from .agda import MODULE_NAME_PATTERN, extract_module_name
 # E.g., `chk2s2B : S2.KernelPairDeclaration`
 RECORD_DECL_RE = re.compile(r"^\s*([A-Za-z0-9_']+)\s*:\s*([A-Za-z0-9_.]+)\.([A-Za-z0-9_]+)\s*$")
 # E.g., `foo : A.KernelPairAdapter` (also matches status lines in tests)
@@ -21,6 +21,7 @@ CHECKLIST_ADAPTER_RE = re.compile(r"(\w+)-adapter\s*:\s*A\.(\w+)", re.MULTILINE)
 CHAPTER_NAME_RE = re.compile(r"(Chapter\d+)")
 SECTION_HEADER_RE = re.compile(r"^-+\s*\n--\s+Level\d+sub(\d+)", re.MULTILINE)
 LINK_ASSERT_RE = re.compile(r"(\w+)-\w+-link\s*:\s*.*?≡\s*([\w.]+)", re.MULTILINE)
+MODULE_RE = MODULE_NAME_PATTERN
 
 
 @dataclass
@@ -29,19 +30,19 @@ class AgdaTestScan:
     records: list[str]
     adapters: list[tuple[str, str]]
     status_assertions: int
+    section_by_adapter: dict[str, str]
 
 
 def scan_agda_test_file(path: Path) -> AgdaTestScan:
     """Scan an Agda test file for module, record, adapter, and status assertions."""
-    module_name: str | None = None
+    content = path.read_text(encoding="utf-8")
+    module_name = extract_module_name(content)
     records: set[str] = set()
     adapters: list[tuple[str, str]] = []
     status_assertions = 0
+    section_by_adapter: dict[str, str] = {}
 
-    for line in path.read_text(encoding="utf-8").splitlines():
-        mod_match = MODULE_RE.match(line)
-        if mod_match:
-            module_name = mod_match.group(1)
+    for line in content.splitlines():
         record_match = RECORD_DECL_RE.match(line)
         if record_match:
             records.add(record_match.group(3))
@@ -51,11 +52,15 @@ def scan_agda_test_file(path: Path) -> AgdaTestScan:
         if STATUS_ASSERT_RE.match(line):
             status_assertions += 1
 
+    for name, _typ, pos in iter_checklist_adapters(content):
+        section_by_adapter[name] = infer_section_from_preceding(content[:pos])
+
     return AgdaTestScan(
         module=module_name,
         records=sorted(records),
         adapters=adapters,
         status_assertions=status_assertions,
+        section_by_adapter=section_by_adapter,
     )
 
 

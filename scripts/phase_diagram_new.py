@@ -32,6 +32,7 @@ import networkx as nx
 from graphviz import Digraph
 from rich.console import Console
 
+from scripts.shared.config import Config
 from scripts.shared.io import save_json
 from scripts.shared.agda_tests import (
     extract_chapter_from_filename,
@@ -39,6 +40,7 @@ from scripts.shared.agda_tests import (
     infer_section_from_preceding,
     iter_checklist_adapters,
     iter_checklist_links,
+    scan_agda_test_file,
 )
 
 console = Console()
@@ -119,13 +121,13 @@ class PhaseDiagramGenerator:
                         )
                     )
 
-            # Find adapters
-            for adapter_name, adapter_type, adapter_pos in iter_checklist_adapters(content):
-                # Infer section from context
-                preceding = content[:adapter_pos]
-                section_num = infer_section_from_preceding(preceding)
+            scan = scan_agda_test_file(filepath)
 
-                adapter_id = f"{chapter}.{section_num}.{adapter_name}"
+            for adapter_name, adapter_type in scan.adapters:
+                base_name = adapter_name.removesuffix("-adapter")
+                section_num = scan.section_by_adapter.get(base_name, "Unknown")
+
+                adapter_id = f"{chapter}.{section_num}.{base_name}"
                 section_id = f"{chapter}.{section_num}"
 
                 # Add adapter node
@@ -302,17 +304,19 @@ def main() -> None:
     """Main entry point."""
     import argparse
 
+    config = Config.from_env()
+
     parser = argparse.ArgumentParser(description="Generate phase boundary diagrams")
     parser.add_argument(
         "--test-dir",
         type=Path,
-        default=Path("src/agda/Tests"),
+        default=config.agda_dir / "Tests",
         help="Directory containing test files (default: src/agda/Tests)",
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("docs/automation"),
+        default=config.docs_dir / "automation",
         help="Output directory for diagrams (default: docs/automation/)",
     )
     parser.add_argument(

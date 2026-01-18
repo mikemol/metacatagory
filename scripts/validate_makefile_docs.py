@@ -33,6 +33,7 @@ from scripts.audax_doc import (
     render_doc,
 )
 from scripts.shared.io import load_markdown
+from scripts.shared.markdown import parse_markdown_table_rows
 
 GENERATED_DOC = ROOT / "docs" / "automation" / "makefile_targets_generated.md"
 CHECKED_IN_DOC = ROOT / "docs" / "automation" / "MAKEFILE-TARGETS.md"
@@ -50,24 +51,22 @@ class TargetDoc(TypedDict):
 def parse_markdown_table(text: str) -> Dict[str, TargetDoc]:
     """Parse a Markdown table into a {Target: {description, mutability}} dictionary."""
     entries: Dict[str, TargetDoc] = {}
-    lines = text.splitlines()
-    for line in lines:
-        # Matches row: | `target` | Description |
-        if not line.strip().startswith("|") or "---" in line or "Target" in line:
+    rows = parse_markdown_table_rows(text)
+    for row in rows:
+        if len(row) < 2:
             continue
-        
-        parts = [p.strip() for p in line.split("|")]
-        if len(parts) >= 3:
-            target_cell = parts[1]
-            desc_cell = parts[2]
-            mut_cell = parts[3] if len(parts) >= 4 else ""
-            
-            # Extract target name from backticks
-            target = target_cell.strip("` ")
-            entries[target] = {
-                "description": desc_cell.strip(),
-                "mutability": mut_cell.strip(),
-            }
+        if row[0].strip().lower() == "target":
+            continue
+        target_cell = row[0]
+        desc_cell = row[1]
+        mut_cell = row[2] if len(row) >= 3 else ""
+
+        # Extract target name from backticks
+        target = target_cell.strip("` ")
+        entries[target] = {
+            "description": desc_cell.strip(),
+            "mutability": mut_cell.strip(),
+        }
             
     return entries
 

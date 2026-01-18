@@ -110,6 +110,7 @@ Value:
 Local parity:
 - `MUTATE_LEVEL=repo make check` for core validation logic.
 - `make act-ci` for full workflow emulation (requires act).
+- `scripts/ci_local.sh` for a local CI-style run without artifact uploads.
 
 Cleanup opportunities:
 - Keep CI consolidated; avoid reintroducing single-purpose workflows unless they
@@ -117,7 +118,8 @@ Cleanup opportunities:
 
 ### Workflow Test Matrix (Local)
 
-Use `act` only if available and configured (uses container image).
+Use `act` only if available and configured (uses container image). Prefer
+`mise exec -- make act-ci` with rootless Docker; see `docs/process/DOCKER-ROOTLESS.md`.
 
 ```bash
 make act-list

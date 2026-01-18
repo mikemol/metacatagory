@@ -1,0 +1,24 @@
+name: CI Workspace Setup
+description: Prepare workspace for GitHub Actions or act runs.
+
+runs:
+  using: composite
+  steps:
+    - name: Diagnose runner IDs
+      shell: bash
+      run: |
+        id
+        id runner
+        stat -c '%u:%g %A %n' /__w /__w/_temp
+
+    - name: Ensure workspace temp dirs (ACT)
+      if: ${{ env.ACT == 'true' }}
+      shell: bash
+      run: |
+        export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
+        export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+        export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
+        export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
+        mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
+                 "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
+        chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"

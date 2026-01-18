@@ -19,9 +19,9 @@ class TestGenerateMarkdownSection:
         metadata = {
             "total_files": 3,
             "files": {
-                "GP01": {"title": "Found", "summary": "F", "keywords": ["k1"]},
-                "GP300": {"title": "Topo", "summary": "T", "keywords": []},
-                "GP830": {"title": "Unified", "summary": "U"},
+                "GP01": {"title": "Found", "summary": "F", "keywords": ["k1"], "target_module": "src/agda/Plan/CIM/Implementation.agda"},
+                "GP300": {"title": "Topo", "summary": "T", "keywords": [], "target_module": "src/agda/Plan/CIM/Implementation.agda"},
+                "GP830": {"title": "Unified", "summary": "U", "target_module": "src/agda/Plan/CIM/Implementation.agda"},
             },
         }
         md = mod.generate_markdown_section(metadata)
@@ -42,11 +42,11 @@ class TestGenerateMarkdownSection:
         metadata = {
             "total_files": 1,
             "files": {
-                "GP999": {"title": "Other", "summary": "X"},
+                "GP999": {"title": "Other", "summary": "X", "target_module": "src/agda/Plan/CIM/Implementation.agda"},
             },
         }
         md = mod.generate_markdown_section(metadata)
-        assert "### Other" in md
+        assert "### Unified (800-899)" in md
         assert "GP999" in md
 
     def test_additional_categories(self):
@@ -54,16 +54,16 @@ class TestGenerateMarkdownSection:
         metadata = {
             "total_files": 3,
             "files": {
-                "GP150": {"title": "Struct", "summary": "S"},
-                "GP450": {"title": "Semantic", "summary": "Sem"},
-                "GP550": {"title": "Poly", "summary": "P"},
+                "GP150": {"title": "Struct", "summary": "S", "target_module": "src/agda/Plan/CIM/Implementation.agda"},
+                "GP450": {"title": "Semantic", "summary": "Sem", "target_module": "src/agda/Plan/CIM/Implementation.agda"},
+                "GP550": {"title": "Poly", "summary": "P", "target_module": "src/agda/Plan/CIM/Implementation.agda"},
             },
         }
 
         md = mod.generate_markdown_section(metadata)
 
         assert "Structural (100-199)" in md
-        assert "Semantic (400-499)" in md
+        assert "Homological (400-499)" in md
         assert "Polytope (500-599)" in md
 
 
@@ -85,7 +85,7 @@ class TestMain:
                 {
                     "total_files": 1,
                     "files": {
-                        "GP01": {"title": "Found", "summary": "F"}
+                        "GP01": {"title": "Found", "summary": "F", "target_module": "src/agda/Plan/CIM/Implementation.agda"}
                     },
                 }
             )
@@ -109,7 +109,7 @@ class TestMain:
                 {
                     "total_files": 1,
                     "files": {
-                        "GP300": {"title": "Topo", "summary": "S", "keywords": ["k"]}
+                        "GP300": {"title": "Topo", "summary": "S", "keywords": ["k"], "target_module": "src/agda/Plan/CIM/Implementation.agda"}
                     },
                 }
             )
@@ -133,7 +133,7 @@ class TestMain:
                 {
                     "total_files": 1,
                     "files": {
-                        "GP700": {"title": "Analysis", "summary": "A"}
+                        "GP700": {"title": "Analysis", "summary": "A", "target_module": "src/agda/Plan/CIM/Implementation.agda"}
                     },
                 }
             )
@@ -157,8 +157,8 @@ class TestMain:
                 {
                     "total_files": 2,
                     "files": {
-                        "GP200": {"title": "Geom", "summary": "G"},
-                        "GP201": {"title": "Geom2", "summary": "G2"},
+                        "GP200": {"title": "Geom", "summary": "G", "target_module": "src/agda/Plan/CIM/Implementation.agda"},
+                        "GP201": {"title": "Geom2", "summary": "G2", "target_module": "src/agda/Plan/CIM/Implementation.agda"},
                     },
                 }
             )
@@ -183,7 +183,7 @@ class TestMain:
             json.dumps(
                 {
                     "total_files": 1,
-                    "files": {"GP150": {"title": "Struct", "summary": "S"}},
+                    "files": {"GP150": {"title": "Struct", "summary": "S", "target_module": "src/agda/Plan/CIM/Implementation.agda"}},
                 }
             )
         )

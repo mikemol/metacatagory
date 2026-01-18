@@ -37,6 +37,11 @@ except ImportError:
     ValidationFailure = None
 
 
+def read_agda_text(path: Path) -> str:
+    """Load Agda source with consistent encoding handling."""
+    return path.read_text(encoding="utf-8", errors="ignore")
+
+
 @dataclass
 class AgdaModule:
     """Representation of an Agda module.
@@ -171,7 +176,7 @@ class AgdaParser:
         
         try:
             content = file_path.read_text(encoding='utf-8')
-            lines = content.split('\n')
+            lines = content.splitlines()
             
             # Extract module name and exports
             module_match = self.MODULE_PATTERN.search(content)
@@ -697,3 +702,74 @@ class DependencyAnalyzer:
             'most_imported_modules': dict(sorted_imports[:10]),  # Changed key from 'most_imported' to match test
             'cycles_found': len(self.find_cycles()),
         }
+
+
+def extract_module_header(file_path: Path, max_lines: int = 50) -> Optional[str]:
+    """Extract module doc comment or first meaningful block comment."""
+    if not file_path.exists():
+        return None
+
+    lines = file_path.read_text(encoding="utf-8", errors="ignore").splitlines()
+    doc_lines: list[str] = []
+    in_block_comment = False
+
+    for line in lines[:max_lines]:
+        stripped = line.strip()
+
+        if stripped.startswith("{-# OPTIONS"):
+            continue
+
+        if "{-" in stripped and "-}" not in stripped:
+            in_block_comment = True
+            text = stripped.split("{-", 1)[1].strip()
+            if text and not text.startswith("#"):
+                doc_lines.append(text)
+            continue
+
+        if in_block_comment:
+            if "-}" in stripped:
+                in_block_comment = False
+                text = stripped.split("-}", 1)[0].strip()
+                if text:
+                    doc_lines.append(text)
+                break
+            if stripped and not stripped.startswith("-"):
+                doc_lines.append(stripped)
+
+        if stripped.startswith("--") and not stripped.startswith("---"):
+            text = stripped[2:].strip()
+            if text and len(text) > 10:
+                doc_lines.append(text)
+                if len(doc_lines) >= 3:
+                    break
+
+    if doc_lines:
+        return " ".join(doc_lines[:5])
+
+    return None
+
+
+def extract_definition_names(file_path: Path, limit: int | None = None) -> list[str]:
+    """Extract top-level definition names based on type signature lines."""
+    if not file_path.exists():
+        return []
+
+    pattern = re.compile(r"^([a-zA-Z][a-zA-Z0-9-_]*)\s*:")
+    names: list[str] = []
+    for line in file_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+        match = pattern.match(line)
+        if match:
+            names.append(match.group(1))
+            if limit is not None and len(names) >= limit:
+                break
+    return names
+MODULE_NAME_PATTERN = re.compile(
+    r'^\s*module\s+([A-Za-z0-9_.]+)(?:\s*\(([^)]+)\))?\s+where\s*$',
+    re.MULTILINE
+)
+
+
+def extract_module_name(content: str) -> str | None:
+    """Extract the module name from Agda source content."""
+    match = MODULE_NAME_PATTERN.search(content)
+    return match.group(1) if match else None

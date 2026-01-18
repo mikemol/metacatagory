@@ -24,7 +24,7 @@ def test_merge_roadmaps_minimal(tmp_path):
                     "id": "T-1",
                     "title": "Task Alpha",
                     "description": "Alpha description",
-                    "status": "planned",
+                    "status": "not-started",
                     "category": "demo",
                     "source": "tasks.json",
                     "files": ["src/alpha.agda"],
@@ -42,7 +42,7 @@ def test_merge_roadmaps_minimal(tmp_path):
         "id": "RM-1",
         "title": "Task Beta",
         "description": "Beta description",
-        "status": "planned",
+        "status": "not-started",
         "category": "demo",
         "files": ["src/beta.agda"],
     }
@@ -90,7 +90,7 @@ def test_export_roadmap_sppf_minimal(tmp_path, monkeypatch):
                 {
                     "id": "N1",
                     "title": "Node One",
-                    "status": "planned",
+                    "status": "not-started",
                     "category": "demo",
                     "source": "fixture",
                     "files": ["src/one.agda"],
@@ -120,7 +120,7 @@ def test_export_dependency_graph_minimal(tmp_path):
                 {
                     "id": "A",
                     "title": "Task A",
-                    "status": "planned",
+                    "status": "not-started",
                     "category": "demo",
                     "dependsOn": [],
                     "suggestedDependencies": [],
@@ -128,7 +128,7 @@ def test_export_dependency_graph_minimal(tmp_path):
                 {
                     "id": "B",
                     "title": "Task B",
-                    "status": "planned",
+                    "status": "not-started",
                     "category": "demo",
                     "dependsOn": ["A"],
                     "suggestedDependencies": ["A"],

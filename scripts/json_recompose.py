@@ -25,7 +25,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 from scripts.shared.parallel import get_parallel_settings
-from scripts.shared.io import save_json
+from scripts.shared.io import load_json, save_json
 
 
 class JSONRecomposer:
@@ -40,8 +40,7 @@ class JSONRecomposer:
         """Load metadata from hierarchical structure."""
         metadata_file = self.hierarchical_dir / "_metadata.json"
         if metadata_file.exists():
-            with open(metadata_file, "r") as f:
-                return json.load(f)
+            return load_json(metadata_file, required=False)
         raise ValueError(f"No _metadata.json in {self.hierarchical_dir}")
 
     def _check_expected_count(self, found: int, label: str) -> None:
@@ -81,8 +80,7 @@ class DependencyGraphRecomposer(JSONRecomposer):
             module_files = []
 
             if index_file.exists():
-                with open(index_file, "r") as f:
-                    module_names = json.load(f)
+                module_names = load_json(index_file, required=False)
                 for module_name in module_names:
                     if not isinstance(module_name, str):
                         continue
@@ -96,8 +94,7 @@ class DependencyGraphRecomposer(JSONRecomposer):
                 ]
 
             for json_file in module_files:
-                with open(json_file, "r") as f:
-                    module_data = json.load(f)
+                module_data = load_json(json_file, required=False)
 
                 module_name = module_data.get("name")
                 if not module_name:
@@ -119,8 +116,7 @@ class DependencyGraphRecomposer(JSONRecomposer):
         if layers_dir.exists():
             for json_file in sorted(layers_dir.glob("layer-*.json")):
                 layer_num = int(json_file.stem.split("-")[1])
-                with open(json_file, "r") as f:
-                    layer_modules = json.load(f)
+                layer_modules = load_json(json_file, required=False)
                 layers[layer_num] = layer_modules
         
         # Read cycles
@@ -128,9 +124,8 @@ class DependencyGraphRecomposer(JSONRecomposer):
         cycles_dir = self.hierarchical_dir / "cycles"
         if cycles_dir.exists():
             for json_file in sorted(cycles_dir.glob("cycle-*.json")):
-                with open(json_file, "r") as f:
-                    cycle_data = json.load(f)
-                    cycles.append(cycle_data.get("modules", []))
+                cycle_data = load_json(json_file, required=False)
+                cycles.append(cycle_data.get("modules", []))
         
         result = {
             "modules": modules,
@@ -168,10 +163,11 @@ class ItemArrayRecomposer(JSONRecomposer):
             item_ids = []
             
             if index_file.exists():
-                with open(index_file, "r") as f:
-                    index_data = json.load(f)
-                    item_ids = [entry["id"] if isinstance(entry, dict) else entry 
-                               for entry in index_data]
+                index_data = load_json(index_file, required=False)
+                item_ids = [
+                    entry["id"] if isinstance(entry, dict) else entry
+                    for entry in index_data
+                ]
             
             # Read items in index order
             parallel, workers = get_parallel_settings()
@@ -180,8 +176,7 @@ class ItemArrayRecomposer(JSONRecomposer):
                 item_file = items_dir / f"{item_id}.json"
                 if not item_file.exists():
                     return None
-                with open(item_file, "r") as f:
-                    return json.load(f)
+                return load_json(item_file, required=False)
 
             if parallel and workers > 1 and item_ids:
                 with ThreadPoolExecutor(max_workers=workers) as executor:
@@ -199,8 +194,7 @@ class ItemArrayRecomposer(JSONRecomposer):
             json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
 
             def load_path(path: Path) -> Any:
-                with open(path, "r") as f:
-                    return json.load(f)
+                return load_json(path, required=False)
 
             if parallel and workers > 1 and json_files:
                 with ThreadPoolExecutor(max_workers=workers) as executor:
@@ -232,10 +226,11 @@ class RoadmapRecomposer(JSONRecomposer):
             item_ids = []
             
             if index_file.exists():
-                with open(index_file, "r") as f:
-                    index_data = json.load(f)
-                    item_ids = [entry["id"] if isinstance(entry, dict) else entry 
-                               for entry in index_data]
+                index_data = load_json(index_file, required=False)
+                item_ids = [
+                    entry["id"] if isinstance(entry, dict) else entry
+                    for entry in index_data
+                ]
             
             # Read items in index order
             parallel, workers = get_parallel_settings()
@@ -244,8 +239,7 @@ class RoadmapRecomposer(JSONRecomposer):
                 item_file = items_dir / f"{item_id}.json"
                 if not item_file.exists():
                     return None
-                with open(item_file, "r") as f:
-                    return json.load(f)
+                return load_json(item_file, required=False)
 
             if parallel and workers > 1 and item_ids:
                 with ThreadPoolExecutor(max_workers=workers) as executor:
@@ -263,8 +257,7 @@ class RoadmapRecomposer(JSONRecomposer):
             json_files = [p for p in sorted(items_dir.glob("*.json")) if p.name != "_index.json"]
 
             def load_path(path: Path) -> Any:
-                with open(path, "r") as f:
-                    return json.load(f)
+                return load_json(path, required=True)
 
             if parallel and workers > 1 and json_files:
                 with ThreadPoolExecutor(max_workers=workers) as executor:
@@ -284,9 +277,8 @@ def get_recomposer(hierarchical_dir: str) -> JSONRecomposer:
     
     if not metadata_file.exists():
         raise ValueError(f"No _metadata.json in {hierarchical_dir}")
-    
-    with open(metadata_file, "r") as f:
-        metadata = json.load(f)
+
+    metadata = load_json(metadata_file, required=False)
     
     strategy = metadata.get("strategy", "unknown")
     
@@ -309,8 +301,7 @@ def validate_roundtrip(original_file: str, recomposed: Dict[str, Any]) -> bool:
     Note: Not exact equality (fragment order may differ), but structurally equivalent.
     """
     try:
-        with open(original_file, "r") as f:
-            original = json.load(f)
+        original = load_json(original_file, required=False)
     except FileNotFoundError:
         print(f"Warning: Original file not found for validation: {original_file}")
         return True  # Skip validation
@@ -362,14 +353,13 @@ def main():
             # Validate roundtrip if original available
             metadata_file = Path(hierarchical_dir) / "_metadata.json"
             if metadata_file.exists():
-                with open(metadata_file, "r") as f:
-                    metadata = json.load(f)
-                    original = metadata.get("source_file")
-                    if original and Path(original).exists():
-                        if validate_roundtrip(original, recomposed):
-                            print(f"✓ Roundtrip validation passed")
-                        else:
-                            print(f"⚠ Roundtrip validation issues detected")
+                metadata = load_json(metadata_file, required=False)
+                original = metadata.get("source_file")
+                if original and Path(original).exists():
+                    if validate_roundtrip(original, recomposed):
+                        print(f"✓ Roundtrip validation passed")
+                    else:
+                        print(f"⚠ Roundtrip validation issues detected")
         except Exception as e:
             print(f"Error writing output: {e}")
             sys.exit(1)

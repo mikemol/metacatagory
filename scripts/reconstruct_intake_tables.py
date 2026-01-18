@@ -9,73 +9,7 @@ import sys
 from pathlib import Path
 
 from scripts.shared.io import load_markdown, save_markdown
-
-def reconstruct_table_section(lines, start_idx):
-    """
-    Reconstruct a table from collapsed format.
-    Returns (new_lines, end_idx)
-    """
-    # Collect all lines that appear to be part of the collapsed table
-    table_lines = []
-    i = start_idx
-    
-    while i < len(lines):
-        line = lines[i].strip()
-        # Check if this looks like a table separator or content line
-        if line.startswith('---') or '**' in line or '$mathbf{' in line:
-            table_lines.append(lines[i])
-            i += 1
-        elif not line:  # Empty line might signal end
-            i += 1
-            if i < len(lines) and not lines[i].strip().startswith(('---', '  ---', '**', '  **', '$', '  $')):
-                break
-        else:
-            break
-    
-    # If we didn't find enough content, return original
-    if len(table_lines) < 2:
-        return lines[start_idx:i], i
-    
-    # Try to identify columns by finding patterns
-    # Look for header indicators
-    combined = ' '.join(table_lines)
-    
-    # Common table structures - detect by content patterns
-    if 'Formal Type' in combined and 'Exegesis' in combined:
-        return reconstruct_formal_type_table(table_lines), i
-    elif 'Level (n-Cell)' in combined or 'n-Cell' in combined:
-        return reconstruct_ncell_table(table_lines), i
-    elif 'Construction' in combined and 'Categorical' in combined:
-        return reconstruct_categorical_table(table_lines), i
-    elif 'Component' in combined or 'Operation' in combined:
-        return reconstruct_component_table(table_lines), i
-    else:
-        # Generic fallback
-        return table_lines, i
-
-def reconstruct_formal_type_table(lines):
-    """Reconstruct tables with Formal Type | Exegesis | Source pattern."""
-    # Standard 3-column table
-    result = [
-        "| **Formal Type** | **Exegesis & Purpose** | **Source** |",
-        "| --- | --- | --- |"
-    ]
-    
-    # Extract content - this is simplified; full reconstruction would need semantic parsing
-    # For now, preserve original format with minimal fixes
-    return lines
-
-def reconstruct_ncell_table(lines):
-    """Reconstruct n-Cell hierarchy tables."""
-    return lines
-
-def reconstruct_categorical_table(lines):
-    """Reconstruct categorical construction tables."""
-    return lines
-
-def reconstruct_component_table(lines):
-    """Reconstruct component/operation tables."""
-    return lines
+from scripts.shared.markdown import reconstruct_table_section
 
 def process_file(filepath: Path) -> None:
     """Process a single markdown file to fix table corruption."""

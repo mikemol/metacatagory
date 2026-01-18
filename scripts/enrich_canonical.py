@@ -38,7 +38,10 @@ if str(REPO_ROOT) not in sys.path:
 from scripts.shared.parallel import get_parallel_settings
 from scripts.shared.io import save_json
 from scripts.shared.dot import parse_dependency_graph
+from scripts.shared.paths import get_module_name_from_path
+from scripts.shared.agda import extract_module_header, extract_definition_names
 from scripts.shared.markdown import extract_markdown_section as shared_extract_markdown_section
+from scripts.shared.errors import ValidationError
 from scripts import shared_data
 
 # Controlled tag vocabulary
@@ -103,74 +106,13 @@ def extract_agda_module_header(agda_path: Path) -> Optional[str]:
     """
     Extract module doc comment or first meaningful block comment.
     """
-    if not agda_path.exists():
-        return None
-    
-    with open(agda_path, "r", encoding="utf-8") as f:
-        lines = f.readlines()
-    
-    doc_lines = []
-    in_block_comment = False
-    
-    for line in lines[:50]:  # Check first 50 lines
-        stripped = line.strip()
-        
-        # Skip OPTIONS pragmas
-        if stripped.startswith("{-# OPTIONS"):
-            continue
-        
-        # Handle block comments {- ... -}
-        if "{-" in stripped and "-}" not in stripped:
-            in_block_comment = True
-            # Extract text after {-
-            text = stripped.split("{-", 1)[1].strip()
-            if text and not text.startswith("#"):
-                doc_lines.append(text)
-            continue
-        
-        if in_block_comment:
-            if "-}" in stripped:
-                in_block_comment = False
-                # Extract text before -}
-                text = stripped.split("-}", 1)[0].strip()
-                if text:
-                    doc_lines.append(text)
-                break
-            else:
-                if stripped and not stripped.startswith("-"):
-                    doc_lines.append(stripped)
-        
-        # Handle single-line comments starting with --
-        if stripped.startswith("--") and not stripped.startswith("---"):
-            text = stripped[2:].strip()
-            if text and len(text) > 10:  # Meaningful comments
-                doc_lines.append(text)
-                if len(doc_lines) >= 3:
-                    break
-    
-    if doc_lines:
-        return " ".join(doc_lines[:5])  # Return up to 5 lines
-    
-    return None
+    return extract_module_header(agda_path)
 
 def extract_agda_exports(agda_path: Path) -> List[str]:
     """
     Extract top-level definition names (heuristic: lines starting with name :).
     """
-    if not agda_path.exists():
-        return []
-    
-    with open(agda_path, "r", encoding="utf-8") as f:
-        lines = f.readlines()
-    
-    exports = []
-    for line in lines:
-        # Match: identifier : type
-        match = re.match(r"^([a-zA-Z][a-zA-Z0-9-_]*)\s*:", line)
-        if match:
-            exports.append(match.group(1))
-    
-    return exports[:5]  # Limit to first 5
+    return extract_definition_names(agda_path, limit=5)
 
 def parse_dot_dependency_graph(dot_path: Path) -> Dict[str, List[str]]:
     """
@@ -194,13 +136,8 @@ def build_module_to_tasks_map(items: List[Dict]) -> Dict[str, List[str]]:
             if not file_path.endswith(".agda"):
                 continue
 
-            # Convert path to module name
-            parts = Path(file_path).parts
-            if "agda" in parts:
-                idx = parts.index("agda")
-                module_parts = parts[idx + 1:]
-                module_name = ".".join(module_parts).replace(".agda", "")
-                pairs.append((module_name, task_id))
+            module_name = get_module_name_from_path(Path(file_path))
+            pairs.append((module_name, task_id))
         return pairs
 
     if parallel and workers > 1 and items:
@@ -247,13 +184,8 @@ def extract_module_anchors(item: Dict) -> List[str]:
         if not file_path.endswith(".agda"):
             continue
         
-        # Convert path to module name: src/agda/Core/Yoneda.agda -> Core.Yoneda
-        parts = Path(file_path).parts
-        if "agda" in parts:
-            idx = parts.index("agda")
-            module_parts = parts[idx + 1:]
-            module_name = ".".join(module_parts).replace(".agda", "")
-            anchors.append(module_name)
+        module_name = get_module_name_from_path(Path(file_path))
+        anchors.append(module_name)
     
     return anchors
 
@@ -427,22 +359,17 @@ def infer_dependencies_from_imports(item: Dict, module_to_tasks: Dict[str, List[
         if not file_path.endswith(".agda"):
             continue
         
-        # Convert path to module name
-        parts = Path(file_path).parts
-        if "agda" in parts:
-            idx = parts.index("agda")
-            module_parts = parts[idx + 1:]
-            module_name = ".".join(module_parts).replace(".agda", "")
+        module_name = get_module_name_from_path(Path(file_path))
             
-            # Get dependencies from DOT graph
-            imported_modules = dep_graph.get(module_name, [])
+        # Get dependencies from DOT graph
+        imported_modules = dep_graph.get(module_name, [])
             
-            # Find tasks that define those imported modules
-            for imported_module in imported_modules:
-                related_tasks = module_to_tasks.get(imported_module, [])
-                for task_id in related_tasks:
-                    if task_id != current_task_id:
-                        suggested_deps.add(task_id)
+        # Find tasks that define those imported modules
+        for imported_module in imported_modules:
+            related_tasks = module_to_tasks.get(imported_module, [])
+            for task_id in related_tasks:
+                if task_id != current_task_id:
+                    suggested_deps.add(task_id)
     
     return sorted(suggested_deps)
 
@@ -523,8 +450,8 @@ def enrich_canonical() -> None:
     Main entry point: read canonical, enrich, write enriched.
     """
     try:
-        canonical = shared_data.load_planning_index(repo_root=REPO_ROOT)
-    except (FileNotFoundError, ValueError, JSONDecodeError) as exc:
+        canonical = shared_data.load_planning_index_validated(repo_root=REPO_ROOT)
+    except (FileNotFoundError, ValueError, JSONDecodeError, ValidationError) as exc:
         print(f"Error: {exc}. Run 'make roadmap-merge' first.")
         return
     

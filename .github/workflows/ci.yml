@@ -36,23 +36,6 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
-      - name: Diagnose runner IDs
-        run: |
-          id
-          id runner || true
-          stat -c '%u:%g %A %n' /__w /__w/_temp || true
-
-      - name: Ensure workspace temp dirs (ACT)
-        if: ${{ env.ACT == 'true' }}
-        run: |
-          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
-          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
-          mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
-                   "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
-          chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
-
       - name: Checkout
         uses: actions/checkout@v4
         if: ${{ env.ACT != 'true' }}
@@ -67,9 +50,16 @@ jobs:
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
 
+      - name: Prepare workspace
+        uses: ./.github/actions/ci-workspace-setup
+
       - name: Generate Makefile recipes
         working-directory: ${{ env.BUILD_WORKDIR }}
         run: bash scripts/recipes/regen-makefile.sh
+
+      - name: Validate Makefile.generated
+        working-directory: ${{ env.BUILD_WORKDIR }}
+        run: MUTATE_LEVEL=repo make check-makefile-generated
 
       - name: Generate Agda exports
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -88,17 +78,7 @@ jobs:
       - name: Stage build reports
         if: ${{ env.ACT != 'true' }}
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          if [ -d build/reports ]; then
-            mkdir -p "${CI_REPORT_DIR}"
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
-                build/reports/ "${CI_REPORT_DIR}/"
-            else
-              (cd build/reports && tar --exclude='agda' --exclude='docs' --exclude='roadmap' --exclude='python' -cf - .) \
-                | tar -C "${CI_REPORT_DIR}" -xf -
-            fi
-          fi
+        run: bash scripts/ci_stage_reports.sh
 
       - name: Upload Agda exports
         if: ${{ env.ACT != 'true' }}
@@ -140,23 +120,6 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
-      - name: Diagnose runner IDs
-        run: |
-          id
-          id runner || true
-          stat -c '%u:%g %A %n' /__w /__w/_temp || true
-
-      - name: Ensure workspace temp dirs (ACT)
-        if: ${{ env.ACT == 'true' }}
-        run: |
-          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
-          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
-          mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
-                   "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
-          chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
-
       - name: Checkout
         uses: actions/checkout@v4
         if: ${{ env.ACT != 'true' }}
@@ -171,6 +134,9 @@ jobs:
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
 
+      - name: Prepare workspace
+        uses: ./.github/actions/ci-workspace-setup
+
 
       - name: Download Agda exports
         if: ${{ env.ACT != 'true' }}
@@ -179,21 +145,9 @@ jobs:
           name: agda-exports
           path: .
 
-      - name: Ensure Makefile recipes
+      - name: Prepare Python environment
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: bash scripts/recipes/regen-makefile.sh
-
-      - name: Install Python dependencies
-        working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Verify Agda export artifacts
-        working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          test -f data/planning_index.json
-          test -f data/dependency_graph.json
+        run: bash scripts/ci_prepare_job.sh
 
       - name: Install Node dependencies
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -206,17 +160,7 @@ jobs:
       - name: Stage build reports
         if: ${{ env.ACT != 'true' }}
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          if [ -d build/reports ]; then
-            mkdir -p "${CI_REPORT_DIR}"
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
-                build/reports/ "${CI_REPORT_DIR}/"
-            else
-              (cd build/reports && tar --exclude='agda' --exclude='docs' --exclude='roadmap' --exclude='python' -cf - .) \
-                | tar -C "${CI_REPORT_DIR}" -xf -
-            fi
-          fi
+        run: bash scripts/ci_stage_reports.sh
 
       - name: Upload build reports (docs)
         if: ${{ env.ACT != 'true' }}
@@ -246,23 +190,6 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
-      - name: Diagnose runner IDs
-        run: |
-          id
-          id runner || true
-          stat -c '%u:%g %A %n' /__w /__w/_temp || true
-
-      - name: Ensure workspace temp dirs (ACT)
-        if: ${{ env.ACT == 'true' }}
-        run: |
-          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
-          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
-          mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
-                   "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
-          chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
-
       - name: Checkout
         uses: actions/checkout@v4
         if: ${{ env.ACT != 'true' }}
@@ -277,6 +204,9 @@ jobs:
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
 
+      - name: Prepare workspace
+        uses: ./.github/actions/ci-workspace-setup
+
 
       - name: Download Agda exports
         if: ${{ env.ACT != 'true' }}
@@ -285,21 +215,9 @@ jobs:
           name: agda-exports
           path: .
 
-      - name: Ensure Makefile recipes
+      - name: Prepare Python environment
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: bash scripts/recipes/regen-makefile.sh
-
-      - name: Install Python dependencies
-        working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Verify Agda export artifacts
-        working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          test -f data/planning_index.json
-          test -f data/dependency_graph.json
+        run: bash scripts/ci_prepare_job.sh
 
       - name: Run roadmap checks
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -318,17 +236,7 @@ jobs:
       - name: Stage build reports
         if: ${{ env.ACT != 'true' }}
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          if [ -d build/reports ]; then
-            mkdir -p "${CI_REPORT_DIR}"
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
-                build/reports/ "${CI_REPORT_DIR}/"
-            else
-              (cd build/reports && tar --exclude='agda' --exclude='docs' --exclude='roadmap' --exclude='python' -cf - .) \
-                | tar -C "${CI_REPORT_DIR}" -xf -
-            fi
-          fi
+        run: bash scripts/ci_stage_reports.sh
 
       - name: Upload build reports (roadmap)
         if: ${{ env.ACT != 'true' }}
@@ -357,23 +265,6 @@ jobs:
       METACATAGORY_STRICT_ROUNDTRIP: "true"
       METACATAGORY_REPORT_MODE: "write"
     steps:
-      - name: Diagnose runner IDs
-        run: |
-          id
-          id runner || true
-          stat -c '%u:%g %A %n' /__w /__w/_temp || true
-
-      - name: Ensure workspace temp dirs (ACT)
-        if: ${{ env.ACT == 'true' }}
-        run: |
-          export ACTIONS_FILE_COMMANDS="${GITHUB_WORKSPACE}/.tmp/_runner_file_commands"
-          export ACTIONS_RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TEMP="${GITHUB_WORKSPACE}/.tmp"
-          export RUNNER_TOOL_CACHE="${GITHUB_WORKSPACE}/.tmp/runner_tool_cache"
-          mkdir -p "${ACTIONS_FILE_COMMANDS:-${GITHUB_WORKSPACE}/.tmp/_runner_file_commands}" \
-                   "${RUNNER_TOOL_CACHE:-${GITHUB_WORKSPACE}/.tmp/runner_tool_cache}"
-          chmod -R 777 "${ACTIONS_RUNNER_TEMP:-${GITHUB_WORKSPACE}/.tmp}"
-
       - name: Checkout
         uses: actions/checkout@v4
         if: ${{ env.ACT != 'true' }}
@@ -388,6 +279,9 @@ jobs:
             tar -C "$ACT_SRC" -cf - . | tar -C "$GITHUB_WORKSPACE" -xf -
           fi
 
+      - name: Prepare workspace
+        uses: ./.github/actions/ci-workspace-setup
+
 
       - name: Download Agda exports
         if: ${{ env.ACT != 'true' }}
@@ -396,21 +290,9 @@ jobs:
           name: agda-exports
           path: .
 
-      - name: Ensure Makefile recipes
+      - name: Prepare Python environment
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: bash scripts/recipes/regen-makefile.sh
-
-      - name: Install Python dependencies
-        working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Verify Agda export artifacts
-        working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          test -f data/planning_index.json
-          test -f data/dependency_graph.json
+        run: bash scripts/ci_prepare_job.sh
 
       - name: Run Python tests
         working-directory: ${{ env.BUILD_WORKDIR }}
@@ -423,17 +305,7 @@ jobs:
       - name: Stage build reports
         if: ${{ env.ACT != 'true' }}
         working-directory: ${{ env.BUILD_WORKDIR }}
-        run: |
-          if [ -d build/reports ]; then
-            mkdir -p "${CI_REPORT_DIR}"
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --exclude 'agda' --exclude 'docs' --exclude 'roadmap' --exclude 'python' \
-                build/reports/ "${CI_REPORT_DIR}/"
-            else
-              (cd build/reports && tar --exclude='agda' --exclude='docs' --exclude='roadmap' --exclude='python' -cf - .) \
-                | tar -C "${CI_REPORT_DIR}" -xf -
-            fi
-          fi
+        run: bash scripts/ci_stage_reports.sh
 
       - name: Upload build reports (python)
         if: ${{ env.ACT != 'true' }}

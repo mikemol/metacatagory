@@ -20,7 +20,7 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-from scripts.shared.io import save_json
+from scripts.shared.io import load_json_text, save_json
 from scripts.shared.markdown import (
     is_json_input,
     fix_list_markers,
@@ -72,7 +72,11 @@ def main() -> None:
     input_text: str = sys.stdin.read()
     if is_json_input(input_text):
         # Pandoc JSON AST: process and output JSON
-        pandoc_json: Any = json.loads(input_text)
+        pandoc_json: Any = load_json_text(
+            input_text,
+            required=True,
+            error_msg="Invalid Pandoc JSON input",
+        )
         pandoc_json = fix_lists(pandoc_json)
         print(json.dumps(pandoc_json))
     else:

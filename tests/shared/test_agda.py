@@ -7,6 +7,9 @@ from pathlib import Path
 from scripts.shared.agda import (
     AgdaModule, AgdaParser, ModuleCoverage,
     DependencyAnalyzer,
+    extract_module_header,
+    extract_definition_names,
+    extract_module_name,
 )
 
 
@@ -423,3 +426,31 @@ class TestAgdaIntegration:
             
             # Should have dependency on at least one other module
             assert len(deps) > 0
+
+
+class TestAgdaHelpers:
+    """Test shared helper functions."""
+
+    def test_extract_module_header_block_comment(self, tmp_path):
+        agda_file = tmp_path / "Test.agda"
+        agda_file.write_text(
+            "{- Header line\nMore details\n-}\n\nmodule Test where\n",
+            encoding="utf-8",
+        )
+        header = extract_module_header(agda_file)
+        assert header is not None
+        assert "Header line" in header
+
+    def test_extract_definition_names_limits(self, tmp_path):
+        agda_file = tmp_path / "Test.agda"
+        agda_file.write_text(
+            "foo : Nat\nbar : Nat\nbaz : Nat\n",
+            encoding="utf-8",
+        )
+        names = extract_definition_names(agda_file, limit=2)
+        assert names == ["foo", "bar"]
+
+
+def test_extract_module_name():
+    content = "module Foo.Bar where\n\npostulate X : Set"
+    assert extract_module_name(content) == "Foo.Bar"

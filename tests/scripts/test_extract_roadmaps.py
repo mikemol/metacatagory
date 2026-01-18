@@ -26,6 +26,11 @@ def test_generate_agda_module_uses_shared_renderer(tmp_path: Path):
     entry = mod.RoadmapEntry(
         gp_number="GP01",
         title="Title",
+        summary="Summary",
+        keywords=["Alpha"],
+        insight="Insight",
+        gap="Gap",
+        fix="Fix",
         category="Foundation",
         question="Do thing",
         formal_correction="Correction",
@@ -33,9 +38,37 @@ def test_generate_agda_module_uses_shared_renderer(tmp_path: Path):
         related_gps=[],
         manifest_version=None,
         target_modules=[],
+        target_module="src/agda/Plan/CIM/Implementation.agda",
     )
 
     module_text = mod.generate_agda_module("Foundation", [entry])
     assert "roadmapGp01" in module_text
     assert "Concepts: Alpha" in module_text
     assert "targetModule = \"src/agda/Plan/CIM/Implementation.agda\"" in module_text
+
+
+def test_build_extraction_summary_matches_ingested_schema(tmp_path: Path):
+    entry = mod.RoadmapEntry(
+        gp_number="GP01",
+        title="Title",
+        summary="Summary",
+        keywords=["Alpha"],
+        insight="Insight",
+        gap="Gap",
+        fix="Fix",
+        category="Foundation",
+        question="Do thing",
+        formal_correction="Correction",
+        key_concepts=["Alpha"],
+        related_gps=[],
+        manifest_version=None,
+        target_modules=[],
+        target_module="src/agda/Plan/CIM/Implementation.agda",
+    )
+
+    payload = mod.build_extraction_summary({"Foundation": [entry]})
+
+    assert payload["total_files"] == 1
+    assert "GP01" in payload["files"]
+    assert payload["files"]["GP01"]["title"] == "Title"
+    assert payload["files"]["GP01"]["target_module"].endswith(".agda")

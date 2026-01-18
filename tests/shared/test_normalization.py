@@ -15,7 +15,8 @@ from scripts.shared.normalization import (
     deduplicate_items_by_id,
     merge_dependencies,
     validate_item_structure,
-    clean_empty_strings
+    clean_empty_strings,
+    unescape_string,
 )
 
 
@@ -202,6 +203,14 @@ class TestValidateItemStructure:
         
         assert len(errors) == 1
         assert "id" in errors[0]
+
+
+class TestUnescapeString:
+    def test_unescapes_sequences(self):
+        assert unescape_string("line\\nnext") == "line\nnext"
+
+    def test_returns_on_failure(self):
+        assert unescape_string("plain text") == "plain text"
     
     def test_invalid_list_field_type(self):
         """Should report type errors for list fields."""

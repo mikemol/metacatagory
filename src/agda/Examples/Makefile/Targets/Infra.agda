@@ -18,8 +18,6 @@ infraTargets =
   ∷ validatorToTarget "intake-lint" "Lint intake files specifically" "build/reports/intake-md-lint.txt"
     []
     ("if [ \"$${METACATAGORY_REPORT_MODE:-stdout}\" = \"write\" ]; then mkdir -p build/reports && printf \"intake lint suppressed (too much legacy noise)\\n\" > build/reports/intake-md-lint.txt; else printf \"intake lint suppressed (too much legacy noise)\\n\"; fi" ∷ [])
-  ∷ generatorToFileTarget mutateCert "build/canonical_roadmap.json" "Generate canonical roadmap JSON from intake" ([]) 
-      ("python3 scripts/intake_scan.py" ∷ [])
   ∷ generatorToTarget mutateCert "intake-scan" "Scan intake directory for new files" ("data/planning_index.json" ∷ [])
       ("@echo \"intake scan complete\"" ∷ [])
   ∷ validatorToTarget "makefile-validate" "Validate Makefile consistency" "build/reports/makefile-validate.txt"

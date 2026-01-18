@@ -5,21 +5,17 @@ Provides unified access to planning index, markdown, and YAML data.
 Centralizes data loading patterns to reduce duplication across scripts.
 """
 
-import json
-from json import JSONDecodeError
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Optional
+
+from scripts.shared.io import load_json, try_load_json
 
 REPO_ROOT = Path(__file__).parent.parent
 
 def _load_items(path: Path) -> Tuple[Optional[List[Dict[str, Any]]], str]:
-    try:
-        with open(path) as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        return None, "missing"
-    except JSONDecodeError:
-        return None, "invalid"
+    data, state = try_load_json(path)
+    if state != "ok":
+        return None, state
     if isinstance(data, list):
         return data, "ok"
     if isinstance(data, dict):
@@ -58,6 +54,35 @@ def load_planning_index_from(path: Path) -> List[Dict[str, Any]]:
     if state == "invalid":
         raise ValueError(f"Unexpected JSON shape in {path}")
     return items or []
+
+
+def load_planning_index_validated_from(
+    path: Path,
+    *,
+    allow_missing: bool = False,
+    filter_legacy: bool = False,
+) -> List[Dict[str, Any]]:
+    """Load planning index from an explicit path and validate schema."""
+    try:
+        items = load_planning_index_from(path)
+    except FileNotFoundError:
+        if allow_missing:
+            return []
+        raise
+
+    if filter_legacy:
+        items = [
+            item for item in items
+            if not str(item.get("id", "")).startswith("LEGACY-")
+        ]
+
+    from scripts.shared.validation import ValidationResult, roadmap_item_validator
+
+    result = ValidationResult()
+    for idx, item in enumerate(items):
+        result.merge(roadmap_item_validator(item, path=f"items[{idx}]"))
+    result.raise_if_invalid("Planning index schema validation failed")
+    return items
 
 
 def load_tasks_json_from(path: Path, required: bool = True) -> List[Dict[str, Any]]:
@@ -124,34 +149,58 @@ def load_planning_index(
     return items
 
 
+def load_planning_index_validated(
+    repo_root: Optional[Path] = None,
+    filter_legacy: bool = False,
+    allow_missing: bool = False,
+) -> List[Dict[str, Any]]:
+    """Load planning index and validate against the roadmap item schema."""
+    try:
+        items = load_planning_index(repo_root=repo_root, filter_legacy=filter_legacy)
+    except (FileNotFoundError, ValueError):
+        if allow_missing:
+            return []
+        raise
+
+    from scripts.shared.validation import ValidationResult, roadmap_item_validator
+
+    result = ValidationResult()
+    for idx, item in enumerate(items):
+        result.merge(roadmap_item_validator(item, path=f"items[{idx}]"))
+    result.raise_if_invalid("Planning index schema validation failed")
+    return items
+
+
 def load_roadmap_markdown_from(md_path: Path) -> Tuple[List[str], List[Dict[str, Any]]]:
     """Extract roadmap item IDs and frontmatter from an explicit path."""
-    from scripts.shared.markdown import (
-        extract_bracketed_ids,
-        parse_yaml_fenced_blocks_fallback,
-    )
+    from scripts.shared.markdown import extract_roadmap_frontmatter_and_ids_from_path
 
-    if not md_path.exists():
-        raise FileNotFoundError(f"ROADMAP.md not found at {md_path}")
+    return extract_roadmap_frontmatter_and_ids_from_path(md_path)
 
-    content = md_path.read_text()
-    
-    # Extract YAML frontmatter blocks (with fallback parsing)
-    frontmatter_items: List[Dict[str, Any]] = []
-    for data in parse_yaml_fenced_blocks_fallback(content):
-        if data and isinstance(data, dict):
-            frontmatter_items.append(data)
-    
-    # Extract IDs from frontmatter and text fallback
-    ids = set()
-    for item in frontmatter_items:
-        if 'id' in item and isinstance(item['id'], str):
-            ids.add(item['id'])
-    
-    for item_id in extract_bracketed_ids(content):
-        ids.add(item_id)
-    
-    return sorted(ids), frontmatter_items
+
+def load_ingested_metadata_from(path: Path, required: bool = True) -> Dict[str, Any]:
+    """Load ingested_metadata.json and validate schema."""
+    if not path.exists():
+        if required:
+            raise FileNotFoundError(f"ingested_metadata.json not found at {path}")
+        return {"total_files": 0, "files": {}}
+
+    payload = load_json(path)
+
+    from scripts.shared.validation import ingested_metadata_validator
+
+    result = ingested_metadata_validator(payload, path="ingested_metadata")
+    result.raise_if_invalid("Ingested metadata schema validation failed")
+    return payload
+
+
+def load_ingested_metadata(repo_root: Optional[Path] = None, required: bool = True) -> Dict[str, Any]:
+    """Load ingested_metadata.json from the repo build dir."""
+    from scripts.shared.paths import INGESTED_METADATA_JSON
+
+    root = repo_root or REPO_ROOT
+    path = INGESTED_METADATA_JSON if root == REPO_ROOT else root / "build" / "ingested_metadata.json"
+    return load_ingested_metadata_from(path, required=required)
 
 
 def load_roadmap_markdown() -> Tuple[List[str], List[Dict[str, Any]]]:

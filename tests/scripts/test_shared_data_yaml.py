@@ -59,6 +59,42 @@ def test_load_planning_index_filter_legacy(tmp_path, monkeypatch):
     assert [item["id"] for item in items] == ["GP-1"]
 
 
+def test_load_planning_index_validated(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    json_path = tmp_path / "data" / "planning_index.json"
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+
+    assert shared_data.load_planning_index_validated(allow_missing=True) == []
+
+    json_path.write_text(json.dumps([{"id": "GP-1", "title": "Title"}]), encoding="utf-8")
+    items = shared_data.load_planning_index_validated()
+    assert items[0]["id"] == "GP-1"
+
+    json_path.write_text(json.dumps([{"id": "GP-2"}]), encoding="utf-8")
+    from scripts.shared.errors import ValidationError
+
+    with pytest.raises(ValidationError):
+        shared_data.load_planning_index_validated()
+
+
+def test_load_planning_index_validated_from(tmp_path, monkeypatch):
+    monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
+    json_path = tmp_path / "data" / "planning_index.json"
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+
+    assert shared_data.load_planning_index_validated_from(json_path, allow_missing=True) == []
+
+    json_path.write_text(json.dumps([{"id": "GP-1", "title": "Title"}]), encoding="utf-8")
+    items = shared_data.load_planning_index_validated_from(json_path)
+    assert items[0]["id"] == "GP-1"
+
+    json_path.write_text(json.dumps([{"id": "GP-2"}]), encoding="utf-8")
+    from scripts.shared.errors import ValidationError
+
+    with pytest.raises(ValidationError):
+        shared_data.load_planning_index_validated_from(json_path)
+
+
 def test_resolve_planning_path_prefers_data(tmp_path, monkeypatch):
     monkeypatch.setattr(shared_data, "REPO_ROOT", tmp_path)
     data_path = tmp_path / "data" / "planning_index.json"

@@ -18,7 +18,6 @@ Example:
         --strategy dependency-graph
 """
 
-import json
 import os
 import sys
 import shutil
@@ -33,7 +32,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 from scripts.shared.parallel import get_parallel_settings
-from scripts.shared.io import save_json
+from scripts.shared.io import load_json, save_json
 
 
 @dataclass
@@ -467,15 +466,11 @@ def main():
         strategy = sys.argv[sys.argv.index("--strategy") + 1]
     
     # Load JSON
-    try:
-        with open(monolithic_file, "r") as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        print(f"Error: File not found: {monolithic_file}")
-        sys.exit(1)
-    except json.JSONDecodeError as e:
-        print(f"Error: Invalid JSON: {e}")
-        sys.exit(1)
+    data = load_json(
+        monolithic_file,
+        required=True,
+        error_msg=f"File not found: {monolithic_file}",
+    )
     
     # Decompose
     decomposer_class = get_decomposer(strategy)

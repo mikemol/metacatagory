@@ -206,7 +206,7 @@ def run_all_validations(base_dir: Path | None = None) -> bool:
         if parallel and workers > 1:
             with ThreadPoolExecutor(max_workers=2) as executor:
                 json_future = executor.submit(
-                    shared_data.load_planning_index_from, planning_path
+                    shared_data.load_planning_index_validated_from, planning_path
                 )
                 md_future = executor.submit(
                     shared_data.load_roadmap_markdown_from, roadmap_path
@@ -214,7 +214,7 @@ def run_all_validations(base_dir: Path | None = None) -> bool:
                 json_items = json_future.result()
                 md_ids, md_frontmatter = md_future.result()
         else:
-            json_items = shared_data.load_planning_index_from(planning_path)
+            json_items = shared_data.load_planning_index_validated_from(planning_path)
             md_ids, md_frontmatter = shared_data.load_roadmap_markdown_from(roadmap_path)
     except FileNotFoundError as e:
         print(f"✗ {e}")
@@ -270,7 +270,7 @@ def run_all_validations(base_dir: Path | None = None) -> bool:
     try:
         metadata_path = INGESTED_METADATA_JSON if base_dir is None else base_dir / "build" / "ingested_metadata.json"
         if metadata_path.exists():
-            metadata_payload = load_json(metadata_path)
+            metadata_payload = shared_data.load_ingested_metadata_from(metadata_path)
             metadata_result = ingested_metadata_validator(metadata_payload, path="ingested_metadata")
             if not metadata_result.is_valid():
                 metadata_valid = False

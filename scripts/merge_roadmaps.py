@@ -20,17 +20,17 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-import shared_data
-from shared.io import load_json, save_json
-from shared.paths import REPO_ROOT, BUILD_DIR, DOCLINT_ROADMAP_JSON, CANONICAL_ROADMAP_JSON
-from shared.normalization import (
+from scripts import shared_data
+from scripts.shared.io import load_json, save_json
+from scripts.shared.paths import REPO_ROOT, BUILD_DIR, DOCLINT_ROADMAP_JSON, CANONICAL_ROADMAP_JSON
+from scripts.shared.normalization import (
     normalize_title,
     ensure_provenance,
     deduplicate_items_by_id,
     ensure_item_fields
 )
-from shared.roadmap_agda import parse_ingested_agda, parse_legacy_agda
-from shared.parallel import get_parallel_settings
+from scripts.shared.roadmap_agda import parse_ingested_agda, parse_legacy_agda
+from scripts.shared.parallel import get_parallel_settings
 
 # --- Helpers --------------------------------------------------------------
 
@@ -66,6 +66,8 @@ def parse_roadmap_md(path: Path) -> List[Dict]:
         return []
 
     _, frontmatter_items = shared_data.load_roadmap_markdown_from(path)
+    validation = shared_data.validate_roadmap_frontmatter(frontmatter_items)
+    validation.raise_if_invalid("ROADMAP.md frontmatter schema validation failed")
     items = []
 
     for entry in frontmatter_items:

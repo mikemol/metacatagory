@@ -21,17 +21,19 @@ then applies the proof as a sequence of transformation steps to produce a strict
 """
 
 import sys
-import json
 from typing import Any
+
+try:
+    from scripts.shared.io import load_json
+except ImportError:  # pragma: no cover - fallback for direct invocation
+    from shared.io import load_json  # type: ignore
 
 # --- Load Pandoc AST and proof object ---
 def load_ast(path: str) -> dict[str, Any]:
-    with open(path) as f:
-        return json.load(f)
+    return load_json(path, required=True, error_msg="Pandoc AST not found")
 
 def load_proof(path: str) -> list[dict[str, Any]]:
-    with open(path) as f:
-        return json.load(f)
+    return load_json(path, required=True, error_msg="Proof file not found")
 
 # --- Interpreter core ---
 def apply_proof(ast: dict[str, Any], proof: list[dict[str, Any]]) -> dict[str, Any]:

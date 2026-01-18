@@ -21,6 +21,16 @@ The goal is consistency: every mutation should have a clear, traceable reason.
 This list is derived from the current CI workflow and the Makefile’s mutability graph
 (direct + transitive dependencies).
 
+## Mutable Surface Boundaries
+
+- **build/**: ephemeral build artifacts and reports (default, untracked).
+- **data/** and **docs/**: tracked state; these are the intended persistence roots.
+- **Repo-root docs**: `README.md`, `NAVIGATION.md`, `CONTRIBUTING.md`, `ROADMAP.md`
+  are treated as docs-scoped outputs for mutability gating.
+- **.github/**: workflow-facing outputs (e.g. `.github/roadmap/tasks.json`,
+  `.github/badges/weights.json`) are explicitly scoped as `github` and require
+  repo-level mutation permission.
+
 ### `.github/workflows/ci.yml`
 
 All `check-*` targets are mutative (transitively) because they produce reports

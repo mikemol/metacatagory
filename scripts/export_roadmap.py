@@ -7,8 +7,10 @@ from pathlib import Path
 from typing import Dict, List
 
 # Import shared utilities
-from scripts.shared.io import load_json, load_markdown, save_markdown
+from scripts import shared_data
+from scripts.shared.io import load_markdown, save_markdown
 from scripts.shared.config import Config
+from scripts.shared.gp_intake import categorize_gp_phase, extract_gp_number
 
 def generate_markdown_section(metadata: Dict) -> str:
     """Generate a markdown section for each GP file."""
@@ -18,27 +20,22 @@ def generate_markdown_section(metadata: Dict) -> str:
     
     # Group files by category (using first part of filename)
     categories = {}
+    phase_labels = {
+        "foundational": "Foundational (00-99)",
+        "structural": "Structural (100-199)",
+        "geometric": "Geometric (200-299)",
+        "topological": "Topological (300-399)",
+        "homological": "Homological (400-499)",
+        "polytope": "Polytope (500-599)",
+        "coherence": "Coherence (600-699)",
+        "analysis": "Analysis (700-799)",
+        "unified": "Unified (800-899)",
+    }
+
     for gp_id, meta in metadata['files'].items():
-        # Extract category from GP ID (e.g., "GP01" -> "01", "GP830" -> "830")
-        num = gp_id.replace('GP', '')
-        if num.startswith('0'):
-            cat = "Foundational (00-99)"
-        elif num.startswith('1'):
-            cat = "Structural (100-199)"
-        elif num.startswith('2'):
-            cat = "Geometric (200-299)"
-        elif num.startswith('3'):
-            cat = "Topological (300-399)"
-        elif num.startswith('4'):
-            cat = "Semantic (400-499)"
-        elif num.startswith('5'):
-            cat = "Polytope (500-599)"
-        elif num.startswith('7'):
-            cat = "Analysis (700-799)"
-        elif num.startswith('8'):
-            cat = "Unified (800-899)"
-        else:
-            cat = "Other"
+        gp_num = extract_gp_number(gp_id)
+        phase = categorize_gp_phase(gp_num)
+        cat = phase_labels.get(phase, "Other")
         
         if cat not in categories:
             categories[cat] = []
@@ -78,7 +75,7 @@ def main(config: Config | None = None):
     
     # Load metadata using shared utility
     try:
-        metadata = load_json(metadata_path, required=True)
+        metadata = shared_data.load_ingested_metadata_from(metadata_path)
     except (FileNotFoundError, SystemExit):
         print("Metadata file not found: " + str(metadata_path))
         return

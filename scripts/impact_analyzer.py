@@ -7,13 +7,12 @@ Analyzes the impact of changing roadmap items on Agda modules:
 - Prioritizes work to minimize rework
 """
 
-import json
 from pathlib import Path
 from typing import Dict, List, Set, Tuple
 from dataclasses import dataclass, field
 from collections import defaultdict
 
-from scripts.shared.io import save_json
+from scripts.shared.io import load_json, save_json
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -54,22 +53,28 @@ class ImpactAnalyzer:
         
         # Load module mappings
         mappings_path = Path(self.workspace_root) / "data/module_mappings.json"
-        with open(mappings_path, 'r') as f:
-            data = json.load(f)
-            self.module_mappings = {
-                m['step_id']: m for m in data['mappings']
-            }
+        data = load_json(
+            mappings_path,
+            required=True,
+            error_msg=f"Missing module mappings: {mappings_path}",
+        )
+        self.module_mappings = {
+            m['step_id']: m for m in data['mappings']
+        }
         
         # Load dependency graph
         graph_path = Path(self.workspace_root) / "data/dependency_graph.json"
-        with open(graph_path, 'r') as f:
-            graph_data = json.load(f)
-            
-            # Build dependency and reverse dependency maps
-            for node in graph_data['nodes']:
-                module = node['module']
-                self.dependency_graph[module] = set(node['imports'])
-                self.reverse_dependencies[module] = set(node['imported_by'])
+        graph_data = load_json(
+            graph_path,
+            required=True,
+            error_msg=f"Missing dependency graph: {graph_path}",
+        )
+        
+        # Build dependency and reverse dependency maps
+        for node in graph_data['nodes']:
+            module = node['module']
+            self.dependency_graph[module] = set(node['imports'])
+            self.reverse_dependencies[module] = set(node['imported_by'])
         
         print(f"   ✓ Loaded {len(self.module_mappings)} roadmap mappings")
         print(f"   ✓ Loaded {len(self.dependency_graph)} module dependencies")
@@ -254,9 +259,12 @@ class ImpactAnalyzer:
         """Find steps on the critical path (high impact, high dependencies)."""
         # Load critical path from dependency graph
         graph_path = Path(self.workspace_root) / "data/dependency_graph.json"
-        with open(graph_path, 'r') as f:
-            graph_data = json.load(f)
-            critical_modules = set(graph_data['critical_path'])
+        graph_data = load_json(
+            graph_path,
+            required=True,
+            error_msg=f"Missing dependency graph: {graph_path}",
+        )
+        critical_modules = set(graph_data['critical_path'])
         
         # Find steps that modify critical path modules
         critical_steps = [

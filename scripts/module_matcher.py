@@ -16,9 +16,12 @@ from dataclasses import dataclass, field
 from collections import defaultdict
 
 from scripts import shared_data
-from scripts.shared.agda import AgdaParser
+from scripts.shared.agda import AgdaParser, extract_module_header, read_agda_text
 from scripts.shared.agda_declarations import scan_agda_declarations
 from scripts.shared.io import save_json
+from scripts.shared.gp_intake import categorize_gp_phase, extract_gp_number
+from scripts.shared.normalization import extract_keywords_from_text
+from scripts.shared.paths import get_module_name_from_path
 
 @dataclass
 class AgdaModule:
@@ -94,7 +97,7 @@ class ModuleMatcher:
         
         # Read file to extract keywords
         try:
-            content = file_path.read_text(encoding='utf-8')
+            content = read_agda_text(file_path)
             keywords = self._extract_keywords(content, file_path)
         except Exception:
             keywords = set()
@@ -129,12 +132,10 @@ class ModuleMatcher:
     def _extract_keywords(self, content: str, file_path: Path) -> Set[str]:
         """Extract keywords from module content."""
         keywords = set()
-        
-        # Extract from comments
-        comment_pattern = re.compile(r'--\s*(.+)$', re.MULTILINE)
-        for match in comment_pattern.finditer(content):
-            words = match.group(1).lower().split()
-            keywords.update(w.strip('.,;:()[]{}') for w in words if len(w) > 3)
+
+        header = extract_module_header(file_path)
+        if header:
+            keywords.update(extract_keywords_from_text(header))
         
         # Extract from record/data type declarations
         for decl in scan_agda_declarations(file_path):
@@ -178,11 +179,12 @@ class ModuleMatcher:
         files = {}
         metadata_path = Path(self.workspace_root) / metadata_file
         if metadata_path.exists():
-            with open(metadata_path, 'r') as f:
-                data = json.load(f)
+            data = shared_data.load_ingested_metadata_from(metadata_path)
             files = data.get('files', {})
         else:
-            index_items = shared_data.load_planning_index(repo_root=Path(self.workspace_root))
+            index_items = shared_data.load_planning_index_validated(
+                repo_root=Path(self.workspace_root)
+            )
             for item in index_items:
                 files[item['id']] = {
                     'title': item.get('title', ''),
@@ -200,7 +202,7 @@ class ModuleMatcher:
             # Prefer explicit file mapping when present (e.g., planning_index.json entries)
             file_modules = [f for f in item_data.get('files', []) if f.startswith("src/agda/")]
             if file_modules:
-                primary_module = file_modules[0].replace("src/agda/", "").replace(".agda", "").replace("/", ".")
+                primary_module = get_module_name_from_path(Path(file_modules[0]))
                 mapping = ModuleMapping(
                     step_id=step_id,
                     title=item.get('title', ''),
@@ -225,9 +227,8 @@ class ModuleMatcher:
         keywords = set(item.get('keywords', []))
         
         # Extract category from step_id (e.g., GP700 -> analysis phase)
-        match = re.search(r'\d+', step_id)
-        gp_number = int(match.group()) if match else 0
-        step_category = self._categorize_gp_number(gp_number)
+        gp_number = extract_gp_number(step_id)
+        step_category = categorize_gp_phase(gp_number)
         
         # Score all modules
         module_scores = []
@@ -265,27 +266,6 @@ class ModuleMatcher:
             confidence=confidence,
             rationale=rationale
         )
-    
-    def _categorize_gp_number(self, gp_number: int) -> str:
-        """Categorize GP number into phase."""
-        if gp_number < 100:
-            return 'foundational'
-        elif gp_number < 200:
-            return 'structural'
-        elif gp_number < 300:
-            return 'geometric'
-        elif gp_number < 400:
-            return 'topological'
-        elif gp_number < 500:
-            return 'homological'
-        elif gp_number < 600:
-            return 'polytope'
-        elif gp_number < 700:
-            return 'coherence'
-        elif gp_number < 800:
-            return 'analysis'
-        else:
-            return 'unified'
     
     def _calculate_match_score(
         self,

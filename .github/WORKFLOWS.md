@@ -8,8 +8,9 @@ Your project is configured with:
 - **Docker Image**: `ghcr.io/mikemol/act-ubuntu-agda:latest` (prebuilt)
 - **Config File**: `.actrc`
 - **Environment**: Loaded from `.env.local`
+- **Rootless Docker**: Recommended; see `docs/process/DOCKER-ROOTLESS.md`
 
-Pull the worker image locally (once per machine):
+Pull the worker image locally (once per machine, or when refreshed):
 
 ```bash
 docker pull ghcr.io/mikemol/act-ubuntu-agda:latest
@@ -19,7 +20,7 @@ docker pull ghcr.io/mikemol/act-ubuntu-agda:latest
 
 | Workflow | Command | Purpose |
 |----------|---------|---------|
-| CI | `make act-ci` or `act -W .github/workflows/ci.yml` | Full test/validation pipeline |
+| CI | `MUTATE_LEVEL=repo mise exec -- make act-ci` | Full test/validation pipeline |
 
 ## Quick Start
 
@@ -37,7 +38,7 @@ act -l
 
 ```bash
 # Using Makefile
-make act-ci
+MUTATE_LEVEL=repo mise exec -- make act-ci
 
 # Using act directly
 act -W .github/workflows/ci.yml
@@ -65,20 +66,19 @@ docker ps
 
 ### Permission denied
 
-Add your user to the docker group:
+Ensure rootless Docker is running and the user socket is in `DOCKER_HOST`:
 
 ```bash
-sudo usermod -aG docker $USER
-newgrp docker
+export DOCKER_HOST="unix:///run/user/$(id -u)/docker.sock"
 ```
 
 ### Container issues
 
-Clear act cache and rebuild:
+If the image is stale, force a pull and retry:
 
 ```bash
-act -h  # Show help
-act -P ubuntu-latest=catthehacker/ubuntu:act-22.04 -W .github/workflows/ci.yml
+docker pull ghcr.io/mikemol/act-ubuntu-agda:latest
+act -W .github/workflows/ci.yml
 ```
 
 ## Environment Variables

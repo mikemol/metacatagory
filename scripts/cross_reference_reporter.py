@@ -8,12 +8,11 @@ Integrates all Phase 4 analyses into comprehensive report:
 - Execution recommendations
 """
 
-import json
 from pathlib import Path
 from typing import Dict, List
 from datetime import datetime
 
-from scripts.shared.io import save_json
+from scripts.shared.io import load_json, save_json
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -28,20 +27,38 @@ class CrossReferenceReporter:
         print("📥 Loading all Phase 4 analysis data...")
         
         # Load module mappings
-        with open(Path(self.workspace_root) / "data/module_mappings.json") as f:
-            module_data = json.load(f)
+        module_path = Path(self.workspace_root) / "data/module_mappings.json"
+        module_data = load_json(
+            module_path,
+            required=True,
+            error_msg=f"Missing module mappings: {module_path}",
+        )
         
         # Load dependency graph
-        with open(Path(self.workspace_root) / "data/dependency_graph.json") as f:
-            dependency_data = json.load(f)
+        dependency_path = Path(self.workspace_root) / "data/dependency_graph.json"
+        dependency_data = load_json(
+            dependency_path,
+            required=True,
+            error_msg=f"Missing dependency graph: {dependency_path}",
+        )
         
         # Load impact analysis
-        with open(Path(self.workspace_root) / "data/impact_analysis.json") as f:
-            impact_data = json.load(f)
+        impact_path = Path(self.workspace_root) / "data/impact_analysis.json"
+        impact_data = load_json(
+            impact_path,
+            required=True,
+            error_msg=f"Missing impact analysis: {impact_path}",
+        )
         
         # Load original roadmap traversal
-        with open(Path(self.workspace_root) / "build/roadmap_traversal_report.json") as f:
-            traversal_data = json.load(f)
+        traversal_path = (
+            Path(self.workspace_root) / "build" / "roadmap_traversal_report.json"
+        )
+        traversal_data = load_json(
+            traversal_path,
+            required=True,
+            error_msg=f"Missing roadmap traversal report: {traversal_path}",
+        )
         
         print("   ✓ All data loaded")
         

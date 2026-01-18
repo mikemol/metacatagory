@@ -18,6 +18,10 @@ import json
 import textwrap
 
 try:
+    from .io import try_load_json_text
+except ImportError:
+    from scripts.shared.io import try_load_json_text  # type: ignore
+try:
     from ..shared_yaml import (
         dump_yaml as shared_dump_yaml,
         safe_load as shared_safe_load,
@@ -237,23 +241,19 @@ class MarkdownParser:
         if match:
             raw = match.group(1)
             raw = textwrap.dedent(raw)  # Dedent for indented content
-            try:
-                data = json.loads(raw)
+            data, state = try_load_json_text(raw)
+            if state == "ok" and data is not None:
                 return FrontMatter(data_or_raw=raw, data=data, format="json")
-            except Exception:
-                pass
         
         # Try bare JSON frontmatter (for test compatibility)
         match = self.FRONTMATTER_JSON_BARE_PATTERN.match(self.content)
         if match:
             raw = match.group(1)
             raw = textwrap.dedent(raw)  # Dedent for indented content
-            try:
-                data = json.loads(raw)
+            data, state = try_load_json_text(raw)
+            if state == "ok" and data is not None:
                 # Find where JSON ends to extract properly
                 return FrontMatter(data_or_raw=raw, data=data, format="json")
-            except Exception:
-                pass
         
         return FrontMatter()
     
@@ -381,6 +381,11 @@ def parse_yaml_fenced_blocks(content: str, include_errors: bool = False) -> List
     return parsed
 
 
+def parse_yaml_fenced_blocks_with_errors(content: str) -> List[Dict[str, Any]]:
+    """Parse fenced YAML blocks and include parse errors as sentinel dicts."""
+    return parse_yaml_fenced_blocks(content, include_errors=True)
+
+
 def parse_simple_yaml_block(block: str) -> Dict[str, Any]:
     """Parse a minimal YAML block without a YAML parser."""
     entry: Dict[str, Any] = {}
@@ -429,10 +434,44 @@ def parse_yaml_fenced_blocks_fallback(content: str) -> List[Dict[str, Any]]:
     return fallback
 
 
-def extract_bracketed_ids(content: str, pattern: str = r"\[([A-Z]+-\d+)\]") -> List[str]:
+def extract_bracketed_ids(content: str, pattern: str = r"\[([A-Z]+-\d+|GP\d+)\]") -> List[str]:
     """Extract bracketed IDs like [PHASE-123] from content."""
     ids = {match.group(1) for match in re.finditer(pattern, content)}
     return sorted(ids)
+
+
+def extract_bold_list_item_titles(content: str) -> List[str]:
+    """Extract bolded list item titles like '- **Title**' from content."""
+    pattern = re.compile(r'[-*]\s+\*\*(.+?)\*\*')
+    titles = {match.group(1).strip() for match in pattern.finditer(content)}
+    return sorted(title for title in titles if title)
+
+
+def extract_roadmap_frontmatter_and_ids(content: str) -> Tuple[List[str], List[Dict[str, Any]]]:
+    """Extract roadmap frontmatter entries and referenced IDs from markdown."""
+    frontmatter_items: List[Dict[str, Any]] = []
+    for data in parse_yaml_fenced_blocks_fallback(content):
+        if data and isinstance(data, dict):
+            frontmatter_items.append(data)
+
+    ids = set()
+    for item in frontmatter_items:
+        item_id = item.get("id")
+        if isinstance(item_id, str):
+            ids.add(item_id)
+
+    ids.update(extract_bracketed_ids(content))
+    return sorted(ids), frontmatter_items
+
+
+def extract_roadmap_frontmatter_and_ids_from_path(
+    md_path: Path,
+) -> Tuple[List[str], List[Dict[str, Any]]]:
+    """Extract roadmap IDs/frontmatter from a markdown file."""
+    if not md_path.exists():
+        raise FileNotFoundError(f"ROADMAP.md not found at {md_path}")
+    content = md_path.read_text(encoding="utf-8")
+    return extract_roadmap_frontmatter_and_ids(content)
 
 
 def extract_markdown_section_from_content(
@@ -478,6 +517,86 @@ def extract_markdown_section(
         return None
     content = md_path.read_text(encoding="utf-8")
     return extract_markdown_section_from_content(content, heading_pattern)
+
+
+def parse_markdown_table_rows(text: str) -> List[List[str]]:
+    """Parse markdown table rows into cell lists.
+
+    Skips separator rows composed of dashes/colons.
+    """
+    rows: List[List[str]] = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            continue
+        # Drop leading/trailing pipes, then split cells.
+        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+        if not cells:
+            continue
+        # Skip separator rows like | --- | ---: |
+        if all(re.fullmatch(r":?-{3,}:?", cell or "-") for cell in cells):
+            continue
+        rows.append(cells)
+    return rows
+
+
+def reconstruct_table_section(lines: List[str], start_idx: int) -> Tuple[List[str], int]:
+    """Reconstruct a collapsed markdown table section from lines."""
+    table_lines: List[str] = []
+    i = start_idx
+
+    while i < len(lines):
+        line = lines[i].strip()
+        if line.startswith('---') or '**' in line or '$mathbf{' in line:
+            table_lines.append(lines[i])
+            i += 1
+        elif not line:
+            i += 1
+            if i < len(lines) and not lines[i].strip().startswith(
+                ('---', '  ---', '**', '  **', '$', '  $')
+            ):
+                break
+        else:
+            break
+
+    if len(table_lines) < 2:
+        return lines[start_idx:i], i
+
+    combined = ' '.join(table_lines)
+
+    if 'Formal Type' in combined and 'Exegesis' in combined:
+        return reconstruct_formal_type_table(table_lines), i
+    if 'Level (n-Cell)' in combined or 'n-Cell' in combined:
+        return reconstruct_ncell_table(table_lines), i
+    if 'Construction' in combined and 'Categorical' in combined:
+        return reconstruct_categorical_table(table_lines), i
+    if 'Component' in combined or 'Operation' in combined:
+        return reconstruct_component_table(table_lines), i
+    return table_lines, i
+
+
+def reconstruct_formal_type_table(lines: List[str]) -> List[str]:
+    """Reconstruct tables with Formal Type | Exegesis | Source pattern."""
+    _ = [
+        "| **Formal Type** | **Exegesis & Purpose** | **Source** |",
+        "| --- | --- | --- |",
+    ]
+    return lines
+
+
+def reconstruct_ncell_table(lines: List[str]) -> List[str]:
+    """Reconstruct n-Cell hierarchy tables."""
+    return lines
+
+
+def reconstruct_categorical_table(lines: List[str]) -> List[str]:
+    """Reconstruct categorical construction tables."""
+    return lines
+
+
+def reconstruct_component_table(lines: List[str]) -> List[str]:
+    """Reconstruct component/operation tables."""
+    return lines
 
 
 class MarkdownBuilder:

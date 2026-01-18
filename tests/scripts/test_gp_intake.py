@@ -1,7 +1,15 @@
 #!/usr/bin/env python3
 """Tests for shared GP intake parsing."""
 
-from scripts.shared.gp_intake import extract_metadata_from_text, infer_target_module, load_concept_config
+from scripts.shared.gp_intake import (
+    build_gp_metadata,
+    categorize_gp_phase,
+    extract_question,
+    extract_metadata_from_text,
+    extract_gp_number,
+    infer_target_module,
+    load_concept_config,
+)
 
 
 def test_extract_metadata_from_text_prefers_structured_sections():
@@ -19,6 +27,46 @@ def test_extract_metadata_from_text_prefers_structured_sections():
     assert "fix goes here" in meta["fix"]
 
 
+def test_extract_metadata_from_text_filters_prompt_lines():
+    content = """# Title
+
+Would you like me to proceed?
+Here is a declarative line.
+Second declarative line.
+"""
+    meta = extract_metadata_from_text(content, "Fallback")
+    assert "Would you like" not in meta["summary"]
+    assert "Here is a declarative line." in meta["summary"]
+
+
+def test_extract_question_splits_lines():
+    content = (
+        "Preface line\r\n"
+        "Would you like me to proceed?\r\n"
+        "Second line.\n"
+        "Third line.\n"
+    )
+    assert extract_question(content) == "Would you like me to proceed?"
+
+
+def test_extract_gp_number_parses_id():
+    assert extract_gp_number("GP01") == 1
+    assert extract_gp_number("GP830") == 830
+    assert extract_gp_number("UNKNOWN") == 0
+
+
+def test_categorize_gp_phase_buckets():
+    assert categorize_gp_phase(1) == "foundational"
+    assert categorize_gp_phase(150) == "structural"
+    assert categorize_gp_phase(250) == "geometric"
+    assert categorize_gp_phase(350) == "topological"
+    assert categorize_gp_phase(450) == "homological"
+    assert categorize_gp_phase(550) == "polytope"
+    assert categorize_gp_phase(650) == "coherence"
+    assert categorize_gp_phase(750) == "analysis"
+    assert categorize_gp_phase(850) == "unified"
+
+
 def test_infer_target_module_defaults(tmp_path):
     config = load_concept_config(tmp_path / "missing.json")
     module = infer_target_module("no matches", "none", [], config)
@@ -29,6 +77,17 @@ def test_infer_target_module_category_routing(tmp_path):
     config = load_concept_config(tmp_path / "missing.json")
     module = infer_target_module("functor morphism", "category", [], config)
     assert module == "src/agda/Core/CategoricalAdapter.agda"
+
+
+def test_build_gp_metadata_includes_target_module(tmp_path):
+    config = load_concept_config(tmp_path / "missing.json")
+    content = "# Title\n\nSome text about functor.\n"
+
+    metadata = build_gp_metadata(content, "GP01", config)
+
+    assert metadata["title"] == "Title"
+    assert metadata["category"] == "Foundation"
+    assert metadata["target_module"] == "src/agda/Core/CategoricalAdapter.agda"
 
 
 def test_ingest_metadata_includes_target_module(tmp_path):
