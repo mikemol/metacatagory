@@ -464,6 +464,16 @@ def extract_roadmap_frontmatter_and_ids(content: str) -> Tuple[List[str], List[D
     return sorted(ids), frontmatter_items
 
 
+def extract_roadmap_frontmatter_and_ids_from_path(
+    md_path: Path,
+) -> Tuple[List[str], List[Dict[str, Any]]]:
+    """Extract roadmap IDs/frontmatter from a markdown file."""
+    if not md_path.exists():
+        raise FileNotFoundError(f"ROADMAP.md not found at {md_path}")
+    content = md_path.read_text(encoding="utf-8")
+    return extract_roadmap_frontmatter_and_ids(content)
+
+
 def extract_markdown_section_from_content(
     content: str,
     heading_pattern: str,
