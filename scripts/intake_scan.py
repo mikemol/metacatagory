@@ -23,7 +23,7 @@ if str(ROOT) not in sys.path:
 from scripts.shared.paths import REPO_ROOT, REPORTS_DIR
 from scripts import shared_data
 from scripts.shared.io import save_json
-from scripts.shared.intake import classify_intake_filename, find_roadmap_ids
+from scripts.shared.intake import classify_intake_filename, find_roadmap_ids, read_intake_text
 
 INTAKE_DIR = REPO_ROOT / "intake"
 CANONICAL_PATH = shared_data.resolve_planning_path(repo_root=REPO_ROOT)
@@ -77,7 +77,7 @@ def build_coverage(canonical_ids: set[str], files: list[Path]) -> dict[str, Any]
     formalized: list[str] = []
 
     for path in files:
-        text = path.read_text(errors="ignore")
+        text = read_intake_text(path)
         matches = find_roadmap_ids(text)
         canonical_matches = sorted(matches & canonical_ids)
         unknown_matches = sorted(matches - canonical_ids)

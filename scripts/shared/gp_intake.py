@@ -10,6 +10,11 @@ from typing import Dict, List, Optional
 
 from scripts.shared.io import load_json
 
+
+def load_gp_text(path: Path) -> str:
+    """Load GP markdown content with consistent encoding handling."""
+    return path.read_text(encoding="utf-8", errors="ignore")
+
 def strip_base64_images(text: str) -> str:
     """Remove Base64-encoded images from text to prevent pollution."""
     text = re.sub(r'data:image/[^;]+;base64,[A-Za-z0-9+/=]+', '[image removed]', text)
@@ -187,7 +192,7 @@ def categorize_gp_phase(gp_num: int) -> str:
 def extract_metadata_from_md(filepath: Path | str) -> Dict:
     """Extract metadata from a markdown file."""
     path = Path(filepath)
-    content = path.read_text(encoding="utf-8", errors="ignore")
+    content = load_gp_text(path)
     return extract_metadata_from_text(content, path.stem)
 
 

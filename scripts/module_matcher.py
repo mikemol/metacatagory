@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from collections import defaultdict
 
 from scripts import shared_data
-from scripts.shared.agda import AgdaParser, extract_module_header
+from scripts.shared.agda import AgdaParser, extract_module_header, read_agda_text
 from scripts.shared.agda_declarations import scan_agda_declarations
 from scripts.shared.io import save_json
 from scripts.shared.gp_intake import categorize_gp_phase, extract_gp_number
@@ -97,7 +97,7 @@ class ModuleMatcher:
         
         # Read file to extract keywords
         try:
-            content = file_path.read_text(encoding='utf-8')
+            content = read_agda_text(file_path)
             keywords = self._extract_keywords(content, file_path)
         except Exception:
             keywords = set()

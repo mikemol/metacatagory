@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 
 ID_PATTERN = re.compile(
     r"\b(?:PHASE-[A-Za-z0-9.\-]+|ROADMAP-MD-\d+|GP-[A-Za-z0-9.\-]+)\b"
@@ -34,3 +35,8 @@ def classify_intake_filename(name: str) -> str:
     ):
         return "substrate"
     return "formalized"
+
+
+def read_intake_text(path: Path) -> str:
+    """Load intake file content with consistent encoding handling."""
+    return path.read_text(errors="ignore")

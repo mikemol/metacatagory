@@ -13,6 +13,7 @@ from dataclasses import dataclass, asdict
 from scripts.shared.gp_intake import (
     build_gp_metadata,
     infer_target_module,
+    load_gp_text,
     load_concept_config,
 )
 from scripts.shared.gp_roadmap_render import (
@@ -46,7 +47,7 @@ class RoadmapEntry:
     target_module: str       # Routed primary module
 def parse_gp_file(filepath: Path) -> RoadmapEntry:
     """Parse a single GP markdown file."""
-    content = filepath.read_text(encoding='utf-8')
+    content = load_gp_text(filepath)
     gp_number = filepath.stem  # "GP01", "GP700", etc.
     metadata = build_gp_metadata(content, gp_number, CONCEPT_CONFIG)
     

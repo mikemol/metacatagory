@@ -37,6 +37,11 @@ except ImportError:
     ValidationFailure = None
 
 
+def read_agda_text(path: Path) -> str:
+    """Load Agda source with consistent encoding handling."""
+    return path.read_text(encoding="utf-8", errors="ignore")
+
+
 @dataclass
 class AgdaModule:
     """Representation of an Agda module.
