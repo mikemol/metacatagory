@@ -11,8 +11,8 @@ jsonRoundtripTargets : List MakefileTarget
 jsonRoundtripTargets =
   generatorToTarget mutateCert "json-decompose" "Decompose monolithic JSON to hierarchical structure" ("data/dependency_graph.json" ∷ [])
     ("python3 scripts/json_decompose.py data/dependency_graph.json $(DEPS_DIR) --strategy dependency-graph" ∷ [])
-  ∷ generatorToTarget mutateCert "json-decompose-prebuilt" "Decompose monolithic JSON using prebuilt inputs" ("data/dependency_graph.json" ∷ [])
-    ("python3 scripts/json_decompose.py data/dependency_graph.json $(DEPS_DIR) --strategy dependency-graph" ∷ [])
+  ∷ generatorToTarget mutateCert "json-decompose-prebuilt" "Decompose monolithic JSON using prebuilt inputs" ("json-decompose" ∷ [])
+    []
   ∷ generatorToFileTarget mutateCert "build/dependency_graph_recomposed.json" "Recompose hierarchical JSON back to monolithic form" ("json-decompose" ∷ "$(DEPS_METADATA)" ∷ [])
     ("python3 scripts/json_recompose.py $(DEPS_DIR) build/dependency_graph_recomposed.json" ∷ [])
   ∷ generatorToTarget mutateCert "json-roundtrip-validate" "Validate JSON decomposition roundtrip" ("json-decompose" ∷ "build/dependency_graph_recomposed.json" ∷ [])

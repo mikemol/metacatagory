@@ -286,7 +286,7 @@ json-decompose: data/dependency_graph.json
 	$(call require_mutate_scope,repo)
 	scripts/run_profiled.sh 'json-decompose' 'build/recipes/json-decompose.sh'
 # Decompose monolithic JSON using prebuilt inputs
-json-decompose-prebuilt: data/dependency_graph.json
+json-decompose-prebuilt: json-decompose
 	$(call require_mutate_scope,repo)
 	scripts/run_profiled.sh 'json-decompose-prebuilt' 'build/recipes/json-decompose-prebuilt.sh'
 # Recompose hierarchical JSON back to monolithic form
