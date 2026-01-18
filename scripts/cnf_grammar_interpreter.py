@@ -10,10 +10,15 @@ import sys
 import json
 from typing import Any
 
+from scripts.shared.io import load_json
+
 # --- Load CNF grammar ---
 def load_cnf_grammar(path: str) -> dict[str, Any]:
-    with open(path) as f:
-        return json.load(f)
+    return load_json(
+        path,
+        required=True,
+        error_msg=f"Missing CNF grammar input: {path}",
+    )
 
 # --- Example: Apply CNF grammar to a proof trace ---
 def apply_cnf_grammar(
