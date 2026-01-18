@@ -32,6 +32,7 @@ import networkx as nx
 from graphviz import Digraph
 from rich.console import Console
 
+from scripts.shared.config import Config
 from scripts.shared.io import save_json
 from scripts.shared.agda_tests import (
     extract_chapter_from_filename,
@@ -302,17 +303,19 @@ def main() -> None:
     """Main entry point."""
     import argparse
 
+    config = Config.from_env()
+
     parser = argparse.ArgumentParser(description="Generate phase boundary diagrams")
     parser.add_argument(
         "--test-dir",
         type=Path,
-        default=Path("src/agda/Tests"),
+        default=config.agda_dir / "Tests",
         help="Directory containing test files (default: src/agda/Tests)",
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("docs/automation"),
+        default=config.docs_dir / "automation",
         help="Output directory for diagrams (default: docs/automation/)",
     )
     parser.add_argument(
