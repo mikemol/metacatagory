@@ -20,6 +20,7 @@ from scripts.shared.agda import AgdaParser
 from scripts.shared.agda_declarations import scan_agda_declarations
 from scripts.shared.io import save_json
 from scripts.shared.gp_intake import categorize_gp_phase, extract_gp_number
+from scripts.shared.paths import get_module_name_from_path
 
 @dataclass
 class AgdaModule:
@@ -202,7 +203,7 @@ class ModuleMatcher:
             # Prefer explicit file mapping when present (e.g., planning_index.json entries)
             file_modules = [f for f in item_data.get('files', []) if f.startswith("src/agda/")]
             if file_modules:
-                primary_module = file_modules[0].replace("src/agda/", "").replace(".agda", "").replace("/", ".")
+                primary_module = get_module_name_from_path(Path(file_modules[0]))
                 mapping = ModuleMapping(
                     step_id=step_id,
                     title=item.get('title', ''),
