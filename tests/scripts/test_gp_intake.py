@@ -24,6 +24,18 @@ def test_extract_metadata_from_text_prefers_structured_sections():
     assert "fix goes here" in meta["fix"]
 
 
+def test_extract_metadata_from_text_filters_prompt_lines():
+    content = """# Title
+
+Would you like me to proceed?
+Here is a declarative line.
+Second declarative line.
+"""
+    meta = extract_metadata_from_text(content, "Fallback")
+    assert "Would you like" not in meta["summary"]
+    assert "Here is a declarative line." in meta["summary"]
+
+
 def test_infer_target_module_defaults(tmp_path):
     config = load_concept_config(tmp_path / "missing.json")
     module = infer_target_module("no matches", "none", [], config)
