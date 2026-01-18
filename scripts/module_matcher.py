@@ -16,10 +16,11 @@ from dataclasses import dataclass, field
 from collections import defaultdict
 
 from scripts import shared_data
-from scripts.shared.agda import AgdaParser
+from scripts.shared.agda import AgdaParser, extract_module_header
 from scripts.shared.agda_declarations import scan_agda_declarations
 from scripts.shared.io import save_json
 from scripts.shared.gp_intake import categorize_gp_phase, extract_gp_number
+from scripts.shared.normalization import extract_keywords_from_text
 from scripts.shared.paths import get_module_name_from_path
 
 @dataclass
@@ -131,12 +132,10 @@ class ModuleMatcher:
     def _extract_keywords(self, content: str, file_path: Path) -> Set[str]:
         """Extract keywords from module content."""
         keywords = set()
-        
-        # Extract from comments
-        comment_pattern = re.compile(r'--\s*(.+)$', re.MULTILINE)
-        for match in comment_pattern.finditer(content):
-            words = match.group(1).lower().split()
-            keywords.update(w.strip('.,;:()[]{}') for w in words if len(w) > 3)
+
+        header = extract_module_header(file_path)
+        if header:
+            keywords.update(extract_keywords_from_text(header))
         
         # Extract from record/data type declarations
         for decl in scan_agda_declarations(file_path):

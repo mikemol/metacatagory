@@ -211,3 +211,9 @@ def unescape_string(value: str) -> str:
         return bytes(value, "utf-8").decode("unicode_escape")
     except Exception:
         return value
+
+
+def extract_keywords_from_text(text: str, *, min_len: int = 4) -> Set[str]:
+    """Extract lowercase keywords from free-form text."""
+    words = re.split(r"\W+", text.lower())
+    return {word for word in words if len(word) >= min_len}
